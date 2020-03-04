@@ -3461,6 +3461,74 @@ table tr th:last-child {
 .custom-ticket-title-suggestions::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+
+.custom-antd-table .ant-table-content {
+  overflow: auto;
+}
+.custom-antd-table .ant-table-content::-webkit-scrollbar {
+  height: 5px;
+}
+.custom-antd-table .ant-table-content::-webkit-scrollbar-track {
+  background: #F3F0F0;
+  border-radius: 10px;
+}
+.custom-antd-table .ant-table-content::-webkit-scrollbar-thumb {
+  background: #a5a3a3;
+  border-radius: 10px;
+}
+.order-input {
+  border: 1px solid #eaeaea;
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+.custom-antd-table .ant-table-thead > tr > th {
+  font-weight: 700;
+  color: #4a4a4a;
+  white-space: nowrap;
+  padding: 10px 20px 4px !important;
+  background: transparent !important;
+  border-bottom: 0;
+}
+.custom-antd-table .ant-table-thead > tr {
+  background: transparent !important;
+}
+.custom-antd-table .ant-table-tbody > tr > td {
+  white-space: nowrap;
+  padding: 20px !important;
+}
+.custom-antd-table .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td {
+  background: transparent;
+}
+.custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+  font-size: 12px !important;
+}
+.custom-antd-table .ant-table-expanded-row > td:first-child {
+  display: none;
+}
+.custom-antd-table .ant-table-expanded-row {
+  background: #f8f8f8;
+}
+.custom-antd-table .ant-table-expanded-row .ant-table-tbody > tr > td {
+  border-bottom: 0;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-antd-table .filter-checkbox input + label {
+  padding-left: 0;
+  top: -3px;
+}
+.custom-antd-table table {
+  padding: 0 20px;
+}
+.custom-antd-table .ant-table-expanded-row table {
+  padding: 0;
+}
+.datepicker-overflow table, .datepicker-overflow .ant-table-content {
+  overflow: visible;
+}
+.datepicker-overflow .react-datepicker__month-read-view span, .datepicker-overflow .react-datepicker__year-read-view span {
+  display: inline-block;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
@@ -10872,4 +10940,8 @@ table tr th:last-child {
 {
   min-width: 700px;
   max-width: 700px;
+}
+.emshl {
+  background: #fff url("./../Images/facebook.png") no-repeat right 15px
+  center;
 }

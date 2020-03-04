@@ -17,6 +17,7 @@ import {
 import matchSorter from "match-sorter";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
+import { Table } from "antd";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -100,10 +101,10 @@ class TicketSystemOrder extends Component {
   handleRequireSize(e, rowData) {
     debugger;
 
-    var id = rowData.original.orderItemID;
+    var id = rowData.orderItemID;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var index = this.state.OrderSubItem.findIndex(
-      x => x.orderItemID === rowData.original.orderItemID
+      x => x.orderItemID === rowData.orderItemID
     );
 
     var OrderSubItem = this.state.OrderSubItem;
@@ -988,7 +989,7 @@ class TicketSystemOrder extends Component {
             </div>
             {/* <div className="reacttableordermodal ordermainrow tableSrolling headers-menu"> */}
             <div id="Modalorderitemtable" style={{ display: "block" }}>
-              <ReactTable
+              {/* <ReactTable
                 data={orderDetailsData}
                 onFilteredChange={this.onFilteredChange.bind(this)}
                 filtered={this.state.filtered}
@@ -1006,25 +1007,6 @@ class TicketSystemOrder extends Component {
                             className="filter-checkbox"
                             style={{ marginLeft: "15px" }}
                           >
-                            {/* <input
-                              type="checkbox"
-                              id={"i" + row.original.orderMasterID}
-                              style={{ display: "none" }}
-                              name="ticket-order"
-                              checked={
-                                this.state.CheckOrderID[
-                                  row.original.orderMasterID
-                                ] === true
-                              }
-                              onChange={this.handleCheckOrderID.bind(
-                                this,
-                                row.original.orderMasterID,
-                                row.original
-                              )}
-                            />
-                            <label
-                              htmlFor={"i" + row.original.orderMasterID}
-                            ></label> */}
                             <input
                               type="checkbox"
                               id={"all" + row.original.orderMasterID}
@@ -1091,7 +1073,6 @@ class TicketSystemOrder extends Component {
                     Filter: () => {},
                     getProps: () => {
                       return {
-                        // style: { padding: "0px"}
                       };
                     },
                     filterMethod: (filter, rows) => {
@@ -1110,10 +1091,8 @@ class TicketSystemOrder extends Component {
                         threshold: matchSorter.rankings.WORD_STARTS_WITH
                       });
                       if (result.length > 0) {
-                        debugger;
                         return result;
                       } else {
-                        debugger;
                         result = [{ itemPrice: "No Record Found" }];
                         return result;
                       }
@@ -1124,6 +1103,72 @@ class TicketSystemOrder extends Component {
                 resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
+              /> */}
+              <Table
+                className="components-table-demo-nested custom-antd-table"
+                columns={[
+                  {
+                    title: "",
+                    dataIndex: "orderMasterID",
+                    render: (row, data) => {
+                      // debugger;
+                      return (
+                        <div>
+                          <input
+                            type="checkbox"
+                            id={"all" + data.orderMasterID}
+                            name="AllOrder"
+                            checked={
+                              this.state.CheckBoxAllOrder[
+                                data.orderMasterID
+                              ] === true
+                            }
+                            onChange={this.onCheckMasterAllChange.bind(
+                              this,
+                              data.orderMasterID,
+                              data
+                            )}
+                          />
+                           
+                        </div>
+                      );
+                    }
+                  },
+                  {
+                    title: "Invoice Number",
+                    dataIndex: "invoiceNumber",
+                  },
+                  {
+                    title: "Invoice Date",
+                    dataIndex: "dateFormat",
+                  },
+                  {
+                    title: "Item Count",
+                    dataIndex: "itemCount",
+                  },
+                  {
+                    title: "Item Price",
+                    dataIndex: "ordeItemPrice",
+                  },
+                  {
+                    title: "Price Paid",
+                    dataIndex: "orderPricePaid",
+                  },
+                  {
+                    title: "Store Code",
+                    dataIndex: "storeCode",
+                  },
+                  {
+                    title: "Store Address",
+                    dataIndex: "storeAddress",
+                  },
+                  {
+                    title: "Discount",
+                    dataIndex: "discount",
+                  }
+                ]}
+                dataSource={orderDetailsData}
+                pagination={false}
               />
             </div>
             <div
@@ -1131,7 +1176,154 @@ class TicketSystemOrder extends Component {
               className="varunoverflow"
               style={{ display: "none" }}
             >
-              <ReactTable
+              <Table
+                className="components-table-demo-nested custom-antd-table"
+                columns={[
+                  {
+                    title: "",
+                    dataIndex: "orderMasterID",
+                    render: (row, data) => {
+                      // debugger;
+                      return (
+                        <div>
+                          <input
+                            type="checkbox"
+                            id={"all" + data.orderMasterID}
+                            name="AllOrder"
+                            checked={
+                              this.state.CheckBoxAllOrder[
+                                data.orderMasterID
+                              ] === true
+                            }
+                            onChange={this.onCheckMasterAllChange.bind(
+                              this,
+                              data.orderMasterID,
+                              data
+                            )}
+                          />
+                          
+                        </div>
+                      );
+                    }
+                  },
+                  {
+                    title: "Invoice Number",
+                    dataIndex: "invoiceNumber"
+                  },
+                  {
+                    title: "Invoice Date",
+                    dataIndex: "dateFormat"
+                  },
+                  {
+                    title: "Item Count",
+                    dataIndex: "itemCount"
+                  },
+                  {
+                    title: "Item Price",
+                    dataIndex: "ordeItemPrice"
+                  },
+                  {
+                    title: "Price Paid",
+                    dataIndex: "orderPricePaid" 
+                  },
+                  {
+                    title: "Store Code",
+                    dataIndex: "storeCode" 
+                  },
+                  {
+                    title: "Store Address",
+                    dataIndex: "storeAddress" 
+                  },
+                  {
+                    title: "Discount",
+                    dataIndex: "discount"
+                  }
+                ]}
+                expandedRowRender={row => {
+                  return (
+                    <Table
+                      dataSource={this.state.OrderSubItem.filter(
+                        x => x.orderMasterID === row.orderMasterID
+                      )}
+                      columns={[
+                        {
+                          title: "",
+                          dataIndex: "orderMasterID",
+                          render: (row, item) => {
+                            // debugger;
+                            return (
+                              <div>
+                                <input
+                                  type="checkbox"
+                                  id={"item" + item.orderItemID}
+                                  name="AllItem"
+                                  checked={
+                                    this.state.CheckBoxAllItem[
+                                      item.orderItemID
+                                    ] === true
+                                  }
+                                  onChange={this.checkIndividualItem.bind(
+                                    this,
+                                    item.orderItemID,
+                                    item
+                                  )}
+                                />
+                                 
+                              </div>
+                            );
+                          }
+                        },
+                        {
+                          title: "Article Number",
+                          dataIndex: "articleNumber" 
+                        },
+                        {
+                          title: "Article Name",
+                          dataIndex: "articleName" 
+                        },
+                        {
+                          title: "Article MRP",
+                          dataIndex: "itemPrice" 
+                        },
+                        {
+                          title: "Price Paid",
+                          dataIndex: "pricePaid" 
+                        },
+                        {
+                          title: "Discount",
+                          dataIndex: "discount" 
+                        },
+                        {
+                          title: "Required Size",
+                          dataIndex: "requireSize" ,
+                          render: (data, record) => {
+                            return (
+                              <div>
+                                <input
+                                  type="text"
+                                  id={"requireSizeTxt" + record.orderItemID}
+                                  value={record.requireSize || ""}
+                                  name="requiredSize"
+                                  className="order-input"
+                                  autoComplete="off"
+                                  onChange={() => {
+                                    this.handleRequireSize(this, record);
+                                  }}
+                                />
+                              </div>
+                            );
+                          }
+                        }
+                      ]}
+                      // rowSelection={rowSelection}
+                      pagination={false}
+                    />
+                  );
+                }}
+                pagination={false}
+                dataSource={orderDetailsData}
+              />
+              {/* <ReactTable
                 data={orderDetailsData}
                 onFilteredChange={this.onFilteredChange.bind(this)}
                 filtered={this.state.filtered}
@@ -1163,25 +1355,7 @@ class TicketSystemOrder extends Component {
                             className="filter-checkbox"
                             style={{ marginLeft: "15px" }}
                           >
-                            {/* <input
-                              type="checkbox"
-                              id={"i" + row.original.orderMasterID}
-                              style={{ display: "none" }}
-                              name="ticket-order"
-                              checked={
-                                this.state.CheckOrderID[
-                                  row.original.orderMasterID
-                                ] === true
-                              }
-                              onChange={this.handleCheckOrderID.bind(
-                                this,
-                                row.original.orderMasterID,
-                                row.original
-                              )}
-                            />
-                            <label
-                              htmlFor={"i" + row.original.orderMasterID}
-                            ></label> */}
+                            
                             <input
                               type="checkbox"
                               id={"all" + row.original.orderMasterID}
@@ -1297,25 +1471,7 @@ class TicketSystemOrder extends Component {
                                 className="filter-checkbox"
                                 style={{ marginLeft: "15px" }}
                               >
-                                {/* <input
-                                  type="checkbox"
-                                  id={"order" + row.original.orderItemID}
-                                  style={{ display: "none" }}
-                                  name="ticket-order"
-                                  checked={
-                                    this.state.CheckOrderID[
-                                      row.original.orderItemID
-                                    ] === true
-                                  }
-                                  onChange={this.handleCheckOrderID.bind(
-                                    this,
-                                    row.original.orderItemID,
-                                    row.original
-                                  )}
-                                />
-                                <label
-                                  htmlFor={"order" + row.original.orderItemID}
-                                ></label> */}
+                                
                                 <input
                                   type="checkbox"
                                   id={"item" + row.original.orderItemID}
@@ -1374,6 +1530,7 @@ class TicketSystemOrder extends Component {
                                     }
                                     value={row.original.requireSize || ""}
                                     name="requiredSize"
+                                    autoComplete="off"
                                     onChange={() => {
                                       this.handleRequireSize(this, row);
                                     }}
@@ -1399,7 +1556,7 @@ class TicketSystemOrder extends Component {
                     </div>
                   );
                 }}
-              />
+              /> */}
             </div>
             {/* </div> */}
           </Modal>
@@ -1825,95 +1982,76 @@ class TicketSystemOrder extends Component {
               <span className="linestore2"></span>
 
               <div id="orderitemtable" style={{ display: "block" }}>
-                <ReactTable
-                  data={orderDetailsData}
+                <Table
+                  className="components-table-demo-nested custom-antd-table"
                   columns={[
                     {
-                      Header: <span></span>,
-                      accessor: "invoiceNumber",
-                      Cell: row => (
-                        <div
-                          className="filter-checkbox"
-                          style={{ marginLeft: "15px" }}
-                        >
-                          {/* <input
-                          type="checkbox"
-                          id={"i" + row.original.orderMasterID}
-                          style={{ display: "none" }}
-                          name="ticket-order"
-                          checked={
-                            this.state.CheckOrderID[
-                              row.original.orderMasterID
-                            ] === true
-                          }
-                          onChange={this.handleCheckOrderID.bind(
-                            this,
-                            row.original.orderMasterID,
-                            row.original
-                          )}
-                        />
-                        <label
-                          htmlFor={"i" + row.original.orderMasterID}
-                        ></label> */}
-                          <input
-                            type="checkbox"
-                            id={"all" + row.original.orderMasterID}
-                            style={{ display: "none" }}
-                            name="AllOrder"
-                            checked={
-                              this.state.CheckBoxAllOrder[
-                                row.original.orderMasterID
-                              ] === true
-                            }
-                            onChange={this.onCheckMasterAllChange.bind(
-                              this,
-                              row.original.orderMasterID,
-                              row.original
-                            )}
-                          />
-                          <label
-                            htmlFor={"all" + row.original.orderMasterID}
-                          ></label>
-                        </div>
-                      )
+                      title: "",
+                      dataIndex: "orderMasterID",
+                      render: (row, data) => {
+                        // debugger;
+                        return (
+                          <div className="filter-checkbox">
+                            <input
+                            className="d-none"
+                              type="checkbox"
+                              id={"all" + data.orderMasterID}
+                              name="AllOrder"
+                              checked={
+                                this.state.CheckBoxAllOrder[
+                                  data.orderMasterID
+                                ] === true
+                              }
+                              onChange={this.onCheckMasterAllChange.bind(
+                                this,
+                                data.orderMasterID,
+                                data
+                              )}
+                            />
+                             <label
+                              htmlFor={"all" + data.orderMasterID}
+                            ></label>
+                          </div>
+                        );
+                      }
                     },
                     {
-                      Header: <span>Invoice Number</span>,
-                      accessor: "invoiceNumber"
+                      title: "Invoice Number",
+                      dataIndex: "invoiceNumber" 
                     },
                     {
-                      Header: <span>Invoice Date</span>,
-                      accessor: "dateFormat"
+                      title: "Invoice Date",
+                      dataIndex: "dateFormat" 
                     },
                     {
-                      Header: <span>Item Count</span>,
-                      accessor: "itemCount"
+                      title: "Item Count",
+                      dataIndex: "itemCount" 
                     },
                     {
-                      Header: <span>Item Price</span>,
-                      accessor: "ordeItemPrice"
+                      title: "Item Price",
+                      dataIndex: "ordeItemPrice" 
                     },
                     {
-                      Header: <span>Price Paid</span>,
-                      accessor: "orderPricePaid"
+                      title: "Price Paid",
+                      dataIndex: "orderPricePaid"
                     },
                     {
-                      Header: <span>Store Code</span>,
-                      accessor: "storeCode"
+                      title: "Store Code",
+                      dataIndex: "storeCode" 
                     },
                     {
-                      Header: <span>Store Addres</span>,
-                      accessor: "storeAddress"
+                      title: "Store Address",
+                      dataIndex: "storeAddress"
                     },
                     {
-                      Header: <span>Discount</span>,
-                      accessor: "discount"
+                      title: "Discount",
+                      dataIndex: "discount"
                     }
                   ]}
-                  resizable={false}
-                  defaultPageSize={3}
-                  showPagination={false}
+                  dataSource={orderDetailsData}
+                  pagination={false}
                 />
+ 
               </div>
 
               <div
@@ -1921,7 +2059,157 @@ class TicketSystemOrder extends Component {
                 className="order-detc2"
                 style={{ display: "none" }}
               >
-                <ReactTable
+                <Table
+                  className="components-table-demo-nested custom-antd-table"
+                  columns={[
+                    {
+                      title: "",
+                      dataIndex: "orderMasterID",
+                      render: (row, data) => {
+                        // debugger;
+                        return (
+                          <div>
+                            <input
+                              type="checkbox"
+                              id={"all" + data.orderMasterID}
+                              name="AllOrder"
+                              checked={
+                                this.state.CheckBoxAllOrder[
+                                  data.orderMasterID
+                                ] === true
+                              }
+                              onChange={this.onCheckMasterAllChange.bind(
+                                this,
+                                data.orderMasterID,
+                                data
+                              )}
+                            />
+                            
+                          </div>
+                        );
+                      }
+                    },
+                    {
+                      title: "Invoice Number",
+                      dataIndex: "invoiceNumber" 
+                    },
+                    {
+                      title: "Invoice Date",
+                      dataIndex: "dateFormat" 
+                    },
+                    {
+                      title: "Item Count",
+                      dataIndex: "itemCount" 
+                    },
+                    {
+                      title: "Item Price",
+                      dataIndex: "ordeItemPrice" 
+                    },
+                    {
+                      title: "Price Paid",
+                      dataIndex: "orderPricePaid" 
+                    },
+                    {
+                      title: "Store Code",
+                      dataIndex: "storeCode" 
+                    },
+                    {
+                      title: "Store Address",
+                      dataIndex: "storeAddress" 
+                    },
+                    {
+                      title: "Discount",
+                      dataIndex: "discount", 
+                    }
+                  ]}
+                  expandedRowRender={row => {
+                    return (
+                      <Table
+                        dataSource={this.state.OrderSubItem.filter(
+                          x => x.orderMasterID === row.orderMasterID
+                        )}
+                        columns={[
+                          {
+                            title: "",
+                            dataIndex: "orderMasterID",
+                            render: (row, item) => {
+                              debugger;
+                              return (
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    id={"item" + item.orderItemID}
+                                    name="AllItem"
+                                    checked={
+                                      this.state.CheckBoxAllItem[
+                                        item.orderItemID
+                                      ] === true
+                                    }
+                                    onChange={this.checkIndividualItem.bind(
+                                      this,
+                                      item.orderItemID,
+                                      item
+                                    )}
+                                  />
+                                  
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            title: "Article Number",
+                            dataIndex: "articleNumber",
+                          },
+                          {
+                            title: "Article Name",
+                            dataIndex: "articleName",
+                          },
+                          {
+                            title: "Article MRP",
+                            dataIndex: "itemPrice",
+                          },
+                          {
+                            title: "Price Paid",
+                            dataIndex: "pricePaid",
+                          },
+                          {
+                            title: "Discount",
+                            dataIndex: "discount",
+                          },
+                          {
+                            title: "Required Size",
+                            dataIndex: "requireSize",
+                            render: (data, record) => {
+                              return (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="text"
+                                    id={"requireSizeTxt" + record.orderItemID}
+                                    value={record.requireSize || ""}
+                                    name="requiredSize"
+                                    className="order-input"
+                                    autoComplete="off"
+                                    onChange={() => {
+                                      this.handleRequireSize(this, record);
+                                    }}
+                                  />
+                                  <label
+                                    htmlFor={"requireSizeTxt" + record.orderItemID}
+                                  ></label>
+                                </div>
+                              );
+                            }
+                          }
+                        ]}
+                        // rowSelection={rowSelection}
+                        pagination={false}
+                      />
+                    );
+                  }}
+                  pagination={false}
+                  dataSource={orderDetailsData}
+                />
+                {/* <ReactTable
                   data={orderDetailsData}
                   expanded={this.state.expanded}
                   onExpandedChange={(newExpanded, index, event) => {
@@ -1946,25 +2234,6 @@ class TicketSystemOrder extends Component {
                           className="filter-checkbox"
                           style={{ marginLeft: "15px" }}
                         >
-                          {/* <input
-                            type="checkbox"
-                            id={"i" + row.original.orderMasterID}
-                            style={{ display: "none" }}
-                            name="ticket-order"
-                            checked={
-                              this.state.CheckOrderID[
-                                row.original.orderMasterID
-                              ] === true
-                            }
-                            onChange={this.handleCheckOrderID.bind(
-                              this,
-                              row.original.orderMasterID,
-                              row.original
-                            )}
-                          />
-                          <label
-                            htmlFor={"i" + row.original.orderMasterID}
-                          ></label> */}
                           <input
                             type="checkbox"
                             id={"all" + row.original.orderMasterID}
@@ -2037,25 +2306,7 @@ class TicketSystemOrder extends Component {
                                   className="filter-checkbox"
                                   style={{ marginLeft: "15px" }}
                                 >
-                                  {/* <input
-                                    type="checkbox"
-                                    id={"order" + row.original.orderItemID}
-                                    style={{ display: "none" }}
-                                    name="ticket-order"
-                                    checked={
-                                      this.state.CheckOrderID[
-                                        row.original.orderItemID
-                                      ] === true
-                                    }
-                                    onChange={this.handleCheckOrderID.bind(
-                                      this,
-                                      row.original.orderItemID,
-                                      row.original
-                                    )}
-                                  />
-                                  <label
-                                    htmlFor={"order" + row.original.orderItemID}
-                                  ></label> */}
+                                   
                                   <input
                                     type="checkbox"
                                     id={"item" + row.original.orderItemID}
@@ -2109,7 +2360,7 @@ class TicketSystemOrder extends Component {
                       </div>
                     );
                   }}
-                />
+                /> */}
               </div>
             </div>
           ) : null}

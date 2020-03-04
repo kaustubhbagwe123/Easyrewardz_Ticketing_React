@@ -10,6 +10,7 @@ import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
 import matchSorter from "match-sorter";
 import DatePicker from "react-datepicker";
+import { Table } from "antd";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class TicketSystemStore extends Component {
       CustStoreStatusDrop: "0"
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
+    this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
       this
     );
@@ -50,7 +52,7 @@ class TicketSystemStore extends Component {
   }
   handleByvisitDate(e, rowData) {
     debugger;
-    var id = e.original.storeID;
+    var id = e.storeID;
     var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
     this.state.selectedStoreData["VisitedDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
@@ -101,6 +103,7 @@ class TicketSystemStore extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             self.setState({ SearchData: data, message: Msg });
+            self.handleCheckStoreID = self.handleCheckStoreID.bind(self);
           } else {
             self.setState({
               message: res.data.message,
@@ -142,7 +145,7 @@ class TicketSystemStore extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleCheckStoreID(storeMasterID, rowData) {
+  handleCheckStoreID = (storeMasterID, rowData) => {
     debugger;
 
     const newSelected = Object.assign({}, this.state.CheckStoreID);
@@ -188,7 +191,7 @@ class TicketSystemStore extends Component {
     {
       this.props.getStoreID(selectedRow);
     }
-  }
+  };
   onFilteredChange(filtered) {
     debugger;
     if (filtered.length > 1 && this.state.filterAll.length) {
@@ -215,6 +218,8 @@ class TicketSystemStore extends Component {
       CustStoreStatusDrop: e.target.value
     });
   };
+
+  
   render() {
     const { SearchData, selectedStoreData } = this.state;
     return (
@@ -402,7 +407,7 @@ class TicketSystemStore extends Component {
                   aria-labelledby="storedetail-tab"
                 >
                   <div className="reactstoreselect">
-                    <ReactTable
+                    {/* <ReactTable
                       data={SearchData}
                       onFilteredChange={this.onFilteredChange.bind(this)}
                       filtered={this.state.filtered}
@@ -461,7 +466,7 @@ class TicketSystemStore extends Component {
                             {
                               Header: <span>Store Addres</span>,
                               accessor: "address"
-                            } 
+                            }
                           ]
                         },
                         {
@@ -505,7 +510,60 @@ class TicketSystemStore extends Component {
                       // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
-                    />
+                    /> */}
+<Table
+className="custom-antd-table"
+                        columns={[
+                          {
+                            title: "",
+                            dataIndex: "storeID",
+                            render: (row, data) => {
+                              // debugger;
+                              return (
+                                <div>
+                                   <input
+                                      type="checkbox"
+                                      id={"i" + data.storeID}
+                                      name="ticket-store"
+                                      checked={
+                                        this.state.CheckStoreID[
+                                          data.storeID
+                                        ] === true
+                                      }
+                                      onChange={this.handleCheckStoreID.bind(
+                                        this,
+                                        data.storeID,
+                                        data
+                                      )}
+                                    />
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            title: "Store Code",
+                            dataIndex: "storeCode"
+                          },
+                          {
+                            title: "Store Name",
+                            dataIndex: "storeName" 
+                          },
+                          {
+                            title: "Store Pin Code",
+                            dataIndex: "pincode" 
+                          },
+                          {
+                            title: "Store Email ID",
+                            dataIndex: "storeEmailID"
+                          },
+                          {
+                            title: "Store Addres",
+                            dataIndex: "address"
+                          }
+                        ]}
+                        dataSource={SearchData}
+                        pagination={false}
+                      />
                   </div>
                 </div>
                 <div
@@ -515,7 +573,7 @@ class TicketSystemStore extends Component {
                   aria-labelledby="selectedstore-tab"
                 >
                   <div className="reactstoreselect datePickertable">
-                    <ReactTable
+                    {/* <ReactTable
                       data={selectedStoreData}
                       columns={[
                         {
@@ -599,10 +657,106 @@ class TicketSystemStore extends Component {
                           }
                         }
                       ]}
-                      // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
-                    />
+                    /> */}
+                     <Table
+                     className="custom-antd-table datepicker-overflow"
+                        columns={[
+                          {
+                            title: "",
+                            dataIndex: "storeID",
+                            render: (row, data) => {
+                              // debugger;
+                              return (
+                                <div>
+                                   <input
+                                  type="checkbox"
+                                  id={"selected" + data.storeID}
+                                  name="ticket-store"
+                                  checked={
+                                    this.state.CheckStoreID[
+                                      data.storeID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckStoreID.bind(
+                                    this,
+                                    data.storeID,
+                                    data
+                                  )}
+                                />
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            title:"Purpose",
+                            dataIndex:"storeID",
+                            render:(row,data)=>{
+                              return(
+                                <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <label
+                                  htmlFor={"selected" + data.storeID}
+                                >
+                                  {data.purposeId === "0"
+                                    ? "Customer Want to visit store"
+                                    : "Customer Already visited store"}
+                                </label>
+                              </div>
+                              )
+                            }
+                          }, 
+                          {
+                            title: "Store Code",
+                            dataIndex: "storeCode"
+                          },
+                          {
+                            title: "Store Name",
+                            dataIndex: "storeName" 
+                          },
+                          {
+                            title: "Store Pin Code",
+                            dataIndex: "pincode" 
+                          },
+                          {
+                            title: "Store Email ID",
+                            dataIndex: "storeEmailID"
+                          },
+                          {
+                            title: "Store Addres",
+                            dataIndex: "address"
+                          },
+                          {
+                            title: "Visit Date",
+                            dataIndex: "visitDate",
+                            render:(row,data)=>{
+                              return(
+                                <div className="col-sm-12 p-0">
+                                <DatePicker
+                                  selected={data.VisitedDate}
+                                  placeholderText="Visited Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dateFormat="dd/MM/yyyy"
+                                  id={"visitDate" + data.storeID}
+                                  value={data.VisitedDate}
+                                  name="visitDate"
+                                  onChange={this.handleByvisitDate.bind(
+                                    this,
+                                    data
+                                  )}
+                                />
+                              </div>
+                              )
+                            }
+                          }
+                        ]}
+                        dataSource={selectedStoreData}
+                        pagination={false}
+                      />
                   </div>
                 </div>
               </div>
@@ -709,7 +863,60 @@ class TicketSystemStore extends Component {
                     aria-labelledby="storeSubdetail-tab"
                   >
                     <div className="reactstoreselect ordermainrow">
-                      <ReactTable
+                      <Table
+                      className="custom-antd-table"
+                        columns={[
+                          {
+                            title: "",
+                            dataIndex: "storeID",
+                            render: (row, data) => {
+                              // debugger;
+                              return (
+                                <div>
+                                   <input
+                                      type="checkbox"
+                                      id={"i" + data.storeID}
+                                      name="ticket-store"
+                                      checked={
+                                        this.state.CheckStoreID[
+                                          data.storeID
+                                        ] === true
+                                      }
+                                      onChange={this.handleCheckStoreID.bind(
+                                        this,
+                                        data.storeID,
+                                        data
+                                      )}
+                                    />
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            title: "Store Code",
+                            dataIndex: "storeCode"
+                          },
+                          {
+                            title: "Store Name",
+                            dataIndex: "storeName" 
+                          },
+                          {
+                            title: "Store Pin Code",
+                            dataIndex: "pincode" 
+                          },
+                          {
+                            title: "Store Email ID",
+                            dataIndex: "storeEmailID"
+                          },
+                          {
+                            title: "Store Addres",
+                            dataIndex: "address"
+                          }
+                        ]}
+                        dataSource={SearchData}
+                        pagination={false}
+                      />
+                      {/* <ReactTable
                         data={SearchData}
                         onFilteredChange={this.onFilteredChange.bind(this)}
                         filtered={this.state.filtered}
@@ -813,7 +1020,7 @@ class TicketSystemStore extends Component {
                         // resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
-                      />
+                      /> */}
                     </div>
                     {this.state.selectedStoreData.length !== 0 ? (
                       <div className="storedetailtabsbutton">
@@ -836,7 +1043,7 @@ class TicketSystemStore extends Component {
                     aria-labelledby="selectedSubstore-tab"
                   >
                     <div className="reactstoreselect ordermainrow">
-                      <ReactTable
+                      {/* <ReactTable
                         data={selectedStoreData}
                         columns={[
                           {
@@ -934,16 +1141,108 @@ class TicketSystemStore extends Component {
                             }
                           }
                         ]}
-                        // resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
+                      /> */}
+                       <Table
+                       className="custom-antd-table"
+                        columns={[
+                          {
+                            title: "",
+                            dataIndex: "storeID",
+                            render: (row, data) => {
+                              // debugger;
+                              return (
+                                <div>
+                                   <input
+                                  type="checkbox"
+                                  id={"selected" + data.storeID}
+                                  name="ticket-store"
+                                  checked={
+                                    this.state.CheckStoreID[
+                                      data.storeID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckStoreID.bind(
+                                    this,
+                                    data.storeID,
+                                    data
+                                  )}
+                                />
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            title:"Purpose",
+                            dataIndex:"storeID",
+                            render:(row,data)=>{
+                              return(
+                                <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <label
+                                  htmlFor={"selected" + data.storeID}
+                                >
+                                  {data.purposeId === "0"
+                                    ? "Customer Want to visit store"
+                                    : "Customer Already visited store"}
+                                </label>
+                              </div>
+                              )
+                            }
+                          },
+                          {
+                            title: "Store Code",
+                            dataIndex: "storeCode"
+                          },
+                          {
+                            title: "Store Name",
+                            dataIndex: "storeName" 
+                          },
+                          {
+                            title: "Store Pin Code",
+                            dataIndex: "pincode" 
+                          },
+                          {
+                            title: "Store Email ID",
+                            dataIndex: "storeEmailID"
+                          },
+                          {
+                            title: "Store Addres",
+                            dataIndex: "address"
+                          },
+                          {
+                            title: "Visit Date",
+                            dataIndex: "visitDate",
+                            render:(row,data)=>{
+                              return(
+                                <div className="col-sm-12 p-0">
+                                <DatePicker
+                                  selected={data.VisitedDate}
+                                  placeholderText="Visited Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dateFormat="dd/MM/yyyy"
+                                  id={"visitDate" + data.storeID}
+                                  value={data.VisitedDate}
+                                  name="visitDate"
+                                  onChange={this.handleByvisitDate.bind(
+                                    this,
+                                    data
+                                  )}
+                                />
+                              </div>
+                              )
+                            }
+                          }
+                        ]}
+                        dataSource={selectedStoreData}
+                        pagination={false}
                       />
                     </div>
-                    {/* <div className="storedetailtabsbutton">
-                      <button type="button" className="addstoretabsbtn">
-                        REMOVE STORE
-                      </button>
-                    </div> */}
+                    
                   </div>
                 </div>
               </div>

@@ -29,6 +29,7 @@ import { Popover } from "antd";
 import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import axios from "axios";
+import PencilImg from "./../assets/Images/pencil.png";
 // import Demo from "../store/Hashtag";
 // import {
 //   NotificationContainer,
@@ -1003,9 +1004,23 @@ class Header extends Component {
                 </div>
                 <div className="logout-flex">
                   <div>
+                  
                     <p style={{ fontSize: "16px", fontWeight: "600" }}>
                       {this.state.UserName}
+                      &nbsp;
+                      <Link to="userprofile">
+                      <img
+                              src={PencilImg}
+                              alt="Pencile"
+                              className="pencilImg"
+                              title="Edit Profile"
+                              onClick={this.onCloseModal.bind(this)}
+                            />
+                             </Link>
                     </p>
+                   
+                    
+                  
                     <p className="mail-id">{this.state.Email}</p>
                   </div>
                   <button

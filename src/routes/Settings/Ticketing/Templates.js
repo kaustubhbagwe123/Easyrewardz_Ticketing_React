@@ -41,7 +41,7 @@ const MyButton = props => {
   );
 };
 
-const Content = props => {
+const Content = (props,e) => {
   debugger
   var array=[];
   const { rowData } = props
