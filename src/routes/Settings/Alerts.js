@@ -1162,13 +1162,13 @@ class Alerts extends Component {
                                   </div>
                                    */}
                                   <div className="form-group row">
-                                    <label className="label-color-alert">
+                                    <label className="label-color-alert col-sm-auto">
                                       Subject
                                     </label>
-                                    <div className="col-sm-6">
+                                    <div className="col-sm">
                                       <input
                                         type="text"
-                                        className="textbox-email-editor text-box4"
+                                        className="textbox-email-editor text-box4 w-100 ml-0"
                                         name="selectedSubjectCustomer"
                                         value={
                                           this.state.selectedSubjectCustomer
@@ -1292,13 +1292,13 @@ class Alerts extends Component {
                                   </div>
                                    */}
                                   <div className="form-group row">
-                                    <label className="label-color-alert">
+                                    <label className="label-color-alert col-sm-auto">
                                       Subject
                                     </label>
-                                    <div className="col-sm-6">
+                                    <div className="col-sm">
                                       <input
                                         type="text"
-                                        className="textbox-email-editor text-box4"
+                                        className="textbox-email-editor text-box4 w-100 ml-0"
                                         name="selectedSubjectInternal"
                                         value={
                                           this.state.selectedSubjectInternal
@@ -1419,13 +1419,13 @@ class Alerts extends Component {
                                   </div>
                                    */}
                                   <div className="form-group row">
-                                    <label className="label-color-alert">
+                                    <label className="label-color-alert col-sm-auto">
                                       Subject
                                     </label>
-                                    <div className="col-sm-6">
+                                    <div className="col-sm">
                                       <input
                                         type="text"
-                                        className="textbox-email-editor text-box4"
+                                        className="textbox-email-editor text-box4 w-100 ml-0"
                                         name="selectedSubjectStore"
                                         value={this.state.selectedSubjectStore}
                                         onChange={this.setDataOnChangeAlert}
@@ -1542,7 +1542,7 @@ class Alerts extends Component {
                           </div>*/}
                           </div>
                         </div>
-                        <div className="div-button1">
+                        <div className="div-button1 alert-proper">
                           <button
                             className="butn-2"
                             type="submit"

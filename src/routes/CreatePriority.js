@@ -18,6 +18,12 @@ import {
   NotificationManager
 } from "react-notifications";
 
+import { DndProvider, DragSource, DropTarget } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import update from "immutability-helper";
+
+let dragingIndex = -1;
+
 const MyButton = props => {
   const { children } = props;
   return (
@@ -118,6 +124,74 @@ const Content = props => {
   );
 };
 
+class BodyRow extends React.Component {
+  render() {
+    const {
+      isOver,
+      connectDragSource,
+      connectDropTarget,
+      moveRow,
+      ...restProps
+    } = this.props;
+    const style = { ...restProps.style, cursor: "pointer" };
+
+    let { className } = restProps;
+    if (isOver) {
+      if (restProps.index > dragingIndex) {
+        className += " drop-over-downward";
+      }
+      if (restProps.index < dragingIndex) {
+        className += " drop-over-upward";
+      }
+    }
+
+    return connectDragSource(
+      connectDropTarget(
+        <tr {...restProps} className={className} style={style} />
+      )
+    );
+  }
+}
+
+const rowSource = {
+  beginDrag(props) {
+    dragingIndex = props.index;
+    return {
+      index: props.index
+    };
+  }
+};
+
+const rowTarget = {
+  drop(props, monitor) {
+    const dragIndex = monitor.getItem().index;
+    const hoverIndex = props.index;
+
+    // Don't replace items with themselves
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+
+    // Time to actually perform the action
+    props.moveRow(dragIndex, hoverIndex);
+
+    // Note: we're mutating the monitor item here!
+    // Generally it's better to avoid mutations,
+    // but it's good here for the sake of performance
+    // to avoid expensive index searches.
+    monitor.getItem().index = hoverIndex;
+  }
+};
+
+const DragableBodyRow = DropTarget("row", rowTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver()
+}))(
+  DragSource("row", rowSource, connect => ({
+    connectDragSource: connect.dragSource()
+  }))(BodyRow)
+);
+
 const closest = function(el, selector, rootNode) {
   rootNode = rootNode || document.body;
   const matchesSelector =
@@ -166,20 +240,65 @@ class CreatePriority extends Component {
       rowData: {}
     };
   }
+  components = {
+    body: {
+      row: DragableBodyRow
+    }
+  };
   componentDidMount() {
     this.handleGetPriorityList();
   }
 
+  
   callBackEdit = (priortyName, priortyStatus, rowData) => {
     debugger;
     // this.setState({RoleName,updateRoleisActive:Status})
     this.state.updatedPriorityName = priortyName;
     this.state.updatedStatus = priortyStatus;
     this.state.rowData = rowData;
-  };
+  }
+  
+  ////move row info
+  moveRow = (dragIndex, hoverIndex) => {
+    const { priorityData } = this.state;
+    const dragRow = priorityData[dragIndex];
 
+    var paramData = {};
+    paramData.selectedPriorityID = dragRow.priorityID;
+    paramData.currentPriorityID = this.state.priorityData[
+      hoverIndex
+    ].priorityID;
+    this.setState(
+      update(this.state, {
+        priorityData: {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragRow]
+          ]
+        }
+      })
+    );
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Priority/UpdatePriorityOrder",
+      headers: authHeader(),
+      params: paramData
+    })
+      .then(function(res) {
+        debugger;
+
+        if (res.data.responseData) {
+          self.handleGetPriorityList();
+        } else {
+          NotificationManager.error("Sorry we don't sort row of list");
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  };
   handleGetPriorityList() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -191,6 +310,7 @@ class CreatePriority extends Component {
       }
     }).then(function(res) {
       debugger;
+
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -206,7 +326,6 @@ class CreatePriority extends Component {
     });
   }
   handleSubmitData() {
-    debugger;
     if (
       this.state.priority_name.length > 0 &&
       this.state.selectedActiveStatus.length > 0
@@ -228,7 +347,6 @@ class CreatePriority extends Component {
           status: activeStatus
         }
       }).then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetPriorityList();
@@ -247,7 +365,6 @@ class CreatePriority extends Component {
     }
   }
   handleDeleteData(priority_ID) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -257,7 +374,6 @@ class CreatePriority extends Component {
         PriorityID: priority_ID
       }
     }).then(function(res) {
-      debugger;
       let status = res.data.statusCode;
       if (status === 1010) {
         self.handleGetPriorityList();
@@ -291,7 +407,6 @@ class CreatePriority extends Component {
           status: activeStatus
         }
       }).then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetPriorityList();
@@ -383,7 +498,6 @@ class CreatePriority extends Component {
     });
   };
   handleOnChangeData = e => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -399,7 +513,6 @@ class CreatePriority extends Component {
     this.setState({ selectedActiveStatus: value });
   };
   handleroweditClick(e, data) {
-    debugger;
     var finalData = e;
     finalData.name = finalData.priortyName;
     finalData.status = finalData.priortyStatus;
@@ -432,201 +545,203 @@ class CreatePriority extends Component {
                   <div className="loader-icon"></div>
                 ) : (
                   <div className="table-cntr table-height table-priority">
-                    <Table
-                      className={
-                        (this.state.dragIndex >= 0 && "dragging-container") ||
-                        ""
-                      }
-                      // columns={this.state.columns}
-                      columns={[
-                        {
-                          key: "data",
-                          render: (text, record, index) => (
-                            <span>
-                              {(this.state.dragIndex >= 0 &&
-                                this.state.dragIndex !==
-                                  this.state.draggedIndex &&
-                                index === this.state.draggedIndex && (
-                                  <span
-                                    className={`drag-target-line ${
-                                      this.state.draggedIndex <
-                                      this.state.dragIndex
-                                        ? "drag-target-top"
-                                        : ""
-                                    }`}
-                                  />
-                                )) ||
-                                ""}
-                              <a
-                                className="drag-handle"
-                                draggable="false"
-                                onMouseDown={this.onMouseDown}
-                                href="#!"
-                              >
-                                <img src={Braille} alt="braille-icon" />
-                              </a>
-                            </span>
-                          )
-                        },
-                        {
-                          title: "Priority Name",
-                          dataIndex: "priortyName",
-                          key: "priortyName",
-                          filterMultiple: false,
-                          onFilter: (value, record) =>
-                            record.priortyName.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.priortyName.length - b.priortyName.length,
-                          sortDirections: ["descend", "ascend"]
-                        },
-                        {
-                          title: "Created By",
-                          dataIndex: "createdByName",
-                          key: "createdByName",
-                          filterMultiple: false,
-                          onFilter: (value, record) =>
-                            record.createdByName.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.createdByName.length - b.createdByName.length,
-                          sortDirections: ["descend", "ascend"],
-                          render: (text, record) => {
-                            // debugger;
-                            return (
-                              <div>
-                                <Popover
-                                  content={
-                                    <div>
-                                      <div>
-                                        <b>
-                                          <p className="title">
-                                            Created By: {record.createdByName}
-                                          </p>
-                                        </b>
-                                        <p className="sub-title">
-                                          Created Date:{" "}
-                                          {record.createdDateFormated}
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <b>
-                                          <p className="title">
-                                            Updated By: {record.modifiedByName}
-                                          </p>
-                                        </b>
-                                        <p className="sub-title">
-                                          Updated Date:{" "}
-                                          {record.modifiedDateFormated}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                >
-                                  {record.createdByName}
-                                  <img
-                                    className="info-icon-cp"
-                                    src={BlackInfoIcon}
-                                    alt="info-icon"
-                                  />
-                                </Popover>
-                              </div>
-                            );
-                          }
-                        },
-                        {
-                          title: "Created Date",
-                          dataIndex: "createdDateFormated",
-                          key: "createdDateFormated",
-                          onFilter: (value, record) =>
-                            record.createdDateFormated.indexOf(value) === 0,
-                          // defaultSortOrder: "descend",
-                          filterMultiple: false,
-                          sorter: (a, b) =>
-                            a.createdDateFormated.length -
-                            b.createdDateFormated.length,
-                          sortDirections: ["descend", "ascend"]
-                        },
-                        {
-                          title: "Status",
-                          dataIndex: "priortyStatus",
-                          key: "priortyStatus",
-                          filterMultiple: false,
-                          onFilter: (value, record) =>
-                            record.priortyStatus.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.priortyStatus.length - b.priortyStatus.length,
-                          sortDirections: ["descend", "ascend"]
-                        },
-                        {
-                          title: "Action",
-                          dataIndex: "priorityID",
-                          key: "priorityID",
-                          render: (text, record) => {
-                            // debugger;
-                            return (
+                    <DndProvider backend={HTML5Backend}>
+                      <Table
+                        className={
+                          (this.state.dragIndex >= 0 && "dragging-container") ||
+                          ""
+                        }
+                        // columns={this.state.columns}
+                        columns={[
+                          {
+                            key: "data",
+                            render: (text, record, index) => (
                               <span>
-                                <Popover
-                                  content={
-                                    <div>
-                                      <div className="del-big-icon">
-                                        <img
-                                          src={BlackDeleteIcon}
-                                          alt="del-icon"
-                                        />
-                                      </div>
+                                {(this.state.dragIndex >= 0 &&
+                                  this.state.dragIndex !==
+                                    this.state.draggedIndex &&
+                                  index === this.state.draggedIndex && (
+                                    <span
+                                      className={`drag-target-line ${
+                                        this.state.draggedIndex <
+                                        this.state.dragIndex
+                                          ? "drag-target-top"
+                                          : ""
+                                      }`}
+                                    />
+                                  )) ||
+                                  ""}
+                                <a
+                                  className="drag-handle"
+                                  draggable="false"
+                                  onMouseDown={this.onMouseDown}
+                                  href="#!"
+                                >
+                                  <img src={Braille} alt="braille-icon" />
+                                </a>
+                              </span>
+                            )
+                          },
+                          {
+                            title: "Priority Name",
+                            dataIndex: "priortyName",
+                            key: "priortyName",
+                            filterMultiple: false,
+                            onFilter: (value, record) =>
+                              record.priortyName.indexOf(value) === 0,
+                            sorter: (a, b) =>
+                              a.priortyName.length - b.priortyName.length,
+                            sortDirections: ["descend", "ascend"]
+                          },
+                          {
+                            title: "Created By",
+                            dataIndex: "createdByName",
+                            key: "createdByName",
+                            filterMultiple: false,
+                            onFilter: (value, record) =>
+                              record.createdByName.indexOf(value) === 0,
+                            sorter: (a, b) =>
+                              a.createdByName.length - b.createdByName.length,
+                            sortDirections: ["descend", "ascend"],
+                            render: (text, record) => {
+                              //
+                              return (
+                                <div>
+                                  <Popover
+                                    content={
                                       <div>
-                                        <p className="font-weight-bold blak-clr">
-                                          Delete file?
-                                        </p>
-                                        <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
-                                        </p>
-                                        <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                          <button
-                                            className="butn"
-                                            onClick={this.handleDeleteData.bind(
-                                              this,
-                                              record.priorityID
-                                            )}
-                                          >
-                                            Delete
-                                          </button>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              Created By: {record.createdByName}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            Created Date:{" "}
+                                            {record.createdDateFormated}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              Updated By:{" "}
+                                              {record.modifiedByName}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            Updated Date:{" "}
+                                            {record.modifiedDateFormated}
+                                          </p>
                                         </div>
                                       </div>
-                                    </div>
-                                  }
-                                  trigger="click"
-                                  placement="bottom"
-                                >
-                                  <img
-                                    src={RedDeleteIcon}
-                                    alt="del-icon"
-                                    className="del-btn"
-                                  />
-                                </Popover>
-                                <Popover
-                                  content={
-                                    <Content
-                                      rowData={record}
-                                      callBackEdit={this.callBackEdit}
-                                      editpriorityNameCompulsion={
-                                        this.state.editpriorityNameCompulsion
-                                      }
-                                      editstatusCompulsion={
-                                        this.state.editstatusCompulsion
-                                      }
-                                      activeData={this.state.activeData}
-                                      handleUpdateData={this.handleUpdateData.bind(
-                                        this
-                                      )}
+                                    }
+                                    placement="bottom"
+                                  >
+                                    {record.createdByName}
+                                    <img
+                                      className="info-icon-cp"
+                                      src={BlackInfoIcon}
+                                      alt="info-icon"
                                     />
-                                  }
-                                  trigger="click"
-                                  placement="bottom"
-                                >
-                                  {/* <button
+                                  </Popover>
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            title: "Created Date",
+                            dataIndex: "createdDateFormated",
+                            key: "createdDateFormated",
+                            onFilter: (value, record) =>
+                              record.createdDateFormated.indexOf(value) === 0,
+                            // defaultSortOrder: "descend",
+                            filterMultiple: false,
+                            sorter: (a, b) =>
+                              a.createdDateFormated.length -
+                              b.createdDateFormated.length,
+                            sortDirections: ["descend", "ascend"]
+                          },
+                          {
+                            title: "Status",
+                            dataIndex: "priortyStatus",
+                            key: "priortyStatus",
+                            filterMultiple: false,
+                            onFilter: (value, record) =>
+                              record.priortyStatus.indexOf(value) === 0,
+                            sorter: (a, b) =>
+                              a.priortyStatus.length - b.priortyStatus.length,
+                            sortDirections: ["descend", "ascend"]
+                          },
+                          {
+                            title: "Action",
+                            dataIndex: "priorityID",
+                            key: "priorityID",
+                            render: (text, record) => {
+                              //
+                              return (
+                                <span>
+                                  <Popover
+                                    content={
+                                      <div>
+                                        <div className="del-big-icon">
+                                          <img
+                                            src={BlackDeleteIcon}
+                                            alt="del-icon"
+                                          />
+                                        </div>
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            Delete file?
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            Are you sure you want to delete this
+                                            file?
+                                          </p>
+                                          <div className="del-can">
+                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <button
+                                              className="butn"
+                                              onClick={this.handleDeleteData.bind(
+                                                this,
+                                                record.priorityID
+                                              )}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
+                                    trigger="click"
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      src={RedDeleteIcon}
+                                      alt="del-icon"
+                                      className="del-btn"
+                                    />
+                                  </Popover>
+                                  <Popover
+                                    content={
+                                      <Content
+                                        rowData={record}
+                                        callBackEdit={this.callBackEdit}
+                                        editpriorityNameCompulsion={
+                                          this.state.editpriorityNameCompulsion
+                                        }
+                                        editstatusCompulsion={
+                                          this.state.editstatusCompulsion
+                                        }
+                                        activeData={this.state.activeData}
+                                        handleUpdateData={this.handleUpdateData.bind(
+                                          this
+                                        )}
+                                      />
+                                    }
+                                    trigger="click"
+                                    placement="bottom"
+                                  >
+                                    {/* <button
                                     className="react-tabel-button"
                                     onClick={this.handleroweditClick.bind(
                                       this,
@@ -635,57 +750,24 @@ class CreatePriority extends Component {
                                   >
                                     EDIT
                                   </button> */}
-                                  <label className="Table-action-edit-button-text">
-                                    <MyButton>EDIT</MyButton>
-                                  </label>
-                                </Popover>
-                              </span>
-                            );
+                                    <label className="Table-action-edit-button-text">
+                                      <MyButton>EDIT</MyButton>
+                                    </label>
+                                  </Popover>
+                                </span>
+                              );
+                            }
                           }
-                        }
-                      ]}
-                      pagination={true}
-                      dataSource={this.state.priorityData}
-                    />
-
-                    {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
+                        ]}
+                        pagination={true}
+                        dataSource={this.state.priorityData}
+                        components={this.components}
+                        onRow={(record, index) => ({
+                          index,
+                          moveRow: this.moveRow
+                        })}
+                      />
+                    </DndProvider>
                   </div>
                 )}
               </div>

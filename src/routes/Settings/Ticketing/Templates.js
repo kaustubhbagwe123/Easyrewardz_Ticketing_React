@@ -27,6 +27,104 @@ import Sorting from "./../../../assets/Images/sorting.png";
 
 
 
+const MyButton = props => {
+
+  const { children } = props;
+  return (
+    <div style={{ cursor: "pointer" }} {...props}>
+      <button className="react-tabel-button" id="p-edit-pop-2">
+        <label className="Table-action-edit-button-text">
+          {children}
+        </label>
+      </button>
+    </div>
+  );
+};
+
+const Content = props => {
+  debugger
+  var array=[];
+  const { rowData } = props
+  var issuename = rowData.issueTypeName.split(',');
+  var issueid = rowData.issueTypeID.split(',').map(Number);
+  for (let i = 0; i < issueid.length; i++) {
+    array.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
+  }
+  const [templateName, settemplateNameValue] = useState(rowData.templateName);
+  const [arraydata, setarrayValue] = useState(array);
+  const [templateStatus, settemplateStatusValue] = useState(rowData.templateStatus);
+  const [templateID] = useState(rowData.templateID);
+
+  props.callBackEdit(templateName, arraydata,templateStatus, rowData);
+  return (
+    <div className="edtpadding">
+                  <div className="">
+                    <label className="popover-header-text">EDIT TEMPLATES</label>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Name</label>
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      placeholder="Enter Name"
+                      maxLength={25}
+                      name="template_Name"
+                      value={templateName}
+                      onChange={e => settemplateNameValue(e.target.value)}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Issue Type</label>
+                    <Select
+                      getOptionLabel={option =>
+                        option.issueTypeName
+                      }
+                      getOptionValue={
+                        option => option.issueTypeID //id
+                      }
+                      options={
+                        props.slaIssueType
+                      }
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      closeMenuOnSelect={
+                        false
+                      }
+                      onChange={e => setarrayValue(e)}
+                      value={
+                        arraydata
+
+                      }
+
+                      // showNewOptionAtTop={false}
+                      defaultValue={{ label: "asd", value: 1 }}
+                      isMulti
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Status</label>
+                    <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+                      name="template_Status"
+                      value={templateStatus}
+                      onChange={e => settemplateStatusValue(e.target.value)}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <br />
+                  <div>
+                    <a  href={Demo.BLANK_LINK} className="pop-over-cancle">CANCEL</a>
+                    <button className="pop-over-button">
+                    <label className="pop-over-btnsave-text" onClick={(e) => { props.handleUpdateTemplate(e,  templateID) }}>SAVE</label>
+                    </button>
+                  </div>
+                </div>
+  );
+}
+
+
+
 
 class Templates extends Component {
   constructor(props) {
@@ -54,7 +152,11 @@ class Templates extends Component {
       StatusModel: false,
       sortColumn:"",
       sortAllData:[],
-     sortIssueType:[]
+     sortIssueType:[],
+     updatedTemplatename:"",
+     updatedArray:[],
+     updatedStatus:"",
+     rowData:{}
 
     }
 
@@ -64,14 +166,61 @@ class Templates extends Component {
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleUpdateTemplate=this.handleUpdateTemplate.bind(this);
   }
 
   componentDidMount() {
    this.handleGetTemplate();
     this.handleGetSLAIssueType();
   }
+  callBackEdit = (templateName, arraydata,templateStatus, rowData) => {
+    debugger;
+    // this.setState({RoleName,updateRoleisActive:Status})
+    this.state.updatedTemplatename = templateName;
+    this.state.updatedArray = arraydata;
+    this.state.updatedStatus = templateStatus;
+    this.state.rowData = rowData;
+  }
 
+  handleUpdateTemplate(e,templateID){
+    debugger;
+    let self = this;
+    var activeStatus = false;
+    var issuetype="";
+    
+    if (self.state.updatedStatus === "Active") {
+      activeStatus = true;
+    } else {
+      activeStatus = false;
+    }
 
+    if (this.state.updatedArray !== null) {
+      for (let i = 0; i < this.state.updatedArray.length; i++) {
+        issuetype += this.state.updatedArray[i].issueTypeID + ",";
+      }
+    }
+    var issue = issuetype.substring(0, issuetype.length - 1);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/ModifyTemplate",
+      headers: authHeader(),
+      params: {
+        TemplateID:templateID,
+        TemplateName:self.state.updatedTemplatename.trim(),
+        issueType: issue,
+        isTemplateActive: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Template update successfully.");
+        self.handleGetTemplate();
+      }else{
+        NotificationManager.error("Template not update.");
+      }
+    });
+  }
   
   sortStatusAtoZ() {
     debugger;
@@ -381,15 +530,31 @@ class Templates extends Component {
         ),
         accessor: "templateName"
       },
-      {
+      { 
         Header: (
           <span  onClick={this.StatusOpenModel.bind(this,"issueType")}>
             Issue Type
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "issueType",
-        Cell: props => <span className="number">{props.value}</span>
+        
+        accessor: "issueTypeCount",
+        //Cell: props => <span className="number">{props.value}</span>
+        Cell: row => {
+          if (row.original.issueTypeCount === 1){
+            return (
+              <span >
+                <label>{row.original.issueTypeName}</label>
+              </span>
+            );
+          }else{
+            return (
+              <span >
+                <label>{row.original.issueTypeCount}</label>
+              </span>
+            );
+          }
+        }
       },
       {
         id: "createdBy",
@@ -475,80 +640,22 @@ class Templates extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={<div className="edtpadding">
-                  <div className="">
-                    <label className="popover-header-text">EDIT TEMPLATES</label>
-                  </div>
-                  <div className="pop-over-div">
-                    <label className="edit-label-1">Name</label>
-                    <input
-                      type="text"
-                      className="txt-edit-popover"
-                      placeholder="Enter Name"
-                      maxLength={25}
-                      name="template_Name"
-                      value={this.state.templateEdit.template_Name}
-                      onChange={this.handleOnChangeEditData}
-                    />
-                  </div>
-                  <div className="pop-over-div">
-                    <label className="edit-label-1">Issue Type</label>
-                    <Select
-                      getOptionLabel={option =>
-                        option.issueTypeName
-                      }
-                      getOptionValue={
-                        option => option.issueTypeID //id
-                      }
-                      options={
-                        this.state
-                          .slaIssueType
-                      }
-                      placeholder="Select"
-                      // menuIsOpen={true}
-                      closeMenuOnSelect={
-                        false
-                      }
-                      onChange={this.setEditIssueType.bind(
-                        this
-                      )}
-                      value={
-                        this.state.editIssueType
-
-                      }
-
-                      // showNewOptionAtTop={false}
-                      defaultValue={{ label: "asd", value: 1 }}
-                      isMulti
-                    />
-                  </div>
-                  <div className="pop-over-div">
-                    <label className="edit-label-1">Status</label>
-                    <select id="inputStatus" className="edit-dropDwon dropdown-setting"
-                      name="template_Status"
-                      value={this.state.templateEdit.template_Status}
-                      onChange={this.handleOnChangeEditData}
-                    >
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
-                    </select>
-                  </div>
-                  <br />
-                  <div>
-                    <a href="#!" className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
-                    <button className="pop-over-button">
-                      <label className="pop-over-btnsave-text">SAVE</label>
-                    </button>
-                  </div>
-                </div>} placement="bottom" trigger="click">
-                  <button className="react-tabel-button editre" id="p-edit-pop-2"
+                <Popover content={
+                <Content rowData={row.original} callBackEdit={this.callBackEdit}
+                handleUpdateTemplate={this.handleUpdateTemplate.bind(this)}
+                slaIssueType={this.state.slaIssueType} />
+              } placement="bottom" trigger="click">
+                  {/* <button className="react-tabel-button editre" id="p-edit-pop-2"
                     onClick={this.setTemplateEditData.bind(this, row.original)}
                   >
                     EDIT
-                    {/* <label className="Table-action-edit-button-text">
+                   
+                  </button> */}
+                   <label className="Table-action-edit-button-text">
+                    <MyButton>
                       EDIT
-                    </label> */}
-                  </button>
+                    </MyButton>
+                  </label>
                 </Popover>
               </span>
             </>

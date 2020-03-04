@@ -1650,6 +1650,7 @@ class MyTicket extends Component {
         TicketID: id
       }
     }).then(function(res) {
+      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -2650,10 +2651,10 @@ class MyTicket extends Component {
                       </div>
                       <div className="card-space-1">
                         <label className="target-closure-date">
-                          Target Closure Date &nbsp;
+                          Target Closure Date &nbsp; 
                         </label>
                         <label className="Date-target">
-                          {ticketDetailsData.targetClouredate}
+                          {ticketDetailsData.targetClosuredate}
                         </label>
                       </div>
                       <div className="mobilenumber-resp">
@@ -2670,44 +2671,47 @@ class MyTicket extends Component {
                         value="50"
                         max="100"
                       ></progress> */}
-                      <Progress multi>
-                        {this.state.progressDataWithcColor.map(function(item) {
-                          if (item.color === "No Color") {
-                            return <Progress bar value={item.value}></Progress>;
-                          }
-                          if (item.color === "Orange") {
-                            return (
-                              <Progress
-                                bar
-                                color="warning"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
+                      <div className="tic-det-progress">
+                        <Progress multi>
+                          {this.state.progressDataWithcColor.map(function(item) {
+                            if (item.color === "No Color") {
+                              return <Progress bar></Progress>;
+                            }
+                            if (item.color === "Orange") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="warning"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
 
-                          if (item.color === "Red") {
-                            return (
-                              <Progress
-                                bar
-                                color="danger"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
+                            if (item.color === "Red") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="danger"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
 
-                          if (item.color === "Green") {
-                            return (
-                              <Progress
-                                bar
-                                color="success"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
-                        })}
-                      </Progress>
+                            if (item.color === "Green") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="success"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
+                          })}
+                        </Progress>
+                        </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
-                        2 day
+                        {/* 2 day */}
+                        {ticketDetailsData.durationRemaining}
                       </p>
                     </div>
                   </div>

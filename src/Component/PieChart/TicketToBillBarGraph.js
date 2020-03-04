@@ -49,7 +49,7 @@ class TicketToBillBarGraph extends Component {
         },
         tooltip: {
           marker: {
-            fillColors: ['#75A5DE', '#2561A8']
+            fillColors: [ '#2561A8','#75A5DE']
           }
         }
       },

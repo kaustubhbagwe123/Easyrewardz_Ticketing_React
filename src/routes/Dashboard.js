@@ -66,10 +66,10 @@ class Dashboard extends Component {
     let now = new Date();
     let start = moment(
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-    );
+    ).subtract(30, "days");
     let end = moment(start)
-      .add(1, "days")
-      .subtract(1, "seconds");
+      .add(30, "days");
+      // .subtract(1, "seconds");
     this.state = {
       start: start,
       end: end,
