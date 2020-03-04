@@ -1981,8 +1981,9 @@ class TicketSystemOrder extends Component {
                       render: (row, data) => {
                         // debugger;
                         return (
-                          <div>
+                          <div className="filter-checkbox">
                             <input
+                            className="d-none"
                               type="checkbox"
                               id={"all" + data.orderMasterID}
                               name="AllOrder"
@@ -1997,7 +1998,9 @@ class TicketSystemOrder extends Component {
                                 data
                               )}
                             />
-                             
+                             <label
+                              htmlFor={"all" + data.orderMasterID}
+                            ></label>
                           </div>
                         );
                       }
@@ -2168,7 +2171,7 @@ class TicketSystemOrder extends Component {
                             dataIndex: "requireSize",
                             render: (data, record) => {
                               return (
-                                <div>
+                                <div className="filter-checkbox">
                                   <input
                                     type="text"
                                     id={"requireSizeTxt" + record.orderItemID}
@@ -2180,6 +2183,9 @@ class TicketSystemOrder extends Component {
                                       this.handleRequireSize(this, record);
                                     }}
                                   />
+                                  <label
+                                    htmlFor={"requireSizeTxt" + record.orderItemID}
+                                  ></label>
                                 </div>
                               );
                             }

@@ -3513,6 +3513,10 @@ table tr th:last-child {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.custom-antd-table .filter-checkbox input + label {
+  padding-left: 0;
+  top: -3px;
+}
 .custom-antd-table table {
   padding: 0 20px;
 }
