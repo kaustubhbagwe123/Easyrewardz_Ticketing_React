@@ -3519,6 +3519,12 @@ table tr th:last-child {
 .custom-antd-table .ant-table-expanded-row table {
   padding: 0;
 }
+.datepicker-overflow table, .datepicker-overflow .ant-table-content {
+  overflow: visible;
+}
+.datepicker-overflow .react-datepicker__month-read-view span, .datepicker-overflow .react-datepicker__year-read-view span {
+  display: inline-block;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
