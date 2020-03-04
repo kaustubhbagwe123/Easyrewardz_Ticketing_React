@@ -1818,7 +1818,7 @@ class TicketSystemOrder extends Component {
 
               <div id="orderitemtable" style={{ display: "block" }}>
                 <Table
-                  className="components-table-demo-nested custom-antd-table"
+                  className="components-table-demo-nested"
                   columns={[
                     {
                       title: "",
@@ -1892,7 +1892,6 @@ class TicketSystemOrder extends Component {
                     }
                   ]}
                   dataSource={orderDetailsData}
-                  pagination={false}
                 />
 
                 {/* <ReactTable
