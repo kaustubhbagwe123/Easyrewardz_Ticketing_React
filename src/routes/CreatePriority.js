@@ -18,116 +18,105 @@ import {
   NotificationManager
 } from "react-notifications";
 
-
 const MyButton = props => {
-
   const { children } = props;
   return (
     <div style={{ cursor: "pointer" }} {...props}>
       <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">
-          {children}
-        </label>
+        <label className="Table-action-edit-button-text">{children}</label>
       </button>
     </div>
   );
 };
 
 const Content = props => {
-  debugger
-  const { rowData } = props
+  debugger;
+  const { rowData } = props;
   const [priortyName, setpriortyNameValue] = useState(rowData.priortyName);
-  const [priortyStatus, setpriortyStatusValue] = useState(rowData.priortyStatus);
+  const [priortyStatus, setpriortyStatusValue] = useState(
+    rowData.priortyStatus
+  );
   const [priorityID] = useState(rowData.priorityID);
 
   props.callBackEdit(priortyName, priortyStatus, rowData);
   return (
     <div>
-                                      <label className="popover-header-text">
-                                        EDIT PRORITY
-                                      </label>
-                                      <div className=" pop-over-div">
-                                        <label className="pop-over-lbl-text">
-                                          Priority Name
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="pop-over-text"
-                                          placeholder="Enter Priority Name"
-                                          maxLength={25}
-                                          name="name"
-                                          value={priortyName}
-                                          onChange={e => setpriortyNameValue(e.target.value)}
-                                        />
-                                        {priortyName === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px"
-                                            }}
-                                          >
-                                            {
-                                             props.editpriorityNameCompulsion
-                                            }
-                                          </p>
-                                        )}
-                                      </div>
-                                      <div className=" pop-over-div">
-                                        <label className="pop-over-lbl-text">
-                                          Status
-                                        </label>
-                                        <select
-                                          className="form-control dropdown-setting"
-                                          name="status"
-                                          value={priortyStatus}
-                                          onChange={e => setpriortyStatusValue(e.target.value)}
-                                        >
-                                          <option value="">select</option>
-                                          {props.activeData !== null &&
-                                            props.activeData.map(
-                                              (item, j) => (
-                                                <option
-                                                  key={j}
-                                                  value={item.ActiveID}
-                                                >
-                                                  {item.ActiveName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        {priortyStatus === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px"
-                                            }}
-                                          >
-                                            {props.editstatusCompulsion}
-                                          </p>
-                                        )}
-                                      </div>
-                                      <br />
-                                      <div>
-                                      <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
-                                        <button
-                                          type="button"
-                                          className="pop-over-button"
-                                          // onClick={this.handleUpdateData.bind(
-                                          //   this,
-                                          //   record.priorityID
-                                          // )}
-                                        >
-                                       <label className="pop-over-btnsave-text" onClick={(e) => { props.handleUpdateData(e,priorityID) }}>SAVE</label>
-                                        </button>
-                                      </div>
-                                    </div>
+      <label className="popover-header-text">EDIT PRORITY</label>
+      <div className=" pop-over-div">
+        <label className="pop-over-lbl-text">Priority Name</label>
+        <input
+          type="text"
+          className="pop-over-text"
+          placeholder="Enter Priority Name"
+          maxLength={25}
+          name="name"
+          value={priortyName}
+          onChange={e => setpriortyNameValue(e.target.value)}
+        />
+        {priortyName === "" && (
+          <p
+            style={{
+              color: "red",
+              marginBottom: "0px"
+            }}
+          >
+            {props.editpriorityNameCompulsion}
+          </p>
+        )}
+      </div>
+      <div className=" pop-over-div">
+        <label className="pop-over-lbl-text">Status</label>
+        <select
+          className="form-control dropdown-setting"
+          name="status"
+          value={priortyStatus}
+          onChange={e => setpriortyStatusValue(e.target.value)}
+        >
+          <option value="">select</option>
+          {props.activeData !== null &&
+            props.activeData.map((item, j) => (
+              <option key={j} value={item.ActiveID}>
+                {item.ActiveName}
+              </option>
+            ))}
+        </select>
+        {priortyStatus === "" && (
+          <p
+            style={{
+              color: "red",
+              marginBottom: "0px"
+            }}
+          >
+            {props.editstatusCompulsion}
+          </p>
+        )}
+      </div>
+      <br />
+      <div>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
+          CANCEL
+        </a>
+        <button
+          type="button"
+          className="pop-over-button"
+          // onClick={this.handleUpdateData.bind(
+          //   this,
+          //   record.priorityID
+          // )}
+        >
+          <label
+            className="pop-over-btnsave-text"
+            onClick={e => {
+              props.handleUpdateData(e, priorityID);
+            }}
+          >
+            SAVE
+          </label>
+        </button>
+      </div>
+    </div>
   );
-}
-
-
-
-
-
+};
 
 const closest = function(el, selector, rootNode) {
   rootNode = rootNode || document.body;
@@ -172,9 +161,9 @@ class CreatePriority extends Component {
       statusCompulsion: "",
       editpriorityNameCompulsion: "Please enter priority name.",
       editstatusCompulsion: "Please select status.",
-      updatedPriorityName:"",
-      updatedStatus:"",
-      rowData:{}
+      updatedPriorityName: "",
+      updatedStatus: "",
+      rowData: {}
     };
   }
   componentDidMount() {
@@ -187,8 +176,8 @@ class CreatePriority extends Component {
     this.state.updatedPriorityName = priortyName;
     this.state.updatedStatus = priortyStatus;
     this.state.rowData = rowData;
-  }
-  
+  };
+
   handleGetPriorityList() {
     debugger;
     let self = this;
@@ -278,7 +267,7 @@ class CreatePriority extends Component {
       }
     });
   }
-  handleUpdateData(e,priorityID) {
+  handleUpdateData(e, priorityID) {
     debugger;
     if (
       this.state.updatedPriorityName.length > 0 &&
@@ -286,7 +275,7 @@ class CreatePriority extends Component {
     ) {
       let self = this;
       var activeStatus = 0;
-      
+
       if (self.state.updatedStatus === "Active") {
         activeStatus = 1;
       } else {
@@ -619,10 +608,20 @@ class CreatePriority extends Component {
                                 </Popover>
                                 <Popover
                                   content={
-                                    <Content rowData={record} callBackEdit={this.callBackEdit}
-                                    editpriorityNameCompulsion={this.state.editpriorityNameCompulsion}
-                                    editstatusCompulsion={this.state.editstatusCompulsion}
-                                    activeData={this.state.activeData} handleUpdateData={this.handleUpdateData.bind(this)} />
+                                    <Content
+                                      rowData={record}
+                                      callBackEdit={this.callBackEdit}
+                                      editpriorityNameCompulsion={
+                                        this.state.editpriorityNameCompulsion
+                                      }
+                                      editstatusCompulsion={
+                                        this.state.editstatusCompulsion
+                                      }
+                                      activeData={this.state.activeData}
+                                      handleUpdateData={this.handleUpdateData.bind(
+                                        this
+                                      )}
+                                    />
                                   }
                                   trigger="click"
                                   placement="bottom"
@@ -637,10 +636,8 @@ class CreatePriority extends Component {
                                     EDIT
                                   </button> */}
                                   <label className="Table-action-edit-button-text">
-                    <MyButton>
-                      EDIT
-                    </MyButton>
-                  </label>
+                                    <MyButton>EDIT</MyButton>
+                                  </label>
                                 </Popover>
                               </span>
                             );

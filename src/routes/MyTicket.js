@@ -18,7 +18,7 @@ import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
 import RightImg from "./../assets/Images/right.png";
-// import DeleteImg from "./../assets/Images/del-black.png";
+import TwitterImg from "./../assets/Images/twitter.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Loading1Img from "./../assets/Images/loading1.png";
 import FacebookImg from "./../assets/Images/facebook.png";
@@ -94,7 +94,7 @@ class MyTicket extends Component {
       CommentsDrawer: false,
       BillInvoiceModal: false,
       HistOrderShow: true,
-      FreeTextComment:false,
+      FreeTextComment: false,
       CommentCollapse: false,
       CommentCollapse2: false,
       Comment1Collapse: false,
@@ -176,6 +176,7 @@ class MyTicket extends Component {
       CustStoreStatusDrop: 1,
       OrderSubItem: [],
       FileData: [],
+      ReplyFileData: [],
       expanded: {},
       mailId: 0,
       selectProductOrd: true,
@@ -917,12 +918,12 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleFreeTextCommentOpen () {
+  handleFreeTextCommentOpen() {
     debugger;
     this.setState({
       FreeTextComment: !this.state.FreeTextComment
     });
-  };
+  }
   handleCommentCollapseOpen(Mail_Id) {
     debugger;
     this.setState(state => ({
@@ -1463,21 +1464,21 @@ class MyTicket extends Component {
       const formData = new FormData();
       var paramData = {
         TicketID: this.state.ticket_Id,
-          ToEmail: this.state.ticketDetailsData.customerEmailId,
-          UserCC: this.state.mailFiled.userCC,
-          UserBCC: this.state.mailFiled.userBCC,
-          TicketMailBody: stringBody,
-          informStore: this.state.InformStore,
-          TicketSource: 2, // Send ticket source id
-          IsSent: 0,
-          IsCustomerComment: 0,
-          IsResponseToCustomer: 1,
-          IsInternalComment: 0,
-          MailID: this.state.mailId
+        ToEmail: this.state.ticketDetailsData.customerEmailId,
+        UserCC: this.state.mailFiled.userCC,
+        UserBCC: this.state.mailFiled.userBCC,
+        TicketMailBody: stringBody,
+        informStore: this.state.InformStore,
+        TicketSource: 2, // Send ticket source id
+        IsSent: 0,
+        IsCustomerComment: 0,
+        IsResponseToCustomer: 1,
+        IsInternalComment: 0,
+        MailID: this.state.mailId
       };
       formData.append("ticketingMailerQue", JSON.stringify(paramData));
-      for (let j = 0; j < this.state.FileData.length; j++) {
-        formData.append("Filedata", this.state.FileData[j]);
+      for (let j = 0; j < this.state.ReplyFileData.length; j++) {
+        formData.append("Filedata", this.state.ReplyFileData[j]);
       }
       axios({
         method: "post",
@@ -1491,6 +1492,7 @@ class MyTicket extends Component {
           self.handleGetMessageDetails(self.state.ticket_Id);
           self.handleGetCountOfTabs(self.state.ticket_Id);
           self.hanldeCommentClose2();
+          NotificationManager.success("Mail send successfully.", "", 1500);
           self.setState({
             mailFiled: {},
             // mailSubject: "",
@@ -1512,11 +1514,11 @@ class MyTicket extends Component {
         TicketMailBody: stringBody,
         informStore: this.state.InformStore,
         TicketSource: 2, // Send ticket source id
-        IsSent: 1,
-        IsCustomerComment: 1,
+        IsSent: 0,
+        IsCustomerComment: 0,
         MailID: 0
       };
-      formData.append("KeyPending", JSON.stringify(paramData));
+      formData.append("ticketingMailerQue", JSON.stringify(paramData));
       for (let j = 0; j < this.state.FileData.length; j++) {
         formData.append("Filedata", this.state.FileData[j]);
       }
@@ -1525,7 +1527,7 @@ class MyTicket extends Component {
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
-        data: paramData
+        data: formData
       }).then(function(res) {
         debugger;
         let status = res.data.message;
@@ -1556,7 +1558,7 @@ class MyTicket extends Component {
           MailID: this.state.mailId
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramData));
-        
+
         axios({
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
@@ -1590,17 +1592,21 @@ class MyTicket extends Component {
         });
       }
     } else {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/MessageComment",
-        headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
+      const formData = new FormData();
+      var paramData = {
+        TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketcommentMSG,
           IsSent: 1,
           IsCustomerComment: 0,
           IsInternalComment: 1
-        }
+      };
+      formData.append("ticketingMailerQue", JSON.stringify(paramData));
+      
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/MessageComment",
+        headers: authHeader(),
+        data: formData
       }).then(function(res) {
         debugger;
         let status = res.data.message;
@@ -1669,6 +1675,11 @@ class MyTicket extends Component {
   }
   handleReplyFileUpload(e) {
     debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    for (let i = 0; i < selectedFiles.length; i++) {
+      allFiles.push(selectedFiles[i]);
+    }
     // -------------------------Image View code start-----------------------
     // if (e.target.files && e.target.files[0]) {
     //   const filesAmount = e.target.files.length;
@@ -1692,11 +1703,13 @@ class MyTicket extends Component {
       objFile.name = name;
 
       objFile.File = e.target.files[i];
+      const file = e.target.files[i];
 
       this.state.Rplyfile.push(objFile);
+      this.state.ReplyFileData.push(file);
     }
 
-    this.setState({ ReplyfileText: this.state.Rplyfile.length });
+    this.setState({ ReplyfileText: this.state.Rplyfile.length ,ReplyFileData:allFiles});
   }
   handleFileUpload(e) {
     debugger;
@@ -4897,6 +4910,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
+                                debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -4929,24 +4943,36 @@ class MyTicket extends Component {
                                                   .commentBy
                                               }
                                             </label>
-                                            <img
-                                              src={
-                                                details.latestMessageDetails
-                                                  .ticketSourceName === "Calls"
-                                                  ? require("./../assets/Images/headphone3.png")
-                                                  : details.latestMessageDetails
-                                                      .ticketSourceName ===
-                                                    "Facebook"
-                                                  ? require("./../assets/Images/facebook.png")
-                                                  : details.latestMessageDetails
-                                                      .ticketSourceName ===
-                                                    "Mails"
-                                                  ? require("./../assets/Images/SecuredLetter2.png")
-                                                  : require("./../assets/Images/twitter.png")
-                                              }
-                                              alt="sourceIMG"
-                                              className="smg-Img1 headPhone3 black-twitter"
-                                            />
+                                            {details.latestMessageDetails
+                                              .isInternalComment ===
+                                            true ? null : (
+                                              <img
+                                                src={
+                                                  details.latestMessageDetails
+                                                    .ticketSourceName ===
+                                                  "Calls"
+                                                    ? require("./../assets/Images/headphone3.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Facebook"
+                                                    ? require("./../assets/Images/facebook.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Mails"
+                                                    ? require("./../assets/Images/SecuredLetter2.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Twitter"
+                                                    ? require("./../assets/Images/twitter.png")
+                                                    : require("./../assets/Images/twitter.png")
+                                                }
+                                                alt="sourceIMG"
+                                                className="smg-Img1 headPhone3 black-twitter"
+                                              />
+                                            )}
                                           </div>
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
@@ -4956,9 +4982,15 @@ class MyTicket extends Component {
                                               src={commentImg}
                                               alt="comment"
                                               className="commentImg"
+                                              style={{
+                                                display: "inline-block"
+                                              }}
                                             />
                                           ) : null}
-                                          <p className="label-5">
+                                          <p
+                                            className="label-5"
+                                            style={{ display: "inline-block" }}
+                                          >
                                             {
                                               details.latestMessageDetails
                                                 .ticketMailBody
