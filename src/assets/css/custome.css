@@ -10945,3 +10945,21 @@ table tr th:last-child {
   background: #fff url("./../Images/facebook.png") no-repeat right 15px
   center;
 }
+
+#categoryEditModal
+{
+
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+  max-width: 30%;
+  min-width: 30%;
+}
+
+.editcatcnl{
+  float: right;
+  margin: 0;
+  color: #2561a8 !important;
+}

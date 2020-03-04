@@ -1,4 +1,4 @@
-import React, { Component ,useState} from "react";
+import React, { Component, useState } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import Demo from "./../../../store/Hashtag.js";
@@ -47,10 +47,9 @@ const Content = props => {
   const { rowData } = props;
   // const [roleName, setRoleNameValue] = useState(rowData.roleName);
   // const [status, setStatusValue] = useState(rowData.isRoleActive);
-  const [selectBrand,changeBrandDropdown] = useState(rowData.braindID);
+  const [selectBrand, changeBrandDropdown] = useState(rowData.braindID);
 
   // props.callBackEdit(roleName, status, rowData);
- 
 
   return (
     <div>
@@ -91,11 +90,9 @@ const Content = props => {
               <span className="sweetAlert-inCategory">+ ADD NEW</span>
             </Option>
           </Select>
-
-          
         </div>
         <div className="pop-over-div">
-        <label className="edit-label-1">Sub Category</label>
+          <label className="edit-label-1">Sub Category</label>
           <Select
             showSearch={true}
             // value={props.list1Value}
@@ -107,7 +104,6 @@ const Content = props => {
               <span className="sweetAlert-inCategory">+ ADD NEW</span>
             </Option>
           </Select>
-
         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Issue Type</label>
@@ -176,7 +172,9 @@ class CategoryMaster extends Component {
       sortBrandName: [],
       sortCategory: [],
       sortSubCategory: [],
-      sortIssueType: []
+      sortIssueType: [],
+      editmodel: false,
+      editCategory: {}
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -188,6 +186,7 @@ class CategoryMaster extends Component {
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
   }
   componentDidMount() {
     this.handleGetCategoryGridData();
@@ -357,7 +356,14 @@ class CategoryMaster extends Component {
     });
   }
 
-  handleGetCategoryList() {
+  handleGetCategoryList(id) {
+    var braindID;
+
+    if (id) {
+      braindID = id;
+    } else {
+      braindID = this.state.selectBrand;
+    }
     debugger;
     let self = this;
     axios({
@@ -365,7 +371,7 @@ class CategoryMaster extends Component {
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
       params: {
-        BrandID: this.state.selectBrand
+        BrandID: braindID
       }
     }).then(function(res) {
       debugger;
@@ -678,6 +684,92 @@ class CategoryMaster extends Component {
     // this.state.rowData = rowData;
   };
 
+  hanldeEditCategory = rowData => {
+    debugger;
+    var editCategory = {};
+    editCategory.brandID = rowData.braindID;
+    editCategory.brandName = rowData.brandName;
+    this.handleGetCategoryList(rowData.braindID);
+    editCategory.categoryID = rowData.categoryID;
+    editCategory.categoryName = rowData.categoryName;
+
+    this.handleModalCategoryChange(rowData.categoryID);
+    editCategory.subCategoryID = rowData.subCategoryID;
+    editCategory.subCategoryName = rowData.subCategoryName;
+    this.handleModalSubCatOnChange(rowData.subCategoryID);
+    editCategory.issueTypeID = rowData.issueTypeID;
+    editCategory.issueTypeName = rowData.issueTypeName;
+    editCategory.statusName = rowData.statusName;
+
+    this.setState({ editmodel: true, editCategory });
+  };
+
+  toggleEditModal() {
+    this.setState({
+      editmodel: false,
+      categoryDropData: [],
+      SubCategoryDropData: [],
+      ListOfIssueData: []
+    });
+  }
+
+  handleModalBrandChange = e => {
+    debugger;
+    let value = e.target.value;
+    var editCategory={};
+    editCategory[e.target.name]=value;
+    this.setState({
+      editCategory,
+      categoryDropData: [],
+      SubCategoryDropData: [],
+      ListOfIssueData: []
+    });
+    setTimeout(() => {
+      if (value) {
+        this.handleGetCategoryList(value);
+      }
+    }, 1);
+  };
+
+  handleModalCategoryChange = value => {
+    debugger;
+    if (value !== NEW_ITEM) {
+      var editCategory = this.state.editCategory;
+      editCategory["categoryID"] = value;
+      this.setState({ editCategory, SubCategoryDropData: [] });
+      setTimeout(() => {
+        if (value) {
+          this.handleGetSubCategoryList();
+        }
+      }, 1);
+    } else {
+      this.setState({ showList1: true });
+    }
+  };
+  handleModalSubCatOnChange = value => {
+    debugger;
+    if (value !== NEW_ITEM) {
+      var editCategory = this.state.editCategory;
+      editCategory["subCategoryID"] = value;
+      this.setState({ ListOfSubCate: value });
+      setTimeout(() => {
+        if (this.state.ListOfSubCate) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
+    } else {
+      this.setState({ ShowSubCate: true });
+    }
+  };
+  handleModalIssueOnChange = value => {
+    if (value !== NEW_ITEM) {
+      var editCategory = this.state.editCategory;
+      editCategory["issueTypeID"] = value;
+      this.setState({ editCategory});
+    } else {
+      this.setState({ ShowIssuetype: true });
+    }
+  };
   render() {
     const { categoryGridData } = this.state;
     const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
@@ -976,7 +1068,18 @@ class CategoryMaster extends Component {
                                       className="del-btn"
                                     />
                                   </Popover>
-                                  <Popover
+
+                                  <button
+                                    className="react-tabel-button"
+                                    type="button"
+                                    onClick={this.hanldeEditCategory.bind(
+                                      this,
+                                      row.original
+                                    )}
+                                  >
+                                    EDIT
+                                  </button>
+                                  {/* <Popover
                                     content={
                                       <Content
                                         rowData={row.original}
@@ -997,7 +1100,7 @@ class CategoryMaster extends Component {
                                     <label className="Table-action-edit-button-text">
                                       <MyButton>EDIT</MyButton>
                                     </label>
-                                  </Popover>
+                                  </Popover> */}
                                 </span>
                               </>
                             );
@@ -1396,6 +1499,231 @@ class CategoryMaster extends Component {
               </div>
             </div>
           </div>
+          <Modal
+            open={this.state.editmodel}
+            onClose={this.toggleEditModal}
+            modalId="categoryEditModal"
+          >
+            <div className="edtpadding">
+              <label className="popover-header-text">EDIT CATEGORY</label>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Brand Name</label>
+                <select
+                  className="store-create-select"
+                  value={this.state.editCategory.brandID}
+                  onChange={this.handleModalBrandChange}
+                  name="brandID"
+                >
+                  <option>Select</option>
+                  {this.state.brandData !== null &&
+                    this.state.brandData.map((item, i) => (
+                      <option
+                        key={i}
+                        value={item.brandID}
+                        className="select-category-placeholder"
+                      >
+                        {item.brandName}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div className="pop-over-div">
+                <div className="divSpace">
+                  <div className="dropDrownSpace">
+                    <label className="edit-label-1">Category</label>
+                    <Select
+                      showSearch={true}
+                      value={this.state.editCategory.categoryName}
+                      style={{ width: "100%" }}
+                      onChange={this.handleModalCategoryChange}
+                    >
+                      {list1SelectOptions}
+                      <Option value={NEW_ITEM}>
+                        <span className="sweetAlert-inCategory">+ ADD NEW</span>
+                      </Option>
+                    </Select>
+                    {this.state.list1Value === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.categoryCompulsion}
+                      </p>
+                    )}
+
+                    <SweetAlert
+                      show={this.state.showList1}
+                      style={{ width: "320px" }}
+                      title="Add New Category"
+                      text="Enter new Category"
+                      showCancelButton
+                      type="input"
+                      inputPlaceholder="Enter Category Name"
+                      animation="slide-from-top"
+                      validationMsg="Please enter a category!"
+                      onConfirm={inputValue => {
+                        debugger;
+                        inputValue = inputValue.trim();
+                        if (inputValue !== "") {
+                          this.setState({
+                            showList1: false,
+                            list1Value: inputValue
+                          });
+                          this.handleAddCategory(inputValue);
+                        } else {
+                          this.setState({
+                            showList1: false,
+                            list1Value: inputValue
+                          });
+                        }
+                      }}
+                      onCancel={() => {
+                        this.setState({ showList1: false });
+                      }}
+                      onEscapeKey={() => this.setState({ showList1: false })}
+                      onOutsideClick={() => this.setState({ showList1: false })}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="pop-over-div">
+                <div className="divSpace">
+                  <div className="dropDrownSpace">
+                    <label className="edit-label-1">Sub Category</label>
+                    <Select
+                      showSearch={true}
+                      value={this.state.editCategory.subCategoryName}
+                      style={{ width: "100%" }}
+                      onChange={this.handleModalSubCatOnChange}
+                    >
+                      {listSubCategory}
+                      <Option value={NEW_ITEM}>
+                        <span className="sweetAlert-inCategory">+ ADD NEW</span>
+                      </Option>
+                    </Select>
+                    {this.state.ListOfSubCate === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.subcategoryCompulsion}
+                      </p>
+                    )}
+
+                    <SweetAlert
+                      show={this.state.ShowSubCate}
+                      style={{ width: "320px" }}
+                      title="Add New Sub Category"
+                      text="Enter new Category"
+                      showCancelButton
+                      type="input"
+                      inputPlaceholder="Enter Category Name"
+                      animation="slide-from-top"
+                      validationMsg="Please enter a category!"
+                      onConfirm={inputValue => {
+                        debugger;
+                        inputValue = inputValue.trim();
+                        if (inputValue !== "") {
+                          this.setState({
+                            ShowSubCate: false,
+                            ListOfSubCate: inputValue
+                          });
+                          this.handleAddSubCategory(inputValue);
+                        } else {
+                          this.setState({
+                            ShowSubCate: false,
+                            ListOfSubCate: inputValue
+                          });
+                        }
+                      }}
+                      onCancel={() => {
+                        this.setState({ ShowSubCate: false });
+                      }}
+                      onEscapeKey={() => this.setState({ ShowSubCate: false })}
+                      onOutsideClick={() =>
+                        this.setState({ ShowSubCate: false })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="pop-over-div">
+                <div className="divSpace">
+                  <div className="dropDrownSpace">
+                    <label className="edit-label-1">Issue Type</label>
+                    <Select
+                      showSearch={true}
+                      value={this.state.editCategory.issueTypeName}
+                      style={{ width: "100%" }}
+                      onChange={this.handleModalIssueOnChange}
+                    >
+                      {listOfIssueType}
+                      <Option value={NEW_ITEM}>
+                        <span className="sweetAlert-inCategory">+ ADD NEW</span>
+                      </Option>
+                    </Select>
+                    {this.state.ListOfIssue === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.issueCompulsion}
+                      </p>
+                    )}
+                    <SweetAlert
+                      show={this.state.ShowIssuetype}
+                      style={{ width: "320px" }}
+                      title="Add New Issue type"
+                      text="Enter new Issue Type"
+                      showCancelButton
+                      type="input"
+                      inputPlaceholder="Enter Issue Type"
+                      animation="slide-from-top"
+                      validationMsg="Please Enter Issue Type!"
+                      onConfirm={inputValue => {
+                        inputValue = inputValue.trim();
+                        if (inputValue !== "") {
+                          this.setState({
+                            ShowIssuetype: false,
+                            ListOfIssue: inputValue
+                          });
+                          this.handleAddIssueType(inputValue);
+                        } else {
+                          this.setState({
+                            ShowIssuetype: false,
+                            ListOfIssue: inputValue
+                          });
+                        }
+                      }}
+                      onCancel={() => {
+                        this.setState({ ShowIssuetype: false });
+                      }}
+                      onEscapeKey={() =>
+                        this.setState({ ShowIssuetype: false })
+                      }
+                      onOutsideClick={() =>
+                        this.setState({ ShowIssuetype: false })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Status</label>
+                <select
+                  id="inputStatus"
+                  className="edit-dropDwon dropdown-setting"
+                  value={this.state.editCategory.statusName}
+                >
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <br />
+              <div>
+                <button className="pop-over-button">SAVE</button>
+                <a
+                  className="pop-over-cancle editcatcnl"
+                  onClick={this.toggleEditModal}
+                  style={{ marginRight: "20px" }}
+                >
+                  CANCEL
+                </a>
+              </div>
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );

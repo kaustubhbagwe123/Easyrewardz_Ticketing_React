@@ -27,6 +27,7 @@ import ZoneType from "./ZoneType";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+// import StoreEditContent from "./../../CommanComponent/StoreEditContent";
 
 const MyButton = props => {
   const { children } = props;
@@ -41,9 +42,9 @@ const MyButton = props => {
 
 const Content = props => {
   debugger;
-  const { rowData, brandData ,selectedBrand} = props;
+  const { rowData, brandData, selectedBrand } = props;
   let brandIDs = rowData.brandIDs.split(",");
-   
+
   for (let i = 0; i < brandIDs.length; i++) {
     var bData = brandData.filter(x => x.brandID == brandIDs[i]);
     if (bData.length > 0) {
@@ -367,7 +368,8 @@ class StoreMaster extends Component {
       sortState: [],
       sortPincode: [],
       sortColumn: "",
-      editmodel: false
+      editmodel: false,
+      modalSelectedBrand: []
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -378,7 +380,7 @@ class StoreMaster extends Component {
     this.handleUpdateData = this.handleUpdateData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
-    // this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
   }
   componentDidMount() {
     this.handleGetStoreMasterData();
@@ -572,14 +574,20 @@ class StoreMaster extends Component {
       }
     });
   }
-  handleGetCityList() {
+  handleGetCityList(id) {
     let self = this;
+    var stateId;
+    if (id) {
+      stateId = id;
+    } else {
+      stateId = this.state.selectState;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getcitylist",
       headers: authHeader(),
       params: {
-        StateId: this.state.selectState
+        StateId: stateId
       }
     }).then(function(res) {
       let status = res.data.message;
@@ -601,7 +609,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        self.setState({ regionData: data });
+        self.setState({ regionData: data });   
       } else {
         self.setState({ regionData: [] });
       }
@@ -820,11 +828,11 @@ class StoreMaster extends Component {
 
   handleEditStoreMasterData(data) {
     var storeEditData = data;
-    this.setState({ editmodel: true });
 
     this.setStoreUpdateData(data);
   }
   setStoreUpdateData(individualData) {
+    debugger;
     var userEditData = individualData;
     userEditData.store_ID = userEditData.storeID;
     userEditData.store_Name = userEditData.storeName;
@@ -848,8 +856,21 @@ class StoreMaster extends Component {
     userEditData.email_ = userEditData.email;
     userEditData.phoneNumber_ = userEditData.phoneNumber;
 
+    var mBrandData = userEditData.brandIDs.split(",");
+    var modalSelectedBrand = [];
+    for (let i = 0; i < mBrandData.length; i++) {
+      var data = this.state.brandData.filter(x => x.brandID == mBrandData[i]);
+      if (data.length > 0) {
+        modalSelectedBrand.push(data[0]);
+      }
+    }
+
+    this.handleGetCityList(userEditData.stateID);
+
     this.setState({
-      userEditData
+      editmodel: true,
+      userEditData,
+      modalSelectedBrand
     });
   }
   handleOnChangeEditData = e => {
@@ -899,9 +920,9 @@ class StoreMaster extends Component {
       [e.target.name]: e.target.value
     });
   };
-  // toggleEditModal() {
-  //   this.setState({ editmodel: !this.state.editmodel });
-  // }
+  toggleEditModal() {
+    this.setState({ editmodel: false });
+  }
 
   callBackEdit = (RoleName, Status, rowData) => {
     debugger;
@@ -909,6 +930,22 @@ class StoreMaster extends Component {
     // this.state.RoleName = RoleName;
     // this.state.updateRoleisActive = Status;
     // this.state.rowData = rowData;
+  };
+
+  handleModalEditData = e => {
+    var name = e.target.name;
+    var value = e.target.value;
+    var userEditData = this.state.userEditData;
+    userEditData[name] = value;
+    this.setState({ userEditData });
+
+    if ((name = "state_ID")) {
+      this.handleGetCityList(value);
+    }
+  };
+
+  handleModalBrandChange = e => {
+    this.setState({ modalSelectedBrand: e });
   };
 
   render() {
@@ -1274,7 +1311,7 @@ class StoreMaster extends Component {
                                     />
                                   </Popover>
 
-                                  {/* <button
+                                  <button
                                     className="react-tabel-button"
                                     type="button"
                                     onClick={this.handleEditStoreMasterData.bind(
@@ -1283,22 +1320,24 @@ class StoreMaster extends Component {
                                     )}
                                   >
                                     EDIT
-                                  </button> */}
-                                  <Popover
+                                  </button>
+                                  {/* <Popover
                                     content={
-                                      <Content
-                                        rowData={row.original}
-                                        callBackEdit={this.callBackEdit}
-                                        stateData={this.state.stateData}
-                                        cityData={this.state.cityData}
-                                        regionData={this.state.regionData}
-                                        zoneData={this.state.zoneData}
-                                        storeTypeData={this.state.storeTypeData}
-                                        brandData={this.state.brandData}
-                                        handleBrandChange={this.handleBrandChange}
-                                        selectedBrand={this.state.selectedBrand}
-                                        
-                                      />
+
+                                        <Content
+                                          rowData={row.original}
+                                          callBackEdit={this.callBackEdit}
+                                          stateData={this.state.stateData}
+                                          cityData={this.state.cityData}
+                                          regionData={this.state.regionData}
+                                          zoneData={this.state.zoneData}
+                                          storeTypeData={this.state.storeTypeData}
+                                          brandData={this.state.brandData}
+                                          handleBrandChange={this.handleBrandChange}
+                                          selectedBrand={this.state.selectedBrand}
+                                        />
+                                        // <StoreEditContent rowData={row.original} brandData={this.state.brandData} stateData={this.state.stateData} regionData={this.state.regionData}/>
+
                                     }
                                     placement="bottom"
                                     trigger="click"
@@ -1306,7 +1345,7 @@ class StoreMaster extends Component {
                                     <label className="Table-action-edit-button-text">
                                       <MyButton>EDIT</MyButton>
                                     </label>
-                                  </Popover>
+                                  </Popover> */}
                                 </span>
                               </>
                             );
@@ -1759,9 +1798,10 @@ class StoreMaster extends Component {
                       // menuIsOpen={true}
                       name="brand_IDs"
                       closeMenuOnSelect={false}
-                      onChange={this.handleOnChangeEditData}
-                      value={this.state.userEditData.brand_IDs}
-                      // showNewOptionAtTop={false}
+                      // onChange={e => {setBrand(e)}}
+                      onChange={this.handleModalBrandChange}
+                      value={this.state.modalSelectedBrand}
+                      showNewOptionAtTop={false}
                       isMulti
                     />
                   </div>
@@ -1775,8 +1815,8 @@ class StoreMaster extends Component {
                       placeholder="Enter Store Code"
                       name="store_Code"
                       maxLength={10}
-                      value={this.state.userEditData.store_Code}
-                      onChange={this.handleOnChangeEditData}
+                      value={this.state.userEditData.store_ID}
+                      onChange={this.handleModalEditData}
                     />
                   </div>
                 </div>
@@ -1790,7 +1830,7 @@ class StoreMaster extends Component {
                       name="store_Name"
                       maxLength={100}
                       value={this.state.userEditData.store_Name}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     />
                   </div>
                 </div>
@@ -1801,7 +1841,7 @@ class StoreMaster extends Component {
                       className="store-create-select"
                       name="state_ID"
                       value={this.state.userEditData.state_ID}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     >
                       <option>select</option>
                       {this.state.stateData !== null &&
@@ -1817,29 +1857,7 @@ class StoreMaster extends Component {
                     </select>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="pop-over-div">
-                    <label className="edit-label-1">State</label>
-                    <select
-                      className="store-create-select"
-                      name="state_ID"
-                      value={this.state.userEditData.state_ID}
-                      onChange={this.handleOnChangeEditData}
-                    >
-                      <option>select</option>
-                      {this.state.stateData !== null &&
-                        this.state.stateData.map((item, i) => (
-                          <option
-                            key={i}
-                            value={item.stateID}
-                            className="select-category-placeholder"
-                          >
-                            {item.stateName}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                </div>
+
                 <div className="col-md-6">
                   {" "}
                   <div className="pop-over-div">
@@ -1848,7 +1866,7 @@ class StoreMaster extends Component {
                       className="edit-dropDwon dropdown-setting"
                       name="city_ID"
                       value={this.state.userEditData.city_ID}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     >
                       <option>select</option>
                       {this.state.cityData !== null &&
@@ -1874,24 +1892,23 @@ class StoreMaster extends Component {
                       placeholder="Enter Pin Code"
                       name="pin_Code"
                       maxLength={11}
-                      value={this.state.userEditData.pin_Code}
-                      onChange={this.handleOnChangeEditData}
+                      value={this.state.userEditData.strPin_Code}
+                      onChange={this.handleModalEditData}
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Address</label>
-                    <textarea
-                      cols="31"
-                      rows="3"
-                      className="store-create-textarea"
-                      placeholder="Enter address"
-                      name="address_"
-                      maxLength={250}
-                      value={this.state.userEditData.address_}
-                      onChange={this.handleOnChangeEditData}
-                    ></textarea>
+                    <label className="edit-label-1">Status</label>
+                    <select
+                      className="form-control dropdown-setting"
+                      name="status_ID"
+                      value={this.state.userEditData.status_}
+                      onChange={this.handleModalEditData}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1901,7 +1918,7 @@ class StoreMaster extends Component {
                       className="store-create-select"
                       name="region_ID"
                       value={this.state.userEditData.region_ID}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     >
                       <option>Select</option>
                       {this.state.regionData !== null &&
@@ -1921,7 +1938,7 @@ class StoreMaster extends Component {
                       className="store-create-select"
                       name="zone_ID"
                       value={this.state.userEditData.zone_ID}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     >
                       <option>Select</option>
                       {this.state.zoneData !== null &&
@@ -1940,7 +1957,7 @@ class StoreMaster extends Component {
                       className="store-create-select"
                       name="storeType_ID"
                       value={this.state.userEditData.storeType_ID}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     >
                       <option>Select</option>
                       {this.state.storeTypeData !== null &&
@@ -1965,7 +1982,7 @@ class StoreMaster extends Component {
                       name="email_"
                       maxLength={100}
                       value={this.state.userEditData.email_}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     />
                   </div>
                 </div>
@@ -1982,40 +1999,36 @@ class StoreMaster extends Component {
                       name="phoneNumber_"
                       maxLength={10}
                       value={this.state.userEditData.phoneNumber_}
-                      onChange={this.handleOnChangeEditData}
+                      onChange={this.handleModalEditData}
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   {" "}
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Status</label>
-                    <select
-                      className="form-control dropdown-setting"
-                      name="status_ID"
-                      value={this.state.userEditData.status_ID}
-                      onChange={this.handleOnChangeEditData}
-                    >
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
-                    </select>
+                    <label className="edit-label-1">Address</label>
+                    <textarea
+                      cols="31"
+                      rows="3"
+                      className="store-create-textarea"
+                      placeholder="Enter address"
+                      name="address_"
+                      maxLength={250}
+                      value={this.state.userEditData.address_}
+                      onChange={this.handleModalEditData}
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="store-pop-over-div">
+                    <button className="pop-over-button">
+                      <label className="pop-over-btnsave-text">SAVE</label>
+                    </button>
+                    <span className="pop-over-cancle storecancel">CANCEL</span>
                   </div>
                 </div>
               </div>
               <br />
-              <div className="row">
-                <div>
-                  <span
-                    className="pop-over-cancle"
-                    onClick={this.toggleEditModal}
-                  >
-                    CANCEL
-                  </span>
-                  <button className="pop-over-button">
-                    <label className="pop-over-btnsave-text">SAVE</label>
-                  </button>
-                </div>
-              </div>
             </div>
           </Modal>
         </div>
