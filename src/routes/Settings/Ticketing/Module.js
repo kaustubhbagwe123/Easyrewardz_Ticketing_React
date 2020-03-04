@@ -140,6 +140,8 @@ class Module extends Component {
         inactiveitem += this.state.inactiveID[i] + ",";
       }
     }
+    activeitem=activeitem.substring(0,activeitem.length-1);
+    inactiveitem=inactiveitem.substring(0,inactiveitem.length-1);
     axios({
       method: "post",
       url: config.apiUrl + "/Module/ModifyModuleItems",

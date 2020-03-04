@@ -812,11 +812,12 @@ class TicketSystem extends Component {
       }
       var editoreData = this.state.editorTemplateDetails;
       var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
+      var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
       var mailData = [];
       mailData = this.state.mailData;
       this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
       this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
-      this.state.mailFiled["TicketMailBody"] = stringBody;
+      this.state.mailFiled["TicketMailBody"] = finalText;
       this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
       this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
       mailData.push(this.state.mailFiled);
@@ -843,7 +844,7 @@ class TicketSystem extends Component {
         IsInstantEscalateToHighLevel: this.state.escalationLevel,
         IsWantToAttachOrder: this.state.customerAttachOrder,
         TicketTemplateID: this.state.selectTicketTemplateId,
-        TicketMailBody:stringBody,
+        TicketMailBody: finalText,
         IsWantToVisitedStore: this.state.custVisit,
         IsAlreadyVisitedStore: this.state.AlreadycustVisit,
         TicketSourceID: 1,
@@ -1074,7 +1075,7 @@ class TicketSystem extends Component {
                     {/* {this.state.selectedTicketActionType === "200"
                       ? "SUBMIT AS SOLVED"
                       : "CREATE TICKET"} */}
-                      {this.state.selectedTicketActionType === "201"
+                    {this.state.selectedTicketActionType === "201"
                       ? "CREATE TICKET"
                       : "SUBMIT AS SOLVED"}
                   </button>

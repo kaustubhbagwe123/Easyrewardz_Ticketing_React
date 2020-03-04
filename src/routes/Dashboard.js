@@ -66,10 +66,10 @@ class Dashboard extends Component {
     let now = new Date();
     let start = moment(
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-    );
+    ).subtract(30, "days");
     let end = moment(start)
-      .add(1, "days")
-      .subtract(1, "seconds");
+      .add(30, "days");
+      // .subtract(1, "seconds");
     this.state = {
       start: start,
       end: end,
@@ -310,7 +310,12 @@ class Dashboard extends Component {
       sortcreatedOnData:[],
       sortAssigneeData:[],
       sortAllData:[],
-      cSelectedRow: {}
+      cSelectedRow: {},
+      statusColor:"",
+      categoryColor:"",
+      priorityColor:"",
+      assignColor:"",
+      creationColor:""
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -758,26 +763,61 @@ class Dashboard extends Component {
         itemsArray = this.state.SearchTicketData.filter(
           a => a.ticketStatus === data
         );
+        this.setState({
+          statusColor:"table-b table-blue-btn",
+          categoryColor:"",
+          priorityColor:"",
+          assignColor:"",
+          creationColor:""
+        });
       }else if(column==="category"){
         this.state.SearchTicketData=this.state.sortAllData;
         itemsArray = this.state.SearchTicketData.filter(
           a => a.category === data
         );
+        this.setState({
+          statusColor:"",
+          categoryColor:"table-b table-blue-btn",
+          priorityColor:"",
+          assignColor:"",
+          creationColor:""
+        });
       }else if(column==="priority"){
         this.state.SearchTicketData=this.state.sortAllData;
         itemsArray = this.state.SearchTicketData.filter(
           a => a.priority === data
         );
+        this.setState({
+          statusColor:"",
+          categoryColor:"",
+          priorityColor:"table-b table-blue-btn",
+          assignColor:"",
+          creationColor:""
+        });
       }else if(column==="assignedTo"){
         this.state.SearchTicketData=this.state.sortAllData;
         itemsArray = this.state.SearchTicketData.filter(
           a => a.assignedTo === data
         );
+        this.setState({
+          statusColor:"",
+          categoryColor:"",
+          priorityColor:"",
+          assignColor:"table-b table-blue-btn",
+          creationColor:""
+        });
       }else if(column==="createdOn"){
         this.state.SearchTicketData=this.state.sortAllData;
         itemsArray = this.state.SearchTicketData.filter(
           a => a.createdOn === data
         );
+        this.setState({
+          statusColor:"",
+          categoryColor:"",
+          priorityColor:"",
+          assignColor:"table-b table-blue-btn",
+          creationColor:""
+        });
       }else if(column==="colorred"){
         this.state.SearchTicketData=this.state.sortAllData;
         itemsArray = this.state.SearchTicketData.filter(

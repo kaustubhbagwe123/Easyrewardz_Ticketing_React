@@ -3461,6 +3461,64 @@ table tr th:last-child {
 .custom-ticket-title-suggestions::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+
+.custom-antd-table .ant-table-content {
+  overflow: auto;
+}
+.custom-antd-table .ant-table-content::-webkit-scrollbar {
+  height: 5px;
+}
+.custom-antd-table .ant-table-content::-webkit-scrollbar-track {
+  background: #F3F0F0;
+  border-radius: 10px;
+}
+.custom-antd-table .ant-table-content::-webkit-scrollbar-thumb {
+  background: #a5a3a3;
+  border-radius: 10px;
+}
+.order-input {
+  border: 1px solid #eaeaea;
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+.custom-antd-table .ant-table-thead > tr > th {
+  font-weight: 700;
+  color: #4a4a4a;
+  white-space: nowrap;
+  padding: 10px 20px 4px !important;
+  background: transparent !important;
+  border-bottom: 0;
+}
+.custom-antd-table .ant-table-thead > tr {
+  background: transparent !important;
+}
+.custom-antd-table .ant-table-tbody > tr > td {
+  white-space: nowrap;
+  padding: 20px !important;
+}
+.custom-antd-table .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td {
+  background: transparent;
+}
+.custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+  font-size: 12px !important;
+}
+.custom-antd-table .ant-table-expanded-row > td:first-child {
+  display: none;
+}
+.custom-antd-table .ant-table-expanded-row {
+  background: #f8f8f8;
+}
+.custom-antd-table .ant-table-expanded-row .ant-table-tbody > tr > td {
+  border-bottom: 0;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-antd-table table {
+  padding: 0 20px;
+}
+.custom-antd-table .ant-table-expanded-row table {
+  padding: 0;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
@@ -3555,6 +3613,10 @@ table tr th:last-child {
 .my-tic-ckeditor .cke_inner {
   min-height: 300px;
 }
+.tic-det-progress .progress {
+  height: 8px;
+  margin-top: 8px;
+}
 /* my ticket ends */
 
 /* .cke_editable {
@@ -3626,6 +3688,11 @@ table tr th:last-child {
 .kb-search-cntr {
   display: inline-block;
   cursor: pointer;
+}
+
+.alert-proper {
+  margin-top: 0 !important;
+  margin-right: 35px;
 }
 
 /* chetan css end */
@@ -10858,4 +10925,8 @@ table tr th:last-child {
   width: 25px;
     height: 25px;
     padding: 5px;
+}
+.emshl {
+  background: #fff url("./../Images/facebook.png") no-repeat right 15px
+  center;
 }

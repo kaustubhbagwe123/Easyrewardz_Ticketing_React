@@ -18,7 +18,7 @@ import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
 import RightImg from "./../assets/Images/right.png";
-// import DeleteImg from "./../assets/Images/del-black.png";
+import TwitterImg from "./../assets/Images/twitter.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Loading1Img from "./../assets/Images/loading1.png";
 import FacebookImg from "./../assets/Images/facebook.png";
@@ -73,8 +73,25 @@ import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
+import { Dropdown } from 'semantic-ui-react'
 
 // import DatePicker from "react-date-picker";
+
+
+const social=[
+  {
+   key: 'Email',
+      text: 'Email',
+      value: 'Email',
+      image: { avatar: false, src: Email1 },
+  },
+  {
+   key: 'SMS',
+      text: 'SMS',
+      value: 'SMS',
+      image: { avatar: false, src: Sms1 },
+  },
+  ]
 
 const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
@@ -94,7 +111,7 @@ class MyTicket extends Component {
       CommentsDrawer: false,
       BillInvoiceModal: false,
       HistOrderShow: true,
-      FreeTextComment:false,
+      FreeTextComment: false,
       CommentCollapse: false,
       CommentCollapse2: false,
       Comment1Collapse: false,
@@ -176,6 +193,7 @@ class MyTicket extends Component {
       CustStoreStatusDrop: 1,
       OrderSubItem: [],
       FileData: [],
+      ReplyFileData: [],
       expanded: {},
       mailId: 0,
       selectProductOrd: true,
@@ -917,12 +935,12 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleFreeTextCommentOpen () {
+  handleFreeTextCommentOpen() {
     debugger;
     this.setState({
       FreeTextComment: !this.state.FreeTextComment
     });
-  };
+  }
   handleCommentCollapseOpen(Mail_Id) {
     debugger;
     this.setState(state => ({
@@ -1459,25 +1477,26 @@ class MyTicket extends Component {
     let self = this;
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
+    var finalText = stringBody.replace(/[&]nbsp[;]/g," ");
     if (isSend === 1) {
       const formData = new FormData();
       var paramData = {
         TicketID: this.state.ticket_Id,
-          ToEmail: this.state.ticketDetailsData.customerEmailId,
-          UserCC: this.state.mailFiled.userCC,
-          UserBCC: this.state.mailFiled.userBCC,
-          TicketMailBody: stringBody,
-          informStore: this.state.InformStore,
-          TicketSource: 2, // Send ticket source id
-          IsSent: 0,
-          IsCustomerComment: 0,
-          IsResponseToCustomer: 1,
-          IsInternalComment: 0,
-          MailID: this.state.mailId
+        ToEmail: this.state.ticketDetailsData.customerEmailId,
+        UserCC: this.state.mailFiled.userCC,
+        UserBCC: this.state.mailFiled.userBCC,
+        TicketMailBody: finalText,
+        informStore: this.state.InformStore,
+        TicketSource: 2, // Send ticket source id
+        IsSent: 0,
+        IsCustomerComment: 0,
+        IsResponseToCustomer: 1,
+        IsInternalComment: 0,
+        MailID: this.state.mailId
       };
       formData.append("ticketingMailerQue", JSON.stringify(paramData));
-      for (let j = 0; j < this.state.FileData.length; j++) {
-        formData.append("Filedata", this.state.FileData[j]);
+      for (let j = 0; j < this.state.ReplyFileData.length; j++) {
+        formData.append("Filedata", this.state.ReplyFileData[j]);
       }
       axios({
         method: "post",
@@ -1491,6 +1510,7 @@ class MyTicket extends Component {
           self.handleGetMessageDetails(self.state.ticket_Id);
           self.handleGetCountOfTabs(self.state.ticket_Id);
           self.hanldeCommentClose2();
+          NotificationManager.success("Mail send successfully.", "", 1500);
           self.setState({
             mailFiled: {},
             // mailSubject: "",
@@ -1509,14 +1529,14 @@ class MyTicket extends Component {
         UserCC: this.state.mailFiled.userCC,
         UserBCC: this.state.mailFiled.userBCC,
         TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-        TicketMailBody: stringBody,
+        TicketMailBody: finalText,
         informStore: this.state.InformStore,
         TicketSource: 2, // Send ticket source id
-        IsSent: 1,
-        IsCustomerComment: 1,
+        IsSent: 0,
+        IsCustomerComment: 0,
         MailID: 0
       };
-      formData.append("KeyPending", JSON.stringify(paramData));
+      formData.append("ticketingMailerQue", JSON.stringify(paramData));
       for (let j = 0; j < this.state.FileData.length; j++) {
         formData.append("Filedata", this.state.FileData[j]);
       }
@@ -1525,7 +1545,7 @@ class MyTicket extends Component {
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
-        data: paramData
+        data: formData
       }).then(function(res) {
         debugger;
         let status = res.data.message;
@@ -1556,7 +1576,7 @@ class MyTicket extends Component {
           MailID: this.state.mailId
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramData));
-        
+
         axios({
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
@@ -1590,17 +1610,21 @@ class MyTicket extends Component {
         });
       }
     } else {
+      const formData = new FormData();
+      var paramData = {
+        TicketID: this.state.ticket_Id,
+        TicketMailBody: this.state.ticketcommentMSG,
+        IsSent: 1,
+        IsCustomerComment: 0,
+        IsInternalComment: 1
+      };
+      formData.append("ticketingMailerQue", JSON.stringify(paramData));
+
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
-          TicketMailBody: this.state.ticketcommentMSG,
-          IsSent: 1,
-          IsCustomerComment: 0,
-          IsInternalComment: 1
-        }
+        data: formData
       }).then(function(res) {
         debugger;
         let status = res.data.message;
@@ -1644,6 +1668,7 @@ class MyTicket extends Component {
         TicketID: id
       }
     }).then(function(res) {
+      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -1669,6 +1694,11 @@ class MyTicket extends Component {
   }
   handleReplyFileUpload(e) {
     debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    for (let i = 0; i < selectedFiles.length; i++) {
+      allFiles.push(selectedFiles[i]);
+    }
     // -------------------------Image View code start-----------------------
     // if (e.target.files && e.target.files[0]) {
     //   const filesAmount = e.target.files.length;
@@ -1692,11 +1722,16 @@ class MyTicket extends Component {
       objFile.name = name;
 
       objFile.File = e.target.files[i];
+      const file = e.target.files[i];
 
       this.state.Rplyfile.push(objFile);
+      this.state.ReplyFileData.push(file);
     }
 
-    this.setState({ ReplyfileText: this.state.Rplyfile.length });
+    this.setState({
+      ReplyfileText: this.state.Rplyfile.length,
+      ReplyFileData: allFiles
+    });
   }
   handleFileUpload(e) {
     debugger;
@@ -2640,7 +2675,7 @@ class MyTicket extends Component {
                           Target Closure Date &nbsp;
                         </label>
                         <label className="Date-target">
-                          {ticketDetailsData.targetClouredate}
+                          {ticketDetailsData.targetClosuredate}
                         </label>
                       </div>
                       <div className="mobilenumber-resp">
@@ -2657,44 +2692,49 @@ class MyTicket extends Component {
                         value="50"
                         max="100"
                       ></progress> */}
-                      <Progress multi>
-                        {this.state.progressDataWithcColor.map(function(item) {
-                          if (item.color === "No Color") {
-                            return <Progress bar value={item.value}></Progress>;
-                          }
-                          if (item.color === "Orange") {
-                            return (
-                              <Progress
-                                bar
-                                color="warning"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
+                      <div className="tic-det-progress">
+                        <Progress multi>
+                          {this.state.progressDataWithcColor.map(function(
+                            item
+                          ) {
+                            if (item.color === "No Color") {
+                              return <Progress bar></Progress>;
+                            }
+                            if (item.color === "Orange") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="warning"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
 
-                          if (item.color === "Red") {
-                            return (
-                              <Progress
-                                bar
-                                color="danger"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
+                            if (item.color === "Red") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="danger"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
 
-                          if (item.color === "Green") {
-                            return (
-                              <Progress
-                                bar
-                                color="success"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
-                        })}
-                      </Progress>
+                            if (item.color === "Green") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="success"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
+                          })}
+                        </Progress>
+                      </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
-                        2 day
+                        {/* 2 day */}
+                        {ticketDetailsData.durationRemaining}
                       </p>
                     </div>
                   </div>
@@ -3147,7 +3187,7 @@ class MyTicket extends Component {
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
-                                    showPagination={true}
+                                    showPagination={false}
                                     minRows={1}
                                   />
                                 </div>
@@ -3256,7 +3296,7 @@ class MyTicket extends Component {
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
-                                    showPagination={true}
+                                    showPagination={false}
                                     minRows={1}
                                   />
                                 </div>
@@ -3718,9 +3758,9 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Size</span>
+                                                  <span>Article Name</span>
                                                 ),
-                                                accessor: "articleSize"
+                                                accessor: "articleName"
                                               },
                                               {
                                                 Header: (
@@ -4336,8 +4376,23 @@ class MyTicket extends Component {
                         className="dropdown"
                         style={{ display: "inherit" }}
                       ></div>
+                     
+                     {/* <select>
+                       <option className="emshl">Email</option>
+                          <option>Facebook</option>
+                          <option>SMS</option>
+                          <option>Twitter</option>
+                     </select> */}
+                      {/* <div className="dropdown" style={{ display: "inherit" }}>
+                      <Dropdown
+    placeholder='Select Friend'
+   
+   
+    options={social}
+  />
+  </div>  */}
 
-                      <div className="dropdown" style={{ display: "inherit" }}>
+                       <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -4897,6 +4952,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
+                                debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -4929,24 +4985,36 @@ class MyTicket extends Component {
                                                   .commentBy
                                               }
                                             </label>
-                                            <img
-                                              src={
-                                                details.latestMessageDetails
-                                                  .ticketSourceName === "Calls"
-                                                  ? require("./../assets/Images/headphone3.png")
-                                                  : details.latestMessageDetails
-                                                      .ticketSourceName ===
-                                                    "Facebook"
-                                                  ? require("./../assets/Images/facebook.png")
-                                                  : details.latestMessageDetails
-                                                      .ticketSourceName ===
-                                                    "Mails"
-                                                  ? require("./../assets/Images/SecuredLetter2.png")
-                                                  : require("./../assets/Images/twitter.png")
-                                              }
-                                              alt="sourceIMG"
-                                              className="smg-Img1 headPhone3 black-twitter"
-                                            />
+                                            {details.latestMessageDetails
+                                              .isInternalComment ===
+                                            true ? null : (
+                                              <img
+                                                src={
+                                                  details.latestMessageDetails
+                                                    .ticketSourceName ===
+                                                  "Calls"
+                                                    ? require("./../assets/Images/headphone3.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Facebook"
+                                                    ? require("./../assets/Images/facebook.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Mails"
+                                                    ? require("./../assets/Images/SecuredLetter2.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Twitter"
+                                                    ? require("./../assets/Images/twitter.png")
+                                                    : require("./../assets/Images/twitter.png")
+                                                }
+                                                alt="sourceIMG"
+                                                className="smg-Img1 headPhone3 black-twitter"
+                                              />
+                                            )}
                                           </div>
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
@@ -4956,9 +5024,16 @@ class MyTicket extends Component {
                                               src={commentImg}
                                               alt="comment"
                                               className="commentImg"
+                                              style={{
+                                                display: "inline-block"
+                                              }}
                                             />
                                           ) : null}
-                                          <p className="label-5">
+
+                                          <p
+                                            className="label-5"
+                                            style={{ display: "inline-block" }}
+                                          >
                                             {
                                               details.latestMessageDetails
                                                 .ticketMailBody
@@ -4967,45 +5042,53 @@ class MyTicket extends Component {
                                         </div>
 
                                         <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                                          {this.state.collapseUp &&
-                                          "i" +
-                                            details.latestMessageDetails
-                                              .mailID ===
-                                            this.state.collapseId ? (
-                                            <img
-                                              src={Up1Img}
-                                              alt="up"
-                                              className="up-1"
-                                              onClick={this.handleUpClose.bind(
-                                                this,
-                                                "i" +
-                                                  details.latestMessageDetails
-                                                    .mailID
-                                              )}
-                                              id={
-                                                "i" +
+                                          {details.trailMessageDetails
+                                            .length === 0 ? null : (
+                                            <div>
+                                              {this.state.collapseUp &&
+                                              "i" +
                                                 details.latestMessageDetails
-                                                  .mailID
-                                              }
-                                            />
-                                          ) : (
-                                            <img
-                                              src={Down1Img}
-                                              alt="up"
-                                              className="up-1"
-                                              onClick={this.handleUpOpen.bind(
-                                                this,
-                                                "i" +
-                                                  details.latestMessageDetails
-                                                    .mailID
+                                                  .mailID ===
+                                                this.state.collapseId ? (
+                                                <img
+                                                  src={Up1Img}
+                                                  alt="up"
+                                                  className="up-1"
+                                                  onClick={this.handleUpClose.bind(
+                                                    this,
+                                                    "i" +
+                                                      details
+                                                        .latestMessageDetails
+                                                        .mailID
+                                                  )}
+                                                  id={
+                                                    "i" +
+                                                    details.latestMessageDetails
+                                                      .mailID
+                                                  }
+                                                />
+                                              ) : (
+                                                <img
+                                                  src={Down1Img}
+                                                  alt="up"
+                                                  className="up-1"
+                                                  onClick={this.handleUpOpen.bind(
+                                                    this,
+                                                    "i" +
+                                                      details
+                                                        .latestMessageDetails
+                                                        .mailID
+                                                  )}
+                                                  id={
+                                                    "i" +
+                                                    details.latestMessageDetails
+                                                      .mailID
+                                                  }
+                                                />
                                               )}
-                                              id={
-                                                "i" +
-                                                details.latestMessageDetails
-                                                  .mailID
-                                              }
-                                            />
+                                            </div>
                                           )}
+
                                           <div className="inlineGridTicket">
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
@@ -5043,76 +5126,80 @@ class MyTicket extends Component {
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="row card-op-out">
-                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                          <UncontrolledCollapse
-                                            toggler={
-                                              "#i" +
-                                              details.latestMessageDetails
-                                                .mailID
-                                            }
-                                            // isOpen={this.state.collapseUp}
-                                          >
-                                            <Card>
-                                              <CardBody>
-                                                {details.trailMessageDetails !==
-                                                  null &&
-                                                  details.trailMessageDetails.map(
-                                                    function(MsgData, s) {
-                                                      return (
-                                                        <div
-                                                          className="card-details"
-                                                          key={s}
-                                                        >
-                                                          <div className="card-details-1">
-                                                            <label
-                                                              className="label-5"
-                                                              style={{
-                                                                display: "block"
-                                                              }}
-                                                            >
-                                                              {
-                                                                MsgData.ticketMailBody
-                                                              }
-                                                            </label>
+                                      {details.trailMessageDetails.length ===
+                                      0 ? null : (
+                                        <div className="row card-op-out">
+                                          <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                          <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                            <UncontrolledCollapse
+                                              toggler={
+                                                "#i" +
+                                                details.latestMessageDetails
+                                                  .mailID
+                                              }
+                                              // isOpen={this.state.collapseUp}
+                                            >
+                                              <Card>
+                                                <CardBody>
+                                                  {details.trailMessageDetails !==
+                                                    null &&
+                                                    details.trailMessageDetails.map(
+                                                      function(MsgData, s) {
+                                                        return (
+                                                          <div
+                                                            className="card-details"
+                                                            key={s}
+                                                          >
+                                                            <div className="card-details-1">
+                                                              <label
+                                                                className="label-5"
+                                                                style={{
+                                                                  display:
+                                                                    "block"
+                                                                }}
+                                                              >
+                                                                {
+                                                                  MsgData.ticketMailBody
+                                                                }
+                                                              </label>
+                                                            </div>
                                                           </div>
-                                                        </div>
-                                                      );
-                                                    }
-                                                  )}
-                                                {details.trailMessageDetails
-                                                  .length === 0 && (
-                                                  <div className="card-details">
-                                                    <div className="card-details-1">
-                                                      <label className="i-have-solved-this-i">
-                                                        {
-                                                          details
-                                                            .trailMessageDetails
-                                                            .ticketMailSubject
-                                                        }
-                                                      </label>
-                                                      <label
-                                                        className="label-5"
-                                                        style={{
-                                                          display: "block"
-                                                        }}
-                                                      >
-                                                        {
-                                                          details
-                                                            .trailMessageDetails
-                                                            .ticketMailBody
-                                                        }
-                                                      </label>
+                                                        );
+                                                      }
+                                                    )}
+                                                  {details.trailMessageDetails
+                                                    .length === 0 && (
+                                                    <div className="card-details">
+                                                      <div className="card-details-1">
+                                                        <label className="i-have-solved-this-i">
+                                                          {
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailSubject
+                                                          }
+                                                        </label>
+                                                        <label
+                                                          className="label-5"
+                                                          style={{
+                                                            display: "block"
+                                                          }}
+                                                        >
+                                                          {
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailBody
+                                                          }
+                                                        </label>
+                                                      </div>
                                                     </div>
-                                                  </div>
-                                                )}
-                                              </CardBody>
-                                            </Card>
-                                          </UncontrolledCollapse>
+                                                  )}
+                                                </CardBody>
+                                              </Card>
+                                            </UncontrolledCollapse>
+                                          </div>
+                                          <div className="col-12 col-xs-12 col-sm-2"></div>
                                         </div>
-                                        <div className="col-12 col-xs-12 col-sm-2"></div>
-                                      </div>
+                                      )}
                                     </div>
                                   </div>
                                 );
