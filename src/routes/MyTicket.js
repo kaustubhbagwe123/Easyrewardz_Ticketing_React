@@ -4377,12 +4377,15 @@ class MyTicket extends Component {
                         style={{ display: "inherit" }}
                       ></div>
                      
-                     {/* <select>
-                       <option className="emshl">Email</option>
+                     <select>
+                     <option value="volvo" >Email</option>
+                      
                           <option>Facebook</option>
                           <option>SMS</option>
                           <option>Twitter</option>
-                     </select> */}
+                     </select>
+
+
                       {/* <div className="dropdown" style={{ display: "inherit" }}>
                       <Dropdown
     placeholder='Select Friend'
@@ -4392,7 +4395,7 @@ class MyTicket extends Component {
   />
   </div>  */}
 
-                       <div className="dropdown" style={{ display: "inherit" }}>
+                       {/* <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -4435,7 +4438,7 @@ class MyTicket extends Component {
                             </a>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
 
                       <div
                         className="mob-float"
