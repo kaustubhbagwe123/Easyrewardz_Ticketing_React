@@ -69,6 +69,8 @@ class Header extends Component {
       notifiTktIds2: "",
       notifiTktIds3: "",
       percentLog: 0,
+      workTime: 0,
+      workTimeHours: '0H 0M',
       selectedUserProfilePicture:"",
       cont: [
         {
@@ -281,7 +283,9 @@ class Header extends Component {
           LogoutTime: data.logoutTime,
           NameTag: nameTag,
           userProfile: finalPath,
-          percentLog
+          percentLog,
+          workTime: data.workTimeInPercentage,
+          workTimeHours: data.totalWorkingTime
         });
       }
     });
@@ -1082,13 +1086,14 @@ class Header extends Component {
                 </div>
                 <ProgressBar
                   className="logout-progress"
-                  now={this.state.percentLog}
+                  // now={this.state.percentLog}
+                  now={this.state.workTime}
                 />
                 <p
                   className="logout-label font-weight-bold prog-indi"
-                  style={{ width: this.state.percentLog + "%" }}
+                  style={{ width: this.state.workTime + "%", textTransform: 'uppercase' }}
                 >
-                  {this.state.LoggedInDuration}
+                  {this.state.workTimeHours}
                 </p>
               </div>
               <div>
