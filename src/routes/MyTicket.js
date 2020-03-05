@@ -4451,27 +4451,22 @@ class MyTicket extends Component {
                         style={{ display: "inherit" }}
                       ></div>
                      
-                     <select>
-                     <option value="volvo" >Email</option>
-                      
-                          <option>Facebook</option>
-                          <option>SMS</option>
-                          <option>Twitter</option>
-                     </select>
+                    
 
-
-                      {/* <div className="dropdown" style={{ display: "inherit" }}>
-                      <Dropdown
-    placeholder='Select Friend'
-   
-   
-    options={social}
-  />
-  </div>  */}
-
-                       {/* <div className="dropdown" style={{ display: "inherit" }}>
 
                       <div className="dropdown" style={{ display: "inherit" }}>
+                      <select >
+                     
+                          <option value="Email" selected>Email</option>
+                          <option  value="Facebook">Facebook</option>
+                          <option  value="SMS"> SMS</option>
+                          <option  value="Call">Call</option>
+                     </select>
+  </div> 
+
+                       
+
+                      {/* <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
