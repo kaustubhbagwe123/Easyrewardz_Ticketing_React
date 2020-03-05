@@ -3513,11 +3513,21 @@ table tr th:last-child {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.custom-antd-table .filter-checkbox input + label {
+  padding-left: 0;
+  top: -5px;
+}
 .custom-antd-table table {
   padding: 0 20px;
 }
 .custom-antd-table .ant-table-expanded-row table {
   padding: 0;
+}
+.datepicker-overflow table, .datepicker-overflow .ant-table-content {
+  overflow: visible;
+}
+.datepicker-overflow .react-datepicker__month-read-view span, .datepicker-overflow .react-datepicker__year-read-view span {
+  display: inline-block;
 }
 /* ticket system ends */
 
@@ -10926,7 +10936,37 @@ table tr th:last-child {
     height: 25px;
     padding: 5px;
 }
+.editstorepopover
+{
+  min-width: 700px;
+  max-width: 700px;
+}
 .emshl {
   background: #fff url("./../Images/facebook.png") no-repeat right 15px
   center;
+}
+.fileAttchImg{
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#categoryEditModal
+{
+
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+  max-width: 30%;
+  min-width: 30%;
+}
+
+.editcatcnl{
+  float: right;
+  margin: 0;
+  color: #2561a8 !important;
 }

@@ -73,25 +73,24 @@ import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown } from "semantic-ui-react";
 
 // import DatePicker from "react-date-picker";
 
-
-const social=[
+const social = [
   {
-   key: 'Email',
-      text: 'Email',
-      value: 'Email',
-      image: { avatar: false, src: Email1 },
+    key: "Email",
+    text: "Email",
+    value: "Email",
+    image: { avatar: false, src: Email1 }
   },
   {
-   key: 'SMS',
-      text: 'SMS',
-      value: 'SMS',
-      image: { avatar: false, src: Sms1 },
-  },
-  ]
+    key: "SMS",
+    text: "SMS",
+    value: "SMS",
+    image: { avatar: false, src: Sms1 }
+  }
+];
 
 const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
@@ -204,7 +203,10 @@ class MyTicket extends Component {
       progressBarData: [],
       progressDataWithcColor: [],
       collapseId: "",
-      tckcmtMSGCompulsory: ""
+      tckcmtMSGCompulsory: "",
+      hasAttachmentModal: false,
+      hasAttachmentFile: [],
+      FileAttachment: []
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -233,7 +235,7 @@ class MyTicket extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    //debugger;
     if (this.props.location.ticketDetailID) {
       var ticketId = this.props.location.ticketDetailID;
       this.setState({ HistOrderShow: true, ticket_Id: ticketId });
@@ -259,7 +261,7 @@ class MyTicket extends Component {
   };
 
   handleGetTicketDetails(ID) {
-    debugger;
+    //debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -270,7 +272,7 @@ class MyTicket extends Component {
         ticketID: ID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -287,8 +289,6 @@ class MyTicket extends Component {
         var productData = data.products;
         var MailDetails = data.ticketingMailerQue;
         var attachementDetails = data.attachment;
-        var AssignDateTime = moment(data.ticketAssignDate).format("LTS");
-        var ResponseDateTime = moment(data.targetResponseDate).format("LTS");
         var selectetedParameters = {
           ticketStatusID: ticketStatus,
           priorityID: ticketPriority,
@@ -299,8 +299,6 @@ class MyTicket extends Component {
           ticketActionTypeID: ticketActionType,
           issueTypeID: ticketIssueTypeID
         };
-
-        // var resultDate = ResponseDateTime.subtract(AssignDateTime);
 
         var Storedetails = "";
         for (let i = 0; i < storeData.length; i++) {
@@ -342,9 +340,9 @@ class MyTicket extends Component {
     });
   }
   handleOnLoadFiles() {
-    debugger;
+    //debugger;
     for (let i = 0; i < this.state.fileDummy.length; i++) {
-      debugger;
+      //debugger;
 
       var objFile = new Object();
       var name = this.state.fileDummy[i].attachmentName;
@@ -358,14 +356,14 @@ class MyTicket extends Component {
     }
   }
   handleAssignDataList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getagentlist",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let data = res.data.responseData;
       self.setState({
         SearchAssignData: data
@@ -374,7 +372,7 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketStatus(ticStaId) {
-    debugger;
+    //debugger;
     // let self = this;
     axios({
       method: "post",
@@ -385,7 +383,7 @@ class MyTicket extends Component {
         status: ticStaId
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.status;
       if (status === true) {
         if (ticStaId === 103) {
@@ -416,8 +414,12 @@ class MyTicket extends Component {
       if (status === "Success") {
         let data = res.data.responseData;
         self.setState({
-          messageDetails: data
+          messageDetails: data,
+          hasAttachmentFile: data
         });
+        setTimeout(() => {
+          self.handleHasAttachmentFileData();
+        }, 100);
       } else {
         self.setState({
           messageDetails: []
@@ -425,8 +427,38 @@ class MyTicket extends Component {
       }
     });
   }
-  handleGetOrderDetails() {
+
+  handleHasAttachmentFileData() {
     debugger;
+    for (let i = 0; i < this.state.hasAttachmentFile.length; i++) {
+      var data = [];
+      data = this.state.hasAttachmentFile[i].msgDetails;
+
+      for (let j = 0; j < data.length; j++) {
+        var details = [];
+        details = data[j].latestMessageDetails;
+        var Files = details.messageAttachments;
+
+        if (Files.length > 0) {
+          for (let k = 0; k < Files.length; k++) {
+            var objFile = new Object();
+
+            var name = Files[k].attachmentName;
+            var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+            objFile.Type = type;
+            objFile.name = name;
+
+            objFile.File = Files[k];
+
+            this.state.FileAttachment.push(objFile);
+          }
+        }
+      }
+    }
+  }
+
+  handleGetOrderDetails() {
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -436,7 +468,7 @@ class MyTicket extends Component {
         CustomerID: this.state.custID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -447,7 +479,7 @@ class MyTicket extends Component {
     });
   }
   handleGetProductData() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -457,12 +489,12 @@ class MyTicket extends Component {
         TicketID: this.state.ticket_Id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let Msg = res.data.message;
       let data = res.data.responseData;
       if (Msg === "Success") {
         const newSelected = Object.assign({}, self.state.CheckOrderID);
-        debugger;
+        //debugger;
 
         var OrderSubItem = [];
         var selectedRow = [];
@@ -504,7 +536,7 @@ class MyTicket extends Component {
         SearchText: this.state.SearchStore
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let data = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -517,7 +549,7 @@ class MyTicket extends Component {
     });
   }
   handleGetCountOfTabs(ID) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -527,7 +559,7 @@ class MyTicket extends Component {
         ticketID: ID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -538,7 +570,7 @@ class MyTicket extends Component {
     });
   }
   handleUpdateTicketDetails() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -557,7 +589,7 @@ class MyTicket extends Component {
         TicketActionID: this.state.selectetedParameters.ticketActionTypeID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       if (status === "Success") {
         NotificationManager.success("Ticket updated successfully.", "", 2000);
@@ -568,7 +600,7 @@ class MyTicket extends Component {
     });
   }
   handleRequireSize(e, rowData) {
-    debugger;
+    //debugger;
 
     var id = rowData.original.orderItemID;
     var value = document.getElementById("requireSizeTxt" + id).value;
@@ -582,7 +614,7 @@ class MyTicket extends Component {
     this.setState({ OrderSubItem });
   }
   handleOrderSearchData() {
-    debugger;
+    //debugger;
     let self = this;
     if (this.state.orderNumber.length > 0) {
       axios({
@@ -594,7 +626,7 @@ class MyTicket extends Component {
           CustomerID: this.state.custID
         }
       }).then(function(res) {
-        debugger;
+        //debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
 
@@ -637,7 +669,7 @@ class MyTicket extends Component {
   };
 
   hanldeStatusChange(e) {
-    debugger;
+    //debugger;
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
@@ -650,7 +682,7 @@ class MyTicket extends Component {
     }
   }
   handleDropDownChange = e => {
-    debugger;
+    //debugger;
     let name = e.target.name;
     let Value = e.target.value;
     var data = this.state.selectetedParameters;
@@ -720,14 +752,14 @@ class MyTicket extends Component {
   };
 
   handleGetBrandList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -738,7 +770,7 @@ class MyTicket extends Component {
     });
   }
   handleGetCategoryList() {
-    debugger;
+    //debugger;
 
     let self = this;
     axios({
@@ -749,21 +781,21 @@ class MyTicket extends Component {
         BrandID: this.state.selectetedParameters.brandID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       // let status=
       let data = res.data;
       self.setState({ CategoryData: data });
     });
   }
   handleGetTicketPriorityList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -774,7 +806,7 @@ class MyTicket extends Component {
     });
   }
   handleGetSubCategoryList() {
-    debugger;
+    //debugger;
 
     let self = this;
     axios({
@@ -785,7 +817,7 @@ class MyTicket extends Component {
         CategoryID: this.state.selectetedParameters.categoryID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -796,7 +828,7 @@ class MyTicket extends Component {
     });
   }
   handleGetIssueTypeList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -806,7 +838,7 @@ class MyTicket extends Component {
         SubCategoryID: this.state.selectetedParameters.subCategoryID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -823,7 +855,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -834,7 +866,7 @@ class MyTicket extends Component {
     });
   }
   handleAssignTickets() {
-    debugger;
+    //debugger;
     let self = this;
 
     axios({
@@ -847,7 +879,7 @@ class MyTicket extends Component {
         Remark: ""
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let messageData = res.data.message;
       if (messageData === "Success") {
         NotificationManager.success("Tickets assigned successfully.", "", 1500);
@@ -936,13 +968,13 @@ class MyTicket extends Component {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
   handleFreeTextCommentOpen() {
-    debugger;
+    //debugger;
     this.setState({
       FreeTextComment: !this.state.FreeTextComment
     });
   }
   handleCommentCollapseOpen(Mail_Id) {
-    debugger;
+    //debugger;
     this.setState(state => ({
       CommentCollapse: !state.CommentCollapse,
       mailId: Mail_Id
@@ -952,7 +984,7 @@ class MyTicket extends Component {
     this.setState(state => ({ CommentCollapse: false }));
   }
   hanldeCommentOpen2(Mail_Id) {
-    debugger;
+    //debugger;
     this.setState({ CommentCollapse2: true, mailId: Mail_Id });
   }
   hanldeCommentClose2() {
@@ -983,6 +1015,12 @@ class MyTicket extends Component {
   }
   handleThumbModalClose() {
     this.setState({ Plus: false });
+  }
+  handleHasAttachmetModalOpen() {
+    this.setState({ hasAttachmentModal: true });
+  }
+  handleHasAttachmetModalClose() {
+    this.setState({ hasAttachmentModal: false });
   }
   handleSubmitForm(e) {
     e.preventDefault();
@@ -1021,7 +1059,7 @@ class MyTicket extends Component {
     }, 100);
   }
   handleNoteAddComments() {
-    debugger;
+    //debugger;
     if (this.state.NoteAddComment.length > 0) {
       let self = this;
 
@@ -1035,7 +1073,7 @@ class MyTicket extends Component {
           Id: this.state.ticket_Id
         }
       }).then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.status;
         if (status === true) {
           var id = self.state.ticket_Id;
@@ -1056,7 +1094,7 @@ class MyTicket extends Component {
     }
   }
   handleGetHistoricalData() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1066,7 +1104,7 @@ class MyTicket extends Component {
         TicketId: this.state.ticket_Id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.status;
       let details = res.data.responseData;
       self.onOpenModal();
@@ -1077,7 +1115,7 @@ class MyTicket extends Component {
   }
 
   hanldeGetSelectedStoreData() {
-    debugger;
+    //debugger;
     let self = this;
     // this.setState({ loading: true });
     axios({
@@ -1088,13 +1126,13 @@ class MyTicket extends Component {
         TicketID: this.state.ticket_Id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
 
       if (status === "Success") {
         const newSelected = Object.assign({}, self.state.CheckStoreID);
-        debugger;
+        //debugger;
         var selectedRow = [];
         for (let i = 0; i < data.length; i++) {
           if (data[i].storeID) {
@@ -1121,7 +1159,7 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
-    debugger;
+    //debugger;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1153,7 +1191,7 @@ class MyTicket extends Component {
         StoreId: selectedStore.substring(",", selectedStore.length - 1)
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       // let details = res.data.responseData;
       if (status === "Success") {
@@ -1167,7 +1205,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger;
+    //debugger;
     // let self = this;
 
     var selectedRow = "";
@@ -1233,7 +1271,7 @@ class MyTicket extends Component {
         OrderID: selectedRow.substring(",", selectedRow.length - 1)
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       // let details = res.data.responseData;
       if (status === "Success") {
@@ -1244,7 +1282,7 @@ class MyTicket extends Component {
     });
   }
   handleGetNotesTabDetails(ticket_Id) {
-    debugger;
+    //debugger;
     let self = this;
     // this.setState({ loading: true });
     axios({
@@ -1255,7 +1293,7 @@ class MyTicket extends Component {
         TicketId: ticket_Id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let details = res.data.responseData;
       if (status === "Success") {
@@ -1285,7 +1323,7 @@ class MyTicket extends Component {
   };
 
   // handleCheckOrderID(orderMasterID, rowData) {
-  //   debugger;
+  //   //debugger;
   //   const newSelected = Object.assign({}, this.state.CheckOrderID);
   //   newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
   //   this.setState({
@@ -1327,7 +1365,7 @@ class MyTicket extends Component {
   // }
 
   handleCheckStoreID(storeMasterID, rowData) {
-    debugger;
+    //debugger;
 
     const newSelected = Object.assign({}, this.state.CheckStoreID);
     newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
@@ -1371,7 +1409,7 @@ class MyTicket extends Component {
   }
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1383,7 +1421,7 @@ class MyTicket extends Component {
         SubCategor_ID: self.state.selectedSubCategoryKB
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let KbPopupData = res.data.responseData;
       if (KbPopupData.length === 0 || KbPopupData === null) {
         NotificationManager.error("No Record Found.", "", 2000);
@@ -1415,7 +1453,7 @@ class MyTicket extends Component {
 
   //Sub-Category change funcation in KB Templete Modal
   setSubCategoryValueKB = e => {
-    debugger;
+    //debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryKB: subCategoryValue });
 
@@ -1443,7 +1481,7 @@ class MyTicket extends Component {
         IssueTypeID: this.state.selectetedParameters.issueTypeID
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
     });
@@ -1451,7 +1489,7 @@ class MyTicket extends Component {
 
   //get Template data for select template funcation
   handleCkEditorTemplateData(tempId, tempName) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1461,7 +1499,7 @@ class MyTicket extends Component {
         TemplateId: tempId
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let TemplateDetails = res.data.responseData;
       let bodyData = res.data.responseData.templateBody;
       self.setState({
@@ -1473,11 +1511,11 @@ class MyTicket extends Component {
     });
   }
   handleSendMailData(isSend) {
-    debugger;
+    //debugger;
     let self = this;
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
-    var finalText = stringBody.replace(/[&]nbsp[;]/g," ");
+    var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
     if (isSend === 1) {
       const formData = new FormData();
       var paramData = {
@@ -1504,7 +1542,7 @@ class MyTicket extends Component {
         headers: authHeader(),
         data: formData
       }).then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
@@ -1547,7 +1585,7 @@ class MyTicket extends Component {
         headers: authHeader(),
         data: formData
       }).then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
@@ -1583,7 +1621,7 @@ class MyTicket extends Component {
           headers: authHeader(),
           data: formData
         }).then(function(res) {
-          debugger;
+          //debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1626,7 +1664,7 @@ class MyTicket extends Component {
         headers: authHeader(),
         data: formData
       }).then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Comment Added successfully.", "", 2000);
@@ -1644,7 +1682,7 @@ class MyTicket extends Component {
   }
 
   handleMailOnChange(filed, e) {
-    debugger;
+    //debugger;
     var mailFiled = this.state.mailFiled;
     mailFiled[filed] = e.target.value;
 
@@ -1668,7 +1706,7 @@ class MyTicket extends Component {
         TicketID: id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -1693,7 +1731,7 @@ class MyTicket extends Component {
     });
   }
   handleReplyFileUpload(e) {
-    debugger;
+    //debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -1713,7 +1751,7 @@ class MyTicket extends Component {
     //   }
     // }
     for (let i = 0; i < e.target.files.length; i++) {
-      debugger;
+      //debugger;
 
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -1734,7 +1772,7 @@ class MyTicket extends Component {
     });
   }
   handleFileUpload(e) {
-    debugger;
+    //debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -1754,7 +1792,7 @@ class MyTicket extends Component {
       }
     }
     for (let i = 0; i < e.target.files.length; i++) {
-      debugger;
+      //debugger;
 
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -1774,7 +1812,7 @@ class MyTicket extends Component {
   }
 
   handleByvisitDate(e, rowData) {
-    debugger;
+    //debugger;
     var id = e.original.storeID;
     var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
     // this.state.selectedStoreData["VisitedDate"] = rowData;
@@ -1784,7 +1822,7 @@ class MyTicket extends Component {
     this.setState({ selectedStoreData });
   }
   handleChangeOrderItem = e => {
-    debugger;
+    //debugger;
 
     var values = e.target.checked;
     if (!this.state.selectProductOrd) {
@@ -1823,7 +1861,7 @@ class MyTicket extends Component {
   };
 
   handleRemoveImage(i) {
-    debugger;
+    //debugger;
     let file = this.state.file;
     file.splice(i, 1);
     var fileText = file.length;
@@ -1833,7 +1871,7 @@ class MyTicket extends Component {
   }
 
   handleSetDataTab = () => {
-    debugger;
+    //debugger;
     this.setState({
       selectProductOrd: !this.state.selectProductOrd
     });
@@ -1842,7 +1880,7 @@ class MyTicket extends Component {
   // -------------------------------Check box selected all code start-------------------------------
 
   onCheckMasterAllChange(orderMasterID, rowData) {
-    debugger;
+    //debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
     newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
     this.setState({
@@ -1935,7 +1973,7 @@ class MyTicket extends Component {
   }
 
   checkIndividualItem(orderItemID, rowData) {
-    debugger;
+    //debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
     this.setState({
@@ -2025,7 +2063,7 @@ class MyTicket extends Component {
   // -------------------------------Check box selected all code end-------------------------------
 
   callbackToParent = () => {
-    debugger;
+    //debugger;
     this.handleGetCountOfTabs(this.state.ticket_Id);
   };
 
@@ -2276,11 +2314,11 @@ class MyTicket extends Component {
                         showPagination={false}
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
-                          // debugger;
+                          // //debugger;
                           const index = column ? column.index : -1;
                           return {
                             onClick: e => {
-                              debugger;
+                              //debugger;
                               this.selectedRow = index;
                               var agentId = column.original["user_ID"];
                               this.setState({ agentId });
@@ -3132,7 +3170,7 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: row => {
-                                          // debugger;
+                                          // //debugger;
                                           return (
                                             <div
                                               className="filter-checkbox"
@@ -3706,7 +3744,7 @@ class MyTicket extends Component {
                                                 Header: <span> </span>,
                                                 accessor: "invoiceNo",
                                                 Cell: row => {
-                                                  // debugger
+                                                  // //debugger
                                                   return (
                                                     <div
                                                       className="filter-checkbox"
@@ -3782,7 +3820,7 @@ class MyTicket extends Component {
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: row => {
-                                                  // debugger;
+                                                  // //debugger;
                                                   return (
                                                     <div>
                                                       <input
@@ -4194,7 +4232,7 @@ class MyTicket extends Component {
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: row => {
-                                                  // debugger;
+                                                  // //debugger;
                                                   return (
                                                     <div>
                                                       <input
@@ -4396,6 +4434,8 @@ class MyTicket extends Component {
   </div>  */}
 
                        {/* <div className="dropdown" style={{ display: "inherit" }}>
+
+                      <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -4809,6 +4849,60 @@ class MyTicket extends Component {
                     </div>
                   </Modal>
                 </div>
+                <Modal
+                  open={this.state.hasAttachmentModal}
+                  onClose={this.handleHasAttachmetModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                  <div>
+                    <div className="close">
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        onClick={this.handleHasAttachmetModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row my-3 mx-1">
+                      {this.state.FileAttachment !== null &&
+                        this.state.FileAttachment.map((item, k) => {
+                          return (
+                            <div style={{ position: "relative" }} key={k}>
+                            <div>
+                              <img
+                                src={CircleCancel}
+                                alt="thumb"
+                                className="circleCancle"
+                                onClick={() => {
+                                  this.handleRemoveImage(k);
+                                }}
+                              />
+                            </div>
+  
+                            <div>
+                              <img
+                                src={
+                                  item.Type === "docx"
+                                    ? require("./../assets/Images/word.png")
+                                    : item.Type === "xlsx"
+                                    ? require("./../assets/Images/excel.png")
+                                    : item.Type === "pdf"
+                                    ? require("./../assets/Images/pdf.png")
+                                    : item.Type === "txt"
+                                    ? require("./../assets/Images/TxtIcon.png")
+                                    : require("./../assets/Images/thumbticket.png")
+                                }
+                                title={item.name}
+                                alt="thumb"
+                                className="thumbtick"
+                              />
+                            </div>
+                          </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </Modal>
                 <div className="edit-storeTask-header newtab">
                   <div className="tab-content">
                     <div className="store-header-task">
@@ -4955,7 +5049,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                debugger;
+                                // //debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -5032,6 +5126,17 @@ class MyTicket extends Component {
                                               }}
                                             />
                                           ) : null}
+                                          {/* --------------Show Attchement Icone on condition--------------- */}
+                                          {details.latestMessageDetails
+                                            .hasAttachment === 1 ? (
+                                            <img
+                                              src={ClipImg}
+                                              alt="attechment"
+                                              className="fileAttchImg"
+                                              onClick={this.handleHasAttachmetModalOpen.bind(this)}
+                                            />
+                                          ) : null}
+                                          {/* ----------------------------- */}
 
                                           <p
                                             className="label-5"

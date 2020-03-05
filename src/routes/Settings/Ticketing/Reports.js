@@ -28,23 +28,33 @@ import Select from "react-select";
 import { Checkbox } from "antd";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
 
+// const clshide= {
+//  display:"hide"
+// };
+
 class Reports extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
       AddReportPopup: false,
       NextPopup: false,
       ChatDate: "",
+      DefaultPopupName:"",
       tabIndex: 0,
       ReportData: [],
       ReportParams: "",
       brandData: [],
       Schedule_ID: 0,
-      TicketCreatedFromDate:"",
-      TicketCreatedEndDate:"",
-      TicketCreatedSource:"",
-      SelectedSourceIds:"",
-      OpenDefaultModal:false,
+      TicketCreatedFromDate: "",
+      SelectedTicketMultiStatus:"",
+      TicketClosedFrom:"",
+      TicketClosedTo:"",
+      TicketCreatedEndDate: "",
+      TicketCreatedSource: "",
+      SelectedSourceIds: "",
+      SelectedDefaultTeamMember:"",
+      OpenDefaultModal: false,
       CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
@@ -74,6 +84,7 @@ class Reports extends Component {
       selectedVisitStore: "yes",
       selectedAssignedTo: 0,
       selectedWantVisitStore: "yes",
+      selectedDefaultTicketStatus: 0,
       selectedTicketStatus: 0,
       selectedVisitStoreAddress: "",
       selectedPurchaseStore: "",
@@ -257,8 +268,7 @@ class Reports extends Component {
     debugger;
     if (this.state.selectedReportName == "") {
       NotificationManager.error("Please enter report name");
-    }
-    else {
+    } else {
       if (this.state.selectedTeamMemberCommaSeperated) {
         var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
         var selectedTeamMember = this.state.selectedTeamMember;
@@ -272,14 +282,13 @@ class Reports extends Component {
             document.getElementById(this.state.dayIdsArray[j]).click();
           }
         }, 100);
-      }
-      else {
+      } else {
         this.setState({ Schedule: true, selectedTeamMember: [] });
       }
     }
   };
   ScheduleCloseModel = () => {
-    this.setState({ Schedule: false ,selectedTeamMember:[]});
+    this.setState({ Schedule: false, selectedTeamMember: [] });
   };
 
   handleAddReportOpen() {
@@ -289,11 +298,11 @@ class Reports extends Component {
     debugger;
     this.ClearParams();
     this.setState({ AddReportPopup: true, tabIndex: 0 });
-  }
-  handleEditReport = (rowData) => {
+  };
+  handleEditReport = rowData => {
     debugger;
     let allTab = JSON.parse(rowData.reportSearchParams);
-    this.setState({ Schedule_ID: rowData.scheduleID })
+    this.setState({ Schedule_ID: rowData.scheduleID });
     let withClaim = 0;
     let withTask = 0;
     // allTab=objEdit;
@@ -312,7 +321,6 @@ class Reports extends Component {
     }
     // this.state.ReportCreateDate="04/02/2020";
     //this.state.ReportCreateDate=moment(allTab["CreatedDate"]).format("DD/MM/YYYY");
-
 
     // this.state.ReportLastDate=allTab["ModifiedDate"];
     // // --------------------Check null date----------------------------------
@@ -341,7 +349,7 @@ class Reports extends Component {
     // }
     this.state.selectedReportName = rowData.reportName;
     var scheduledIds = rowData.scheduleFor;
-    var scheduledIdsArray = scheduledIds.split(',');
+    var scheduledIdsArray = scheduledIds.split(",");
     // this.state.AssignToData.filter(x => x.userID == )
 
     // this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
@@ -349,18 +357,24 @@ class Reports extends Component {
     this.state.selectedIssueType = allTab["IssueType"];
     this.state.selectedTaskPriority = allTab["TaskPriority"];
     // this.state.selectedCategory=allTab["CategoryId"];
-    this.setState({
-      selectedCategory: allTab["CategoryId"]
-    }, () => {
-      this.handleGetSubCategoryList()
-    });
+    this.setState(
+      {
+        selectedCategory: allTab["CategoryId"]
+      },
+      () => {
+        this.handleGetSubCategoryList();
+      }
+    );
     //this.handleGetSubCategoryList();
     // this.state.selectedSubCategory=allTab["SubCategoryId"];
-    this.setState({
-      selectedSubCategory: allTab["SubCategoryId"]
-    }, () => {
-      this.handleGetIssueTypeList()
-    });
+    this.setState(
+      {
+        selectedSubCategory: allTab["SubCategoryId"]
+      },
+      () => {
+        this.handleGetIssueTypeList();
+      }
+    );
     this.state.selectedIssueType = allTab["IssueTypeId"];
     this.state.selectedTicketSource = allTab["TicketSourceTypeID"];
     this.state.selectedTicketID = allTab["TicketIdORTitle"];
@@ -380,26 +394,35 @@ class Reports extends Component {
 
     this.state.selectedClaimStatus = allTab["ClaimStatusId"];
     // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
-    this.setState({
-      selectedClaimCategory: allTab["ClaimCategoryId"]
-    }, () => {
-      this.handleGetSubCategoryList()
-    });
+    this.setState(
+      {
+        selectedClaimCategory: allTab["ClaimCategoryId"]
+      },
+      () => {
+        this.handleGetSubCategoryList();
+      }
+    );
     // this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
-    this.setState({
-      selectedClaimSubCategory: allTab["ClaimSubCategoryId"]
-    }, () => {
-      this.handleGetIssueTypeList()
-    });
+    this.setState(
+      {
+        selectedClaimSubCategory: allTab["ClaimSubCategoryId"]
+      },
+      () => {
+        this.handleGetIssueTypeList();
+      }
+    );
     this.state.selectedClaimIssueType = allTab["ClaimIssueTypeId"];
 
     this.state.selectedTaskStatus = allTab["TaskStatusId"];
     // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
-    this.setState({
-      selectedDepartment: allTab["TaskDepartment_Id"],
-    }, () => {
-      this.handleGetFunctionList()
-    });
+    this.setState(
+      {
+        selectedDepartment: allTab["TaskDepartment_Id"]
+      },
+      () => {
+        this.handleGetFunctionList();
+      }
+    );
     this.state.selectedFunction = allTab["TaskFunction_Id"];
 
     //////////////////Scheduler/////////////////////////
@@ -408,19 +431,26 @@ class Reports extends Component {
     this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
     this.state.selectedNoOfDay = rowData.noOfDay;
     var responseTime = rowData.scheduleTime;
-    var splittedResponseTime = responseTime.split('T');
+    var splittedResponseTime = responseTime.split("T");
     var date = splittedResponseTime[0];
-    var splittedDate = date.split('-');
+    var splittedDate = date.split("-");
     var time = splittedResponseTime[1];
-    var splittedTime = time.split(':');
-    var finalTime = new Date(splittedDate[0], splittedDate[1] - 1, splittedDate[2], splittedTime[0], splittedTime[1], splittedTime[2])
+    var splittedTime = time.split(":");
+    var finalTime = new Date(
+      splittedDate[0],
+      splittedDate[1] - 1,
+      splittedDate[2],
+      splittedTime[0],
+      splittedTime[1],
+      splittedTime[2]
+    );
 
     this.state.selectedScheduleTime = finalTime;
-    // this.state.selectedScheduleTime=rowData.scheduleTime; 
+    // this.state.selectedScheduleTime=rowData.scheduleTime;
     this.state.selectedNoOfWeek = rowData.noOfWeek;
-    this.state.selectedWeeklyDays = rowData.selectedWeeklyDays
+    this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
     var dayIds = rowData.dayIds;
-    var splittedDayIds = dayIds.split(',');
+    var splittedDayIds = dayIds.split(",");
     this.setState({
       dayIdsArray: splittedDayIds
     });
@@ -465,7 +495,9 @@ class Reports extends Component {
     var dayForWeek = rowData.nameOfDayForWeek.split(",");
     var selectedNameOfDayForWeek = [];
     for (let j = 0; j < dayForWeek.length; j++) {
-      var data = this.state.NameOfDayForWeek.filter(x => x.days == dayForWeek[j]);
+      var data = this.state.NameOfDayForWeek.filter(
+        x => x.days == dayForWeek[j]
+      );
       selectedNameOfDayForWeek.push(data[0]);
     }
     this.setState({
@@ -474,7 +506,9 @@ class Reports extends Component {
     var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
     var selectedNameOfMonthForYear = [];
     for (let j = 0; j < dayForYear.length; j++) {
-      var data = this.state.NameOfMonthForYear.filter(x => x.month == dayForYear[j]);
+      var data = this.state.NameOfMonthForYear.filter(
+        x => x.month == dayForYear[j]
+      );
       selectedNameOfMonthForYear.push(data[0]);
     }
     this.setState({
@@ -484,13 +518,17 @@ class Reports extends Component {
     var dayForYear = rowData.nameOfDayForYear.split(",");
     var selectedNameOfDayForYear = [];
     for (let j = 0; j < dayForYear.length; j++) {
-      var data = this.state.NameOfDayForYear.filter(x => x.days == dayForYear[j]);
+      var data = this.state.NameOfDayForYear.filter(
+        x => x.days == dayForYear[j]
+      );
       selectedNameOfDayForYear.push(data[0]);
     }
     var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
     var selectedNameOfMonthForDailyYear = [];
     for (let j = 0; j < monthForDailyYear.length; j++) {
-      var data = this.state.NameOfMonthForDailyYear.filter(x => x.month == monthForDailyYear[j]);
+      var data = this.state.NameOfMonthForDailyYear.filter(
+        x => x.month == monthForDailyYear[j]
+      );
       selectedNameOfMonthForDailyYear.push(data[0]);
     }
     this.setState({
@@ -501,7 +539,7 @@ class Reports extends Component {
 
     ///////////////////////////////////////////////////
     this.handleAddReportOpen();
-  }
+  };
   handleAddReportClose() {
     this.setState({ AddReportPopup: false });
   }
@@ -540,9 +578,9 @@ class Reports extends Component {
     this.state.selectedDepartment = 0;
     this.state.selectedFunction = 0;
     this.setState({
-      ReportCreateDate: '',
-      ReportLastDate: '',
-      selectedPurchaseStore: '',
+      ReportCreateDate: "",
+      ReportLastDate: "",
+      selectedPurchaseStore: "",
       selectedWithClaim: "no",
       selectedWithTaskAll: "no",
       SubCategoryData: [],
@@ -561,7 +599,7 @@ class Reports extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
@@ -575,16 +613,24 @@ class Reports extends Component {
     this.setState({ NextPopup: false });
     this.handleReportList();
   }
-  handleDefaultPopupClose=()=> {
+  handleDefaultPopupClose = () => {
     this.setState({ OpenDefaultModal: false });
-   // this.handleReportList();
-  }
+    // this.handleReportList();
+  };
   handleReportCreateDate(date) {
     this.setState({ ReportCreateDate: date });
   }
   handleTicketCreateDate(date) {
     debugger;
     this.setState({ TicketCreatedFromDate: date });
+  }
+  handleTicketClosedFrom(date) {
+    debugger;
+    this.setState({ TicketClosedFrom: date });
+  }
+  handleTicketClosedTo(date) {
+    debugger;
+    this.setState({ TicketClosedTo: date });
   }
   handleTicketCreateToDate(date) {
     debugger;
@@ -620,18 +666,18 @@ class Reports extends Component {
       selectedNameOfDayForYearCommaSeperated
     });
   };
-  handleWeekForYear = (e) => {
+  handleWeekForYear = e => {
     debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value
     });
-  }
-  handleDayForYear = (e) => {
+  };
+  handleDayForYear = e => {
     debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value
     });
-  }
+  };
   setNameOfMonthForYear = e => {
     debugger;
     if (e !== null) {
@@ -656,31 +702,31 @@ class Reports extends Component {
       selectedNameOfDayForWeekCommaSeperated
     });
   };
-  handleWeekForWeek = (e) => {
+  handleWeekForWeek = e => {
     debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value
     });
-  }
-  handleMonthForWeek = (e) => {
+  };
+  handleMonthForWeek = e => {
     debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value
     });
-  }
-  handleMonthForMonth = (e) => {
+  };
+  handleMonthForMonth = e => {
     debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value
     });
-  }
-  handleDaysForMonth = (e) => {
+  };
+  handleDaysForMonth = e => {
     debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value
     });
-  }
-  handleWeekly = (e) => {
+  };
+  handleWeekly = e => {
     debugger;
     this.setState({
       selectedNoOfWeek: e.target.value
@@ -688,25 +734,25 @@ class Reports extends Component {
     // this.setState({
     //   selectedNoOfWeek: e.currentTarget.value
     // });
-  }
-  handleDailyDay = (e) => {
+  };
+  handleDailyDay = e => {
     debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
-  }
-  handleScheduleTime = (e) => {
+  };
+  handleScheduleTime = e => {
     debugger;
     this.setState({
       selectedScheduleTime: e
     });
-  }
+  };
   handleChangeTab(index) {
     debugger;
-    // this.setState({ NextPopup: true });   
+    // this.setState({ NextPopup: true });
     //   this.setState({
     //     tabIndex: index
-    //   });   
+    //   });
 
     var allTab = {};
     allTab = this.SetSearchParametr();
@@ -721,16 +767,14 @@ class Reports extends Component {
         BrandId: this.state.BrandIds,
         reportSearch: allTab
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       self.setState({ totalResultCount: data });
       self.handleNextPopupOpen();
-      //self.handleAddReportClose();     
+      //self.handleAddReportClose();
     });
-
-
   }
   EditSearchParameter(objEdit) {
     var allTab = {};
@@ -784,18 +828,14 @@ class Reports extends Component {
     allTab["TicketSatutsID"] = this.state.selectedTicketStatus;
     allTab["SLAStatus"] = this.state.selectedSLAStatus;
     allTab["ClaimId"] = this.state.selectedClaimID;
-    allTab[
-      "InvoiceNumberORSubOrderNo"
-    ] = this.state.selectedInvoiceNo.trim();
+    allTab["InvoiceNumberORSubOrderNo"] = this.state.selectedInvoiceNo.trim();
     allTab["OrderItemId"] = this.state.selectedItemID.trim();
     allTab["IsVisitStore"] = this.state.selectedVisitStore;
     allTab["IsWantVistingStore"] = this.state.selectedWantVisitStore;
     allTab["CustomerEmailID"] = this.state.selectedEmailID.trim();
     allTab["CustomerMobileNo"] = this.state.selectedMobileNo.trim();
     allTab["AssignTo"] = this.state.selectedAssignedTo;
-    allTab[
-      "StoreCodeORAddress"
-    ] = this.state.selectedWantVisitStore.trim();
+    allTab["StoreCodeORAddress"] = this.state.selectedWantVisitStore.trim();
     allTab[
       "WantToStoreCodeORAddress"
     ] = this.state.selectedVisitStoreAddress.trim();
@@ -808,7 +848,6 @@ class Reports extends Component {
     allTab["TaskStatusId"] = this.state.selectedTaskStatus;
     allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
     allTab["TaskFunction_Id"] = this.state.selectedFunction;
-
   }
   SetSearchParametr() {
     var allTab = {};
@@ -858,18 +897,14 @@ class Reports extends Component {
     allTab["TicketSatutsID"] = this.state.selectedTicketStatus;
     allTab["SLAStatus"] = this.state.selectedSLAStatus;
     allTab["ClaimId"] = this.state.selectedClaimID;
-    allTab[
-      "InvoiceNumberORSubOrderNo"
-    ] = this.state.selectedInvoiceNo.trim();
+    allTab["InvoiceNumberORSubOrderNo"] = this.state.selectedInvoiceNo.trim();
     allTab["OrderItemId"] = this.state.selectedItemID.trim();
     allTab["IsVisitStore"] = this.state.selectedVisitStore;
     allTab["IsWantVistingStore"] = this.state.selectedWantVisitStore;
     allTab["CustomerEmailID"] = this.state.selectedEmailID.trim();
     allTab["CustomerMobileNo"] = this.state.selectedMobileNo.trim();
     allTab["AssignTo"] = this.state.selectedAssignedTo;
-    allTab[
-      "StoreCodeORAddress"
-    ] = this.state.selectedWantVisitStore.trim();
+    allTab["StoreCodeORAddress"] = this.state.selectedWantVisitStore.trim();
     allTab[
       "WantToStoreCodeORAddress"
     ] = this.state.selectedVisitStoreAddress.trim();
@@ -884,7 +919,7 @@ class Reports extends Component {
     allTab["TaskFunction_Id"] = this.state.selectedFunction;
 
     return allTab;
-  };
+  }
   handleWeeklyDays = async e => {
     debugger;
     let check = e.target.checked;
@@ -1120,6 +1155,27 @@ class Reports extends Component {
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
   };
 
+  setDefaultTeamMember = e => {
+    debugger;
+    if (e !== null) {
+      var selectedTeamMemberCommaSeperated = Array.prototype.map
+        .call(e, s => s.userID)
+        .toString();
+    }
+    this.setState({ SelectedDefaultTeamMember: e, selectedTeamMemberCommaSeperated });
+  };
+
+  setDefaultMutiStatus = e => {
+    debugger;
+    if (e !== null) {
+      var selectedStatus = Array.prototype.map
+        .call(e, s => s.ticketStatusID)
+        .toString();
+    }
+    this.setState({ SelectedTicketMultiStatus: e, selectedStatus });
+  };
+
+
   setCreatedTicketSource = e => {
     debugger;
     if (e !== null) {
@@ -1129,13 +1185,19 @@ class Reports extends Component {
     }
     this.setState({ SelectedSourceIds: e, selectedCreatedTicketSource });
   };
-
+  
+  setDefaultTicketStatus=e=>{
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
   setOnChangeReportData = e => {
     debugger;
 
     this.setState({
       [e.target.name]: e.target.value
     });
+    
     setTimeout(() => {
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
@@ -1169,7 +1231,7 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });
@@ -1183,7 +1245,7 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let AssignData = res.data.responseData;
 
@@ -1200,7 +1262,7 @@ class Reports extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -1214,7 +1276,7 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let TicketSourceData = res.data.responseData;
       self.setState({
@@ -1230,7 +1292,7 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Report/GetReports",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var reportdata = res.data.responseData;
 
@@ -1245,12 +1307,62 @@ class Reports extends Component {
   }
   handleDownload = (id, name) => {
     debugger;
-    let self = this;
-    if(id==0)
-    {
-        self.setState({OpenDefaultModal:true});
-    }
-    else{
+    let self = this;    
+    if (id == 0) {     
+
+      self.setState({ DefaultPopupName: name });
+      self.setState({ OpenDefaultModal: true });
+      setTimeout(function(){  
+         if(name=="Total Ticket Created")
+         {
+           document.getElementById("FromDate").style.display="block";
+         }
+         else if(name=="Total Open Ticket")
+         {
+          document.getElementById("FromDate").style.display="block";
+          self.setState({selectedDefaultTicketStatus:102});
+          document.getElementById("drpDefaultStatus").disabled=true;
+          document.getElementById("TicketStatus").style.display="block";
+         }
+         else if(name=="Total Closed Ticket")
+         {
+          document.getElementById("TicketClosedTo").style.display="block";
+          document.getElementById("TicketClosedFrom").style.display="block";
+          document.getElementById("FromDate").style.display="block";
+         }
+         else if(name=="Ticket Count By Associates")
+         {          
+          document.getElementById("FromDate").style.display="block";
+         // document.getElementById("TicketStatus").style.display="block";
+          document.getElementById("dvAssignedTo").style.display="block";
+          document.getElementById("dvMultiStatus").style.display="block";
+         }
+         else if(name=="Escalated Tickets")
+         {
+          document.getElementById("FromDate").style.display="block";
+          self.setState({selectedDefaultTicketStatus:1001});
+          document.getElementById("drpDefaultStatus").disabled=true;
+          document.getElementById("TicketStatus").style.display="block";
+         }       
+         else if(name=="Re-Assigned Tickets")
+         {
+          document.getElementById("FromDate").style.display="block";
+          document.getElementById("drpDefaultStatus").disabled=false;
+          self.setState({selectedDefaultTicketStatus:1004});
+          //document.getElementById("drpDefaultStatus").disabled=true;
+          document.getElementById("TicketStatus").style.display="block";
+         }
+         else if(name=="Re-Opened Tickets")
+         {
+          document.getElementById("FromDate").style.display="block";
+          self.setState({selectedDefaultTicketStatus:105});
+          document.getElementById("drpDefaultStatus").disabled=true;
+          document.getElementById("TicketStatus").style.display="block";
+         }
+        
+        }, 100);
+     
+    } else {
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadReportSearch",
@@ -1258,57 +1370,252 @@ class Reports extends Component {
         params: {
           SchedulerID: id
         }
-      }).then(function (res) {
+      }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, '_blank');
+        window.open(res.data.responseData, "_blank");
         // self.downloadURI(res.data.responseData,name+".csv");
       });
     }
-   
-  }
+  };
 
-  downloadDefaultReport = (id, name) => {
+  downloadDefaultReport = () => {
     debugger;
     let self = this;
-    let sourceIds="";
-    if(this.state.TicketCreatedFromDate=="")
+    let sourceIds = "";
+    let assignedIds="";
+    let multiStatusIds="";
+    var elts = document.getElementsByClassName('cls-spnerror');
+    for (var i = 0; i < elts.length; ++i) {
+        elts[i].textContent="";
+    }   
+    if(this.state.DefaultPopupName=="Total Ticket Created")
+    { 
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+          sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+         }   
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "1"
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+    }
+    else if(this.state.DefaultPopupName=="Total Open Ticket")
     {
-      NotificationManager.error("Please enter from date");
-      return;
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "2",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
     }
-    if(this.state.TicketCreatedEndDate=="")
+    else if(this.state.DefaultPopupName=="Total Closed Ticket")
     {
-      NotificationManager.error("Please enter end date");
-      return;
-    }
-    if(this.state.SelectedSourceIds=="")
-    {
-      NotificationManager.error("Please select ticket source");
-      return;
-    }
-    else{
-      for (var i = 0; i < this.state.SelectedSourceIds.length; i++) {
-        sourceIds+=this.state.SelectedSourceIds[i].ticketSourceId+",";
-    } 
-    }
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Report/DownloadDefaultReport",
-      headers: authHeader(),
-      data: {
-       
-        Ticket_CreatedFrom:moment(this.state.TicketCreatedFromDate).format("YYYY-MM-DD"),
-        Ticket_CreatedTo:moment(this.state.TicketCreatedEndDate).format("YYYY-MM-DD"),
-        Ticket_SourceIDs:sourceIds,
-        ReportTypeID:1
-      }
-    }).then(function (res) {
       debugger;
-      window.open(res.data.responseData, '_blank');
-      // self.downloadURI(res.data.responseData,name+".csv");
-    });
-   
-  }
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      var totalError=0;
+      if(this.state.TicketClosedFrom=="")
+      {
+        totalError+=1;
+        document.getElementById("spnTicketClosedFrom").textContent="Please enter from ticket close date"
+      }
+      if(this.state.TicketClosedTo=="")
+      {
+        totalError+=1;
+        document.getElementById("spnTicketClosedTo").textContent="Please enter from ticket close date"
+      }
+      if(totalError>0)
+      {
+        return false;
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CloseFrom:moment(this.state.TicketClosedFrom).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CloseTo:moment(this.state.TicketClosedTo).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "3",
+          
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Ticket Count By Associates")
+    {
+      debugger;
+      var totalError=0;
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds+=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+       for (var i = 0; i < this.state.SelectedDefaultTeamMember.length; ++i) {
+        assignedIds+=this.state.SelectedDefaultTeamMember[i].userID+",";
+       }  
+       for (var i = 0; i < this.state.SelectedTicketMultiStatus.length; ++i) {
+        multiStatusIds+=this.state.SelectedTicketMultiStatus[i].ticketStatusID+",";
+       }  
+      if(this.state.SelectedDefaultTeamMember=="")
+      {
+        totalError+=1;
+        document.getElementById("spnAssignedTo").textContent="Please select assigned to"
+      }
+      if(this.state.SelectedTicketMultiStatus=="")
+      {
+        totalError+=1;
+        document.getElementById("spnTicketStatus").textContent="Please select ticket status"
+      }
+      if(totalError>0)
+      {
+        return;
+      }
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_AssignIDs:assignedIds,
+          Ticket_StatusIDs:multiStatusIds,        
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "4"        
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Escalated Tickets")
+    {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "5",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      }); 
+    }
+    else if(this.state.DefaultPopupName=="Re-Assigned Tickets")
+    {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "6",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Re-Opened Tickets")
+    {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "7",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    
+    
+  };
 
   downloadURI = (uri, name) => {
     var link = document.createElement("a");
@@ -1318,7 +1625,7 @@ class Reports extends Component {
     link.click();
     document.body.removeChild(link);
     //delete link;
-  }
+  };
   handleDeleteReport(id) {
     debugger;
     let self = this;
@@ -1330,7 +1637,7 @@ class Reports extends Component {
       params: {
         ReportID: id
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -1346,7 +1653,7 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -1365,7 +1672,7 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CategoryData = res.data;
 
@@ -1394,7 +1701,7 @@ class Reports extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var SubCategoryData = res.data.responseData;
       self.setState({
@@ -1418,7 +1725,7 @@ class Reports extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
@@ -1447,95 +1754,89 @@ class Reports extends Component {
     //       ScheduleID: this.state.Schedule_ID
     //     }
     //   }).then(function (res) {
-    //     // this.handleReportList(); 
+    //     // this.handleReportList();
     //     self.handleReportList();
     //     self.handleNextPopupClose();
     //     NotificationManager.success("Report saved successfully for download.");
     //   });
     // }
     // else {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/Schedule",
-        headers: authHeader(),
-        data: {
-          PrimaryScheduleID: this.state.Schedule_ID,
-          ReportName: this.state.selectedReportName,
-          SearchInputParams: SearchParams,
-          ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
-          ScheduleType: this.state.selectScheduleDate,
-          NoOfDay: this.state.selectedNoOfDay,
-          ScheduleTime: this.state.selectedScheduleTime,
-          IsDaily: this.state.IsDaily,
-          IsWeekly: this.state.IsWeekly,
-          NoOfWeek: this.state.selectedNoOfWeek,
-          DayIds: this.state.selectedWeeklyDays,
-          IsDailyForMonth: this.state.IsDailyForMonth,
-          NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
-          NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
-          IsWeeklyForMonth: this.state.IsWeeklyForMonth,
-          NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
-          NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-          ScheduleFrom: 4,
-          NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
-          IsDailyForYear: this.state.IsDailyForYear,
-          NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-          NameOfMonthForDailyYear: this.state
-            .selectedNameOfMonthForYearCommaSeperated,
-          IsWeeklyForYear: this.state.IsWeeklyForYear,
-          NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
-          NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-          NameOfMonthForYear: this.state
-            .selectedNameOfMonthForDailyYearCommaSeperated
-        }
-      }).then(function (res) {
-        debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/Schedule",
+      headers: authHeader(),
+      data: {
+        PrimaryScheduleID: this.state.Schedule_ID,
+        ReportName: this.state.selectedReportName,
+        SearchInputParams: SearchParams,
+        ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+        ScheduleType: this.state.selectScheduleDate,
+        NoOfDay: this.state.selectedNoOfDay,
+        ScheduleTime: this.state.selectedScheduleTime,
+        IsDaily: this.state.IsDaily,
+        IsWeekly: this.state.IsWeekly,
+        NoOfWeek: this.state.selectedNoOfWeek,
+        DayIds: this.state.selectedWeeklyDays,
+        IsDailyForMonth: this.state.IsDailyForMonth,
+        NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+        NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+        IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+        NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+        NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+        ScheduleFrom: 4,
+        NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+        IsDailyForYear: this.state.IsDailyForYear,
+        NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+        NameOfMonthForDailyYear: this.state
+          .selectedNameOfMonthForYearCommaSeperated,
+        IsWeeklyForYear: this.state.IsWeeklyForYear,
+        NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+        NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+        NameOfMonthForYear: this.state
+          .selectedNameOfMonthForDailyYearCommaSeperated
+      }
+    }).then(function(res) {
+      debugger;
 
-        let status = res.data.message;
-        let scheduleId = res.data.responseData;
-        if (status === "Success") {
-          self.state.selectedTeamMember = "";
-          self.state.selectedTeamMemberCommaSeperated = undefined;
-          self.state.selectScheduleDate = "";
-          self.state.selectedScheduleTime = "";
+      let status = res.data.message;
+      let scheduleId = res.data.responseData;
+      if (status === "Success") {
+        self.state.selectedTeamMember = "";
+        self.state.selectedTeamMemberCommaSeperated = undefined;
+        self.state.selectScheduleDate = "";
+        self.state.selectedScheduleTime = "";
 
-          self.ScheduleCloseModel();
-          // this.handleReportList(); 
-          self.setState({ Schedule_ID: scheduleId });
-          self.setState({ AddReportPopup: false });
-          NotificationManager.success("Report saved successfully.");
-          self.setState({
-            ReportParams: {},
-            selectedScheduleTime: "",
-            // selectedTeamMemberCommaSeperated="",
-            // selectScheduleDate="",
-            // selectedScheduleTime="",
-            IsDaily: false,
-            IsDailyForMonth: false,
-            IsWeekly: false,
-            IsWeeklyForMonth: false,
-            IsDailyForYear: false,
-            IsWeeklyForYear: false
-          });
-        }
-        else if (status == "duplicate") {
-          self.setState({ Schedule_ID: 0 });
-          NotificationManager.error("Report name already exist.");
-        }
-      });
-  //  }
-
+        self.ScheduleCloseModel();
+        // this.handleReportList();
+        self.setState({ Schedule_ID: scheduleId });
+        self.setState({ AddReportPopup: false });
+        NotificationManager.success("Report saved successfully.");
+        self.setState({
+          ReportParams: {},
+          selectedScheduleTime: "",
+          // selectedTeamMemberCommaSeperated="",
+          // selectScheduleDate="",
+          // selectedScheduleTime="",
+          IsDaily: false,
+          IsDailyForMonth: false,
+          IsWeekly: false,
+          IsWeeklyForMonth: false,
+          IsDailyForYear: false,
+          IsWeeklyForYear: false
+        });
+      } else if (status == "duplicate") {
+        self.setState({ Schedule_ID: 0 });
+        NotificationManager.error("Report name already exist.");
+      }
+    });
+    //  }
 
     // else{
-    //   NotificationManager.error("Please create scheduler");      
+    //   NotificationManager.error("Please create scheduler");
     // }
-
-
   }
 
-
   handleInsertReport() {
-
     let self = this;
     var SearchParams = {};
 
@@ -1594,7 +1895,7 @@ class Reports extends Component {
           NameOfMonthForYear: this.state
             .selectedNameOfMonthForDailyYearCommaSeperated
         }
-      }).then(function (res) {
+      }).then(function(res) {
         debugger;
 
         let status = res.data.message;
@@ -1606,7 +1907,7 @@ class Reports extends Component {
           self.state.selectedScheduleTime = "";
 
           self.ScheduleCloseModel();
-          // this.handleReportList(); 
+          // this.handleReportList();
           self.setState({ Schedule_ID: scheduleId });
           self.setState({ AddReportPopup: false });
           NotificationManager.success("Scheduler created successfully.");
@@ -1623,17 +1924,14 @@ class Reports extends Component {
             IsDailyForYear: false,
             IsWeeklyForYear: false
           });
-        }
-        else if (status == "duplicate") {
+        } else if (status == "duplicate") {
           self.setState({ Schedule_ID: 0 });
           NotificationManager.error("Report name already exist.");
         }
       });
-    }
-    else {
+    } else {
       NotificationManager.error("Please add report for create scheduler.");
     }
-
   }
 
   render() {
@@ -1665,14 +1963,12 @@ class Reports extends Component {
             </div>
           </div>
 
-          
-          
           <Modal
             open={this.state.AddReportPopup}
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addreport-popup"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
@@ -1811,7 +2107,7 @@ class Reports extends Component {
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportCreateDate}
 
-                        // className="form-control"
+                          // className="form-control"
                         />
                         {this.state.ReportCreateDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -1879,7 +2175,7 @@ class Reports extends Component {
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportLastDate}
-                        // className="form-control"
+                          // className="form-control"
                         />
                         {this.state.ReportLastDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -2045,8 +2341,7 @@ class Reports extends Component {
                             <option key={i} value={item.slaDueID}>
                               {item.slaDueName}
                             </option>
-                            )
-                          )}
+                          ))}
                       </select>
                     </div>
                     <div className="col-md-3 ticketreport">
@@ -2346,18 +2641,12 @@ class Reports extends Component {
                             onChange={this.setOnChangeReportData}
                           >
                             <option>Task Function</option>
-                            {this.state.FunctionData !==
-                              null &&
-                              this.state.FunctionData.map(
-                                (item, i) => (
-                                  <option
-                                    key={i}
-                                    value={item.functionID}
-                                  >
-                                    {item.funcationName}
-                                  </option>
-                                )
-                              )}
+                            {this.state.FunctionData !== null &&
+                              this.state.FunctionData.map((item, i) => (
+                                <option key={i} value={item.functionID}>
+                                  {item.funcationName}
+                                </option>
+                              ))}
                           </select>
                         </>
                       ) : null}
@@ -2414,7 +2703,7 @@ class Reports extends Component {
                           placeholderText="Chat Date"
                           showMonthDropdown
                           showYearDropdown
-                        // className="form-control"
+                          // className="form-control"
                         />
                         {/* <input className="no-bg" type="text" /> */}
                       </div>
@@ -2464,7 +2753,7 @@ class Reports extends Component {
               </div>
             </div>
           </Modal>
-         
+
           <Modal
             open={this.state.OpenDefaultModal}
             onClose={this.handleDefaultPopupClose}
@@ -2474,88 +2763,191 @@ class Reports extends Component {
               modal: "schedule-width"
             }}
             overlayId="logout-ovrly"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
-    <div id="TotalTicketCreated">
-          <div className="total-tic-title">
-          <label>
-          <b>Total Ticket Created</b>
-          </label>
-          </div>
-          <div className="ticketreport down-tic-rep">
-           Ticket From Date 
-           <div className="ticketreportdat mt-2">
-           <DatePicker
-              selected={this.state.TicketCreatedFromDate}
-              onChange={this.handleTicketCreateDate.bind(this)}
-              placeholderText="Creation Date"
-              showMonthDropdown
-              showYearDropdown
-              dateFormat="dd/MM/yyyy"
-              value={this.state.TicketCreatedFromDate}
-            />
-                     
-           </div>
-          
-          </div>
-          <div className="ticketreport down-tic-rep">
-           Ticket To Date 
-           <div className="ticketreportdat mt-2">
-           <DatePicker
-                          selected={this.state.TicketCreatedEndDate}
-                          onChange={this.handleTicketCreateToDate.bind(this)}
-                          placeholderText="To Date"
-                          showMonthDropdown
-                          showYearDropdown
-                          dateFormat="dd/MM/yyyy"
-                          value={this.state.TicketCreatedEndDate}
-
-                        // className="form-control"
-                       />
-           </div>
-          
-          </div>
-          <div>
-           Ticket Source
-           <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
+            
+            <div className="" id="TotalTicketCreated">
+              <div className="total-tic-title">
+                <label>
+                  <b>{this.state.DefaultPopupName}</b>
+                </label>
+              </div>
+              <div>
+             
+              <div id="dvAssignedTo" className="cls-hide">
+                  Assigned To
+                <div className="normal-dropdown dropdown-setting1 schedule-multi">
                           <Select
-                            getOptionLabel={option => option.ticketSourceName}
+                            getOptionLabel={option => option.fullName}
                             getOptionValue={
-                              option => option.ticketSourceId //id
+                              option => option.userID //id
                             }
-                            options={this.state.TicketSourceData}
-                            placeholder="Ticket Source"
+                            options={this.state.AssignToData}
+                            placeholder="Team Member"
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
-                            onChange={this.setCreatedTicketSource.bind(this)}
-                            value={this.state.SelectedSourceIds}
+                            onChange={this.setDefaultTeamMember.bind(this)}
+                            value={this.state.SelectedDefaultTeamMember}
                             // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
-          </div>
-          </div>
-          <div>
-                          <button
-                            className="scheduleBtn"
-                            onClick={this.downloadDefaultReport.bind(this)}
-                          >
-                            <label className="addLable">Download</label>
-                          </button>
+                        <span id="spnAssignedTo" className="cls-spnerror" style={{color:"red"}}></span>
+                </div>
+                <div id="dvMultiStatus" className="cls-hide">
+                  Ticket Status
+                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={option => option.ticketStatusName}
+                            getOptionValue={
+                              option => option.ticketStatusID //id
+                            }
+                            options={this.state.TicketStatusData}
+                            placeholder="Ticket Status"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setDefaultMutiStatus.bind(this)}
+                            value={this.state.SelectedTicketMultiStatus}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
                         </div>
-                        <div onClick={this.handleDefaultPopupClose}>
-                          <button type="button" className="scheduleBtncancel mt-3 w-100">
-                            CANCEL
-                          </button>
-                        </div>
-        </Modal>
+                        <span id="spnTicketStatus" className="cls-spnerror" style={{color:"red"}}></span>
+                </div>
+              
+            </div>
+              <div id="TicketClosedFrom" className="cls-hide ticketreport down-tic-rep">
+                Ticket Closed From
+                <div className="ticketreportdat mt-2">
+                  <DatePicker
+                    selected={this.state.TicketClosedFrom}
+                    onChange={this.handleTicketClosedFrom.bind(this)}
+                    placeholderText="Ticket Closed From"
+                    showMonthDropdown
+                    showYearDropdown
+                    dateFormat="dd/MM/yyyy"
+                    value={this.state.TicketClosedFrom}
+                  />
+                </div>
+                <span id="spnTicketClosedFrom" className="cls-spnerror" style={{color:"red"}}></span>
+              </div>
+              <div id="TicketClosedTo" className="cls-hide ticketreport down-tic-rep">
+                Ticket Closed To
+                <div className="ticketreportdat mt-2">
+                  <DatePicker
+                    selected={this.state.TicketClosedTo}
+                    onChange={this.handleTicketClosedTo.bind(this)}
+                    placeholderText="Ticket Closed To"
+                    showMonthDropdown
+                    showYearDropdown
+                    dateFormat="dd/MM/yyyy"
+                    value={this.state.TicketClosedTo}
+                  />
+                </div>
+                <span id="spnTicketClosedTo" className="cls-spnerror" style={{color:"red"}}></span>
+              </div>
+              <div id="FromDate" className="cls-hide ticketreport down-tic-rep">
+                Ticket From Date
+                <div className="ticketreportdat mt-2">
+                  <DatePicker
+                    selected={this.state.TicketCreatedFromDate}
+                    onChange={this.handleTicketCreateDate.bind(this)}
+                    placeholderText="Creation Date"
+                    showMonthDropdown
+                    showYearDropdown
+                    dateFormat="dd/MM/yyyy"
+                    value={this.state.TicketCreatedFromDate}
+                  />
+                  
+                </div>
+                <span id="spnTicketFromDate" className="cls-spnerror" style={{color:"red"}}></span>
+              </div>
+              <div className="ticketreport down-tic-rep">
+                Ticket To Date
+                <div className="ticketreportdat mt-2">
+                  <DatePicker
+                    selected={this.state.TicketCreatedEndDate}
+                    onChange={this.handleTicketCreateToDate.bind(this)}
+                    placeholderText="To Date"
+                    showMonthDropdown
+                    showYearDropdown
+                    dateFormat="dd/MM/yyyy"
+                    value={this.state.TicketCreatedEndDate}
+
+                    // className="form-control"
+                  />
+                </div>
+                <span id="spnTicketToDate" className="cls-spnerror" style={{color:"red"}}></span>
+              </div>
+              <div>
+                Ticket Source
+                <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
+                  <Select
+                    getOptionLabel={option => option.ticketSourceName}
+                    getOptionValue={
+                      option => option.ticketSourceId //id
+                    }
+                    options={this.state.TicketSourceData}
+                    placeholder="Ticket Source"
+                    // menuIsOpen={true}
+                    closeMenuOnSelect={false}
+                    onChange={this.setCreatedTicketSource.bind(this)}
+                    value={this.state.SelectedSourceIds}
+                    // showNewOptionAtTop={false}
+                    isMulti
+                  />
+                </div>
+                <span id="spnTicketSource" className="cls-spnerror" style={{color:"red"}}></span>
+              </div>
+              <div id="TicketStatus" className="cls-hide">
+                      Status
+                      <div className="mt-2">
+                      <select id="drpDefaultStatus" style={{width:"120px"}} className="normal-dropdown dropdown-setting1"
+                        name="selectedDefaultTicketStatus"
+                        value={this.state.selectedDefaultTicketStatus}
+                        onChange={this.setDefaultTicketStatus}
+                      >
+                        <option> Status</option>
+                        {this.state.TicketStatusData !== null &&
+                          this.state.TicketStatusData.map((item, i) => (
+                            <option key={i} value={item.ticketStatusID}>
+                              {item.ticketStatusName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedDefaultTicketStatus === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.TicketStatusCompulsion}
+                        </p>
+                      )}
+                      </div>
+                      <span id="spnStatus" className="cls-spnerror" style={{color:"red"}}></span>
+                    </div>
+
+            </div>
+          
+
+            <div>
+              <button
+                className="scheduleBtn"
+                onClick={this.downloadDefaultReport.bind(this)}
+              >
+                <label className="addLable">Download</label>
+              </button>
+            </div>
+            <div onClick={this.handleDefaultPopupClose}>
+              <button type="button" className="scheduleBtncancel mt-3 w-100">
+                CANCEL
+              </button>
+            </div>
+          </Modal>
 
           <Modal
             open={this.state.NextPopup}
             onClose={this.handleNextPopupClose}
             closeIconId="sdsg"
             modalId="nextbuttonpopup"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
@@ -2571,7 +2963,9 @@ class Reports extends Component {
                 <div className="col-md-6">
                   <div className="totalresultcircle">
                     <label className="totalresult">Total Result</label>
-                    <span className="totalresultnumber">{this.state.totalResultCount}</span>
+                    <span className="totalresultnumber">
+                      {this.state.totalResultCount}
+                    </span>
                   </div>
                 </div>
                 <div className="col-md-6 rname">
@@ -2628,27 +3022,18 @@ class Reports extends Component {
                         <select
                           id="inputState"
                           className="form-control dropdown-setting1 ScheduleDate-to"
-                          value={
-                            this.state.selectScheduleDate
-                          }
-                          onChange={
-                            this.handleScheduleDateChange
-                          }
+                          value={this.state.selectScheduleDate}
+                          onChange={this.handleScheduleDateChange}
                         >
-                          {this.state.ScheduleOption !==
-                            null &&
-                            this.state.ScheduleOption.map(
-                              (item, i) => (
-                                <option
-                                  key={i}
-                                  value={item.scheduleID}
-                                >
-                                  {item.scheduleName}
-                                </option>
-                              )
-                            )}
+                          {this.state.ScheduleOption !== null &&
+                            this.state.ScheduleOption.map((item, i) => (
+                              <option key={i} value={item.scheduleID}>
+                                {item.scheduleName}
+                              </option>
+                            ))}
                         </select>
-                        {(this.state.selectScheduleDate === "230" || this.state.selectScheduleDate === 230) ? (
+                        {this.state.selectScheduleDate === "230" ||
+                        this.state.selectScheduleDate === 230 ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Every</label>
@@ -2664,7 +3049,8 @@ class Reports extends Component {
                             </span>
                           </div>
                         ) : null}
-                        {(this.state.selectScheduleDate === "231" || this.state.selectScheduleDate === 231) ? (
+                        {this.state.selectScheduleDate === "231" ||
+                        this.state.selectScheduleDate === 231 ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Every</label>
@@ -2729,7 +3115,8 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
-                        {(this.state.selectScheduleDate === "232" || this.state.selectScheduleDate === 232) ? (
+                        {this.state.selectScheduleDate === "232" ||
+                        this.state.selectScheduleDate === 232 ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Day</label>
@@ -2752,7 +3139,8 @@ class Reports extends Component {
                             </span>
                           </div>
                         ) : null}
-                        {(this.state.selectScheduleDate === "233" || this.state.selectScheduleDate === 233) ? (
+                        {this.state.selectScheduleDate === "233" ||
+                        this.state.selectScheduleDate === 233 ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Every</label>
@@ -2801,7 +3189,8 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
-                        {(this.state.selectScheduleDate === "234" || this.state.selectScheduleDate === 234) ? (
+                        {this.state.selectScheduleDate === "234" ||
+                        this.state.selectScheduleDate === 234 ? (
                           <div className="ScheduleDate-to">
                             <div className="row m-0">
                               <label
@@ -2844,7 +3233,8 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
-                        {(this.state.selectScheduleDate === "235" || this.state.selectScheduleDate === 235) ? (
+                        {this.state.selectScheduleDate === "235" ||
+                        this.state.selectScheduleDate === 235 ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <div className="row m-0">
@@ -2964,7 +3354,9 @@ class Reports extends Component {
                     </div>
                   </Modal>
                   <div className="buttonschdulesave1">
-                    <button onClick={this.handleSave} className="Schedulenext1">SAVE</button>
+                    <button onClick={this.handleSave} className="Schedulenext1">
+                      SAVE
+                    </button>
                   </div>
                 </div>
               </div>
@@ -2978,113 +3370,120 @@ class Reports extends Component {
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
               ) : (
-                  <ReactTable
-                    data={datareport}
-                    columns={[
-                      {
-                        Header: (
-                          <span>
-                            Name
-                        <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "reportName"
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Schedule Status
-                        <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "scheduleStatus"
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Created by
-                        <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "createdBy",
-                        Cell: row => {
-                          var ids = row.original["reportID"];
-                          return (
-                            <div>
-                              <span>
-                                Admin
-                            <Popover
-                                  content={
-                                    <>
-                                      <div>
-                                        <b>
-                                          <p className="title">
-                                            Created By: {row.original.createdBy}
-                                          </p>
-                                        </b>
-                                        <p className="sub-title">
-                                          Created Date: {row.original.createdDate}
+                <ReactTable
+                  data={datareport}
+                  columns={[
+                    {
+                      Header: (
+                        <span>
+                          Name
+                          <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "reportName"
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Schedule Status
+                          <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "scheduleStatus"
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Created by
+                          <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "createdBy",
+                      Cell: row => {
+                        var ids = row.original["reportID"];
+                        return (
+                          <div>
+                            <span>
+                              Admin
+                              <Popover
+                                content={
+                                  <>
+                                    <div>
+                                      <b>
+                                        <p className="title">
+                                          Created By: {row.original.createdBy}
                                         </p>
-                                      </div>
-                                      <div>
-                                        <b>
-                                          <p className="title">
-                                            Updated By: {row.original.modifiedBy}
-                                          </p>
-                                        </b>
-                                        <p className="sub-title">
-                                          Updated Date: {row.original.modifiedDate}
+                                      </b>
+                                      <p className="sub-title">
+                                        Created Date: {row.original.createdDate}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <b>
+                                        <p className="title">
+                                          Updated By: {row.original.modifiedBy}
                                         </p>
-                                      </div>
-                                    </>
-                                  }
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon-cp"
-                                    src={BlackInfoIcon}
-                                    alt="info-icon"
-                                    id={ids}
-                                  />
-                                </Popover>
-                              </span>
-                            </div>
-                          );
-                        }
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Status
-                        <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "reportStatus"
-                      },
-                      {
-                        Header: <span>Actions</span>,
-                        accessor: "actionReport",
-                        Cell: row => (
-                          <div className="report-action">
-                            <div>
-                              {row.original.isDownloaded == 1 ?
+                                      </b>
+                                      <p className="sub-title">
+                                        Updated Date:{" "}
+                                        {row.original.modifiedDate}
+                                      </p>
+                                    </div>
+                                  </>
+                                }
+                                placement="bottom"
+                              >
                                 <img
-                                  src={DownExcel}
-                                  alt="download icon"
-                                  className="downloadaction"
-                                  onClick={this.handleDownload.bind(
-                                    this,
-                                    row.original.scheduleID, row.original.reportName
-                                  )}
-                                /> : <img style={{ display: "none" }}
-                                  src={DownExcel}
-                                  alt="download icon"
-                                  className="downloadaction"
+                                  className="info-icon-cp"
+                                  src={BlackInfoIcon}
+                                  alt="info-icon"
+                                  id={ids}
                                 />
-                              }
-                              </div>
-                              <div>
-                              {row.original.scheduleID==0?"":
+                              </Popover>
+                            </span>
+                          </div>
+                        );
+                      }
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Status
+                          <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "reportStatus"
+                    },
+                    {
+                      Header: <span>Actions</span>,
+                      accessor: "actionReport",
+                      Cell: row => (
+                        <div className="report-action">
+                          <div>
+                            {row.original.isDownloaded == 1 ? (
+                              <img
+                                src={DownExcel}
+                                alt="download icon"
+                                className="downloadaction"
+                                onClick={this.handleDownload.bind(
+                                  this,
+                                  row.original.scheduleID,
+                                  row.original.reportName
+                                )}
+                              />
+                            ) : (
+                              <img
+                                style={{ display: "none" }}
+                                src={DownExcel}
+                                alt="download icon"
+                                className="downloadaction"
+                              />
+                            )}
+                          </div>
+                          <div>
+                            {row.original.scheduleID == 0 ? (
+                              ""
+                            ) : (
                               <Popover
                                 content={
                                   <div className="samdel d-flex general-popover popover-body">
@@ -3092,10 +3491,13 @@ class Reports extends Component {
                                       <img src={DelBigIcon} alt="del-icon" />
                                     </div>
                                     <div>
-                                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                                      <p className="font-weight-bold blak-clr">
+                                        Delete file?
+                                      </p>
                                       <p className="mt-1 fs-12">
-                                        Are you sure you want to delete this file?
-                                </p>
+                                        Are you sure you want to delete this
+                                        file?
+                                      </p>
                                       <div className="del-can">
                                         <a>CANCEL</a>
                                         <button
@@ -3106,7 +3508,7 @@ class Reports extends Component {
                                           )}
                                         >
                                           Delete
-                                  </button>
+                                        </button>
                                       </div>
                                     </div>
                                   </div>
@@ -3118,32 +3520,37 @@ class Reports extends Component {
                                   src={RedDeleteIcon}
                                   alt="del-icon"
                                   className="del-btn"
-                                // onClick={() => this.show(this, "samdel" + ids)}
+                                  // onClick={() => this.show(this, "samdel" + ids)}
                                 />
                               </Popover>
-                              }
-                              </div>
-                              <div>
-                              {row.original.scheduleID==0?"":
+                            )}
+                          </div>
+                          <div>
+                            {row.original.scheduleID == 0 ? (
+                              ""
+                            ) : (
                               <button
                                 className="react-tabel-button editre"
                                 id="p-edit-pop-2"
-                                onClick={this.handleEditReport.bind(this, row.original)}
+                                onClick={this.handleEditReport.bind(
+                                  this,
+                                  row.original
+                                )}
                               >
                                 EDIT
-                        
                               </button>
-                              }
-                              </div>
+                            )}
                           </div>
-                        )
-                      }
-                    ]}
-                    // resizable={false}
-                    defaultPageSize={10}
-                    showPagination={true}
-                    minRows={1}
-                  />)}
+                        </div>
+                      )
+                    }
+                  ]}
+                  // resizable={false}
+                  defaultPageSize={10}
+                  showPagination={true}
+                  minRows={1}
+                />
+              )}
               {/* <div className="position-relative">
                 <div className="pagi">
                   <ul>
