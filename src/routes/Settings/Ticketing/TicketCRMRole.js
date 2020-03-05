@@ -49,6 +49,8 @@ const Content = props => {
   const [status, setStatusValue] = useState(rowData.isRoleActive);
   const [crmRoleID] = useState(rowData.crmRoleID);
 
+ 
+
   props.callBackEdit(roleName,modules, status, rowData);
   return (
     <div>
@@ -72,14 +74,15 @@ const Content = props => {
                         <div className="module-switch crm-margin-div crm-padding-div" key={i}>
                           <div className="switch switch-primary d-inline m-r-10">
                             <label className="storeRole-name-text">{item.moduleName}</label>
-                            <input type="checkbox" id={'i' + item.moduleID}
+                            <input type="checkbox" id={'k' + item.moduleID}
                               name="allModules"
                               attrIds={item.moduleID}
                               checked={item.modulestatus}
-                              onChange={props.updateCheckModule.bind(props, item.moduleID)}
+                              onClick={(e) => { props.updateCheckModule(e,  item.moduleID) }}
+                              //onChange={props.updateCheckModule.bind(e, item.moduleID) }
                             />
                             <label
-                              htmlFor={'i' + item.moduleID}
+                              htmlFor={'k' + item.moduleID}
                               className="cr cr-float-auto"
                             ></label>
                            
@@ -203,7 +206,7 @@ class TicketCRMRole extends Component {
       modulesList, ModulesEnabled, ModulesDisabled
     });
   }
-  updateCheckModule = async (moduleId) => {
+  updateCheckModule = async (e,moduleId) => {
     debugger;
     let updateModulesList = [... this.state.updateModulesList], isActive, updateModulesEnabled = '', updateModulesDisabled = '';
     for (let i = 0; i < updateModulesList.length; i++) {
@@ -273,16 +276,16 @@ class TicketCRMRole extends Component {
       } else if (addUpdate === 'update') {
         CRMRoleID = crmRoleId
         RoleName = self.state.RoleName
-        for (let j = 0; j < self.state.rowData.modules.length; j++) {
-          if (self.state.rowData.modules[j].modulestatus) {
-            ModulesEnabled += self.state.rowData.modules[j].moduleID + ","
-          }
-          else {
-            ModulesDisabled += self.state.rowData.modules[j].moduleID + ","
-          }
-        }
-        ModulesEnabled = ModulesEnabled.substring(0, ModulesEnabled.length - 1);
-        ModulesDisabled = ModulesDisabled.substring(0, ModulesDisabled.length - 1);
+        // for (let j = 0; j < self.state.rowData.modules.length; j++) {
+        //   if (self.state.rowData.modules[j].modulestatus) {
+        //     ModulesEnabled += self.state.rowData.modules[j].moduleID + ","
+        //   }
+        //   else {
+        //     ModulesDisabled += self.state.rowData.modules[j].moduleID + ","
+        //   }
+        // }
+         ModulesEnabled =  self.state.updateModulesEnabled.substring(0,  self.state.updateModulesEnabled.length - 1);
+         ModulesDisabled = self.state.updateModulesDisabled.substring(0, self.state.updateModulesDisabled.length - 1);
       }
       axios({
         method: "post",
@@ -292,7 +295,7 @@ class TicketCRMRole extends Component {
           CRMRoleID: CRMRoleID,
           RoleName: RoleName,
           RoleisActive: RoleisActive,
-          ModulesEnabled: ModulesEnabled,
+          ModulesEnabled:ModulesEnabled,
           ModulesDisabled: ModulesDisabled
         }
       }).then((res) => {
@@ -516,6 +519,9 @@ class TicketCRMRole extends Component {
                   content={<Content rowData={row.original} callBackEdit={this.callBackEdit}
                   modulesList={this.state.modulesList}
                   updateCheckModule={this.updateCheckModule.bind(this)}
+                  // updateModulesList={this.state.updateModulesList}
+                  // updateModulesEnabled={this.state.updateModulesEnabled}
+                  // updateModulesDisabled={this.state.updateModulesDisabled}
                   createUpdateCrmRole={this.createUpdateCrmRole.bind(this)} />}
                   placement="bottom"
                   trigger="click"
