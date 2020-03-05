@@ -4618,7 +4618,7 @@ class MyTicket extends Component {
                       </CardBody>
                       <div className="row colladrowa">
                         <div className="col-md-12 colladrow">
-                          <ul>
+                          <ul className="ck-edit-mar">
                             <li>
                               <label>
                                 To: &nbsp;{ticketDetailsData.customerEmailId}
