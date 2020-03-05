@@ -435,7 +435,8 @@ class CategoryMaster extends Component {
       let status = res.data.message;
       if (status === "Success") {
         self.handleGetCategoryGridData();
-        NotificationManager.success("Category deleted successfully.");
+        NotificationManager.success("Category deleted successfully.","",
+        2000);
       }
     });
   }
@@ -457,7 +458,8 @@ class CategoryMaster extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("Category added successfully.");
+        NotificationManager.success("Category added successfully.","",
+        2000);
         self.setState({
           category_Id: data
           // inputValue: "",
@@ -491,7 +493,8 @@ class CategoryMaster extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("SubCategory added successfully.");
+        NotificationManager.success("SubCategory added successfully.","",
+        2000);
         self.setState({
           subCategory_Id: data
         });
@@ -524,7 +527,8 @@ class CategoryMaster extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("Issue Type added successfully.");
+        NotificationManager.success("Issue Type added successfully.","",
+        2000);
         self.setState({
           issueType_Id: data
         });
@@ -589,7 +593,8 @@ class CategoryMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetCategoryGridData();
-          NotificationManager.success("Category added successfully.");
+          NotificationManager.success("Category added successfully.","",
+          2000);
           self.setState({
             selectBrand: 0,
             list1Value: "",

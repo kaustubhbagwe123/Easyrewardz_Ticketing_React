@@ -210,7 +210,8 @@ class MyTicket extends Component {
       FileAttachment: [],
       hasDataFile: [],
       ticketSourceId: 2,
-      ReplySourceId: 2
+      ReplySourceId: 2,
+      FinalAttachmentData: []
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -1024,11 +1025,12 @@ class MyTicket extends Component {
     this.setState({ Plus: false });
   }
   handleHasAttachmetModalOpen(msgID) {
-    // var filedata=this.state.FileAttachment.filter(x=>x.mailID ===  )
-    // for (let i = 0; i < this.state.FileAttachment.length; i++) {
+    debugger;
+    var filedata = this.state.FileAttachment.filter(x => x.id === msgID);
+    // for (let i = 0; i < filedata.length; i++) {
 
     // }
-    this.setState({ hasAttachmentModal: true });
+    this.setState({ hasAttachmentModal: true, FinalAttachmentData: filedata });
   }
   handleHasAttachmetModalClose() {
     this.setState({ hasAttachmentModal: false });
@@ -4903,8 +4905,8 @@ class MyTicket extends Component {
                       />
                     </div>
                     <div className="row my-3 mx-1">
-                      {this.state.FileAttachment !== null &&
-                        this.state.FileAttachment.map((item, k) => {
+                      {this.state.FinalAttachmentData !== null &&
+                        this.state.FinalAttachmentData.map((item, k) => {
                           // debugger
                           return (
                             <div style={{ position: "relative" }} key={k}>
