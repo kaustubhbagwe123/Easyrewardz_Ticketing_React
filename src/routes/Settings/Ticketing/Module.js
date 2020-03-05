@@ -32,7 +32,9 @@ class Module extends Component {
       activeID: [],
       inactiveID: [],
       moduleIDMyticket: 0,
-      modulesItemsMyticket: []
+      modulesItemsMyticket: [],
+      selTab: '',
+      loading: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleGetModulesNames = this.handleGetModulesNames.bind(this);
@@ -179,10 +181,11 @@ class Module extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       let moduleID = data[0].moduleID;
+      let selTab = data[0].moduleName;
       let moduleIDMyticket = data[1].moduleID;
 
       if (status === "Success") {
-        self.setState({ modulesNames: data, moduleID, moduleIDMyticket });
+        self.setState({ modulesNames: data, moduleID, moduleIDMyticket, selTab });
       } else {
         self.setState({ modulesNames: [] });
       }
@@ -193,6 +196,7 @@ class Module extends Component {
   handleGetModulesItems() {
     debugger;
     let self = this;
+    self.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModulesItems",
@@ -206,9 +210,9 @@ class Module extends Component {
       let data = res.data.responseData;
 
       if (status === "Success") {
-        self.setState({ modulesItems: data });
+        self.setState({ modulesItems: data, loading: false });
       } else {
-        self.setState({ modulesItems: [] });
+        self.setState({ modulesItems: [], loading: false });
       }
     });
   }
@@ -234,6 +238,16 @@ class Module extends Component {
       }
     });
   }
+  
+  onModulesChange = async (moduleName) => {
+    debugger;
+    let selectedArray = this.state.modulesNames.filter(x => x.moduleName === moduleName);
+    await this.setState({
+      moduleID: selectedArray[0].moduleID,
+      selTab: moduleName
+    });
+    this.handleGetModulesItems();
+  }
 
   render() {
     return (
@@ -258,7 +272,9 @@ class Module extends Component {
             <section>
               {this.state.modulesNames.length > 0 && (
                 <Tabs
-                  onSelect={(index, label) => console.log(label + " selected")}
+                  onSelect={(index, label) => this.onModulesChange(label)}
+                  selected={this.state.selTab}
+                  // onSelect={(index, label) => console.log(label + " selected")}
                 >
                   {this.state.modulesNames !== null &&
                     this.state.modulesNames.map((name, i) => (
@@ -272,8 +288,10 @@ class Module extends Component {
                           </label>
                         </div>
 
-                        {this.state.modulesItems !== null &&
-                          name.moduleID === 8 &&
+                        {this.state.loading ? <div className="loader-icon-cntr">
+                  <div className="loader-icon"></div>
+                </div> : this.state.modulesItems !== null &&
+                          // name.moduleID === 8 &&
                           this.state.modulesItems.map((item, i) => (
                             <div className="module-switch" key={i}>
                               <div className="switch switch-primary">
@@ -299,7 +317,7 @@ class Module extends Component {
                             </div>
                           ))}
 
-                        {this.state.modulesItemsMyticket !== null &&
+                        {/* {this.state.modulesItemsMyticket !== null &&
                           name.moduleID === 9 &&
                           this.state.modulesItemsMyticket.map((item, i) => (
                             <div className="module-switch" key={i}>
@@ -324,7 +342,7 @@ class Module extends Component {
                                 ></label>
                               </div>
                             </div>
-                          ))}
+                          ))} */}
                       </Tab>
                     ))}
                 </Tabs>
