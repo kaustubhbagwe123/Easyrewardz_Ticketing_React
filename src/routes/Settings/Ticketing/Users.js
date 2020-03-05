@@ -124,7 +124,8 @@ class Users extends Component {
       profileReadOnly:false,
       StatusModel:false,
       sortAllData:"",
-      sortDesignation:[]
+      sortDesignation:[],
+      selTab: 'Personal Details'
 
 
     };
@@ -228,7 +229,7 @@ class Users extends Component {
 
   }
   closeEditModal() {
-    this.setState({ editmodel: false });
+    this.setState({ editmodel: false, selTab: 'Personal Details' });
   }
 
   togglePopover() {
@@ -1617,7 +1618,7 @@ if(datar==="add"){
           modalId="UsEdit-popup"
         >
         <div>
-          <Tabs>
+          <Tabs onSelect={(index, label) => this.setState({selTab: label})} selected={this.state.selTab}>
             <Tab label="Personal Details">
                 <div>
                   <h4 style={{textAlign:"center"}}>Personal Details</h4>
