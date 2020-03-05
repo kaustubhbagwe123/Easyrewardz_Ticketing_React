@@ -65,7 +65,7 @@ class MyTicketTask extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    //debugger;
     if (this.props.taskData.TicketData.TicketId !== 0) {
       var Id = this.props.taskData.TicketData.TicketId;
       /// var GridData=this.props.taskData.TicketData.GridData;
@@ -96,7 +96,7 @@ class MyTicketTask extends Component {
     this.setState({ TaskDetailDrawer: false });
   }
   HandleRowClickDraw = (rowInfo, column) => {
-    debugger
+    //debugger
     return {
       onClick: e => {
         var taskId = column.original["ticketingTaskID"];
@@ -115,7 +115,7 @@ class MyTicketTask extends Component {
     });
   };
   handleGetTaskTableGrid(Id) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -125,7 +125,7 @@ class MyTicketTask extends Component {
         TicketId: Id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -136,7 +136,7 @@ class MyTicketTask extends Component {
     });
   }
   handleGetTaskTabDetails(ticketTaskId) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -146,7 +146,7 @@ class MyTicketTask extends Component {
         taskId: ticketTaskId
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -157,7 +157,7 @@ class MyTicketTask extends Component {
     });
   }
   handleGetTaskCommentsdetails(ticketTaskId) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -167,7 +167,7 @@ class MyTicketTask extends Component {
         TaskId: ticketTaskId
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -178,14 +178,14 @@ class MyTicketTask extends Component {
     });
   }
   handleGetDepartmentList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -196,7 +196,7 @@ class MyTicketTask extends Component {
     });
   }
   handleGetFunctionList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -206,7 +206,7 @@ class MyTicketTask extends Component {
         DepartmentId: this.state.selectedDepartment
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
     });
@@ -221,20 +221,20 @@ class MyTicketTask extends Component {
         Function_ID: this.state.selectedFunction
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let AssignToData = res.data.responseData;
       self.setState({ AssignToData: AssignToData });
     });
   }
   handleGetTicketPriorityList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -271,7 +271,7 @@ class MyTicketTask extends Component {
     this.setState({ selectedPriority: PriorityValue });
   };
   handleAddTaskTitle() {
-    debugger;
+    //debugger;
     if (
       this.state.taskTitle.length > 0 &&
       this.state.taskDescription.length > 0 &&
@@ -297,7 +297,7 @@ class MyTicketTask extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          //debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Task created successfully.", "", 1500);
@@ -338,7 +338,7 @@ class MyTicketTask extends Component {
    
   }
   handleTaskAddComments() {
-    debugger;
+    //debugger;
     if(
       this.state.taskAddComment.length > 0
     ){
@@ -354,7 +354,7 @@ class MyTicketTask extends Component {
         Id: this.state.ticketTask_Id
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       if (status === "Success") {
         NotificationManager.success("Comment added successfully.", "", 2000);
