@@ -100,6 +100,7 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       InformStore: false,
+      ReplyInformStore:false,
       collapseUp: false,
       profilemodal: false,
       storemodal: false,
@@ -1038,6 +1039,11 @@ class MyTicket extends Component {
       InformStore: !this.state.InformStore
     });
   };
+  showInformStoreReply = () => {
+    this.setState({
+      ReplyInformStore: !this.state.ReplyInformStore
+    });
+  };
   handleGetTabsName(e) {
     let self = this;
     let CurrentActive = e.target.name;
@@ -1524,17 +1530,18 @@ class MyTicket extends Component {
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
     var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
-    if (this.state.InformStore === true) {
-      var selectedStore = "";
-
-      for (let i = 0; i < this.state.selectedStoreData.length; i++) {
-        selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
-      }
-    } else {
-      var selectedStore = "";
-    }
+    
 
     if (isSend === 1) {
+      if (this.state.InformStore === true) {
+        var selectedStore = "";
+  
+        for (let i = 0; i < this.state.selectedStoreData.length; i++) {
+          selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
+        }
+      } else {
+        var selectedStore = "";
+      }
       const formData = new FormData();
       var paramData = {
         TicketID: this.state.ticket_Id,
@@ -1579,6 +1586,15 @@ class MyTicket extends Component {
       });
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
+      if (this.state.ReplyInformStore === true) {
+        var store_Id = "";
+  
+        for (let i = 0; i < this.state.selectedStoreData.length; i++) {
+          store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
+        }
+      } else {
+        var store_Id = "";
+      }
       const formData = new FormData();
       var paramData = {
         TicketID: this.state.ticket_Id,
@@ -1587,12 +1603,12 @@ class MyTicket extends Component {
         UserBCC: this.state.mailFiled.userBCC,
         TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
         TicketMailBody: finalText,
-        IsInformToStore: this.state.InformStore,
+        IsInformToStore: this.state.ReplyInformStore,
         TicketSource: 2, // Send ticket source id
         IsSent: 0,
         IsCustomerComment: 0,
         MailID: 0,
-        StoreID: selectedStore.substring(",", selectedStore.length - 1)
+        StoreID: store_Id.substring(",", store_Id.length - 1)
       };
       formData.append("ticketingMailerQue", JSON.stringify(paramData));
       for (let j = 0; j < this.state.FileData.length; j++) {
@@ -5575,7 +5591,7 @@ class MyTicket extends Component {
                                     name="filter-type"
                                     style={{ display: "none" }}
                                     onChange={() =>
-                                      this.showInformStoreFuncation()
+                                      this.showInformStoreReply()
                                     }
                                   />
                                   <label
