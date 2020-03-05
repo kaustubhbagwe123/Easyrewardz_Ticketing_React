@@ -520,9 +520,10 @@ className="custom-antd-table"
                             render: (row, data) => {
                               // debugger;
                               return (
-                                <div>
+                                <div className="filter-checkbox">
                                    <input
                                       type="checkbox"
+                                      className="d-none"
                                       id={"i" + data.storeID}
                                       name="ticket-store"
                                       checked={
@@ -536,6 +537,9 @@ className="custom-antd-table"
                                         data
                                       )}
                                     />
+                                    <label
+                                      htmlFor={"i" + data.storeID}
+                                    ></label>
                                 </div>
                               );
                             }
@@ -669,8 +673,9 @@ className="custom-antd-table"
                             render: (row, data) => {
                               // debugger;
                               return (
-                                <div>
+                                <div className="filter-checkbox">
                                    <input
+                                   className="d-none"
                                   type="checkbox"
                                   id={"selected" + data.storeID}
                                   name="ticket-store"
@@ -685,6 +690,9 @@ className="custom-antd-table"
                                     data
                                   )}
                                 />
+                                <label
+                                      htmlFor={"selected" + data.storeID}
+                                    ></label>
                                 </div>
                               );
                             }
@@ -872,9 +880,10 @@ className="custom-antd-table"
                             render: (row, data) => {
                               // debugger;
                               return (
-                                <div>
+                                <div className="filter-checkbox">
                                    <input
                                       type="checkbox"
+                                      className="d-none"
                                       id={"i" + data.storeID}
                                       name="ticket-store"
                                       checked={
@@ -888,6 +897,9 @@ className="custom-antd-table"
                                         data
                                       )}
                                     />
+                                    <label
+                                      htmlFor={"i" + data.storeID}
+                                    ></label>
                                 </div>
                               );
                             }
@@ -1153,8 +1165,9 @@ className="custom-antd-table"
                             render: (row, data) => {
                               // debugger;
                               return (
-                                <div>
+                                <div className="filter-checkbox">
                                    <input
+                                   className="d-none"
                                   type="checkbox"
                                   id={"selected" + data.storeID}
                                   name="ticket-store"
@@ -1169,6 +1182,9 @@ className="custom-antd-table"
                                     data
                                   )}
                                 />
+                                <label
+                                  htmlFor={"selected" + data.storeID}
+                                ></label>
                                 </div>
                               );
                             }
