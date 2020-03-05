@@ -661,7 +661,7 @@ className="custom-antd-table"
                       showPagination={false}
                     /> */}
                      <Table
-                     className="custom-antd-table"
+                     className="custom-antd-table datepicker-overflow"
                         columns={[
                           {
                             title: "",
