@@ -45,10 +45,11 @@ const Content = props => {
   debugger
   const { rowData } = props
   const [roleName, setRoleNameValue] = useState(rowData.roleName);
+  const [modules, updateCheckModule] = useState(rowData.modules);
   const [status, setStatusValue] = useState(rowData.isRoleActive);
   const [crmRoleID] = useState(rowData.crmRoleID);
 
-  props.callBackEdit(roleName, status, rowData);
+  props.callBackEdit(roleName,modules, status, rowData);
   return (
     <div>
       <div className="edtpadding">
@@ -66,6 +67,25 @@ const Content = props => {
             onChange={e => setRoleNameValue(e.target.value)}
           />
         </div>
+        {rowData.modules!== null &&
+                      rowData.modules.map((item, i) => (
+                        <div className="module-switch crm-margin-div crm-padding-div" key={i}>
+                          <div className="switch switch-primary d-inline m-r-10">
+                            <label className="storeRole-name-text">{item.moduleName}</label>
+                            <input type="checkbox" id={'i' + item.moduleID}
+                              name="allModules"
+                              attrIds={item.moduleID}
+                              checked={item.modulestatus}
+                              onChange={props.updateCheckModule.bind(props, item.moduleID)}
+                            />
+                            <label
+                              htmlFor={'i' + item.moduleID}
+                              className="cr cr-float-auto"
+                            ></label>
+                           
+                          </div>
+                        </div>
+                      ))}
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
           <select id="inputStatus" className="edit-dropDwon dropdown-setting"
@@ -355,10 +375,11 @@ class TicketCRMRole extends Component {
     })
   }
 
-  callBackEdit = (RoleName, Status, rowData) => {
+  callBackEdit = (RoleName,modules, Status, rowData) => {
     debugger;
     // this.setState({RoleName,updateRoleisActive:Status})
     this.state.RoleName = RoleName;
+    this.state.updateModulesList=modules;
     this.state.updateRoleisActive = Status;
     this.state.rowData = rowData;
   }
@@ -492,7 +513,10 @@ class TicketCRMRole extends Component {
                 </Popover>
                 <Popover
 
-                  content={<Content rowData={row.original} callBackEdit={this.callBackEdit} createUpdateCrmRole={this.createUpdateCrmRole.bind(this)} />}
+                  content={<Content rowData={row.original} callBackEdit={this.callBackEdit}
+                  modulesList={this.state.modulesList}
+                  updateCheckModule={this.updateCheckModule.bind(this)}
+                  createUpdateCrmRole={this.createUpdateCrmRole.bind(this)} />}
                   placement="bottom"
                   trigger="click"
                 >
