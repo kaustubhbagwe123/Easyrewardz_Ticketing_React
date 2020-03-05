@@ -1113,9 +1113,10 @@ class TicketSystemOrder extends Component {
                     render: (row, data) => {
                       // debugger;
                       return (
-                        <div>
+                        <div className="filter-checkbox">
                           <input
                             type="checkbox"
+                            className="d-none"
                             id={"all" + data.orderMasterID}
                             name="AllOrder"
                             checked={
@@ -1129,7 +1130,9 @@ class TicketSystemOrder extends Component {
                               data
                             )}
                           />
-                           
+                           <label
+                              htmlFor={"all" + data.orderMasterID}
+                            ></label>
                         </div>
                       );
                     }
@@ -1185,9 +1188,10 @@ class TicketSystemOrder extends Component {
                     render: (row, data) => {
                       // debugger;
                       return (
-                        <div>
+                        <div className="filter-checkbox">
                           <input
                             type="checkbox"
+                            className="d-none"
                             id={"all" + data.orderMasterID}
                             name="AllOrder"
                             checked={
@@ -1201,7 +1205,9 @@ class TicketSystemOrder extends Component {
                               data
                             )}
                           />
-                          
+                          <label
+                            htmlFor={"all" + data.orderMasterID}
+                          ></label>
                         </div>
                       );
                     }
@@ -1252,9 +1258,10 @@ class TicketSystemOrder extends Component {
                           render: (row, item) => {
                             // debugger;
                             return (
-                              <div>
+                              <div className="filter-checkbox">
                                 <input
                                   type="checkbox"
+                                  className="d-none"
                                   id={"item" + item.orderItemID}
                                   name="AllItem"
                                   checked={
@@ -1268,7 +1275,9 @@ class TicketSystemOrder extends Component {
                                     item
                                   )}
                                 />
-                                 
+                                 <label
+                                    htmlFor={"item" + item.orderItemID}
+                                  ></label>
                               </div>
                             );
                           }
@@ -2068,7 +2077,7 @@ class TicketSystemOrder extends Component {
                       render: (row, data) => {
                         // debugger;
                         return (
-                          <div>
+                          <div className="filter-checkbox">
                             <input
                               type="checkbox"
                               id={"all" + data.orderMasterID}
@@ -2078,13 +2087,16 @@ class TicketSystemOrder extends Component {
                                   data.orderMasterID
                                 ] === true
                               }
+                              className="d-none"
                               onChange={this.onCheckMasterAllChange.bind(
                                 this,
                                 data.orderMasterID,
                                 data
                               )}
                             />
-                            
+                            <label
+                              htmlFor={"all" + data.orderMasterID}
+                            ></label>
                           </div>
                         );
                       }
@@ -2135,9 +2147,10 @@ class TicketSystemOrder extends Component {
                             render: (row, item) => {
                               debugger;
                               return (
-                                <div>
+                                <div className="filter-checkbox">
                                   <input
                                     type="checkbox"
+                                    className="d-none"
                                     id={"item" + item.orderItemID}
                                     name="AllItem"
                                     checked={
@@ -2151,7 +2164,9 @@ class TicketSystemOrder extends Component {
                                       item
                                     )}
                                   />
-                                  
+                                  <label
+                                    htmlFor={"item" + item.orderItemID}
+                                  ></label>
                                 </div>
                               );
                             }
@@ -2181,7 +2196,7 @@ class TicketSystemOrder extends Component {
                             dataIndex: "requireSize",
                             render: (data, record) => {
                               return (
-                                <div className="filter-checkbox">
+                                <div>
                                   <input
                                     type="text"
                                     id={"requireSizeTxt" + record.orderItemID}
@@ -2193,9 +2208,9 @@ class TicketSystemOrder extends Component {
                                       this.handleRequireSize(this, record);
                                     }}
                                   />
-                                  <label
+                                  {/* <label
                                     htmlFor={"requireSizeTxt" + record.orderItemID}
-                                  ></label>
+                                  ></label> */}
                                 </div>
                               );
                             }

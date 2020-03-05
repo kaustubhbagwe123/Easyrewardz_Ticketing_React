@@ -1382,8 +1382,17 @@ class Reports extends Component {
     debugger;
     let self = this;
     let sourceIds = "";
+    let assignedIds="";
+    let multiStatusIds="";
+    var elts = document.getElementsByClassName('cls-spnerror');
+    for (var i = 0; i < elts.length; ++i) {
+        elts[i].textContent="";
+    }   
     if(this.state.DefaultPopupName=="Total Ticket Created")
     { 
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+          sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+         }   
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1405,6 +1414,9 @@ class Reports extends Component {
     }
     else if(this.state.DefaultPopupName=="Total Open Ticket")
     {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1417,7 +1429,182 @@ class Reports extends Component {
             "YYYY-MM-DD"
           ),
           Ticket_SourceIDs: sourceIds,
-          ReportTypeID: "1",
+          ReportTypeID: "2",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Total Closed Ticket")
+    {
+      debugger;
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      var totalError=0;
+      if(this.state.TicketClosedFrom=="")
+      {
+        totalError+=1;
+        document.getElementById("spnTicketClosedFrom").textContent="Please enter from ticket close date"
+      }
+      if(this.state.TicketClosedTo=="")
+      {
+        totalError+=1;
+        document.getElementById("spnTicketClosedTo").textContent="Please enter from ticket close date"
+      }
+      if(totalError>0)
+      {
+        return false;
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CloseFrom:moment(this.state.TicketClosedFrom).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CloseTo:moment(this.state.TicketClosedTo).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "3",
+          
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Ticket Count By Associates")
+    {
+      debugger;
+      var totalError=0;
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds+=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+       for (var i = 0; i < this.state.SelectedDefaultTeamMember.length; ++i) {
+        assignedIds+=this.state.SelectedDefaultTeamMember[i].userID+",";
+       }  
+       for (var i = 0; i < this.state.SelectedTicketMultiStatus.length; ++i) {
+        multiStatusIds+=this.state.SelectedTicketMultiStatus[i].ticketStatusID+",";
+       }  
+      if(this.state.SelectedDefaultTeamMember=="")
+      {
+        totalError+=1;
+        document.getElementById("spnAssignedTo").textContent="Please select assigned to"
+      }
+      if(this.state.SelectedTicketMultiStatus=="")
+      {
+        totalError+=1;
+        document.getElementById("spnTicketStatus").textContent="Please select ticket status"
+      }
+      if(totalError>0)
+      {
+        return;
+      }
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_AssignIDs:assignedIds,
+          Ticket_StatusIDs:multiStatusIds,        
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "4"        
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Escalated Tickets")
+    {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "5",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      }); 
+    }
+    else if(this.state.DefaultPopupName=="Re-Assigned Tickets")
+    {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "6",
+          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+        }
+      }).then(function(res) {
+        debugger;
+        window.open(res.data.responseData, "_blank");       
+      });         
+      
+    }
+    else if(this.state.DefaultPopupName=="Re-Opened Tickets")
+    {
+      for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
+        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
+       }  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadDefaultReport",
+        headers: authHeader(),
+        data: {
+          Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_CreatedTo: moment(this.state.TicketCreatedEndDate).format(
+            "YYYY-MM-DD"
+          ),
+          Ticket_SourceIDs: sourceIds,
+          ReportTypeID: "7",
           Ticket_StatusID:this.state.selectedDefaultTicketStatus
         }
       }).then(function(res) {
@@ -2613,9 +2800,9 @@ class Reports extends Component {
                           <Select
                             getOptionLabel={option => option.ticketStatusName}
                             getOptionValue={
-                              option => option.userID //id
+                              option => option.ticketStatusID //id
                             }
-                            options={this.state.ticketStatusID}
+                            options={this.state.TicketStatusData}
                             placeholder="Ticket Status"
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
@@ -2635,7 +2822,7 @@ class Reports extends Component {
                   <DatePicker
                     selected={this.state.TicketClosedFrom}
                     onChange={this.handleTicketClosedFrom.bind(this)}
-                    placeholderText="Creation Date"
+                    placeholderText="Ticket Closed From"
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -2645,12 +2832,12 @@ class Reports extends Component {
                 <span id="spnTicketClosedFrom" className="cls-spnerror" style={{color:"red"}}></span>
               </div>
               <div id="TicketClosedTo" className="cls-hide ticketreport down-tic-rep">
-                Ticket Closed ToTicketClosedTo
+                Ticket Closed To
                 <div className="ticketreportdat mt-2">
                   <DatePicker
                     selected={this.state.TicketClosedTo}
                     onChange={this.handleTicketClosedTo.bind(this)}
-                    placeholderText="Creation Date"
+                    placeholderText="Ticket Closed To"
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"

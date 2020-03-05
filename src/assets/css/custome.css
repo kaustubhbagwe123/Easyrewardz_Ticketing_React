@@ -3515,7 +3515,7 @@ table tr th:last-child {
 }
 .custom-antd-table .filter-checkbox input + label {
   padding-left: 0;
-  top: -3px;
+  top: -5px;
 }
 .custom-antd-table table {
   padding: 0 20px;
