@@ -4439,7 +4439,7 @@ class MyTicket extends Component {
 
 
                       <div className="dropdown" style={{ display: "inherit" }}>
-                      <select >
+                      <select className="my-tic-email">
                      
                           <option value="Email" selected>Email</option>
                           <option  value="Facebook">Facebook</option>
