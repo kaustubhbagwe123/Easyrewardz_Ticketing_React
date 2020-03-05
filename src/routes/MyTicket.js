@@ -100,7 +100,7 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       InformStore: false,
-      ReplyInformStore:false,
+      ReplyInformStore: false,
       collapseUp: false,
       profilemodal: false,
       storemodal: false,
@@ -208,7 +208,9 @@ class MyTicket extends Component {
       hasAttachmentModal: false,
       hasAttachmentFile: [],
       FileAttachment: [],
-      hasDataFile: []
+      hasDataFile: [],
+      ticketSourceId: 2,
+      ReplySourceId: 2
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -1530,12 +1532,11 @@ class MyTicket extends Component {
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
     var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
-    
 
     if (isSend === 1) {
       if (this.state.InformStore === true) {
         var selectedStore = "";
-  
+
         for (let i = 0; i < this.state.selectedStoreData.length; i++) {
           selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
         }
@@ -1550,7 +1551,7 @@ class MyTicket extends Component {
         UserBCC: this.state.mailFiled.userBCC,
         TicketMailBody: finalText,
         IsInformToStore: this.state.InformStore,
-        TicketSource: 2, // Send ticket source id
+        TicketSource: this.state.ReplySourceId, // Send ticket source id
         IsSent: 0,
         IsCustomerComment: 0,
         IsResponseToCustomer: 1,
@@ -1588,7 +1589,7 @@ class MyTicket extends Component {
       // -------------Plush Icen Editor Call api--------------------
       if (this.state.ReplyInformStore === true) {
         var store_Id = "";
-  
+
         for (let i = 0; i < this.state.selectedStoreData.length; i++) {
           store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
         }
@@ -1604,7 +1605,7 @@ class MyTicket extends Component {
         TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
         TicketMailBody: finalText,
         IsInformToStore: this.state.ReplyInformStore,
-        TicketSource: 2, // Send ticket source id
+        TicketSource: this.state.ticketSourceId, // Send ticket source id
         IsSent: 0,
         IsCustomerComment: 0,
         MailID: 0,
@@ -2101,6 +2102,15 @@ class MyTicket extends Component {
   callbackToParent = () => {
     debugger;
     this.handleGetCountOfTabs(this.state.ticket_Id);
+  };
+  handleTicketSourceChange = e => {
+    let value = e.target.value;
+    this.setState({ ticketSourceId: value });
+  };
+
+  handleReplyTcktSourceChange = e => {
+    let value = e.target.value;
+    this.setState({ ReplySourceId: value });
   };
 
   render() {
@@ -4450,21 +4460,19 @@ class MyTicket extends Component {
                         className="dropdown"
                         style={{ display: "inherit" }}
                       ></div>
-                     
-                    
-
 
                       <div className="dropdown" style={{ display: "inherit" }}>
-                      <select className="my-tic-email">
-                     
-                          <option value="Email" selected>Email</option>
-                          <option  value="Facebook">Facebook</option>
-                          <option  value="SMS"> SMS</option>
-                          <option  value="Call">Call</option>
-                     </select>
-  </div> 
-
-                       
+                        <select
+                          className="my-tic-email"
+                          value={this.state.ticketSourceId}
+                          onChange={this.handleTicketSourceChange}
+                        >
+                          <option value={2}>Email</option>
+                          <option value={3}>Facebook</option>
+                          <option value={5}> SMS</option>
+                          <option value={1}>Call</option>
+                        </select>
+                      </div>
 
                       {/* <div className="dropdown" style={{ display: "inherit" }}>
                         <button
@@ -5418,6 +5426,21 @@ class MyTicket extends Component {
                               className="dropdown"
                               style={{ display: "inherit" }}
                             >
+                              <select
+                                className="my-tic-email"
+                                value={this.state.ReplySourceId}
+                                onChange={this.handleReplyTcktSourceChange}
+                              >
+                                <option value={2}>Email</option>
+                                <option value={3}>Facebook</option>
+                                <option value={5}> SMS</option>
+                                <option value={1}>Call</option>
+                              </select>
+                            </div>
+                            {/* <div
+                              className="dropdown"
+                              style={{ display: "inherit" }}
+                            >
                               <button
                                 className="dropdown-toggle my-tic-email"
                                 type="button"
@@ -5472,7 +5495,7 @@ class MyTicket extends Component {
                                   </a>
                                 </li>
                               </ul>
-                            </div>
+                            </div> */}
                             <div className="my-ticket-temp">
                               <a
                                 href="#!"
@@ -5585,9 +5608,7 @@ class MyTicket extends Component {
                                     id="custRply"
                                     name="filter-type"
                                     style={{ display: "none" }}
-                                    onChange={() =>
-                                      this.showInformStoreReply()
-                                    }
+                                    onChange={() => this.showInformStoreReply()}
                                   />
                                   <label
                                     htmlFor="custRply"
