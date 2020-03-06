@@ -219,7 +219,9 @@ class Templates extends Component {
       }else{
         NotificationManager.error("Template not update.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   
   sortStatusAtoZ() {
@@ -390,7 +392,9 @@ class Templates extends Component {
       if (slaIssueType !== null && slaIssueType !== undefined) {
         self.setState({ slaIssueType });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   deleteTemplate(deleteId) {
@@ -412,7 +416,9 @@ class Templates extends Component {
       } else {
         NotificationManager.error("Template not deleted.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   createTemplate() {
@@ -459,7 +465,9 @@ class Templates extends Component {
       } else {
         NotificationManager.error("Template not added.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
      
@@ -498,7 +506,9 @@ class Templates extends Component {
       if (template !== null && template !== undefined) {
         self.setState({ template });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleConfigureTabsOpen() {

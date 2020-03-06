@@ -101,7 +101,9 @@ class UserProfile extends Component {
        }
       
       
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   setGetProfileData =(data)=>{
@@ -153,7 +155,9 @@ self.setState({
         });
       }
 
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleEditUserProfile() {
@@ -196,7 +200,9 @@ self.setState({
         }, 400);
        }
      
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       fileNameCompulsion:"Please select profile picture.",

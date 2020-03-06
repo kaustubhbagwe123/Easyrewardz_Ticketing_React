@@ -3627,6 +3627,9 @@ table tr th:last-child {
   height: 8px;
   margin-top: 8px;
 }
+.ck-edit-mar {
+  margin-bottom: 14px !important;
+}
 /* my ticket ends */
 
 /* .cke_editable {
@@ -7967,14 +7970,15 @@ table tr th:last-child {
   width: 100%;
   height: 35px;
   padding-left: 8px;
-  padding-right: 40px;
+  padding-right: 25px;
   border-color: #ecf2f4;
-  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px
+  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 4px
     center;
   background-size: 13px;
   cursor: pointer;
   border: none;
   font-weight: 600;
+  height: 39px;
 }
 .ticketreport label {
   font-size: 13px;

@@ -103,7 +103,10 @@ class KnowledgeBase extends Component {
       sortTable:"",
       issueColor:"",
       categoryColor:"",
-      subCategoryColor:""
+      subCategoryColor:"",
+      styleColumn:{
+        color:"#FFFFFF",backgroundColor:"#0066CC",width:"100px",height:"20px",fontWeight:"bold"
+      }
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -474,7 +477,9 @@ class KnowledgeBase extends Component {
         CategoryData: CategoryData
         // CategoryDataAll: CategoryDataAll
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetSubCategoryList() {
     debugger;
@@ -495,7 +500,9 @@ class KnowledgeBase extends Component {
       self.setState({
         SubCategoryData: SubCategoryData
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetIssueTypeList() {
     debugger;
@@ -512,7 +519,9 @@ class KnowledgeBase extends Component {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleDeleteKB(id) {
     debugger;
@@ -535,7 +544,9 @@ class KnowledgeBase extends Component {
         NotificationManager.success("Record deleted Successfully.");
         self.handleKBList();
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleRejectKB(id, bit) {
@@ -566,7 +577,9 @@ class KnowledgeBase extends Component {
         }
 
         self.handleKBList();
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       // }
 
@@ -602,7 +615,9 @@ class KnowledgeBase extends Component {
           }
           self.closeEditAproveModal1();
           self.handleKBList();
-        });
+        }).catch(data => {
+          console.log(data);
+          });
       } else {
         this.setState({
           approveCategoryCompulsion: "Category field is compulsory.",
@@ -735,7 +750,9 @@ class KnowledgeBase extends Component {
           kbClearList: false
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleSeaechKB() {
@@ -779,7 +796,9 @@ class KnowledgeBase extends Component {
         })
       }
       self.closeSearchModal();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleUpdateKB(kbid) {
@@ -1268,8 +1287,12 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span
                       onClick={this.StatusOpenModel.bind(this,"subCategoryName","notapprove")}
+                      
                       >
-                        <label style={{color:this.state.subCategoryColor}}>
+                        <label 
+                        //style={{color:this.state.subCategoryColor}}
+                        style={{color:"#0066CC",fontWeight:"bold"}}
+                        >
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>

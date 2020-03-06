@@ -133,7 +133,9 @@ class MyTicketTask extends Component {
       } else {
         self.setState({ taskTableGrid: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetTaskTabDetails(ticketTaskId) {
     //debugger;
@@ -154,7 +156,9 @@ class MyTicketTask extends Component {
       } else {
         self.setState({ taskDetailsData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetTaskCommentsdetails(ticketTaskId) {
     //debugger;
@@ -175,7 +179,9 @@ class MyTicketTask extends Component {
       } else {
         self.setState({ Taskdetails: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetDepartmentList() {
     //debugger;
@@ -193,7 +199,9 @@ class MyTicketTask extends Component {
       } else {
         self.setState({ DepartmentData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetFunctionList() {
     //debugger;
@@ -209,7 +217,9 @@ class MyTicketTask extends Component {
       //debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetAssignToList() {
     let self = this;
@@ -224,7 +234,9 @@ class MyTicketTask extends Component {
       //debugger;
       let AssignToData = res.data.responseData;
       self.setState({ AssignToData: AssignToData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetTicketPriorityList() {
     //debugger;
@@ -242,7 +254,9 @@ class MyTicketTask extends Component {
       } else {
         self.setState({ TicketPriorityData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   setDepartmentValue = e => {
     let DepartmentValue = e.target.value;
@@ -365,7 +379,9 @@ class MyTicketTask extends Component {
       } else {
         NotificationManager.error("Comment not added.", "", 2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       addcommentCompulsion:"Please Add Comment."

@@ -350,7 +350,9 @@ class Brands extends Component {
           brandData: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleSubmitData() {
     debugger;
@@ -388,7 +390,9 @@ class Brands extends Component {
             selectedStatus: 0
           });
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.setState({
         brandcodeCompulsion: "Please Enter Brand Code",
@@ -415,7 +419,9 @@ class Brands extends Component {
       } else {
         NotificationManager.error(res.data.message);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUpdateData(e, brandID) {
     debugger;
@@ -449,7 +455,9 @@ class Brands extends Component {
           self.handleGetBrandList();
           NotificationManager.success("Brand updated successfully.");
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       NotificationManager.error("Brand not updated .");
       this.setState({

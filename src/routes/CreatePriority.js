@@ -323,7 +323,9 @@ class CreatePriority extends Component {
           priorityData: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleSubmitData() {
     if (
@@ -356,7 +358,9 @@ class CreatePriority extends Component {
             selectedActiveStatus: 0
           });
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.setState({
         priorityNameCompulsion: "Please Enter Priority Name",
@@ -381,7 +385,9 @@ class CreatePriority extends Component {
       } else {
         NotificationManager.error(res.data.message);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUpdateData(e, priorityID) {
     debugger;
@@ -420,7 +426,9 @@ class CreatePriority extends Component {
             selectedActiveStatus: 0
           });
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       NotificationManager.error("Priority not updated.");
       this.setState({

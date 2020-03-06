@@ -38,6 +38,7 @@ import QAApp from './routes/QA/index';
 import ArtBoardApp from './routes/ArtBoard/index';
 import TenantApp from "./routes/Tenant Controller";
 import ChangePassword from "./Component/ChangePassword";
+import UserForgotPassword from './Component/UserForgotPassword';
 // import MyTicket from './routes/MyTicket';
 
 ReactDOM.render(
@@ -49,6 +50,7 @@ ReactDOM.render(
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/ChangePassword" component={ChangePassword} />
+    <Route exact path="/UserForgotPassword" component={UserForgotPassword} />
     <Route exact path="/PieChart" component={PieChart} />
     <Route path="/artBoard" component={ArtBoardApp} />
     <Route path="/tenantApp" component={TenantApp} />

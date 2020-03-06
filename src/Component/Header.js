@@ -110,8 +110,9 @@ class Header extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleLoggedInUserDetails();
     this.handleGetUserProfileData();
+    this.handleLoggedInUserDetails();
+    
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
@@ -391,12 +392,12 @@ class Header extends Component {
             <div className="hamb-menu">
               <div className="dropdown">
                 <img src={Hamb} alt="hamburger icon" data-toggle="dropdown" />
-                <ul className="dropdown-menu">
-                  <li>
+                <ul className="dropdown-menu" >
+                  <li >
                     <Link to="dashboard">Dashboards</Link>
                   </li>
-                  <li>
-                    <Link to="myTicketlist">My Tickets</Link>
+                  <li >
+                    <Link to="myTicketlist" >My Tickets</Link>
                   </li>
                   <li>
                     <Link to="knowledgebase">Knowledge Base</Link>

@@ -40,7 +40,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
 import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
-import { FormControl } from "react-bootstrap";
+// import { FormControl } from "react-bootstrap";
 import { Checkbox } from "antd";
 import moment from "moment";
 import { Row, Col } from "react-bootstrap";
@@ -94,7 +94,6 @@ class Dashboard extends Component {
       range: "",
       CSVDownload: [],
       SearchTicketData: [],
-
       SearchListData: [],
       SlaDueData: SlaDue(),
       TicketStatusData: TicketStatus(),
@@ -282,7 +281,6 @@ class Dashboard extends Component {
       loadingAbove: true,
       modulesItems: [],
       FinalSaveSearchData: "",
-
       CreateDateShowRecord: "",
       LastUpdatedDate: "",
       Category: "",
@@ -317,7 +315,9 @@ class Dashboard extends Component {
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: ""
+      creationColor: "",
+      moduleID:0
+      
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -408,7 +408,7 @@ class Dashboard extends Component {
     this.handleGetAgentList();
     this.handleGetSaveSearchList();
 
-    this.handleAdvanceSearchOption();
+    this.handleGetModulesNames();
   }
 
   handleTicketsOnLoadLoader() {
@@ -643,6 +643,8 @@ class Dashboard extends Component {
           loading: false
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -872,7 +874,31 @@ class Dashboard extends Component {
     });
     this.StatusCloseModel();
   }
-  handleAdvanceSearchOption() {
+  handleGetModulesNames() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModules",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let moduleID = data[0].moduleID;
+      let selTab = data[0].moduleName;
+      let moduleIDMyticket = data[1].moduleID;
+
+      // if (status === "Success") {
+      //   self.setState({ modulesNames: data, moduleID });
+      // } else {
+      //   self.setState({ modulesNames: [] });
+      // }
+      self.handleAdvanceSearchOption(moduleID);
+      
+    });
+  }
+  handleAdvanceSearchOption(id) {
     debugger;
     let self = this;
     axios({
@@ -880,7 +906,7 @@ class Dashboard extends Component {
       url: config.apiUrl + "/Module/GetModulesItems",
       headers: authHeader(),
       params: {
-        ModuleID: 8
+        ModuleID: id
       }
     }).then(function(res) {
       debugger;
@@ -892,6 +918,8 @@ class Dashboard extends Component {
       } else {
         self.setState({ modulesItems: [] });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   setAdvanceSearch(data1) {
@@ -1066,6 +1094,8 @@ class Dashboard extends Component {
       ) {
         self.setState({ loadingAbove: false });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetDashboardGraphData() {
@@ -1134,6 +1164,8 @@ class Dashboard extends Component {
           self.setState({ loadingAbove: false });
         }
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1351,6 +1383,8 @@ class Dashboard extends Component {
           TeamMemberData: []
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetBrandList() {
@@ -1365,6 +1399,8 @@ class Dashboard extends Component {
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
       self.checkAllBrandStart();
+    }).catch(data => {
+      console.log(data);
     });
   }
   handelCheckBoxCheckedChange = async ticketID => {
@@ -1512,6 +1548,8 @@ class Dashboard extends Component {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handelOnchangeData(e) {
@@ -1536,6 +1574,8 @@ class Dashboard extends Component {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetDepartmentList() {
@@ -1554,6 +1594,8 @@ class Dashboard extends Component {
       } else {
         self.setState({ DepartmentData: [] });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleWithTaskAll = e => {
@@ -1633,6 +1675,8 @@ class Dashboard extends Component {
         assignEmail: ""
         // selectedDesignation: 0
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleAssignClearData() {
@@ -1659,6 +1703,8 @@ class Dashboard extends Component {
       debugger;
       let data = res.data.responseData;
       self.setState({ TicketPriorityData: data });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleTicketStatusAll = e => {
@@ -1711,6 +1757,7 @@ class Dashboard extends Component {
 
   checkAllCheckbox = async event => {
     debugger;
+    var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
@@ -1720,16 +1767,25 @@ class Dashboard extends Component {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
             strIds += checkboxes[i].getAttribute("attrIds") + ",";
+            for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+              obj[this.state.SearchTicketData[i].ticketID] = true;
+              }
         }
       }
     } else {
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = false;
+            }
         }
       }
       strIds = "";
     }
+    this.setState({
+      cSelectedRow: obj
+      });
     await this.setState({
       ticketIds: strIds
     });
@@ -2136,6 +2192,8 @@ class Dashboard extends Component {
           selectedTeamMemberCommaSeperated: ""
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleWeekForYear(e) {
@@ -2231,6 +2289,8 @@ class Dashboard extends Component {
           // self.handleSearchTicketEscalation();
           self.ViewSearchData();
         }
+      }).catch(data => {
+        console.log(data);
       });
     } else {
       this.setState({
@@ -2259,6 +2319,8 @@ class Dashboard extends Component {
           SlaStatusData: []
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetTicketSourceList() {
@@ -2282,6 +2344,8 @@ class Dashboard extends Component {
           TicketSourceData: []
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetClaimIssueTypeList() {
@@ -2302,6 +2366,8 @@ class Dashboard extends Component {
       debugger;
       let ClaimIssueTypeData = res.data.responseData;
       self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetIssueTypeList() {
@@ -2339,6 +2405,8 @@ class Dashboard extends Component {
           IssueTypeAllData: IssueTypeAllData
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetCategoryList() {
@@ -2357,6 +2425,8 @@ class Dashboard extends Component {
         CategoryData: CategoryData
         // CategoryDataAll: CategoryDataAll
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetClaimSubCategoryList() {
@@ -2382,6 +2452,8 @@ class Dashboard extends Component {
       self.setState({
         ClaimSubCategoryData: ClaimSubCategoryData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetSubCategoryList() {
@@ -2422,6 +2494,8 @@ class Dashboard extends Component {
           SubCategoryAllData: SubCategoryAllData
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   clearSearch() {
@@ -2831,6 +2905,8 @@ class Dashboard extends Component {
           loading: false
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   SaveSearchData() {
@@ -2855,6 +2931,8 @@ class Dashboard extends Component {
             SearchName: ""
           });
         }
+      }).catch(data => {
+        console.log(data);
       });
     } else {
       self.setState({
@@ -2911,6 +2989,8 @@ class Dashboard extends Component {
       } else {
         self.setState({ SearchListData: [] });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleSearchTicketEscalation() {
@@ -2955,6 +3035,8 @@ class Dashboard extends Component {
         }
         self.setState({ CSVDownload: CSVData });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handlePurchaseStoreCodeAddressAll = e => {
@@ -2997,6 +3079,8 @@ class Dashboard extends Component {
         NotificationManager.success("Saved search data deleted successfully.");
         self.handleGetSaveSearchList();
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleSlaDueByDate = e => {
@@ -6114,6 +6198,7 @@ class Dashboard extends Component {
                         Header: (
                           <span
                             onClick={this.StatusOpenModel.bind(this, "status")}
+                           
                           >
                             Status <FontAwesomeIcon icon={faCaretDown} />
                           </span>

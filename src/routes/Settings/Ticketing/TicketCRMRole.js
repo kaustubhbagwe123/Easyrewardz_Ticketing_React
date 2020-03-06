@@ -169,7 +169,9 @@ class TicketCRMRole extends Component {
       if (crmRoles !== null && crmRoles !== undefined) {
         self.setState({ crmRoles });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleModulesDefault = async () => {
@@ -308,6 +310,7 @@ class TicketCRMRole extends Component {
               RoleName: '',
               RoleisActive: 'true',
               ModulesEnabled: '',
+              ModulesDisabled:'',
               updateModulesEnabled: '',
               updateModulesDisabled: ''
             })
@@ -319,11 +322,14 @@ class TicketCRMRole extends Component {
         } else {
           if (e === 'add') {
             NotificationManager.error("CRM Role not added.");
+            
           } else if (addUpdate === 'update') {
             NotificationManager.error("CRM Role not updated.");
           }
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -350,7 +356,9 @@ class TicketCRMRole extends Component {
         NotificationManager.success("Record deleted Successfully.");
         self.handleGetCRMRoles();
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   updateCrmRole(individualData) {

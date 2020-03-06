@@ -123,7 +123,9 @@ class TicketSystemOrder extends Component {
       debugger;
       let data = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: data });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleOrderTableOpen() {
@@ -252,7 +254,9 @@ class TicketSystemOrder extends Component {
           TicketSourceData: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetManuallyTableData() {
     debugger;
@@ -265,7 +269,9 @@ class TicketSystemOrder extends Component {
       debugger;
       let finalData = res.data.data;
       self.setState({ finalData: finalData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleOrderSearchData(OrdData) {
@@ -302,7 +308,9 @@ class TicketSystemOrder extends Component {
               orderDetailsData: mainData,
               OrderSubItem
             });
-          });
+          }).catch(data => {
+            console.log(data);
+            });
         } else {
           self.setState({
             validOrdernumber: "Please Enter Order Number"
@@ -339,7 +347,9 @@ class TicketSystemOrder extends Component {
               orderDetailsData: mainData,
               OrderSubItem
             });
-          });
+          }).catch(data => {
+            console.log(data);
+            });
         } else {
           self.setState({
             validMdlOrdernumber: "Please Enter Order Number"
@@ -376,7 +386,9 @@ class TicketSystemOrder extends Component {
           OrderSubItem,
           orderNumber: ""
         });
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     }
   }
   hadleAddManuallyOrderData() {
@@ -435,7 +447,9 @@ class TicketSystemOrder extends Component {
               requiredSize: ""
             });
           }
-        });
+        }).catch(data => {
+          console.log(data);
+          });
       } else {
         NotificationManager.error("Order not added.");
         self.setState({
@@ -474,7 +488,9 @@ class TicketSystemOrder extends Component {
             SearchItem: []
           });
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       self.setState({
         SearchData
@@ -505,7 +521,9 @@ class TicketSystemOrder extends Component {
     }).then(function(res) {
       let modeData = res.data.responseData;
       self.setState({ modeData: modeData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   onFilteredChange(filtered) {
     debugger;
@@ -1828,7 +1846,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Size"
                     name="size"
                     value={this.state.size}
-                    onChange={this.handleNumberOnchange}
+                    // onChange={this.handleNumberOnchange}
+                    onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
                 </div>
@@ -1842,7 +1861,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Required Size"
                     name="requiredSize"
                     value={this.state.requiredSize}
-                    onChange={this.handleNumberOnchange}
+                    // onChange={this.handleNumberOnchange}
+                    onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
                   {/* {this.validator.message(
