@@ -1828,7 +1828,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Size"
                     name="size"
                     value={this.state.size}
-                    onChange={this.handleNumberOnchange}
+                    // onChange={this.handleNumberOnchange}
+                    onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
                 </div>
@@ -1842,7 +1843,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Required Size"
                     name="requiredSize"
                     value={this.state.requiredSize}
-                    onChange={this.handleNumberOnchange}
+                    // onChange={this.handleNumberOnchange}
+                    onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
                   {/* {this.validator.message(

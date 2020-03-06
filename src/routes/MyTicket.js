@@ -3358,7 +3358,7 @@ class MyTicket extends Component {
                                                 selected={
                                                   row.original.storeVisitDate
                                                 }
-                                                placeholderText="Date"
+                                                placeholderText="DD/MM/YYYY"
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 // dateFormat="dd/MM/yyyy"

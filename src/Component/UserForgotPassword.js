@@ -10,26 +10,24 @@ import {
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
 
-class ChangePassword extends Component {
+class UserForgotPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       newPassword: "",
       confimPassword: "",
-      oldPassword:""
     };
     this.handleCheckPassword = this.handleCheckPassword.bind(this);
-    this.handlechange = this.handlechange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.validator = new SimpleReactValidator();
   }
-  handlechange(e) {
+  handlechange = e => {
     debugger;
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
 
   handleCheckPassword(e) {
     debugger;
@@ -46,8 +44,6 @@ class ChangePassword extends Component {
       }
     } else {
       this.validator.showMessages();
-      // rerender to show messages for the first time
-      // you can use the autoForceUpdate option to do this automatically`
       this.forceUpdate();
     }
   }
@@ -61,11 +57,10 @@ class ChangePassword extends Component {
 
     axios({
       method: "post",
-      url: config.apiUrl+"/User/ChangePassword",
-      data: {
-        EmailID: emaiId,
-        Password:this.state.oldPassword,
-        NewPassword: newPassword
+      url: config.apiUrl + "/Account/UpdatePassword",
+      params: {
+        cipherEmailId: emaiId,
+        Password: newPassword
       },
       headers: authHeader()
     }).then(function(response) {
@@ -77,8 +72,7 @@ class ChangePassword extends Component {
         setTimeout(function() {
           self.props.history.push("/SignIn");
         }, 400);
-      }
-      else {
+      } else {
         NotificationManager.error("Password Not Changed.");
       }
     });
@@ -101,33 +95,11 @@ class ChangePassword extends Component {
                     className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
                     style={{ fontWeight: "300" }}
                   >
-                    CHANGE PASSWORD
+                    FORGOT PASSWORD
                   </label>
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
-              <div className="input-group sb-2">
-                  <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter Old Password
-                  </label>
-                </div>
-                <div className="input-group mb-3">
-                  <input
-                    type="password"
-                    name="oldPassword"
-                    placeholder="Enter Old Password"
-                    className="program-code-textbox"
-                    value={this.state.oldPassword}
-                    onChange={this.handlechange}
-                    maxLength={25}
-                  />
-                  
-                </div>
-                <div className="input-group sb-2">
-                  <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter New Password
-                  </label>
-                </div>
                 <div className="input-group mb-3">
                   <input
                     type="password"
@@ -181,4 +153,4 @@ class ChangePassword extends Component {
   }
 }
 
-export default ChangePassword;
+export default UserForgotPassword;
