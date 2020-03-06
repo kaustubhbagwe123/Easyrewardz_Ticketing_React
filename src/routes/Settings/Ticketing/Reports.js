@@ -81,9 +81,9 @@ class Reports extends Component {
       selectedMobileNo: "",
       selectedItemID: "",
       selectedPriority: 0,
-      selectedVisitStore: "yes",
+      selectedVisitStore: "all",
       selectedAssignedTo: 0,
-      selectedWantVisitStore: "yes",
+      selectedWantVisitStore: "all",
       selectedDefaultTicketStatus: 0,
       selectedTicketStatus: 0,
       selectedVisitStoreAddress: "",
@@ -2212,6 +2212,7 @@ class Reports extends Component {
                         value={this.state.selectedVisitStore}
                         onChange={this.setOnChangeReportData}
                       >
+                        <option value="all">All</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                       </select>
@@ -2295,6 +2296,7 @@ class Reports extends Component {
                         value={this.state.selectedWantVisitStore}
                         onChange={this.setOnChangeReportData}
                       >
+                        <option value="all">All</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                       </select>

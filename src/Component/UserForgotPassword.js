@@ -53,12 +53,12 @@ class UserForgotPassword extends Component {
     // let emaiId=encryption(EmailID, "enc");
     let emaiId = window.location.href
       .slice(window.location.href.indexOf("?") + 1)
-      .split("=")[1];
+      .split(":")[1];
 
     axios({
       method: "post",
       url: config.apiUrl + "/Account/UpdatePassword",
-      data: {
+      params: {
         cipherEmailId: emaiId,
         Password: newPassword
       },
