@@ -103,7 +103,10 @@ class KnowledgeBase extends Component {
       sortTable:"",
       issueColor:"",
       categoryColor:"",
-      subCategoryColor:""
+      subCategoryColor:"",
+      styleColumn:{
+        color:"#FFFFFF",backgroundColor:"#0066CC",width:"100px",height:"20px",fontWeight:"bold"
+      }
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -1268,8 +1271,12 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span
                       onClick={this.StatusOpenModel.bind(this,"subCategoryName","notapprove")}
+                      
                       >
-                        <label style={{color:this.state.subCategoryColor}}>
+                        <label 
+                        //style={{color:this.state.subCategoryColor}}
+                        style={{color:"#0066CC",fontWeight:"bold"}}
+                        >
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>

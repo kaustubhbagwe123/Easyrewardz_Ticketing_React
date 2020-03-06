@@ -316,7 +316,9 @@ class Dashboard extends Component {
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: ""
+      creationColor: "",
+      moduleID:0
+      
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -407,7 +409,7 @@ class Dashboard extends Component {
     this.handleGetAgentList();
     this.handleGetSaveSearchList();
 
-    this.handleAdvanceSearchOption();
+    this.handleGetModulesNames();
   }
 
   handleTicketsOnLoadLoader() {
@@ -871,7 +873,31 @@ class Dashboard extends Component {
     });
     this.StatusCloseModel();
   }
-  handleAdvanceSearchOption() {
+  handleGetModulesNames() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModules",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let moduleID = data[0].moduleID;
+      let selTab = data[0].moduleName;
+      let moduleIDMyticket = data[1].moduleID;
+
+      // if (status === "Success") {
+      //   self.setState({ modulesNames: data, moduleID });
+      // } else {
+      //   self.setState({ modulesNames: [] });
+      // }
+      self.handleAdvanceSearchOption(moduleID);
+      
+    });
+  }
+  handleAdvanceSearchOption(id) {
     debugger;
     let self = this;
     axios({
@@ -879,7 +905,7 @@ class Dashboard extends Component {
       url: config.apiUrl + "/Module/GetModulesItems",
       headers: authHeader(),
       params: {
-        ModuleID: 8
+        ModuleID: id
       }
     }).then(function(res) {
       debugger;
@@ -1710,6 +1736,7 @@ class Dashboard extends Component {
 
   checkAllCheckbox = async event => {
     debugger;
+    var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
@@ -1719,16 +1746,25 @@ class Dashboard extends Component {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
             strIds += checkboxes[i].getAttribute("attrIds") + ",";
+            for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+              obj[this.state.SearchTicketData[i].ticketID] = true;
+              }
         }
       }
     } else {
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = false;
+            }
         }
       }
       strIds = "";
     }
+    this.setState({
+      cSelectedRow: obj
+      });
     await this.setState({
       ticketIds: strIds
     });
@@ -6112,6 +6148,7 @@ class Dashboard extends Component {
                         Header: (
                           <span
                             onClick={this.StatusOpenModel.bind(this, "status")}
+                           
                           >
                             Status <FontAwesomeIcon icon={faCaretDown} />
                           </span>
