@@ -42,7 +42,7 @@ class UserProfile extends Component {
   }
   componentDidMount(){
     debugger;
-    //this.handleGetDesignationList();
+    this.handleGetDesignationList();
     this.handleGetUserProfileData();
    
   }

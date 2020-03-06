@@ -1548,6 +1548,12 @@ table {
   width: 18px;
   height: 23px;
 }
+
+.sort-column{
+  color:#0066CC;
+   font-Weight: bold;
+   text-decoration-line: underline;
+}
 .add-note {
   color: #9b9b9b;
   font-family: Lato;
