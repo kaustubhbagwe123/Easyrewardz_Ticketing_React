@@ -264,7 +264,8 @@ class MyTicketList extends Component {
       sortAssigneeData: [],
       sortAllData: [],
       cSelectedRow: {},
-      notiType: ""
+      notiType: "",
+      moduleIDMyticket:0
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -345,7 +346,7 @@ class MyTicketList extends Component {
     this.handleGetAssignTo();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
-    this.handleMyTicketsearchOption();
+    this.handleGetModulesNames();
   }
 
   componentDidUpdate() {
@@ -377,8 +378,31 @@ class MyTicketList extends Component {
   //   document.getElementsByName("Open")[0].classList.add("active");
   //   this.handleSearchTicket("Open");
   // }
+  handleGetModulesNames() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModules",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let moduleID = data[0].moduleID;
+      let selTab = data[0].moduleName;
+      let moduleIDMyticket = data[1].moduleID;
 
-  handleMyTicketsearchOption() {
+      // if (status === "Success") {
+      //   self.setState({ modulesNames: data, moduleID });
+      // } else {
+      //   self.setState({ modulesNames: [] });
+      // }
+      self.handleMyTicketsearchOption(moduleIDMyticket);
+      
+    });
+  }
+  handleMyTicketsearchOption(id) {
     debugger;
     let self = this;
     axios({
@@ -386,7 +410,7 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Module/GetModulesItems",
       headers: authHeader(),
       params: {
-        ModuleID: 9
+        ModuleID: id
       }
     })
       .then(function(res) {

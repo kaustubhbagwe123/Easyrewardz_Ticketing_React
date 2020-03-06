@@ -342,7 +342,9 @@ class MyTicket extends Component {
           custID: 0
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleOnLoadFiles() {
     debugger;
@@ -373,7 +375,9 @@ class MyTicket extends Component {
       self.setState({
         SearchAssignData: data
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleUpdateTicketStatus(ticStaId) {
@@ -401,7 +405,9 @@ class MyTicket extends Component {
           NotificationManager.success("The ticket has been closed.", "", 2000);
         }
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetMessageDetails(ticketId) {
     debugger;
@@ -430,7 +436,9 @@ class MyTicket extends Component {
           messageDetails: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleHasAttachmentFileData() {
@@ -484,7 +492,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ orderDetails: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetProductData() {
     debugger;
@@ -532,7 +542,9 @@ class MyTicket extends Component {
           selectedProduct: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetStoreDetails() {
     let self = this;
@@ -554,7 +566,9 @@ class MyTicket extends Component {
           storeDetails: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetCountOfTabs(ID) {
     debugger;
@@ -575,7 +589,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ tabCounts: {} });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUpdateTicketDetails() {
     debugger;
@@ -605,7 +621,9 @@ class MyTicket extends Component {
       } else {
         NotificationManager.error("Ticket not update", "", 2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleRequireSize(e, rowData) {
     debugger;
@@ -652,7 +670,9 @@ class MyTicket extends Component {
           orderDetailsData: mainData,
           OrderSubItem
         });
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       self.setState({
         validOrdernumber: "Please Enter Order Number"
@@ -775,7 +795,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ BrandData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetCategoryList() {
     debugger;
@@ -793,7 +815,9 @@ class MyTicket extends Component {
       // let status=
       let data = res.data;
       self.setState({ CategoryData: data });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetTicketPriorityList() {
     debugger;
@@ -811,7 +835,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ TicketPriorityData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetSubCategoryList() {
     debugger;
@@ -833,7 +859,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ SubCategoryData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetIssueTypeList() {
     debugger;
@@ -854,7 +882,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ IssueTypeData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetChannelOfPurchaseList() {
     let self = this;
@@ -871,7 +901,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ ChannelOfPurchaseData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleAssignTickets() {
     debugger;
@@ -897,7 +929,9 @@ class MyTicket extends Component {
           self.componentDidMount();
         }, 1500);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   expand_row(row) {
     var expanded = { ...this.state.expanded };
@@ -1104,7 +1138,9 @@ class MyTicket extends Component {
         } else {
           NotificationManager.error("Comment not added.", "", 2000);
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.setState({
         notesCommentCompulsion: "The Notes field is compulsory."
@@ -1129,7 +1165,9 @@ class MyTicket extends Component {
       if (status === true) {
         self.setState({ historicalDetails: details });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   hanldeGetSelectedStoreData() {
@@ -1173,7 +1211,9 @@ class MyTicket extends Component {
           selectedStore: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleAttachStoreData() {
@@ -1219,7 +1259,9 @@ class MyTicket extends Component {
       } else {
         NotificationManager.error("Store not attached", "", 2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleAttachProductData() {
@@ -1297,7 +1339,9 @@ class MyTicket extends Component {
       } else {
         NotificationManager.error("Product not attached", "", 2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetNotesTabDetails(ticket_Id) {
     debugger;
@@ -1319,7 +1363,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ Notesdetails: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleAddNewForm() {
     this.setState(prevState => ({
@@ -1445,7 +1491,9 @@ class MyTicket extends Component {
         NotificationManager.error("No Record Found.", "", 2000);
       }
       self.setState({ KbPopupData: KbPopupData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   //Close funcation for KB Templete Search Modal
@@ -1502,7 +1550,9 @@ class MyTicket extends Component {
       debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   //get Template data for select template funcation
@@ -1526,7 +1576,9 @@ class MyTicket extends Component {
         selectTicketTemplateId: tempId,
         mailBodyData: bodyData
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleSendMailData(isSend) {
     debugger;
@@ -1586,7 +1638,9 @@ class MyTicket extends Component {
         } else {
           NotificationManager.error(status, "", 1500);
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
       if (this.state.ReplyInformStore === true) {
@@ -1639,7 +1693,9 @@ class MyTicket extends Component {
         } else {
           NotificationManager.error(status, "", 1500);
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
       if (this.state.ticketcommentMSG.length > 0) {
@@ -1680,7 +1736,9 @@ class MyTicket extends Component {
               ticketcommentMSG: ""
             });
           }
-        });
+        }).catch(data => {
+          console.log(data);
+          });
       } else {
         this.setState({
           tckcmtMSGCompulsory: "Comment field is compulsory."
@@ -1716,7 +1774,9 @@ class MyTicket extends Component {
         } else {
           NotificationManager.error(status, "", 2000);
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     }
   }
 
@@ -1767,7 +1827,9 @@ class MyTicket extends Component {
       } else {
         self.setState({ progressBarData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleReplyFileUpload(e) {
     debugger;

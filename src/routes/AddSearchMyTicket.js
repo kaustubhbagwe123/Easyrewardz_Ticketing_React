@@ -113,7 +113,9 @@ class AddSearchMyTicket extends Component {
         });
         // NotificationManager.error(res.data.message);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   } else {
     this.setState({
       searchCompulsion: 'Search field is compulsory.'
@@ -141,7 +143,9 @@ class AddSearchMyTicket extends Component {
           NotificationManager.error(res.data.responseData);
         }
         // let GetCustId = SearchData.customerID;
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -189,7 +193,9 @@ class AddSearchMyTicket extends Component {
           customerId: custId
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   genderSelect = e => {
     this.setState({

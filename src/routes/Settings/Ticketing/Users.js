@@ -614,7 +614,9 @@ handleEditDesination =(data1,e)  =>{
         CRMRoleData: crmroledata
 
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   editMethod(){
     debugger;
@@ -648,7 +650,9 @@ handleEditDesination =(data1,e)  =>{
 
       });
       
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetReporteedesignationList(data1) {
@@ -676,7 +680,9 @@ handleEditDesination =(data1,e)  =>{
         ReporteeDesignData: reportdesign
 
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetReportTOList(data2) {
     debugger;
@@ -704,7 +710,9 @@ handleEditDesination =(data1,e)  =>{
         ReportToData: reportto
 
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetBrandList() {
     let self = this;
@@ -721,7 +729,9 @@ handleEditDesination =(data1,e)  =>{
       } else {
         self.setState({ brandData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetCategoryList(data) {
     debugger;
@@ -762,7 +772,9 @@ handleEditDesination =(data1,e)  =>{
         CategoryData: CategoryData,
         multibrandIDs: finalBrandId
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetSubCategoryList(data) {
     debugger;
@@ -799,7 +811,9 @@ handleEditDesination =(data1,e)  =>{
         SubCategoryData: SubCategoryData,
         multicategoryIDs: finalCategoryId
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetIssueTypeList(data) {
     debugger;
@@ -835,7 +849,9 @@ handleEditDesination =(data1,e)  =>{
         IssueTypeData: IssueTypeData,
         multisubcategoryIDs: finalSubCategoryId
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetAgentList(datar) {
     debugger;
@@ -871,7 +887,9 @@ if(datar==="add"){
       
 
       self.setState({ AgentData: array });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUserList() {
     debugger;
@@ -913,7 +931,9 @@ if(datar==="add"){
         
       }
       
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetUserListByID(id) {
@@ -942,7 +962,9 @@ if(datar==="add"){
         });
       }
 
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleValidationEmailIdMob() {
@@ -991,7 +1013,9 @@ if(datar==="add"){
         }  
       } 
 
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       usernameCompulsion:"Please enter user name.",
@@ -1043,7 +1067,9 @@ if(datar==="add"){
         personalReadOnly:true
       });
       self.handleUserList();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       usernameCompulsion:"Please enter user name.",
@@ -1097,7 +1123,9 @@ if(datar==="add"){
         personalReadOnly:true
       });
       self.handleUserList();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       usernameCompulsion:"Please enter user name.",
@@ -1158,7 +1186,9 @@ if(datar==="add"){
 
       });
       self.handleUserList();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       userdesignCompulsion:"Please select designation.",
@@ -1288,7 +1318,9 @@ if(datar==="add"){
         getID: 0
       });
       self.handleUserList();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
       brandCompulsion:"Please select brands",
@@ -1326,7 +1358,9 @@ if(datar==="add"){
         NotificationManager.success("Record deleted Successfully.");
         self.handleUserList();
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleSendMail(id) {
     debugger;
@@ -1348,7 +1382,9 @@ if(datar==="add"){
         NotificationManager.success("Please Check Email.");
        }
       
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUpdateUser() {
 

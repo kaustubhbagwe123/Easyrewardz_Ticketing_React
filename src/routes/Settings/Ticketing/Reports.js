@@ -9,6 +9,7 @@ import Modal from "react-responsive-modal";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
 import DatePicker from "react-datepicker";
 import { Popover } from "antd";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
@@ -213,7 +214,8 @@ class Reports extends Component {
       TaskPriorityCompulsion: "",
       DepartmentCompulsion: "",
       FunctionCompulsion: "",
-      FunctionData: []
+      FunctionData: [],
+      loadingDownload: false
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -603,6 +605,8 @@ class Reports extends Component {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleNextPopupOpen() {
@@ -614,8 +618,7 @@ class Reports extends Component {
     this.handleReportList();
   }
   handleDefaultPopupClose = () => {
-    this.setState({ OpenDefaultModal: false });
-    // this.handleReportList();
+    this.setState({ OpenDefaultModal: false, TicketCreatedFromDate: '', TicketCreatedEndDate: '', SelectedSourceIds: '', selectedDefaultTicketStatus: 0, TicketClosedFrom: '', TicketClosedTo: '', SelectedDefaultTeamMember: '', SelectedTicketMultiStatus: '' });
   };
   handleReportCreateDate(date) {
     this.setState({ ReportCreateDate: date });
@@ -774,6 +777,8 @@ class Reports extends Component {
       self.setState({ totalResultCount: data });
       self.handleNextPopupOpen();
       //self.handleAddReportClose();
+    }).catch(data => {
+      console.log(data);
     });
   }
   EditSearchParameter(objEdit) {
@@ -1235,6 +1240,8 @@ class Reports extends Component {
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1252,6 +1259,8 @@ class Reports extends Component {
       self.setState({
         AssignToData: AssignData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1266,6 +1275,8 @@ class Reports extends Component {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetTicketSourceList() {
@@ -1282,6 +1293,8 @@ class Reports extends Component {
       self.setState({
         TicketSourceData: TicketSourceData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleReportList() {
@@ -1303,10 +1316,15 @@ class Reports extends Component {
         ReportData: reportdata,
         loading: false
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleDownload = (id, name) => {
     debugger;
+    this.setState({
+      loadingDownload: false
+    })
     let self = this;    
     if (id == 0) {     
 
@@ -1363,6 +1381,9 @@ class Reports extends Component {
         }, 100);
      
     } else {
+      this.setState({
+        loading: true
+      })
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadReportSearch",
@@ -1372,8 +1393,13 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");
+        window.open(res.data.responseData);
         // self.downloadURI(res.data.responseData,name+".csv");
+        self.setState({
+          loading: false
+        })
+      }).catch(data => {
+        console.log(data);
       });
     }
   };
@@ -1392,7 +1418,10 @@ class Reports extends Component {
     { 
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
           sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-         }   
+         }
+         this.setState({
+          loadingDownload: true
+        });   
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1409,14 +1438,22 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);   
+        self.setState({
+          loadingDownload: false
+        });    
+      }).catch(data => {
+        console.log(data);
       });         
     }
     else if(this.state.DefaultPopupName=="Total Open Ticket")
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      }); 
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1434,7 +1471,12 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);
+        self.setState({
+          loadingDownload: false
+        });       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1458,6 +1500,10 @@ class Reports extends Component {
       if(totalError>0)
       {
         return false;
+      } else {
+        this.setState({
+          loadingDownload: true
+        });
       }
       axios({
         method: "post",
@@ -1482,7 +1528,12 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);  
+        self.setState({
+          loadingDownload: false
+        });     
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1512,6 +1563,10 @@ class Reports extends Component {
       if(totalError>0)
       {
         return;
+      } else {
+        this.setState({
+          loadingDownload: true
+        });
       }
 
       axios({
@@ -1532,7 +1587,12 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);
+        self.setState({
+          loadingDownload: false
+        });      
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1540,7 +1600,10 @@ class Reports extends Component {
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      });  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1558,14 +1621,22 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData); 
+        self.setState({
+          loadingDownload: false
+        });      
+      }).catch(data => {
+        console.log(data);
       }); 
     }
     else if(this.state.DefaultPopupName=="Re-Assigned Tickets")
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      });  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1583,7 +1654,12 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData); 
+        self.setState({
+          loadingDownload: false
+        });      
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1591,7 +1667,10 @@ class Reports extends Component {
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      });  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1609,7 +1688,12 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);
+        self.setState({
+          loadingDownload: false
+        });       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1644,6 +1728,8 @@ class Reports extends Component {
         NotificationManager.success("Record Deleted successfully.");
         self.handleReportList();
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetBrandList() {
@@ -1662,6 +1748,8 @@ class Reports extends Component {
       } else {
         self.setState({ brandData: [] });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetCategoryList() {
@@ -1679,6 +1767,8 @@ class Reports extends Component {
       self.setState({
         CategoryData: CategoryData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1707,6 +1797,8 @@ class Reports extends Component {
       self.setState({
         SubCategoryData: SubCategoryData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetIssueTypeList() {
@@ -1729,6 +1821,8 @@ class Reports extends Component {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1758,6 +1852,8 @@ class Reports extends Component {
         self.handleReportList();
         self.handleNextPopupClose();
         NotificationManager.success("Report saved successfully for download.");
+      }).catch(data => {
+        console.log(data);
       });
     }
     else {
@@ -1828,6 +1924,8 @@ class Reports extends Component {
         self.setState({ Schedule_ID: 0 });
         NotificationManager.error("Report name already exist.");
       }
+    }).catch(data => {
+      console.log(data);
     });
       }
 
@@ -1928,6 +2026,8 @@ class Reports extends Component {
           self.setState({ Schedule_ID: 0 });
           NotificationManager.error("Report name already exist.");
         }
+      }).catch(data => {
+        console.log(data);
       });
     } else {
       NotificationManager.error("Please add report for create scheduler.");
@@ -2776,9 +2876,9 @@ class Reports extends Component {
               </div>
               <div>
              
-              <div id="dvAssignedTo" className="cls-hide">
+              <div id="dvAssignedTo" className="cls-hide ticketreport">
                   Assigned To
-                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
                           <Select
                             getOptionLabel={option => option.fullName}
                             getOptionValue={
@@ -2796,9 +2896,9 @@ class Reports extends Component {
                         </div>
                         <span id="spnAssignedTo" className="cls-spnerror" style={{color:"red"}}></span>
                 </div>
-                <div id="dvMultiStatus" className="cls-hide">
+                <div id="dvMultiStatus" className="cls-hide ticketreport">
                   Ticket Status
-                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
                           <Select
                             getOptionLabel={option => option.ticketStatusName}
                             getOptionValue={
@@ -2881,7 +2981,7 @@ class Reports extends Component {
                 </div>
                 <span id="spnTicketToDate" className="cls-spnerror" style={{color:"red"}}></span>
               </div>
-              <div>
+              <div className="ticketreport">
                 Ticket Source
                 <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
                   <Select
@@ -2901,10 +3001,10 @@ class Reports extends Component {
                 </div>
                 <span id="spnTicketSource" className="cls-spnerror" style={{color:"red"}}></span>
               </div>
-              <div id="TicketStatus" className="cls-hide">
+              <div id="TicketStatus" className="ticketreport cls-hide">
                       Status
                       <div className="mt-2">
-                      <select id="drpDefaultStatus" style={{width:"120px"}} className="normal-dropdown dropdown-setting1"
+                      <select id="drpDefaultStatus" className="w-100 normal-dropdown dropdown-setting1"
                         name="selectedDefaultTicketStatus"
                         value={this.state.selectedDefaultTicketStatus}
                         onChange={this.setDefaultTicketStatus}
@@ -2933,8 +3033,18 @@ class Reports extends Component {
               <button
                 className="scheduleBtn"
                 onClick={this.downloadDefaultReport.bind(this)}
+                disabled={this.state.loadingDownload}
               >
-                <label className="addLable">Download</label>
+                {this.state.loadingDownload ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )}
+                <label className="addLable">{this.state.loadingDownload ? "Please Wait ..." : "Download"}</label>
               </button>
             </div>
             <div onClick={this.handleDefaultPopupClose}>
@@ -3462,7 +3572,7 @@ class Reports extends Component {
                       Cell: row => (
                         <div className="report-action">
                           <div>
-                            {row.original.isDownloaded == 1 ? (
+                            {row.original.isDownloaded == 1 && 
                               <img
                                 src={DownExcel}
                                 alt="download icon"
@@ -3473,14 +3583,7 @@ class Reports extends Component {
                                   row.original.reportName
                                 )}
                               />
-                            ) : (
-                              <img
-                                style={{ display: "none" }}
-                                src={DownExcel}
-                                alt="download icon"
-                                className="downloadaction"
-                              />
-                            )}
+                            }
                           </div>
                           <div>
                             {row.original.scheduleID == 0 ? (

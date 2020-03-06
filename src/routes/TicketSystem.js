@@ -377,7 +377,9 @@ class TicketSystem extends Component {
 
           self.handleEditCustomerClose.bind(this);
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -402,7 +404,9 @@ class TicketSystem extends Component {
       } else {
         self.setState({ TicketTitleData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleCkEditorTemplate() {
     let self = this;
@@ -417,7 +421,9 @@ class TicketSystem extends Component {
       debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleCkEditorTemplateData(tempId, tempName) {
     debugger;
@@ -439,7 +445,9 @@ class TicketSystem extends Component {
         selectTicketTemplateId: tempId,
         mailBodyData: bodyData
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleKbLinkPopupSearch() {
     if (
@@ -464,7 +472,9 @@ class TicketSystem extends Component {
           NotificationManager.error("No Record Found.", "", 2000);
         }
         self.setState({ KbPopupData: KbPopupData });
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.setState({
         categoryKbCompulsion: "Category field is compulsory.",
@@ -484,7 +494,9 @@ class TicketSystem extends Component {
       debugger;
       let data = res.data.responseData;
       self.setState({ BrandData: data });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetCategoryList(brandId = 0) {
     debugger;
@@ -508,7 +520,9 @@ class TicketSystem extends Component {
       debugger;
       let CategoryData = res.data;
       self.setState({ CategoryData: CategoryData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetSubCategoryList() {
     debugger;
@@ -535,7 +549,9 @@ class TicketSystem extends Component {
       debugger;
       let SubCategoryData = res.data.responseData;
       self.setState({ SubCategoryData: SubCategoryData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetIssueTypeList() {
     debugger;
@@ -555,7 +571,9 @@ class TicketSystem extends Component {
       debugger;
       let data = res.data.responseData;
       self.setState({ IssueTypeData: data });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetTicketPriorityList() {
     debugger;
@@ -573,7 +591,9 @@ class TicketSystem extends Component {
       } else {
         self.setState({ TicketPriorityData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetChannelOfPurchaseList() {
     let self = this;
@@ -585,7 +605,9 @@ class TicketSystem extends Component {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetCustomerData(CustId, mode) {
@@ -619,7 +641,9 @@ class TicketSystem extends Component {
         self.handleEditCustomerOpen();
         self.setState({ customerData: customerData, CustData });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   setWrapperRef(node) {
@@ -875,7 +899,9 @@ class TicketSystem extends Component {
         } else {
           NotificationManager.error(res.data.message, "", 2000);
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.setState({
         ticketTitleCompulsion: "Ticket Title field is compulsory.",

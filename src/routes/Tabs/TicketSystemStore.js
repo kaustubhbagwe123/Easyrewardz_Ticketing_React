@@ -110,7 +110,9 @@ class TicketSystemStore extends Component {
               SearchData: []
             });
           }
-        });
+        }).catch(data => {
+          console.log(data);
+          });
       } else {
         self.setState({
           byValideStoreData: "Please Enter Store Details."
