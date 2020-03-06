@@ -110,8 +110,9 @@ class Header extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleLoggedInUserDetails();
     this.handleGetUserProfileData();
+    this.handleLoggedInUserDetails();
+    
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
