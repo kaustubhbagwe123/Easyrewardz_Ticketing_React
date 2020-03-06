@@ -264,7 +264,7 @@ class MyTicketList extends Component {
       sortAssigneeData: [],
       sortAllData: [],
       cSelectedRow: {},
-      notiType: ''
+      notiType: ""
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -352,12 +352,10 @@ class MyTicketList extends Component {
     debugger;
     // console.log(this.state.notiType);
     if (this.props.location.state) {
-
       if (this.state.notiType !== this.props.location.state.isType) {
-        this.newNotifications(this.props.location.state.isType)
+        this.newNotifications(this.props.location.state.isType);
       }
     }
-
   }
 
   newNotifications(type) {
@@ -366,11 +364,10 @@ class MyTicketList extends Component {
       upperTabs[i].classList.remove("active");
     }
     document.getElementsByName(type)[0].classList.add("active");
-    this.setState({ notiType: type })
+    this.setState({ notiType: type });
     setTimeout(() => {
       this.handleSearchTicket(type);
     }, 100);
-
   }
   // openNotifications() {
   //   let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
@@ -391,17 +388,21 @@ class MyTicketList extends Component {
       params: {
         ModuleID: 9
       }
-    }).then(function (res) {
-      debugger;
-      let status = res.data.message;
-      let data1 = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ modulesItemsMyticket: data1 });
-        self.setMyTicketSearch(data1);
-      } else {
-        self.setState({ modulesItemsMyticket: [] });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data1 = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ modulesItemsMyticket: data1 });
+          self.setMyTicketSearch(data1);
+        } else {
+          self.setState({ modulesItemsMyticket: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   setMyTicketSearch(data1) {
@@ -482,46 +483,50 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Search/TicketStatusCount",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      let Status = res.data.message;
-      if (Status === "Success") {
-        var EscalationCount = data[0].ticketCount;
-        var NewCount = data[1].ticketCount;
-        var OpenCount = data[2].ticketCount;
-        var ResolvedCount = data[3].ticketCount;
-        var ReassignedCount = data[4].ticketCount;
-        var ClosedCount = data[5].ticketCount;
-        var AllCount = data[6].ticketCount;
-        var FollowUpCount = data[7].ticketCount;
-        var draftCountStatus = data[8].ticketCount;
-        var byReOpenCount = data[9].ticketCount;
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let Status = res.data.message;
+        if (Status === "Success") {
+          var EscalationCount = data[0].ticketCount;
+          var NewCount = data[1].ticketCount;
+          var OpenCount = data[2].ticketCount;
+          var ResolvedCount = data[3].ticketCount;
+          var ReassignedCount = data[4].ticketCount;
+          var ClosedCount = data[5].ticketCount;
+          var AllCount = data[6].ticketCount;
+          var FollowUpCount = data[7].ticketCount;
+          var draftCountStatus = data[8].ticketCount;
+          var byReOpenCount = data[9].ticketCount;
 
-        self.setState({
-          byEscalationCount: EscalationCount,
-          byNewCount: NewCount,
-          byOpenCount: OpenCount,
-          byResolvedCount: ResolvedCount,
-          byReassignedCount: ReassignedCount,
-          byClosedCount: ClosedCount,
-          byAllCount: AllCount,
-          byFollowUpCount: FollowUpCount,
-          draftCountStatus: draftCountStatus,
-          byReOpenCount
-        });
-      }
-    });
+          self.setState({
+            byEscalationCount: EscalationCount,
+            byNewCount: NewCount,
+            byOpenCount: OpenCount,
+            byResolvedCount: ResolvedCount,
+            byReassignedCount: ReassignedCount,
+            byClosedCount: ClosedCount,
+            byAllCount: AllCount,
+            byFollowUpCount: FollowUpCount,
+            draftCountStatus: draftCountStatus,
+            byReOpenCount
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleSearchTicket(TabId) {
     debugger;
-    this.state.sortTicketData= [];
-    this.state.sortCategoryData= [];
-    this.state.sortPriorityData= [];
-    this.state.sortcreatedOnData= [];
-    this.state.sortAssigneeData= [];
-    this.state.sortAllData =[];
+    this.state.sortTicketData = [];
+    this.state.sortCategoryData = [];
+    this.state.sortPriorityData = [];
+    this.state.sortcreatedOnData = [];
+    this.state.sortAssigneeData = [];
+    this.state.sortAllData = [];
     var ticketStatus = 0;
 
     if (TabId === "Escalation" || TabId === undefined) {
@@ -571,53 +576,56 @@ class MyTicketList extends Component {
       });
     }
     // var data = ticketStatus;
-    this.setState({ loading: true, resultCount: 0, collapseSearch: false,
+    this.setState({
+      loading: true,
+      resultCount: 0,
+      collapseSearch: false,
       ByDateCreatDate: "",
       ByDateSelectDate: "",
       selectedSlaDueByDate: 0,
       selectedTicketStatusByDate: 0,
       MobileNoByCustType: "",
-          EmailIdByCustType: "",
-          TicketIdByCustType: "",
-          selectedTicketStatusByCustomer: 0,
-          selectedPriority: 0,
-          selectedTicketStatusByTicket: 0,
-          selectedChannelOfPurchase: [],
-          selectedTicketActionType: [],
-          selectedCategory: 0,
-          selectedSubCategory: 0,
-          selectedIssueType: 0,
-          selectedTicketStatusByCategory: 0,
-          ByAllCreateDate: "",
-          selectedTicketSource: 0,
-          ClaimIdByAll: "",
-          EmailByAll: "",
-          ByAllLastDate: "",
-          TicketIdTitleByAll: "",
-          InvoiceSubOrderByAll: "",
-          MobileByAll: "",
-          selectedCategoryAll: 0,
-          selectedPriorityAll: 0,
-          ItemIdByAll: "",
-          selectedAssignedToAll: "",
-          selectedSubCategoryAll: 0,
-          selectedTicketStatusAll: 0,
-          selectedAssignedTo: 0,
-          selectedVisitStoreAll: "all",
-          selectedPurchaseStoreCodeAddressAll: "",
-          selectedIssueTypeAll: 0,
-          selectedSlaStatus: 0,
-          selectedWantToVisitStoreAll: "all",
-          selectedVisitStoreCodeAddressAll: "",
-          selectedWithClaimAll: "no",
-          selectedClaimStatus: 0,
-          selectedClaimCategory: 0,
-          selectedClaimSubCategory: 0,
-          selectedClaimIssueType: 0,
-          selectedWithTaskAll: "no",
-          selectedTaskStatus: 0,
-          selectedDepartment: 0,
-          selectedFunction: 0
+      EmailIdByCustType: "",
+      TicketIdByCustType: "",
+      selectedTicketStatusByCustomer: 0,
+      selectedPriority: 0,
+      selectedTicketStatusByTicket: 0,
+      selectedChannelOfPurchase: [],
+      selectedTicketActionType: [],
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedTicketStatusByCategory: 0,
+      ByAllCreateDate: "",
+      selectedTicketSource: 0,
+      ClaimIdByAll: "",
+      EmailByAll: "",
+      ByAllLastDate: "",
+      TicketIdTitleByAll: "",
+      InvoiceSubOrderByAll: "",
+      MobileByAll: "",
+      selectedCategoryAll: 0,
+      selectedPriorityAll: 0,
+      ItemIdByAll: "",
+      selectedAssignedToAll: "",
+      selectedSubCategoryAll: 0,
+      selectedTicketStatusAll: 0,
+      selectedAssignedTo: 0,
+      selectedVisitStoreAll: "all",
+      selectedPurchaseStoreCodeAddressAll: "",
+      selectedIssueTypeAll: 0,
+      selectedSlaStatus: 0,
+      selectedWantToVisitStoreAll: "all",
+      selectedVisitStoreCodeAddressAll: "",
+      selectedWithClaimAll: "no",
+      selectedClaimStatus: 0,
+      selectedClaimCategory: 0,
+      selectedClaimSubCategory: 0,
+      selectedClaimIssueType: 0,
+      selectedWithTaskAll: "no",
+      selectedTaskStatus: 0,
+      selectedDepartment: 0,
+      selectedFunction: 0
     });
     debugger;
     let self = this;
@@ -628,94 +636,97 @@ class MyTicketList extends Component {
       params: {
         HeaderStatusID: ticketStatus
       }
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      let CSVData = data;
-      let Status = res.data.message;
-      
-       if(data !== null){
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let CSVData = data;
+        let Status = res.data.message;
 
-        self.state.sortAllData = data;
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].ticketStatus]) {
-          distinct.push(data[i].ticketStatus);
-          unique[data[i].ticketStatus] = 1;
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].ticketStatus]) {
+              distinct.push(data[i].ticketStatus);
+              unique[data[i].ticketStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].category]) {
+              distinct.push(data[i].category);
+              unique[data[i].category] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCategoryData.push({ category: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].priority]) {
+              distinct.push(data[i].priority);
+              unique[data[i].priority] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortPriorityData.push({ priority: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdOn]) {
+              distinct.push(data[i].createdOn);
+              unique[data[i].createdOn] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].assignedTo]) {
+              distinct.push(data[i].assignedTo);
+              unique[data[i].assignedTo] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+          }
         }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortTicketData.push({ ticketStatus: distinct[i] });
-      }
 
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].category]) {
-          distinct.push(data[i].category);
-          unique[data[i].category] = 1;
+        if (Status === "Success") {
+          self.setState({
+            SearchTicketData: data,
+            loading: false,
+            cSelectedRow: {}
+          });
+          for (let i = 0; i < CSVData.length; i++) {
+            delete CSVData[i].totalpages;
+            delete CSVData[i].responseTimeRemainingBy;
+            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].resolutionOverdueBy;
+            // delete CSVData[i].ticketCommentCount;
+          }
+          self.setState({ CSVDownload: CSVData });
+        } else {
+          self.setState({ SearchTicketData: [], loading: false });
         }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortCategoryData.push({ category: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].priority]) {
-          distinct.push(data[i].priority);
-          unique[data[i].priority] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortPriorityData.push({ priority: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].createdOn]) {
-          distinct.push(data[i].createdOn);
-          unique[data[i].createdOn] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].assignedTo]) {
-          distinct.push(data[i].assignedTo);
-          unique[data[i].assignedTo] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
-      }
-      
-
-
-       }
-      
-
-      if (Status === "Success") {
-        self.setState({ SearchTicketData: data, loading: false, cSelectedRow: {} });
-        for (let i = 0; i < CSVData.length; i++) {
-          delete CSVData[i].totalpages;
-          delete CSVData[i].responseTimeRemainingBy;
-          delete CSVData[i].responseOverdueBy;
-          delete CSVData[i].resolutionOverdueBy;
-          // delete CSVData[i].ticketCommentCount;
-        }
-        self.setState({ CSVDownload: CSVData });
-      } else {
-        self.setState({ SearchTicketData: [], loading: false });
-      }
-    });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleSchedulePopup() {
@@ -847,17 +858,21 @@ class MyTicketList extends Component {
         NameOfMonthForYear: this.state
           .selectedNameOfMonthForDailyYearCommaSeperated
       }
-    }).then(function (res) {
-      debugger;
-      let messageData = res.data.message;
-      if (messageData === "Success") {
-        self.ScheduleCloseModel();
-        NotificationManager.success("Scheduled successfully.");
-        self.setState({
-          scheduleRequired: ""
-        });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let messageData = res.data.message;
+        if (messageData === "Success") {
+          self.ScheduleCloseModel();
+          NotificationManager.success("Scheduled successfully.");
+          self.setState({
+            scheduleRequired: ""
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleAssignRemark(e) {
@@ -1030,15 +1045,19 @@ class MyTicketList extends Component {
           AgentID: this.state.agentId,
           Remark: this.state.agentRemark
         }
-      }).then(function (res) {
-        debugger;
-        let messageData = res.data.message;
-        if (messageData === "Success") {
-          self.handleAssignModalClose();
-          NotificationManager.success("Tickets assigned successfully.");
-          self.handleSearchTicket();
-        }
-      });
+      })
+        .then(function(res) {
+          debugger;
+          let messageData = res.data.message;
+          if (messageData === "Success") {
+            self.handleAssignModalClose();
+            NotificationManager.success("Tickets assigned successfully.");
+            self.handleSearchTicket();
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       this.setState({
         agentSelection: "Agent Selection is required"
@@ -1202,16 +1221,20 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/GetDraftDetails",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let details = res.data.responseData;
-      let status = res.data.message;
-      if (status === "Success") {
-        self.setState({ DraftDetails: details });
-      } else {
-        self.setState({ DraftDetails: [] });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let details = res.data.responseData;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({ DraftDetails: details });
+        } else {
+          self.setState({ DraftDetails: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetDepartmentList() {
     debugger;
@@ -1220,16 +1243,20 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      let status = res.data.message;
-      if (status === "Success") {
-        self.setState({ DepartmentData: data });
-      } else {
-        self.setState({ DepartmentData: [] });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({ DepartmentData: data });
+        } else {
+          self.setState({ DepartmentData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetFunctionList() {
     debugger;
@@ -1244,11 +1271,15 @@ class MyTicketList extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function (res) {
-      debugger;
-      let FunctionData = res.data.responseData;
-      self.setState({ FunctionData: FunctionData });
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let FunctionData = res.data.responseData;
+        self.setState({ FunctionData: FunctionData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   setScheduleFor = e => {
@@ -1263,16 +1294,20 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      let status = res.data.message;
-      if (status === "Success") {
-        self.setState({ DesignationData: data });
-      } else {
-        self.setState({ DesignationData: [] });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({ DesignationData: data });
+        } else {
+          self.setState({ DesignationData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetTicketPriorityList() {
     debugger;
@@ -1281,16 +1316,20 @@ class MyTicketList extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      let stastus = res.data.message;
-      if (stastus === "Success") {
-        self.setState({ TicketPriorityData: data });
-      } else {
-        self.setState({ TicketPriorityData: [] });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let stastus = res.data.message;
+        if (stastus === "Success") {
+          self.setState({ TicketPriorityData: data });
+        } else {
+          self.setState({ TicketPriorityData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetChannelOfPurchaseList() {
     let self = this;
@@ -1298,11 +1337,15 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let ChannelOfPurchaseData = res.data.responseData;
-      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let ChannelOfPurchaseData = res.data.responseData;
+        self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetTicketSourceList() {
     debugger;
@@ -1312,20 +1355,24 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      let status = res.data.message;
-      if (status === "Success") {
-        self.setState({
-          TicketSourceData: data
-        });
-      } else {
-        self.setState({
-          TicketSourceData: []
-        });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            TicketSourceData: data
+          });
+        } else {
+          self.setState({
+            TicketSourceData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetSlaStatusList() {
     debugger;
@@ -1335,13 +1382,17 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/GetSLAStatusList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({
-        SlaStatusData: data
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({
+          SlaStatusData: data
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    });
   }
   handleGetCategoryList() {
     debugger;
@@ -1351,16 +1402,20 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data;
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data;
 
-      if (data !== null) {
-        self.setState({
-          CategoryData: data
-        });
-      }
-    });
+        if (data !== null) {
+          self.setState({
+            CategoryData: data
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetClaimSubCategoryList() {
     debugger;
@@ -1379,13 +1434,17 @@ class MyTicketList extends Component {
       params: {
         CategoryID: this.state.selectedClaimCategory
       }
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({
-        ClaimSubCategoryData: data
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({
+          ClaimSubCategoryData: data
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    });
   }
   handleGetSubCategoryList() {
     debugger;
@@ -1412,19 +1471,23 @@ class MyTicketList extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function (res) {
-      debugger;
-      var data = res.data.responseData;
-      if (self.state.byCategoryFlag === 4) {
-        self.setState({
-          SubCategoryData: data
-        });
-      } else if (self.state.allFlag === 5) {
-        self.setState({
-          SubCategoryAllData: data
-        });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        var data = res.data.responseData;
+        if (self.state.byCategoryFlag === 4) {
+          self.setState({
+            SubCategoryData: data
+          });
+        } else if (self.state.allFlag === 5) {
+          self.setState({
+            SubCategoryAllData: data
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetClaimIssueTypeList() {
     let self = this;
@@ -1440,11 +1503,15 @@ class MyTicketList extends Component {
       params: {
         SubCategoryID: this.state.selectedClaimSubCategory
       }
-    }).then(function (res) {
-      debugger;
-      let ClaimIssueTypeData = res.data.responseData;
-      self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let ClaimIssueTypeData = res.data.responseData;
+        self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetIssueTypeList() {
     let self = this;
@@ -1466,22 +1533,26 @@ class MyTicketList extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function (res) {
-      debugger;
-      // let IssueTypeData = res.data.responseData;
-      // self.setState({ IssueTypeData: IssueTypeData });
-      if (self.state.byCategoryFlag === 4) {
-        var IssueTypeData = res.data.responseData;
-        self.setState({
-          IssueTypeData: IssueTypeData
-        });
-      } else if (self.state.allFlag === 5) {
-        var IssueTypeAllData = res.data.responseData;
-        self.setState({
-          IssueTypeAllData: IssueTypeAllData
-        });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        // let IssueTypeData = res.data.responseData;
+        // self.setState({ IssueTypeData: IssueTypeData });
+        if (self.state.byCategoryFlag === 4) {
+          var IssueTypeData = res.data.responseData;
+          self.setState({
+            IssueTypeData: IssueTypeData
+          });
+        } else if (self.state.allFlag === 5) {
+          var IssueTypeAllData = res.data.responseData;
+          self.setState({
+            IssueTypeAllData: IssueTypeAllData
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleAssignSearchData() {
     debugger;
@@ -1496,17 +1567,21 @@ class MyTicketList extends Component {
         Email: this.state.assignEmail.trim(),
         DesignationID: this.state.selectedDesignation
       }
-    }).then(function (res) {
-      debugger;
-      let SearchAssignData = res.data.responseData;
-      self.setState({
-        SearchAssignData: SearchAssignData,
-        assignFirstName: "",
-        assignLastName: "",
-        assignEmail: ""
-        // selectedDesignation: 0
+    })
+      .then(function(res) {
+        debugger;
+        let SearchAssignData = res.data.responseData;
+        self.setState({
+          SearchAssignData: SearchAssignData,
+          assignFirstName: "",
+          assignLastName: "",
+          assignEmail: ""
+          // selectedDesignation: 0
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    });
   }
   handleAssignClearData() {
     debugger;
@@ -1530,17 +1605,21 @@ class MyTicketList extends Component {
           SearchSaveName: this.state.SearchName,
           parameter: this.state.FinalSaveSearchData
         }
-      }).then(function (res) {
-        debugger;
-        let Msg = res.data.message;
-        if (Msg === "Success") {
-          NotificationManager.success("Save Search parameter successfully.");
-          self.handleGetSaveSearchList();
-          self.setState({
-            SearchName: ""
-          });
-        }
-      });
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Save Search parameter successfully.");
+            self.handleGetSaveSearchList();
+            self.setState({
+              SearchName: ""
+            });
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       self.setState({
         SearchNameCompulsory: "Please Enter Search Name."
@@ -1554,11 +1633,15 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/listSavedSearch",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({ SearchListData: data });
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({ SearchListData: data });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   hadleSearchDeleteData(searchDeletId) {
     debugger;
@@ -1571,23 +1654,29 @@ class MyTicketList extends Component {
       params: {
         SearchParamID: searchDeletId
       }
-    }).then(function (res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Saved search data deleted successfully.");
-        self.handleGetSaveSearchList();
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          NotificationManager.success(
+            "Saved search data deleted successfully."
+          );
+          self.handleGetSaveSearchList();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   ViewSearchData(clrSrch) {
     debugger;
-    this.state.sortTicketData= [];
-    this.state.sortCategoryData= [];
-    this.state.sortPriorityData= [];
-    this.state.sortcreatedOnData= [];
-    this.state.sortAssigneeData= [];
-    this.state.sortAllData =[];
+    this.state.sortTicketData = [];
+    this.state.sortCategoryData = [];
+    this.state.sortPriorityData = [];
+    this.state.sortcreatedOnData = [];
+    this.state.sortAssigneeData = [];
+    this.state.sortAllData = [];
     let self = this;
     this.setState({ loading: true });
 
@@ -1775,122 +1864,118 @@ class MyTicketList extends Component {
         searchDataByCategoryType: categoryType,
         SearchDataByAll: allTab
       }
-    }).then(function (res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      console.log(data);
-      let CSVData = data;
-      let count = 0;
-      if(data !== null) {
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
-      }
-
-      if(data !== null){
-
-        self.state.sortAllData = data;
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].ticketStatus]) {
-          distinct.push(data[i].ticketStatus);
-          unique[data[i].ticketStatus] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortTicketData.push({ ticketStatus: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].category]) {
-          distinct.push(data[i].category);
-          unique[data[i].category] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortCategoryData.push({ category: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].priority]) {
-          distinct.push(data[i].priority);
-          unique[data[i].priority] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortPriorityData.push({ priority: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].createdOn]) {
-          distinct.push(data[i].createdOn);
-          unique[data[i].createdOn] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
-      }
-
-      var unique = [];
-      var distinct = [];
-      for (let i = 0; i < data.length; i++) {
-        if (!unique[data[i].assignedTo]) {
-          distinct.push(data[i].assignedTo);
-          unique[data[i].assignedTo] = 1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
-      }
-    }
-      
-
-      }
-        
-      
-
-     
-
-      if (status === "Success") {
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        let CSVData = data;
+        let count = 0;
         if (data !== null) {
-          for (let i = 0; i < CSVData.length; i++) {
-            delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
-            // delete CSVData[i].ticketCommentCount;
+          if (res.data.responseData != null) {
+            count = res.data.responseData.length;
           }
-          self.setState({ CSVDownload: CSVData });
-          self.setState({
-            SearchTicketData: data
-          });
+
+          if (data !== null) {
+            self.state.sortAllData = data;
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].ticketStatus]) {
+                distinct.push(data[i].ticketStatus);
+                unique[data[i].ticketStatus] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+            }
+
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].category]) {
+                distinct.push(data[i].category);
+                unique[data[i].category] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortCategoryData.push({ category: distinct[i] });
+            }
+
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].priority]) {
+                distinct.push(data[i].priority);
+                unique[data[i].priority] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortPriorityData.push({ priority: distinct[i] });
+            }
+
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].createdOn]) {
+                distinct.push(data[i].createdOn);
+                unique[data[i].createdOn] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+            }
+
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].assignedTo]) {
+                distinct.push(data[i].assignedTo);
+                unique[data[i].assignedTo] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+            }
+          }
         }
-        if (clrSrch === 1) {
-          self.setState({
-            resultCount: count,
-            loading: false
-          });
+
+        if (status === "Success") {
+          if (data !== null) {
+            for (let i = 0; i < CSVData.length; i++) {
+              delete CSVData[i].totalpages;
+              delete CSVData[i].responseTimeRemainingBy;
+              delete CSVData[i].responseOverdueBy;
+              delete CSVData[i].resolutionOverdueBy;
+              // delete CSVData[i].ticketCommentCount;
+            }
+            self.setState({ CSVDownload: CSVData });
+            self.setState({
+              SearchTicketData: data
+            });
+          }
+          if (clrSrch === 1) {
+            self.setState({
+              resultCount: count,
+              loading: false
+            });
+          } else {
+            self.setState({
+              resultCount: count,
+              loading: false
+            });
+          }
         } else {
           self.setState({
-            resultCount: count,
+            SearchTicketData: [],
+            resultCount: 0,
             loading: false
           });
         }
-      } else {
-        self.setState({
-          SearchTicketData: [],
-          resultCount: 0,
-          loading: false
-        });
-      }
-    });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   setAssignedToValue = e => {
@@ -2194,7 +2279,6 @@ class MyTicketList extends Component {
     var data = e.currentTarget.value;
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-
     } else if (column === "status") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
@@ -2202,14 +2286,10 @@ class MyTicketList extends Component {
       );
     } else if (column === "category") {
       this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.category === data
-      );
+      itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
     } else if (column === "priority") {
       this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.priority === data
-      );
+      itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
     } else if (column === "assignedTo") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
@@ -2233,7 +2313,10 @@ class MyTicketList extends Component {
     } else if (column === "colorwhite") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
-        a => a.isEscalation === 0 && a.isSLANearBreach === false && a.isReassigned === false
+        a =>
+          a.isEscalation === 0 &&
+          a.isSLANearBreach === false &&
+          a.isReassigned === false
       );
     } else if (column === "colorgreen") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -2241,7 +2324,6 @@ class MyTicketList extends Component {
         a => a.isReassigned === true && a.isEscalation === 0
       );
     }
-
 
     this.setState({
       SearchTicketData: itemsArray
@@ -2282,25 +2364,29 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          AssignToData: data,
-          TeamMemberData: data
-        });
-      } else {
-        self.setState({
-          AssignToData: [],
-          TeamMemberData: []
-        });
-      }
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AssignToData: data,
+            TeamMemberData: data
+          });
+        } else {
+          self.setState({
+            AssignToData: [],
+            TeamMemberData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
-  handelCheckBoxCheckedChange = async (ticketID) => {
+  handelCheckBoxCheckedChange = async ticketID => {
     debugger;
     var checkboxes = document.getElementsByName("ListCheckbox");
     var strIds = "";
@@ -2319,7 +2405,8 @@ class MyTicketList extends Component {
     newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
 
     await this.setState({
-      cSelectedRow: ticketID ? newSelected : false, ticketIds: strIds
+      cSelectedRow: ticketID ? newSelected : false,
+      ticketIds: strIds
     });
   };
 
@@ -2374,7 +2461,7 @@ class MyTicketList extends Component {
           self.setState({
             ticketDetailID: Id
           });
-          setTimeout(function () {
+          setTimeout(function() {
             self.props.history.push({
               pathname: "myticket",
               ticketDetailID: Id
@@ -2386,10 +2473,10 @@ class MyTicketList extends Component {
             column.original["isEscalation"] === 1
               ? "#FFDFDF"
               : column.original["isSLANearBreach"] === true
-                ? "#FFF3DF"
-                : column.original["isReassigned"] === true
-                  ? "#DEF3FF"
-                  : "white"
+              ? "#FFF3DF"
+              : column.original["isReassigned"] === true
+              ? "#DEF3FF"
+              : "white"
         }
       };
     }
@@ -2533,328 +2620,380 @@ class MyTicketList extends Component {
       params: {
         SearchParamID: paramsID
       }
-    }).then(function (res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData.ticketList;
-      let count = 0;
-      if (res.data.responseData.ticketList != null) {
-        count = res.data.responseData.ticketList.length;
-      }
-      if (status === "Success") {
-        let dataSearch = JSON.parse(res.data.responseData.searchParams);
-        self.setState({
-          SearchTicketData: data,
-          resultCount: count,
-          loading: false
-        });
-        // self.onCloseModal();
-
-        let lowerTabs = document.querySelectorAll(".lower-tabs .nav-link");
-        let activeTabId = dataSearch.ActiveTabId;
-        for (let i = 0; i < lowerTabs.length; i++) {
-          lowerTabs[i].classList.remove("active");
-          if (activeTabId - 1 === i) {
-            lowerTabs[i].classList.add("active");
-          }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData.ticketList;
+        let count = 0;
+        if (res.data.responseData.ticketList != null) {
+          count = res.data.responseData.ticketList.length;
         }
-
-        let lowerTabsPane = document.querySelectorAll(
-          ".lower-tabs-pane .tab-pane"
-        );
-        for (let i = 0; i < lowerTabsPane.length; i++) {
-          lowerTabsPane[i].classList.remove("active");
-          lowerTabsPane[i].classList.remove("show");
-          if (activeTabId - 1 === i) {
-            lowerTabsPane[i].classList.add("active");
-            lowerTabsPane[i].classList.add("show");
-          }
-        }
-
-        let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
-        let headerStatusId = dataSearch.HeaderStatusId;
-        for (let i = 0; i < upperTabs.length; i++) {
-          upperTabs[i].classList.remove("active");
-        }
-        if (headerStatusId === 1001) {
-          document.getElementsByName("Escalation")[0].classList.add("active");
-        } else if (headerStatusId === 101) {
-          document.getElementsByName("New")[0].classList.add("active");
-        } else if (headerStatusId === 102) {
-          document.getElementsByName("Open")[0].classList.add("active");
-        } else if (headerStatusId === 103) {
-          document.getElementsByName("Resolved")[0].classList.add("active");
-        } else if (headerStatusId === 104) {
-          document.getElementsByName("Closed")[0].classList.add("active");
-        } else if (headerStatusId === 105) {
-          document.getElementsByName("ReOpen")[0].classList.add("active");
-        } else if (headerStatusId === 1004) {
-          document.getElementsByName("Reassigned")[0].classList.add("active");
-        } else if (headerStatusId === 1002) {
-          document.getElementsByName("All")[0].classList.add("active");
-        } else if (headerStatusId === 1003) {
-          document.getElementsByName("FollowUp")[0].classList.add("active");
-        }
-
-        if (dataSearch.searchDataByDate === null) {
+        if (status === "Success") {
+          let dataSearch = JSON.parse(res.data.responseData.searchParams);
           self.setState({
-            ByDateCreatDate: "",
-            ByDateSelectDate: "",
-            selectedSlaDueByDate: 0,
-            selectedTicketStatusByDate: 0
+            SearchTicketData: data,
+            resultCount: count,
+            loading: false
           });
-        } else {
-          debugger;
-          if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
-            let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
-            let createdDateArray = createdDate.split('-');
-            var createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
-          }
-          if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
-            let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
-            let modifiedDateArray = modifiedDate.split('-');
-            var modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
-          }
-          self.setState({
-            ByDateCreatDate: createdDateFinal,
-            ByDateSelectDate: modifiedDateFinal,
-            selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
-            selectedTicketStatusByDate:
-              dataSearch.searchDataByDate.Ticket_StatusID,
-              byCategoryFlag: 0,
-              allFlag: 0
-          });
-        }
+          // self.onCloseModal();
 
-        if (dataSearch.searchDataByCustomerType === null) {
-          self.setState({
-            MobileNoByCustType: "",
-            EmailIdByCustType: "",
-            TicketIdByCustType: "",
-            selectedTicketStatusByCustomer: 0
-          });
-        } else {
-          self.setState({
-            MobileNoByCustType:
-              dataSearch.searchDataByCustomerType.CustomerMobileNo,
-            EmailIdByCustType:
-              dataSearch.searchDataByCustomerType.CustomerEmailID,
-            TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
-            selectedTicketStatusByCustomer:
-              dataSearch.searchDataByCustomerType.TicketStatusID,
-              byCategoryFlag: 0,
-              allFlag: 0
-          });
-        }
-
-        if (dataSearch.searchDataByTicketType === null) {
-          self.setState({
-            selectedPriority: 0,
-            selectedTicketStatusByTicket: 0,
-            selectedChannelOfPurchase: [],
-            selectedTicketActionType: []
-          });
-        } else {
-          let purchaseArr = [];
-          let purchaseId = dataSearch.searchDataByTicketType.ChannelOfPurchaseIds.split(
-            ","
-          );
-          for (let i = 0; i < purchaseId.length - 1; i++) {
-            const element = purchaseId[i];
-            for (let j = 0; j < self.state.ChannelOfPurchaseData.length; j++) {
-              if (
-                element ==
-                self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
-              ) {
-                purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
-              }
+          let lowerTabs = document.querySelectorAll(".lower-tabs .nav-link");
+          let activeTabId = dataSearch.ActiveTabId;
+          for (let i = 0; i < lowerTabs.length; i++) {
+            lowerTabs[i].classList.remove("active");
+            if (activeTabId - 1 === i) {
+              lowerTabs[i].classList.add("active");
             }
           }
 
-          let actionArr = [];
-          let actionId = dataSearch.searchDataByTicketType.ActionTypes.split(
-            ","
+          let lowerTabsPane = document.querySelectorAll(
+            ".lower-tabs-pane .tab-pane"
           );
-          for (let i = 0; i < actionId.length - 1; i++) {
-            const element = actionId[i];
-            for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
-              if (
-                element ==
-                self.state.TicketActionTypeData[j].ticketActionTypeID
-              ) {
-                actionArr.push(self.state.TicketActionTypeData[j]);
-              }
+          for (let i = 0; i < lowerTabsPane.length; i++) {
+            lowerTabsPane[i].classList.remove("active");
+            lowerTabsPane[i].classList.remove("show");
+            if (activeTabId - 1 === i) {
+              lowerTabsPane[i].classList.add("active");
+              lowerTabsPane[i].classList.add("show");
             }
           }
 
-          self.setState({
-            selectedPriority:
-              dataSearch.searchDataByTicketType.TicketPriorityID,
-            selectedTicketStatusByTicket:
-              dataSearch.searchDataByTicketType.TicketStatusID,
-            selectedChannelOfPurchase: purchaseArr,
-            selectedTicketActionType: actionArr,
-            byCategoryFlag: 0,
-            allFlag: 0
-          });
-        }
-
-        if (dataSearch.searchDataByCategoryType === null) {
-          self.setState({
-            selectedCategory: 0,
-            selectedSubCategory: 0,
-            selectedIssueType: 0,
-            selectedTicketStatusByCategory: 0
-          });
-        } else {
-          // self.setState({
-          //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-          //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
-          //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
-          //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
-          // });
-          self.setState({
-            selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-            byCategoryFlag: 4,
-            allFlag: 0,
-            selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
-          }, () => {
-            self.handleGetSubCategoryList()
-          });
-          self.setState({
-            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId
-          }, () => {
-            self.handleGetIssueTypeList()
-          });
-          self.setState({
-            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
-          });
-        }
-
-        if (dataSearch.SearchDataByAll === null) {
-          self.setState({
-            ByAllCreateDate: "",
-            selectedTicketSource: 0,
-            ClaimIdByAll: "",
-            EmailByAll: "",
-            ByAllLastDate: "",
-            TicketIdTitleByAll: "",
-            InvoiceSubOrderByAll: "",
-            MobileByAll: "",
-            selectedCategoryAll: 0,
-            selectedPriorityAll: 0,
-            ItemIdByAll: "",
-            selectedAssignedTo: 0,
-            selectedAssignedToAll: "",
-            selectedSubCategoryAll: 0,
-            selectedTicketStatusAll: 0,
-            selectedVisitStoreAll: "all",
-            selectedPurchaseStoreCodeAddressAll: "",
-            selectedIssueTypeAll: 0,
-            selectedSlaStatus: 0,
-            selectedWantToVisitStoreAll: "all",
-            selectedVisitStoreCodeAddressAll: "",
-            selectedWithClaimAll: "no",
-            selectedClaimStatus: 0,
-            selectedClaimCategory: 0,
-            selectedClaimSubCategory: 0,
-            selectedClaimIssueType: 0,
-            selectedWithTaskAll: "no",
-            selectedTaskStatus: 0,
-            selectedDepartment: 0,
-            selectedFunction: 0
-          });
-        } else {
-          if (dataSearch.SearchDataByAll.CreatedDate !== "") {
-            let createdDate = dataSearch.SearchDataByAll.CreatedDate;
-            let createdDateArray = createdDate.split('-');
-            let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
+          let headerStatusId = dataSearch.HeaderStatusId;
+          for (let i = 0; i < upperTabs.length; i++) {
+            upperTabs[i].classList.remove("active");
           }
-          if (dataSearch.SearchDataByAll.ModifiedDate !== "") {
-            let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
-            let modifiedDateArray = modifiedDate.split('-');
-            let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          if (headerStatusId === 1001) {
+            document.getElementsByName("Escalation")[0].classList.add("active");
+          } else if (headerStatusId === 101) {
+            document.getElementsByName("New")[0].classList.add("active");
+          } else if (headerStatusId === 102) {
+            document.getElementsByName("Open")[0].classList.add("active");
+          } else if (headerStatusId === 103) {
+            document.getElementsByName("Resolved")[0].classList.add("active");
+          } else if (headerStatusId === 104) {
+            document.getElementsByName("Closed")[0].classList.add("active");
+          } else if (headerStatusId === 105) {
+            document.getElementsByName("ReOpen")[0].classList.add("active");
+          } else if (headerStatusId === 1004) {
+            document.getElementsByName("Reassigned")[0].classList.add("active");
+          } else if (headerStatusId === 1002) {
+            document.getElementsByName("All")[0].classList.add("active");
+          } else if (headerStatusId === 1003) {
+            document.getElementsByName("FollowUp")[0].classList.add("active");
           }
-          self.setState({
-            ByAllCreateDate: createdDateFinal,
-            selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
-            ClaimIdByAll: dataSearch.SearchDataByAll.ClaimId,
-            EmailByAll: dataSearch.SearchDataByAll.CustomerEmailID,
-            ByAllLastDate: modifiedDateFinal,
-            TicketIdTitleByAll: dataSearch.SearchDataByAll.TicketIdORTitle,
-            InvoiceSubOrderByAll:
-              dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
-            MobileByAll: dataSearch.SearchDataByAll.CustomerMobileNo,
-            // selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
-            selectedPriorityAll: dataSearch.SearchDataByAll.PriorityId,
-            ItemIdByAll: dataSearch.SearchDataByAll.OrderItemId,
-            selectedAssignedTo: dataSearch.SearchDataByAll.AssignTo,
-            // selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
-            selectedTicketStatusAll: dataSearch.SearchDataByAll.TicketSatutsID,
-            selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
-            selectedPurchaseStoreCodeAddressAll:
-              dataSearch.SearchDataByAll.StoreCodeORAddress,
-            // selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
-            selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
-            selectedWantToVisitStoreAll:
-              dataSearch.SearchDataByAll.IsWantVistingStore,
-            selectedVisitStoreCodeAddressAll:
-              dataSearch.SearchDataByAll.WantToStoreCodeORAddress,
-            selectedWithClaimAll:
-              dataSearch.SearchDataByAll.HaveClaim === 0 ? "no" : "yes",
-            selectedClaimStatus: dataSearch.SearchDataByAll.ClaimStatusId,
-            // selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
-            // selectedClaimSubCategory:
-            //   dataSearch.SearchDataByAll.ClaimSubCategoryId,
-            // selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
-            selectedWithTaskAll:
-              dataSearch.SearchDataByAll.HaveTask === 0 ? "no" : "yes",
-            selectedTaskStatus: dataSearch.SearchDataByAll.TaskStatusId,
-            // selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
-            // selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
-          });
-          self.setState({
-            selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
-            byCategoryFlag: 0,
-            allFlag: 5
-          }, () => {
-            self.handleGetSubCategoryList()
-          });
-          self.setState({
-            selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId
-          }, () => {
-            self.handleGetIssueTypeList()
-          });
-          self.setState({
-            selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId
-          });
-          self.setState({
-            selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
-          }, () => {
-            self.handleGetFunctionList()
-          });
-          self.setState({
-            selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
-          });
-          self.setState({
-            selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId
-          }, () => {
-            self.handleGetClaimSubCategoryList()
-          });
-          self.setState({
-            selectedClaimSubCategory:
-              dataSearch.SearchDataByAll.ClaimSubCategoryId,
-          }, () => {
-            self.handleGetClaimIssueTypeList()
-          });
-          self.setState({
-            selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId
-          });
+
+          if (dataSearch.searchDataByDate === null) {
+            self.setState({
+              ByDateCreatDate: "",
+              ByDateSelectDate: "",
+              selectedSlaDueByDate: 0,
+              selectedTicketStatusByDate: 0
+            });
+          } else {
+            debugger;
+            if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
+              let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+              let createdDateArray = createdDate.split("-");
+              var createdDateFinal = new Date(
+                createdDateArray[0],
+                createdDateArray[1] - 1,
+                createdDateArray[2]
+              );
+            }
+            if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
+              let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+              let modifiedDateArray = modifiedDate.split("-");
+              var modifiedDateFinal = new Date(
+                modifiedDateArray[0],
+                modifiedDateArray[1] - 1,
+                modifiedDateArray[2]
+              );
+            }
+            self.setState({
+              ByDateCreatDate: createdDateFinal,
+              ByDateSelectDate: modifiedDateFinal,
+              selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
+              selectedTicketStatusByDate:
+                dataSearch.searchDataByDate.Ticket_StatusID,
+              byCategoryFlag: 0,
+              allFlag: 0
+            });
+          }
+
+          if (dataSearch.searchDataByCustomerType === null) {
+            self.setState({
+              MobileNoByCustType: "",
+              EmailIdByCustType: "",
+              TicketIdByCustType: "",
+              selectedTicketStatusByCustomer: 0
+            });
+          } else {
+            self.setState({
+              MobileNoByCustType:
+                dataSearch.searchDataByCustomerType.CustomerMobileNo,
+              EmailIdByCustType:
+                dataSearch.searchDataByCustomerType.CustomerEmailID,
+              TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
+              selectedTicketStatusByCustomer:
+                dataSearch.searchDataByCustomerType.TicketStatusID,
+              byCategoryFlag: 0,
+              allFlag: 0
+            });
+          }
+
+          if (dataSearch.searchDataByTicketType === null) {
+            self.setState({
+              selectedPriority: 0,
+              selectedTicketStatusByTicket: 0,
+              selectedChannelOfPurchase: [],
+              selectedTicketActionType: []
+            });
+          } else {
+            let purchaseArr = [];
+            let purchaseId = dataSearch.searchDataByTicketType.ChannelOfPurchaseIds.split(
+              ","
+            );
+            for (let i = 0; i < purchaseId.length - 1; i++) {
+              const element = purchaseId[i];
+              for (
+                let j = 0;
+                j < self.state.ChannelOfPurchaseData.length;
+                j++
+              ) {
+                if (
+                  element ==
+                  self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
+                ) {
+                  purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
+                }
+              }
+            }
+
+            let actionArr = [];
+            let actionId = dataSearch.searchDataByTicketType.ActionTypes.split(
+              ","
+            );
+            for (let i = 0; i < actionId.length - 1; i++) {
+              const element = actionId[i];
+              for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
+                if (
+                  element ==
+                  self.state.TicketActionTypeData[j].ticketActionTypeID
+                ) {
+                  actionArr.push(self.state.TicketActionTypeData[j]);
+                }
+              }
+            }
+
+            self.setState({
+              selectedPriority:
+                dataSearch.searchDataByTicketType.TicketPriorityID,
+              selectedTicketStatusByTicket:
+                dataSearch.searchDataByTicketType.TicketStatusID,
+              selectedChannelOfPurchase: purchaseArr,
+              selectedTicketActionType: actionArr,
+              byCategoryFlag: 0,
+              allFlag: 0
+            });
+          }
+
+          if (dataSearch.searchDataByCategoryType === null) {
+            self.setState({
+              selectedCategory: 0,
+              selectedSubCategory: 0,
+              selectedIssueType: 0,
+              selectedTicketStatusByCategory: 0
+            });
+          } else {
+            // self.setState({
+            //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+            //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+            //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+            //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+            // });
+            self.setState(
+              {
+                selectedCategory:
+                  dataSearch.searchDataByCategoryType.CategoryId,
+                byCategoryFlag: 4,
+                allFlag: 0,
+                selectedTicketStatusByCategory:
+                  dataSearch.searchDataByCategoryType.TicketStatusID
+              },
+              () => {
+                self.handleGetSubCategoryList();
+              }
+            );
+            self.setState(
+              {
+                selectedSubCategory:
+                  dataSearch.searchDataByCategoryType.SubCategoryId
+              },
+              () => {
+                self.handleGetIssueTypeList();
+              }
+            );
+            self.setState({
+              selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
+            });
+          }
+
+          if (dataSearch.SearchDataByAll === null) {
+            self.setState({
+              ByAllCreateDate: "",
+              selectedTicketSource: 0,
+              ClaimIdByAll: "",
+              EmailByAll: "",
+              ByAllLastDate: "",
+              TicketIdTitleByAll: "",
+              InvoiceSubOrderByAll: "",
+              MobileByAll: "",
+              selectedCategoryAll: 0,
+              selectedPriorityAll: 0,
+              ItemIdByAll: "",
+              selectedAssignedTo: 0,
+              selectedAssignedToAll: "",
+              selectedSubCategoryAll: 0,
+              selectedTicketStatusAll: 0,
+              selectedVisitStoreAll: "all",
+              selectedPurchaseStoreCodeAddressAll: "",
+              selectedIssueTypeAll: 0,
+              selectedSlaStatus: 0,
+              selectedWantToVisitStoreAll: "all",
+              selectedVisitStoreCodeAddressAll: "",
+              selectedWithClaimAll: "no",
+              selectedClaimStatus: 0,
+              selectedClaimCategory: 0,
+              selectedClaimSubCategory: 0,
+              selectedClaimIssueType: 0,
+              selectedWithTaskAll: "no",
+              selectedTaskStatus: 0,
+              selectedDepartment: 0,
+              selectedFunction: 0
+            });
+          } else {
+            if (dataSearch.SearchDataByAll.CreatedDate !== "") {
+              let createdDate = dataSearch.SearchDataByAll.CreatedDate;
+              let createdDateArray = createdDate.split("-");
+              let createdDateFinal = new Date(
+                createdDateArray[0],
+                createdDateArray[1] - 1,
+                createdDateArray[2]
+              );
+            }
+            if (dataSearch.SearchDataByAll.ModifiedDate !== "") {
+              let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
+              let modifiedDateArray = modifiedDate.split("-");
+              let modifiedDateFinal = new Date(
+                modifiedDateArray[0],
+                modifiedDateArray[1] - 1,
+                modifiedDateArray[2]
+              );
+            }
+            self.setState({
+              ByAllCreateDate: createdDateFinal,
+              selectedTicketSource:
+                dataSearch.SearchDataByAll.TicketSourceTypeID,
+              ClaimIdByAll: dataSearch.SearchDataByAll.ClaimId,
+              EmailByAll: dataSearch.SearchDataByAll.CustomerEmailID,
+              ByAllLastDate: modifiedDateFinal,
+              TicketIdTitleByAll: dataSearch.SearchDataByAll.TicketIdORTitle,
+              InvoiceSubOrderByAll:
+                dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
+              MobileByAll: dataSearch.SearchDataByAll.CustomerMobileNo,
+              // selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
+              selectedPriorityAll: dataSearch.SearchDataByAll.PriorityId,
+              ItemIdByAll: dataSearch.SearchDataByAll.OrderItemId,
+              selectedAssignedTo: dataSearch.SearchDataByAll.AssignTo,
+              // selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
+              selectedTicketStatusAll:
+                dataSearch.SearchDataByAll.TicketSatutsID,
+              selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
+              selectedPurchaseStoreCodeAddressAll:
+                dataSearch.SearchDataByAll.StoreCodeORAddress,
+              // selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
+              selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
+              selectedWantToVisitStoreAll:
+                dataSearch.SearchDataByAll.IsWantVistingStore,
+              selectedVisitStoreCodeAddressAll:
+                dataSearch.SearchDataByAll.WantToStoreCodeORAddress,
+              selectedWithClaimAll:
+                dataSearch.SearchDataByAll.HaveClaim === 0 ? "no" : "yes",
+              selectedClaimStatus: dataSearch.SearchDataByAll.ClaimStatusId,
+              // selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
+              // selectedClaimSubCategory:
+              //   dataSearch.SearchDataByAll.ClaimSubCategoryId,
+              // selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
+              selectedWithTaskAll:
+                dataSearch.SearchDataByAll.HaveTask === 0 ? "no" : "yes",
+              selectedTaskStatus: dataSearch.SearchDataByAll.TaskStatusId
+              // selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
+              // selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
+            });
+            self.setState(
+              {
+                selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
+                byCategoryFlag: 0,
+                allFlag: 5
+              },
+              () => {
+                self.handleGetSubCategoryList();
+              }
+            );
+            self.setState(
+              {
+                selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId
+              },
+              () => {
+                self.handleGetIssueTypeList();
+              }
+            );
+            self.setState({
+              selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId
+            });
+            self.setState(
+              {
+                selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id
+              },
+              () => {
+                self.handleGetFunctionList();
+              }
+            );
+            self.setState({
+              selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
+            });
+            self.setState(
+              {
+                selectedClaimCategory:
+                  dataSearch.SearchDataByAll.ClaimCategoryId
+              },
+              () => {
+                self.handleGetClaimSubCategoryList();
+              }
+            );
+            self.setState(
+              {
+                selectedClaimSubCategory:
+                  dataSearch.SearchDataByAll.ClaimSubCategoryId
+              },
+              () => {
+                self.handleGetClaimIssueTypeList();
+              }
+            );
+            self.setState({
+              selectedClaimIssueType:
+                dataSearch.SearchDataByAll.ClaimIssueTypeId
+            });
+          }
+        } else {
+          self.setState({ SearchTicketData: [], loading: false });
         }
-      } else {
-        self.setState({ SearchTicketData: [], loading: false });
-      }
-    });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -2867,8 +3006,8 @@ class MyTicketList extends Component {
     const ImgChange = this.state.collapseSearch ? (
       <img className="search-icon" src={CancalImg} alt="search-icon" />
     ) : (
-        <img className="search-icon" src={SearchIcon} alt="search-icon" />
-      );
+      <img className="search-icon" src={SearchIcon} alt="search-icon" />
+    );
 
     return (
       <Fragment>
@@ -2905,10 +3044,8 @@ class MyTicketList extends Component {
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
-
                     name="filter-type"
                     id={"fil-open"}
-
                     value="all"
                     onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
@@ -2916,130 +3053,128 @@ class MyTicketList extends Component {
                     <span className="table-btn table-blue-btn">ALL</span>
                   </label>
                 </div>
-                {this.state.sortColumnName === "status" ?
-
-                  this.state.sortTicketData !== null &&
-                  this.state.sortTicketData.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.ticketStatus}
-
-                        value={item.ticketStatus}
-                        onChange={this.setSortCheckStatus.bind(this, "status")}
-                      />
-                      <label htmlFor={"fil-open" + item.ticketStatus}>
-                        <span className="table-btn table-blue-btn">{item.ticketStatus}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "status"
+                  ? this.state.sortTicketData !== null &&
+                    this.state.sortTicketData.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.ticketStatus}
+                          value={item.ticketStatus}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "status"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.ticketStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.ticketStatus}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "category" ?
-
-                  this.state.sortCategoryData !== null &&
-                  this.state.sortCategoryData.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.category}
-
-                        value={item.category}
-                        onChange={this.setSortCheckStatus.bind(this, "category")}
-                      />
-                      <label htmlFor={"fil-open" + item.category}>
-                        <span className="table-btn table-blue-btn">{item.category}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "category"
+                  ? this.state.sortCategoryData !== null &&
+                    this.state.sortCategoryData.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.category}
+                          value={item.category}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "category"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.category}>
+                          <span className="table-btn table-blue-btn">
+                            {item.category}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "priority" ?
-
-                  this.state.sortPriorityData !== null &&
-                  this.state.sortPriorityData.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.priority}
-
-                        value={item.priority}
-                        onChange={this.setSortCheckStatus.bind(this, "priority")}
-                      />
-                      <label htmlFor={"fil-open" + item.priority}>
-                        <span className="table-btn table-blue-btn">{item.priority}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "priority"
+                  ? this.state.sortPriorityData !== null &&
+                    this.state.sortPriorityData.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.priority}
+                          value={item.priority}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "priority"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.priority}>
+                          <span className="table-btn table-blue-btn">
+                            {item.priority}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "createdOn" ?
-
-                  this.state.sortcreatedOnData !== null &&
-                  this.state.sortcreatedOnData.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.createdOn}
-
-                        value={item.createdOn}
-                        onChange={this.setSortCheckStatus.bind(this, "createdOn")}
-                      />
-                      <label htmlFor={"fil-open" + item.createdOn}>
-                        <span className="table-btn table-blue-btn">{item.createdOn}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "createdOn"
+                  ? this.state.sortcreatedOnData !== null &&
+                    this.state.sortcreatedOnData.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdOn}
+                          value={item.createdOn}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdOn"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdOn}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdOn}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "assignedTo" ?
-
-                  this.state.sortAssigneeData !== null &&
-                  this.state.sortAssigneeData.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.assignedTo}
-
-                        value={item.assignedTo}
-                        onChange={this.setSortCheckStatus.bind(this, "assignedTo")}
-                      />
-                      <label htmlFor={"fil-open" + item.assignedTo}>
-                        <span className="table-btn table-blue-btn">{item.assignedTo}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "assignedTo"
+                  ? this.state.sortAssigneeData !== null &&
+                    this.state.sortAssigneeData.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.assignedTo}
+                          value={item.assignedTo}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "assignedTo"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.assignedTo}>
+                          <span className="table-btn table-blue-btn">
+                            {item.assignedTo}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
-
-
               </div>
 
               <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
-               
-                    
-                    <div className="filter-checkbox">
-                  <input type="checkbox"
+
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
                     id="fil-red"
                     name="filter-color"
                     value="isEscalation"
@@ -3050,10 +3185,11 @@ class MyTicketList extends Component {
                   </label>
                 </div>
 
-              
-               
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-orange" name="filter-color"
+                  <input
+                    type="checkbox"
+                    id="fil-orange"
+                    name="filter-color"
                     value="isSLANearBreach"
                     onChange={this.setSortCheckStatus.bind(this, "colororange")}
                   />
@@ -3062,7 +3198,10 @@ class MyTicketList extends Component {
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-white" name="filter-color"
+                  <input
+                    type="checkbox"
+                    id="fil-white"
+                    name="filter-color"
                     value="white"
                     onChange={this.setSortCheckStatus.bind(this, "colorwhite")}
                   />
@@ -3071,7 +3210,10 @@ class MyTicketList extends Component {
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-green" name="filter-color"
+                  <input
+                    type="checkbox"
+                    id="fil-green"
+                    name="filter-color"
                     value="isReassigned"
                     onChange={this.setSortCheckStatus.bind(this, "colorgreen")}
                   />
@@ -3080,9 +3222,6 @@ class MyTicketList extends Component {
                   </label>
                 </div>
               </div>
-
-
-
             </div>
           </Modal>
         </div>
@@ -3527,7 +3666,7 @@ class MyTicketList extends Component {
                                           dateFormat="dd/MM/yyyy"
                                           autoComplete="off"
                                           value={this.state.ByDateCreatDate}
-                                        // className="form-control"
+                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3543,7 +3682,7 @@ class MyTicketList extends Component {
                                           value={this.state.ByDateSelectDate}
                                           name="ByDateSelectDate"
                                           autoComplete="off"
-                                        // className="form-control"
+                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3899,7 +4038,7 @@ class MyTicketList extends Component {
                                           onChange={this.handleAllCreateDate.bind(
                                             this
                                           )}
-                                        // className="form-control"
+                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3957,7 +4096,7 @@ class MyTicketList extends Component {
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
                                           value={this.state.ByAllLastDate}
-                                        // className="form-control"
+                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -4247,138 +4386,138 @@ class MyTicketList extends Component {
                                               </select>
                                             </div>
                                             {this.state.selectedWithClaimAll ===
-                                              "yes" ? (
-                                                <React.Fragment>
-                                                  <div className="m-b-25">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedClaimStatus
-                                                      }
-                                                      onChange={
-                                                        this.handleClaimStatus
-                                                      }
-                                                    >
-                                                      <option>
-                                                        Claim Status
+                                            "yes" ? (
+                                              <React.Fragment>
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimStatus
+                                                    }
+                                                    onChange={
+                                                      this.handleClaimStatus
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Claim Status
                                                     </option>
-                                                      {this.state
-                                                        .ClaimStatusData !==
-                                                        null &&
-                                                        this.state.ClaimStatusData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.claimStatusID
-                                                              }
-                                                            >
-                                                              {
-                                                                item.claimStatusName
-                                                              }
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
+                                                    {this.state
+                                                      .ClaimStatusData !==
+                                                      null &&
+                                                      this.state.ClaimStatusData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.claimStatusID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.claimStatusName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
 
-                                                  <div className="m-b-25">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedClaimCategory
-                                                      }
-                                                      onChange={
-                                                        this.setClaimCategoryValue
-                                                      }
-                                                    >
-                                                      <option value="0">
-                                                        Claim Category
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimCategory
+                                                    }
+                                                    onChange={
+                                                      this.setClaimCategoryValue
+                                                    }
+                                                  >
+                                                    <option value="0">
+                                                      Claim Category
                                                     </option>
-                                                      {this.state.CategoryData !==
-                                                        null &&
-                                                        this.state.CategoryData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.categoryID
-                                                              }
-                                                            >
-                                                              {item.categoryName}
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
+                                                    {this.state.CategoryData !==
+                                                      null &&
+                                                      this.state.CategoryData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.categoryID
+                                                            }
+                                                          >
+                                                            {item.categoryName}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
 
-                                                  <div className="m-b-25">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedClaimSubCategory
-                                                      }
-                                                      onChange={
-                                                        this
-                                                          .setClaimSubCategoryValue
-                                                      }
-                                                    >
-                                                      <option value={0}>
-                                                        Claim Sub Category
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimSubCategory
+                                                    }
+                                                    onChange={
+                                                      this
+                                                        .setClaimSubCategoryValue
+                                                    }
+                                                  >
+                                                    <option value={0}>
+                                                      Claim Sub Category
                                                     </option>
-                                                      {this.state
-                                                        .ClaimSubCategoryData !==
-                                                        null &&
-                                                        this.state.ClaimSubCategoryData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.subCategoryID
-                                                              }
-                                                            >
-                                                              {
-                                                                item.subCategoryName
-                                                              }
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
+                                                    {this.state
+                                                      .ClaimSubCategoryData !==
+                                                      null &&
+                                                      this.state.ClaimSubCategoryData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.subCategoryID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.subCategoryName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
 
-                                                  <div className="">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedClaimIssueType
-                                                      }
-                                                      onChange={
-                                                        this
-                                                          .setClaimIssueTypeValue
-                                                      }
-                                                    >
-                                                      <option value="0">
-                                                        Claim Issue Type
+                                                <div className="">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimIssueType
+                                                    }
+                                                    onChange={
+                                                      this
+                                                        .setClaimIssueTypeValue
+                                                    }
+                                                  >
+                                                    <option value="0">
+                                                      Claim Issue Type
                                                     </option>
-                                                      {this.state
-                                                        .ClaimIssueTypeData !==
-                                                        null &&
-                                                        this.state.ClaimIssueTypeData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.issueTypeID
-                                                              }
-                                                            >
-                                                              {item.issueTypeName}
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
-                                                </React.Fragment>
-                                              ) : null}
+                                                    {this.state
+                                                      .ClaimIssueTypeData !==
+                                                      null &&
+                                                      this.state.ClaimIssueTypeData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.issueTypeID
+                                                            }
+                                                          >
+                                                            {item.issueTypeName}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+                                              </React.Fragment>
+                                            ) : null}
                                           </div>
                                           <div className="col-sm-6">
                                             <div className="m-b-25">
@@ -4400,103 +4539,103 @@ class MyTicketList extends Component {
                                             </div>
 
                                             {this.state.selectedWithTaskAll ===
-                                              "yes" ? (
-                                                <React.Fragment>
-                                                  <div className="m-b-25">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedTaskStatus
-                                                      }
-                                                      onChange={
-                                                        this.handleTaskStatus
-                                                      }
-                                                    >
-                                                      <option>Task Status</option>
-                                                      {this.state
-                                                        .TaskStatusData !==
-                                                        null &&
-                                                        this.state.TaskStatusData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.taskStatusID
-                                                              }
-                                                            >
-                                                              {
-                                                                item.taskStatusName
-                                                              }
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
+                                            "yes" ? (
+                                              <React.Fragment>
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedTaskStatus
+                                                    }
+                                                    onChange={
+                                                      this.handleTaskStatus
+                                                    }
+                                                  >
+                                                    <option>Task Status</option>
+                                                    {this.state
+                                                      .TaskStatusData !==
+                                                      null &&
+                                                      this.state.TaskStatusData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.taskStatusID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.taskStatusName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
 
-                                                  <div className="m-b-25">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedDepartment
-                                                      }
-                                                      onChange={
-                                                        this.setDepartmentValue
-                                                      }
-                                                    >
-                                                      <option>
-                                                        Task Department
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedDepartment
+                                                    }
+                                                    onChange={
+                                                      this.setDepartmentValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Task Department
                                                     </option>
-                                                      {this.state
-                                                        .DepartmentData !==
-                                                        null &&
-                                                        this.state.DepartmentData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.departmentID
-                                                              }
-                                                            >
-                                                              {
-                                                                item.departmentName
-                                                              }
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
+                                                    {this.state
+                                                      .DepartmentData !==
+                                                      null &&
+                                                      this.state.DepartmentData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.departmentID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.departmentName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
 
-                                                  <div className="">
-                                                    <select
-                                                      value={
-                                                        this.state
-                                                          .selectedFunction
-                                                      }
-                                                      onChange={
-                                                        this.setFunctionValue
-                                                      }
-                                                    >
-                                                      <option>
-                                                        Task Function
+                                                <div className="">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedFunction
+                                                    }
+                                                    onChange={
+                                                      this.setFunctionValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Task Function
                                                     </option>
-                                                      {this.state.FunctionData !==
-                                                        null &&
-                                                        this.state.FunctionData.map(
-                                                          (item, i) => (
-                                                            <option
-                                                              key={i}
-                                                              value={
-                                                                item.functionID
-                                                              }
-                                                            >
-                                                              {item.funcationName}
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </select>
-                                                  </div>
-                                                </React.Fragment>
-                                              ) : null}
+                                                    {this.state.FunctionData !==
+                                                      null &&
+                                                      this.state.FunctionData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.functionID
+                                                            }
+                                                          >
+                                                            {item.funcationName}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+                                              </React.Fragment>
+                                            ) : null}
                                           </div>
                                         </div>
                                       </div>
@@ -4614,214 +4753,266 @@ class MyTicketList extends Component {
                                               )}
                                           </select>
                                           {this.state.selectScheduleDate ===
-                                            "230" ? (
-                                              <div className="ScheduleDate-to">
-                                                <span>
-                                                  <label className="every1">
-                                                    Every
+                                          "230" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Every
                                                 </label>
-                                                  <input
-                                                    type="text"
-                                                    className="Every"
-                                                    placeholder="1"
-                                                    onChange={this.handleDailyDay}
-                                                  />
-                                                  <label className="every1">
-                                                    Day
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                  onChange={this.handleDailyDay}
+                                                />
+                                                <label className="every1">
+                                                  Day
                                                 </label>
-                                                </span>
-                                              </div>
-                                            ) : null}
+                                              </span>
+                                            </div>
+                                          ) : null}
                                           {this.state.selectScheduleDate ===
-                                            "231" ? (
-                                              <div className="ScheduleDate-to">
-                                                <span>
-                                                  <label className="every1">
-                                                    Every
+                                          "231" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Every
                                                 </label>
-                                                  <input
-                                                    type="text"
-                                                    className="Every"
-                                                    placeholder="1"
-                                                    onChange={this.handleWeekly}
-                                                  />
-                                                  <label className="every1">
-                                                    Week on
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                  onChange={this.handleWeekly}
+                                                />
+                                                <label className="every1">
+                                                  Week on
                                                 </label>
-                                                </span>
-                                                <div
-                                                  style={{
-                                                    marginTop: "10px"
-                                                  }}
+                                              </span>
+                                              <div
+                                                style={{
+                                                  marginTop: "10px"
+                                                }}
+                                              >
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Mon"
                                                 >
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Mon"
-                                                  >
-                                                    Mon
+                                                  Mon
                                                 </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Tue"
-                                                  >
-                                                    Tue
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Tue"
+                                                >
+                                                  Tue
                                                 </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Wed"
-                                                  >
-                                                    Wed
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Wed"
+                                                >
+                                                  Wed
                                                 </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Thu"
-                                                  >
-                                                    Thu
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Thu"
+                                                >
+                                                  Thu
                                                 </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Fri"
-                                                  >
-                                                    Fri
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Fri"
+                                                >
+                                                  Fri
                                                 </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Sat"
-                                                  >
-                                                    Sat
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Sat"
+                                                >
+                                                  Sat
                                                 </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Sun"
-                                                  >
-                                                    Sun
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Sun"
+                                                >
+                                                  Sun
                                                 </Checkbox>
+                                              </div>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "232" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Day
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="9"
+                                                  onChange={
+                                                    this.handleDaysForMonth
+                                                  }
+                                                />
+                                                <label className="every1">
+                                                  of every
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                  onChange={
+                                                    this.handleMonthForMonth
+                                                  }
+                                                />
+                                                <label className="every1">
+                                                  months
+                                                </label>
+                                              </span>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "233" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Every
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                  onChange={
+                                                    this.handleMonthForWeek
+                                                  }
+                                                />
+                                                <label className="every1">
+                                                  month on the
+                                                </label>
+                                              </span>
+                                              <div className="row mt-3">
+                                                <div className="col-md-6">
+                                                  <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                    onChange={
+                                                      this.handleWeekForWeek
+                                                    }
+                                                    value={
+                                                      this.state
+                                                        .selectedNoOfWeekForWeek
+                                                    }
+                                                  >
+                                                    <option value="0">
+                                                      Select
+                                                    </option>
+                                                    <option value="2">
+                                                      Second
+                                                    </option>
+                                                    <option value="4">
+                                                      Four
+                                                    </option>
+                                                  </select>
                                                 </div>
-                                              </div>
-                                            ) : null}
-                                          {this.state.selectScheduleDate ===
-                                            "232" ? (
-                                              <div className="ScheduleDate-to">
-                                                <span>
-                                                  <label className="every1">
-                                                    Day
-                                                </label>
-                                                  <input
-                                                    type="text"
-                                                    className="Every"
-                                                    placeholder="9"
-                                                    onChange={
-                                                      this.handleDaysForMonth
-                                                    }
-                                                  />
-                                                  <label className="every1">
-                                                    of every
-                                                </label>
-                                                  <input
-                                                    type="text"
-                                                    className="Every"
-                                                    placeholder="1"
-                                                    onChange={
-                                                      this.handleMonthForMonth
-                                                    }
-                                                  />
-                                                  <label className="every1">
-                                                    months
-                                                </label>
-                                                </span>
-                                              </div>
-                                            ) : null}
-                                          {this.state.selectScheduleDate ===
-                                            "233" ? (
-                                              <div className="ScheduleDate-to">
-                                                <span>
-                                                  <label className="every1">
-                                                    Every
-                                                </label>
-                                                  <input
-                                                    type="text"
-                                                    className="Every"
-                                                    placeholder="1"
-                                                    onChange={
-                                                      this.handleMonthForWeek
-                                                    }
-                                                  />
-                                                  <label className="every1">
-                                                    month on the
-                                                </label>
-                                                </span>
-                                                <div className="row mt-3">
-                                                  <div className="col-md-6">
-                                                    <select
-                                                      id="inputState"
-                                                      className="form-control dropdown-setting1"
-                                                      onChange={
-                                                        this.handleWeekForWeek
+                                                <div className="col-md-6">
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.days
                                                       }
+                                                      getOptionValue={
+                                                        option => option.days //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfDayForWeek
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfDayForWeek.bind(
+                                                        this
+                                                      )}
                                                       value={
                                                         this.state
-                                                          .selectedNoOfWeekForWeek
+                                                          .selectedNameOfDayForWeek
                                                       }
-                                                    >
-                                                      <option value="0">
-                                                        Select
-                                                    </option>
-                                                      <option value="2">
-                                                        Second
-                                                    </option>
-                                                      <option value="4">
-                                                        Four
-                                                    </option>
-                                                    </select>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.days
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.days //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfDayForWeek
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={false}
-                                                        onChange={this.setNameOfDayForWeek.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfDayForWeek
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
                                                   </div>
                                                 </div>
                                               </div>
-                                            ) : null}
+                                            </div>
+                                          ) : null}
                                           {this.state.selectScheduleDate ===
-                                            "234" ? (
-                                              <div className="ScheduleDate-to">
+                                          "234" ? (
+                                            <div className="ScheduleDate-to">
+                                              <div className="row m-0">
+                                                <label
+                                                  className="every1"
+                                                  style={{
+                                                    lineHeight: "40px"
+                                                  }}
+                                                >
+                                                  on
+                                                </label>
+                                                <div className="col-md-7">
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.month
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.month //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfMonthForYear
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfMonthForYear.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfMonthForYear
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                  onChange={
+                                                    this.handleDayForYear
+                                                  }
+                                                />
+                                              </div>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "235" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
                                                 <div className="row m-0">
                                                   <label
                                                     className="every1"
@@ -4829,156 +5020,104 @@ class MyTicketList extends Component {
                                                       lineHeight: "40px"
                                                     }}
                                                   >
-                                                    on
-                                                </label>
-                                                  <div className="col-md-7">
-                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.month
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.month //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfMonthForYear
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={false}
-                                                        onChange={this.setNameOfMonthForYear.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfMonthForYear
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                  <input
-                                                    type="text"
-                                                    className="Every"
-                                                    placeholder="1"
-                                                    onChange={
-                                                      this.handleDayForYear
-                                                    }
-                                                  />
-                                                </div>
-                                              </div>
-                                            ) : null}
-                                          {this.state.selectScheduleDate ===
-                                            "235" ? (
-                                              <div className="ScheduleDate-to">
-                                                <span>
-                                                  <div className="row m-0">
-                                                    <label
-                                                      className="every1"
-                                                      style={{
-                                                        lineHeight: "40px"
-                                                      }}
-                                                    >
-                                                      on the
+                                                    on the
                                                   </label>
-                                                    <div className="col-md-7">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                        onChange={
-                                                          this.handleWeekForYear
-                                                        }
-                                                        value={
-                                                          this.state
-                                                            .selectedNoOfWeekForYear
-                                                        }
-                                                      >
-                                                        <option value="0">
-                                                          Select
+                                                  <div className="col-md-7">
+                                                    <select
+                                                      id="inputState"
+                                                      className="form-control dropdown-setting1"
+                                                      onChange={
+                                                        this.handleWeekForYear
+                                                      }
+                                                      value={
+                                                        this.state
+                                                          .selectedNoOfWeekForYear
+                                                      }
+                                                    >
+                                                      <option value="0">
+                                                        Select
                                                       </option>
-                                                        <option value="2">
-                                                          Second
+                                                      <option value="2">
+                                                        Second
                                                       </option>
-                                                        <option value="4">
-                                                          Four
+                                                      <option value="4">
+                                                        Four
                                                       </option>
-                                                      </select>
-                                                    </div>
+                                                    </select>
                                                   </div>
-                                                </span>
-                                                <div
-                                                  className="row mt-3"
-                                                  style={{ position: "relative" }}
+                                                </div>
+                                              </span>
+                                              <div
+                                                className="row mt-3"
+                                                style={{ position: "relative" }}
+                                              >
+                                                <div className="col-md-6">
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.days
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.days //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfDayForYear
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfDayForYear.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfDayForYear
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <label
+                                                  className="every1 last-to"
+                                                  style={{
+                                                    lineHeight: "40px"
+                                                  }}
                                                 >
-                                                  <div className="col-md-6">
-                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.days
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.days //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfDayForYear
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={false}
-                                                        onChange={this.setNameOfDayForYear.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfDayForYear
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                  <label
-                                                    className="every1 last-to"
-                                                    style={{
-                                                      lineHeight: "40px"
-                                                    }}
-                                                  >
-                                                    to
+                                                  to
                                                 </label>
-                                                  <div className="col-md-6">
-                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.month
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.month //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfMonthForDailyYear
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={false}
-                                                        onChange={this.setNameOfMonthForDailyYear.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfMonthForDailyYear
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
+                                                <div className="col-md-6">
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.month
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.month //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfMonthForDailyYear
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfMonthForDailyYear.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfMonthForDailyYear
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
                                                   </div>
                                                 </div>
                                               </div>
-                                            ) : null}
+                                            </div>
+                                          ) : null}
 
                                           <div className="dash-timepicker">
                                             <DatePicker
@@ -5169,7 +5308,7 @@ class MyTicketList extends Component {
                                                       />
                                                       {
                                                         row.original[
-                                                        "agentName"
+                                                          "agentName"
                                                         ]
                                                       }
                                                     </span>
@@ -5312,466 +5451,502 @@ class MyTicketList extends Component {
                         <div className="loader-icon"></div>
                       </div>
                     ) : (
-                        <div>
-                          <div className="MyTicketListReact cus-head">
-                            <ReactTable
-                              data={SearchTicketData}
-                              columns={[
-                                {
-                                  Header: (
-                                    <span>
+                      <div>
+                        <div className="MyTicketListReact cus-head">
+                          <ReactTable
+                            data={SearchTicketData}
+                            columns={[
+                              {
+                                Header: (
+                                  <span>
+                                    <div className="filter-type pink1 pinkmyticket">
+                                      <div className="filter-checkbox pink2 pinkmargin">
+                                        <input
+                                          type="checkbox"
+                                          id="fil-aball"
+                                          name="ListCheckbox"
+                                          // checked={this.state.CheckBoxChecked}
+                                          onChange={this.checkAllCheckbox.bind(
+                                            this
+                                          )}
+                                        />
+                                        <label
+                                          htmlFor="fil-aball"
+                                          className="ticketid"
+                                        >
+                                          ID
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </span>
+                                ),
+                                accessor: "ticketID",
+                                Cell: row => {
+                                  return (
+                                    <span onClick={e => this.clickCheckbox(e)}>
                                       <div className="filter-type pink1 pinkmyticket">
                                         <div className="filter-checkbox pink2 pinkmargin">
                                           <input
                                             type="checkbox"
-                                            id="fil-aball"
+                                            id={"i" + row.original.ticketID}
                                             name="ListCheckbox"
-                                            // checked={this.state.CheckBoxChecked}
-                                            onChange={this.checkAllCheckbox.bind(
-                                              this
-                                            )}
+                                            checked={
+                                              this.state.cSelectedRow[
+                                                row.original.ticketID
+                                              ]
+                                            }
+                                            attrIds={row.original.ticketID}
+                                            onChange={() =>
+                                              this.handelCheckBoxCheckedChange(
+                                                row.original.ticketID
+                                              )
+                                            }
                                           />
                                           <label
-                                            htmlFor="fil-aball"
-                                            className="ticketid"
+                                            htmlFor={
+                                              "i" + row.original.ticketID
+                                            }
                                           >
-                                            ID
-                                        </label>
+                                            {row.original.ticketSourceType ===
+                                            "Calls" ? (
+                                              <img
+                                                src={HeadPhone3}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="Calls"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Mails" ? (
+                                              <img
+                                                src={MailImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="Mails"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Facebook" ? (
+                                              <img
+                                                src={FacebookImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="Facebook"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "ChatBot" ? (
+                                              <img
+                                                src={Chat}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="ChatBot"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Twitter" ? (
+                                              <img
+                                                src={Twitter}
+                                                alt="HeadPhone"
+                                                className="headPhone3 black-twitter"
+                                                title="Twitter"
+                                              />
+                                            ) : null}
+
+                                            {row.original.ticketID}
+                                          </label>
                                         </div>
                                       </div>
                                     </span>
-                                  ),
-                                  accessor: "ticketID",
-                                  Cell: row => {
+                                  );
+                                }
+                              },
+                              {
+                                Header: (
+                                  <span
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "status"
+                                    )}
+                                  >
+                                    Status{" "}
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "ticketStatus",
+                                Cell: row => {
+                                  if (row.original.ticketStatus === "Open") {
                                     return (
-                                      <span onClick={e => this.clickCheckbox(e)}>
-                                        <div className="filter-type pink1 pinkmyticket">
-                                          <div className="filter-checkbox pink2 pinkmargin">
-                                            <input
-                                              type="checkbox"
-                                              id={"i" + row.original.ticketID}
-                                              name="ListCheckbox"
-                                              checked={this.state.cSelectedRow[row.original.ticketID]}
-                                              attrIds={row.original.ticketID}
-                                              onChange={() => this.handelCheckBoxCheckedChange(
-                                                row.original.ticketID
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.ticketID
-                                              }
-                                            >
-                                              {row.original.ticketSourceType ===
-                                                "Calls" ? (
-                                                  <img
-                                                    src={HeadPhone3}
-                                                    alt="HeadPhone"
-                                                    className="headPhone3"
-                                                    title="Calls"
-                                                  />
-                                                ) : row.original
-                                                  .ticketSourceType ===
-                                                  "Mails" ? (
-                                                    <img
-                                                      src={MailImg}
-                                                      alt="HeadPhone"
-                                                      className="headPhone3"
-                                                      title="Mails"
-                                                    />
-                                                  ) : row.original
-                                                    .ticketSourceType ===
-                                                    "Facebook" ? (
-                                                      <img
-                                                        src={FacebookImg}
-                                                        alt="HeadPhone"
-                                                        className="headPhone3"
-                                                        title="Facebook"
-                                                      />
-                                                    ) : row.original
-                                                      .ticketSourceType ===
-                                                      "ChatBot" ? (
-                                                        <img
-                                                          src={Chat}
-                                                          alt="HeadPhone"
-                                                          className="headPhone3"
-                                                          title="ChatBot"
-                                                        />
-                                                      ) : row.original
-                                                        .ticketSourceType ===
-                                                        "Twitter" ? (
-                                                          <img
-                                                            src={Twitter}
-                                                            alt="HeadPhone"
-                                                            className="headPhone3 black-twitter"
-                                                            title="Twitter"
-                                                          />
-                                                        ) : null}
-
-                                              {row.original.ticketID}
-                                            </label>
-                                          </div>
-                                        </div>
+                                      <span className="table-b table-blue-btn">
+                                        <label>
+                                          {row.original.ticketStatus}
+                                        </label>
+                                      </span>
+                                    );
+                                  } else if (
+                                    row.original.ticketStatus === "Resolved"
+                                  ) {
+                                    return (
+                                      <span className="table-b table-green-btn">
+                                        <label>
+                                          {row.original.ticketStatus}
+                                        </label>
+                                      </span>
+                                    );
+                                  } else if (
+                                    row.original.ticketStatus === "New"
+                                  ) {
+                                    return (
+                                      <span className="table-b table-yellow-btn">
+                                        <label>
+                                          {row.original.ticketStatus}
+                                        </label>
+                                      </span>
+                                    );
+                                  } else if (
+                                    row.original.ticketStatus === "Solved"
+                                  ) {
+                                    return (
+                                      <span className="table-b table-green-btn">
+                                        <label>
+                                          {row.original.ticketStatus}
+                                        </label>
+                                      </span>
+                                    );
+                                  } else {
+                                    return (
+                                      <span className="table-b table-green-btn">
+                                        <label>
+                                          {row.original.ticketStatus}
+                                        </label>
                                       </span>
                                     );
                                   }
-                                },
-                                {
-                                  Header: (
-                                    <span onClick={this.StatusOpenModel.bind(this, "status")}>
-                                      Status{" "}
-                                      <FontAwesomeIcon icon={faCaretDown} />
-                                    </span>
-                                  ),
-                                  accessor: "ticketStatus",
-                                  Cell: row => {
-                                    if (row.original.ticketStatus === "Open") {
-                                      return (
-                                        <span className="table-b table-blue-btn">
-                                          <label>
-                                            {row.original.ticketStatus}
-                                          </label>
-                                        </span>
-                                      );
-                                    } else if (
-                                      row.original.ticketStatus === "Resolved"
-                                    ) {
-                                      return (
-                                        <span className="table-b table-green-btn">
-                                          <label>
-                                            {row.original.ticketStatus}
-                                          </label>
-                                        </span>
-                                      );
-                                    } else if (
-                                      row.original.ticketStatus === "New"
-                                    ) {
-                                      return (
-                                        <span className="table-b table-yellow-btn">
-                                          <label>
-                                            {row.original.ticketStatus}
-                                          </label>
-                                        </span>
-                                      );
-                                    } else if (
-                                      row.original.ticketStatus === "Solved"
-                                    ) {
-                                      return (
-                                        <span className="table-b table-green-btn">
-                                          <label>
-                                            {row.original.ticketStatus}
-                                          </label>
-                                        </span>
-                                      );
-                                    } else {
-                                      return (
-                                        <span className="table-b table-green-btn">
-                                          <label>
-                                            {row.original.ticketStatus}
-                                          </label>
-                                        </span>
-                                      );
-                                    }
-                                  }
-                                },
-                                {
-                                  Header: <span></span>,
-                                  accessor: "taskStatus",
-                                  width: 45,
-                                  Cell: row => {
-                                    if (row.original.claimStatus !== "0/0") {
-                                      return (
-                                        <div>
-                                          <Popover
-                                            content={
-                                              <div className="dash-task-popup-new">
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                  <p className="m-b-0">
-                                                    CLAIM:
+                                }
+                              },
+                              {
+                                Header: <span></span>,
+                                accessor: "taskStatus",
+                                width: 45,
+                                Cell: row => {
+                                  if (row.original.claimStatus !== "0/0") {
+                                    return (
+                                      <div>
+                                        <Popover
+                                          content={
+                                            <div className="dash-task-popup-new">
+                                              <div className="d-flex justify-content-between align-items-center">
+                                                <p className="m-b-0">
+                                                  CLAIM:
                                                   {row.original.claimStatus}
-                                                  </p>
-                                                  <div className="d-flex align-items-center">
-                                                    2 NEW
+                                                </p>
+                                                <div className="d-flex align-items-center">
+                                                  2 NEW
                                                   <div className="nw-chat">
+                                                    <img
+                                                      src={Chat}
+                                                      alt="chat"
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <ProgressBar
+                                                className="task-progress"
+                                                now={70}
+                                              />
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                        >
+                                          <img
+                                            className="task-icon-1 marginimg claim-icon-1"
+                                            src={CliamIconBlue}
+                                            alt="task-icon-blue"
+                                          />
+                                        </Popover>
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div>
+                                        <img
+                                          className="task-icon-1 marginimg claim-icon-1"
+                                          src={CliamIconGray}
+                                          alt="task-icon-gray"
+                                        />
+                                      </div>
+                                    );
+                                  }
+                                }
+                              },
+                              {
+                                Header: <span></span>,
+                                accessor: "taskStatus",
+                                width: 45,
+                                Cell: row => {
+                                  if (row.original.taskStatus === "0/0") {
+                                    return (
+                                      <div>
+                                        <img
+                                          className="task-icon-1 marginimg"
+                                          src={TaskIconGray}
+                                          alt="task-icon-gray"
+                                        />
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div>
+                                        <Popover
+                                          content={
+                                            <div className="dash-task-popup-new">
+                                              <div className="d-flex justify-content-between align-items-center">
+                                                <p className="m-b-0">
+                                                  TASK:{row.original.taskStatus}
+                                                </p>
+                                                {row.original
+                                                  .ticketCommentCount > 0 ? (
+                                                  <div className="d-flex align-items-center">
+                                                    {
+                                                      row.original
+                                                        .ticketCommentCount
+                                                    }
+                                                    NEW
+                                                    <div className="nw-chat">
                                                       <img
                                                         src={Chat}
                                                         alt="chat"
                                                       />
                                                     </div>
                                                   </div>
-                                                </div>
-                                                <ProgressBar
-                                                  className="task-progress"
-                                                  now={70}
-                                                />
+                                                ) : null}
                                               </div>
-                                            }
-                                            placement="bottom"
-                                          >
-                                            <img
-                                              className="task-icon-1 marginimg claim-icon-1"
-                                              src={CliamIconBlue}
-                                              alt="task-icon-blue"
-                                            />
-                                          </Popover>
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div>
-                                          <img
-                                            className="task-icon-1 marginimg claim-icon-1"
-                                            src={CliamIconGray}
-                                            alt="task-icon-gray"
-                                          />
-                                        </div>
-                                      );
-                                    }
-                                  }
-                                },
-                                {
-                                  Header: <span></span>,
-                                  accessor: "taskStatus",
-                                  width: 45,
-                                  Cell: row => {
-                                    if (row.original.taskStatus === "0/0") {
-                                      return (
-                                        <div>
+                                              <ProgressBar
+                                                className="task-progress"
+                                                now={70}
+                                              />
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                        >
                                           <img
                                             className="task-icon-1 marginimg"
-                                            src={TaskIconGray}
-                                            alt="task-icon-gray"
+                                            src={TaskIconBlue}
+                                            alt="task-icon-blue"
                                           />
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div>
-                                          <Popover
-                                            content={
-                                              <div className="dash-task-popup-new">
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                  <p className="m-b-0">
-                                                    TASK:{row.original.taskStatus}
-                                                  </p>
-                                                  {row.original
-                                                    .ticketCommentCount > 0 ? (
-                                                      <div className="d-flex align-items-center">
-                                                        {
-                                                          row.original
-                                                            .ticketCommentCount
-                                                        }
-                                                        NEW
-                                                    <div className="nw-chat">
-                                                          <img
-                                                            src={Chat}
-                                                            alt="chat"
-                                                          />
-                                                        </div>
-                                                      </div>
-                                                    ) : null}
-                                                </div>
-                                                <ProgressBar
-                                                  className="task-progress"
-                                                  now={70}
-                                                />
-                                              </div>
-                                            }
-                                            placement="bottom"
-                                          >
-                                            <img
-                                              className="task-icon-1 marginimg"
-                                              src={TaskIconBlue}
-                                              alt="task-icon-blue"
-                                            />
-                                          </Popover>
-                                        </div>
-                                      );
-                                    }
-                                  }
-                                },
-                                {
-                                  Header: (
-                                    <label className="ticketid">
-                                      <span>Subject/</span>
-                                      <span
-                                        style={{
-                                          fontWeight: "bold",
-                                          fontSize: "11px !important"
-                                        }}
-                                      >
-                                        Latest Message
-                                    </span>
-                                    </label>
-                                  ),
-                                  accessor: "message",
-                                  Cell: row => {
-                                    return (
-                                      <div>
-                                        {row.original.message.split("-")[0]}/&nbsp;
-                                      <span style={{ color: "#666" }}>
-                                          {row.original.message.split("-")[1]}
-                                        </span>
+                                        </Popover>
                                       </div>
                                     );
                                   }
-                                },
-                                {
-                                  Header: (
-                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "category")}>
-                                      Category{" "}
-                                      <FontAwesomeIcon icon={faCaretDown} />
+                                }
+                              },
+                              {
+                                Header: (
+                                  <label className="ticketid">
+                                    <span>Subject/</span>
+                                    <span
+                                      style={{
+                                        fontWeight: "bold",
+                                        fontSize: "11px !important"
+                                      }}
+                                    >
+                                      Latest Message
                                     </span>
-                                  ),
-                                  accessor: "category",
-                                  Cell: row => (
-                                    <span className="one-line-outer">
-                                      <label className="one-line">
-                                        {row.original.category}{" "}
-                                      </label>
+                                  </label>
+                                ),
+                                accessor: "message",
+                                Cell: row => {
+                                  return (
+                                    <div>
+                                      {row.original.message.split("-")[0]}
+                                      /&nbsp;
+                                      <span style={{ color: "#666" }}>
+                                        {row.original.message.split("-")[1]}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                              },
+                              {
+                                Header: (
+                                  <span
+                                    className="ticketid"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "category"
+                                    )}
+                                  >
+                                    Category{" "}
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "category",
+                                Cell: row => (
+                                  <span className="one-line-outer">
+                                    <label className="one-line">
+                                      {row.original.category}{" "}
+                                    </label>
 
-                                      <Popover
-                                        content={
-                                          <div className="dash-creation-popup-cntr">
-                                            <ul className="dash-category-popup dashnewpopup">
-                                              <li>
-                                                <p>Category</p>
-                                                <p>{row.original.category}</p>
-                                              </li>
-                                              <li>
-                                                <p>Sub Category</p>
-                                                <p>{row.original.subCategory}</p>
-                                              </li>
-                                              <li>
-                                                <p>Type</p>
-                                                <p>{row.original.issueType}</p>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        }
-                                        placement="bottom"
-                                      >
-                                        <img
-                                          className="info-icon"
-                                          src={InfoIcon}
-                                          alt="info-icon"
-                                        />
-                                      </Popover>
-                                    </span>
-                                  )
-                                },
-                                {
-                                  Header: (
-                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "priority")} >
-                                      Priority{" "}
-                                      <FontAwesomeIcon icon={faCaretDown} />
-                                    </span>
-                                  ),
-                                  accessor: "priority",
-                                  minWidth: 50
-                                  // Cell: props => <span>High</span>
-                                },
-                                {
-                                  Header: (
-                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "assignedTo")}>
-                                      Assignee{" "}
-                                      <FontAwesomeIcon icon={faCaretDown} />
-                                    </span>
-                                  ),
-                                  accessor: "assignee"
-                                },
-                                {
-                                  Header: (
-                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "createdOn")}>
-                                      Creation On{" "}
-                                      <FontAwesomeIcon icon={faCaretDown} />
-                                    </span>
-                                  ),
-                                  accessor: "createdOn",
-                                  Cell: row => (
-                                    <span className="one-line-outer">
-                                      <label className="one-line">
-                                        {row.original.createdOn}
-                                      </label>
-
-                                      <Popover
-                                        content={
-                                          <div className="insertpop1">
-                                            <ul className="dash-creation-popup">
-                                              <li className="title">
-                                                Creation details
+                                    <Popover
+                                      content={
+                                        <div className="dash-creation-popup-cntr">
+                                          <ul className="dash-category-popup dashnewpopup">
+                                            <li>
+                                              <p>Category</p>
+                                              <p>{row.original.category}</p>
                                             </li>
-                                              <li>
-                                                <p>
-                                                  {row.original.createdBy} Created
+                                            <li>
+                                              <p>Sub Category</p>
+                                              <p>{row.original.subCategory}</p>
+                                            </li>
+                                            <li>
+                                              <p>Type</p>
+                                              <p>{row.original.issueType}</p>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      }
+                                      placement="bottom"
+                                    >
+                                      <img
+                                        className="info-icon"
+                                        src={InfoIcon}
+                                        alt="info-icon"
+                                      />
+                                    </Popover>
+                                  </span>
+                                )
+                              },
+                              {
+                                Header: (
+                                  <span
+                                    className="ticketid"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "priority"
+                                    )}
+                                  >
+                                    Priority{" "}
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "priority",
+                                minWidth: 50
+                                // Cell: props => <span>High</span>
+                              },
+                              {
+                                Header: (
+                                  <span
+                                    className="ticketid"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "assignedTo"
+                                    )}
+                                  >
+                                    Assignee{" "}
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "assignee"
+                              },
+                              {
+                                Header: (
+                                  <span
+                                    className="ticketid"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "createdOn"
+                                    )}
+                                  >
+                                    Creation On{" "}
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "createdOn",
+                                Cell: row => (
+                                  <span className="one-line-outer">
+                                    <label className="one-line">
+                                      {row.original.createdOn}
+                                    </label>
+
+                                    <Popover
+                                      content={
+                                        <div className="insertpop1">
+                                          <ul className="dash-creation-popup">
+                                            <li className="title">
+                                              Creation details
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {row.original.createdBy} Created
                                               </p>
-                                                <p>{row.original.createdago}</p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  Assigned to{" "}
-                                                  {row.original.assignedTo}
-                                                </p>
-                                                <p>{row.original.assignedago}</p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {row.original.updatedBy} updated
+                                              <p>{row.original.createdago}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                Assigned to{" "}
+                                                {row.original.assignedTo}
                                               </p>
-                                                <p>{row.original.updatedago}</p>
-                                              </li>
-                                              <li>
-                                                <p>Response time remaining by</p>
-                                                <p>
-                                                  {
-                                                    row.original
-                                                      .responseTimeRemainingBy
-                                                  }
-                                                </p>
-                                              </li>
-                                              <li>
-                                                <p>Response overdue by</p>
-                                                <p>
-                                                  {row.original.responseOverdueBy}
-                                                </p>
-                                              </li>
-                                              <li>
-                                                <p>Resolution overdue by</p>
-                                                <p>
-                                                  {
-                                                    row.original
-                                                      .resolutionOverdueBy
-                                                  }
-                                                </p>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        }
-                                        placement="left"
-                                      >
-                                        <img
-                                          className="info-icon info-iconcus"
-                                          src={InfoIcon}
-                                          alt="info-icon"
-                                        />
-                                      </Popover>
-                                    </span>
-                                  )
-                                }
-                              ]}
-                              resizable={false}
-                              defaultPageSize={10}
-                              showPagination={true}
-                              getTrProps={this.HandleRowClickPage}
-                              minRows={1}
-                              defaultSorted={[
-                                {
-                                  id: "ticketID",
-                                  desc: true
-                                }
-                              ]}
-                            />
-                            {/* <div className="position-relative">
+                                              <p>{row.original.assignedago}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {row.original.updatedBy} updated
+                                              </p>
+                                              <p>{row.original.updatedago}</p>
+                                            </li>
+                                            <li>
+                                              <p>Response time remaining by</p>
+                                              <p>
+                                                {
+                                                  row.original
+                                                    .responseTimeRemainingBy
+                                                }
+                                              </p>
+                                            </li>
+                                            <li>
+                                              <p>Response overdue by</p>
+                                              <p>
+                                                {row.original.responseOverdueBy}
+                                              </p>
+                                            </li>
+                                            <li>
+                                              <p>Resolution overdue by</p>
+                                              <p>
+                                                {
+                                                  row.original
+                                                    .resolutionOverdueBy
+                                                }
+                                              </p>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      }
+                                      placement="left"
+                                    >
+                                      <img
+                                        className="info-icon info-iconcus"
+                                        src={InfoIcon}
+                                        alt="info-icon"
+                                      />
+                                    </Popover>
+                                  </span>
+                                )
+                              }
+                            ]}
+                            resizable={false}
+                            defaultPageSize={10}
+                            showPagination={true}
+                            getTrProps={this.HandleRowClickPage}
+                            minRows={1}
+                            defaultSorted={[
+                              {
+                                id: "ticketID",
+                                desc: true
+                              }
+                            ]}
+                          />
+                          {/* <div className="position-relative">
                                     <Popover
                                       content={
                                         <div className="insertpop1">
@@ -5881,16 +6056,16 @@ class MyTicketList extends Component {
                           <p>Items per page</p>
                         </div>
                       </div> */}
-                          </div>
-                          <div
-                            className="float-search"
-                            onClick={this.toggleSearch}
-                          >
-                            <small>{TitleChange}</small>
-                            {ImgChange}
-                          </div>
                         </div>
-                      )}
+                        <div
+                          className="float-search"
+                          onClick={this.toggleSearch}
+                        >
+                          <small>{TitleChange}</small>
+                          {ImgChange}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
