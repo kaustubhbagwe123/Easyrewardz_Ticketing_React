@@ -3627,6 +3627,9 @@ table tr th:last-child {
   height: 8px;
   margin-top: 8px;
 }
+.ck-edit-mar {
+  margin-bottom: 14px !important;
+}
 /* my ticket ends */
 
 /* .cke_editable {

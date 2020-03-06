@@ -745,7 +745,7 @@ className="custom-antd-table"
                                 <div className="col-sm-12 p-0">
                                 <DatePicker
                                   selected={data.VisitedDate}
-                                  placeholderText="Visited Date"
+                                  placeholderText="DD/MM/YYYY"
                                   showMonthDropdown
                                   showYearDropdown
                                   dateFormat="dd/MM/yyyy"
@@ -1237,7 +1237,7 @@ className="custom-antd-table"
                                 <div className="col-sm-12 p-0">
                                 <DatePicker
                                   selected={data.VisitedDate}
-                                  placeholderText="Visited Date"
+                                  placeholderText="DD/MM/YYYY"
                                   showMonthDropdown
                                   showYearDropdown
                                   dateFormat="dd/MM/yyyy"
