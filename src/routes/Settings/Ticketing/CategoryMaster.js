@@ -543,9 +543,9 @@ class CategoryMaster extends Component {
     debugger;
     if (
       this.state.selectBrand.length > 0 &&
-      this.state.list1Value > 0 &&
-      this.state.ListOfSubCate > 0 &&
-      this.state.ListOfIssue > 0 &&
+      (this.state.list1Value > 0 || this.state.list1Value !=="") &&
+      (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !=="") &&
+      (this.state.ListOfIssue > 0 || this.state.ListOfIssue !=="") &&
       this.state.selectStatus.length > 0
     ) {
       let self = this;

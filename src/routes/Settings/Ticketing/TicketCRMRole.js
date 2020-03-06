@@ -308,6 +308,7 @@ class TicketCRMRole extends Component {
               RoleName: '',
               RoleisActive: 'true',
               ModulesEnabled: '',
+              ModulesDisabled:'',
               updateModulesEnabled: '',
               updateModulesDisabled: ''
             })
@@ -319,6 +320,7 @@ class TicketCRMRole extends Component {
         } else {
           if (e === 'add') {
             NotificationManager.error("CRM Role not added.");
+            
           } else if (addUpdate === 'update') {
             NotificationManager.error("CRM Role not updated.");
           }
