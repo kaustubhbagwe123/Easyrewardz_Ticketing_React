@@ -66,7 +66,9 @@ class MyTicketClaim extends Component {
       } else {
         self.setState({ claimDetailsData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleClaimDetailsModalOpen() {
@@ -107,7 +109,9 @@ class MyTicketClaim extends Component {
       } else {
         NotificationManager.error("Comment not added.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   render() {
     const { claimDetailsData } = this.state;

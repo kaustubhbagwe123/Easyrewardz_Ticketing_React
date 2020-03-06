@@ -338,7 +338,9 @@ class TicketHierarchy extends Component {
           reportToData: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetHierarchyData() {
     let self = this;
@@ -390,7 +392,9 @@ class TicketHierarchy extends Component {
           hierarchyData: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleSubmitData() {
     debugger;
@@ -431,7 +435,9 @@ class TicketHierarchy extends Component {
           selectedStatus: 1
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
 
     this.setState({
@@ -463,7 +469,9 @@ class TicketHierarchy extends Component {
       }else{
         NotificationManager.error(res.data.message);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUpdateHierarchyData(e,designationID){
     debugger;
@@ -500,7 +508,9 @@ class TicketHierarchy extends Component {
       }else{
         NotificationManager.error("Hierarchy not update.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     NotificationManager.error("Hierarchy not update.");
     this.setState({

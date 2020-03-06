@@ -39,7 +39,9 @@ class FileUploadLogs extends Component {
       if (fileUploadLog !== null && fileUploadLog !== undefined) {
         self.setState({ fileUploadLog });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   render() {
