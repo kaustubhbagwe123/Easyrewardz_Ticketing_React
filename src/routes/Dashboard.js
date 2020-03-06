@@ -2006,7 +2006,8 @@ class Dashboard extends Component {
     this.setState({ selectedClaimCategory: claimCategoryValue });
     setTimeout(() => {
       if (this.state.selectedClaimCategory) {
-        this.handleGetClaimSubCategoryList();
+        // this.handleGetClaimSubCategoryList();
+        this.handleGetSubCategoryList('allClaimTab');
       }
     }, 1);
   };
@@ -2031,7 +2032,7 @@ class Dashboard extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList();
+        this.handleGetSubCategoryList('categoryTab');
       }
     }, 1);
   };
@@ -2040,7 +2041,7 @@ class Dashboard extends Component {
     this.setState({ selectedCategoryAll: categoryAllValue });
     setTimeout(() => {
       if (this.state.selectedCategoryAll) {
-        this.handleGetSubCategoryList();
+        this.handleGetSubCategoryList('allTab');
       }
     }, 1);
   };
@@ -2050,7 +2051,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList();
+        this.handleGetIssueTypeList('categoryTab');
       }
     }, 1);
   };
@@ -2060,7 +2061,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategoryAll) {
-        this.handleGetIssueTypeList();
+        this.handleGetIssueTypeList('allTab');
       }
     }, 1);
   };
@@ -2070,7 +2071,8 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedClaimSubCategory) {
-        this.handleGetClaimIssueTypeList();
+        this.handleGetIssueTypeList('allClaimTab');
+        // this.handleGetClaimIssueTypeList();
       }
     }, 1);
   };
@@ -2432,18 +2434,42 @@ class Dashboard extends Component {
         console.log(data);
       });
   }
-  handleGetIssueTypeList() {
+  handleGetIssueTypeList(param) {
     let self = this;
-    self.setState({
-      IssueTypeData: [],
-      IssueTypeAllData: [],
-      selectedIssueType: 0,
-      selectedIssueTypeAll: 0
-    });
-    let subCateId =
-      this.state.byCategoryFlag === 4
-        ? this.state.selectedSubCategory
-        : this.state.selectedSubCategoryAll;
+    // self.setState({
+    //   IssueTypeData: [],
+    //   IssueTypeAllData: [],
+    //   selectedIssueType: 0,
+    //   selectedIssueTypeAll: 0
+    // });
+    if (param == 'categoryTab') {
+      self.setState({
+        IssueTypeData: [],
+        selectedIssueType: 0
+      });
+    } else if (param == 'allTab') {
+      self.setState({
+        IssueTypeAllData: [],
+        selectedIssueTypeAll: 0
+      });
+    } else if (param == 'allClaimTab') {
+      self.setState({
+        ClaimIssueTypeData: [],
+        selectedClaimIssueType: 0
+      });
+    }
+    // let subCateId =
+    //   this.state.byCategoryFlag === 4
+    //     ? this.state.selectedSubCategory
+    //     : this.state.selectedSubCategoryAll;
+    let subCateId;
+    if (param == 'categoryTab') {
+      subCateId = this.state.selectedSubCategory
+    } else if (param == 'allTab') {
+      subCateId = this.state.selectedSubCategoryAll
+    } else if (param == 'allClaimTab') {
+      subCateId = this.state.selectedClaimSubCategory
+    }
 
     axios({
       method: "post",
@@ -2455,17 +2481,31 @@ class Dashboard extends Component {
     })
       .then(function(res) {
         debugger;
-        // let IssueTypeData = res.data.responseData;
-        // self.setState({ IssueTypeData: IssueTypeData });
-        if (self.state.byCategoryFlag === 4) {
+        // if (self.state.byCategoryFlag === 4) {
+        //   var IssueTypeData = res.data.responseData;
+        //   self.setState({
+        //     IssueTypeData: IssueTypeData
+        //   });
+        // } else if (self.state.allFlag === 5) {
+        //   var IssueTypeAllData = res.data.responseData;
+        //   self.setState({
+        //     IssueTypeAllData: IssueTypeAllData
+        //   });
+        // }
+        if (param == 'categoryTab') {
           var IssueTypeData = res.data.responseData;
           self.setState({
             IssueTypeData: IssueTypeData
           });
-        } else if (self.state.allFlag === 5) {
+        } else if (param == 'allTab') {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
             IssueTypeAllData: IssueTypeAllData
+          });
+        } else if (param == 'allClaimTab') {
+          var ClaimIssueTypeData = res.data.responseData;
+          self.setState({
+            ClaimIssueTypeData: ClaimIssueTypeData
           });
         }
       })
@@ -2524,23 +2564,53 @@ class Dashboard extends Component {
         console.log(data);
       });
   }
-  handleGetSubCategoryList() {
+  handleGetSubCategoryList(param) {
     debugger;
     let self = this;
-    self.setState({
-      SubCategoryData: [],
-      SubCategoryAllData: [],
-      selectedSubCategory: 0,
-      selectedSubCategoryAll: 0,
-      IssueTypeData: [],
-      IssueTypeAllData: [],
-      selectedIssueType: 0,
-      selectedIssueTypeAll: 0
-    });
-    let cateId =
-      this.state.byCategoryFlag === 4
-        ? this.state.selectedCategory
-        : this.state.selectedCategoryAll;
+    // self.setState({
+    //   SubCategoryData: [],
+    //   SubCategoryAllData: [],
+    //   selectedSubCategory: 0,
+    //   selectedSubCategoryAll: 0,
+    //   IssueTypeData: [],
+    //   IssueTypeAllData: [],
+    //   selectedIssueType: 0,
+    //   selectedIssueTypeAll: 0
+    // });
+    if (param == 'categoryTab') {
+      this.setState({
+        SubCategoryData: [],
+        IssueTypeData: [],
+        selectedSubCategory: 0,
+        selectedIssueType: 0
+      });
+    } else if (param == 'allTab') {
+      this.setState({
+        SubCategoryAllData: [],
+        IssueTypeAllData: [],
+        selectedSubCategoryAll: 0,
+        selectedIssueTypeAll: 0
+      });
+    } else if (param == 'allClaimTab') {
+      this.setState({
+        ClaimSubCategoryData: [],
+        selectedClaimSubCategory: 0,
+        ClaimIssueTypeData: [],
+        selectedClaimIssueType: 0
+      });
+    }
+    // let cateId =
+    //   this.state.byCategoryFlag === 4
+    //     ? this.state.selectedCategory
+    //     : this.state.selectedCategoryAll;
+    let cateId;
+    if (param == 'categoryTab') {
+      cateId = this.state.selectedCategory
+    } else if (param == 'allTab') {
+      cateId = this.state.selectedCategoryAll
+    } else if (param == 'allClaimTab') {
+      cateId = this.state.selectedClaimCategory
+    }
 
     axios({
       method: "post",
@@ -2552,15 +2622,31 @@ class Dashboard extends Component {
     })
       .then(function(res) {
         debugger;
-        if (self.state.byCategoryFlag === 4) {
+        // if (self.state.byCategoryFlag === 4) {
+        //   var SubCategoryData = res.data.responseData;
+        //   self.setState({
+        //     SubCategoryData: SubCategoryData
+        //   });
+        // } else if (self.state.allFlag === 5) {
+        //   var SubCategoryAllData = res.data.responseData;
+        //   self.setState({
+        //     SubCategoryAllData: SubCategoryAllData
+        //   });
+        // }
+        if (param == 'categoryTab') {
           var SubCategoryData = res.data.responseData;
           self.setState({
             SubCategoryData: SubCategoryData
           });
-        } else if (self.state.allFlag === 5) {
+        } else if (param == 'allTab') {
           var SubCategoryAllData = res.data.responseData;
           self.setState({
             SubCategoryAllData: SubCategoryAllData
+          });
+        } else if (param == 'allClaimTab') {
+          var ClaimSubCategoryData = res.data.responseData;
+          self.setState({
+            ClaimSubCategoryData: ClaimSubCategoryData
           });
         }
       })
@@ -2619,12 +2705,14 @@ class Dashboard extends Component {
           selectedSubCategory: 0,
           selectedIssueType: 0,
           selectedTicketStatusByCategory: 0,
-          resultCount: 0
+          resultCount: 0,
+          SubCategoryData: [],
+          IssueTypeData: []
         },
         () => {
           // this.handleSearchTicketEscalation();
           this.ViewSearchData(1);
-          this.handleGetSubCategoryList();
+          // this.handleGetSubCategoryList();
         }
       );
     } else if (this.state.allFlag === 5) {
@@ -2660,13 +2748,17 @@ class Dashboard extends Component {
           selectedTaskStatus: 0,
           selectedDepartment: 0,
           selectedFunction: 0,
-          resultCount: 0
+          resultCount: 0,
+          SubCategoryAllData: [],
+          IssueTypeAllData: [],
+          ClaimSubCategoryData: [],
+          ClaimIssueTypeData: []
         },
         () => {
           // this.handleSearchTicketEscalation();
           this.ViewSearchData(1);
-          this.handleGetSubCategoryList();
-          this.handleGetClaimSubCategoryList();
+          // this.handleGetSubCategoryList();
+          // this.handleGetClaimSubCategoryList();
         }
       );
     }
@@ -3377,7 +3469,7 @@ class Dashboard extends Component {
                   dataSearch.searchDataByCategoryType.TicketStatusID
               },
               () => {
-                self.handleGetSubCategoryList();
+                self.handleGetSubCategoryList('categoryTab');
               }
             );
             self.setState(
@@ -3386,7 +3478,7 @@ class Dashboard extends Component {
                   dataSearch.searchDataByCategoryType.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList();
+                self.handleGetIssueTypeList('categoryTab');
               }
             );
             self.setState({
@@ -3493,7 +3585,7 @@ class Dashboard extends Component {
                 allFlag: 5
               },
               () => {
-                self.handleGetSubCategoryList();
+                self.handleGetSubCategoryList('allTab');
               }
             );
             self.setState(
@@ -3501,7 +3593,7 @@ class Dashboard extends Component {
                 selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList();
+                self.handleGetIssueTypeList('allTab');
               }
             );
             self.setState({
@@ -3524,7 +3616,8 @@ class Dashboard extends Component {
                   dataSearch.searchDataByAll.ClaimCategoryId
               },
               () => {
-                self.handleGetClaimSubCategoryList();
+                // self.handleGetClaimSubCategoryList();
+                self.handleGetSubCategoryList('allClaimTab');
               }
             );
             self.setState(
@@ -3533,7 +3626,8 @@ class Dashboard extends Component {
                   dataSearch.searchDataByAll.ClaimSubCategoryId
               },
               () => {
-                self.handleGetClaimIssueTypeList();
+                // self.handleGetClaimIssueTypeList();
+                self.handleGetIssueTypeList('allClaimTab');
               }
             );
             self.setState({
@@ -4490,7 +4584,7 @@ class Dashboard extends Component {
                             <button
                               type="button"
                               className="btn-inv"
-                              onClick={this.ViewSearchData.bind(this)}
+                              onClick={this.ViewSearchData.bind(this, 1)}
                             >
                               View Search
                             </button>
