@@ -477,7 +477,9 @@ class KnowledgeBase extends Component {
         CategoryData: CategoryData
         // CategoryDataAll: CategoryDataAll
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetSubCategoryList() {
     debugger;
@@ -498,7 +500,9 @@ class KnowledgeBase extends Component {
       self.setState({
         SubCategoryData: SubCategoryData
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetIssueTypeList() {
     debugger;
@@ -515,7 +519,9 @@ class KnowledgeBase extends Component {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleDeleteKB(id) {
     debugger;
@@ -538,7 +544,9 @@ class KnowledgeBase extends Component {
         NotificationManager.success("Record deleted Successfully.");
         self.handleKBList();
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleRejectKB(id, bit) {
@@ -569,7 +577,9 @@ class KnowledgeBase extends Component {
         }
 
         self.handleKBList();
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       // }
 
@@ -605,7 +615,9 @@ class KnowledgeBase extends Component {
           }
           self.closeEditAproveModal1();
           self.handleKBList();
-        });
+        }).catch(data => {
+          console.log(data);
+          });
       } else {
         this.setState({
           approveCategoryCompulsion: "Category field is compulsory.",
@@ -738,7 +750,9 @@ class KnowledgeBase extends Component {
           kbClearList: false
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleSeaechKB() {
@@ -782,7 +796,9 @@ class KnowledgeBase extends Component {
         })
       }
       self.closeSearchModal();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleUpdateKB(kbid) {

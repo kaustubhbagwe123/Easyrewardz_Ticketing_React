@@ -336,7 +336,9 @@ class CategoryMaster extends Component {
           categoryGridData: []
         });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetBrandList() {
     let self = this;
@@ -353,7 +355,9 @@ class CategoryMaster extends Component {
       } else {
         self.setState({ brandData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetCategoryList(id) {
@@ -378,7 +382,9 @@ class CategoryMaster extends Component {
       // let status=
       let data = res.data;
       self.setState({ categoryDropData: data });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetSubCategoryList() {
@@ -395,7 +401,9 @@ class CategoryMaster extends Component {
       debugger;
       let data = res.data.responseData;
       self.setState({ SubCategoryDropData: data });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetIssueTypeList() {
@@ -417,7 +425,9 @@ class CategoryMaster extends Component {
       } else {
         self.setState({ ListOfIssueData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleDeleteCategoryData(category_Id) {
@@ -438,7 +448,9 @@ class CategoryMaster extends Component {
         NotificationManager.success("Category deleted successfully.","",
         2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleAddCategory(value) {
@@ -469,7 +481,9 @@ class CategoryMaster extends Component {
       } else {
         NotificationManager.error("Category not added.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleAddSubCategory(value) {
     debugger;
@@ -502,7 +516,9 @@ class CategoryMaster extends Component {
       } else {
         NotificationManager.error("SubCategory not added.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleAddIssueType(value) {
@@ -536,7 +552,9 @@ class CategoryMaster extends Component {
       } else {
         NotificationManager.error("Issue Type not added.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleSubmitData() {
@@ -603,7 +621,9 @@ class CategoryMaster extends Component {
             selectStatus: 0
           });
         }
-      });
+      }).catch(data => {
+        console.log(data);
+        });
     } else {
       this.setState({
         brandCompulsion: "Please Select Brand",

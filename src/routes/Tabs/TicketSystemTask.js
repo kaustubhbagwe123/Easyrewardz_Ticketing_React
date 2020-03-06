@@ -72,7 +72,9 @@ class TicketSystemTask extends Component {
       } else {
         self.setState({ DepartmentData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetFunctionList() {
     debugger;
@@ -89,7 +91,9 @@ class TicketSystemTask extends Component {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetAssignToList() {
     debugger;
@@ -111,7 +115,9 @@ class TicketSystemTask extends Component {
       } else {
         self.setState({ AssignToData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetTicketPriorityList() {
     debugger;
@@ -129,7 +135,9 @@ class TicketSystemTask extends Component {
       } else {
         self.setState({ TicketPriorityData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   setDepartmentValue = e => {

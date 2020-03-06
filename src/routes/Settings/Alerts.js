@@ -270,7 +270,9 @@ class Alerts extends Component {
         });
       }
      
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleAlertTabs = e => {
@@ -332,7 +334,9 @@ class Alerts extends Component {
       if (alert !== null && alert !== undefined) {
         self.setState({ alert });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   deleteAlert(deleteId) {
     debugger;
@@ -353,7 +357,9 @@ class Alerts extends Component {
       } else {
         NotificationManager.error("Alert not deleted.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleUpdateAlert(e,alertID) {
     debugger;
@@ -384,7 +390,9 @@ class Alerts extends Component {
       } else {
         NotificationManager.error("Alert not updated.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     NotificationManager.error("Alert not updated.");
     this.setState({
@@ -631,7 +639,9 @@ class Alerts extends Component {
         NotificationManager.success("Record Saved successfully.");
       }
       self.handleAddAlertTabsClose();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   render() {
      

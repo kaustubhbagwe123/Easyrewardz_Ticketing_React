@@ -166,7 +166,9 @@ class Module extends Component {
         activeID: [],
         inactiveID: []
       });
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleGetModulesNames() {
@@ -191,7 +193,9 @@ class Module extends Component {
       }
       self.handleGetModulesItems();
       self.handleGetModulesItemsMyTicket();
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetModulesItems() {
     debugger;
@@ -214,7 +218,9 @@ class Module extends Component {
       } else {
         self.setState({ modulesItems: [], loading: false });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetModulesItemsMyTicket() {
     debugger;
@@ -236,7 +242,9 @@ class Module extends Component {
       } else {
         self.setState({ modulesItemsMyticket: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   
   onModulesChange = async (moduleName) => {

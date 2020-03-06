@@ -311,7 +311,9 @@ class CreateSLA extends Component {
           }
         }
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   handleCreate(issueTypeName) {
@@ -362,7 +364,9 @@ class CreateSLA extends Component {
       } else {
         self.setState({ sla: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   handleGetPriorityList() {
     debugger;
@@ -395,7 +399,9 @@ class CreateSLA extends Component {
       } else {
         self.setState({ PriorityData: [] });
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   // handleSlaIssueType = e => {
@@ -440,7 +446,9 @@ class CreateSLA extends Component {
       } else {
         NotificationManager.error("SLA not updated.", '', 2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
   updateSla(individualData) {
     debugger;
@@ -529,7 +537,9 @@ class CreateSLA extends Component {
       } else {
         NotificationManager.error("SLA not added.", '', 2000);
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }else{
     this.setState({
        issueTypeCompulsion:"Please select issuetype.",
@@ -557,7 +567,9 @@ class CreateSLA extends Component {
       } else {
         NotificationManager.error("SLA not deleted.");
       }
-    });
+    }).catch(data => {
+      console.log(data);
+      });
   }
 
   fileUpload = e => {
