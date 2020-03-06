@@ -603,6 +603,8 @@ class Reports extends Component {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleNextPopupOpen() {
@@ -614,8 +616,7 @@ class Reports extends Component {
     this.handleReportList();
   }
   handleDefaultPopupClose = () => {
-    this.setState({ OpenDefaultModal: false });
-    // this.handleReportList();
+    this.setState({ OpenDefaultModal: false, TicketCreatedFromDate: '', TicketCreatedEndDate: '', SelectedSourceIds: '', selectedDefaultTicketStatus: 0, TicketClosedFrom: '', TicketClosedTo: '', SelectedDefaultTeamMember: '', SelectedTicketMultiStatus: '' });
   };
   handleReportCreateDate(date) {
     this.setState({ ReportCreateDate: date });
@@ -774,6 +775,8 @@ class Reports extends Component {
       self.setState({ totalResultCount: data });
       self.handleNextPopupOpen();
       //self.handleAddReportClose();
+    }).catch(data => {
+      console.log(data);
     });
   }
   EditSearchParameter(objEdit) {
@@ -1235,6 +1238,8 @@ class Reports extends Component {
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1252,6 +1257,8 @@ class Reports extends Component {
       self.setState({
         AssignToData: AssignData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1266,6 +1273,8 @@ class Reports extends Component {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetTicketSourceList() {
@@ -1282,6 +1291,8 @@ class Reports extends Component {
       self.setState({
         TicketSourceData: TicketSourceData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleReportList() {
@@ -1303,6 +1314,8 @@ class Reports extends Component {
         ReportData: reportdata,
         loading: false
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleDownload = (id, name) => {
@@ -1374,6 +1387,8 @@ class Reports extends Component {
         debugger;
         window.open(res.data.responseData, "_blank");
         // self.downloadURI(res.data.responseData,name+".csv");
+      }).catch(data => {
+        console.log(data);
       });
     }
   };
@@ -1410,6 +1425,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       });         
     }
     else if(this.state.DefaultPopupName=="Total Open Ticket")
@@ -1435,6 +1452,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1483,6 +1502,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1533,6 +1554,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1559,6 +1582,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       }); 
     }
     else if(this.state.DefaultPopupName=="Re-Assigned Tickets")
@@ -1584,6 +1609,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1610,6 +1637,8 @@ class Reports extends Component {
       }).then(function(res) {
         debugger;
         window.open(res.data.responseData, "_blank");       
+      }).catch(data => {
+        console.log(data);
       });         
       
     }
@@ -1644,6 +1673,8 @@ class Reports extends Component {
         NotificationManager.success("Record Deleted successfully.");
         self.handleReportList();
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetBrandList() {
@@ -1662,6 +1693,8 @@ class Reports extends Component {
       } else {
         self.setState({ brandData: [] });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetCategoryList() {
@@ -1679,6 +1712,8 @@ class Reports extends Component {
       self.setState({
         CategoryData: CategoryData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1707,6 +1742,8 @@ class Reports extends Component {
       self.setState({
         SubCategoryData: SubCategoryData
       });
+    }).catch(data => {
+      console.log(data);
     });
   }
   handleGetIssueTypeList() {
@@ -1729,6 +1766,8 @@ class Reports extends Component {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -1758,6 +1797,8 @@ class Reports extends Component {
         self.handleReportList();
         self.handleNextPopupClose();
         NotificationManager.success("Report saved successfully for download.");
+      }).catch(data => {
+        console.log(data);
       });
     }
     else {
@@ -1828,6 +1869,8 @@ class Reports extends Component {
         self.setState({ Schedule_ID: 0 });
         NotificationManager.error("Report name already exist.");
       }
+    }).catch(data => {
+      console.log(data);
     });
       }
 
@@ -1928,6 +1971,8 @@ class Reports extends Component {
           self.setState({ Schedule_ID: 0 });
           NotificationManager.error("Report name already exist.");
         }
+      }).catch(data => {
+        console.log(data);
       });
     } else {
       NotificationManager.error("Please add report for create scheduler.");
@@ -2776,9 +2821,9 @@ class Reports extends Component {
               </div>
               <div>
              
-              <div id="dvAssignedTo" className="cls-hide">
+              <div id="dvAssignedTo" className="cls-hide ticketreport">
                   Assigned To
-                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
                           <Select
                             getOptionLabel={option => option.fullName}
                             getOptionValue={
@@ -2796,9 +2841,9 @@ class Reports extends Component {
                         </div>
                         <span id="spnAssignedTo" className="cls-spnerror" style={{color:"red"}}></span>
                 </div>
-                <div id="dvMultiStatus" className="cls-hide">
+                <div id="dvMultiStatus" className="cls-hide ticketreport">
                   Ticket Status
-                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
                           <Select
                             getOptionLabel={option => option.ticketStatusName}
                             getOptionValue={
@@ -2881,7 +2926,7 @@ class Reports extends Component {
                 </div>
                 <span id="spnTicketToDate" className="cls-spnerror" style={{color:"red"}}></span>
               </div>
-              <div>
+              <div className="ticketreport">
                 Ticket Source
                 <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
                   <Select
@@ -2901,10 +2946,10 @@ class Reports extends Component {
                 </div>
                 <span id="spnTicketSource" className="cls-spnerror" style={{color:"red"}}></span>
               </div>
-              <div id="TicketStatus" className="cls-hide">
+              <div id="TicketStatus" className="ticketreport cls-hide">
                       Status
                       <div className="mt-2">
-                      <select id="drpDefaultStatus" style={{width:"120px"}} className="normal-dropdown dropdown-setting1"
+                      <select id="drpDefaultStatus" className="w-100 normal-dropdown dropdown-setting1"
                         name="selectedDefaultTicketStatus"
                         value={this.state.selectedDefaultTicketStatus}
                         onChange={this.setDefaultTicketStatus}
