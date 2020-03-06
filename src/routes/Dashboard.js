@@ -32,7 +32,7 @@ import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
 import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSourceBar";
 import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
-// import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -59,8 +59,9 @@ import TicketActionType from "./TicketActionType";
 import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
 import { CSVLink } from "react-csv";
-import { DatePicker } from "antd";
-const { RangePicker } = DatePicker;
+import DatePickerComponenet from "./Settings/Ticketing/DatePickerComponent";
+// import { DatePicker } from "antd";
+// const { RangePicker } = DatePicker;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -3748,7 +3749,7 @@ class Dashboard extends Component {
                         value={value}
                       />
                     </DateTimeRangeContainer> */}
-                    <RangePicker
+                    {/* <RangePicker
                       onChange={this.applyCallback}
                       bordered={false}
                       format="DD-MM-YYYY"
@@ -3756,7 +3757,8 @@ class Dashboard extends Component {
                         moment(this.state.start, "DD-MM-YYYY"),
                         moment(this.state.end, "DD-MM-YYYY")
                       ]}
-                    />
+                    /> */}
+                    <DatePickerComponenet applyCallback={this.applyCallback}/>
                   </Col>
                   {/* <Col xs={3} md={4} /> */}
                 </Row>
