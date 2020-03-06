@@ -9,6 +9,7 @@ import Modal from "react-responsive-modal";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
 import DatePicker from "react-datepicker";
 import { Popover } from "antd";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
@@ -213,7 +214,8 @@ class Reports extends Component {
       TaskPriorityCompulsion: "",
       DepartmentCompulsion: "",
       FunctionCompulsion: "",
-      FunctionData: []
+      FunctionData: [],
+      loadingDownload: false
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -1320,6 +1322,9 @@ class Reports extends Component {
   }
   handleDownload = (id, name) => {
     debugger;
+    this.setState({
+      loadingDownload: false
+    })
     let self = this;    
     if (id == 0) {     
 
@@ -1376,6 +1381,9 @@ class Reports extends Component {
         }, 100);
      
     } else {
+      this.setState({
+        loading: true
+      })
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadReportSearch",
@@ -1385,8 +1393,11 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");
+        window.open(res.data.responseData);
         // self.downloadURI(res.data.responseData,name+".csv");
+        self.setState({
+          loading: false
+        })
       }).catch(data => {
         console.log(data);
       });
@@ -1407,7 +1418,10 @@ class Reports extends Component {
     { 
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
           sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-         }   
+         }
+         this.setState({
+          loadingDownload: true
+        });   
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1424,7 +1438,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);   
+        self.setState({
+          loadingDownload: false
+        });    
       }).catch(data => {
         console.log(data);
       });         
@@ -1433,7 +1450,10 @@ class Reports extends Component {
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      }); 
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1451,7 +1471,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);
+        self.setState({
+          loadingDownload: false
+        });       
       }).catch(data => {
         console.log(data);
       });         
@@ -1477,6 +1500,10 @@ class Reports extends Component {
       if(totalError>0)
       {
         return false;
+      } else {
+        this.setState({
+          loadingDownload: true
+        });
       }
       axios({
         method: "post",
@@ -1501,7 +1528,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);  
+        self.setState({
+          loadingDownload: false
+        });     
       }).catch(data => {
         console.log(data);
       });         
@@ -1533,6 +1563,10 @@ class Reports extends Component {
       if(totalError>0)
       {
         return;
+      } else {
+        this.setState({
+          loadingDownload: true
+        });
       }
 
       axios({
@@ -1553,7 +1587,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);
+        self.setState({
+          loadingDownload: false
+        });      
       }).catch(data => {
         console.log(data);
       });         
@@ -1563,7 +1600,10 @@ class Reports extends Component {
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      });  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1581,7 +1621,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData); 
+        self.setState({
+          loadingDownload: false
+        });      
       }).catch(data => {
         console.log(data);
       }); 
@@ -1590,7 +1633,10 @@ class Reports extends Component {
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      });  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1608,7 +1654,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData); 
+        self.setState({
+          loadingDownload: false
+        });      
       }).catch(data => {
         console.log(data);
       });         
@@ -1618,7 +1667,10 @@ class Reports extends Component {
     {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
+       }
+       this.setState({
+        loadingDownload: true
+      });  
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1636,7 +1688,10 @@ class Reports extends Component {
         }
       }).then(function(res) {
         debugger;
-        window.open(res.data.responseData, "_blank");       
+        window.open(res.data.responseData);
+        self.setState({
+          loadingDownload: false
+        });       
       }).catch(data => {
         console.log(data);
       });         
@@ -2978,8 +3033,18 @@ class Reports extends Component {
               <button
                 className="scheduleBtn"
                 onClick={this.downloadDefaultReport.bind(this)}
+                disabled={this.state.loadingDownload}
               >
-                <label className="addLable">Download</label>
+                {this.state.loadingDownload ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )}
+                <label className="addLable">{this.state.loadingDownload ? "Please Wait ..." : "Download"}</label>
               </button>
             </div>
             <div onClick={this.handleDefaultPopupClose}>
@@ -3507,7 +3572,7 @@ class Reports extends Component {
                       Cell: row => (
                         <div className="report-action">
                           <div>
-                            {row.original.isDownloaded == 1 ? (
+                            {row.original.isDownloaded == 1 && 
                               <img
                                 src={DownExcel}
                                 alt="download icon"
@@ -3518,14 +3583,7 @@ class Reports extends Component {
                                   row.original.reportName
                                 )}
                               />
-                            ) : (
-                              <img
-                                style={{ display: "none" }}
-                                src={DownExcel}
-                                alt="download icon"
-                                className="downloadaction"
-                              />
-                            )}
+                            }
                           </div>
                           <div>
                             {row.original.scheduleID == 0 ? (
