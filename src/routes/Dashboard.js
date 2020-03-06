@@ -762,13 +762,20 @@ class Dashboard extends Component {
     var data = e.currentTarget.value;
     if (column === "all") {
       itemsArray = this.state.sortAllData;
+      this.setState({
+        statusColor: "",
+        categoryColor: "",
+        priorityColor: "",
+        assignColor: "",
+        creationColor: ""
+      });
     } else if (column === "status") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.ticketStatus === data
       );
       this.setState({
-        statusColor: "table-b table-blue-btn",
+        statusColor: "sort-column",
         categoryColor: "",
         priorityColor: "",
         assignColor: "",
@@ -779,7 +786,7 @@ class Dashboard extends Component {
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
         statusColor: "",
-        categoryColor: "table-b table-blue-btn",
+        categoryColor: "sort-column",
         priorityColor: "",
         assignColor: "",
         creationColor: ""
@@ -790,7 +797,7 @@ class Dashboard extends Component {
       this.setState({
         statusColor: "",
         categoryColor: "",
-        priorityColor: "table-b table-blue-btn",
+        priorityColor: "sort-column",
         assignColor: "",
         creationColor: ""
       });
@@ -803,7 +810,7 @@ class Dashboard extends Component {
         statusColor: "",
         categoryColor: "",
         priorityColor: "",
-        assignColor: "table-b table-blue-btn",
+        assignColor: "sort-column",
         creationColor: ""
       });
     } else if (column === "createdOn") {
@@ -815,7 +822,7 @@ class Dashboard extends Component {
         statusColor: "",
         categoryColor: "",
         priorityColor: "",
-        assignColor: "table-b table-blue-btn",
+        assignColor: "sort-column",
         creationColor: ""
       });
     } else if (column === "colorred") {
@@ -6392,6 +6399,7 @@ class Dashboard extends Component {
                         Header: (
                           <span
                             onClick={this.StatusOpenModel.bind(this, "status")}
+                            className={this.state.statusColor}
                           >
                             Status <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -6560,7 +6568,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.categoryColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "category"
@@ -6609,7 +6617,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.priorityColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "priority"
@@ -6624,7 +6632,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.assignColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "assignedTo"
@@ -6638,7 +6646,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdOn"

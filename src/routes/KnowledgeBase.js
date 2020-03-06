@@ -22,13 +22,6 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { notification } from "antd";
 
-
-
-
-
-
-
-
 class KnowledgeBase extends Component {
   constructor(props) {
     super(props);
