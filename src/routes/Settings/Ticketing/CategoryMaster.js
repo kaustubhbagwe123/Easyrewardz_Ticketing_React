@@ -1732,6 +1732,7 @@ class CategoryMaster extends Component {
                   id="inputStatus"
                   className="edit-dropDwon dropdown-setting"
                   value={this.state.editCategory.statusName}
+                  
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
