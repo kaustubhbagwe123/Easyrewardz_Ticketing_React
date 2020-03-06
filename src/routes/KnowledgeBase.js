@@ -22,6 +22,13 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { notification } from "antd";
 
+
+
+
+
+
+
+
 class KnowledgeBase extends Component {
   constructor(props) {
     super(props);
@@ -1806,6 +1813,7 @@ class KnowledgeBase extends Component {
               <br />
               <div className="row">
                 <div className="col-md-12 KBas">
+                  
                   <CKEditor
                     data={this.state.ckeditorAdd}
                     onChange={this.onAddCKEditorChange}
@@ -1841,9 +1849,11 @@ class KnowledgeBase extends Component {
                         }
                       
                       ]
-
+                      
+                       
                       
                     }}
+                    
                   />
                 </div>
               </div>
