@@ -2325,6 +2325,7 @@ class MyTicketList extends Component {
 
   checkAllCheckbox = async event => {
     debugger;
+    var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("ListCheckbox");
@@ -2334,16 +2335,25 @@ class MyTicketList extends Component {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
             strIds += checkboxes[i].getAttribute("attrIds") + ",";
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = true;
+          }
         }
       }
     } else {
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = false;
+          }
         }
       }
       strIds = "";
     }
+    this.setState({
+      cSelectedRow: obj
+    });
     await this.setState({
       ticketIds: strIds
     });
