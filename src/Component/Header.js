@@ -72,6 +72,8 @@ class Header extends Component {
       workTime: 0,
       workTimeHours: '0H 0M',
       selectedUserProfilePicture:"",
+      notificationAccess:"yes",
+      settingAccess:"yes",
       cont: [
         {
           data: "Dashboards",
@@ -105,7 +107,8 @@ class Header extends Component {
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
     this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
-   
+    this.handleCRMRole=this.handleCRMRole.bind(this);
+    this.setAccessUser=this.setAccessUser.bind(this);
   }
 
   componentDidMount() {
@@ -129,6 +132,7 @@ class Header extends Component {
       1
     );
     this.handleGetNotificationList();
+    
   }
 
   handleNextButtonShow() {
@@ -214,12 +218,13 @@ class Header extends Component {
     }).then(function (res) {
       debugger;
       var status = res.data.message;
+      var id=res.data.responseData[0].userId;
       var userdata = res.data.responseData[0].profilePicture;
       if (status === "Success") {
         self.setState({
           selectedUserProfilePicture: userdata
         });
-      
+      self.handleCRMRole(id);
       } else {
         self.setState({
           selectedUserProfilePicture: ""
@@ -228,6 +233,90 @@ class Header extends Component {
 
     });
   }
+
+  handleCRMRole(id) {
+    debugger;
+    let self = this;
+   
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetRolesByUserID",
+      headers: authHeader(),
+      params: {
+        UserId: id
+      }
+    }).then(function (res) {
+      debugger;
+      let msg=res.data.message;
+      let data = res.data.responseData.modules;
+      if(msg==="Success"){
+ self.setAccessUser(data)
+      }
+     
+    }).catch(data => {
+      console.log(data);
+    });
+  }
+
+  setAccessUser(data){
+    debugger;
+    var accessdata=[];
+    var dashboard={
+      data: "Dashboards",
+      urls: "dashboard",
+      logoBlack: DashboardLogo,
+      logoBlue: DashboardLogoBlue,
+      imgAlt: "dashboard icon",
+      imgClass: "dashboardImg1",
+      activeClass: "active single-menu"
+    };
+    var myticket= {
+      data: "My Tickets",
+      urls: "myTicketlist",
+      logoBlack: TicketLogo,
+      logoBlue: TicketLogoBlue,
+      imgAlt: "ticket icon",
+      imgClass: "myTicket",
+      activeClass: "single-menu"
+    };
+    var knowledgebase={
+      data: "Knowledge Base",
+      urls: "knowledgebase",
+      logoBlack: KnowledgeLogo,
+      logoBlue: KnowledgeLogoBlue,
+      imgAlt: "knowledge icon",
+      imgClass: "knowledgeNav",
+      activeClass: "single-menu"
+    };
+if(data !==null){
+  for(var i=0; i<data.length;i++){
+
+    if(data[i].moduleName==="Dashboard" && data[i].modulestatus===true ){
+      accessdata.push(dashboard);
+    }else if(data[i].moduleName==="Tickets" && data[i].modulestatus===true ){
+      accessdata.push(myticket);
+    }else if(data[i].moduleName==="Knowledge Base" && data[i].modulestatus===true ){
+      accessdata.push(knowledgebase);
+    }else if(data[i].moduleName==="Settings" && data[i].modulestatus===false ){
+      this.setState({
+        settingAccess:"none"
+      });
+    }else if(data[i].moduleName==="Notification" && data[i].modulestatus===false ){
+      this.setState({
+        notificationAccess:"none"
+      });
+    }
+  }
+}
+this.setState({
+  cont:accessdata
+})
+
+}
+
+
+
+  
   
   handleLogoutMethod() {
     // let self = this;
@@ -878,7 +967,7 @@ class Header extends Component {
                   src={NotificationLogo}
                   alt="logo"
                   className="notifi"
-
+                  style={{ display: this.state.notificationAccess}}
                 />
                 {this.state.notiCount > 0 && <span className="upper-noti-count">{this.state.notiCount}</span>}
               </div>
@@ -887,7 +976,7 @@ class Header extends Component {
               </span>
             </a>
             <Link to="settings">
-              <img src={SettingLogo} alt="logo" className="setting" />
+              <img src={SettingLogo} alt="logo" className="setting" style={{ display: this.state.settingAccess}} />
               <img
                 src={SettingLogoBlue}
                 alt="logo"
