@@ -68,7 +68,7 @@ class Dashboard extends Component {
     super(props);
     let now = new Date();
     let start = moment(
-      new Date(now.getFullYear(), now.getMonth() , now.getDate(), 0, 0, 0, 0)
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     ).subtract(30, "days");
     let end = moment(start).add(30, "days");
     // .subtract(1, "seconds");
@@ -316,8 +316,7 @@ class Dashboard extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      moduleID:0
-      
+      moduleID: 0
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -610,42 +609,44 @@ class Dashboard extends Component {
         searchDataByCategoryType: categoryType,
         searchDataByAll: allTab
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      let CSVData = data;
-      let count = 0;
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
-      }
-      if (status === "Success") {
-        self.setState({
-          SearchTicketData: data,
-
-          resultCount: count,
-          loading: false,
-          cSelectedRow: {}
-        });
-        for (let i = 0; i < CSVData.length; i++) {
-          delete CSVData[i].totalpages;
-          delete CSVData[i].responseTimeRemainingBy;
-          delete CSVData[i].responseOverdueBy;
-          delete CSVData[i].resolutionOverdueBy;
-          // delete CSVData[i].ticketCommentCount;
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        let CSVData = data;
+        let count = 0;
+        if (res.data.responseData != null) {
+          count = res.data.responseData.length;
         }
-        self.setState({ CSVDownload: CSVData });
-      } else {
-        self.setState({
-          SearchTicketData: [],
+        if (status === "Success") {
+          self.setState({
+            SearchTicketData: data,
 
-          resultCount: 0,
-          loading: false
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+            resultCount: count,
+            loading: false,
+            cSelectedRow: {}
+          });
+          for (let i = 0; i < CSVData.length; i++) {
+            delete CSVData[i].totalpages;
+            delete CSVData[i].responseTimeRemainingBy;
+            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].resolutionOverdueBy;
+            // delete CSVData[i].ticketCommentCount;
+          }
+          self.setState({ CSVDownload: CSVData });
+        } else {
+          self.setState({
+            SearchTicketData: [],
+
+            resultCount: 0,
+            loading: false
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   clickCheckbox(evt) {
@@ -761,13 +762,20 @@ class Dashboard extends Component {
     var data = e.currentTarget.value;
     if (column === "all") {
       itemsArray = this.state.sortAllData;
+      this.setState({
+        statusColor: "",
+        categoryColor: "",
+        priorityColor: "",
+        assignColor: "",
+        creationColor: ""
+      });
     } else if (column === "status") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.ticketStatus === data
       );
       this.setState({
-        statusColor: "table-b table-blue-btn",
+        statusColor: "sort-column",
         categoryColor: "",
         priorityColor: "",
         assignColor: "",
@@ -778,7 +786,7 @@ class Dashboard extends Component {
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
         statusColor: "",
-        categoryColor: "table-b table-blue-btn",
+        categoryColor: "sort-column",
         priorityColor: "",
         assignColor: "",
         creationColor: ""
@@ -789,7 +797,7 @@ class Dashboard extends Component {
       this.setState({
         statusColor: "",
         categoryColor: "",
-        priorityColor: "table-b table-blue-btn",
+        priorityColor: "sort-column",
         assignColor: "",
         creationColor: ""
       });
@@ -802,7 +810,7 @@ class Dashboard extends Component {
         statusColor: "",
         categoryColor: "",
         priorityColor: "",
-        assignColor: "table-b table-blue-btn",
+        assignColor: "sort-column",
         creationColor: ""
       });
     } else if (column === "createdOn") {
@@ -814,7 +822,7 @@ class Dashboard extends Component {
         statusColor: "",
         categoryColor: "",
         priorityColor: "",
-        assignColor: "table-b table-blue-btn",
+        assignColor: "sort-column",
         creationColor: ""
       });
     } else if (column === "colorred") {
@@ -895,7 +903,6 @@ class Dashboard extends Component {
       //   self.setState({ modulesNames: [] });
       // }
       self.handleAdvanceSearchOption(moduleID);
-      
     });
   }
   handleAdvanceSearchOption(id) {
@@ -908,19 +915,21 @@ class Dashboard extends Component {
       params: {
         ModuleID: id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data1 = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ modulesItems: data1 });
-        self.setAdvanceSearch(data1);
-      } else {
-        self.setState({ modulesItems: [] });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data1 = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ modulesItems: data1 });
+          self.setAdvanceSearch(data1);
+        } else {
+          self.setState({ modulesItems: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   setAdvanceSearch(data1) {
     debugger;
@@ -1084,19 +1093,27 @@ class Dashboard extends Component {
         BrandID: this.state.BrandIds
         // BrandID: "26, 31"
       }
-    }).then(function(res) {
-      debugger;
-      let DashboardNumberData = res.data.responseData;
-      self.setState({ DashboardNumberData: DashboardNumberData });
-      if (
-        Object.keys(self.state.DashboardGraphData).length > 0 &&
-        Object.keys(self.state.DashboardNumberData).length > 0
-      ) {
-        self.setState({ loadingAbove: false });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if(status === "Success"){
+          self.setState({ DashboardNumberData: data });
+          if (
+            Object.keys(self.state.DashboardGraphData).length > 0 &&
+            Object.keys(self.state.DashboardNumberData).length > 0
+          ) {
+            self.setState({ loadingAbove: false });
+          }
+        }else{
+          self.setState({ DashboardNumberData: {} });
+        }
+        
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetDashboardGraphData() {
     this.setState({ loadingAbove: true });
@@ -1120,53 +1137,57 @@ class Dashboard extends Component {
         todate: moment(this.state.end).format("YYYY-MM-DD"),
         BrandID: this.state.BrandIds
       }
-    }).then(function(res) {
-      debugger;
-      if (res.data.responseData !== null) {
-        let DashboardGraphData = res.data.responseData;
-        let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
-        let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
-        let DashboardTaskGraphData = res.data.responseData.tickettoTaskGraph;
-        let DashboardPriorityGraphData = res.data.responseData.priorityChart;
-        let DashboardClaimGraphData = res.data.responseData.tickettoClaimGraph;
-        if (DashboardTaskGraphData !== null) {
+    })
+      .then(function(res) {
+        debugger;
+        if (res.data.responseData !== null) {
+          let DashboardGraphData = res.data.responseData;
+          let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
+          let DashboardSourceGraphData =
+            res.data.responseData.ticketSourceGraph;
+          let DashboardTaskGraphData = res.data.responseData.tickettoTaskGraph;
+          let DashboardPriorityGraphData = res.data.responseData.priorityChart;
+          let DashboardClaimGraphData =
+            res.data.responseData.tickettoClaimGraph;
+          if (DashboardTaskGraphData !== null) {
+            self.setState({
+              DashboardTaskGraphData
+            });
+          }
+          if (DashboardClaimGraphData !== null) {
+            self.setState({
+              DashboardClaimGraphData
+            });
+          }
+          if (DashboardBillGraphData !== null) {
+            self.setState({
+              DashboardBillGraphData
+            });
+          }
+          if (DashboardSourceGraphData !== null) {
+            self.setState({
+              DashboardSourceGraphData
+            });
+          }
+          if (DashboardPriorityGraphData !== null) {
+            self.setState({
+              DashboardPriorityGraphData
+            });
+          }
           self.setState({
-            DashboardTaskGraphData
+            DashboardGraphData: DashboardGraphData
           });
+          if (
+            Object.keys(self.state.DashboardGraphData).length > 0 &&
+            Object.keys(self.state.DashboardNumberData).length > 0
+          ) {
+            self.setState({ loadingAbove: false });
+          }
         }
-        if (DashboardClaimGraphData !== null) {
-          self.setState({
-            DashboardClaimGraphData
-          });
-        }
-        if (DashboardBillGraphData !== null) {
-          self.setState({
-            DashboardBillGraphData
-          });
-        }
-        if (DashboardSourceGraphData !== null) {
-          self.setState({
-            DashboardSourceGraphData
-          });
-        }
-        if (DashboardPriorityGraphData !== null) {
-          self.setState({
-            DashboardPriorityGraphData
-          });
-        }
-        self.setState({
-          DashboardGraphData: DashboardGraphData
-        });
-        if (
-          Object.keys(self.state.DashboardGraphData).length > 0 &&
-          Object.keys(self.state.DashboardNumberData).length > 0
-        ) {
-          self.setState({ loadingAbove: false });
-        }
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   checkAllAgentStart(event) {
@@ -1365,27 +1386,29 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          AgentData: data,
-          AssignToData: data,
-          TeamMemberData: data
-        });
-        self.checkAllAgentStart();
-      } else {
-        self.setState({
-          AgentData: [],
-          AssignToData: [],
-          TeamMemberData: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AgentData: data,
+            AssignToData: data,
+            TeamMemberData: data
+          });
+          self.checkAllAgentStart();
+        } else {
+          self.setState({
+            AgentData: [],
+            AssignToData: [],
+            TeamMemberData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetBrandList() {
     debugger;
@@ -1394,14 +1417,21 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let BrandData = res.data.responseData;
-      self.setState({ BrandData: BrandData });
-      self.checkAllBrandStart();
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ BrandData: data });
+          self.checkAllBrandStart();
+        } else {
+          self.setState({ BrandData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handelCheckBoxCheckedChange = async ticketID => {
     debugger;
@@ -1544,13 +1574,20 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let ChannelOfPurchaseData = res.data.responseData;
-      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ ChannelOfPurchaseData: data });
+        } else {
+          self.setState({ ChannelOfPurchaseData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handelOnchangeData(e) {
     this.setState({
@@ -1570,13 +1607,15 @@ class Dashboard extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function(res) {
-      debugger;
-      let FunctionData = res.data.responseData;
-      self.setState({ FunctionData: FunctionData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let FunctionData = res.data.responseData;
+        self.setState({ FunctionData: FunctionData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetDepartmentList() {
     debugger;
@@ -1585,18 +1624,20 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ DepartmentData: data });
-      } else {
-        self.setState({ DepartmentData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ DepartmentData: data });
+        } else {
+          self.setState({ DepartmentData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleWithTaskAll = e => {
     let withTaskAllValue = e.currentTarget.value;
@@ -1665,19 +1706,21 @@ class Dashboard extends Component {
         Email: this.state.assignEmail.trim(),
         DesignationID: this.state.selectedDesignation
       }
-    }).then(function(res) {
-      debugger;
-      let SearchAssignData = res.data.responseData;
-      self.setState({
-        SearchAssignData: SearchAssignData,
-        assignFirstName: "",
-        assignLastName: "",
-        assignEmail: ""
-        // selectedDesignation: 0
+    })
+      .then(function(res) {
+        debugger;
+        let SearchAssignData = res.data.responseData;
+        self.setState({
+          SearchAssignData: SearchAssignData,
+          assignFirstName: "",
+          assignLastName: "",
+          assignEmail: ""
+          // selectedDesignation: 0
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleAssignClearData() {
     debugger;
@@ -1699,13 +1742,20 @@ class Dashboard extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({ TicketPriorityData: data });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ TicketPriorityData: data });
+        } else {
+          self.setState({ TicketPriorityData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleTicketStatusAll = e => {
     let ticketStatusAllValue = e.currentTarget.value;
@@ -1767,9 +1817,9 @@ class Dashboard extends Component {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
             strIds += checkboxes[i].getAttribute("attrIds") + ",";
-            for (let i = 0; i < this.state.SearchTicketData.length; i++) {
-              obj[this.state.SearchTicketData[i].ticketID] = true;
-              }
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = true;
+          }
         }
       }
     } else {
@@ -1778,14 +1828,14 @@ class Dashboard extends Component {
           checkboxes[J].checked = false;
           for (let i = 0; i < this.state.SearchTicketData.length; i++) {
             obj[this.state.SearchTicketData[i].ticketID] = false;
-            }
+          }
         }
       }
       strIds = "";
     }
     this.setState({
       cSelectedRow: obj
-      });
+    });
     await this.setState({
       ticketIds: strIds
     });
@@ -1963,7 +2013,8 @@ class Dashboard extends Component {
     this.setState({ selectedClaimCategory: claimCategoryValue });
     setTimeout(() => {
       if (this.state.selectedClaimCategory) {
-        this.handleGetClaimSubCategoryList();
+        // this.handleGetClaimSubCategoryList();
+        this.handleGetSubCategoryList('allClaimTab');
       }
     }, 1);
   };
@@ -1988,7 +2039,7 @@ class Dashboard extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList();
+        this.handleGetSubCategoryList('categoryTab');
       }
     }, 1);
   };
@@ -1997,7 +2048,7 @@ class Dashboard extends Component {
     this.setState({ selectedCategoryAll: categoryAllValue });
     setTimeout(() => {
       if (this.state.selectedCategoryAll) {
-        this.handleGetSubCategoryList();
+        this.handleGetSubCategoryList('allTab');
       }
     }, 1);
   };
@@ -2007,7 +2058,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList();
+        this.handleGetIssueTypeList('categoryTab');
       }
     }, 1);
   };
@@ -2017,7 +2068,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategoryAll) {
-        this.handleGetIssueTypeList();
+        this.handleGetIssueTypeList('allTab');
       }
     }, 1);
   };
@@ -2027,7 +2078,8 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedClaimSubCategory) {
-        this.handleGetClaimIssueTypeList();
+        this.handleGetIssueTypeList('allClaimTab');
+        // this.handleGetClaimIssueTypeList();
       }
     }, 1);
   };
@@ -2047,11 +2099,20 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let DesignationData = res.data.responseData;
-      self.setState({ DesignationData: DesignationData });
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ DesignationData: data });
+        } else {
+          self.setState({ DesignationData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleSchedulePopup() {
     debugger;
@@ -2181,20 +2242,22 @@ class Dashboard extends Component {
         NameOfMonthForYear: this.state
           .selectedNameOfMonthForDailyYearCommaSeperated
       }
-    }).then(function(res) {
-      debugger;
-      let messageData = res.data.message;
-      if (messageData === "Success") {
-        self.ScheduleCloseModel();
-        NotificationManager.success("Scheduled successfully.");
-        self.setState({
-          scheduleRequired: "",
-          selectedTeamMemberCommaSeperated: ""
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let messageData = res.data.message;
+        if (messageData === "Success") {
+          self.ScheduleCloseModel();
+          NotificationManager.success("Scheduled successfully.");
+          self.setState({
+            scheduleRequired: "",
+            selectedTeamMemberCommaSeperated: ""
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleWeekForYear(e) {
     debugger;
@@ -2280,18 +2343,20 @@ class Dashboard extends Component {
           AgentID: this.state.agentId,
           Remark: this.state.agentRemark
         }
-      }).then(function(res) {
-        debugger;
-        let messageData = res.data.message;
-        if (messageData === "Success") {
-          self.handleAssignModalClose();
-          NotificationManager.success("Tickets assigned successfully.");
-          // self.handleSearchTicketEscalation();
-          self.ViewSearchData();
-        }
-      }).catch(data => {
-        console.log(data);
-      });
+      })
+        .then(function(res) {
+          debugger;
+          let messageData = res.data.message;
+          if (messageData === "Success") {
+            self.handleAssignModalClose();
+            NotificationManager.success("Tickets assigned successfully.");
+            // self.handleSearchTicketEscalation();
+            self.ViewSearchData();
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       this.setState({
         agentSelection: "Agent Selection is required"
@@ -2306,22 +2371,24 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/GetSLAStatusList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          SlaStatusData: data
-        });
-      } else {
-        self.setState({
-          SlaStatusData: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            SlaStatusData: data
+          });
+        } else {
+          self.setState({
+            SlaStatusData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetTicketSourceList() {
     debugger;
@@ -2331,22 +2398,24 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          TicketSourceData: data
-        });
-      } else {
-        self.setState({
-          TicketSourceData: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            TicketSourceData: data
+          });
+        } else {
+          self.setState({
+            TicketSourceData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetClaimIssueTypeList() {
     let self = this;
@@ -2362,26 +2431,52 @@ class Dashboard extends Component {
       params: {
         SubCategoryID: this.state.selectedClaimSubCategory
       }
-    }).then(function(res) {
-      debugger;
-      let ClaimIssueTypeData = res.data.responseData;
-      self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let ClaimIssueTypeData = res.data.responseData;
+        self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
-  handleGetIssueTypeList() {
+  handleGetIssueTypeList(param) {
     let self = this;
-    self.setState({
-      IssueTypeData: [],
-      IssueTypeAllData: [],
-      selectedIssueType: 0,
-      selectedIssueTypeAll: 0
-    });
-    let subCateId =
-      this.state.byCategoryFlag === 4
-        ? this.state.selectedSubCategory
-        : this.state.selectedSubCategoryAll;
+    // self.setState({
+    //   IssueTypeData: [],
+    //   IssueTypeAllData: [],
+    //   selectedIssueType: 0,
+    //   selectedIssueTypeAll: 0
+    // });
+    if (param == 'categoryTab') {
+      self.setState({
+        IssueTypeData: [],
+        selectedIssueType: 0
+      });
+    } else if (param == 'allTab') {
+      self.setState({
+        IssueTypeAllData: [],
+        selectedIssueTypeAll: 0
+      });
+    } else if (param == 'allClaimTab') {
+      self.setState({
+        ClaimIssueTypeData: [],
+        selectedClaimIssueType: 0
+      });
+    }
+    // let subCateId =
+    //   this.state.byCategoryFlag === 4
+    //     ? this.state.selectedSubCategory
+    //     : this.state.selectedSubCategoryAll;
+    let subCateId;
+    if (param == 'categoryTab') {
+      subCateId = this.state.selectedSubCategory
+    } else if (param == 'allTab') {
+      subCateId = this.state.selectedSubCategoryAll
+    } else if (param == 'allClaimTab') {
+      subCateId = this.state.selectedClaimSubCategory
+    }
 
     axios({
       method: "post",
@@ -2390,24 +2485,40 @@ class Dashboard extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
-      debugger;
-      // let IssueTypeData = res.data.responseData;
-      // self.setState({ IssueTypeData: IssueTypeData });
-      if (self.state.byCategoryFlag === 4) {
-        var IssueTypeData = res.data.responseData;
-        self.setState({
-          IssueTypeData: IssueTypeData
-        });
-      } else if (self.state.allFlag === 5) {
-        var IssueTypeAllData = res.data.responseData;
-        self.setState({
-          IssueTypeAllData: IssueTypeAllData
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        // if (self.state.byCategoryFlag === 4) {
+        //   var IssueTypeData = res.data.responseData;
+        //   self.setState({
+        //     IssueTypeData: IssueTypeData
+        //   });
+        // } else if (self.state.allFlag === 5) {
+        //   var IssueTypeAllData = res.data.responseData;
+        //   self.setState({
+        //     IssueTypeAllData: IssueTypeAllData
+        //   });
+        // }
+        if (param == 'categoryTab') {
+          var IssueTypeData = res.data.responseData;
+          self.setState({
+            IssueTypeData: IssueTypeData
+          });
+        } else if (param == 'allTab') {
+          var IssueTypeAllData = res.data.responseData;
+          self.setState({
+            IssueTypeAllData: IssueTypeAllData
+          });
+        } else if (param == 'allClaimTab') {
+          var ClaimIssueTypeData = res.data.responseData;
+          self.setState({
+            ClaimIssueTypeData: ClaimIssueTypeData
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetCategoryList() {
     debugger;
@@ -2417,17 +2528,19 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let CategoryData = res.data;
-      // let CategoryDataAll = res.data;
-      self.setState({
-        CategoryData: CategoryData
-        // CategoryDataAll: CategoryDataAll
+    })
+      .then(function(res) {
+        debugger;
+        let CategoryData = res.data;
+        // let CategoryDataAll = res.data;
+        self.setState({
+          CategoryData: CategoryData
+          // CategoryDataAll: CategoryDataAll
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleGetClaimSubCategoryList() {
     debugger;
@@ -2446,33 +2559,65 @@ class Dashboard extends Component {
       params: {
         CategoryID: this.state.selectedClaimCategory
       }
-    }).then(function(res) {
-      debugger;
-      let ClaimSubCategoryData = res.data.responseData;
-      self.setState({
-        ClaimSubCategoryData: ClaimSubCategoryData
+    })
+      .then(function(res) {
+        debugger;
+        let ClaimSubCategoryData = res.data.responseData;
+        self.setState({
+          ClaimSubCategoryData: ClaimSubCategoryData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
-  handleGetSubCategoryList() {
+  handleGetSubCategoryList(param) {
     debugger;
     let self = this;
-    self.setState({
-      SubCategoryData: [],
-      SubCategoryAllData: [],
-      selectedSubCategory: 0,
-      selectedSubCategoryAll: 0,
-      IssueTypeData: [],
-      IssueTypeAllData: [],
-      selectedIssueType: 0,
-      selectedIssueTypeAll: 0
-    });
-    let cateId =
-      this.state.byCategoryFlag === 4
-        ? this.state.selectedCategory
-        : this.state.selectedCategoryAll;
+    // self.setState({
+    //   SubCategoryData: [],
+    //   SubCategoryAllData: [],
+    //   selectedSubCategory: 0,
+    //   selectedSubCategoryAll: 0,
+    //   IssueTypeData: [],
+    //   IssueTypeAllData: [],
+    //   selectedIssueType: 0,
+    //   selectedIssueTypeAll: 0
+    // });
+    if (param == 'categoryTab') {
+      this.setState({
+        SubCategoryData: [],
+        IssueTypeData: [],
+        selectedSubCategory: 0,
+        selectedIssueType: 0
+      });
+    } else if (param == 'allTab') {
+      this.setState({
+        SubCategoryAllData: [],
+        IssueTypeAllData: [],
+        selectedSubCategoryAll: 0,
+        selectedIssueTypeAll: 0
+      });
+    } else if (param == 'allClaimTab') {
+      this.setState({
+        ClaimSubCategoryData: [],
+        selectedClaimSubCategory: 0,
+        ClaimIssueTypeData: [],
+        selectedClaimIssueType: 0
+      });
+    }
+    // let cateId =
+    //   this.state.byCategoryFlag === 4
+    //     ? this.state.selectedCategory
+    //     : this.state.selectedCategoryAll;
+    let cateId;
+    if (param == 'categoryTab') {
+      cateId = this.state.selectedCategory
+    } else if (param == 'allTab') {
+      cateId = this.state.selectedCategoryAll
+    } else if (param == 'allClaimTab') {
+      cateId = this.state.selectedClaimCategory
+    }
 
     axios({
       method: "post",
@@ -2481,22 +2626,40 @@ class Dashboard extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function(res) {
-      debugger;
-      if (self.state.byCategoryFlag === 4) {
-        var SubCategoryData = res.data.responseData;
-        self.setState({
-          SubCategoryData: SubCategoryData
-        });
-      } else if (self.state.allFlag === 5) {
-        var SubCategoryAllData = res.data.responseData;
-        self.setState({
-          SubCategoryAllData: SubCategoryAllData
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        // if (self.state.byCategoryFlag === 4) {
+        //   var SubCategoryData = res.data.responseData;
+        //   self.setState({
+        //     SubCategoryData: SubCategoryData
+        //   });
+        // } else if (self.state.allFlag === 5) {
+        //   var SubCategoryAllData = res.data.responseData;
+        //   self.setState({
+        //     SubCategoryAllData: SubCategoryAllData
+        //   });
+        // }
+        if (param == 'categoryTab') {
+          var SubCategoryData = res.data.responseData;
+          self.setState({
+            SubCategoryData: SubCategoryData
+          });
+        } else if (param == 'allTab') {
+          var SubCategoryAllData = res.data.responseData;
+          self.setState({
+            SubCategoryAllData: SubCategoryAllData
+          });
+        } else if (param == 'allClaimTab') {
+          var ClaimSubCategoryData = res.data.responseData;
+          self.setState({
+            ClaimSubCategoryData: ClaimSubCategoryData
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   clearSearch() {
     debugger;
@@ -2549,12 +2712,14 @@ class Dashboard extends Component {
           selectedSubCategory: 0,
           selectedIssueType: 0,
           selectedTicketStatusByCategory: 0,
-          resultCount: 0
+          resultCount: 0,
+          SubCategoryData: [],
+          IssueTypeData: []
         },
         () => {
           // this.handleSearchTicketEscalation();
           this.ViewSearchData(1);
-          this.handleGetSubCategoryList();
+          // this.handleGetSubCategoryList();
         }
       );
     } else if (this.state.allFlag === 5) {
@@ -2590,13 +2755,17 @@ class Dashboard extends Component {
           selectedTaskStatus: 0,
           selectedDepartment: 0,
           selectedFunction: 0,
-          resultCount: 0
+          resultCount: 0,
+          SubCategoryAllData: [],
+          IssueTypeAllData: [],
+          ClaimSubCategoryData: [],
+          ClaimIssueTypeData: []
         },
         () => {
           // this.handleSearchTicketEscalation();
           this.ViewSearchData(1);
-          this.handleGetSubCategoryList();
-          this.handleGetClaimSubCategoryList();
+          // this.handleGetSubCategoryList();
+          // this.handleGetClaimSubCategoryList();
         }
       );
     }
@@ -2797,117 +2966,119 @@ class Dashboard extends Component {
         searchDataByCategoryType: categoryType,
         searchDataByAll: allTab
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
 
-      let CSVData = data;
-      let count = 0;
-      if (data !== null) {
-        if (res.data.responseData != null) {
-          count = res.data.responseData.length;
-        }
+        let CSVData = data;
+        let count = 0;
         if (data !== null) {
-          self.state.sortAllData = data;
-          var unique = [];
-          var distinct = [];
-          for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].ticketStatus]) {
-              distinct.push(data[i].ticketStatus);
-              unique[data[i].ticketStatus] = 1;
+          if (res.data.responseData != null) {
+            count = res.data.responseData.length;
+          }
+          if (data !== null) {
+            self.state.sortAllData = data;
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].ticketStatus]) {
+                distinct.push(data[i].ticketStatus);
+                unique[data[i].ticketStatus] = 1;
+              }
             }
-          }
-          for (let i = 0; i < distinct.length; i++) {
-            self.state.sortTicketData.push({ ticketStatus: distinct[i] });
-          }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+            }
 
-          var unique = [];
-          var distinct = [];
-          for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].category]) {
-              distinct.push(data[i].category);
-              unique[data[i].category] = 1;
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].category]) {
+                distinct.push(data[i].category);
+                unique[data[i].category] = 1;
+              }
             }
-          }
-          for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCategoryData.push({ category: distinct[i] });
-          }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortCategoryData.push({ category: distinct[i] });
+            }
 
-          var unique = [];
-          var distinct = [];
-          for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].priority]) {
-              distinct.push(data[i].priority);
-              unique[data[i].priority] = 1;
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].priority]) {
+                distinct.push(data[i].priority);
+                unique[data[i].priority] = 1;
+              }
             }
-          }
-          for (let i = 0; i < distinct.length; i++) {
-            self.state.sortPriorityData.push({ priority: distinct[i] });
-          }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortPriorityData.push({ priority: distinct[i] });
+            }
 
-          var unique = [];
-          var distinct = [];
-          for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].createdOn]) {
-              distinct.push(data[i].createdOn);
-              unique[data[i].createdOn] = 1;
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].createdOn]) {
+                distinct.push(data[i].createdOn);
+                unique[data[i].createdOn] = 1;
+              }
             }
-          }
-          for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
-          }
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+            }
 
-          var unique = [];
-          var distinct = [];
-          for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].assignedTo]) {
-              distinct.push(data[i].assignedTo);
-              unique[data[i].assignedTo] = 1;
+            var unique = [];
+            var distinct = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].assignedTo]) {
+                distinct.push(data[i].assignedTo);
+                unique[data[i].assignedTo] = 1;
+              }
             }
-          }
-          for (let i = 0; i < distinct.length; i++) {
-            self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+            for (let i = 0; i < distinct.length; i++) {
+              self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+            }
           }
         }
-      }
 
-      if (status === "Success") {
-        if (Shwcheck === 1) {
-          self.setState({
-            SearchTicketData: data,
-            resultCount: count,
-            ShowGridCheckBox: false,
-            loading: false
-          });
+        if (status === "Success") {
+          if (Shwcheck === 1) {
+            self.setState({
+              SearchTicketData: data,
+              resultCount: count,
+              ShowGridCheckBox: false,
+              loading: false
+            });
+          } else {
+            self.setState({
+              SearchTicketData: [],
+              resultCount: 0,
+              ShowGridCheckBox: true,
+              loading: false
+            });
+          }
+
+          for (let i = 0; i < CSVData.length; i++) {
+            delete CSVData[i].totalpages;
+            delete CSVData[i].responseTimeRemainingBy;
+            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].resolutionOverdueBy;
+            // delete CSVData[i].ticketCommentCount;
+          }
+          self.setState({ CSVDownload: CSVData });
         } else {
           self.setState({
-            SearchTicketData: data,
-            resultCount: count,
-            ShowGridCheckBox: true,
+            SearchTicketData: [],
+
+            resultCount: 0,
             loading: false
           });
         }
-
-        for (let i = 0; i < CSVData.length; i++) {
-          delete CSVData[i].totalpages;
-          delete CSVData[i].responseTimeRemainingBy;
-          delete CSVData[i].responseOverdueBy;
-          delete CSVData[i].resolutionOverdueBy;
-          // delete CSVData[i].ticketCommentCount;
-        }
-        self.setState({ CSVDownload: CSVData });
-      } else {
-        self.setState({
-          SearchTicketData: [],
-
-          resultCount: 0,
-          loading: false
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   SaveSearchData() {
     debugger;
@@ -2921,19 +3092,21 @@ class Dashboard extends Component {
           SearchSaveName: this.state.SearchName,
           parameter: this.state.FinalSaveSearchData
         }
-      }).then(function(res) {
-        debugger;
-        let Msg = res.data.message;
-        if (Msg === "Success") {
-          NotificationManager.success("Save Search parameter successfully.");
-          self.handleGetSaveSearchList();
-          self.setState({
-            SearchName: ""
-          });
-        }
-      }).catch(data => {
-        console.log(data);
-      });
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Save Search parameter successfully.");
+            self.handleGetSaveSearchList();
+            self.setState({
+              SearchName: ""
+            });
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       self.setState({
         SearchNameCompulsory: "Please Enter Search Name."
@@ -2980,18 +3153,20 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/DashBoard/GetDashBoardSavedSearch",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ SearchListData: data });
-      } else {
-        self.setState({ SearchListData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ SearchListData: data });
+        } else {
+          self.setState({ SearchListData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleSearchTicketEscalation() {
     debugger;
@@ -3008,36 +3183,42 @@ class Dashboard extends Component {
         isEscalation: 1
         // ticketStatus: ticketStatus
       }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      let Status = res.data.message;
-      let CSVData = data;
-      let count = 0;
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
-      }
-      if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [], loading: false, resultCount: 0 });
-      } else if (data !== null) {
-        self.setState({
-          SearchTicketData: data,
-          sortTicketData: data,
-          loading: false,
-          resultCount: count
-        });
-        for (let i = 0; i < CSVData.length; i++) {
-          delete CSVData[i].totalpages;
-          delete CSVData[i].responseTimeRemainingBy;
-          delete CSVData[i].responseOverdueBy;
-          delete CSVData[i].resolutionOverdueBy;
-          // delete CSVData[i].ticketCommentCount;
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let Status = res.data.message;
+        let CSVData = data;
+        let count = 0;
+        if (res.data.responseData != null) {
+          count = res.data.responseData.length;
         }
-        self.setState({ CSVDownload: CSVData });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+        if (Status === "Record Not Found") {
+          self.setState({
+            SearchTicketData: [],
+            loading: false,
+            resultCount: 0
+          });
+        } else if (data !== null) {
+          self.setState({
+            SearchTicketData: data,
+            sortTicketData: data,
+            loading: false,
+            resultCount: count
+          });
+          for (let i = 0; i < CSVData.length; i++) {
+            delete CSVData[i].totalpages;
+            delete CSVData[i].responseTimeRemainingBy;
+            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].resolutionOverdueBy;
+            // delete CSVData[i].ticketCommentCount;
+          }
+          self.setState({ CSVDownload: CSVData });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handlePurchaseStoreCodeAddressAll = e => {
     let purchaseStoreCodeAddressAllValue = e.currentTarget.value;
@@ -3072,16 +3253,20 @@ class Dashboard extends Component {
       params: {
         SearchParamID: searchDeletId
       }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Saved search data deleted successfully.");
-        self.handleGetSaveSearchList();
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          NotificationManager.success(
+            "Saved search data deleted successfully."
+          );
+          self.handleGetSaveSearchList();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleSlaDueByDate = e => {
     let slaDueValue = e.currentTarget.value;
@@ -3114,340 +3299,356 @@ class Dashboard extends Component {
       params: {
         SearchParamID: paramsID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData.dashboardTicketList;
-      let count = 0;
-      if (res.data.responseData.dashboardTicketList != null) {
-        count = res.data.responseData.dashboardTicketList.length;
-      }
-      if (status === "Success") {
-        let dataSearch = JSON.parse(res.data.responseData.dbsearchParams);
-        self.setState({
-          SearchTicketData: data,
-          resultCount: count,
-          loading: false
-        });
-        // self.onCloseModal();
-
-        let lowerTabs = document.querySelectorAll(".lower-tabs .nav-link");
-        let activeTabId = dataSearch.ActiveTabId;
-        for (let i = 0; i < lowerTabs.length; i++) {
-          lowerTabs[i].classList.remove("active");
-          if (activeTabId - 1 === i) {
-            lowerTabs[i].classList.add("active");
-          }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData.dashboardTicketList;
+        let count = 0;
+        if (res.data.responseData.dashboardTicketList != null) {
+          count = res.data.responseData.dashboardTicketList.length;
         }
-        let lowerTabsPane = document.querySelectorAll(
-          ".lower-tabs-pane .tab-pane"
-        );
-        for (let i = 0; i < lowerTabsPane.length; i++) {
-          lowerTabsPane[i].classList.remove("active");
-          lowerTabsPane[i].classList.remove("show");
-          if (activeTabId - 1 === i) {
-            lowerTabsPane[i].classList.add("active");
-            lowerTabsPane[i].classList.add("show");
-          }
-        }
+        if (status === "Success") {
+          let dataSearch = JSON.parse(res.data.responseData.dbsearchParams);
+          self.setState({
+            SearchTicketData: data,
+            resultCount: count,
+            loading: false
+          });
+          // self.onCloseModal();
 
-        if (dataSearch.searchDataByDate === null) {
-          self.setState({
-            ByDateCreatDate: "",
-            ByDateSelectDate: "",
-            selectedSlaDueByDate: 0,
-            selectedTicketStatusByDate: 0
-          });
-        } else {
-          debugger;
-          if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
-            let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
-            let createdDateArray = createdDate.split("-");
-            var createdDateFinal = new Date(
-              createdDateArray[0],
-              createdDateArray[1] - 1,
-              createdDateArray[2]
-            );
+          let lowerTabs = document.querySelectorAll(".lower-tabs .nav-link");
+          let activeTabId = dataSearch.ActiveTabId;
+          for (let i = 0; i < lowerTabs.length; i++) {
+            lowerTabs[i].classList.remove("active");
+            if (activeTabId - 1 === i) {
+              lowerTabs[i].classList.add("active");
+            }
           }
-          if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
-            let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
-            let modifiedDateArray = modifiedDate.split("-");
-            var modifiedDateFinal = new Date(
-              modifiedDateArray[0],
-              modifiedDateArray[1] - 1,
-              modifiedDateArray[2]
-            );
-          }
-          self.setState({
-            ByDateCreatDate: createdDateFinal,
-            ByDateSelectDate: modifiedDateFinal,
-            selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
-            selectedTicketStatusByDate:
-              dataSearch.searchDataByDate.Ticket_StatusID,
-            byCategoryFlag: 0,
-            allFlag: 0
-          });
-        }
-
-        if (dataSearch.searchDataByCustomerType === null) {
-          self.setState({
-            MobileNoByCustType: "",
-            EmailIdByCustType: "",
-            TicketIdByCustType: "",
-            selectedTicketStatusByCustomer: 0
-          });
-        } else {
-          self.setState({
-            MobileNoByCustType:
-              dataSearch.searchDataByCustomerType.CustomerMobileNo,
-            EmailIdByCustType:
-              dataSearch.searchDataByCustomerType.CustomerEmailID,
-            TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
-            selectedTicketStatusByCustomer:
-              dataSearch.searchDataByCustomerType.TicketStatusID,
-            byCategoryFlag: 0,
-            allFlag: 0
-          });
-        }
-
-        if (dataSearch.searchDataByTicketType === null) {
-          self.setState({
-            selectedPriority: 0,
-            selectedTicketStatusByTicket: 0,
-            selectedChannelOfPurchase: [],
-            selectedTicketActionType: []
-          });
-        } else {
-          let purchaseArr = [];
-          let purchaseId = dataSearch.searchDataByTicketType.ChannelOfPurchaseIds.split(
-            ","
+          let lowerTabsPane = document.querySelectorAll(
+            ".lower-tabs-pane .tab-pane"
           );
-          for (let i = 0; i < purchaseId.length - 1; i++) {
-            const element = purchaseId[i];
-            for (let j = 0; j < self.state.ChannelOfPurchaseData.length; j++) {
-              if (
-                element ==
-                self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
-              ) {
-                purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
-              }
+          for (let i = 0; i < lowerTabsPane.length; i++) {
+            lowerTabsPane[i].classList.remove("active");
+            lowerTabsPane[i].classList.remove("show");
+            if (activeTabId - 1 === i) {
+              lowerTabsPane[i].classList.add("active");
+              lowerTabsPane[i].classList.add("show");
             }
           }
 
-          let actionArr = [];
-          let actionId = dataSearch.searchDataByTicketType.ActionTypes.split(
-            ","
-          );
-          for (let i = 0; i < actionId.length - 1; i++) {
-            const element = actionId[i];
-            for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
-              if (
-                element == self.state.TicketActionTypeData[j].ticketActionTypeID
-              ) {
-                actionArr.push(self.state.TicketActionTypeData[j]);
-              }
+          if (dataSearch.searchDataByDate === null) {
+            self.setState({
+              ByDateCreatDate: "",
+              ByDateSelectDate: "",
+              selectedSlaDueByDate: 0,
+              selectedTicketStatusByDate: 0
+            });
+          } else {
+            debugger;
+            if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
+              let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+              let createdDateArray = createdDate.split("-");
+              var createdDateFinal = new Date(
+                createdDateArray[0],
+                createdDateArray[1] - 1,
+                createdDateArray[2]
+              );
             }
-          }
-
-          self.setState({
-            selectedPriority:
-              dataSearch.searchDataByTicketType.TicketPriorityID,
-            selectedTicketStatusByTicket:
-              dataSearch.searchDataByTicketType.TicketStatusID,
-            selectedChannelOfPurchase: purchaseArr,
-            selectedTicketActionType: actionArr,
-            byCategoryFlag: 0,
-            allFlag: 0
-          });
-        }
-
-        if (dataSearch.searchDataByCategoryType === null) {
-          self.setState({
-            selectedCategory: 0,
-            selectedSubCategory: 0,
-            selectedIssueType: 0,
-            selectedTicketStatusByCategory: 0
-          });
-        } else {
-          // self.setState({
-          //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-          //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
-          //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
-          //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
-          // });
-          self.setState(
-            {
-              selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-              byCategoryFlag: 4,
-              allFlag: 0,
-              selectedTicketStatusByCategory:
-                dataSearch.searchDataByCategoryType.TicketStatusID
-            },
-            () => {
-              self.handleGetSubCategoryList();
+            if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
+              let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+              let modifiedDateArray = modifiedDate.split("-");
+              var modifiedDateFinal = new Date(
+                modifiedDateArray[0],
+                modifiedDateArray[1] - 1,
+                modifiedDateArray[2]
+              );
             }
-          );
-          self.setState(
-            {
-              selectedSubCategory:
-                dataSearch.searchDataByCategoryType.SubCategoryId
-            },
-            () => {
-              self.handleGetIssueTypeList();
-            }
-          );
-          self.setState({
-            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
-          });
-        }
-
-        if (dataSearch.searchDataByAll === null) {
-          self.setState({
-            ByAllCreateDate: "",
-            selectedTicketSource: 0,
-            ClaimIdByAll: "",
-            EmailByAll: "",
-            ByAllLastDate: "",
-            TicketIdTitleByAll: "",
-            InvoiceSubOrderByAll: "",
-            MobileByAll: "",
-            selectedCategoryAll: 0,
-            selectedPriorityAll: 0,
-            ItemIdByAll: "",
-            selectedAssignedTo: 0,
-            selectedAssignedToAll: "",
-            selectedSubCategoryAll: 0,
-            selectedTicketStatusAll: 0,
-            selectedVisitStoreAll: "all",
-            selectedPurchaseStoreCodeAddressAll: "",
-            selectedIssueTypeAll: 0,
-            selectedSlaStatus: 0,
-            selectedWantToVisitStoreAll: "all",
-            selectedVisitStoreCodeAddressAll: "",
-            selectedWithClaimAll: "no",
-            selectedClaimStatus: 0,
-            selectedClaimCategory: 0,
-            selectedClaimSubCategory: 0,
-            selectedClaimIssueType: 0,
-            selectedWithTaskAll: "no",
-            selectedTaskStatus: 0,
-            selectedDepartment: 0,
-            selectedFunction: 0
-          });
-        } else {
-          if (dataSearch.searchDataByAll.CreatedDate !== "") {
-            let createdDate = dataSearch.searchDataByAll.CreatedDate;
-            let createdDateArray = createdDate.split("-");
-            var createdDateFinal = new Date(
-              createdDateArray[0],
-              createdDateArray[1] - 1,
-              createdDateArray[2]
-            );
-          }
-          if (dataSearch.searchDataByAll.ModifiedDate !== "") {
-            let modifiedDate = dataSearch.searchDataByAll.ModifiedDate;
-            let modifiedDateArray = modifiedDate.split("-");
-            var modifiedDateFinal = new Date(
-              modifiedDateArray[0],
-              modifiedDateArray[1] - 1,
-              modifiedDateArray[2]
-            );
-          }
-          self.setState({
-            ByAllCreateDate: createdDateFinal,
-            selectedTicketSource: dataSearch.searchDataByAll.TicketSourceTypeID,
-            ClaimIdByAll: dataSearch.searchDataByAll.ClaimId,
-            EmailByAll: dataSearch.searchDataByAll.CustomerEmailID,
-            ByAllLastDate: modifiedDateFinal,
-            TicketIdTitleByAll: dataSearch.searchDataByAll.TicketIdORTitle,
-            InvoiceSubOrderByAll:
-              dataSearch.searchDataByAll.InvoiceNumberORSubOrderNo,
-            MobileByAll: dataSearch.searchDataByAll.CustomerMobileNo,
-            // selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
-            selectedPriorityAll: dataSearch.searchDataByAll.PriorityId,
-            ItemIdByAll: dataSearch.searchDataByAll.OrderItemId,
-            selectedAssignedTo: dataSearch.searchDataByAll.AssignTo,
-            // selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId,
-            selectedTicketStatusAll: dataSearch.searchDataByAll.TicketSatutsID,
-            selectedVisitStoreAll: dataSearch.searchDataByAll.IsVisitStore,
-            selectedPurchaseStoreCodeAddressAll:
-              dataSearch.searchDataByAll.StoreCodeORAddress,
-            // selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId,
-            selectedSlaStatus: dataSearch.searchDataByAll.SLAStatus,
-            selectedWantToVisitStoreAll:
-              dataSearch.searchDataByAll.IsWantVistingStore,
-            selectedVisitStoreCodeAddressAll:
-              dataSearch.searchDataByAll.WantToStoreCodeORAddress,
-            selectedWithClaimAll:
-              dataSearch.searchDataByAll.HaveClaim === 0 ? "no" : "yes",
-            selectedClaimStatus: dataSearch.searchDataByAll.ClaimStatusId,
-            // selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId,
-            // selectedClaimSubCategory:
-            //   dataSearch.searchDataByAll.ClaimSubCategoryId,
-            // selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId,
-            selectedWithTaskAll:
-              dataSearch.searchDataByAll.HaveTask === 0 ? "no" : "yes",
-            selectedTaskStatus: dataSearch.searchDataByAll.TaskStatusId
-            // selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id,
-            // selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
-          });
-          self.setState(
-            {
-              selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
+            self.setState({
+              ByDateCreatDate: createdDateFinal,
+              ByDateSelectDate: modifiedDateFinal,
+              selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
+              selectedTicketStatusByDate:
+                dataSearch.searchDataByDate.Ticket_StatusID,
               byCategoryFlag: 0,
-              allFlag: 5
-            },
-            () => {
-              self.handleGetSubCategoryList();
+              allFlag: 0
+            });
+          }
+
+          if (dataSearch.searchDataByCustomerType === null) {
+            self.setState({
+              MobileNoByCustType: "",
+              EmailIdByCustType: "",
+              TicketIdByCustType: "",
+              selectedTicketStatusByCustomer: 0
+            });
+          } else {
+            self.setState({
+              MobileNoByCustType:
+                dataSearch.searchDataByCustomerType.CustomerMobileNo,
+              EmailIdByCustType:
+                dataSearch.searchDataByCustomerType.CustomerEmailID,
+              TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
+              selectedTicketStatusByCustomer:
+                dataSearch.searchDataByCustomerType.TicketStatusID,
+              byCategoryFlag: 0,
+              allFlag: 0
+            });
+          }
+
+          if (dataSearch.searchDataByTicketType === null) {
+            self.setState({
+              selectedPriority: 0,
+              selectedTicketStatusByTicket: 0,
+              selectedChannelOfPurchase: [],
+              selectedTicketActionType: []
+            });
+          } else {
+            let purchaseArr = [];
+            let purchaseId = dataSearch.searchDataByTicketType.ChannelOfPurchaseIds.split(
+              ","
+            );
+            for (let i = 0; i < purchaseId.length - 1; i++) {
+              const element = purchaseId[i];
+              for (
+                let j = 0;
+                j < self.state.ChannelOfPurchaseData.length;
+                j++
+              ) {
+                if (
+                  element ==
+                  self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
+                ) {
+                  purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
+                }
+              }
             }
-          );
-          self.setState(
-            {
-              selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId
-            },
-            () => {
-              self.handleGetIssueTypeList();
+
+            let actionArr = [];
+            let actionId = dataSearch.searchDataByTicketType.ActionTypes.split(
+              ","
+            );
+            for (let i = 0; i < actionId.length - 1; i++) {
+              const element = actionId[i];
+              for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
+                if (
+                  element ==
+                  self.state.TicketActionTypeData[j].ticketActionTypeID
+                ) {
+                  actionArr.push(self.state.TicketActionTypeData[j]);
+                }
+              }
             }
-          );
-          self.setState({
-            selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId
-          });
-          self.setState(
-            {
-              selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id
-            },
-            () => {
-              self.handleGetFunctionList();
+
+            self.setState({
+              selectedPriority:
+                dataSearch.searchDataByTicketType.TicketPriorityID,
+              selectedTicketStatusByTicket:
+                dataSearch.searchDataByTicketType.TicketStatusID,
+              selectedChannelOfPurchase: purchaseArr,
+              selectedTicketActionType: actionArr,
+              byCategoryFlag: 0,
+              allFlag: 0
+            });
+          }
+
+          if (dataSearch.searchDataByCategoryType === null) {
+            self.setState({
+              selectedCategory: 0,
+              selectedSubCategory: 0,
+              selectedIssueType: 0,
+              selectedTicketStatusByCategory: 0
+            });
+          } else {
+            // self.setState({
+            //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+            //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+            //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+            //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+            // });
+            self.setState(
+              {
+                selectedCategory:
+                  dataSearch.searchDataByCategoryType.CategoryId,
+                byCategoryFlag: 4,
+                allFlag: 0,
+                selectedTicketStatusByCategory:
+                  dataSearch.searchDataByCategoryType.TicketStatusID
+              },
+              () => {
+                self.handleGetSubCategoryList('categoryTab');
+              }
+            );
+            self.setState(
+              {
+                selectedSubCategory:
+                  dataSearch.searchDataByCategoryType.SubCategoryId
+              },
+              () => {
+                self.handleGetIssueTypeList('categoryTab');
+              }
+            );
+            self.setState({
+              selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
+            });
+          }
+
+          if (dataSearch.searchDataByAll === null) {
+            self.setState({
+              ByAllCreateDate: "",
+              selectedTicketSource: 0,
+              ClaimIdByAll: "",
+              EmailByAll: "",
+              ByAllLastDate: "",
+              TicketIdTitleByAll: "",
+              InvoiceSubOrderByAll: "",
+              MobileByAll: "",
+              selectedCategoryAll: 0,
+              selectedPriorityAll: 0,
+              ItemIdByAll: "",
+              selectedAssignedTo: 0,
+              selectedAssignedToAll: "",
+              selectedSubCategoryAll: 0,
+              selectedTicketStatusAll: 0,
+              selectedVisitStoreAll: "all",
+              selectedPurchaseStoreCodeAddressAll: "",
+              selectedIssueTypeAll: 0,
+              selectedSlaStatus: 0,
+              selectedWantToVisitStoreAll: "all",
+              selectedVisitStoreCodeAddressAll: "",
+              selectedWithClaimAll: "no",
+              selectedClaimStatus: 0,
+              selectedClaimCategory: 0,
+              selectedClaimSubCategory: 0,
+              selectedClaimIssueType: 0,
+              selectedWithTaskAll: "no",
+              selectedTaskStatus: 0,
+              selectedDepartment: 0,
+              selectedFunction: 0
+            });
+          } else {
+            if (dataSearch.searchDataByAll.CreatedDate !== "") {
+              let createdDate = dataSearch.searchDataByAll.CreatedDate;
+              let createdDateArray = createdDate.split("-");
+              var createdDateFinal = new Date(
+                createdDateArray[0],
+                createdDateArray[1] - 1,
+                createdDateArray[2]
+              );
             }
-          );
-          self.setState({
-            selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
-          });
-          self.setState(
-            {
-              selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId
-            },
-            () => {
-              self.handleGetClaimSubCategoryList();
+            if (dataSearch.searchDataByAll.ModifiedDate !== "") {
+              let modifiedDate = dataSearch.searchDataByAll.ModifiedDate;
+              let modifiedDateArray = modifiedDate.split("-");
+              var modifiedDateFinal = new Date(
+                modifiedDateArray[0],
+                modifiedDateArray[1] - 1,
+                modifiedDateArray[2]
+              );
             }
-          );
-          self.setState(
-            {
-              selectedClaimSubCategory:
-                dataSearch.searchDataByAll.ClaimSubCategoryId
-            },
-            () => {
-              self.handleGetClaimIssueTypeList();
-            }
-          );
-          self.setState({
-            selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId
-          });
+            self.setState({
+              ByAllCreateDate: createdDateFinal,
+              selectedTicketSource:
+                dataSearch.searchDataByAll.TicketSourceTypeID,
+              ClaimIdByAll: dataSearch.searchDataByAll.ClaimId,
+              EmailByAll: dataSearch.searchDataByAll.CustomerEmailID,
+              ByAllLastDate: modifiedDateFinal,
+              TicketIdTitleByAll: dataSearch.searchDataByAll.TicketIdORTitle,
+              InvoiceSubOrderByAll:
+                dataSearch.searchDataByAll.InvoiceNumberORSubOrderNo,
+              MobileByAll: dataSearch.searchDataByAll.CustomerMobileNo,
+              // selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
+              selectedPriorityAll: dataSearch.searchDataByAll.PriorityId,
+              ItemIdByAll: dataSearch.searchDataByAll.OrderItemId,
+              selectedAssignedTo: dataSearch.searchDataByAll.AssignTo,
+              // selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId,
+              selectedTicketStatusAll:
+                dataSearch.searchDataByAll.TicketSatutsID,
+              selectedVisitStoreAll: dataSearch.searchDataByAll.IsVisitStore,
+              selectedPurchaseStoreCodeAddressAll:
+                dataSearch.searchDataByAll.StoreCodeORAddress,
+              // selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId,
+              selectedSlaStatus: dataSearch.searchDataByAll.SLAStatus,
+              selectedWantToVisitStoreAll:
+                dataSearch.searchDataByAll.IsWantVistingStore,
+              selectedVisitStoreCodeAddressAll:
+                dataSearch.searchDataByAll.WantToStoreCodeORAddress,
+              selectedWithClaimAll:
+                dataSearch.searchDataByAll.HaveClaim === 0 ? "no" : "yes",
+              selectedClaimStatus: dataSearch.searchDataByAll.ClaimStatusId,
+              // selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId,
+              // selectedClaimSubCategory:
+              //   dataSearch.searchDataByAll.ClaimSubCategoryId,
+              // selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId,
+              selectedWithTaskAll:
+                dataSearch.searchDataByAll.HaveTask === 0 ? "no" : "yes",
+              selectedTaskStatus: dataSearch.searchDataByAll.TaskStatusId
+              // selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id,
+              // selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
+            });
+            self.setState(
+              {
+                selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
+                byCategoryFlag: 0,
+                allFlag: 5
+              },
+              () => {
+                self.handleGetSubCategoryList('allTab');
+              }
+            );
+            self.setState(
+              {
+                selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId
+              },
+              () => {
+                self.handleGetIssueTypeList('allTab');
+              }
+            );
+            self.setState({
+              selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId
+            });
+            self.setState(
+              {
+                selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id
+              },
+              () => {
+                self.handleGetFunctionList();
+              }
+            );
+            self.setState({
+              selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
+            });
+            self.setState(
+              {
+                selectedClaimCategory:
+                  dataSearch.searchDataByAll.ClaimCategoryId
+              },
+              () => {
+                // self.handleGetClaimSubCategoryList();
+                self.handleGetSubCategoryList('allClaimTab');
+              }
+            );
+            self.setState(
+              {
+                selectedClaimSubCategory:
+                  dataSearch.searchDataByAll.ClaimSubCategoryId
+              },
+              () => {
+                // self.handleGetClaimIssueTypeList();
+                self.handleGetIssueTypeList('allClaimTab');
+              }
+            );
+            self.setState({
+              selectedClaimIssueType:
+                dataSearch.searchDataByAll.ClaimIssueTypeId
+            });
+          }
+        } else {
+          self.setState({ SearchTicketData: [], loading: false });
         }
-      } else {
-        self.setState({ SearchTicketData: [], loading: false });
-      }
-    });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -4390,7 +4591,7 @@ class Dashboard extends Component {
                             <button
                               type="button"
                               className="btn-inv"
-                              onClick={this.ViewSearchData.bind(this)}
+                              onClick={this.ViewSearchData.bind(this, 1)}
                             >
                               View Search
                             </button>
@@ -6198,7 +6399,7 @@ class Dashboard extends Component {
                         Header: (
                           <span
                             onClick={this.StatusOpenModel.bind(this, "status")}
-                           
+                            className={this.state.statusColor}
                           >
                             Status <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -6367,7 +6568,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.categoryColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "category"
@@ -6416,7 +6617,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.priorityColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "priority"
@@ -6431,7 +6632,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.assignColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "assignedTo"
@@ -6445,7 +6646,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            className="ticketid"
+                          className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdOn"

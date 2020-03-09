@@ -209,7 +209,7 @@
   font-weight: 400;
   padding: 17px 15px;
   font-size: 16px;
-    font-weight: 600;
+  font-weight: 600;
 }
 .store-task-tabs .nav-tabs .nav-link.active {
   font-weight: 700;
@@ -894,35 +894,35 @@ table tr th:last-child {
 /* Claim page end */
 /* StoreAddTask css start by kalpesh */
 .card1 {
-width: 100%;
-padding: 42px 20px;
-margin-left: 0;
-margin-right: 0;
+  width: 100%;
+  padding: 42px 20px;
+  margin-left: 0;
+  margin-right: 0;
 }
 .store-Edit-lblcre {
-color: #4a4a4a;
-font-family: Lato;
-font-size: 20px;
-font-weight: 700;
-margin-bottom: 25px;
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 25px;
 }
 .store-Edit-lbl1 {
-color: #9b9b9b;
-font-family: Lato;
-font-size: 14px;
-font-weight: 700;
-line-height: 19px;
-text-align: left;
-margin-bottom: 7px;
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  margin-bottom: 7px;
 }
 .cardmargin {
-margin-left: -30px;
-height: 49.6vw;
+  margin-left: -30px;
+  height: 49.6vw;
 }
 /* StoreAddTask css end */
 /* ClaimApproveReject css start for header button and bottom page by Kalpesh */
-.claim-title1{
-  color: #4A4A4A;
+.claim-title1 {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 16px;
   font-weight: 550;
@@ -935,15 +935,15 @@ height: 49.6vw;
   margin-top: 4px;
 }
 .btn-approrej1 {
-background-color: #2561a8;
-border-radius: 4px;
-border-color: #2561a8;
-width: 155px;
-height: 40px;
-font-size: 14px;
-cursor: pointer;
-color: white;
-margin: 3px 0px 8px 12px;
+  background-color: #2561a8;
+  border-radius: 4px;
+  border-color: #2561a8;
+  width: 155px;
+  height: 40px;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+  margin: 3px 0px 8px 12px;
 }
 .oval-approve {
   background-color: #f8e71c;
@@ -965,14 +965,14 @@ margin: 3px 0px 8px 12px;
 }
 .a {
   border-radius: 50%;
-    background-color: #2561a8;
-    color: white;
-    padding: 3px 10px 5px 11px;
-    font-weight: 500;
-    margin-right: 10px;
+  background-color: #2561a8;
+  color: white;
+  padding: 3px 10px 5px 11px;
+  font-weight: 500;
+  margin-right: 10px;
 }
 .cardbor {
-  border:1px solid #e0e0e0 !important;
+  border: 1px solid #e0e0e0 !important;
 }
 .alankrit {
   margin-bottom: 20px;
@@ -981,38 +981,38 @@ margin: 3px 0px 8px 12px;
 /* ClaimApproveReject css end */
 /* Raiseclaim search collapse css start kalpesh */
 .Searchline {
-  border-bottom: 1px solid #E3E3E3;
-    width: 100%;
-    margin-top: 10px;
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-  .uploadsearch-text {
-  color: #4A4A4A;
+  border-bottom: 1px solid #e3e3e3;
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.uploadsearch-text {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 17px;
   font-weight: 700;
   line-height: 20px;
   text-align: center;
-  }
-  .uploadsearchbtn {
-  background-color: #2561A8;
+}
+.uploadsearchbtn {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 154px;
   height: 43px;
   cursor: pointer;
-  }
-  .uploadsearchbtn-text {
-  color: #FFFFFF;
+}
+.uploadsearchbtn-text {
+  color: #ffffff;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
   cursor: pointer;
-  }
-  .searchdownload {
-  color: #2561A8;
+}
+.searchdownload {
+  color: #2561a8;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
@@ -1020,63 +1020,63 @@ margin: 3px 0px 8px 12px;
   text-align: left;
   text-decoration: underline;
   cursor: pointer;
-  }
-  .uploadsechmargin {
+}
+.uploadsechmargin {
   margin-bottom: 15px;
-  }
-  .uploadsearch {
+}
+.uploadsearch {
   text-align: center;
   margin-top: 70px;
-  }
-  .searchtext {
-    background-color: #FFFFFF;
-    border: 1px solid #979797;
-    border-radius: 4px;
-    width: 299px;
-    height: 43px;
-    float: right;
-    padding: 10px;
-  }
-  .searchImg-raise {
-    width: 20px;
-    height: 20px;
-    float: right;
-    margin-right: -280px;
-    margin-top: 12px;
-  }
-  .oderDetails-table .ReactTable .rt-thead.-header {
-    background-color: #fff;
-  }
-  .orderdetailtext {
-    color: #4A4A4A;
-    font-family: Lato;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 19px;
-    text-align: left;
-    margin-top: 10px;
-  }
-  /* Raiseclaim search collapse css start kalpesh */
-  
+}
+.searchtext {
+  background-color: #ffffff;
+  border: 1px solid #979797;
+  border-radius: 4px;
+  width: 299px;
+  height: 43px;
+  float: right;
+  padding: 10px;
+}
+.searchImg-raise {
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-right: -280px;
+  margin-top: 12px;
+}
+.oderDetails-table .ReactTable .rt-thead.-header {
+  background-color: #fff;
+}
+.orderdetailtext {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  margin-top: 10px;
+}
+/* Raiseclaim search collapse css start kalpesh */
+
 /* Department-Master Css Start Kalpesh */
 .deptMaster .ReactTable .rt-thead .rt-tr {
   font-size: 12px;
-  }
-  .deptMaster .ReactTable{
+}
+.deptMaster .ReactTable {
   border: none;
-  }
-  .right-sect-collapse .div-cntrdept{
+}
+.right-sect-collapse .div-cntrdept {
   padding: 0 10px;
-  }
-  .editdeptpopover {
+}
+.editdeptpopover {
   background-color: #ffffff;
   border-radius: 4px;
-  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0); 
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0);
   padding: 25px 10px;
   /* margin-bottom: 25px; */
-  }
-  .editdeptpopover input,
-  .editdeptpopover select {
+}
+.editdeptpopover input,
+.editdeptpopover select {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 250px;
@@ -1085,15 +1085,15 @@ margin: 3px 0px 8px 12px;
   border: 0;
   padding: 11px 15px;
   margin-top: 5px;
-  }
-  .delcan-btn {
+}
+.delcan-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: -25px;
-  }
-  /* Department-Master Css end */
-  /* SLA Template Department Start by Kalpesh */
+}
+/* Department-Master Css end */
+/* SLA Template Department Start by Kalpesh */
 .slatemp-text-1 {
   color: #4a4a4a;
   font-family: Lato;
@@ -1103,93 +1103,98 @@ margin: 3px 0px 8px 12px;
   text-align: left;
   display: inline-block;
   width: 33%;
-  }
-  .slatempreact .ReactTable {
+}
+.slatempreact .ReactTable {
   border-left: none;
   border-right: none;
-  }
-  .slatempreact {
-  border-left: 1px solid rgb(0,0,0,0.1);
-  border-right: 1px solid rgb(0,0,0,0.1);
-  }
-  /* SLA Template Department End */
-  /* Config add pop-up css start by Kalpesh */
-  .config-button {
-    float: right;
-    margin: 10px 38px 10px 0;
-    }
-    .config-buttontext {
-    width: 140px;
-    height: 40px;
-    cursor: pointer;
-    background-color: #2561a8;
-    color: #fff;
-    }
-    .config-tab {
-    width: 100%;
-    }
-    .cancelImg-config {
-    float: right;
-    width: 25px;
-    height: 25px;
-    margin-top: 15px;
-    cursor: pointer;
-    }
-    .templateName {
-    text-align: left;
-    padding: 25px 0px 20px 55px;
-    }
-    .template-text {
-    font-size: 20px;
-    font-weight: 600;
-    color: #2561a8;
-    font-family: lato;
-    
-    }
-    .template-editor {
-    width: 90% !important;
-    margin-left: 40px !important;
-    }
-    .template-editor .cke_bottom {
-    display: none;
-    }
-  /* Config add pop-up css End by Kalpesh */
-  .stinlitab {
-    display: inline-table;
-  }
-  .StoreRaiseReact .hope {
-    display: block;
-    font-size: 10px;
-  }
-  .camp-datepick .react-datepicker__navigation--previous {
-    min-width: auto;
-  }
-  .camp-datepick .react-datepicker__navigation--next {
-    min-width: auto;
-  }
-  .camp-datepick span {
-    display: grid;
-  }
-  .reactstoreclaim .ReactTable {
-    background-color: #F8F8F8;
-  }
-  .reacttableordermodal .ReactTable .rt-thead.-header {
-    background-color: #F8F8F8 !important;
-  }
-  .raisereactTable svg:not(:root).svg-inline--fa {
-    overflow: visible;
-    color:#a7aaad;
-    width: 20px;
-    height: 18px;
-    margin: -3px 0;
-   }
-   .storeplusline-12 {
-    cursor: pointer;
-    float: right;
-    padding: 15px 0 0 0;
-    height: 54px;
-    pointer-events: none;
+}
+.slatempreact {
+  border-left: 1px solid rgb(0, 0, 0, 0.1);
+  border-right: 1px solid rgb(0, 0, 0, 0.1);
+}
+/* SLA Template Department End */
+/* Config add pop-up css start by Kalpesh */
+.config-button {
+  float: right;
+  margin: 10px 38px 10px 0;
+}
+.config-buttontext {
+  width: 140px;
+  height: 40px;
+  cursor: pointer;
+  background-color: #2561a8;
+  color: #fff;
+}
+.config-tab {
+  width: 100%;
+}
+.cancelImg-config {
+  float: right;
+  width: 25px;
+  height: 25px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.templateName {
+  text-align: left;
+  padding: 25px 0px 20px 55px;
+}
+.template-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2561a8;
+  font-family: lato;
+}
+.template-editor {
+  width: 90% !important;
+  margin-left: 40px !important;
+}
+.template-editor .cke_bottom {
+  display: none;
+}
+/* Config add pop-up css End by Kalpesh */
+.stinlitab {
+  display: inline-table;
+}
+.StoreRaiseReact .hope {
+  display: block;
+  font-size: 10px;
+}
+.camp-datepick .react-datepicker__navigation--previous {
+  min-width: auto;
+}
+.camp-datepick .react-datepicker__navigation--next {
+  min-width: auto;
+}
+.camp-datepick span {
+  display: grid;
+}
+.reactstoreclaim .ReactTable {
+  background-color: #f8f8f8;
+}
+.reacttableordermodal .ReactTable .rt-thead.-header {
+  background-color: #f8f8f8 !important;
+}
+.raisereactTable svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color: #a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+}
+.storeplusline-12 {
+  cursor: pointer;
+  float: right;
+  padding: 15px 0 0 0;
+  height: 54px;
+  pointer-events: none;
 }
 /* ----------------------------------------------- */
-
-
+/* ------Change password btn css start-------- */
+.userChangePW {
+  text-align: center;
+  font-size: 18px;
+  color: #1555a2;
+  cursor: pointer;
+}
+/* -------Change password btn css end------- */

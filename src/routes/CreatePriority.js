@@ -320,7 +320,8 @@ class CreatePriority extends Component {
         });
       } else {
         self.setState({
-          priorityData: []
+          priorityData: [],
+          loading: false
         });
       }
     }).catch(data => {

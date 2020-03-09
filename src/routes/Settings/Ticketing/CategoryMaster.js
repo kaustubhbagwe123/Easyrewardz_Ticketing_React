@@ -333,7 +333,8 @@ class CategoryMaster extends Component {
         });
       } else {
         self.setState({
-          categoryGridData: []
+          categoryGridData: [],
+          loading: false
         });
       }
     }).catch(data => {

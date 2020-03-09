@@ -38,7 +38,7 @@ class SingIn extends Component {
 
   componentDidMount() {
     debugger;
-    if(this.props.location.encProgramCode){
+    if (this.props.location.encProgramCode) {
       var finalEncProgramCode = this.props.location.encProgramCode;
       if (finalEncProgramCode) {
         this.setState({
@@ -47,10 +47,10 @@ class SingIn extends Component {
       } else {
         this.props.history.push("/");
       }
-    }else{
+    } else {
       this.props.history.push("/");
     }
-    
+
   }
 
   handleSubmit(event) {
@@ -63,8 +63,8 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-     let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
+      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption(
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
@@ -73,7 +73,7 @@ class SingIn extends Component {
       let X_Authorized_Programcode = this.state.programCode;
 
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
-        
+
 
         axios({
           method: "post",
@@ -86,13 +86,13 @@ class SingIn extends Component {
             "X-Authorized-password": X_Authorized_password,
             "X-Authorized-Domainname": X_Authorized_Domainname
           }
-        }).then(function(res) {
+        }).then(function (res) {
           debugger;
           //alert(1);
           // let data = res.data.responseData;
           let resValid = res.data.message;
           self.setState({
-          loading: true
+            loading: true
           });
           if (resValid === "Valid Login") {
             debugger;
@@ -102,14 +102,14 @@ class SingIn extends Component {
             //   UserEmail: data.userEmailID
             // });
             window.localStorage.setItem("token", res.data.responseData.token);
-            setTimeout(function() {
-              self.props.history.push("/admin/dashboard");
+            setTimeout(function () {
+              self.props.history.push("/admin/header");
             }, 400);
           } else {
             NotificationManager.error("Username or password is invalid.");
             self.setState({
               loading: false
-              });
+            });
           }
         });
       }
@@ -169,19 +169,19 @@ class SingIn extends Component {
                   type="submit"
                   className="program-code-button"
                   disabled={this.state.loading}
-                  // onClick={this.handleSubmit}
+                // onClick={this.handleSubmit}
                 >
-                  
+
                   {this.state.loading ? (
-                      <FontAwesomeIcon
-                        className="circular-loader"
-                        icon={faCircleNotch}
-                        spin
-                      />
-                    ) : (
+                    <FontAwesomeIcon
+                      className="circular-loader"
+                      icon={faCircleNotch}
+                      spin
+                    />
+                  ) : (
                       ""
                     )}
-                    {this.state.loading ? "Please Wait ..." : "LOGIN"}
+                  {this.state.loading ? "Please Wait ..." : "LOGIN"}
                 </button>
               </form>
               <div>

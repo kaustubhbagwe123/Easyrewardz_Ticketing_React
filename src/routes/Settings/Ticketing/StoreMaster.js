@@ -532,12 +532,14 @@ class StoreMaster extends Component {
           });
         } else {
           self.setState({
-            storeData: []
+            storeData: [],
+            loading: false
           });
         }
       } else {
         self.setState({
-          storeData: []
+          storeData: [],
+          loading: false
         });
       }
     });
