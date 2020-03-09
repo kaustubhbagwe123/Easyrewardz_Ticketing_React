@@ -395,7 +395,7 @@ class Header extends Component {
   };
 
   actives = e => {
-    debugger
+    debugger;
     const contDummy = [...this.state.cont];
     contDummy.forEach(i => {
       i.activeClass = "single-menu";
@@ -415,18 +415,19 @@ class Header extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData.ticketNotification;
+      let count = res.data.responseData.notiCount;
       if (status === "Success") {
         debugger;
-       
+
         self.setState({
-          notifiMessages: data
-           
+          notifiMessages: data,
+          notiCount: count
         });
       } else {
         debugger;
         self.setState({
-          
-          notifiMessages: []
+          notifiMessages: [],
+          notiCount: 0
         });
       }
     });
@@ -1011,7 +1012,7 @@ class Header extends Component {
                   </label>
                 </div>
                 <div className="viewticketspeadding">
-                  <Link
+                  {/* <Link
                     to={{
                       pathname: "myTicketlist",
                       state: {
@@ -1019,37 +1020,26 @@ class Header extends Component {
                       }
                     }}
                     onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
-                  >
-                    <label className="md-4 view-tickets">VIEW TICKETS</label>
-                  </Link>
+                  > */}
+                    <div
+                      className="md-4 view-tickets"
+                      onClick={this.handleViewTicketModalOpen}
+                    >
+                      VIEW TICKETS
+                    </div>
+                  {/* </Link> */}
                 </div>
               </div>
             );
           })}
-
-          {/* <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05 noti-count">
-              <label className="labledata">{this.state.notifiCount3}</label>
-            </div>
-            <div className="md-6 new-tickets-assigned tic-noti">
-              <label>
-                <span>{this.state.notifiMsg3}</span>
-              </label>
-            </div>
-            <div className="viewticketspeadding">
-              <Link
-                to={{
-                  pathname: "myTicketlist",
-                  state: {
-                    isType: "Escalation"
-                  }
-                }}
-                onClick={() => this.onViewTicket(this.state.notifiTktIds3)}
-              >
-                <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </Link>
-            </div>
-          </div> */}
+        </Modal>
+        <Modal
+          onClose={this.handleViewTicketModalClose}
+          open={this.state.ViewTicketModal}
+          modalId="Notification-popup"
+          overlayId="logout-ovrly"
+        >
+          Hello
         </Modal>
         <div>
           <Modal
