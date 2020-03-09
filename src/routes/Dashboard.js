@@ -4152,7 +4152,7 @@ class Dashboard extends Component {
                         </div>
                         {this.state.TotalNoOfChatShow && (
                           <div
-                            className="col-md col-sm-4 col-6"
+                            className="col-md col-sm-4 col-6 d-none"
                             onClick={this.HandleChangeRedict.bind(this)}
                           >
                             <div className="dash-top-cards">
@@ -4372,7 +4372,7 @@ class Dashboard extends Component {
                             ) : null}
                           </div>
                         </div>
-                        <div className="col-lg-3 col-sm-6">
+                        <div className="col-lg-3 col-sm-6 d-none">
                           <div className="dash-top-cards">
                             <p className="card-head">Task</p>
                             <div className="aside-cont">
@@ -4403,7 +4403,7 @@ class Dashboard extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="col-lg-6 order-1 order-lg-0">
+                        <div className="col-lg-6 order-1 order-lg-0 d-none">
                           <div className="dash-top-cards p-0">
                             <ul className="nav nav-tabs" role="tablist">
                               <li className="nav-item">
@@ -4463,7 +4463,7 @@ class Dashboard extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="col-lg-3 col-sm-6">
+                        <div className="col-lg-3 col-sm-6 d-none">
                           <div className="dash-top-cards">
                             <p className="card-head">Claim</p>
                             <div className="aside-cont">
