@@ -3487,7 +3487,7 @@ table tr th:last-child {
   padding: 4px 10px;
   border-radius: 5px;
 }
-.custom-antd-table .ant-table-thead > tr > th {
+.custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th {
   font-weight: 700;
   color: #4a4a4a;
   white-space: nowrap;
@@ -10973,6 +10973,13 @@ table tr th:last-child {
   display: inline-block;
   max-width: 30%;
   min-width: 30%;
+}
+
+#tampleteEditModal
+{
+
+  width: 300px;
+  top:16%;
 }
 
 .editcatcnl{
