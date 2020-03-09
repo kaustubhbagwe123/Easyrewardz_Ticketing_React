@@ -10969,6 +10969,13 @@ table tr th:last-child {
   min-width: 30%;
 }
 
+#tampleteEditModal
+{
+
+  width: 300px;
+  top:16%;
+}
+
 .editcatcnl{
   float: right;
   margin: 0;

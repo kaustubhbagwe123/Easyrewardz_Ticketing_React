@@ -1586,7 +1586,7 @@ class KnowledgeBase extends Component {
                   }
                 ]}
                 // resizable={false}
-                
+                minRows={2}
                 defaultPageSize={10}
                 showPagination={true}
                 getTrProps={this.HandleRowClickPage}
