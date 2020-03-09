@@ -51,7 +51,6 @@ import QaUserMaster from "./QA/QaUserMaster";
 import QaAuditParameters from "./QA/QaAuditParameters";
 import HistoricalChat from "./Chat/HistoricalChat";
 import UserProfile from "./UserProfile";
-// import Aux from "./../Component/Aux";
 
 export class App extends Component {
   render() {

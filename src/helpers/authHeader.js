@@ -6,14 +6,19 @@ export function authHeader(token = "token") {
     return {
       // Authorization: " TXlXYXlVc2VyOmRlbW8=",
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "*"
     };
-  } 
-else {
+  } else {
     // Send token in server side with tenanID, ProgramCode, UserId, Password and Domain name
-      
-      var _token = window.localStorage.getItem("token");
-      return { 'X-Authorized-Token': _token, "Content-Type": "application/json" };
-     
+    var _token = window.localStorage.getItem("token");
+    if (_token === null) {
+      localStorage.clear();
+      window.location.href = "/";
+    } else {
+      return {
+        "X-Authorized-Token": _token,
+        "Content-Type": "application/json"
+      };
+    }
   }
 }
