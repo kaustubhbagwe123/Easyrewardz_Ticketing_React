@@ -3546,7 +3546,8 @@ class MyTicket extends Component {
                                               ></label>
                                             </div>
                                           );
-                                        }
+                                        },
+                                        width: 20
                                       },
                                       {
                                         Header: <span>Store Code</span>,
@@ -3582,7 +3583,7 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="selectedstore-tab"
                               >
-                                <div className="reactstoreselect datePickertable">
+                                <div className="reactstoreselect custom-react-table datePickertable">
                                   {/* {this.state.loading === true ? (
                                     <div className="loader-icon"></div>
                                   ) : ( */}
@@ -3590,8 +3591,9 @@ class MyTicket extends Component {
                                     data={this.state.selectedStoreData}
                                     columns={[
                                       {
-                                        Header: <span>Purpose</span>,
-                                        accessor: "invoiceNumber",
+                                        Header: '',
+                                        accessor: "storeID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
@@ -3614,6 +3616,23 @@ class MyTicket extends Component {
                                               )}
                                               defaultChecked={true}
                                             />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.storeID
+                                              }
+                                            >
+                                            </label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Purpose</span>,
+                                        accessor: "invoiceNumber",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
                                             <label
                                               htmlFor={
                                                 "i" + row.original.storeID
@@ -3872,7 +3891,7 @@ class MyTicket extends Component {
                                 aria-labelledby="productdetail-tab"
                               >
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="orderitemtable"
                                   style={{ display: "block" }}
                                 >
@@ -3882,10 +3901,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             {/* <input
                                               type="checkbox"
@@ -3974,7 +3993,7 @@ class MyTicket extends Component {
                                   />
                                 </div>
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="ordertable"
                                   style={{ display: "none" }}
                                 >
@@ -4005,10 +4024,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             <input
                                               type="checkbox"
@@ -4077,7 +4096,7 @@ class MyTicket extends Component {
                                     showPagination={false}
                                     SubComponent={row => {
                                       return (
-                                        <div style={{ padding: "20px" }}>
+                                        <div className="inner-custom-react-table" id="inner-custom-react-table">
                                           <ReactTable
                                             // data={row.original.orderItems}
                                             data={this.state.OrderSubItem.filter(
@@ -4089,14 +4108,12 @@ class MyTicket extends Component {
                                               {
                                                 Header: <span> </span>,
                                                 accessor: "invoiceNo",
+                                                width: 20,
                                                 Cell: row => {
                                                   // debugger
                                                   return (
                                                     <div
                                                       className="filter-checkbox"
-                                                      style={{
-                                                        marginLeft: "15px"
-                                                      }}
                                                     >
                                                       <input
                                                         type="checkbox"
@@ -4181,6 +4198,7 @@ class MyTicket extends Component {
                                                             .requireSize || ""
                                                         }
                                                         name="requiredSize"
+                                                        className="order-input"
                                                         onChange={() => {
                                                           this.handleRequireSize(
                                                             this,
@@ -4210,7 +4228,7 @@ class MyTicket extends Component {
                                 aria-labelledby="selectedproduct-tab"
                               >
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="orderitemtbl"
                                   style={{ display: "block" }}
                                 >
@@ -4242,10 +4260,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             {/* <input
                                               type="checkbox"
@@ -4341,7 +4359,7 @@ class MyTicket extends Component {
                                   />
                                 </div>
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="ordertbls"
                                   style={{ display: "none" }}
                                 >
@@ -4373,10 +4391,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             {/* <input
                                               type="checkbox"
@@ -4469,7 +4487,7 @@ class MyTicket extends Component {
                                     showPagination={false}
                                     SubComponent={row => {
                                       return (
-                                        <div style={{ padding: "20px" }}>
+                                        <div className="inner-custom-react-table" id="inner-custom-react-table">
                                           <ReactTable
                                             data={this.state.OrderSubItem.filter(
                                               x =>
@@ -4480,12 +4498,10 @@ class MyTicket extends Component {
                                               {
                                                 Header: <span></span>,
                                                 accessor: "size",
+                                                width: 20,
                                                 Cell: row => (
                                                   <div
                                                     className="filter-checkbox"
-                                                    style={{
-                                                      marginLeft: "15px"
-                                                    }}
                                                   >
                                                     {/* <input
                                                       type="checkbox"
@@ -4588,6 +4604,7 @@ class MyTicket extends Component {
                                                           row.original
                                                             .orderItemID
                                                         }
+                                                        className="order-input"
                                                         value={
                                                           row.original
                                                             .requireSize || ""
