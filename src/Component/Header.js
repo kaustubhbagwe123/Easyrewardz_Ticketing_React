@@ -70,10 +70,10 @@ class Header extends Component {
       notifiTktIds3: "",
       percentLog: 0,
       workTime: 0,
-      workTimeHours: '0H 0M',
-      selectedUserProfilePicture:"",
-      notificationAccess:"yes",
-      settingAccess:"yes",
+      workTimeHours: "0H 0M",
+      selectedUserProfilePicture: "",
+      notificationAccess: "yes",
+      settingAccess: "yes",
       cont: [
         {
           data: "Dashboards",
@@ -106,20 +106,20 @@ class Header extends Component {
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
-    this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
-    this.handleCRMRole=this.handleCRMRole.bind(this);
-    this.setAccessUser=this.setAccessUser.bind(this);
+    this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
+    this.handleCRMRole = this.handleCRMRole.bind(this);
+    this.setAccessUser = this.setAccessUser.bind(this);
   }
 
   componentDidMount() {
     debugger;
     this.handleGetUserProfileData();
     this.handleLoggedInUserDetails();
-    
+
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
-      function () {
+      function() {
         pageName = window.location.pathname;
         lastOne = pageName.split("/");
         lastValue = lastOne[lastOne.length - 1];
@@ -132,7 +132,6 @@ class Header extends Component {
       1
     );
     this.handleGetNotificationList();
-    
   }
 
   handleNextButtonShow() {
@@ -183,8 +182,8 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  
-  onViewTicket = (notiIds) => {
+
+  onViewTicket = notiIds => {
     debugger;
     this.setState({ modalIsOpen: false });
     if (notiIds !== "") {
@@ -205,7 +204,7 @@ class Header extends Component {
       });
     }
   };
- 
+
   handleGetUserProfileData() {
     debugger;
 
@@ -214,30 +213,28 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
       headers: authHeader()
-     
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var status = res.data.message;
-      var id=res.data.responseData[0].userId;
+      var id = res.data.responseData[0].userId;
       var userdata = res.data.responseData[0].profilePicture;
       if (status === "Success") {
         self.setState({
           selectedUserProfilePicture: userdata
         });
-      self.handleCRMRole(id);
+        self.handleCRMRole(id);
       } else {
         self.setState({
           selectedUserProfilePicture: ""
         });
       }
-
     });
   }
 
   handleCRMRole(id) {
     debugger;
     let self = this;
-   
+
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
@@ -245,23 +242,24 @@ class Header extends Component {
       params: {
         UserId: id
       }
-    }).then(function (res) {
-      debugger;
-      let msg=res.data.message;
-      let data = res.data.responseData.modules;
-      if(msg==="Success"){
- self.setAccessUser(data)
-      }
-     
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let msg = res.data.message;
+        let data = res.data.responseData.modules;
+        if (msg === "Success") {
+          self.setAccessUser(data);
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
-  setAccessUser(data){
+  setAccessUser(data) {
     debugger;
-    var accessdata=[];
-    var dashboard={
+    var accessdata = [];
+    var dashboard = {
       data: "Dashboards",
       urls: "dashboard",
       logoBlack: DashboardLogo,
@@ -270,7 +268,7 @@ class Header extends Component {
       imgClass: "dashboardImg1",
       activeClass: "active single-menu"
     };
-    var myticket= {
+    var myticket = {
       data: "My Tickets",
       urls: "myTicketlist",
       logoBlack: TicketLogo,
@@ -279,7 +277,7 @@ class Header extends Component {
       imgClass: "myTicket",
       activeClass: "single-menu"
     };
-    var knowledgebase={
+    var knowledgebase = {
       data: "Knowledge Base",
       urls: "knowledgebase",
       logoBlack: KnowledgeLogo,
@@ -288,43 +286,52 @@ class Header extends Component {
       imgClass: "knowledgeNav",
       activeClass: "single-menu"
     };
-if(data !==null){
-  for(var i=0; i<data.length;i++){
-
-    if(data[i].moduleName==="Dashboard" && data[i].modulestatus===true ){
-      accessdata.push(dashboard);
-    }else if(data[i].moduleName==="Tickets" && data[i].modulestatus===true ){
-      accessdata.push(myticket);
-    }else if(data[i].moduleName==="Knowledge Base" && data[i].modulestatus===true ){
-      accessdata.push(knowledgebase);
-    }else if(data[i].moduleName==="Settings" && data[i].modulestatus===false ){
-      this.setState({
-        settingAccess:"none"
-      });
-    }else if(data[i].moduleName==="Notification" && data[i].modulestatus===false ){
-      this.setState({
-        notificationAccess:"none"
-      });
+    if (data !== null) {
+      for (var i = 0; i < data.length; i++) {
+        if (
+          data[i].moduleName === "Dashboard" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(dashboard);
+        } else if (
+          data[i].moduleName === "Tickets" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(myticket);
+        } else if (
+          data[i].moduleName === "Knowledge Base" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(knowledgebase);
+        } else if (
+          data[i].moduleName === "Settings" &&
+          data[i].modulestatus === false
+        ) {
+          this.setState({
+            settingAccess: "none"
+          });
+        } else if (
+          data[i].moduleName === "Notification" &&
+          data[i].modulestatus === false
+        ) {
+          this.setState({
+            notificationAccess: "none"
+          });
+        }
+      }
     }
+    this.setState({
+      cont: accessdata
+    });
   }
-}
-this.setState({
-  cont:accessdata
-})
 
-}
-
-
-
-  
-  
   handleLogoutMethod() {
     // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Account/Logout",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       //debugger;
       var status = res.data.status;
       // var Msg=res.data.message
@@ -334,7 +341,7 @@ this.setState({
         window.location.href = "/";
       }
     });
-  };
+  }
 
   handleLoggedInUserDetails = () => {
     //debugger;
@@ -343,7 +350,7 @@ this.setState({
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var data = res.data.responseData;
       var status = res.data.message;
@@ -397,7 +404,7 @@ this.setState({
       method: "post",
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
@@ -405,9 +412,12 @@ this.setState({
         let Count1 = res.data.responseData.ticketNotification[0].ticketCount;
         let Count2 = res.data.responseData.ticketNotification[1].ticketCount;
         let Count3 = res.data.responseData.ticketNotification[2].ticketCount;
-        let Msg1 = res.data.responseData.ticketNotification[0].notificationMessage;
-        let Msg2 = res.data.responseData.ticketNotification[1].notificationMessage;
-        let Msg3 = res.data.responseData.ticketNotification[2].notificationMessage;
+        let Msg1 =
+          res.data.responseData.ticketNotification[0].notificationMessage;
+        let Msg2 =
+          res.data.responseData.ticketNotification[1].notificationMessage;
+        let Msg3 =
+          res.data.responseData.ticketNotification[2].notificationMessage;
         let TktIds1 = res.data.responseData.ticketNotification[0].ticketIDs;
         let TktIds2 = res.data.responseData.ticketNotification[1].ticketIDs;
         let TktIds3 = res.data.responseData.ticketNotification[2].ticketIDs;
@@ -426,7 +436,7 @@ this.setState({
           notiCount
         });
       } else {
-        debugger
+        debugger;
         self.setState({
           notifiCount1: "",
           notifiCount2: "",
@@ -481,12 +491,12 @@ this.setState({
             <div className="hamb-menu">
               <div className="dropdown">
                 <img src={Hamb} alt="hamburger icon" data-toggle="dropdown" />
-                <ul className="dropdown-menu" >
-                  <li >
+                <ul className="dropdown-menu">
+                  <li>
                     <Link to="dashboard">Dashboards</Link>
                   </li>
-                  <li >
-                    <Link to="myTicketlist" >My Tickets</Link>
+                  <li>
+                    <Link to="myTicketlist">My Tickets</Link>
                   </li>
                   <li>
                     <Link to="knowledgebase">Knowledge Base</Link>
@@ -641,44 +651,44 @@ this.setState({
                   </div>
                 </div>
               ) : (
-                  <div>
-                    <div className="row amitsinghcenter">
-                      <div className="col-md-12">
-                        <div className="status1">
-                          <input type="radio" name="logout-status" id="online" />
-                          <label
-                            htmlFor="online"
-                            className="logout-label1"
-                            style={{ marginRight: "25px" }}
-                          >
-                            Online
+                <div>
+                  <div className="row amitsinghcenter">
+                    <div className="col-md-12">
+                      <div className="status1">
+                        <input type="radio" name="logout-status" id="online" />
+                        <label
+                          htmlFor="online"
+                          className="logout-label1"
+                          style={{ marginRight: "25px" }}
+                        >
+                          Online
                         </label>
 
-                          <input type="radio" name="logout-status" id="away" />
-                          <label htmlFor="away" className="logout-label1">
-                            Offline
+                        <input type="radio" name="logout-status" id="away" />
+                        <label htmlFor="away" className="logout-label1">
+                          Offline
                         </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row amitnextrow">
-                      <div className="col-md-12">
-                        <button
-                          className="loginbtnagent"
-                          onClick={this.handleNextButtonShow.bind(this)}
-                        >
-                          Next
-                      </button>
-                      </div>
-                    </div>
-                    <div className="row amitnextrow">
-                      <div className="col-md-12">
-                        <img src={LogoutImg} alt="logo" className="logoutImg" />
-                        <span className="logouttamitsingh">Logout</span>
                       </div>
                     </div>
                   </div>
-                )}
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <button
+                        className="loginbtnagent"
+                        onClick={this.handleNextButtonShow.bind(this)}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <img src={LogoutImg} alt="logo" className="logoutImg" />
+                      <span className="logouttamitsingh">Logout</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </Modal>
 
             <Modal
@@ -769,62 +779,62 @@ this.setState({
                   </div>
                 </div>
               ) : (
-                  <div>
-                    <div className="row amitsinghcallrow">
-                      <div className="col-md-12">
-                        <input
-                          type="text"
-                          className="amitsinghwaiting"
-                          placeholder="Waiting for incoming call"
-                          onClick={this.handleWaitingShow.bind(this)}
-                        />
-                        <div className="row">
-                          <div className="col-md-8">
-                            <label className="idletimeamit">
-                              Idle Time: 02:24
+                <div>
+                  <div className="row amitsinghcallrow">
+                    <div className="col-md-12">
+                      <input
+                        type="text"
+                        className="amitsinghwaiting"
+                        placeholder="Waiting for incoming call"
+                        onClick={this.handleWaitingShow.bind(this)}
+                      />
+                      <div className="row">
+                        <div className="col-md-8">
+                          <label className="idletimeamit">
+                            Idle Time: 02:24
                           </label>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="row amitnextbuttonrow">
-                      <div className="col-md-12">
-                        <button className="CallwrapBtn">Call Wrap</button>
-                      </div>
-                    </div>
-                    <div className="row amitnextbuttonrow1">
-                      <div className="col-md-12">
-                        <button className="SwitchToProgBtn">
-                          Switch to progressive
-                      </button>
-                      </div>
-                    </div>
-                    <div className="row amitnextrow">
-                      <div className="col-md-12">
-                        <div className="takeabreak">
-                          <img src={TakeBreak} alt="logo" className="logoutImg" />
-                          <span className="takebreaktext">Take a Breake</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="row backtohomelogoutrow">
-                      <div className="col-md-12">
-                        <img src={LogoutImg} alt="logo" className="logoutImg" />
-                        <span className="logoutbacktohome">Logout</span>
-                      </div>
-                    </div>
-
-                    <div className="row backtohomerow">
-                      <div className="col-md-12">
-                        <a href="#!" className="backtohometext">
-                          >>Back to Home
-                      </a>
                       </div>
                     </div>
                   </div>
-                )}
+
+                  <div className="row amitnextbuttonrow">
+                    <div className="col-md-12">
+                      <button className="CallwrapBtn">Call Wrap</button>
+                    </div>
+                  </div>
+                  <div className="row amitnextbuttonrow1">
+                    <div className="col-md-12">
+                      <button className="SwitchToProgBtn">
+                        Switch to progressive
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <div className="takeabreak">
+                        <img src={TakeBreak} alt="logo" className="logoutImg" />
+                        <span className="takebreaktext">Take a Breake</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row backtohomelogoutrow">
+                    <div className="col-md-12">
+                      <img src={LogoutImg} alt="logo" className="logoutImg" />
+                      <span className="logoutbacktohome">Logout</span>
+                    </div>
+                  </div>
+
+                  <div className="row backtohomerow">
+                    <div className="col-md-12">
+                      <a href="#!" className="backtohometext">
+                        >>Back to Home
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
             </Modal>
 
             <a href="#!" className="d-none">
@@ -967,16 +977,25 @@ this.setState({
                   src={NotificationLogo}
                   alt="logo"
                   className="notifi"
-                  style={{ display: this.state.notificationAccess}}
+                  style={{ display: this.state.notificationAccess }}
                 />
-                {this.state.notiCount > 0 && <span className="upper-noti-count">{this.state.notiCount}</span>}
+                {this.state.notiCount > 0 && (
+                  <span className="upper-noti-count">
+                    {this.state.notiCount}
+                  </span>
+                )}
               </div>
               <span style={{ display: "none" }} className="icon-fullname">
                 Notifications
               </span>
             </a>
             <Link to="settings">
-              <img src={SettingLogo} alt="logo" className="setting" style={{ display: this.state.settingAccess}} />
+              <img
+                src={SettingLogo}
+                alt="logo"
+                className="setting"
+                style={{ display: this.state.settingAccess }}
+              />
               <img
                 src={SettingLogoBlue}
                 alt="logo"
@@ -990,7 +1009,6 @@ this.setState({
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               {this.state.NameTag}
             </a>
-            
           </div>
         </div>
 
@@ -1006,19 +1024,18 @@ this.setState({
             </div>
             <div className="md-6 new-tickets-assigned tic-noti">
               <label>
-                <span>
-                  {this.state.notifiMsg1}
-                </span>
+                <span>{this.state.notifiMsg1}</span>
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to={{
-                pathname: 'myTicketlist',
-                state: {
-                  isType: 'New'
-                }
-              }} 
-              onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
+              <Link
+                to={{
+                  pathname: "myTicketlist",
+                  state: {
+                    isType: "New"
+                  }
+                }}
+                onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
               >
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
@@ -1030,18 +1047,19 @@ this.setState({
             </div>
             <div className="md-6 new-tickets-assigned tic-noti">
               <label>
-                <span>
-                  {this.state.notifiMsg2}
-                </span>
+                <span>{this.state.notifiMsg2}</span>
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to={{
-                pathname: 'myTicketlist',
-                state: {
-                  isType: 'Open'
-                }
-              }} onClick={() => this.onViewTicket(this.state.notifiTktIds2)}>
+              <Link
+                to={{
+                  pathname: "myTicketlist",
+                  state: {
+                    isType: "Open"
+                  }
+                }}
+                onClick={() => this.onViewTicket(this.state.notifiTktIds2)}
+              >
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -1052,20 +1070,19 @@ this.setState({
             </div>
             <div className="md-6 new-tickets-assigned tic-noti">
               <label>
-                <span>
-                  {this.state.notifiMsg3}
-                </span>
+                <span>{this.state.notifiMsg3}</span>
               </label>
             </div>
             <div className="viewticketspeadding">
               <Link
-              to={{
-                pathname: 'myTicketlist',
-                state: {
-                  isType: 'Escalation'
-                }
-              }}
-              onClick={() => this.onViewTicket(this.state.notifiTktIds3)}>
+                to={{
+                  pathname: "myTicketlist",
+                  state: {
+                    isType: "Escalation"
+                  }
+                }}
+                onClick={() => this.onViewTicket(this.state.notifiTktIds3)}
+              >
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -1082,39 +1099,42 @@ this.setState({
             <div className="logout-block">
               <div>
                 <div className="user-img">
-                <Link to="userprofile">
-                  <img
-                    src={this.state.selectedUserProfilePicture==="https://localhost:44357/Resources/Images/"&&"https://erbelltkt.dcdev.brainvire.net/Resources/Images/"?ProfileImg:this.state.selectedUserProfilePicture}
+                  <Link to="userprofile">
+                    <img
+                      src={
+                        this.state.selectedUserProfilePicture ===
+                          "https://localhost:44357/Resources/Images/" &&
+                        "https://erbelltkt.dcdev.brainvire.net/Resources/Images/"
+                          ? ProfileImg
+                          : this.state.selectedUserProfilePicture
+                      }
                       //this.state.userProfile === "user-img.jpg"
-                       // ? require("./../assets/Images/user-img.jpg")
-                       // : require("./../assets/Images/defaultUser.png")
-                    //}
-                    alt="User"
-                    style={{ width: '90px' }}
-                    title="Edit Profile"
-                    onClick={this.onCloseModal.bind(this)}
-                  />
+                      // ? require("./../assets/Images/user-img.jpg")
+                      // : require("./../assets/Images/defaultUser.png")
+                      //}
+                      alt="User"
+                      style={{ width: "90px" }}
+                      title="Edit Profile"
+                      onClick={this.onCloseModal.bind(this)}
+                    />
                   </Link>
                 </div>
                 <div className="logout-flex">
                   <div>
-                  
                     <p style={{ fontSize: "16px", fontWeight: "600" }}>
                       {this.state.UserName}
                       &nbsp;
                       <Link to="userprofile">
-                      <img
-                              src={PencilImg}
-                              alt="Pencile"
-                              className="pencilImg"
-                              title="Edit Profile"
-                              onClick={this.onCloseModal.bind(this)}
-                            />
-                             </Link>
+                        <img
+                          src={PencilImg}
+                          alt="Pencile"
+                          className="pencilImg"
+                          title="Edit Profile"
+                          onClick={this.onCloseModal.bind(this)}
+                        />
+                      </Link>
                     </p>
-                   
-                    
-                  
+
                     <p className="mail-id">{this.state.Email}</p>
                   </div>
                   <button
@@ -1181,7 +1201,10 @@ this.setState({
                 />
                 <p
                   className="logout-label font-weight-bold prog-indi"
-                  style={{ width: this.state.workTime + "%", textTransform: 'uppercase' }}
+                  style={{
+                    width: this.state.workTime + "%",
+                    textTransform: "uppercase"
+                  }}
                 >
                   {this.state.workTimeHours}
                 </p>
@@ -1199,7 +1222,6 @@ this.setState({
                   <p className="logout-label">Avg Response time</p>
                   <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
-               
               </div>
             </div>
           </Modal>
