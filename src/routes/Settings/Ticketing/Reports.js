@@ -34,28 +34,30 @@ import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
 // };
 
 class Reports extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
       AddReportPopup: false,
       NextPopup: false,
       ChatDate: "",
-      DefaultPopupName:"",
+      DefaultPopupName: "",
       tabIndex: 0,
       ReportData: [],
       ReportParams: "",
       brandData: [],
       Schedule_ID: 0,
       TicketCreatedFromDate: "",
-      SelectedTicketMultiStatus:"",
-      TicketClosedFrom:"",
-      TicketClosedTo:"",
+      SelectedTicketMultiStatus: "",
+      TicketClosedFrom: "",
+      TicketClosedTo: "",
+      DefaultEmailID:"",
       TicketCreatedEndDate: "",
       TicketCreatedSource: "",
       SelectedSourceIds: "",
-      SelectedDefaultTeamMember:"",
+      SelectedDefaultTeamMember: "",
       OpenDefaultModal: false,
+      OpenDefaultMailModal: false,
+      FileURL:"",
       CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
@@ -601,13 +603,15 @@ class Reports extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function(res) {
-      debugger;
-      let FunctionData = res.data.responseData;
-      self.setState({ FunctionData: FunctionData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let FunctionData = res.data.responseData;
+        self.setState({ FunctionData: FunctionData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleNextPopupOpen() {
     this.handleAddReportClose();
@@ -618,7 +622,30 @@ class Reports extends Component {
     this.handleReportList();
   }
   handleDefaultPopupClose = () => {
-    this.setState({ OpenDefaultModal: false, TicketCreatedFromDate: '', TicketCreatedEndDate: '', SelectedSourceIds: '', selectedDefaultTicketStatus: 0, TicketClosedFrom: '', TicketClosedTo: '', SelectedDefaultTeamMember: '', SelectedTicketMultiStatus: '' });
+    this.setState({
+      OpenDefaultModal: false,
+      TicketCreatedFromDate: "",
+      TicketCreatedEndDate: "",
+      SelectedSourceIds: "",
+      selectedDefaultTicketStatus: 0,
+      TicketClosedFrom: "",
+      TicketClosedTo: "",
+      SelectedDefaultTeamMember: "",
+      SelectedTicketMultiStatus: ""
+    });
+  };
+  handleDefaultMailPopupClose = () => {
+    this.setState({
+      OpenDefaultMailModal: false,
+      TicketCreatedFromDate: "",
+      TicketCreatedEndDate: "",
+      SelectedSourceIds: "",
+      selectedDefaultTicketStatus: 0,
+      TicketClosedFrom: "",
+      TicketClosedTo: "",
+      SelectedDefaultTeamMember: "",
+      SelectedTicketMultiStatus: ""
+    });
   };
   handleReportCreateDate(date) {
     this.setState({ ReportCreateDate: date });
@@ -770,16 +797,18 @@ class Reports extends Component {
         BrandId: this.state.BrandIds,
         reportSearch: allTab
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      self.setState({ totalResultCount: data });
-      self.handleNextPopupOpen();
-      //self.handleAddReportClose();
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        self.setState({ totalResultCount: data });
+        self.handleNextPopupOpen();
+        //self.handleAddReportClose();
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   EditSearchParameter(objEdit) {
     var allTab = {};
@@ -1167,7 +1196,10 @@ class Reports extends Component {
         .call(e, s => s.userID)
         .toString();
     }
-    this.setState({ SelectedDefaultTeamMember: e, selectedTeamMemberCommaSeperated });
+    this.setState({
+      SelectedDefaultTeamMember: e,
+      selectedTeamMemberCommaSeperated
+    });
   };
 
   setDefaultMutiStatus = e => {
@@ -1180,7 +1212,6 @@ class Reports extends Component {
     this.setState({ SelectedTicketMultiStatus: e, selectedStatus });
   };
 
-
   setCreatedTicketSource = e => {
     debugger;
     if (e !== null) {
@@ -1190,19 +1221,19 @@ class Reports extends Component {
     }
     this.setState({ SelectedSourceIds: e, selectedCreatedTicketSource });
   };
-  
-  setDefaultTicketStatus=e=>{
+
+  setDefaultTicketStatus = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
   setOnChangeReportData = e => {
     debugger;
 
     this.setState({
       [e.target.name]: e.target.value
     });
-    
+
     setTimeout(() => {
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
@@ -1236,13 +1267,15 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let DepartmentData = res.data.responseData;
+        self.setState({ DepartmentData: DepartmentData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleAssignTo() {
@@ -1252,16 +1285,18 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let AssignData = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let AssignData = res.data.responseData;
 
-      self.setState({
-        AssignToData: AssignData
+        self.setState({
+          AssignToData: AssignData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
 
   handleGetTicketPriorityList() {
@@ -1271,13 +1306,15 @@ class Reports extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let TicketPriorityData = res.data.responseData;
+        self.setState({ TicketPriorityData: TicketPriorityData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetTicketSourceList() {
     debugger;
@@ -1287,15 +1324,17 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let TicketSourceData = res.data.responseData;
-      self.setState({
-        TicketSourceData: TicketSourceData
+    })
+      .then(function(res) {
+        debugger;
+        let TicketSourceData = res.data.responseData;
+        self.setState({
+          TicketSourceData: TicketSourceData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleReportList() {
     debugger;
@@ -1305,85 +1344,71 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Report/GetReports",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      var reportdata = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        var reportdata = res.data.responseData;
 
-      if (reportdata == null) {
-        reportdata = [];
-      }
-      self.setState({
-        ReportData: reportdata,
-        loading: false
+        if (reportdata == null) {
+          reportdata = [];
+        }
+        self.setState({
+          ReportData: reportdata,
+          loading: false
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleDownload = (id, name) => {
     debugger;
     this.setState({
       loadingDownload: false
-    })
-    let self = this;    
-    if (id == 0) {     
-
+    });
+    let self = this;
+    if (id == 0) {
       self.setState({ DefaultPopupName: name });
       self.setState({ OpenDefaultModal: true });
-      setTimeout(function(){  
-         if(name=="Total Ticket Created")
-         {
-           document.getElementById("FromDate").style.display="block";
-         }
-         else if(name=="Total Open Ticket")
-         {
-          document.getElementById("FromDate").style.display="block";
-          self.setState({selectedDefaultTicketStatus:102});
-          document.getElementById("drpDefaultStatus").disabled=true;
-          document.getElementById("TicketStatus").style.display="block";
-         }
-         else if(name=="Total Closed Ticket")
-         {
-          document.getElementById("TicketClosedTo").style.display="block";
-          document.getElementById("TicketClosedFrom").style.display="block";
-          document.getElementById("FromDate").style.display="block";
-         }
-         else if(name=="Ticket Count By Associates")
-         {          
-          document.getElementById("FromDate").style.display="block";
-         // document.getElementById("TicketStatus").style.display="block";
-          document.getElementById("dvAssignedTo").style.display="block";
-          document.getElementById("dvMultiStatus").style.display="block";
-         }
-         else if(name=="Escalated Tickets")
-         {
-          document.getElementById("FromDate").style.display="block";
-          self.setState({selectedDefaultTicketStatus:1001});
-          document.getElementById("drpDefaultStatus").disabled=true;
-          document.getElementById("TicketStatus").style.display="block";
-         }       
-         else if(name=="Re-Assigned Tickets")
-         {
-          document.getElementById("FromDate").style.display="block";
-          document.getElementById("drpDefaultStatus").disabled=false;
-          self.setState({selectedDefaultTicketStatus:1004});
+      setTimeout(function() {
+        if (name == "Total Ticket Created") {
+          document.getElementById("FromDate").style.display = "block";
+        } else if (name == "Total Open Ticket") {
+          document.getElementById("FromDate").style.display = "block";
+          self.setState({ selectedDefaultTicketStatus: 102 });
+          document.getElementById("drpDefaultStatus").disabled = true;
+          document.getElementById("TicketStatus").style.display = "block";
+        } else if (name == "Total Closed Ticket") {
+          document.getElementById("TicketClosedTo").style.display = "block";
+          document.getElementById("TicketClosedFrom").style.display = "block";
+          document.getElementById("FromDate").style.display = "block";
+        } else if (name == "Ticket Count By Associates") {
+          document.getElementById("FromDate").style.display = "block";
+          // document.getElementById("TicketStatus").style.display="block";
+          document.getElementById("dvAssignedTo").style.display = "block";
+          document.getElementById("dvMultiStatus").style.display = "block";
+        } else if (name == "Escalated Tickets") {
+          document.getElementById("FromDate").style.display = "block";
+          self.setState({ selectedDefaultTicketStatus: 1001 });
+          document.getElementById("drpDefaultStatus").disabled = true;
+          document.getElementById("TicketStatus").style.display = "block";
+        } else if (name == "Re-Assigned Tickets") {
+          document.getElementById("FromDate").style.display = "block";
+          document.getElementById("drpDefaultStatus").disabled = false;
+          self.setState({ selectedDefaultTicketStatus: 1004 });
           //document.getElementById("drpDefaultStatus").disabled=true;
-          document.getElementById("TicketStatus").style.display="block";
-         }
-         else if(name=="Re-Opened Tickets")
-         {
-          document.getElementById("FromDate").style.display="block";
-          self.setState({selectedDefaultTicketStatus:105});
-          document.getElementById("drpDefaultStatus").disabled=true;
-          document.getElementById("TicketStatus").style.display="block";
-         }
-        
-        }, 100);
-     
+          document.getElementById("TicketStatus").style.display = "block";
+        } else if (name == "Re-Opened Tickets") {
+          document.getElementById("FromDate").style.display = "block";
+          self.setState({ selectedDefaultTicketStatus: 105 });
+          document.getElementById("drpDefaultStatus").disabled = true;
+          document.getElementById("TicketStatus").style.display = "block";
+        }
+      }, 100);
     } else {
       this.setState({
         loading: true
-      })
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadReportSearch",
@@ -1391,37 +1416,60 @@ class Reports extends Component {
         params: {
           SchedulerID: id
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData);
-        // self.downloadURI(res.data.responseData,name+".csv");
-        self.setState({
-          loading: false
+      })
+        .then(function(res) {
+          debugger;
+          window.open(res.data.responseData);
+          // self.downloadURI(res.data.responseData,name+".csv");
+          self.setState({
+            loading: false
+          });
         })
-      }).catch(data => {
-        console.log(data);
-      });
+        .catch(data => {
+          console.log(data);
+        });
     }
   };
+  sentMail = () => {
+    let self=this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Report/DownloadDefaultReport",
+      headers: authHeader(),
+      data: {
+        Email:this.state.DefaultEmailID,
+        FileURL:this.state.FileURL
+      }
+    })
+      .then(function(res) {
+        debugger;
+        NotificationManager.success("Email has been sent");
+        self.setState({
+          loadingDownload: false
+        });
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
 
   downloadDefaultReport = () => {
     debugger;
     let self = this;
     let sourceIds = "";
-    let assignedIds="";
-    let multiStatusIds="";
-    var elts = document.getElementsByClassName('cls-spnerror');
+    let assignedIds = "";
+    let multiStatusIds = "";
+    var elts = document.getElementsByClassName("cls-spnerror");
     for (var i = 0; i < elts.length; ++i) {
-        elts[i].textContent="";
-    }   
-    if(this.state.DefaultPopupName=="Total Ticket Created")
-    { 
+      elts[i].textContent = "";
+    }
+    if (this.state.DefaultPopupName == "Total Ticket Created") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-          sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-         }
-         this.setState({
-          loadingDownload: true
-        });   
+        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+      }
+      this.setState({
+        loadingDownload: true
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1436,24 +1484,38 @@ class Reports extends Component {
           Ticket_SourceIDs: sourceIds,
           ReportTypeID: "1"
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData);   
-        self.setState({
-          loadingDownload: false
-        });    
-      }).catch(data => {
-        console.log(data);
-      });         
-    }
-    else if(this.state.DefaultPopupName=="Total Open Ticket")
-    {
+      })
+        .then(function(res) {
+          debugger;
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+          
+        })
+        .catch(data => {
+          self.setState({
+            loadingDownload: false
+          });
+          console.log(data);
+        });
+    } else if (this.state.DefaultPopupName == "Total Open Ticket") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }
-       this.setState({
+        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+      }
+      this.setState({
         loadingDownload: true
-      }); 
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1467,38 +1529,47 @@ class Reports extends Component {
           ),
           Ticket_SourceIDs: sourceIds,
           ReportTypeID: "2",
-          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+          Ticket_StatusID: this.state.selectedDefaultTicketStatus
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData);
-        self.setState({
-          loadingDownload: false
-        });       
-      }).catch(data => {
-        console.log(data);
-      });         
-      
-    }
-    else if(this.state.DefaultPopupName=="Total Closed Ticket")
-    {
+      })
+        .then(function(res) {
+          debugger;
+         // window.open(res.data.responseData);
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else if (this.state.DefaultPopupName == "Total Closed Ticket") {
       debugger;
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
-      var totalError=0;
-      if(this.state.TicketClosedFrom=="")
-      {
-        totalError+=1;
-        document.getElementById("spnTicketClosedFrom").textContent="Please enter from ticket close date"
+        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
-      if(this.state.TicketClosedTo=="")
-      {
-        totalError+=1;
-        document.getElementById("spnTicketClosedTo").textContent="Please enter from ticket close date"
+      var totalError = 0;
+      if (this.state.TicketClosedFrom == "") {
+        totalError += 1;
+        document.getElementById("spnTicketClosedFrom").textContent =
+          "Please enter from ticket close date";
       }
-      if(totalError>0)
-      {
+      if (this.state.TicketClosedTo == "") {
+        totalError += 1;
+        document.getElementById("spnTicketClosedTo").textContent =
+          "Please enter from ticket close date";
+      }
+      if (totalError > 0) {
         return false;
       } else {
         this.setState({
@@ -1510,10 +1581,10 @@ class Reports extends Component {
         url: config.apiUrl + "/Report/DownloadDefaultReport",
         headers: authHeader(),
         data: {
-          Ticket_CloseFrom:moment(this.state.TicketClosedFrom).format(
+          Ticket_CloseFrom: moment(this.state.TicketClosedFrom).format(
             "YYYY-MM-DD"
           ),
-          Ticket_CloseTo:moment(this.state.TicketClosedTo).format(
+          Ticket_CloseTo: moment(this.state.TicketClosedTo).format(
             "YYYY-MM-DD"
           ),
           Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
@@ -1523,45 +1594,54 @@ class Reports extends Component {
             "YYYY-MM-DD"
           ),
           Ticket_SourceIDs: sourceIds,
-          ReportTypeID: "3",
-          
+          ReportTypeID: "3"
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData);  
-        self.setState({
-          loadingDownload: false
-        });     
-      }).catch(data => {
-        console.log(data);
-      });         
-      
-    }
-    else if(this.state.DefaultPopupName=="Ticket Count By Associates")
-    {
+      })
+        .then(function(res) {
+          debugger;
+          //window.open(res.data.responseData);
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else if (this.state.DefaultPopupName == "Ticket Count By Associates") {
       debugger;
-      var totalError=0;
+      var totalError = 0;
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds+=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }  
-       for (var i = 0; i < this.state.SelectedDefaultTeamMember.length; ++i) {
-        assignedIds+=this.state.SelectedDefaultTeamMember[i].userID+",";
-       }  
-       for (var i = 0; i < this.state.SelectedTicketMultiStatus.length; ++i) {
-        multiStatusIds+=this.state.SelectedTicketMultiStatus[i].ticketStatusID+",";
-       }  
-      if(this.state.SelectedDefaultTeamMember=="")
-      {
-        totalError+=1;
-        document.getElementById("spnAssignedTo").textContent="Please select assigned to"
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
-      if(this.state.SelectedTicketMultiStatus=="")
-      {
-        totalError+=1;
-        document.getElementById("spnTicketStatus").textContent="Please select ticket status"
+      for (var i = 0; i < this.state.SelectedDefaultTeamMember.length; ++i) {
+        assignedIds += this.state.SelectedDefaultTeamMember[i].userID + ",";
       }
-      if(totalError>0)
-      {
+      for (var i = 0; i < this.state.SelectedTicketMultiStatus.length; ++i) {
+        multiStatusIds +=
+          this.state.SelectedTicketMultiStatus[i].ticketStatusID + ",";
+      }
+      if (this.state.SelectedDefaultTeamMember == "") {
+        totalError += 1;
+        document.getElementById("spnAssignedTo").textContent =
+          "Please select assigned to";
+      }
+      if (this.state.SelectedTicketMultiStatus == "") {
+        totalError += 1;
+        document.getElementById("spnTicketStatus").textContent =
+          "Please select ticket status";
+      }
+      if (totalError > 0) {
         return;
       } else {
         this.setState({
@@ -1574,8 +1654,8 @@ class Reports extends Component {
         url: config.apiUrl + "/Report/DownloadDefaultReport",
         headers: authHeader(),
         data: {
-          Ticket_AssignIDs:assignedIds,
-          Ticket_StatusIDs:multiStatusIds,        
+          Ticket_AssignIDs: assignedIds,
+          Ticket_StatusIDs: multiStatusIds,
           Ticket_CreatedFrom: moment(this.state.TicketCreatedFromDate).format(
             "YYYY-MM-DD"
           ),
@@ -1583,27 +1663,37 @@ class Reports extends Component {
             "YYYY-MM-DD"
           ),
           Ticket_SourceIDs: sourceIds,
-          ReportTypeID: "4"        
+          ReportTypeID: "4"
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData);
-        self.setState({
-          loadingDownload: false
-        });      
-      }).catch(data => {
-        console.log(data);
-      });         
-      
-    }
-    else if(this.state.DefaultPopupName=="Escalated Tickets")
-    {
+      })
+        .then(function(res) {
+          debugger;
+         // window.open(res.data.responseData);
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else if (this.state.DefaultPopupName == "Escalated Tickets") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }
-       this.setState({
+        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+      }
+      this.setState({
         loadingDownload: true
-      });  
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1617,26 +1707,37 @@ class Reports extends Component {
           ),
           Ticket_SourceIDs: sourceIds,
           ReportTypeID: "5",
-          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+          Ticket_StatusID: this.state.selectedDefaultTicketStatus
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData); 
-        self.setState({
-          loadingDownload: false
-        });      
-      }).catch(data => {
-        console.log(data);
-      }); 
-    }
-    else if(this.state.DefaultPopupName=="Re-Assigned Tickets")
-    {
+      })
+        .then(function(res) {
+          debugger;
+        //  window.open(res.data.responseData);
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else if (this.state.DefaultPopupName == "Re-Assigned Tickets") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }
-       this.setState({
+        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+      }
+      this.setState({
         loadingDownload: true
-      });  
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1650,27 +1751,37 @@ class Reports extends Component {
           ),
           Ticket_SourceIDs: sourceIds,
           ReportTypeID: "6",
-          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+          Ticket_StatusID: this.state.selectedDefaultTicketStatus
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData); 
-        self.setState({
-          loadingDownload: false
-        });      
-      }).catch(data => {
-        console.log(data);
-      });         
-      
-    }
-    else if(this.state.DefaultPopupName=="Re-Opened Tickets")
-    {
+      })
+        .then(function(res) {
+          debugger;
+        //  window.open(res.data.responseData);
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else if (this.state.DefaultPopupName == "Re-Opened Tickets") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds=this.state.SelectedSourceIds[i].ticketSourceId+",";
-       }
-       this.setState({
+        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+      }
+      this.setState({
         loadingDownload: true
-      });  
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1684,21 +1795,31 @@ class Reports extends Component {
           ),
           Ticket_SourceIDs: sourceIds,
           ReportTypeID: "7",
-          Ticket_StatusID:this.state.selectedDefaultTicketStatus
+          Ticket_StatusID: this.state.selectedDefaultTicketStatus
         }
-      }).then(function(res) {
-        debugger;
-        window.open(res.data.responseData);
-        self.setState({
-          loadingDownload: false
-        });       
-      }).catch(data => {
-        console.log(data);
-      });         
-      
+      })
+        .then(function(res) {
+          debugger;
+         // window.open(res.data.responseData);
+          self.setState({
+            loadingDownload: false
+          });
+          var resultArr=res.data.responseData.split('@');
+          if(resultArr.length>1)
+          { 
+             self.setState({FileURL:resultArr[1]});           
+             self.setState({OpenDefaultMailModal:true});
+             self.setState({OpenDefaultModal:false});
+          }
+          else
+          {
+            window.open(resultArr[0]);         
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     }
-    
-    
   };
 
   downloadURI = (uri, name) => {
@@ -1708,6 +1829,11 @@ class Reports extends Component {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    //delete link;
+  };
+
+  setDefaultEmail =e=> {
+   this.setState({DefaultEmailID:e.target.value});
     //delete link;
   };
   handleDeleteReport(id) {
@@ -1721,16 +1847,18 @@ class Reports extends Component {
       params: {
         ReportID: id
       }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Record Deleted successfully.");
-        self.handleReportList();
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          NotificationManager.success("Record Deleted successfully.");
+          self.handleReportList();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetBrandList() {
     debugger;
@@ -1739,18 +1867,20 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ brandData: data });
-      } else {
-        self.setState({ brandData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ brandData: data });
+        } else {
+          self.setState({ brandData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleGetCategoryList() {
     debugger;
@@ -1760,16 +1890,18 @@ class Reports extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let CategoryData = res.data;
+    })
+      .then(function(res) {
+        debugger;
+        let CategoryData = res.data;
 
-      self.setState({
-        CategoryData: CategoryData
+        self.setState({
+          CategoryData: CategoryData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
 
   handleGetSubCategoryList() {
@@ -1791,15 +1923,17 @@ class Reports extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function(res) {
-      debugger;
-      var SubCategoryData = res.data.responseData;
-      self.setState({
-        SubCategoryData: SubCategoryData
+    })
+      .then(function(res) {
+        debugger;
+        var SubCategoryData = res.data.responseData;
+        self.setState({
+          SubCategoryData: SubCategoryData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleGetIssueTypeList() {
     debugger;
@@ -1817,13 +1951,15 @@ class Reports extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
-      debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let IssueTypeData = res.data.responseData;
+        self.setState({ IssueTypeData: IssueTypeData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleSave() {
@@ -1847,87 +1983,92 @@ class Reports extends Component {
         params: {
           ScheduleID: this.state.Schedule_ID
         }
-      }).then(function (res) {
-        // this.handleReportList();
-        self.handleReportList();
-        self.handleNextPopupClose();
-        NotificationManager.success("Report saved successfully for download.");
-      }).catch(data => {
-        console.log(data);
-      });
-    }
-    else {
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/Schedule",
-      headers: authHeader(),
-      data: {
-        PrimaryScheduleID: this.state.Schedule_ID,
-        ReportName: this.state.selectedReportName,
-        SearchInputParams: SearchParams,
-        ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
-        ScheduleType: this.state.selectScheduleDate,
-        NoOfDay: this.state.selectedNoOfDay,
-        ScheduleTime: this.state.selectedScheduleTime,
-        IsDaily: this.state.IsDaily,
-        IsWeekly: this.state.IsWeekly,
-        NoOfWeek: this.state.selectedNoOfWeek,
-        DayIds: this.state.selectedWeeklyDays,
-        IsDailyForMonth: this.state.IsDailyForMonth,
-        NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
-        NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
-        IsWeeklyForMonth: this.state.IsWeeklyForMonth,
-        NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
-        NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-        ScheduleFrom: 4,
-        NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
-        IsDailyForYear: this.state.IsDailyForYear,
-        NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-        NameOfMonthForDailyYear: this.state
-          .selectedNameOfMonthForYearCommaSeperated,
-        IsWeeklyForYear: this.state.IsWeeklyForYear,
-        NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
-        NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-        NameOfMonthForYear: this.state
-          .selectedNameOfMonthForDailyYearCommaSeperated
-      }
-    }).then(function(res) {
-      debugger;
-
-      let status = res.data.message;
-      let scheduleId = res.data.responseData;
-      if (status === "Success") {
-        self.state.selectedTeamMember = "";
-        self.state.selectedTeamMemberCommaSeperated = undefined;
-        self.state.selectScheduleDate = "";
-        self.state.selectedScheduleTime = "";
-
-        self.ScheduleCloseModel();
-        // this.handleReportList();
-        self.setState({ Schedule_ID: scheduleId });
-        self.setState({ AddReportPopup: false });
-        NotificationManager.success("Report saved successfully.");
-        self.setState({
-          ReportParams: {},
-          selectedScheduleTime: "",
-          // selectedTeamMemberCommaSeperated="",
-          // selectScheduleDate="",
-          // selectedScheduleTime="",
-          IsDaily: false,
-          IsDailyForMonth: false,
-          IsWeekly: false,
-          IsWeeklyForMonth: false,
-          IsDailyForYear: false,
-          IsWeeklyForYear: false
+      })
+        .then(function(res) {
+          // this.handleReportList();
+          self.handleReportList();
+          self.handleNextPopupClose();
+          NotificationManager.success(
+            "Report saved successfully for download."
+          );
+        })
+        .catch(data => {
+          console.log(data);
         });
-      } else if (status == "duplicate") {
-        self.setState({ Schedule_ID: 0 });
-        NotificationManager.error("Report name already exist.");
-      }
-    }).catch(data => {
-      console.log(data);
-    });
-      }
+    } else {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/Schedule",
+        headers: authHeader(),
+        data: {
+          PrimaryScheduleID: this.state.Schedule_ID,
+          ReportName: this.state.selectedReportName,
+          SearchInputParams: SearchParams,
+          ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+          ScheduleType: this.state.selectScheduleDate,
+          NoOfDay: this.state.selectedNoOfDay,
+          ScheduleTime: this.state.selectedScheduleTime,
+          IsDaily: this.state.IsDaily,
+          IsWeekly: this.state.IsWeekly,
+          NoOfWeek: this.state.selectedNoOfWeek,
+          DayIds: this.state.selectedWeeklyDays,
+          IsDailyForMonth: this.state.IsDailyForMonth,
+          NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+          NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+          IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+          NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+          NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+          ScheduleFrom: 4,
+          NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+          IsDailyForYear: this.state.IsDailyForYear,
+          NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+          NameOfMonthForDailyYear: this.state
+            .selectedNameOfMonthForYearCommaSeperated,
+          IsWeeklyForYear: this.state.IsWeeklyForYear,
+          NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+          NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+          NameOfMonthForYear: this.state
+            .selectedNameOfMonthForDailyYearCommaSeperated
+        }
+      })
+        .then(function(res) {
+          debugger;
+
+          let status = res.data.message;
+          let scheduleId = res.data.responseData;
+          if (status === "Success") {
+            self.state.selectedTeamMember = "";
+            self.state.selectedTeamMemberCommaSeperated = undefined;
+            self.state.selectScheduleDate = "";
+            self.state.selectedScheduleTime = "";
+
+            self.ScheduleCloseModel();
+            // this.handleReportList();
+            self.setState({ Schedule_ID: scheduleId });
+            self.setState({ AddReportPopup: false });
+            NotificationManager.success("Report saved successfully.");
+            self.setState({
+              ReportParams: {},
+              selectedScheduleTime: "",
+              // selectedTeamMemberCommaSeperated="",
+              // selectScheduleDate="",
+              // selectedScheduleTime="",
+              IsDaily: false,
+              IsDailyForMonth: false,
+              IsWeekly: false,
+              IsWeeklyForMonth: false,
+              IsDailyForYear: false,
+              IsWeeklyForYear: false
+            });
+          } else if (status == "duplicate") {
+            self.setState({ Schedule_ID: 0 });
+            NotificationManager.error("Report name already exist.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    }
 
     // else{
     //   NotificationManager.error("Please create scheduler");
@@ -1993,42 +2134,44 @@ class Reports extends Component {
           NameOfMonthForYear: this.state
             .selectedNameOfMonthForDailyYearCommaSeperated
         }
-      }).then(function(res) {
-        debugger;
+      })
+        .then(function(res) {
+          debugger;
 
-        let status = res.data.message;
-        let scheduleId = res.data.responseData;
-        if (status === "Success") {
-          self.state.selectedTeamMember = "";
-          self.state.selectedTeamMemberCommaSeperated = undefined;
-          self.state.selectScheduleDate = "";
-          self.state.selectedScheduleTime = "";
+          let status = res.data.message;
+          let scheduleId = res.data.responseData;
+          if (status === "Success") {
+            self.state.selectedTeamMember = "";
+            self.state.selectedTeamMemberCommaSeperated = undefined;
+            self.state.selectScheduleDate = "";
+            self.state.selectedScheduleTime = "";
 
-          self.ScheduleCloseModel();
-          // this.handleReportList();
-          self.setState({ Schedule_ID: scheduleId });
-          self.setState({ AddReportPopup: false });
-          NotificationManager.success("Scheduler created successfully.");
-          self.setState({
-            ReportParams: {},
-            selectedScheduleTime: "",
-            // selectedTeamMemberCommaSeperated="",
-            // selectScheduleDate="",
-            // selectedScheduleTime="",
-            IsDaily: false,
-            IsDailyForMonth: false,
-            IsWeekly: false,
-            IsWeeklyForMonth: false,
-            IsDailyForYear: false,
-            IsWeeklyForYear: false
-          });
-        } else if (status == "duplicate") {
-          self.setState({ Schedule_ID: 0 });
-          NotificationManager.error("Report name already exist.");
-        }
-      }).catch(data => {
-        console.log(data);
-      });
+            self.ScheduleCloseModel();
+            // this.handleReportList();
+            self.setState({ Schedule_ID: scheduleId });
+            self.setState({ AddReportPopup: false });
+            NotificationManager.success("Scheduler created successfully.");
+            self.setState({
+              ReportParams: {},
+              selectedScheduleTime: "",
+              // selectedTeamMemberCommaSeperated="",
+              // selectScheduleDate="",
+              // selectedScheduleTime="",
+              IsDaily: false,
+              IsDailyForMonth: false,
+              IsWeekly: false,
+              IsWeeklyForMonth: false,
+              IsDailyForYear: false,
+              IsWeeklyForYear: false
+            });
+          } else if (status == "duplicate") {
+            self.setState({ Schedule_ID: 0 });
+            NotificationManager.error("Report name already exist.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       NotificationManager.error("Please add report for create scheduler.");
     }
@@ -2857,6 +3000,72 @@ class Reports extends Component {
           </Modal>
 
           <Modal
+            open={this.state.OpenDefaultMailModal}
+            onClose={this.handleDefaultMailPopupClose}
+            closeIconId="sdsg"
+            modalId="nextdefaultpopup"
+            classNames={{
+              modal: "schedule-width"
+            }}
+            overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
+          >
+            <div className="" id="EmailID">
+              <div className="total-tic-title">
+                <label>
+                  <b>Mail</b>
+                </label>
+              </div>
+              <div>
+                <div id="dvAssignedTo" className="ticketreport">
+                  Email ID
+                  <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
+                    <input
+                      type="text"
+                      className="txt-1"
+                      placeholder="Enter email id"
+                      name="email_"
+                      maxLength={100}
+                      value={this.state.DefaultEmailID}
+                     onChange={this.setDefaultEmail.bind(this)}
+                    />
+                  </div>
+                  <span
+                    id="spnMailError"
+                    className="cls-spnerror"
+                    style={{ color: "red" }}
+                  ></span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button
+                className="scheduleBtn"
+                onClick={this.sentMail.bind(this)}
+                disabled={this.state.loadingDownload}
+              >
+                {this.state.loadingDownload ? (
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : (
+                  ""
+                )}
+                <label className="addLable">
+                  {this.state.loadingDownload ? "Please Wait ..." : "Send"}
+                </label>
+              </button>
+            </div>
+            <div onClick={this.handleDefaultMailPopupClose}>
+              <button type="button" className="scheduleBtncancel mt-3 w-100">
+                CANCEL
+              </button>
+            </div>
+          </Modal>
+
+          <Modal
             open={this.state.OpenDefaultModal}
             onClose={this.handleDefaultPopupClose}
             closeIconId="sdsg"
@@ -2867,7 +3076,6 @@ class Reports extends Component {
             overlayId="logout-ovrly"
             // overlayId="logout-ovrly"
           >
-            
             <div className="" id="TotalTicketCreated">
               <div className="total-tic-title">
                 <label>
@@ -2875,50 +3083,59 @@ class Reports extends Component {
                 </label>
               </div>
               <div>
-             
-              <div id="dvAssignedTo" className="cls-hide ticketreport">
+                <div id="dvAssignedTo" className="cls-hide ticketreport">
                   Assigned To
-                <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
-                          <Select
-                            getOptionLabel={option => option.fullName}
-                            getOptionValue={
-                              option => option.userID //id
-                            }
-                            options={this.state.AssignToData}
-                            placeholder="Team Member"
-                            // menuIsOpen={true}
-                            closeMenuOnSelect={false}
-                            onChange={this.setDefaultTeamMember.bind(this)}
-                            value={this.state.SelectedDefaultTeamMember}
-                            // showNewOptionAtTop={false}
-                            isMulti
-                          />
-                        </div>
-                        <span id="spnAssignedTo" className="cls-spnerror" style={{color:"red"}}></span>
+                  <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
+                    <Select
+                      getOptionLabel={option => option.fullName}
+                      getOptionValue={
+                        option => option.userID //id
+                      }
+                      options={this.state.AssignToData}
+                      placeholder="Team Member"
+                      // menuIsOpen={true}
+                      closeMenuOnSelect={false}
+                      onChange={this.setDefaultTeamMember.bind(this)}
+                      value={this.state.SelectedDefaultTeamMember}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <span
+                    id="spnAssignedTo"
+                    className="cls-spnerror"
+                    style={{ color: "red" }}
+                  ></span>
                 </div>
                 <div id="dvMultiStatus" className="cls-hide ticketreport">
                   Ticket Status
-                <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
-                          <Select
-                            getOptionLabel={option => option.ticketStatusName}
-                            getOptionValue={
-                              option => option.ticketStatusID //id
-                            }
-                            options={this.state.TicketStatusData}
-                            placeholder="Ticket Status"
-                            // menuIsOpen={true}
-                            closeMenuOnSelect={false}
-                            onChange={this.setDefaultMutiStatus.bind(this)}
-                            value={this.state.SelectedTicketMultiStatus}
-                            // showNewOptionAtTop={false}
-                            isMulti
-                          />
-                        </div>
-                        <span id="spnTicketStatus" className="cls-spnerror" style={{color:"red"}}></span>
+                  <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
+                    <Select
+                      getOptionLabel={option => option.ticketStatusName}
+                      getOptionValue={
+                        option => option.ticketStatusID //id
+                      }
+                      options={this.state.TicketStatusData}
+                      placeholder="Ticket Status"
+                      // menuIsOpen={true}
+                      closeMenuOnSelect={false}
+                      onChange={this.setDefaultMutiStatus.bind(this)}
+                      value={this.state.SelectedTicketMultiStatus}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <span
+                    id="spnTicketStatus"
+                    className="cls-spnerror"
+                    style={{ color: "red" }}
+                  ></span>
                 </div>
-              
-            </div>
-              <div id="TicketClosedFrom" className="cls-hide ticketreport down-tic-rep">
+              </div>
+              <div
+                id="TicketClosedFrom"
+                className="cls-hide ticketreport down-tic-rep"
+              >
                 Ticket Closed From
                 <div className="ticketreportdat mt-2">
                   <DatePicker
@@ -2931,9 +3148,16 @@ class Reports extends Component {
                     value={this.state.TicketClosedFrom}
                   />
                 </div>
-                <span id="spnTicketClosedFrom" className="cls-spnerror" style={{color:"red"}}></span>
+                <span
+                  id="spnTicketClosedFrom"
+                  className="cls-spnerror"
+                  style={{ color: "red" }}
+                ></span>
               </div>
-              <div id="TicketClosedTo" className="cls-hide ticketreport down-tic-rep">
+              <div
+                id="TicketClosedTo"
+                className="cls-hide ticketreport down-tic-rep"
+              >
                 Ticket Closed To
                 <div className="ticketreportdat mt-2">
                   <DatePicker
@@ -2946,7 +3170,11 @@ class Reports extends Component {
                     value={this.state.TicketClosedTo}
                   />
                 </div>
-                <span id="spnTicketClosedTo" className="cls-spnerror" style={{color:"red"}}></span>
+                <span
+                  id="spnTicketClosedTo"
+                  className="cls-spnerror"
+                  style={{ color: "red" }}
+                ></span>
               </div>
               <div id="FromDate" className="cls-hide ticketreport down-tic-rep">
                 Ticket From Date
@@ -2960,9 +3188,12 @@ class Reports extends Component {
                     dateFormat="dd/MM/yyyy"
                     value={this.state.TicketCreatedFromDate}
                   />
-                  
                 </div>
-                <span id="spnTicketFromDate" className="cls-spnerror" style={{color:"red"}}></span>
+                <span
+                  id="spnTicketFromDate"
+                  className="cls-spnerror"
+                  style={{ color: "red" }}
+                ></span>
               </div>
               <div className="ticketreport down-tic-rep">
                 Ticket To Date
@@ -2979,7 +3210,11 @@ class Reports extends Component {
                     // className="form-control"
                   />
                 </div>
-                <span id="spnTicketToDate" className="cls-spnerror" style={{color:"red"}}></span>
+                <span
+                  id="spnTicketToDate"
+                  className="cls-spnerror"
+                  style={{ color: "red" }}
+                ></span>
               </div>
               <div className="ticketreport">
                 Ticket Source
@@ -2999,36 +3234,43 @@ class Reports extends Component {
                     isMulti
                   />
                 </div>
-                <span id="spnTicketSource" className="cls-spnerror" style={{color:"red"}}></span>
+                <span
+                  id="spnTicketSource"
+                  className="cls-spnerror"
+                  style={{ color: "red" }}
+                ></span>
               </div>
               <div id="TicketStatus" className="ticketreport cls-hide">
-                      Status
-                      <div className="mt-2">
-                      <select id="drpDefaultStatus" className="w-100 normal-dropdown dropdown-setting1"
-                        name="selectedDefaultTicketStatus"
-                        value={this.state.selectedDefaultTicketStatus}
-                        onChange={this.setDefaultTicketStatus}
-                      >
-                        <option> Status</option>
-                        {this.state.TicketStatusData !== null &&
-                          this.state.TicketStatusData.map((item, i) => (
-                            <option key={i} value={item.ticketStatusID}>
-                              {item.ticketStatusName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedDefaultTicketStatus === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.TicketStatusCompulsion}
-                        </p>
-                      )}
-                      </div>
-                      <span id="spnStatus" className="cls-spnerror" style={{color:"red"}}></span>
-                    </div>
-
+                Status
+                <div className="mt-2">
+                  <select
+                    id="drpDefaultStatus"
+                    className="w-100 normal-dropdown dropdown-setting1"
+                    name="selectedDefaultTicketStatus"
+                    value={this.state.selectedDefaultTicketStatus}
+                    onChange={this.setDefaultTicketStatus}
+                  >
+                    <option> Status</option>
+                    {this.state.TicketStatusData !== null &&
+                      this.state.TicketStatusData.map((item, i) => (
+                        <option key={i} value={item.ticketStatusID}>
+                          {item.ticketStatusName}
+                        </option>
+                      ))}
+                  </select>
+                  {this.state.selectedDefaultTicketStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TicketStatusCompulsion}
+                    </p>
+                  )}
+                </div>
+                <span
+                  id="spnStatus"
+                  className="cls-spnerror"
+                  style={{ color: "red" }}
+                ></span>
+              </div>
             </div>
-          
-
             <div>
               <button
                 className="scheduleBtn"
@@ -3036,15 +3278,17 @@ class Reports extends Component {
                 disabled={this.state.loadingDownload}
               >
                 {this.state.loadingDownload ? (
-                      <FontAwesomeIcon
-                        className="circular-loader"
-                        icon={faCircleNotch}
-                        spin
-                      />
-                    ) : (
-                      ""
-                    )}
-                <label className="addLable">{this.state.loadingDownload ? "Please Wait ..." : "Download"}</label>
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : (
+                  ""
+                )}
+                <label className="addLable">
+                  {this.state.loadingDownload ? "Please Wait ..." : "Download"}
+                </label>
               </button>
             </div>
             <div onClick={this.handleDefaultPopupClose}>
@@ -3572,7 +3816,7 @@ class Reports extends Component {
                       Cell: row => (
                         <div className="report-action">
                           <div>
-                            {row.original.isDownloaded == 1 && 
+                            {row.original.isDownloaded == 1 && (
                               <img
                                 src={DownExcel}
                                 alt="download icon"
@@ -3583,7 +3827,7 @@ class Reports extends Component {
                                   row.original.reportName
                                 )}
                               />
-                            }
+                            )}
                           </div>
                           <div>
                             {row.original.scheduleID == 0 ? (
