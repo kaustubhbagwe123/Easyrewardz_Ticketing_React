@@ -313,6 +313,18 @@ class Brands extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
 
+      if (status === "Success") {
+        self.setState({
+          brandData: data,
+          loading: false
+        });
+      } else {
+        self.setState({
+          brandData: [],
+          loading: false
+        });
+      }
+
       if (data !== null) {
         self.state.sortAllData = data;
         var unique = [];
@@ -340,16 +352,7 @@ class Brands extends Component {
         }
       }
 
-      if (status === "Success") {
-        self.setState({
-          brandData: data,
-          loading: false
-        });
-      } else {
-        self.setState({
-          brandData: []
-        });
-      }
+      
     }).catch(data => {
       console.log(data);
       });

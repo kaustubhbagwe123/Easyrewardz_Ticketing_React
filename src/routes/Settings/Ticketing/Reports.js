@@ -1347,15 +1347,20 @@ class Reports extends Component {
     })
       .then(function(res) {
         debugger;
-        var reportdata = res.data.responseData;
+        var status = res.data.message;
+        var data = res.data.responseData;
 
-        if (reportdata == null) {
-          reportdata = [];
+        if (status === "Success") {
+          self.setState({
+            ReportData: data,
+            loading: false
+          });
+        } else {
+          self.setState({
+            ReportData: [],
+            loading: false
+          });
         }
-        self.setState({
-          ReportData: reportdata,
-          loading: false
-        });
       })
       .catch(data => {
         console.log(data);

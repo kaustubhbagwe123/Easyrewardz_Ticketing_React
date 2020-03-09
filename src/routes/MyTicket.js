@@ -77,22 +77,6 @@ import { Dropdown } from "semantic-ui-react";
 
 // import DatePicker from "react-date-picker";
 
-const social = [
-  {
-    key: "Email",
-    text: "Email",
-    value: "Email",
-    image: { avatar: false, src: Email1 }
-  },
-  {
-    key: "SMS",
-    text: "SMS",
-    value: "SMS",
-    image: { avatar: false, src: Sms1 }
-  }
-];
-
-const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -111,6 +95,7 @@ class MyTicket extends Component {
       CommentsDrawer: false,
       BillInvoiceModal: false,
       HistOrderShow: true,
+      ReAssignComment: false,
       FreeTextComment: false,
       CommentCollapse: false,
       CommentCollapse2: false,
@@ -190,6 +175,7 @@ class MyTicket extends Component {
       agentId: 0,
       AttachementrData: [],
       ticketcommentMSG: "",
+      addReassignCmmt: "",
       CustStoreStatusDrop: 1,
       OrderSubItem: [],
       FileData: [],
@@ -211,7 +197,10 @@ class MyTicket extends Component {
       hasDataFile: [],
       ticketSourceId: 2,
       ReplySourceId: 2,
-      FinalAttachmentData: []
+      FinalAttachmentData: [],
+      skipComment: "",
+      oldAgentId: 0,
+      AssignCommentCompulsory: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -276,74 +265,78 @@ class MyTicket extends Component {
       params: {
         ticketID: ID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        var customer_Id = data.customerID;
-        var ticketStatus = data.status;
-        var ticketPriority = data.priortyID;
-        var ticketBrand = data.brandID;
-        var ticketCagetory = data.categoryID;
-        var ticketSubGategory = data.subCategoryID;
-        var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
-        var ticketActionType = data.ticketActionTypeID;
-        var ticketIssueTypeID = data.issueTypeID;
-        var storeData = data.stores;
-        var productData = data.products;
-        var MailDetails = data.ticketingMailerQue;
-        var attachementDetails = data.attachment;
-        var selectetedParameters = {
-          ticketStatusID: ticketStatus,
-          priorityID: ticketPriority,
-          brandID: ticketBrand,
-          categoryID: ticketCagetory,
-          subCategoryID: ticketSubGategory,
-          channelOfPurchaseID: ticketChannelOfPurchaseID,
-          ticketActionTypeID: ticketActionType,
-          issueTypeID: ticketIssueTypeID
-        };
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          var AgentId = data.assignedID;
+          var customer_Id = data.customerID;
+          var ticketStatus = data.status;
+          var ticketPriority = data.priortyID;
+          var ticketBrand = data.brandID;
+          var ticketCagetory = data.categoryID;
+          var ticketSubGategory = data.subCategoryID;
+          var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
+          var ticketActionType = data.ticketActionTypeID;
+          var ticketIssueTypeID = data.issueTypeID;
+          var storeData = data.stores;
+          var productData = data.products;
+          var MailDetails = data.ticketingMailerQue;
+          var attachementDetails = data.attachment;
+          var selectetedParameters = {
+            ticketStatusID: ticketStatus,
+            priorityID: ticketPriority,
+            brandID: ticketBrand,
+            categoryID: ticketCagetory,
+            subCategoryID: ticketSubGategory,
+            channelOfPurchaseID: ticketChannelOfPurchaseID,
+            ticketActionTypeID: ticketActionType,
+            issueTypeID: ticketIssueTypeID
+          };
 
-        var Storedetails = "";
-        for (let i = 0; i < storeData.length; i++) {
-          Storedetails += storeData[i].storename + ",";
+          var Storedetails = "";
+          for (let i = 0; i < storeData.length; i++) {
+            Storedetails += storeData[i].storename + ",";
+          }
+          Storedetails = Storedetails.substring(",", Storedetails.length - 1);
+          var ProductDetails = "";
+          for (let j = 0; j < productData.length; j++) {
+            ProductDetails += productData[j].invoiceNumber + ",";
+          }
+          ProductDetails = ProductDetails.substring(
+            ",",
+            ProductDetails.length - 1
+          );
+
+          self.setState({
+            ticketDetailsData: data,
+            custID: customer_Id,
+            selectetedParameters,
+            StoreName: Storedetails,
+            ProductName: ProductDetails,
+            mailFiled: MailDetails,
+            fileDummy: attachementDetails,
+            oldAgentId: AgentId,
+            loading: false
+          });
+
+          setTimeout(() => {
+            self.handleGetCategoryList();
+            self.handleGetSubCategoryList();
+            self.handleGetIssueTypeList();
+            self.handleOnLoadFiles();
+          }, 100);
+        } else {
+          self.setState({
+            ticketDetailsData: {},
+            custID: 0
+          });
         }
-        Storedetails = Storedetails.substring(",", Storedetails.length - 1);
-        var ProductDetails = "";
-        for (let j = 0; j < productData.length; j++) {
-          ProductDetails += productData[j].invoiceNumber + ",";
-        }
-        ProductDetails = ProductDetails.substring(
-          ",",
-          ProductDetails.length - 1
-        );
-
-        self.setState({
-          ticketDetailsData: data,
-          custID: customer_Id,
-          selectetedParameters,
-          StoreName: Storedetails,
-          ProductName: ProductDetails,
-          mailFiled: MailDetails,
-          fileDummy: attachementDetails,
-          loading: false
-        });
-
-        setTimeout(() => {
-          self.handleGetCategoryList();
-          self.handleGetSubCategoryList();
-          self.handleGetIssueTypeList();
-          self.handleOnLoadFiles();
-        }, 100);
-      } else {
-        self.setState({
-          ticketDetailsData: {},
-          custID: 0
-        });
-      }
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleOnLoadFiles() {
@@ -369,14 +362,16 @@ class MyTicket extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/getagentlist",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({
-        SearchAssignData: data
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({
+          SearchAssignData: data
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -391,22 +386,28 @@ class MyTicket extends Component {
         TicketID: this.state.ticket_Id,
         status: ticStaId
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      if (status === true) {
-        if (ticStaId === 103) {
-          NotificationManager.success(
-            "The ticket has been resolved.",
-            "",
-            2000
-          );
-        } else if (ticStaId === 104) {
-          NotificationManager.success("The ticket has been closed.", "", 2000);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.status;
+        if (status === true) {
+          if (ticStaId === 103) {
+            NotificationManager.success(
+              "The ticket has been resolved.",
+              "",
+              2000
+            );
+          } else if (ticStaId === 104) {
+            NotificationManager.success(
+              "The ticket has been closed.",
+              "",
+              2000
+            );
+          }
         }
-      }
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetMessageDetails(ticketId) {
@@ -419,25 +420,27 @@ class MyTicket extends Component {
       params: {
         ticketID: ticketId
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        let data = res.data.responseData;
-        self.setState({
-          messageDetails: data,
-          hasAttachmentFile: data
-        });
-        setTimeout(() => {
-          self.handleHasAttachmentFileData();
-        }, 100);
-      } else {
-        self.setState({
-          messageDetails: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          let data = res.data.responseData;
+          self.setState({
+            messageDetails: data,
+            hasAttachmentFile: data
+          });
+          setTimeout(() => {
+            self.handleHasAttachmentFileData();
+          }, 100);
+        } else {
+          self.setState({
+            messageDetails: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -483,17 +486,19 @@ class MyTicket extends Component {
       params: {
         CustomerID: this.state.custID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ orderDetails: data });
-      } else {
-        self.setState({ orderDetails: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ orderDetails: data });
+        } else {
+          self.setState({ orderDetails: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetProductData() {
@@ -506,44 +511,46 @@ class MyTicket extends Component {
       params: {
         TicketID: this.state.ticket_Id
       }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      let data = res.data.responseData;
-      if (Msg === "Success") {
-        const newSelected = Object.assign({}, self.state.CheckOrderID);
+    })
+      .then(function(res) {
         debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          const newSelected = Object.assign({}, self.state.CheckOrderID);
+          debugger;
 
-        var OrderSubItem = [];
-        var selectedRow = [];
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].orderMasterID) {
-            newSelected[data[i].orderMasterID] = !self.state.CheckOrderID[
-              data[i].orderMasterID
-            ];
-            selectedRow.push(data[i]);
-            self.setState({
-              CheckOrderID: data[i].orderMasterID ? newSelected : false
-            });
-          }
-          if (data[i].orderItems.length > 0) {
-            for (let j = 0; j < data[i].orderItems.length; j++) {
-              OrderSubItem.push(data[i].orderItems[j]);
+          var OrderSubItem = [];
+          var selectedRow = [];
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].orderMasterID) {
+              newSelected[data[i].orderMasterID] = !self.state.CheckOrderID[
+                data[i].orderMasterID
+              ];
+              selectedRow.push(data[i]);
+              self.setState({
+                CheckOrderID: data[i].orderMasterID ? newSelected : false
+              });
+            }
+            if (data[i].orderItems.length > 0) {
+              for (let j = 0; j < data[i].orderItems.length; j++) {
+                OrderSubItem.push(data[i].orderItems[j]);
+              }
             }
           }
+          self.setState({
+            selectedDataRow: selectedRow,
+            selectedProduct: data,
+            OrderSubItem
+          });
+        } else {
+          self.setState({
+            selectedProduct: []
+          });
         }
-        self.setState({
-          selectedDataRow: selectedRow,
-          selectedProduct: data,
-          OrderSubItem
-        });
-      } else {
-        self.setState({
-          selectedProduct: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetStoreDetails() {
@@ -555,19 +562,21 @@ class MyTicket extends Component {
       params: {
         SearchText: this.state.SearchStore
       }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        self.setState({ storeDetails: data });
-      } else {
-        self.setState({
-          storeDetails: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          self.setState({ storeDetails: data });
+        } else {
+          self.setState({
+            storeDetails: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetCountOfTabs(ID) {
@@ -580,17 +589,19 @@ class MyTicket extends Component {
       params: {
         ticketID: ID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ tabCounts: data });
-      } else {
-        self.setState({ tabCounts: {} });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ tabCounts: data });
+        } else {
+          self.setState({ tabCounts: {} });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleUpdateTicketDetails() {
@@ -612,17 +623,19 @@ class MyTicket extends Component {
           .channelOfPurchaseID,
         TicketActionID: this.state.selectetedParameters.ticketActionTypeID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        NotificationManager.success("Ticket updated successfully.", "", 2000);
-        self.props.history.push("myticket");
-      } else {
-        NotificationManager.error("Ticket not update", "", 2000);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Ticket updated successfully.", "", 2000);
+          self.props.history.push("myticket");
+        } else {
+          NotificationManager.error("Ticket not update", "", 2000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleRequireSize(e, rowData) {
@@ -651,27 +664,29 @@ class MyTicket extends Component {
           OrderNumber: this.state.orderNumber,
           CustomerID: this.state.custID
         }
-      }).then(function(res) {
-        debugger;
-        let Msg = res.data.message;
-        let mainData = res.data.responseData;
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          let mainData = res.data.responseData;
 
-        var OrderSubItem = [];
+          var OrderSubItem = [];
 
-        for (let i = 0; i < mainData.length; i++) {
-          if (mainData[i].orderItems.length > 0) {
-            for (let j = 0; j < mainData[i].orderItems.length; j++) {
-              OrderSubItem.push(mainData[i].orderItems[j]);
+          for (let i = 0; i < mainData.length; i++) {
+            if (mainData[i].orderItems.length > 0) {
+              for (let j = 0; j < mainData[i].orderItems.length; j++) {
+                OrderSubItem.push(mainData[i].orderItems[j]);
+              }
             }
           }
-        }
-        self.setState({
-          message: Msg,
-          orderDetailsData: mainData,
-          OrderSubItem
-        });
-      }).catch(data => {
-        console.log(data);
+          self.setState({
+            message: Msg,
+            orderDetailsData: mainData,
+            OrderSubItem
+          });
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       self.setState({
@@ -786,17 +801,19 @@ class MyTicket extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ BrandData: data });
-      } else {
-        self.setState({ BrandData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ BrandData: data });
+        } else {
+          self.setState({ BrandData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetCategoryList() {
@@ -810,13 +827,15 @@ class MyTicket extends Component {
       params: {
         BrandID: this.state.selectetedParameters.brandID
       }
-    }).then(function(res) {
-      debugger;
-      // let status=
-      let data = res.data;
-      self.setState({ CategoryData: data });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        // let status=
+        let data = res.data;
+        self.setState({ CategoryData: data });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetTicketPriorityList() {
@@ -826,17 +845,19 @@ class MyTicket extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ TicketPriorityData: data });
-      } else {
-        self.setState({ TicketPriorityData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ TicketPriorityData: data });
+        } else {
+          self.setState({ TicketPriorityData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetSubCategoryList() {
@@ -850,17 +871,19 @@ class MyTicket extends Component {
       params: {
         CategoryID: this.state.selectetedParameters.categoryID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ SubCategoryData: data });
-      } else {
-        self.setState({ SubCategoryData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ SubCategoryData: data });
+        } else {
+          self.setState({ SubCategoryData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetIssueTypeList() {
@@ -873,17 +896,19 @@ class MyTicket extends Component {
       params: {
         SubCategoryID: this.state.selectetedParameters.subCategoryID
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ IssueTypeData: data });
-      } else {
-        self.setState({ IssueTypeData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ IssueTypeData: data });
+        } else {
+          self.setState({ IssueTypeData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetChannelOfPurchaseList() {
@@ -892,17 +917,19 @@ class MyTicket extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ ChannelOfPurchaseData: data });
-      } else {
-        self.setState({ ChannelOfPurchaseData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ ChannelOfPurchaseData: data });
+        } else {
+          self.setState({ ChannelOfPurchaseData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleAssignTickets() {
@@ -918,19 +945,26 @@ class MyTicket extends Component {
         AgentID: this.state.agentId,
         Remark: ""
       }
-    }).then(function(res) {
-      debugger;
-      let messageData = res.data.message;
-      if (messageData === "Success") {
-        NotificationManager.success("Tickets assigned successfully.", "", 1500);
-        self.HandlelabelModalClose();
-
-        setTimeout(function() {
-          self.componentDidMount();
-        }, 1500);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let messageData = res.data.message;
+        if (messageData === "Success") {
+          NotificationManager.success(
+            "Tickets assigned successfully.",
+            "",
+            1500
+          );
+          self.HandlelabelModalClose();
+          // self.handleReAssignCommentOpen();
+          setTimeout(function() {
+            // self.componentDidMount();
+            self.handleGetTicketDetails(self.state.ticket_Id);
+          }, 1500);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   expand_row(row) {
@@ -1008,6 +1042,11 @@ class MyTicket extends Component {
   }
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
+  }
+  handleReAssignCommentOpen() {
+    this.setState({
+      ReAssignComment: !this.state.ReAssignComment
+    });
   }
   handleFreeTextCommentOpen() {
     debugger;
@@ -1124,22 +1163,28 @@ class MyTicket extends Component {
           Comment: this.state.NoteAddComment.trim(),
           Id: this.state.ticket_Id
         }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.status;
-        if (status === true) {
-          var id = self.state.ticket_Id;
-          self.handleGetNotesTabDetails(id);
-          NotificationManager.success("Comment added successfully.", "", 2000);
-          self.setState({
-            NoteAddComment: "",
-            notesCommentCompulsion: ""
-          });
-        } else {
-          NotificationManager.error("Comment not added.", "", 2000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.status;
+          if (status === true) {
+            var id = self.state.ticket_Id;
+            self.handleGetNotesTabDetails(id);
+            NotificationManager.success(
+              "Comment added successfully.",
+              "",
+              2000
+            );
+            self.setState({
+              NoteAddComment: "",
+              notesCommentCompulsion: ""
+            });
+          } else {
+            NotificationManager.error("Comment not added.", "", 2000);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       this.setState({
@@ -1157,16 +1202,18 @@ class MyTicket extends Component {
       params: {
         TicketId: this.state.ticket_Id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      let details = res.data.responseData;
-      self.onOpenModal();
-      if (status === true) {
-        self.setState({ historicalDetails: details });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.status;
+        let details = res.data.responseData;
+        self.onOpenModal();
+        if (status === true) {
+          self.setState({ historicalDetails: details });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -1181,38 +1228,40 @@ class MyTicket extends Component {
       params: {
         TicketID: this.state.ticket_Id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-
-      if (status === "Success") {
-        const newSelected = Object.assign({}, self.state.CheckStoreID);
+    })
+      .then(function(res) {
         debugger;
-        var selectedRow = [];
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].storeID) {
-            newSelected[data[i].storeID] = !self.state.CheckStoreID[
-              data[i].storeID
-            ];
-            selectedRow.push(data[i]);
-            self.setState({
-              CheckStoreID: data[i].storeID ? newSelected : false
-            });
+        let status = res.data.message;
+        let data = res.data.responseData;
+
+        if (status === "Success") {
+          const newSelected = Object.assign({}, self.state.CheckStoreID);
+          debugger;
+          var selectedRow = [];
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].storeID) {
+              newSelected[data[i].storeID] = !self.state.CheckStoreID[
+                data[i].storeID
+              ];
+              selectedRow.push(data[i]);
+              self.setState({
+                CheckStoreID: data[i].storeID ? newSelected : false
+              });
+            }
           }
+          self.setState({
+            selectedStoreData: selectedRow,
+            selectedStore: data
+            // loading: false
+          });
+        } else {
+          self.setState({
+            selectedStore: []
+          });
         }
-        self.setState({
-          selectedStoreData: selectedRow,
-          selectedStore: data
-          // loading: false
-        });
-      } else {
-        self.setState({
-          selectedStore: []
-        });
-      }
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -1248,19 +1297,21 @@ class MyTicket extends Component {
         TicketId: this.state.ticket_Id,
         StoreId: selectedStore.substring(",", selectedStore.length - 1)
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      // let details = res.data.responseData;
-      if (status === "Success") {
-        NotificationManager.success("Store attached successfully.", "", 2000);
-        self.HandleStoreModalClose();
-        self.handleGetTicketDetails(self.state.ticket_Id);
-      } else {
-        NotificationManager.error("Store not attached", "", 2000);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        // let details = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success("Store attached successfully.", "", 2000);
+          self.HandleStoreModalClose();
+          self.handleGetTicketDetails(self.state.ticket_Id);
+        } else {
+          NotificationManager.error("Store not attached", "", 2000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -1330,17 +1381,23 @@ class MyTicket extends Component {
         TicketId: this.state.ticket_Id,
         OrderID: selectedRow.substring(",", selectedRow.length - 1)
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      // let details = res.data.responseData;
-      if (status === "Success") {
-        NotificationManager.success("Product attached successfully.", "", 2000);
-      } else {
-        NotificationManager.error("Product not attached", "", 2000);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        // let details = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success(
+            "Product attached successfully.",
+            "",
+            2000
+          );
+        } else {
+          NotificationManager.error("Product not attached", "", 2000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetNotesTabDetails(ticket_Id) {
@@ -1354,17 +1411,19 @@ class MyTicket extends Component {
       params: {
         TicketId: ticket_Id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let details = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ Notesdetails: details });
-      } else {
-        self.setState({ Notesdetails: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let details = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ Notesdetails: details });
+        } else {
+          self.setState({ Notesdetails: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleAddNewForm() {
@@ -1484,15 +1543,17 @@ class MyTicket extends Component {
         Category_ID: self.state.selectedCategoryKB,
         SubCategor_ID: self.state.selectedSubCategoryKB
       }
-    }).then(function(res) {
-      debugger;
-      let KbPopupData = res.data.responseData;
-      if (KbPopupData.length === 0 || KbPopupData === null) {
-        NotificationManager.error("No Record Found.", "", 2000);
-      }
-      self.setState({ KbPopupData: KbPopupData });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let KbPopupData = res.data.responseData;
+        if (KbPopupData.length === 0 || KbPopupData === null) {
+          NotificationManager.error("No Record Found.", "", 2000);
+        }
+        self.setState({ KbPopupData: KbPopupData });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -1546,12 +1607,14 @@ class MyTicket extends Component {
       params: {
         IssueTypeID: this.state.selectetedParameters.issueTypeID
       }
-    }).then(function(res) {
-      debugger;
-      let CkEditorTemplateData = res.data.responseData;
-      self.setState({ CkEditorTemplateData: CkEditorTemplateData });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let CkEditorTemplateData = res.data.responseData;
+        self.setState({ CkEditorTemplateData: CkEditorTemplateData });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -1566,18 +1629,20 @@ class MyTicket extends Component {
       params: {
         TemplateId: tempId
       }
-    }).then(function(res) {
-      debugger;
-      let TemplateDetails = res.data.responseData;
-      let bodyData = res.data.responseData.templateBody;
-      self.setState({
-        CkEditorTemplateDetails: TemplateDetails,
-        tempName: tempName,
-        selectTicketTemplateId: tempId,
-        mailBodyData: bodyData
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let TemplateDetails = res.data.responseData;
+        let bodyData = res.data.responseData.templateBody;
+        self.setState({
+          CkEditorTemplateDetails: TemplateDetails,
+          tempName: tempName,
+          selectTicketTemplateId: tempId,
+          mailBodyData: bodyData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleSendMailData(isSend) {
@@ -1622,24 +1687,27 @@ class MyTicket extends Component {
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
         data: formData
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetMessageDetails(self.state.ticket_Id);
-          self.handleGetCountOfTabs(self.state.ticket_Id);
-          self.hanldeCommentClose2();
-          NotificationManager.success("Mail send successfully.", "", 1500);
-          self.setState({
-            mailFiled: {},
-            // mailSubject: "",
-            mailBodyData: ""
-          });
-        } else {
-          NotificationManager.error(status, "", 1500);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetMessageDetails(self.state.ticket_Id);
+            self.handleGetCountOfTabs(self.state.ticket_Id);
+            self.hanldeCommentClose2();
+            NotificationManager.success("Mail send successfully.", "", 1500);
+            self.setState({
+              mailFiled: {},
+              ReplyFileData:[],
+              ReplyfileText:0,
+              mailBodyData: ""
+            });
+          } else {
+            NotificationManager.error(status, "", 1500);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
@@ -1677,24 +1745,26 @@ class MyTicket extends Component {
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
         data: formData
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetMessageDetails(self.state.ticket_Id);
-          self.handleGetCountOfTabs(self.state.ticket_Id);
-          self.HandleEmailCollapseOpen();
-          NotificationManager.success("Mail send successfully.", "", 1500);
-          self.setState({
-            mailFiled: {},
-            // mailSubject: "",
-            mailBodyData: ""
-          });
-        } else {
-          NotificationManager.error(status, "", 1500);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetMessageDetails(self.state.ticket_Id);
+            self.handleGetCountOfTabs(self.state.ticket_Id);
+            self.HandleEmailCollapseOpen();
+            NotificationManager.success("Mail send successfully.", "", 1500);
+            self.setState({
+              mailFiled: {},
+              // mailSubject: "",
+              mailBodyData: ""
+            });
+          } else {
+            NotificationManager.error(status, "", 1500);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
@@ -1715,35 +1785,91 @@ class MyTicket extends Component {
           url: config.apiUrl + "/Ticketing/MessageComment",
           headers: authHeader(),
           data: formData
-        }).then(function(res) {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success(
-              "Comment Added successfully.",
-              "",
-              2000
-            );
-            self.handleGetMessageDetails(self.state.ticket_Id);
-            self.handleGetCountOfTabs(self.state.ticket_Id);
-            self.handleCommentCollapseOpen();
-            self.setState({
-              ticketcommentMSG: ""
-            });
-          } else {
-            NotificationManager.error(status, "", 2000);
-            self.setState({
-              ticketcommentMSG: ""
-            });
-          }
-        }).catch(data => {
-          console.log(data);
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success(
+                "Comment Added successfully.",
+                "",
+                2000
+              );
+              self.handleGetMessageDetails(self.state.ticket_Id);
+              self.handleGetCountOfTabs(self.state.ticket_Id);
+              self.handleCommentCollapseOpen();
+              self.setState({
+                ticketcommentMSG: ""
+              });
+            } else {
+              NotificationManager.error(status, "", 2000);
+              self.setState({
+                ticketcommentMSG: ""
+              });
+            }
+          })
+          .catch(data => {
+            console.log(data);
           });
       } else {
         this.setState({
           tckcmtMSGCompulsory: "Comment field is compulsory."
         });
       }
+    } else if (isSend === 4) {
+      // ---------------API call for ReAssign To Ticket---------------------
+      if(this.state.addReassignCmmt.length > 0){
+        const formData = new FormData();
+        var paramData = {
+          TicketID: this.state.ticket_Id,
+          TicketMailBody: this.state.addReassignCmmt,
+          IsSent: 1,
+          IsCustomerComment: 0,
+          IsInternalComment: 1,
+          MailID: 0,
+          OldAgentID: this.state.oldAgentId,
+          NewAgentID: this.state.agentId
+        };
+        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+  
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/MessageComment",
+          headers: authHeader(),
+          data: formData
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              // NotificationManager.success(
+              //   "Comment Added successfully.",
+              //   "",
+              //   2000
+              // );
+              self.handleGetMessageDetails(self.state.ticket_Id);
+              self.handleGetCountOfTabs(self.state.ticket_Id);
+              self.handleReAssignCommentOpen();
+              self.handleAssignTickets();
+              self.setState({
+                addReassignCmmt: ""
+              });
+            } else {
+              NotificationManager.error(status, "", 2000);
+              self.setState({
+                addReassignCmmt: ""
+              });
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      }else{
+        this.setState({
+          AssignCommentCompulsory: "Comment field is compulsory."
+        });
+      }
+     
     } else {
       const formData = new FormData();
       var paramData = {
@@ -1760,22 +1886,28 @@ class MyTicket extends Component {
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
         data: formData
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Comment Added successfully.", "", 2000);
-          self.handleGetMessageDetails(self.state.ticket_Id);
-          self.handleGetCountOfTabs(self.state.ticket_Id);
-          self.handleFreeTextCommentOpen();
-          self.setState({
-            ticketcommentMSG: ""
-          });
-        } else {
-          NotificationManager.error(status, "", 2000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success(
+              "Comment Added successfully.",
+              "",
+              2000
+            );
+            self.handleGetMessageDetails(self.state.ticket_Id);
+            self.handleGetCountOfTabs(self.state.ticket_Id);
+            self.handleFreeTextCommentOpen();
+            self.setState({
+              ticketcommentMSG: ""
+            });
+          } else {
+            NotificationManager.error(status, "", 2000);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     }
   }
@@ -1804,31 +1936,33 @@ class MyTicket extends Component {
       params: {
         TicketID: id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        var progressColor = [];
-        if (data) {
-          var objColor = {};
-          objColor.value = data.progressFirstPercentage;
-          objColor.color = data.progressFirstColorCode;
-          progressColor.push(objColor);
-          var objColor1 = {};
-          objColor1.value = data.progressSecondPercentage;
-          objColor1.color = data.progressSecondColorCode;
-          progressColor.push(objColor1);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          var progressColor = [];
+          if (data) {
+            var objColor = {};
+            objColor.value = data.progressFirstPercentage;
+            objColor.color = data.progressFirstColorCode;
+            progressColor.push(objColor);
+            var objColor1 = {};
+            objColor1.value = data.progressSecondPercentage;
+            objColor1.color = data.progressSecondColorCode;
+            progressColor.push(objColor1);
+          }
+          self.setState({
+            progressBarData: data,
+            progressDataWithcColor: progressColor
+          });
+        } else {
+          self.setState({ progressBarData: [] });
         }
-        self.setState({
-          progressBarData: data,
-          progressDataWithcColor: progressColor
-        });
-      } else {
-        self.setState({ progressBarData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleReplyFileUpload(e) {
@@ -2176,6 +2310,50 @@ class MyTicket extends Component {
     let value = e.target.value;
     this.setState({ ReplySourceId: value });
   };
+  handleSkipComment() {
+    debugger;
+    let self = this;
+    const formData = new FormData();
+    var paramData = {
+      TicketID: this.state.ticket_Id,
+      TicketMailBody: "Ticket has been reassigned by @User1 to @User2",
+      IsSent: 1,
+      IsCustomerComment: 0,
+      IsInternalComment: 1,
+      MailID: 0,
+      OldAgentID: this.state.oldAgentId,
+      NewAgentID: this.state.agentId
+    };
+    formData.append("ticketingMailerQue", JSON.stringify(paramData));
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/MessageComment",
+      headers: authHeader(),
+      data: formData
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id);
+          self.handleReAssignCommentOpen();
+          self.handleAssignTickets();
+          self.setState({
+            addReassignCmmt: ""
+          });
+        } else {
+          NotificationManager.error(status, "", 2000);
+          self.setState({
+            addReassignCmmt: ""
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
 
   render() {
     const {
@@ -2444,7 +2622,7 @@ class MyTicket extends Component {
                         <button
                           type="button"
                           className="btn btn-outline-primary"
-                          onClick={this.handleAssignTickets.bind(this)}
+                          onClick={this.handleReAssignCommentOpen.bind(this)}
                         >
                           SELECT
                         </button>
@@ -2460,6 +2638,64 @@ class MyTicket extends Component {
                 </div>
               </div>
             </div>
+            <Modal
+              open={this.state.ReAssignComment}
+              onClose={this.handleReAssignCommentOpen.bind(this)}
+              closeIconId="sdsg"
+              modalId="Historical-popup"
+              overlayId="logout-ovrly"
+              classNames={{
+                modal: "historical-popup"
+              }}
+            >
+              <div className="commenttextborder">
+                <div className="comment-disp">
+                  <div className="Commentlabel">
+                    <label className="Commentlabel1">Add Comment</label>
+                  </div>
+                  <div>
+                    <img
+                      src={CrossIcon}
+                      alt="Minus"
+                      className="pro-cross-icn m-0"
+                      onClick={this.handleReAssignCommentOpen.bind(this)}
+                    />
+                  </div>
+                </div>
+                <div className="commenttextmessage">
+                  <textarea
+                    cols="31"
+                    rows="3"
+                    className="ticketMSGCmt-textarea"
+                    name="addReassignCmmt"
+                    maxLength={300}
+                    value={this.state.addReassignCmmt}
+                    onChange={this.handleNoteOnChange}
+                  ></textarea>
+                </div>
+                {this.state.addReassignCmmt.length === 0 && (
+                  <p style={{ color: "red", marginTop: "0px" }}>
+                    {this.state.AssignCommentCompulsory}
+                  </p>
+                )}
+                <div className="SendCommentBtn" style={{ float: "left" }}>
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleSkipComment.bind(this)}
+                  >
+                    SKIP
+                  </button>
+                </div>
+                <div className="SendCommentBtn">
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleSendMailData.bind(this, 4)}
+                  >
+                    ADD
+                  </button>
+                </div>
+              </div>
+            </Modal>
             <div className="card-rectangle">
               <div className="rectangle-box">
                 <div className="row">
@@ -5160,7 +5396,7 @@ class MyTicket extends Component {
                                       <div className="row top-margin">
                                         <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                                           <div
-                                            className="row"
+                                            className="d-flex"
                                             style={{ marginTop: "0" }}
                                           >
                                             {details.latestMessageDetails
@@ -5177,15 +5413,36 @@ class MyTicket extends Component {
                                                 className="oval-55"
                                               />
                                             )}
-                                            <label
-                                              className="solved-by-naman-r"
-                                              style={{ marginLeft: "7px" }}
-                                            >
-                                              {
-                                                details.latestMessageDetails
-                                                  .commentBy
-                                              }
-                                            </label>
+                                            <div>
+                                              <label
+                                                className="solved-by-naman-r mt-0"
+                                                style={{ marginLeft: "7px" }}
+                                              >
+                                                {
+                                                  details.latestMessageDetails
+                                                    .commentBy
+                                                }
+                                              </label>
+                                              {details.latestMessageDetails
+                                                .isReAssign === true ? (
+                                                <label
+                                                  style={{
+                                                    display: "block",
+                                                    marginLeft: "7px"
+                                                  }}
+                                                >
+                                                  {" "}
+                                                  Reassign to &nbsp;
+                                                  <span className="solved-by-naman-r">
+                                                    {
+                                                      details
+                                                        .latestMessageDetails
+                                                        .newAgentName
+                                                    }
+                                                  </span>
+                                                </label>
+                                              ) : null}
+                                            </div>
                                             {details.latestMessageDetails
                                               .isInternalComment ===
                                             true ? null : (

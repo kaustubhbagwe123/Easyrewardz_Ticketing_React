@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
 import { DatePicker } from "antd";
-
 const { RangePicker } = DatePicker;
 
 class DatePickerComponenet extends Component {

@@ -11,6 +11,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import { Link } from "react-router-dom";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -19,32 +20,30 @@ class UserProfile extends Component {
     this.state = {
       open: false,
       fileName: [],
-      selectedUserID:0,
-      selectedProfilePicture:"",
-      selectedFirstName:"",
-      selectedLastName:"",
-      selectedMobile:"",
-      selectedEmailID:"",
-      selectedDesignation:"",
+      selectedUserID: 0,
+      selectedProfilePicture: "",
+      selectedFirstName: "",
+      selectedLastName: "",
+      selectedMobile: "",
+      selectedEmailID: "",
+      selectedDesignation: "",
       DesignationData: [],
-      ProfileData:[],
-
-      fileNameCompulsion:"",
-      FirstNameCompulsion:"",
-      LastNameCompulsion:"",
-      MobileCompulsion:"",
-      EmailIDCompulsion:"",
-      DesignationCompulsion:""
+      ProfileData: [],
+      fileNameCompulsion: "",
+      FirstNameCompulsion: "",
+      LastNameCompulsion: "",
+      MobileCompulsion: "",
+      EmailIDCompulsion: "",
+      DesignationCompulsion: ""
     };
-    this.handleGetDesignationList=this.handleGetDesignationList.bind(this);
-    this.handleEditUserProfile=this.handleEditUserProfile.bind(this);
-    this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
+    this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
+    this.handleEditUserProfile = this.handleEditUserProfile.bind(this);
+    this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
   }
-  componentDidMount(){
+  componentDidMount() {
     debugger;
-    //this.handleGetDesignationList();
+    this.handleGetDesignationList();
     this.handleGetUserProfileData();
-   
   }
   onOpenModal = () => {
     this.setState({ open: true });
@@ -52,16 +51,16 @@ class UserProfile extends Component {
   onCloseModal() {
     this.setState({ open: false });
   }
-  fileUpload (e) {
+  fileUpload(e) {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
-    allFiles.push(selectedFiles[0])
+    allFiles.push(selectedFiles[0]);
     this.setState({
-       //fileName: e.target.files[0].name
-       fileName:allFiles
-       });
-  };
+      //fileName: e.target.files[0].name
+      fileName: allFiles
+    });
+  }
   fileDrop = e => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
@@ -72,11 +71,10 @@ class UserProfile extends Component {
   fileDragEnter = e => {
     e.preventDefault();
   };
-  setUserData=(e)=>{
+  setUserData = e => {
     debugger;
     this.setState({
       [e.target.name]: e.target.value
-  
     });
   };
 
@@ -84,52 +82,47 @@ class UserProfile extends Component {
     debugger;
 
     let self = this;
-   
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let designationdata = res.data.responseData;
-       let status=res.data.message;
-       if(status==="Success"){
-        self.setState({
-          DesignationData: designationdata
-  
-        });
-       }
-      
-      
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let designationdata = res.data.responseData;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            DesignationData: designationdata
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
-  setGetProfileData =(data)=>{
+  setGetProfileData = data => {
     debugger;
-    let self =this
-var userData=data[0];
- 
-this.state.selectedUserID=userData.userId;
-this.state.selectedFirstName=userData.firstName;
-this.state.selectedLastName=userData.lastName;
-this.state.selectedMobile=userData.mobileNo;
-this.state.selectedEmailID=userData.emailId;
-this.state.selectedDesignation=userData.designationID;
-this.state.selectedProfilePicture=userData.profilePicture;
+    let self = this;
+    var userData = data[0];
+    this.state.selectedUserID = userData.userId;
+    this.state.selectedFirstName = userData.firstName;
+    this.state.selectedLastName = userData.lastName;
+    this.state.selectedMobile = userData.mobileNo;
+    this.state.selectedEmailID = userData.emailId;
+    this.state.selectedDesignation = userData.designationID;
+    this.state.selectedProfilePicture = userData.profilePicture;
 
-self.setState({
-  selectedUserID:userData.userId,
-  selectedFirstName:userData.firstName,
-  selectedLastName:userData.lastName,
-  selectedMobile:userData.mobileNo,
-  selectedEmailID:userData.emailId,
-  selectedDesignation:userData.designationID
-});
-
-
-  }
+    self.setState({
+      selectedUserID: userData.userId,
+      selectedFirstName: userData.firstName,
+      selectedLastName: userData.lastName,
+      selectedMobile: userData.mobileNo,
+      selectedEmailID: userData.emailId,
+      selectedDesignation: userData.designationID
+    });
+  };
 
   handleGetUserProfileData() {
     debugger;
@@ -139,87 +132,86 @@ self.setState({
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
       headers: authHeader()
-     
-    }).then(function (res) {
-      debugger;
-      var status = res.data.message;
-      var userdata = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          ProfileData: userdata
-        });
-       self.setGetProfileData(userdata)
-      } else {
-        self.setState({
-          ProfileData: []
-        });
-      }
-
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        var status = res.data.message;
+        var userdata = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            ProfileData: userdata
+          });
+          self.setGetProfileData(userdata);
+        } else {
+          self.setState({
+            ProfileData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
   handleEditUserProfile() {
     debugger;
-    if(
+    if (
       this.state.fileName.length > 0 &&
       this.state.selectedFirstName.length > 0 &&
       this.state.selectedLastName.length > 0 &&
       this.state.selectedMobile.length > 0 &&
       this.state.selectedEmailID.length > 0 &&
-      this.state.selectedDesignation > 0 
-    ){
-    let self=this;
-    var json={
-      UserId:this.state.selectedUserID,
-      FirstName:this.state.selectedFirstName,
-      LastName:this.state.selectedLastName,
-      MobileNo:this.state.selectedMobile,
-      EmailId:this.state.selectedEmailID,
-      DesignationID:this.state.selectedDesignation
-    }
-    const formData=new FormData();
-   
-    formData.append("UpdateUserProfiledetailsModel",JSON.stringify(json));
-    formData.append("file",this.state.fileName[0]);
+      this.state.selectedDesignation > 0
+    ) {
+      let self = this;
+      var json = {
+        UserId: this.state.selectedUserID,
+        FirstName: this.state.selectedFirstName,
+        LastName: this.state.selectedLastName,
+        MobileNo: this.state.selectedMobile,
+        EmailId: this.state.selectedEmailID,
+        DesignationID: this.state.selectedDesignation
+      };
+      const formData = new FormData();
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/UpdateUserProfileDetails",
-      headers: authHeader(),
-      data:formData
+      formData.append("UpdateUserProfiledetailsModel", JSON.stringify(json));
+      formData.append("file", this.state.fileName[0]);
 
-    }).then(function (res) {
-      debugger;
-      let msg = res.data.message;
-       if(msg==="Success"){
-        NotificationManager.success("Profile updated successfully.");
-        setTimeout(function() {
-          self.props.history.push("/admin/dashboard");
-        }, 400);
-       }
-     
-    }).catch(data => {
-      console.log(data);
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/UpdateUserProfileDetails",
+        headers: authHeader(),
+        data: formData
+      })
+        .then(function(res) {
+          debugger;
+          let msg = res.data.message;
+          if (msg === "Success") {
+            NotificationManager.success("Profile updated successfully.");
+            setTimeout(function() {
+              self.props.history.push("/admin/dashboard");
+            }, 400);
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        fileNameCompulsion: "Please select profile picture.",
+        FirstNameCompulsion: "Please enter first name.",
+        LastNameCompulsion: "Please enter last name.",
+        MobileCompulsion: "Please enter mobile number.",
+        EmailIDCompulsion: "Please enter emailID.",
+        DesignationCompulsion: "Please select designation."
       });
-  }else{
-    this.setState({
-      fileNameCompulsion:"Please select profile picture.",
-      FirstNameCompulsion:"Please enter first name.",
-      LastNameCompulsion:"Please enter last name.",
-      MobileCompulsion:"Please enter mobile number.",
-      EmailIDCompulsion:"Please enter emailID.",
-      DesignationCompulsion:"Please select designation."
-
-    });
-  }
+    }
   }
 
   render() {
     return (
       <Fragment>
-         <NotificationContainer />
+        <NotificationContainer />
         <div className="container-fluid">
           <div className="profile-settings-cntr">
             <div className="row">
@@ -228,30 +220,49 @@ self.setState({
                   <div className="half-circle">
                     <div className="imguserupload">
                       <img
-                        src={this.state.selectedProfilePicture==="https://localhost:44357/Resources/Images/"&&"https://erbelltkt.dcdev.brainvire.net/Resources/Images/"?ProfileImg:this.state.selectedProfilePicture}
+                        src={
+                          this.state.selectedProfilePicture ===
+                            "https://localhost:44357/Resources/Images/" &&
+                          "https://erbelltkt.dcdev.brainvire.net/Resources/Images/"
+                            ? ProfileImg
+                            : this.state.selectedProfilePicture
+                        }
                         alt="store-settings"
                         className="profimg"
                       />
+                      {/* <img
+                            src={
+                              item.Type === "docx"
+                                ? require("./../assets/Images/word.png")
+                                : item.Type === "xlsx"
+                                ? require("./../assets/Images/TxtIcon.png")
+                                : require("./../assets/Images/thumbticket.png")
+                            }
+                            title={item.name}
+                            alt="thumb"
+                            className="thumbtick"
+                          /> */}
                       <div className="uploadtextprofile">
                         <br></br>
                         <input
                           id="file-upload"
-                          
                           className="d-none file-uploadprofile"
                           type="file"
                           onChange={this.fileUpload.bind(this)}
                         />
-                         <label htmlFor="file-upload"
-                         onDrop={this.fileDrop}
-                         onDragOver={this.fileDragOver}
-                         onDragEnter={this.fileDragEnter}
-                         onChange={this.fileUpload.bind(this)}
-                         >
-                      {/* <div className="file-icon">
+                        <label
+                          htmlFor="file-upload"
+                          onDrop={this.fileDrop}
+                          onDragOver={this.fileDragOver}
+                          onDragEnter={this.fileDragEnter}
+                          onChange={this.fileUpload.bind(this)}
+                        >
+                          {/* <div className="file-icon">
                         <img src="{FileUpload}" alt="file-upload" />
                       </div> */}
-                      <span className="uploadtextprofile1">Upload </span>   choose  photo                 
-                    </label>
+                          <span className="uploadtextprofile1">Upload </span>{" "}
+                          choose photo
+                        </label>
                         {/* <label
                           htmlFor="file-upload"
                           onDrop={this.fileDrop}
@@ -276,10 +287,10 @@ self.setState({
                         )}
                       </div>
                       {this.state.fileName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.fileNameCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.fileNameCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -296,10 +307,10 @@ self.setState({
                           onChange={this.setUserData.bind(this)}
                         />
                         {this.state.selectedFirstName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.fileNameCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.fileNameCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -314,10 +325,10 @@ self.setState({
                           onChange={this.setUserData.bind(this)}
                         />
                         {this.state.selectedLastName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.LastNameCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.LastNameCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -332,10 +343,10 @@ self.setState({
                           onChange={this.setUserData.bind(this)}
                         />
                         {this.state.selectedMobile.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.MobileCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.MobileCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -350,19 +361,19 @@ self.setState({
                           value={this.state.selectedEmailID}
                           onChange={this.setUserData.bind(this)}
                         />
-                         {this.state.selectedEmailID.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.EmailIDCompulsion}
-                    </p>
-                  )}
+                        {this.state.selectedEmailID.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.EmailIDCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="divSpace">
                       <div className="">
                         <label className="reports-to">Designation</label>
-                        <select className="add-select-category"
-                          
+                        <select
+                          className="add-select-category"
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.setUserData.bind(this)}
@@ -376,20 +387,25 @@ self.setState({
                             ))}
                         </select>
                         {this.state.selectedDesignation === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.DesignationCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.DesignationCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="chatconfigbtn">
-                      <button className="CreateADDBtn" onClick={this.handleEditUserProfile.bind(this)}>
-                      SAVE
-                        {/* <label className="addLable">SAVE</label> */}
+                      <button
+                        className="CreateADDBtn"
+                        onClick={this.handleEditUserProfile.bind(this)}
+                      >
+                        SAVE
                       </button>
                     </div>
                   </div>
+                  <div className="userChangePW">
+                      <Link to="/changePassword">Change Password</Link>
+                    </div>
 
                   {/* <div className="row">
                     <div className="col-md-12" style={{ textAlign: "center" }}>
@@ -454,6 +470,7 @@ self.setState({
                         </button>
                       </div>
                     </div>
+                   
                     {/* <img
                     src={CancelImg}
                     alt="cancelImg"
