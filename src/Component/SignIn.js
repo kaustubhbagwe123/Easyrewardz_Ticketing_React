@@ -103,7 +103,7 @@ class SingIn extends Component {
             // });
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function () {
-              self.props.history.push("/admin/header");
+              self.props.history.push("/admin/dashboard");
             }, 400);
           } else {
             NotificationManager.error("Username or password is invalid.");

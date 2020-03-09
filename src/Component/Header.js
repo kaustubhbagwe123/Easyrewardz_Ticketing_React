@@ -42,6 +42,7 @@ class Header extends Component {
 
     this.state = {
       modalIsOpen: false,
+      ViewTicketModal: false,
       Email: "",
       UserName: "",
       LoginTime: "",
@@ -59,15 +60,7 @@ class Header extends Component {
       NextButtonModal: false,
       WaitingCall: false,
       userProfile: "",
-      notifiCount1: 0,
-      notifiCount2: 0,
-      notifiCount3: 0,
-      notifiMsg1: "",
-      notifiMsg2: "",
-      notifiMsg3: "",
-      notifiTktIds1: "",
-      notifiTktIds2: "",
-      notifiTktIds3: "",
+      notifiMessages: [],
       percentLog: 0,
       workTime: 0,
       workTimeHours: "0H 0M",
@@ -113,25 +106,30 @@ class Header extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleGetUserProfileData();
-    this.handleLoggedInUserDetails();
+    var _token = window.localStorage.getItem("token");
+    if (_token === null) {
+      window.location.href = "/";
+    } else {
+      this.handleGetUserProfileData();
+      this.handleLoggedInUserDetails();
 
-    let pageName, lastOne, lastValue, arr;
-    arr = [...this.state.cont];
-    setTimeout(
-      function() {
-        pageName = window.location.pathname;
-        lastOne = pageName.split("/");
-        lastValue = lastOne[lastOne.length - 1];
-        arr.forEach(i => {
-          i.activeClass = "single-menu";
-          if (i.urls === lastValue) i.activeClass = "active single-menu";
-        });
-        this.setState({ cont: arr });
-      }.bind(this),
-      1
-    );
-    this.handleGetNotificationList();
+      let pageName, lastOne, lastValue, arr;
+      arr = [...this.state.cont];
+      setTimeout(
+        function() {
+          pageName = window.location.pathname;
+          lastOne = pageName.split("/");
+          lastValue = lastOne[lastOne.length - 1];
+          arr.forEach(i => {
+            i.activeClass = "single-menu";
+            if (i.urls === lastValue) i.activeClass = "active single-menu";
+          });
+          this.setState({ cont: arr });
+        }.bind(this),
+        1
+      );
+      this.handleGetNotificationList();
+    }
   }
 
   handleNextButtonShow() {
@@ -182,6 +180,16 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+  handleViewTicketModalOpen = () => {
+    this.setState({
+      ViewTicketModal: true
+    });
+  };
+  handleViewTicketModalClose = () => {
+    this.setState({
+      ViewTicketModal: false
+    });
+  };
 
   onViewTicket = notiIds => {
     debugger;
@@ -207,7 +215,6 @@ class Header extends Component {
 
   handleGetUserProfileData() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -234,7 +241,6 @@ class Header extends Component {
   handleCRMRole(id) {
     debugger;
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
@@ -389,6 +395,7 @@ class Header extends Component {
   };
 
   actives = e => {
+    debugger
     const contDummy = [...this.state.cont];
     contDummy.forEach(i => {
       i.activeClass = "single-menu";
@@ -407,46 +414,19 @@ class Header extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
+      let data = res.data.responseData.ticketNotification;
       if (status === "Success") {
         debugger;
-        let Count1 = res.data.responseData.ticketNotification[0].ticketCount;
-        let Count2 = res.data.responseData.ticketNotification[1].ticketCount;
-        let Count3 = res.data.responseData.ticketNotification[2].ticketCount;
-        let Msg1 =
-          res.data.responseData.ticketNotification[0].notificationMessage;
-        let Msg2 =
-          res.data.responseData.ticketNotification[1].notificationMessage;
-        let Msg3 =
-          res.data.responseData.ticketNotification[2].notificationMessage;
-        let TktIds1 = res.data.responseData.ticketNotification[0].ticketIDs;
-        let TktIds2 = res.data.responseData.ticketNotification[1].ticketIDs;
-        let TktIds3 = res.data.responseData.ticketNotification[2].ticketIDs;
-        let notiCount = res.data.responseData.notiCount;
-
+       
         self.setState({
-          notifiCount1: Count1,
-          notifiCount2: Count2,
-          notifiCount3: Count3,
-          notifiMsg1: Msg1,
-          notifiMsg2: Msg2,
-          notifiMsg3: Msg3,
-          notifiTktIds1: TktIds1,
-          notifiTktIds2: TktIds2,
-          notifiTktIds3: TktIds3,
-          notiCount
+          notifiMessages: data
+           
         });
       } else {
         debugger;
         self.setState({
-          notifiCount1: "",
-          notifiCount2: "",
-          notifiCount3: "",
-          notifiMsg1: "",
-          notifiMsg2: "",
-          notifiMsg3: "",
-          notifiTktIds1: "",
-          notifiTktIds2: "",
-          notifiTktIds3: ""
+          
+          notifiMessages: []
         });
       }
     });
@@ -1018,53 +998,36 @@ class Header extends Component {
           modalId="Notification-popup"
           overlayId="logout-ovrly"
         >
-          <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05 noti-count">
-              <label className="labledata">{this.state.notifiCount1}</label>
-            </div>
-            <div className="md-6 new-tickets-assigned tic-noti">
-              <label>
-                <span>{this.state.notifiMsg1}</span>
-              </label>
-            </div>
-            <div className="viewticketspeadding">
-              <Link
-                to={{
-                  pathname: "myTicketlist",
-                  state: {
-                    isType: "New"
-                  }
-                }}
-                onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
-              >
-                <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </Link>
-            </div>
-          </div>
-          <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05 noti-count">
-              <label className="labledata">{this.state.notifiCount2}</label>
-            </div>
-            <div className="md-6 new-tickets-assigned tic-noti">
-              <label>
-                <span>{this.state.notifiMsg2}</span>
-              </label>
-            </div>
-            <div className="viewticketspeadding">
-              <Link
-                to={{
-                  pathname: "myTicketlist",
-                  state: {
-                    isType: "Open"
-                  }
-                }}
-                onClick={() => this.onViewTicket(this.state.notifiTktIds2)}
-              >
-                <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </Link>
-            </div>
-          </div>
-          <div className="row rowpadding">
+          {this.state.notifiMessages.map((item, i) => {
+            debugger;
+            return (
+              <div className="row rowpadding" key={i}>
+                <div className="md-2 rectangle-2 lable05 noti-count">
+                  <label className="labledata">{item.ticketCount}</label>
+                </div>
+                <div className="md-6 new-tickets-assigned tic-noti">
+                  <label>
+                    <span>{item.notificationMessage}</span>
+                  </label>
+                </div>
+                <div className="viewticketspeadding">
+                  <Link
+                    to={{
+                      pathname: "myTicketlist",
+                      state: {
+                        isType: "New"
+                      }
+                    }}
+                    onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
+                  >
+                    <label className="md-4 view-tickets">VIEW TICKETS</label>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* <div className="row rowpadding">
             <div className="md-2 rectangle-2 lable05 noti-count">
               <label className="labledata">{this.state.notifiCount3}</label>
             </div>
@@ -1086,7 +1049,7 @@ class Header extends Component {
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
-          </div>
+          </div> */}
         </Modal>
         <div>
           <Modal

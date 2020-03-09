@@ -3508,7 +3508,7 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="storedetail-tab"
                               >
-                                <div className="reactstoreselect datePickertable">
+                                <div className="reactstoreselect custom-react-table datePickertable">
                                   <ReactTable
                                     data={storeDetails}
                                     columns={[

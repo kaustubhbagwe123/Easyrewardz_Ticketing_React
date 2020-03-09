@@ -1206,10 +1206,13 @@ class Dashboard extends Component {
     this.setState({
       AgentIds: strAgentIds
     });
-    if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
+    // if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
+    if (this.state.AgentIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
       this.handleTicketsOnLoad();
+    } else {
+      this.setState({ loadingAbove: false });
     }
   }
   checkAllBrandStart(event) {
@@ -1228,10 +1231,13 @@ class Dashboard extends Component {
     this.setState({
       BrandIds: strBrandIds
     });
-    if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
+    // if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
+    if (this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
       this.handleTicketsOnLoad();
+    } else {
+      this.setState({ loadingAbove: false });
     }
   }
   checkIndividualAgent = event => {
@@ -1427,6 +1433,7 @@ class Dashboard extends Component {
           self.checkAllBrandStart();
         } else {
           self.setState({ BrandData: [] });
+          self.checkAllBrandStart();
         }
       })
       .catch(data => {
