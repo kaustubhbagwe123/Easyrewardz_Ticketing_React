@@ -3650,6 +3650,19 @@ table tr th:last-child {
 .ck-edit-mar {
   margin-bottom: 14px !important;
 }
+.tic-det-ck-user {
+  position: absolute;
+  right: 230px;
+  z-index: 1;
+  background: #fff !important;
+  top: 5px;
+}
+.tic-det-ck-user select {
+  background-color: #ecf2f4 !important;
+  height: auto;
+  padding: 5px 25px 5px 15px !important;
+  background-position: right 10px center !important;
+}
 /* my ticket ends */
 
 /* .cke_editable {
