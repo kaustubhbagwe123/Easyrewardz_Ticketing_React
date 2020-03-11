@@ -28,8 +28,8 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
-import Schedule from "./../assets/Images/schedule.png";
-import Assign from "./../assets/Images/assign.png";
+// import Schedule from "./../assets/Images/schedule.png";
+// import Assign from "./../assets/Images/assign.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -160,7 +160,6 @@ class MyTicketList extends Component {
       resultCount: 0,
       selectedAssignedTo: 0,
       AssignToData: [],
-      resultCount: 0,
       TeamMemberData: [],
       NameOfDayForWeek: [
         {
@@ -388,10 +387,10 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status = res.data.message;
+      // let status = res.data.message;
       let data = res.data.responseData;
-      let moduleID = data[0].moduleID;
-      let selTab = data[0].moduleName;
+      // let moduleID = data[0].moduleID;
+      // let selTab = data[0].moduleName;
       let moduleIDMyticket = data[1].moduleID;
 
       // if (status === "Success") {
@@ -720,12 +719,12 @@ class MyTicketList extends Component {
             self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
           }
 
-          var unique = [];
+          var Assignunique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].assignedTo]) {
+            if (!Assignunique[data[i].assignedTo]) {
               distinct.push(data[i].assignedTo);
-              unique[data[i].assignedTo] = 1;
+              Assignunique[data[i].assignedTo] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
@@ -1546,21 +1545,21 @@ class MyTicketList extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == "categoryTab") {
+    if (param === "categoryTab") {
       this.setState({
         SubCategoryData: [],
         IssueTypeData: [],
         selectedSubCategory: 0,
         selectedIssueType: 0
       });
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       this.setState({
         SubCategoryAllData: [],
         IssueTypeAllData: [],
         selectedSubCategoryAll: 0,
         selectedIssueTypeAll: 0
       });
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       this.setState({
         ClaimSubCategoryData: [],
         selectedClaimSubCategory: 0,
@@ -1575,9 +1574,9 @@ class MyTicketList extends Component {
     let cateId;
     if (param == "categoryTab") {
       cateId = this.state.selectedCategory;
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       cateId = this.state.selectedCategoryAll;
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       cateId = this.state.selectedClaimCategory;
     }
 
@@ -1601,15 +1600,15 @@ class MyTicketList extends Component {
         //     SubCategoryAllData: data
         //   });
         // }
-        if (param == "categoryTab") {
+        if (param === "categoryTab") {
           self.setState({
             SubCategoryData: data
           });
-        } else if (param == "allTab") {
+        } else if (param === "allTab") {
           self.setState({
             SubCategoryAllData: data
           });
-        } else if (param == "allClaimTab") {
+        } else if (param === "allClaimTab") {
           self.setState({
             ClaimSubCategoryData: data
           });
@@ -1651,17 +1650,17 @@ class MyTicketList extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == "categoryTab") {
+    if (param === "categoryTab") {
       self.setState({
         IssueTypeData: [],
         selectedIssueType: 0
       });
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       self.setState({
         IssueTypeAllData: [],
         selectedIssueTypeAll: 0
       });
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       self.setState({
         ClaimIssueTypeData: [],
         selectedClaimIssueType: 0
@@ -1672,11 +1671,11 @@ class MyTicketList extends Component {
     //     ? this.state.selectedSubCategory
     //     : this.state.selectedSubCategoryAll;
     let subCateId;
-    if (param == "categoryTab") {
+    if (param === "categoryTab") {
       subCateId = this.state.selectedSubCategory;
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       subCateId = this.state.selectedSubCategoryAll;
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       subCateId = this.state.selectedClaimSubCategory;
     }
 
@@ -1701,17 +1700,17 @@ class MyTicketList extends Component {
         //     IssueTypeAllData: IssueTypeAllData
         //   });
         // }
-        if (param == "categoryTab") {
+        if (param === "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
             IssueTypeData: IssueTypeData
           });
-        } else if (param == "allTab") {
+        } else if (param === "allTab") {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
             IssueTypeAllData: IssueTypeAllData
           });
-        } else if (param == "allClaimTab") {
+        } else if (param === "allClaimTab") {
           var ClaimIssueTypeData = res.data.responseData;
           self.setState({
             ClaimIssueTypeData: ClaimIssueTypeData
@@ -2947,7 +2946,7 @@ class MyTicketList extends Component {
               const element = actionId[i];
               for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
                 if (
-                  element ==
+                  element ===
                   self.state.TicketActionTypeData[j].ticketActionTypeID
                 ) {
                   actionArr.push(self.state.TicketActionTypeData[j]);
