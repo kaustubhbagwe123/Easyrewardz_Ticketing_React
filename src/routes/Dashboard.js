@@ -393,7 +393,7 @@ class Dashboard extends Component {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
-    this.ViewSearchData(1);
+    this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
@@ -3052,19 +3052,22 @@ class Dashboard extends Component {
         if (status === "Success") {
           if (Shwcheck === 1) {
             self.setState({
-              SearchTicketData: data,
-              resultCount: count,
-              ShowGridCheckBox: false,
-              loading: false
-            });
-          } else {
-            self.setState({
-              SearchTicketData: [],
-              resultCount: 0,
-              ShowGridCheckBox: true,
-              loading: false
+              ShowGridCheckBox: true
             });
           }
+          self.setState({
+            SearchTicketData: data,
+            resultCount: count,
+            loading: false
+          });
+          // else {
+          //   self.setState({
+          //     SearchTicketData: [],
+          //     resultCount: 0,
+          //     ShowGridCheckBox: false,
+          //     loading: false
+          //   });
+          // }
 
           for (let i = 0; i < CSVData.length; i++) {
             delete CSVData[i].totalpages;
