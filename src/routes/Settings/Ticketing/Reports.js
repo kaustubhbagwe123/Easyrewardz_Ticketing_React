@@ -28,6 +28,7 @@ import moment from "moment";
 import Select from "react-select";
 import { Checkbox } from "antd";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
+import SimpleReactValidator from "simple-react-validator";
 
 // const clshide= {
 //  display:"hide"
@@ -240,6 +241,7 @@ class Reports extends Component {
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleInsertReport = this.handleInsertReport.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
+    this.validator = new SimpleReactValidator();
   }
   componentDidMount() {
     debugger;
@@ -1436,7 +1438,9 @@ class Reports extends Component {
     }
   };
   sentMail = () => {
+    debugger;
     let self=this;
+    if (this.validator.allValid()) {
     axios({
       method: "post",
       url: config.apiUrl + "/Report/DownloadDefaultReport",
@@ -1456,6 +1460,10 @@ class Reports extends Component {
       .catch(data => {
         console.log(data);
       });
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   }
 
   downloadDefaultReport = () => {
@@ -3035,6 +3043,11 @@ class Reports extends Component {
                      onChange={this.setDefaultEmail.bind(this)}
                     />
                   </div>
+                    {this.validator.message(
+                    "Email Id",
+                    this.state.DefaultEmailID,
+                    "required|email"
+                  )}
                   <span
                     id="spnMailError"
                     className="cls-spnerror"

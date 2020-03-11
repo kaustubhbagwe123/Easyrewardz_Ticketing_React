@@ -200,7 +200,9 @@ class MyTicket extends Component {
       FinalAttachmentData: [],
       skipComment: "",
       oldAgentId: 0,
-      AssignCommentCompulsory: ""
+      AssignCommentCompulsory: "",
+      AssignToData: [],
+      followUpIds: ''
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -217,12 +219,14 @@ class MyTicket extends Component {
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
+    this.handleTicketAssignFollowUp = this.handleTicketAssignFollowUp.bind(this);
     this.handleAssignDataList = this.handleAssignDataList.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
     this.handleProgressBarDetails = this.handleProgressBarDetails.bind(this);
+    this.handleGetAgentList = this.handleGetAgentList.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
@@ -242,17 +246,70 @@ class MyTicket extends Component {
       this.handleGetCountOfTabs(ticketId);
       this.handleGetMessageDetails(ticketId);
       this.handleProgressBarDetails(ticketId);
+      this.handleGetAgentList();
     } else {
       this.props.history.push("myTicketlist");
     }
   }
 
   onAddCKEditorChange = evt => {
+    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
     });
   };
+
+  handleGetAgentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AssignToData: data
+          });
+          self.checkAllAgentStart();
+        } else {
+          self.setState({
+            AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleTicketAssignFollowUp() {
+    debugger;
+    let followUpIds = this.state.followUpIds.substring(0, this.state.followUpIds.length - 1);
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/ticketassigforfollowup",
+      headers: authHeader(),
+      params: {
+        TicketID: this.state.ticket_Id,
+        FollowUPUserID: followUpIds
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
 
   handleGetTicketDetails(ID) {
     debugger;
@@ -553,6 +610,17 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
+  setAssignedToValue = e => {
+    debugger;
+    let assign = e.currentTarget.value;
+    let followUpIds = this.state.followUpIds;
+    followUpIds += assign + ',';
+    let ckData = this.state.mailBodyData;
+    let matchedArr = this.state.AssignToData.filter(x => x.userID == e.currentTarget.value);
+    let userName = matchedArr[0].fullName;
+    ckData += '@' + userName;
+    this.setState({ mailBodyData: ckData, followUpIds });
+  };
   handleGetStoreDetails() {
     let self = this;
     axios({
@@ -1752,6 +1820,7 @@ class MyTicket extends Component {
           if (status === "Success") {
             self.handleGetMessageDetails(self.state.ticket_Id);
             self.handleGetCountOfTabs(self.state.ticket_Id);
+            self.handleTicketAssignFollowUp();
             self.HandleEmailCollapseOpen();
             NotificationManager.success("Mail send successfully.", "", 1500);
             self.setState({
@@ -3546,7 +3615,8 @@ class MyTicket extends Component {
                                               ></label>
                                             </div>
                                           );
-                                        }
+                                        },
+                                        width: 20
                                       },
                                       {
                                         Header: <span>Store Code</span>,
@@ -3582,7 +3652,7 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="selectedstore-tab"
                               >
-                                <div className="reactstoreselect datePickertable">
+                                <div className="reactstoreselect custom-react-table datePickertable">
                                   {/* {this.state.loading === true ? (
                                     <div className="loader-icon"></div>
                                   ) : ( */}
@@ -3590,8 +3660,9 @@ class MyTicket extends Component {
                                     data={this.state.selectedStoreData}
                                     columns={[
                                       {
-                                        Header: <span>Purpose</span>,
-                                        accessor: "invoiceNumber",
+                                        Header: '',
+                                        accessor: "storeID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
@@ -3614,6 +3685,23 @@ class MyTicket extends Component {
                                               )}
                                               defaultChecked={true}
                                             />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.storeID
+                                              }
+                                            >
+                                            </label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Purpose</span>,
+                                        accessor: "invoiceNumber",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
                                             <label
                                               htmlFor={
                                                 "i" + row.original.storeID
@@ -3872,7 +3960,7 @@ class MyTicket extends Component {
                                 aria-labelledby="productdetail-tab"
                               >
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="orderitemtable"
                                   style={{ display: "block" }}
                                 >
@@ -3882,10 +3970,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             {/* <input
                                               type="checkbox"
@@ -3974,7 +4062,7 @@ class MyTicket extends Component {
                                   />
                                 </div>
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="ordertable"
                                   style={{ display: "none" }}
                                 >
@@ -4005,10 +4093,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             <input
                                               type="checkbox"
@@ -4077,7 +4165,7 @@ class MyTicket extends Component {
                                     showPagination={false}
                                     SubComponent={row => {
                                       return (
-                                        <div style={{ padding: "20px" }}>
+                                        <div className="inner-custom-react-table" id="inner-custom-react-table">
                                           <ReactTable
                                             // data={row.original.orderItems}
                                             data={this.state.OrderSubItem.filter(
@@ -4089,14 +4177,12 @@ class MyTicket extends Component {
                                               {
                                                 Header: <span> </span>,
                                                 accessor: "invoiceNo",
+                                                width: 20,
                                                 Cell: row => {
                                                   // debugger
                                                   return (
                                                     <div
                                                       className="filter-checkbox"
-                                                      style={{
-                                                        marginLeft: "15px"
-                                                      }}
                                                     >
                                                       <input
                                                         type="checkbox"
@@ -4181,6 +4267,7 @@ class MyTicket extends Component {
                                                             .requireSize || ""
                                                         }
                                                         name="requiredSize"
+                                                        className="order-input"
                                                         onChange={() => {
                                                           this.handleRequireSize(
                                                             this,
@@ -4210,7 +4297,7 @@ class MyTicket extends Component {
                                 aria-labelledby="selectedproduct-tab"
                               >
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="orderitemtbl"
                                   style={{ display: "block" }}
                                 >
@@ -4242,10 +4329,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             {/* <input
                                               type="checkbox"
@@ -4341,7 +4428,7 @@ class MyTicket extends Component {
                                   />
                                 </div>
                                 <div
-                                  className="reactstoreselect"
+                                  className="reactstoreselect custom-react-table"
                                   id="ordertbls"
                                   style={{ display: "none" }}
                                 >
@@ -4373,10 +4460,10 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "orderMasterID",
+                                        width: 20,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
                                           >
                                             {/* <input
                                               type="checkbox"
@@ -4469,7 +4556,7 @@ class MyTicket extends Component {
                                     showPagination={false}
                                     SubComponent={row => {
                                       return (
-                                        <div style={{ padding: "20px" }}>
+                                        <div className="inner-custom-react-table" id="inner-custom-react-table">
                                           <ReactTable
                                             data={this.state.OrderSubItem.filter(
                                               x =>
@@ -4480,12 +4567,10 @@ class MyTicket extends Component {
                                               {
                                                 Header: <span></span>,
                                                 accessor: "size",
+                                                width: 20,
                                                 Cell: row => (
                                                   <div
                                                     className="filter-checkbox"
-                                                    style={{
-                                                      marginLeft: "15px"
-                                                    }}
                                                   >
                                                     {/* <input
                                                       type="checkbox"
@@ -4588,6 +4673,7 @@ class MyTicket extends Component {
                                                           row.original
                                                             .orderItemID
                                                         }
+                                                        className="order-input"
                                                         value={
                                                           row.original
                                                             .requireSize || ""
@@ -4872,6 +4958,21 @@ class MyTicket extends Component {
                             </li>
                           ))}
                       </ul>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect">
+                    <select
+                      className="add-select-category"
+                      value="0"
+                      onChange={this.setAssignedToValue}
+                    >
+                      <option value="0">Users</option>
+                      {this.state.AssignToData !== null &&
+                        this.state.AssignToData.map((item, i) => (
+                          <option key={i} value={item.userID}>
+                            {item.fullName}
+                          </option>
+                        ))}
+                    </select>
                     </div>
                     <Card>
                       <CardBody>
