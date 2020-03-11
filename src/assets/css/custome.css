@@ -11029,4 +11029,5 @@ table tr th:last-child {
     text-align: center;
     font-size: 13px;
     cursor: pointer;
+    display: inline-table;
 }

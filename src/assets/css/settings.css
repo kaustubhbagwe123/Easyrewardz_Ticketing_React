@@ -2422,6 +2422,7 @@
 }
 .mlistbtn {
   float: right;
+  display: flex;
 }
 .mlistbtn button {
   margin-left: 5px;

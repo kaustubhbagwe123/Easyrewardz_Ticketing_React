@@ -3558,11 +3558,6 @@ class MyTicketList extends Component {
                 </a>
               </li>
             </ul>
-            {this.state.headerActiveId === 1003 ? (
-              <div>
-                <label className="clrFlwUp">Clear FollowUp</label>
-              </div>
-            ) : null}
 
             <div className="mlistbtn">
               {/* <button
@@ -3572,6 +3567,9 @@ class MyTicketList extends Component {
               >
                 ASSIGN
               </button> */}
+              {this.state.headerActiveId === 1003 ? (
+              <label className="clrFlwUp">Clear FollowUp</label>
+            ) : null}
               <button
                 className="Add-ticket-button"
                 type="button"
