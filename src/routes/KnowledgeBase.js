@@ -12,7 +12,7 @@ import Sorting from "./../assets/Images/sorting.png";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
-import { Popover } from "antd";
+// import { Popover } from "antd";
 import {
   NotificationContainer,
   NotificationManager
@@ -104,7 +104,6 @@ class KnowledgeBase extends Component {
       issueColor: "",
       categoryColor: "",
       subCategoryColor: ""
-     
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -128,7 +127,11 @@ class KnowledgeBase extends Component {
   StatusOpenModel(data, table) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumnName: data, sortTable: table });
+    this.setState({
+      StatusModel: true,
+      sortColumnName: data,
+      sortTable: table
+    });
     //StatusModel: true,
     // if(data==="issueTypeName"){
     //   this.setState({
@@ -153,7 +156,6 @@ class KnowledgeBase extends Component {
           categoryColor: "",
           subCategoryColor: ""
         });
-
       } else if (column === "issueTypeName") {
         this.state.KBListnotApproveData = this.state.sortAllData;
         itemsArray = this.state.KBListnotApproveData.filter(
@@ -193,8 +195,6 @@ class KnowledgeBase extends Component {
           categoryColor: "",
           subCategoryColor: ""
         });
-
-
       } else if (column === "issueTypeName") {
         this.state.KBListData = this.state.sortAllDataApprove;
         itemsArrayApprove = this.state.KBListData.filter(
@@ -205,7 +205,6 @@ class KnowledgeBase extends Component {
           categoryColor: "",
           subCategoryColor: ""
         });
-
       } else if (column === "categoryName") {
         this.state.KBListData = this.state.sortAllDataApprove;
         itemsArrayApprove = this.state.KBListData.filter(
@@ -216,7 +215,6 @@ class KnowledgeBase extends Component {
           categoryColor: "sort-column",
           subCategoryColor: ""
         });
-
       } else if (column === "subCategoryName") {
         this.state.KBListData = this.state.sortAllDataApprove;
         itemsArrayApprove = this.state.KBListData.filter(
@@ -227,13 +225,8 @@ class KnowledgeBase extends Component {
           categoryColor: "",
           subCategoryColor: "sort-column"
         });
-
       }
     }
-
-
-
-
 
     this.setState({
       KBListnotApproveData: itemsArray,
@@ -241,9 +234,7 @@ class KnowledgeBase extends Component {
     });
 
     this.StatusCloseModel();
-  }
-
-
+  };
 
   opneSearchModal() {
     this.setState({ searchmodal: true });
@@ -410,7 +401,6 @@ class KnowledgeBase extends Component {
     });
   }
 
-
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
@@ -467,17 +457,19 @@ class KnowledgeBase extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let CategoryData = res.data;
-      // let CategoryDataAll = res.data;
-      self.setState({
-        CategoryData: CategoryData
-        // CategoryDataAll: CategoryDataAll
+    })
+      .then(function(res) {
+        debugger;
+        let CategoryData = res.data;
+        // let CategoryDataAll = res.data;
+        self.setState({
+          CategoryData: CategoryData
+          // CategoryDataAll: CategoryDataAll
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleGetSubCategoryList() {
     debugger;
@@ -492,15 +484,17 @@ class KnowledgeBase extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function (res) {
-      debugger;
-      var SubCategoryData = res.data.responseData;
-      self.setState({
-        SubCategoryData: SubCategoryData
+    })
+      .then(function(res) {
+        debugger;
+        var SubCategoryData = res.data.responseData;
+        self.setState({
+          SubCategoryData: SubCategoryData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }).catch(data => {
-      console.log(data);
-    });
   }
   handleGetIssueTypeList() {
     debugger;
@@ -513,13 +507,15 @@ class KnowledgeBase extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function (res) {
-      debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let IssueTypeData = res.data.responseData;
+        self.setState({ IssueTypeData: IssueTypeData });
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
   handleDeleteKB(id) {
     debugger;
@@ -532,19 +528,20 @@ class KnowledgeBase extends Component {
       params: {
         KBID: id
       }
-    }).then(function (res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Record In use") {
-        NotificationManager.error("Record in use.");
-
-      } else if (Msg === "Record deleted Successfully") {
-        NotificationManager.success("Record deleted Successfully.");
-        self.handleKBList();
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Record In use") {
+          NotificationManager.error("Record in use.");
+        } else if (Msg === "Record deleted Successfully") {
+          NotificationManager.success("Record deleted Successfully.");
+          self.handleKBList();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleRejectKB(id, bit) {
@@ -566,18 +563,20 @@ class KnowledgeBase extends Component {
         url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
         headers: authHeader(),
         data: json
-      }).then(function (res) {
-        debugger;
-        let Msg = res.data.message;
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
 
-        if (Msg === "Success") {
-          NotificationManager.success("Record Rejected successfully.");
-        }
+          if (Msg === "Success") {
+            NotificationManager.success("Record Rejected successfully.");
+          }
 
-        self.handleKBList();
-      }).catch(data => {
-        console.log(data);
-      });
+          self.handleKBList();
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       // }
 
@@ -604,18 +603,20 @@ class KnowledgeBase extends Component {
           url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
           headers: authHeader(),
           data: jsonData
-        }).then(function (res) {
-          debugger;
-          let Msg = res.data.message;
+        })
+          .then(function(res) {
+            debugger;
+            let Msg = res.data.message;
 
-          if (Msg === "Success") {
-            NotificationManager.success("Record Approved successfully.");
-          }
-          self.closeEditAproveModal1();
-          self.handleKBList();
-        }).catch(data => {
-          console.log(data);
-        });
+            if (Msg === "Success") {
+              NotificationManager.success("Record Approved successfully.");
+            }
+            self.closeEditAproveModal1();
+            self.handleKBList();
+          })
+          .catch(data => {
+            console.log(data);
+          });
       } else {
         this.setState({
           approveCategoryCompulsion: "Category field is compulsory.",
@@ -634,123 +635,116 @@ class KnowledgeBase extends Component {
       method: "post",
       url: config.apiUrl + "/KnowledgeBase/KBList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      var approve = res.data.responseData.approved;
-      var notapprove = res.data.responseData.notApproved;
-      var approveconut = res.data.responseData.approved.length;
-      var notapproveconut = res.data.responseData.notApproved.length;
+    })
+      .then(function(res) {
+        debugger;
+        var approve = res.data.responseData.approved;
+        var notapprove = res.data.responseData.notApproved;
+        var approveconut = res.data.responseData.approved.length;
+        var notapproveconut = res.data.responseData.notApproved.length;
 
+        self.setState({
+          KBListData: approve,
+          KBListnotApproveData: notapprove,
+          countApprove: approveconut,
+          countNotApprove: notapproveconut
+        });
 
+        if (notapprove !== null) {
+          self.state.sortAllData = notapprove;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < notapprove.length; i++) {
+            if (!unique[notapprove[i].issueTypeName]) {
+              distinct.push(notapprove[i].issueTypeName);
+              unique[notapprove[i].issueTypeName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortIssueType.push({ issueTypeName: distinct[i] });
+          }
 
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < notapprove.length; i++) {
+            if (!unique[notapprove[i].categoryName]) {
+              distinct.push(notapprove[i].categoryName);
+              unique[notapprove[i].categoryName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCategory.push({ categoryName: distinct[i] });
+          }
 
-      self.setState({
-        KBListData: approve,
-        KBListnotApproveData: notapprove,
-        countApprove: approveconut,
-        countNotApprove: notapproveconut
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < notapprove.length; i++) {
+            if (!unique[notapprove[i].subCategoryName]) {
+              distinct.push(notapprove[i].subCategoryName);
+              unique[notapprove[i].subCategoryName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
+          }
+        }
+
+        if (approve !== null) {
+          self.state.sortAllDataApprove = approve;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < approve.length; i++) {
+            if (!unique[approve[i].issueTypeName]) {
+              distinct.push(approve[i].issueTypeName);
+              unique[approve[i].issueTypeName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortIssueTypeApprove.push({
+              issueTypeName: distinct[i]
+            });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < approve.length; i++) {
+            if (!unique[approve[i].categoryName]) {
+              distinct.push(approve[i].categoryName);
+              unique[approve[i].categoryName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCategoryApprove.push({ categoryName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < approve.length; i++) {
+            if (!unique[approve[i].subCategoryName]) {
+              distinct.push(approve[i].subCategoryName);
+              unique[approve[i].subCategoryName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortSubCategoryApprove.push({
+              subCategoryName: distinct[i]
+            });
+          }
+        }
+
+        if (self.state.tabCount === 1) {
+          self.setState({
+            kbClearNew: false
+          });
+        } else {
+          self.setState({
+            kbClearList: false
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
-
-      if (notapprove !== null) {
-
-        self.state.sortAllData = notapprove;
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < notapprove.length; i++) {
-          if (!unique[notapprove[i].issueTypeName]) {
-            distinct.push(notapprove[i].issueTypeName);
-            unique[notapprove[i].issueTypeName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortIssueType.push({ issueTypeName: distinct[i] });
-        }
-
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < notapprove.length; i++) {
-          if (!unique[notapprove[i].categoryName]) {
-            distinct.push(notapprove[i].categoryName);
-            unique[notapprove[i].categoryName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortCategory.push({ categoryName: distinct[i] });
-        }
-
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < notapprove.length; i++) {
-          if (!unique[notapprove[i].subCategoryName]) {
-            distinct.push(notapprove[i].subCategoryName);
-            unique[notapprove[i].subCategoryName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
-        }
-
-      }
-
-      if (approve !== null) {
-
-        self.state.sortAllDataApprove = approve;
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < approve.length; i++) {
-          if (!unique[approve[i].issueTypeName]) {
-            distinct.push(approve[i].issueTypeName);
-            unique[approve[i].issueTypeName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortIssueTypeApprove.push({ issueTypeName: distinct[i] });
-        }
-
-
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < approve.length; i++) {
-          if (!unique[approve[i].categoryName]) {
-            distinct.push(approve[i].categoryName);
-            unique[approve[i].categoryName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortCategoryApprove.push({ categoryName: distinct[i] });
-        }
-
-
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < approve.length; i++) {
-          if (!unique[approve[i].subCategoryName]) {
-            distinct.push(approve[i].subCategoryName);
-            unique[approve[i].subCategoryName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortSubCategoryApprove.push({ subCategoryName: distinct[i] });
-        }
-
-
-
-      }
-
-
-
-      if (self.state.tabCount === 1) {
-        self.setState({
-          kbClearNew: false
-        });
-      } else {
-        self.setState({
-          kbClearList: false
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
   }
 
   handleSeaechKB() {
@@ -765,38 +759,40 @@ class KnowledgeBase extends Component {
         SubCategory_ID: this.state.selectedSubCategory,
         type_ID: this.state.selectedIssueType
       }
-    }).then(function (res) {
-      debugger;
-      var approve = res.data.responseData.approved;
-      var notapprove = res.data.responseData.notApproved;
-      var approveconut = res.data.responseData.approved.length;
-      var notapproveconut = res.data.responseData.notApproved.length;
-      self.setState({
-        // KBListData: approve,
-        // KBListnotApproveData: notapprove,
-        // countApprove: approveconut,
-        // countNotApprove: notapproveconut,
-        selectedCategory: "",
-        selectedSubCategory: "",
-        selectedIssueType: ""
+    })
+      .then(function(res) {
+        debugger;
+        var approve = res.data.responseData.approved;
+        var notapprove = res.data.responseData.notApproved;
+        var approveconut = res.data.responseData.approved.length;
+        var notapproveconut = res.data.responseData.notApproved.length;
+        self.setState({
+          // KBListData: approve,
+          // KBListnotApproveData: notapprove,
+          // countApprove: approveconut,
+          // countNotApprove: notapproveconut,
+          selectedCategory: "",
+          selectedSubCategory: "",
+          selectedIssueType: ""
+        });
+        if (self.state.tabCount === 1) {
+          self.setState({
+            kbClearNew: true,
+            KBListnotApproveData: notapprove,
+            countNotApprove: notapproveconut
+          });
+        } else {
+          self.setState({
+            kbClearList: true,
+            KBListData: approve,
+            countApprove: approveconut
+          });
+        }
+        self.closeSearchModal();
+      })
+      .catch(data => {
+        console.log(data);
       });
-      if (self.state.tabCount === 1) {
-        self.setState({
-          kbClearNew: true,
-          KBListnotApproveData: notapprove,
-          countNotApprove: notapproveconut,
-        })
-      } else {
-        self.setState({
-          kbClearList: true,
-          KBListData: approve,
-          countApprove: approveconut,
-        })
-      }
-      self.closeSearchModal();
-    }).catch(data => {
-      console.log(data);
-    });
   }
 
   handleUpdateKB(kbid) {
@@ -827,15 +823,13 @@ class KnowledgeBase extends Component {
         headers: authHeader(),
         data: json
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success("Record Updated successfully.");
           } else {
-            NotificationManager.error(
-              "Record Not Updated."
-            );
+            NotificationManager.error("Record Not Updated.");
           }
           self.closeEditAproveModal();
           self.handleKBList();
@@ -883,7 +877,7 @@ class KnowledgeBase extends Component {
         headers: authHeader(),
         data: json
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
@@ -916,13 +910,10 @@ class KnowledgeBase extends Component {
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
-
-
-
     return (
       <Fragment>
         <NotificationContainer />
-        <div className="position-relative d-inline-block"  >
+        <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
             open={this.state.StatusModel}
@@ -932,7 +923,8 @@ class KnowledgeBase extends Component {
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a href="#!"
+                  <a
+                    href="#!"
                     //onClick={this.sortStatusAtoZ.bind(this)}
                     className="sorting-icon"
                   >
@@ -941,7 +933,8 @@ class KnowledgeBase extends Component {
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a href="#!"
+                  <a
+                    href="#!"
                     //onClick={this.sortStatusZtoA.bind(this)}
                     className="sorting-icon"
                   >
@@ -951,17 +944,13 @@ class KnowledgeBase extends Component {
                 </div>
               </div>
               <div className="filter-type">
-
                 <p>FILTER BY TYPE</p>
-
 
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
-
                     name="filter-type"
                     id={"fil-open"}
-
                     value="all"
                     onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
@@ -970,150 +959,150 @@ class KnowledgeBase extends Component {
                   </label>
                 </div>
 
-                {this.state.sortColumnName === "issueTypeName" && this.state.sortTable === "notapprove" ?
-
-                  this.state.sortIssueType !== null &&
-                  this.state.sortIssueType.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.issueTypeName}
-
-                        value={item.issueTypeName}
-                        onChange={this.setSortCheckStatus.bind(this, "issueTypeName")}
-                      />
-                      <label htmlFor={"fil-open" + item.issueTypeName}>
-                        <span className="table-btn table-blue-btn">{item.issueTypeName}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "issueTypeName" &&
+                this.state.sortTable === "notapprove"
+                  ? this.state.sortIssueType !== null &&
+                    this.state.sortIssueType.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.issueTypeName}
+                          value={item.issueTypeName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "issueTypeName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.issueTypeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.issueTypeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "categoryName" && this.state.sortTable === "notapprove" ?
-
-                  this.state.sortCategory !== null &&
-                  this.state.sortCategory.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.categoryName}
-
-                        value={item.categoryName}
-                        onChange={this.setSortCheckStatus.bind(this, "categoryName")}
-                      />
-                      <label htmlFor={"fil-open" + item.categoryName}>
-                        <span className="table-btn table-blue-btn">{item.categoryName}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "categoryName" &&
+                this.state.sortTable === "notapprove"
+                  ? this.state.sortCategory !== null &&
+                    this.state.sortCategory.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.categoryName}
+                          value={item.categoryName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "categoryName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.categoryName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.categoryName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "subCategoryName" && this.state.sortTable === "notapprove" ?
-
-                  this.state.sortSubCategory !== null &&
-                  this.state.sortSubCategory.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.subCategoryName}
-
-                        value={item.subCategoryName}
-                        onChange={this.setSortCheckStatus.bind(this, "subCategoryName")}
-                      />
-                      <label htmlFor={"fil-open" + item.subCategoryName}>
-                        <span className="table-btn table-blue-btn">{item.subCategoryName}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "subCategoryName" &&
+                this.state.sortTable === "notapprove"
+                  ? this.state.sortSubCategory !== null &&
+                    this.state.sortSubCategory.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.subCategoryName}
+                          value={item.subCategoryName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "subCategoryName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.subCategoryName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.subCategoryName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "issueTypeName" && this.state.sortTable === "approve" ?
-
-                  this.state.sortIssueTypeApprove !== null &&
-                  this.state.sortIssueTypeApprove.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.issueTypeName}
-
-                        value={item.issueTypeName}
-                        onChange={this.setSortCheckStatus.bind(this, "issueTypeName")}
-                      />
-                      <label htmlFor={"fil-open" + item.issueTypeName}>
-                        <span className="table-btn table-blue-btn">{item.issueTypeName}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "issueTypeName" &&
+                this.state.sortTable === "approve"
+                  ? this.state.sortIssueTypeApprove !== null &&
+                    this.state.sortIssueTypeApprove.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.issueTypeName}
+                          value={item.issueTypeName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "issueTypeName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.issueTypeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.issueTypeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "categoryName" && this.state.sortTable === "approve" ?
-
-                  this.state.sortCategoryApprove !== null &&
-                  this.state.sortCategoryApprove.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.categoryName}
-
-                        value={item.categoryName}
-                        onChange={this.setSortCheckStatus.bind(this, "categoryName")}
-                      />
-                      <label htmlFor={"fil-open" + item.categoryName}>
-                        <span className="table-btn table-blue-btn">{item.categoryName}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "categoryName" &&
+                this.state.sortTable === "approve"
+                  ? this.state.sortCategoryApprove !== null &&
+                    this.state.sortCategoryApprove.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.categoryName}
+                          value={item.categoryName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "categoryName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.categoryName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.categoryName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
-                {this.state.sortColumnName === "subCategoryName" && this.state.sortTable === "approve" ?
-
-                  this.state.sortSubCategoryApprove !== null &&
-                  this.state.sortSubCategoryApprove.map((item, i) => (
-                    <div className="filter-checkbox">
-
-                      <input
-                        type="checkbox"
-
-                        name="filter-type"
-                        id={"fil-open" + item.subCategoryName}
-
-                        value={item.subCategoryName}
-                        onChange={this.setSortCheckStatus.bind(this, "subCategoryName")}
-                      />
-                      <label htmlFor={"fil-open" + item.subCategoryName}>
-                        <span className="table-btn table-blue-btn">{item.subCategoryName}</span>
-                      </label>
-                    </div>
-                  ))
-
+                {this.state.sortColumnName === "subCategoryName" &&
+                this.state.sortTable === "approve"
+                  ? this.state.sortSubCategoryApprove !== null &&
+                    this.state.sortSubCategoryApprove.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.subCategoryName}
+                          value={item.subCategoryName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "subCategoryName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.subCategoryName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.subCategoryName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
-
-
               </div>
-
-
-
-
             </div>
           </Modal>
         </div>
@@ -1152,12 +1141,14 @@ class KnowledgeBase extends Component {
                 <label className="main-conenet-point">
                   {this.state.countNotApprove} ITEMS
                 </label>
-                {this.state.kbClearNew && <small
-                  className="clear-search"
-                  onClick={this.handleKBList.bind(this)}
-                >
-                  Clear Search
-                </small>}
+                {this.state.kbClearNew && (
+                  <small
+                    className="clear-search"
+                    onClick={this.handleKBList.bind(this)}
+                  >
+                    Clear Search
+                  </small>
+                )}
               </div>
               <div className="col-md-6" style={{ textAlign: "end" }}>
                 <div className="kb-search-cntr" onClick={this.opneSearchModal}>
@@ -1234,16 +1225,17 @@ class KnowledgeBase extends Component {
                   },
                   {
                     Header: (
-
-
                       <span
-                        onClick={this.StatusOpenModel.bind(this, "issueTypeName", "notapprove")}
+                        onClick={this.StatusOpenModel.bind(
+                          this,
+                          "issueTypeName",
+                          "notapprove"
+                        )}
                       >
                         <label className={this.state.issueColor}>
                           Type <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
-
                     ),
                     accessor: "issueTypeName",
 
@@ -1263,7 +1255,11 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span
-                        onClick={this.StatusOpenModel.bind(this, "categoryName", "notapprove")}
+                        onClick={this.StatusOpenModel.bind(
+                          this,
+                          "categoryName",
+                          "notapprove"
+                        )}
                       >
                         <label className={this.state.categoryColor}>
                           Category <FontAwesomeIcon icon={faCaretDown} />
@@ -1284,12 +1280,13 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span
-                        onClick={this.StatusOpenModel.bind(this, "subCategoryName", "notapprove")}
-
+                        onClick={this.StatusOpenModel.bind(
+                          this,
+                          "subCategoryName",
+                          "notapprove"
+                        )}
                       >
-                        <label className={this.state.subCategoryColor}
-                          
-                        >
+                        <label className={this.state.subCategoryColor}>
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -1395,12 +1392,14 @@ class KnowledgeBase extends Component {
                 <label className="main-conenet-point">
                   {this.state.countApprove} ITEMS
                 </label>
-                {this.state.kbClearList && <small
-                  className="clear-search"
-                  onClick={this.handleKBList.bind(this)}
-                >
-                  Clear Search
-                </small>}
+                {this.state.kbClearList && (
+                  <small
+                    className="clear-search"
+                    onClick={this.handleKBList.bind(this)}
+                  >
+                    Clear Search
+                  </small>
+                )}
               </div>
               <div className="col-md-6" style={{ textAlign: "end" }}>
                 <div className="kb-search-cntr" onClick={this.opneSearchModal}>
@@ -1477,7 +1476,11 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span
-                        onClick={this.StatusOpenModel.bind(this, "issueTypeName", "approve")}
+                        onClick={this.StatusOpenModel.bind(
+                          this,
+                          "issueTypeName",
+                          "approve"
+                        )}
                       >
                         <label className={this.state.issueColor}>
                           Type <FontAwesomeIcon icon={faCaretDown} />
@@ -1502,7 +1505,11 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span
-                        onClick={this.StatusOpenModel.bind(this, "categoryName", "approve")}
+                        onClick={this.StatusOpenModel.bind(
+                          this,
+                          "categoryName",
+                          "approve"
+                        )}
                       >
                         <label className={this.state.categoryColor}>
                           Category <FontAwesomeIcon icon={faCaretDown} />
@@ -1523,7 +1530,11 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span
-                        onClick={this.StatusOpenModel.bind(this, "subCategoryName", "approve")}
+                        onClick={this.StatusOpenModel.bind(
+                          this,
+                          "subCategoryName",
+                          "approve"
+                        )}
                       >
                         <label className={this.state.subCategoryColor}>
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
@@ -1806,7 +1817,6 @@ class KnowledgeBase extends Component {
               <br />
               <div className="row">
                 <div className="col-md-12 KBas">
-                  
                   <CKEditor
                     data={this.state.ckeditorAdd}
                     onChange={this.onAddCKEditorChange}
@@ -1840,13 +1850,8 @@ class KnowledgeBase extends Component {
                           name: "editing",
                           items: ["Scayt"]
                         }
-                      
                       ]
-                      
-                       
-                      
                     }}
-                    
                   />
                 </div>
               </div>
