@@ -2205,9 +2205,17 @@
   /* font-size: 12px; */
   /* width: 40px; */
   text-align: left;
-  padding: 5px 2px;
+  /* padding: 5px 2px; */
+  padding: 5px;
   border: 1px solid #9b9b9b;
   border-radius: 5px 0 0 5px;
+  color: #4a4a4a;
+  font-weight: 700;
+}
+.text-box-crt-sla::placeholder {
+  font-size: 10px;
+  color: #ccc;
+  padding: 0;
 }
 
 .sla-div {
@@ -2316,6 +2324,7 @@
   border: 1px solid #9b9b9b;
   border-left: 0;
   border-radius: 0px 5px 5px 0px;
+  color: #4a4a4a;
 }
 
 .pers-lable-select {
@@ -2327,6 +2336,7 @@
   border-radius: 0px 5px 5px 0px;
   background: url("../Images/dropDown.png") no-repeat right 5px center;
   background-size: 11px;
+  color: #4a4a4a;
 }
 
 .category-multiple-cm {
