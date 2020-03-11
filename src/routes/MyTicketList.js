@@ -147,7 +147,6 @@ class MyTicketList extends Component {
       byReassignedCount: 0,
       byClosedCount: 0,
       byReOpenCount: 0,
-
       byAllCount: 0,
       byFollowUpCount: 0,
       draftCountStatus: 0,
@@ -265,7 +264,8 @@ class MyTicketList extends Component {
       sortAllData: [],
       cSelectedRow: {},
       notiType: "",
-      moduleIDMyticket: 0
+      moduleIDMyticket: 0,
+      ClearfollowUp: ""
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -319,6 +319,7 @@ class MyTicketList extends Component {
     this.handleMyTicketsearchOption = this.handleMyTicketsearchOption.bind(
       this
     );
+    this.handleClearFollowUpData = this.handleClearFollowUpData.bind(this);
   }
 
   componentDidMount() {
@@ -667,6 +668,9 @@ class MyTicketList extends Component {
         let Status = res.data.message;
 
         if (data !== null) {
+          if (self.state.headerActiveId === 1003) {
+            self.handleClearFollowUpData();
+          }
           self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
@@ -751,7 +755,61 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
-
+  handleClearFollowUpData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Ticketing/getticketsforfollowup",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            ClearfollowUp: data
+          });
+        } else {
+          self.setState({
+            ClearfollowUp: ""
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  handleSearchClearFollowUp() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/ticketunassigfromfollowup",
+      headers: authHeader(),
+      params: {
+        TicketIDs: this.state.ClearfollowUp
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success(
+            "Clear Follow up notification successfully.",
+            "",
+            2000
+          );
+          self.handleSearchTicketAllTabCount();
+          self.handleSearchTicket(1003);
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   handleSchedulePopup() {
     debugger;
     // if (this.state.selectedTeamMember.length > 0 && ) {
@@ -3567,9 +3625,19 @@ class MyTicketList extends Component {
               >
                 ASSIGN
               </button> */}
-              {this.state.headerActiveId === 1003 ? (
-              <label className="clrFlwUp">Clear FollowUp</label>
-            ) : null}
+              {this.state.SearchTicketData.length > 0 ? (
+                <div>
+                  {this.state.headerActiveId === 1003 ? (
+                    <label
+                      className="clrFlwUp"
+                      onClick={this.handleSearchClearFollowUp.bind(this)}
+                    >
+                      Clear FollowUp
+                    </label>
+                  ) : null}
+                </div>
+              ) : null}
+             
               <button
                 className="Add-ticket-button"
                 type="button"
@@ -6051,7 +6119,7 @@ class MyTicketList extends Component {
                             defaultPageSize={10}
                             showPagination={true}
                             getTrProps={this.HandleRowClickPage}
-                            minRows={1}
+                            minRows={2}
                             defaultSorted={[
                               {
                                 id: "ticketID",

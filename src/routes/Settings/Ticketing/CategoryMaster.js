@@ -490,10 +490,10 @@ class CategoryMaster extends Component {
     debugger;
     let self = this;
     var finalId = 0;
-    if (this.state.category_Id !== 0) {
-      finalId = this.state.category_Id;
-    } else {
+    if (this.state.category_Id === 1) {
       finalId = this.state.list1Value;
+    } else {
+      finalId = this.state.category_Id;
     }
     axios({
       method: "post",
@@ -526,10 +526,10 @@ class CategoryMaster extends Component {
     debugger;
     let self = this;
     var finalId = 0;
-    if (this.state.subCategory_Id === 1) {
-      finalId = this.state.subCategory_Id;
-    } else {
+   if (this.state.subCategory_Id === 0) {
       finalId = this.state.ListOfSubCate;
+    } else {
+      finalId = this.state.subCategory_Id;
     }
     axios({
       method: "post",
@@ -1202,7 +1202,7 @@ class CategoryMaster extends Component {
                                 value={item.brandID}
                                 className="select-category-placeholder"
                               >
-                                {item.brandName}
+                                {item.brandCode}
                               </option>
                             ))}
                         </select>
