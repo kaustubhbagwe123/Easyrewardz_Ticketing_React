@@ -188,7 +188,7 @@ class Header extends Component {
     var Ids = Ticket_Ids.split(",");
 
     this.setState({
-      ViewTicketModal: true,
+      // ViewTicketModal: true,
       NotifiTicketIds: Ids
     });
   }
@@ -1023,12 +1023,37 @@ class Header extends Component {
                   </label>
                 </div>
                 <div className="viewticketspeadding">
+                <Popover
+                  content={
+                    <div className="notification-popover">
+                      {this.state.NotifiTicketIds.map((data, j) => {
+                        debugger;
+                        return (
+                          <p>Ticket No. :
+                            <a href="#!" style={{ wordWrap: "break-word" }} key={j} onClick={this.handleShowTicket.bind(this,)}>
+                              {data + ", "}
+                            </a>
+                          </p>
+                        );
+                      })}
+                    </div>
+                  }
+                  placement="bottom"
+                  trigger="click"
+                >
                   <div
                     className="md-4 view-tickets"
                     onClick={this.handleViewTicketModalOpen.bind(this, item)}
                   >
                     VIEW TICKETS
                   </div>
+                </Popover>
+                  {/* <div
+                    className="md-4 view-tickets"
+                    onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                  >
+                    VIEW TICKETS
+                  </div> */}
                 </div>
               </div>
             );

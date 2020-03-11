@@ -10722,6 +10722,12 @@ table tr th:last-child {
 .noti-count label {
   padding-right: 9px;
 }
+.notification-popover {
+  max-width: 150px;
+  max-height: 200px;
+  overflow: auto;
+  padding-right: 10px;
+}
 .cus-drp .css-yk16xz-control {
   border: none;
   color: #000;
