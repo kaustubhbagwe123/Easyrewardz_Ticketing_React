@@ -11022,3 +11022,11 @@ table tr th:last-child {
   margin: 0;
   color: #2561a8 !important;
 }
+
+.clrFlwUp{
+  color: #2561A8;
+    width: 18px;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+}

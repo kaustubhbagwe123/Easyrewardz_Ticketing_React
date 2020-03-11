@@ -490,7 +490,7 @@ class CategoryMaster extends Component {
     debugger;
     let self = this;
     var finalId = 0;
-    if (this.state.category_Id === 1) {
+    if (this.state.category_Id !== 0) {
       finalId = this.state.category_Id;
     } else {
       finalId = this.state.list1Value;

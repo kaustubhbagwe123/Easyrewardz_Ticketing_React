@@ -265,7 +265,7 @@ class MyTicketList extends Component {
       sortAllData: [],
       cSelectedRow: {},
       notiType: "",
-      moduleIDMyticket:0
+      moduleIDMyticket: 0
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -399,7 +399,6 @@ class MyTicketList extends Component {
       //   self.setState({ modulesNames: [] });
       // }
       self.handleMyTicketsearchOption(moduleIDMyticket);
-      
     });
   }
   handleMyTicketsearchOption(id) {
@@ -1489,21 +1488,21 @@ class MyTicketList extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == 'categoryTab') {
+    if (param == "categoryTab") {
       this.setState({
         SubCategoryData: [],
         IssueTypeData: [],
         selectedSubCategory: 0,
         selectedIssueType: 0
       });
-    } else if (param == 'allTab') {
+    } else if (param == "allTab") {
       this.setState({
         SubCategoryAllData: [],
         IssueTypeAllData: [],
         selectedSubCategoryAll: 0,
         selectedIssueTypeAll: 0
       });
-    } else if (param == 'allClaimTab') {
+    } else if (param == "allClaimTab") {
       this.setState({
         ClaimSubCategoryData: [],
         selectedClaimSubCategory: 0,
@@ -1516,12 +1515,12 @@ class MyTicketList extends Component {
     //     ? this.state.selectedCategory
     //     : this.state.selectedCategoryAll;
     let cateId;
-    if (param == 'categoryTab') {
-      cateId = this.state.selectedCategory
-    } else if (param == 'allTab') {
-      cateId = this.state.selectedCategoryAll
-    } else if (param == 'allClaimTab') {
-      cateId = this.state.selectedClaimCategory
+    if (param == "categoryTab") {
+      cateId = this.state.selectedCategory;
+    } else if (param == "allTab") {
+      cateId = this.state.selectedCategoryAll;
+    } else if (param == "allClaimTab") {
+      cateId = this.state.selectedClaimCategory;
     }
 
     axios({
@@ -1544,15 +1543,15 @@ class MyTicketList extends Component {
         //     SubCategoryAllData: data
         //   });
         // }
-        if (param == 'categoryTab') {
+        if (param == "categoryTab") {
           self.setState({
             SubCategoryData: data
           });
-        } else if (param == 'allTab') {
+        } else if (param == "allTab") {
           self.setState({
             SubCategoryAllData: data
           });
-        } else if (param == 'allClaimTab') {
+        } else if (param == "allClaimTab") {
           self.setState({
             ClaimSubCategoryData: data
           });
@@ -1594,17 +1593,17 @@ class MyTicketList extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == 'categoryTab') {
+    if (param == "categoryTab") {
       self.setState({
         IssueTypeData: [],
         selectedIssueType: 0
       });
-    } else if (param == 'allTab') {
+    } else if (param == "allTab") {
       self.setState({
         IssueTypeAllData: [],
         selectedIssueTypeAll: 0
       });
-    } else if (param == 'allClaimTab') {
+    } else if (param == "allClaimTab") {
       self.setState({
         ClaimIssueTypeData: [],
         selectedClaimIssueType: 0
@@ -1615,12 +1614,12 @@ class MyTicketList extends Component {
     //     ? this.state.selectedSubCategory
     //     : this.state.selectedSubCategoryAll;
     let subCateId;
-    if (param == 'categoryTab') {
-      subCateId = this.state.selectedSubCategory
-    } else if (param == 'allTab') {
-      subCateId = this.state.selectedSubCategoryAll
-    } else if (param == 'allClaimTab') {
-      subCateId = this.state.selectedClaimSubCategory
+    if (param == "categoryTab") {
+      subCateId = this.state.selectedSubCategory;
+    } else if (param == "allTab") {
+      subCateId = this.state.selectedSubCategoryAll;
+    } else if (param == "allClaimTab") {
+      subCateId = this.state.selectedClaimSubCategory;
     }
 
     axios({
@@ -1644,17 +1643,17 @@ class MyTicketList extends Component {
         //     IssueTypeAllData: IssueTypeAllData
         //   });
         // }
-        if (param == 'categoryTab') {
+        if (param == "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
             IssueTypeData: IssueTypeData
           });
-        } else if (param == 'allTab') {
+        } else if (param == "allTab") {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
             IssueTypeAllData: IssueTypeAllData
           });
-        } else if (param == 'allClaimTab') {
+        } else if (param == "allClaimTab") {
           var ClaimIssueTypeData = res.data.responseData;
           self.setState({
             ClaimIssueTypeData: ClaimIssueTypeData
@@ -2265,7 +2264,7 @@ class MyTicketList extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList('categoryTab');
+        this.handleGetSubCategoryList("categoryTab");
       }
     }, 1);
   };
@@ -2274,7 +2273,7 @@ class MyTicketList extends Component {
     this.setState({ selectedClaimCategory: claimCategoryValue });
     setTimeout(() => {
       if (this.state.selectedClaimCategory) {
-        this.handleGetSubCategoryList('allClaimTab');
+        this.handleGetSubCategoryList("allClaimTab");
       }
     }, 1);
   };
@@ -2283,7 +2282,7 @@ class MyTicketList extends Component {
     this.setState({ selectedCategoryAll: categoryAllValue });
     setTimeout(() => {
       if (this.state.selectedCategoryAll) {
-        this.handleGetSubCategoryList('allTab');
+        this.handleGetSubCategoryList("allTab");
       }
     }, 1);
   };
@@ -2293,7 +2292,7 @@ class MyTicketList extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList('categoryTab');
+        this.handleGetIssueTypeList("categoryTab");
       }
     }, 1);
   };
@@ -2303,7 +2302,7 @@ class MyTicketList extends Component {
 
     setTimeout(() => {
       if (this.state.selectedClaimSubCategory) {
-        this.handleGetIssueTypeList('allClaimTab');
+        this.handleGetIssueTypeList("allClaimTab");
       }
     }, 1);
   };
@@ -2313,7 +2312,7 @@ class MyTicketList extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategoryAll) {
-        this.handleGetIssueTypeList('allTab');
+        this.handleGetIssueTypeList("allTab");
       }
     }, 1);
   };
@@ -2934,7 +2933,7 @@ class MyTicketList extends Component {
                   dataSearch.searchDataByCategoryType.TicketStatusID
               },
               () => {
-                self.handleGetSubCategoryList('categoryTab');
+                self.handleGetSubCategoryList("categoryTab");
               }
             );
             self.setState(
@@ -2943,7 +2942,7 @@ class MyTicketList extends Component {
                   dataSearch.searchDataByCategoryType.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList('categoryTab');
+                self.handleGetIssueTypeList("categoryTab");
               }
             );
             self.setState({
@@ -3050,7 +3049,7 @@ class MyTicketList extends Component {
                 allFlag: 5
               },
               () => {
-                self.handleGetSubCategoryList('allTab');
+                self.handleGetSubCategoryList("allTab");
               }
             );
             self.setState(
@@ -3058,7 +3057,7 @@ class MyTicketList extends Component {
                 selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList('allTab');
+                self.handleGetIssueTypeList("allTab");
               }
             );
             self.setState({
@@ -3532,7 +3531,7 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("FollowUp");
                   }}
                 >
-                  Follow Up:{" "}
+                  Follow Up:
                   <span className="myTciket-tab-span">
                     {this.state.byFollowUpCount < 9
                       ? "0" + this.state.byFollowUpCount
@@ -3559,6 +3558,11 @@ class MyTicketList extends Component {
                 </a>
               </li>
             </ul>
+            {this.state.headerActiveId === 1003 ? (
+              <div>
+                <label className="clrFlwUp">Clear FollowUp</label>
+              </div>
+            ) : null}
 
             <div className="mlistbtn">
               {/* <button
