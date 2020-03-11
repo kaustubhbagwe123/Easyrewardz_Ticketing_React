@@ -489,18 +489,18 @@ class CategoryMaster extends Component {
   handleAddSubCategory(value) {
     debugger;
     let self = this;
-    // var finalId = 0;
-    // if (this.state.category_Id === 1) {
-    //   finalId = this.state.list1Value;
-    // } else {
-    //   finalId = this.state.category_Id;
-    // }
+    var finalId = 0;
+    if (this.state.category_Id === 1) {
+      finalId = this.state.category_Id;
+    } else {
+      finalId = this.state.list1Value;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/AddSubCategory",
       headers: authHeader(),
       params: {
-        categoryID: this.state.list1Value,
+        categoryID: finalId,
         SubcategoryName: value
       }
     }).then(function(res) {
@@ -525,18 +525,18 @@ class CategoryMaster extends Component {
   handleAddIssueType(value) {
     debugger;
     let self = this;
-    // var finalId = 0;
-    // if (this.state.subCategory_Id === 0) {
-    //   finalId = this.state.ListOfSubCate;
-    // } else {
-    //   finalId = this.state.subCategory_Id;
-    // }
+    var finalId = 0;
+    if (this.state.subCategory_Id === 1) {
+      finalId = this.state.subCategory_Id;
+    } else {
+      finalId = this.state.ListOfSubCate;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/AddIssueType",
       headers: authHeader(),
       params: {
-        SubcategoryID: this.state.ListOfSubCate,
+        SubcategoryID: finalId,
         IssuetypeName: value
       }
     }).then(function(res) {
@@ -621,6 +621,9 @@ class CategoryMaster extends Component {
             ListOfIssue: "",
             selectStatus: 0
           });
+        }else{
+          NotificationManager.error(status,"",
+          3000);
         }
       }).catch(data => {
         console.log(data);

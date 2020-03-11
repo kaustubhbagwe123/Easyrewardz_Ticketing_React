@@ -2370,9 +2370,9 @@ class MyTicketList extends Component {
   hanleChange = () => {
     this.props.history.push("/admin/addSearchMyTicket");
   };
-  hanleChange_MyTicket = () => {
-    this.props.history.push("/admin/myticket");
-  };
+  // hanleChange_MyTicket = () => {
+  //   this.props.history.push("/admin/myticket");
+  // };
   handleAssignModalOpen() {
     this.setState({ AssignModal: true });
   }
