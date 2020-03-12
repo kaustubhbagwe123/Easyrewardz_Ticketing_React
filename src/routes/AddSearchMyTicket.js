@@ -254,6 +254,7 @@ class AddSearchMyTicket extends Component {
                 value={this.state.SrchEmailPhone}
                 onChange={this.addCustomerData}
                 maxLength="100"
+                autoComplete="off"
               />
               <div className="seacrh-img-addsearch">
                 <img
