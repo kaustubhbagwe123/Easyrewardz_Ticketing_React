@@ -366,7 +366,7 @@ class TicketHierarchy extends Component {
     debugger;
     if (
       this.state.designation_name.length > 0 &&
-      this.state.selectReportTo.length > 0 &&
+      this.state.selectReportTo !== 0 &&
       this.state.selectStatus !== 0
     ) {
       let self = this;
@@ -377,13 +377,17 @@ class TicketHierarchy extends Component {
       } else {
         activeStatus = 0;
       }
+      var ReportId = this.state.selectReportTo;
+      if (ReportId === "1") {
+        ReportId = 0;
+      }
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/CreateHierarchy",
         headers: authHeader(),
         data: {
           DesignationName: this.state.designation_name.trim(),
-          ReportToDesignation: this.state.selectReportTo,
+          ReportToDesignation: ReportId,
           IsActive: activeStatus
         }
       })
@@ -393,6 +397,7 @@ class TicketHierarchy extends Component {
           if (status === "Success") {
             self.handleGetHierarchyData();
             NotificationManager.success("Hierarchy added successfully.");
+            self.hanldeGetReportListDropDown();
             self.setState({
               designation_name: "",
               selectReportTo: 0,
@@ -429,6 +434,7 @@ class TicketHierarchy extends Component {
         if (status === 1010) {
           self.handleGetHierarchyData();
           NotificationManager.success("Designation deleted successfully.");
+          self.hanldeGetReportListDropDown();
         } else {
           NotificationManager.error(res.data.message);
         }
@@ -469,6 +475,7 @@ class TicketHierarchy extends Component {
           if (status === "Success") {
             self.handleGetHierarchyData();
             NotificationManager.success("Hierarchy update successfully.");
+            self.hanldeGetReportListDropDown();
           } else {
             NotificationManager.error("Hierarchy not update.");
           }
@@ -934,7 +941,7 @@ class TicketHierarchy extends Component {
                           onChange={this.handleOnReportToChange}
                         >
                           <option>select</option>
-                          <option value={0}>Root</option>
+                          <option value={1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
                               <option key={i} value={item.designationID}>
