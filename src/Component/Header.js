@@ -208,7 +208,7 @@ class Header extends Component {
         url: config.apiUrl + "/Notification/ReadNotification",
         headers: authHeader(),
         params: {
-          TicketIDS: notiIds
+          TicketID: notiIds
         }
       }).then(function(res) {
         debugger;
@@ -441,7 +441,9 @@ class Header extends Component {
   }
 
   handleShowTicket(Ids){
-    debugger
+    debugger;
+    this.closeModal();
+    this.onViewTicket(Ids);
   }
 
   render() {
@@ -1027,12 +1029,14 @@ class Header extends Component {
                   content={
                     <div className="notification-popover">
                       {this.state.NotifiTicketIds.map((data, j) => {
-                        debugger;
                         return (
                           <p>Ticket No. :
-                            <a href="#!" style={{ wordWrap: "break-word" }} key={j} onClick={this.handleShowTicket.bind(this,)}>
-                              {data + ", "}
-                            </a>
+                            <Link to={{
+              pathname: "myticket",
+              ticketDetailID: data
+            }} key={j} onClick={this.handleShowTicket.bind(this, data)}>
+                              {data}
+                            </Link>
                           </p>
                         );
                       })}
@@ -1073,7 +1077,6 @@ class Header extends Component {
             target="_blank"
           > */}
             {this.state.NotifiTicketIds.map((data, j) => {
-              debugger;
               return (
                 <a href="#!" style={{ wordWrap: "break-word" }} key={j} onClick={this.handleShowTicket.bind(this,)}>
                   {data + ", "}
