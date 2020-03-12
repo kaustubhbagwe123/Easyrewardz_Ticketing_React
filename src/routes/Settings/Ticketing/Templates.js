@@ -22,7 +22,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import Select from "react-select";
-
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
 
 const MyButton = props => {
@@ -137,7 +137,6 @@ class Templates extends Component {
       selectedIssueTypeCommaSeperated: "",
       editStatus: "",
       editIssueType: [],
-
       templateEdit: {},
       templatenamecopulsion: "",
       issurtupeCompulsion: "",
@@ -153,7 +152,8 @@ class Templates extends Component {
       updatedStatus: "",
       rowData: {},
       editmodel: false,
-      isEdit: false
+      isEdit: false,
+      isLoading: false
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -179,32 +179,35 @@ class Templates extends Component {
     this.state.rowData = rowData;
   };
 
-  handleUpdateTemplate(e, templateID) {
+  handleUpdateTemplate() {
     debugger;
     let self = this;
     var activeStatus = false;
     var issuetype = "";
 
-    if (self.state.updatedStatus === "Active") {
+    if (self.state.templateEdit.template_Status === "true") {
       activeStatus = true;
     } else {
       activeStatus = false;
     }
 
-    if (this.state.updatedArray !== null) {
-      for (let i = 0; i < this.state.updatedArray.length; i++) {
-        issuetype += this.state.updatedArray[i].issueTypeID + ",";
+    if (this.state.editIssueType.length > 0) {
+      for (let i = 0; i < this.state.editIssueType.length; i++) {
+        issuetype += this.state.editIssueType[i].issueTypeID + ",";
       }
     }
     var issue = issuetype.substring(0, issuetype.length - 1);
+    this.setState({ editSaveLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Template/ModifyTemplate",
       headers: authHeader(),
       params: {
-        TemplateID: templateID,
-        TemplateName: self.state.updatedTemplatename.trim(),
+        TemplateID: self.state.templateEdit.template_ID,
+        TemplateName: self.state.templateEdit.TemplateName.trim(),
         issueType: issue,
+        // templateSubject: this.state.TemplateSubject,
+        // templateContent: this.state.editorContent,
         isTemplateActive: activeStatus
       }
     })
@@ -214,11 +217,14 @@ class Templates extends Component {
         if (status === "Success") {
           NotificationManager.success("Template update successfully.");
           self.handleGetTemplate();
+          self.setState({ editSaveLoading: true });
         } else {
+          self.setState({ editSaveLoading: true });
           NotificationManager.error("Template not update.");
         }
       })
       .catch(data => {
+        self.setState({ editSaveLoading: true });
         console.log(data);
       });
   }
@@ -279,15 +285,15 @@ class Templates extends Component {
 
   setTemplateEditData(editdata) {
     debugger;
-    var templateEdit = editdata;
+    var templateEdit = {};
     templateEdit.template_ID = editdata.templateID;
     templateEdit.TemplateName = editdata.templateName;
     templateEdit.issue_Type = editdata.issueType;
     templateEdit.template_Status = editdata.templateStatus;
-    templateEdit.TemplateContent = editdata.TemplateContent;
-    templateEdit.TemplateSubject = editdata.TemplateSubject;
+    var TemplateSubject = editdata.templateSubject;
+    var editorContent = editdata.templateContent;
 
-    var itypeData = templateEdit.issueTypeID.split(",");
+    var itypeData = editdata.issueTypeID.split(",");
     var iSelect = [];
 
     for (let i = 0; i < itypeData.length; i++) {
@@ -298,16 +304,19 @@ class Templates extends Component {
       iSelect.push(idata[0]);
     }
 
-    if (templateEdit.template_Status === "Active") {
+    if (editdata.template_Status === "Active") {
       templateEdit.template_Status = "true";
     } else {
       templateEdit.template_Status = "false";
     }
 
     this.setState({
+      TemplateSubject,
+      editorContent,
       templateEdit,
       editIssueType: iSelect,
-      editmodel: true
+      editmodel: true,
+      isEdit: true
     });
   }
   handleOnChangeEditData = e => {
@@ -528,6 +537,15 @@ class Templates extends Component {
   toggleEditModal() {
     this.setState({ editmodel: false });
   }
+  CustomNoDataComponent = () => {
+    if (this.state.isLoading) {
+      return null;
+    }
+    return <div className="rt-noData">No rows found</div>;
+  };
+  handleEditSave = e => {
+    this.setState({ ConfigTabsModal: true });
+  };
   render() {
     const columns = [
       {
@@ -963,7 +981,7 @@ class Templates extends Component {
                             onChange={this.handleTemplateSubject}
                             value={this.state.TemplateSubject}
                           />
-                          {this.state.TemplateSubject.length === 0 && (
+                          {this.state.TemplateSubject && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.templatesubjectCompulsion}
                             </p>
@@ -980,7 +998,7 @@ class Templates extends Component {
                                 items: this.fileUpload
                               }}
                             />
-                            {this.state.editorContent.length === 0 && (
+                            {this.state.editorContent && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
                                 {this.state.templatebodyCompulsion}
                               </p>
@@ -989,9 +1007,23 @@ class Templates extends Component {
                           <div className="config-button">
                             <button
                               className="config-buttontext"
-                              onClick={this.createTemplate.bind(this)}
+                              disabled={this.state.editSaveLoading}
+                              onClick={
+                                this.state.isEdit
+                                  ? this.handleUpdateTemplate.bind(this)
+                                  : this.createTemplate.bind(this)
+                              }
                               type="submit"
                             >
+                              {this.state.editSaveLoading ? (
+                                <FontAwesomeIcon
+                                  className="circular-loader"
+                                  icon={faCircleNotch}
+                                  spin
+                                />
+                              ) : (
+                                ""
+                              )}
                               SAVE & NEXT
                             </button>
                           </div>
@@ -1020,8 +1052,8 @@ class Templates extends Component {
                     className="txt-edit-popover"
                     placeholder="Enter Name"
                     maxLength={25}
-                    name="template_Name"
-                    value={this.state.templateEdit.template_Name}
+                    name="TemplateName"
+                    value={this.state.templateEdit.TemplateName}
                     onChange={this.handleOnChangeEditData}
                   />
                 </div>
@@ -1064,9 +1096,7 @@ class Templates extends Component {
                   <button className="pop-over-button FlNone">
                     <label
                       className="pop-over-btnsave-text"
-                      // onClick={e => {
-                      //   props.handleUpdateTemplate(e, templateID);
-                      // }}
+                      onClick={this.handleEditSave}
                     >
                       SAVE
                     </label>

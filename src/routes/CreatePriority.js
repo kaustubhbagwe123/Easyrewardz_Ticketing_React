@@ -550,9 +550,9 @@ class CreatePriority extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                {this.state.loading === true ? (
+                {/* {this.state.loading === true ? (
                   <div className="loader-icon"></div>
-                ) : (
+                ) : ( */}
                   <div className="table-cntr table-height table-priority">
                     <DndProvider backend={HTML5Backend}>
                       <Table
@@ -768,6 +768,8 @@ class CreatePriority extends Component {
                             }
                           }
                         ]}
+                        loading={this.state.loading}
+                        noDataContent="No Record Found"
                         pagination={true}
                         dataSource={this.state.priorityData}
                         components={this.components}
@@ -778,7 +780,7 @@ class CreatePriority extends Component {
                       />
                     </DndProvider>
                   </div>
-                )}
+                {/* // )} */}
               </div>
               <div className="col-md-4">
                 <div className="createHierarchyMask">

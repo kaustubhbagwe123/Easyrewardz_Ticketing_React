@@ -27,296 +27,10 @@ import ZoneType from "./ZoneType";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+
 // import StoreEditContent from "./../../CommanComponent/StoreEditContent";
 
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = props => {
-  debugger;
-  const { rowData, brandData, selectedBrand } = props;
-  let brandIDs = rowData.brandIDs.split(",");
-
-  for (let i = 0; i < brandIDs.length; i++) {
-    var bData = brandData.filter(x => x.brandID == brandIDs[i]);
-    if (bData.length > 0) {
-      selectedBrand.push(bData[0]);
-    }
-  }
-
-  const [storeName, setStoreName] = useState(rowData.storeName);
-
-  const [storeID, setStore] = useState(rowData.storeID);
-  const [stateID, setState] = useState(rowData.stateID);
-  const [cityID, setCity] = useState(rowData.cityID);
-  const [pinCode, setPinCode] = useState(rowData.strPinCode);
-  const [status, setStatus] = useState(rowData.status);
-  const [regionID, setRegion] = useState(rowData.regionID);
-  const [zoneID, setZone] = useState(rowData.zoneID);
-  const [storeTypeID, setStoreType] = useState(rowData.storeTypeID);
-  const [email, setEmail] = useState(rowData.email);
-  const [phoneNumber, setPhoneNumber] = useState(rowData.phoneNumber);
-  const [address, setAddress] = useState(rowData.address);
-  // const [selectedBrand] = useState(selectedBrand);
-  // const [selectedBrand] = useState([]);
-
-  // props.callBackEdit(roleName, status, rowData);
-
-  return (
-    <div className="editstorepopover">
-      <div className="edtpadding">
-        <label className="popover-header-text">EDIT STORE</label>
-        <div className="row">
-          <div className="col-md-6">
-            <div className="div-padding-1">
-              <label className="edit-label-1">Brand</label>
-              <Select
-                getOptionLabel={option => option.brandName}
-                getOptionValue={option => option.brandID}
-                options={props.brandData}
-                placeholder="Select"
-                // menuIsOpen={true}
-                name="brand_IDs"
-                closeMenuOnSelect={false}
-                // onChange={e => {setBrand(e)}}
-                onChange={props.handleBrandChange}
-                value={selectedBrand}
-                showNewOptionAtTop={false}
-                isMulti
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="pop-over-div">
-              <label className="edit-label-1">Store Code</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter Store Code"
-                name="store_Code"
-                maxLength={10}
-                value={storeID}
-                onChange={e => setStore(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="pop-over-div">
-              <label className="edit-label-1">Store Name</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter Store Name"
-                name="store_Name"
-                maxLength={100}
-                value={storeName}
-                onChange={e => setStoreName(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="pop-over-div">
-              <label className="edit-label-1">State</label>
-              <select
-                className="store-create-select"
-                name="state_ID"
-                // value={this.state.userEditData.state_ID}
-                // onChange={this.handleOnChangeEditData}
-              >
-                <option>select</option>
-                {props.stateData !== null &&
-                  props.stateData.map((item, i) => (
-                    <option
-                      key={i}
-                      value={item.stateID}
-                      className="select-category-placeholder"
-                    >
-                      {item.stateName}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            {" "}
-            <div className="pop-over-div">
-              <label className="edit-label-1">City</label>
-              <select
-                className="edit-dropDwon dropdown-setting"
-                name="city_ID"
-                value={cityID}
-                onChange={e => setCity(e.target.value)}
-              >
-                <option>select</option>
-                {props.cityData !== null &&
-                  props.cityData.map((item, i) => (
-                    <option
-                      key={i}
-                      value={item.cityID}
-                      className="select-category-placeholder"
-                    >
-                      {item.cityName}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </div>
-          <div className="col-md-6">
-            {" "}
-            <div className="pop-over-div">
-              <label className="edit-label-1">Pin Code</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter Pin Code"
-                name="pin_Code"
-                maxLength={11}
-                value={pinCode}
-                onChange={e => setPinCode(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="pop-over-div">
-              <label className="edit-label-1">Status</label>
-              <select
-                className="form-control dropdown-setting"
-                name="status_ID"
-                value={status}
-                onChange={e => setStatus(e.target.value)}
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="pop-over-div">
-              <label className="edit-label-1">Region</label>
-              <select
-                className="store-create-select"
-                name="region_ID"
-                value={regionID}
-                onChange={e => setRegion(e.target.value)}
-              >
-                <option>Select</option>
-                {props.regionData !== null &&
-                  props.regionData.map((item, s) => (
-                    <option key={s} value={item.regionID}>
-                      {item.regionName}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </div>
-          <div className="col-md-6">
-            {" "}
-            <div className="pop-over-div">
-              <label className="edit-label-1">Zone</label>
-              <select
-                className="store-create-select"
-                name="zone_ID"
-                value={zoneID}
-                onChange={e => setZone(e.target.value)}
-              >
-                <option>Select</option>
-                {props.zoneData !== null &&
-                  props.zoneData.map((item, s) => (
-                    <option key={s} value={item.zoneID}>
-                      {item.zoneName}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="pop-over-div">
-              <label className="edit-label-1">Store Type</label>
-              <select
-                className="store-create-select"
-                name="storeType_ID"
-                value={storeTypeID}
-                onChange={e => setStoreType(e.target.value)}
-              >
-                <option>Select</option>
-                {props.storeTypeData !== null &&
-                  props.storeTypeData.map((item, t) => (
-                    <option key={t} value={item.storeTypeID}>
-                      {item.storeTypeName}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </div>
-          <div className="col-md-6">
-            {" "}
-            <div className="pop-over-div">
-              <label className="edit-label-1">Contact Details:Email</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter email id"
-                name="email_"
-                maxLength={100}
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            {" "}
-            <div className="pop-over-div">
-              <label className="edit-label-1">Contact Details:Phone</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter phone no"
-                name="phoneNumber_"
-                maxLength={10}
-                value={phoneNumber}
-                onChange={e => setPhoneNumber(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            {" "}
-            <div className="pop-over-div">
-              <label className="edit-label-1">Address</label>
-              <textarea
-                cols="31"
-                rows="3"
-                className="store-create-textarea"
-                placeholder="Enter address"
-                name="address_"
-                maxLength={250}
-                value={address}
-                onChange={e => setAddress(e.target.value)}
-              ></textarea>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="store-pop-over-div">
-              <button className="pop-over-button">
-                <label className="pop-over-btnsave-text">SAVE</label>
-              </button>
-              <span className="pop-over-cancle storecancel">CANCEL</span>
-            </div>
-          </div>
-        </div>
-        <br />
-      </div>
-    </div>
-  );
-};
 class StoreMaster extends Component {
   constructor(props) {
     super(props);
@@ -369,7 +83,8 @@ class StoreMaster extends Component {
       sortPincode: [],
       sortColumn: "",
       editmodel: false,
-      modalSelectedBrand: []
+      modalSelectedBrand: [],
+      editSaveLoading:false
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -611,7 +326,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        self.setState({ regionData: data });   
+        self.setState({ regionData: data });
       } else {
         self.setState({ regionData: [] });
       }
@@ -742,33 +457,36 @@ class StoreMaster extends Component {
     }
   }
 
-  handleUpdateData(id) {
+  handleUpdateData() {
+    debugger;
     let self = this;
     var activeStatus = 0;
     var finalBrandId = "";
     var status = this.state.userEditData.status_ID;
-    if (status === "true") {
+    if (status === true) {
       activeStatus = 1;
     } else {
       activeStatus = 0;
     }
-    if (this.state.userEditData.brand_IDs !== null) {
-      for (let i = 0; i < this.state.selectedBrand.length; i++) {
-        finalBrandId += this.state.userEditData.brand_IDs[i].brandID + ",";
+    debugger;
+    if (this.state.modalSelectedBrand.length > 0) {
+      for (let i = 0; i < this.state.modalSelectedBrand.length; i++) {
+        finalBrandId += this.state.modalSelectedBrand[i].brandID + ",";
       }
     }
+    this.setState({editSaveLoading:true});
     axios({
       method: "post",
       url: config.apiUrl + "/Store/editstore",
       headers: authHeader(),
       data: {
-        StoreID: id,
-        BrandIDs: "25,26",
-        StoreCode: this.state.userEditData.store_Code.trim(),
-        StoreName: this.state.userEditData.store_Name.trim(),
+        StoreID: this.state.userEditData.store_ID,
+        BrandIDs: finalBrandId,
+        StoreCode: this.state.userEditData.store_Code,
+        StoreName: this.state.userEditData.store_Name,
         StateID: this.state.userEditData.state_ID,
         CityID: this.state.userEditData.city_ID,
-        PincodeID: this.state.userEditData.pin_Code,
+        PincodeID: this.state.userEditData.strPin_Code,
         Address: this.state.userEditData.address_,
         RegionID: this.state.userEditData.region_ID,
         ZoneID: this.state.userEditData.zone_ID,
@@ -782,7 +500,10 @@ class StoreMaster extends Component {
       if (status === "Success") {
         self.handleGetStoreMasterData();
         NotificationManager.success("Store updated successfully.");
+        
         self.setState({
+          editSaveLoading:false,
+          editmodel:false,
           store_code: "",
           store_name: "",
           selectedBrand: [],
@@ -796,6 +517,8 @@ class StoreMaster extends Component {
           phoneNumber_: ""
         });
       }
+    }).catch(response=>{
+      console.log(response);
     });
   }
   fileUpload = e => {
@@ -831,36 +554,34 @@ class StoreMaster extends Component {
   };
 
   handleEditStoreMasterData(data) {
-    var storeEditData = data;
-
     this.setStoreUpdateData(data);
   }
   setStoreUpdateData(individualData) {
     debugger;
-    var userEditData = individualData;
-    userEditData.store_ID = userEditData.storeID;
-    userEditData.store_Name = userEditData.storeName;
-    userEditData.store_Code = userEditData.storeCode;
-    userEditData.brand_Name = userEditData.brandName;
-    userEditData.city_Name = userEditData.cityName;
-    userEditData.state_Name = userEditData.stateName;
-    userEditData.pin_Code = userEditData.pinCode;
-    userEditData.status_ = userEditData.status;
-    userEditData.strPin_Code = userEditData.strPinCode;
-    userEditData.city_ID = userEditData.cityID;
-    userEditData.state_ID = userEditData.stateID;
-    userEditData.region_ID = userEditData.regionID;
-    userEditData.zone_ID = userEditData.zoneID;
-    userEditData.storeType_ID = userEditData.storeTypeID;
-    userEditData.status_ID = userEditData.statusID;
-    userEditData.brand_IDs = userEditData.brandIDs;
-    userEditData.brandNames_ = userEditData.brandNames;
-    userEditData.brand_Names_ = userEditData.brand_Names;
-    userEditData.address_ = userEditData.address;
-    userEditData.email_ = userEditData.email;
-    userEditData.phoneNumber_ = userEditData.phoneNumber;
+    var userEditData = {};
+    userEditData.store_ID = individualData.storeID;
+    userEditData.store_Name = individualData.storeName;
+    userEditData.store_Code = individualData.storeCode;
+    userEditData.brand_Name = individualData.brandName;
+    userEditData.city_Name = individualData.cityName;
+    userEditData.state_Name = individualData.stateName;
+    userEditData.pin_Code = individualData.pinCode;
+    userEditData.status_ = individualData.status;
+    userEditData.strPin_Code = individualData.strPinCode;
+    userEditData.city_ID = individualData.cityID;
+    userEditData.state_ID = individualData.stateID;
+    userEditData.region_ID = individualData.regionID;
+    userEditData.zone_ID = individualData.zoneID;
+    userEditData.storeType_ID = individualData.storeTypeID;
+    userEditData.status_ID = individualData.statusID;
+    userEditData.brand_IDs = individualData.brandIDs;
+    userEditData.brandNames_ = individualData.brandNames;
+    userEditData.brand_Names_ = individualData.brand_Names;
+    userEditData.address_ = individualData.address;
+    userEditData.email_ = individualData.email;
+    userEditData.phoneNumber_ = individualData.phoneNumber;
 
-    var mBrandData = userEditData.brandIDs.split(",");
+    var mBrandData = individualData.brandIDs.split(",");
     var modalSelectedBrand = [];
     for (let i = 0; i < mBrandData.length; i++) {
       var data = this.state.brandData.filter(x => x.brandID == mBrandData[i]);
@@ -869,7 +590,7 @@ class StoreMaster extends Component {
       }
     }
 
-    this.handleGetCityList(userEditData.stateID);
+    this.handleGetCityList(individualData.stateID);
 
     this.setState({
       editmodel: true,
@@ -937,6 +658,8 @@ class StoreMaster extends Component {
   };
 
   handleModalEditData = e => {
+  debugger;
+
     var name = e.target.name;
     var value = e.target.value;
     var userEditData = this.state.userEditData;
@@ -1325,31 +1048,6 @@ class StoreMaster extends Component {
                                   >
                                     EDIT
                                   </button>
-                                  {/* <Popover
-                                    content={
-
-                                        <Content
-                                          rowData={row.original}
-                                          callBackEdit={this.callBackEdit}
-                                          stateData={this.state.stateData}
-                                          cityData={this.state.cityData}
-                                          regionData={this.state.regionData}
-                                          zoneData={this.state.zoneData}
-                                          storeTypeData={this.state.storeTypeData}
-                                          brandData={this.state.brandData}
-                                          handleBrandChange={this.handleBrandChange}
-                                          selectedBrand={this.state.selectedBrand}
-                                        />
-                                        // <StoreEditContent rowData={row.original} brandData={this.state.brandData} stateData={this.state.stateData} regionData={this.state.regionData}/>
-
-                                    }
-                                    placement="bottom"
-                                    trigger="click"
-                                  >
-                                    <label className="Table-action-edit-button-text">
-                                      <MyButton>EDIT</MyButton>
-                                    </label>
-                                  </Popover> */}
                                 </span>
                               </>
                             );
@@ -1894,7 +1592,7 @@ class StoreMaster extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Enter Pin Code"
-                      name="pin_Code"
+                      name="strPin_Code"
                       maxLength={11}
                       value={this.state.userEditData.strPin_Code}
                       onChange={this.handleModalEditData}
@@ -1907,7 +1605,11 @@ class StoreMaster extends Component {
                     <select
                       className="form-control dropdown-setting"
                       name="status_ID"
-                      value={this.state.userEditData.status_}
+                      value={
+                        this.state.userEditData.status_ID == true
+                          ? "Active"
+                          : "Inactive"
+                      }
                       onChange={this.handleModalEditData}
                     >
                       <option value="Active">Active</option>
@@ -2025,11 +1727,29 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-12">
                   <div className="text-center mt-3">
-                  <span className="pop-over-cancle">CANCEL</span>
-                    <button className="pop-over-button FlNone">
-                      <label className="pop-over-btnsave-text">SAVE</label>
+                  <span
+                      className="pop-over-cancle"
+                      onClick={this.toggleEditModal}
+                    >
+                      CANCEL
+                    </span>
+                    <button
+                      className="pop-over-button FlNone"
+                      onClick={this.handleUpdateData.bind(this)}
+                    >
+                      <label className="pop-over-btnsave-text">
+                        {this.state.editSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
+                        SAVE
+                      </label>
                     </button>
-                    
                   </div>
                 </div>
               </div>
