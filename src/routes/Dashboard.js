@@ -760,46 +760,40 @@ class Dashboard extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      statusColor: "",
+      categoryColor: "",
+      priorityColor: "",
+      assignColor: "",
+      creationColor: ""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-      this.setState({
-        statusColor: "",
-        categoryColor: "",
-        priorityColor: "",
-        assignColor: "",
-        creationColor: ""
-      });
+     
     } else if (column === "status") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.ticketStatus === data
       );
       this.setState({
-        statusColor: "sort-column",
-        categoryColor: "",
-        priorityColor: "",
-        assignColor: "",
-        creationColor: ""
+        statusColor: "sort-column"
+       
       });
     } else if (column === "category") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
-        statusColor: "",
-        categoryColor: "sort-column",
-        priorityColor: "",
-        assignColor: "",
-        creationColor: ""
+       
+        categoryColor: "sort-column"
+      
       });
     } else if (column === "priority") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
       this.setState({
-        statusColor: "",
-        categoryColor: "",
-        priorityColor: "sort-column",
-        assignColor: "",
-        creationColor: ""
+       
+        priorityColor: "sort-column"
+      
       });
     } else if (column === "assignedTo") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -807,11 +801,9 @@ class Dashboard extends Component {
         a => a.assignedTo === data
       );
       this.setState({
-        statusColor: "",
-        categoryColor: "",
-        priorityColor: "",
-        assignColor: "sort-column",
-        creationColor: ""
+       
+        assignColor: "sort-column"
+        
       });
     } else if (column === "createdOn") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -819,22 +811,22 @@ class Dashboard extends Component {
         a => a.createdOn === data
       );
       this.setState({
-        statusColor: "",
-        categoryColor: "",
-        priorityColor: "",
-        assignColor: "sort-column",
-        creationColor: ""
+      
+        creationColor: "sort-column"
+       
       });
     } else if (column === "colorred") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.isEscalation === 1
       );
+     
     } else if (column === "colororange") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.isSLANearBreach === true
       );
+     
     } else if (column === "colorwhite") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
