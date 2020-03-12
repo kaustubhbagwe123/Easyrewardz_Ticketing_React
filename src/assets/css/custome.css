@@ -3543,6 +3543,12 @@ table tr th:last-child {
 .custom-antd-table .ant-table-expanded-row table {
   padding: 0;
 }
+.date-picker-arrows .react-datepicker button {
+  min-width: auto;
+}
+.date-picker-arrows .react-datepicker span {
+  display: inline-block;
+}
 .datepicker-overflow table, .datepicker-overflow .ant-table-content {
   overflow: visible;
 }
