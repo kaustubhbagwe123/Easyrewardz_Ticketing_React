@@ -1980,8 +1980,8 @@ class Reports extends Component {
     let self = this;
     var SearchParams = {};
     SearchParams = JSON.stringify(this.state.ReportParams);
-    if (self.state.reportName == "") {
-      NotificationManager.error("Please select report name.");
+    if (self.state.selectedReportName == "") {
+      NotificationManager.error("Please enter report name");
       return;
     }
     self = this;
