@@ -643,7 +643,7 @@ class TicketCRMRole extends Component {
                 </Popover>
 
                 <button
-                  className="react-tabel-button"
+                  className="react-tabel-button ReNewBtn"
                   type="button"
                   onClick={this.hanldeEditCRM.bind(this, row.original)}
                 >
@@ -1055,11 +1055,11 @@ class TicketCRMRole extends Component {
                 </select>
               </div>
               <br />
-              <div>
+              <div className="text-center">
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
                   CANCEL
                 </a>
-                <button className="pop-over-button">
+                <button className="pop-over-button FlNone">
                   <label
                     className="pop-over-btnsave-text"
                     onClick={ this.createUpdateCrmRole.bind(this,"update",this.state.crmRoleID)}

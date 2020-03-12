@@ -102,7 +102,7 @@ const Content = (props, e) => {
         </select>
       </div>
       <br />
-      <div>
+      <div className="float-right">
         <a href={Demo.BLANK_LINK} className="pop-over-cancle">
           CANCEL
         </a>
@@ -1057,11 +1057,11 @@ class Templates extends Component {
                   </select>
                 </div>
                 <br />
-                <div>
+                <div className="text-center">
                   <a className="pop-over-cancle" onClick={this.toggleEditModal}>
                     CANCEL
                   </a>
-                  <button className="pop-over-button">
+                  <button className="pop-over-button FlNone">
                     <label
                       className="pop-over-btnsave-text"
                       // onClick={e => {
