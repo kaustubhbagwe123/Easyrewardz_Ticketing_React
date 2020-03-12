@@ -390,7 +390,10 @@ class Brands extends Component {
           self.setState({
             brand_Code: "",
             brand_name: "",
-            selectedStatus: 0
+            selectedStatus: 0,
+            brandcodeCompulsion: "",
+            brandnameCompulsion: "",
+            statusCompulsion: ""
           });
         }
       }).catch(data => {
