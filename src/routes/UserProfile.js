@@ -19,7 +19,7 @@ class UserProfile extends Component {
 
     this.state = {
       open: false,
-      fileName: {},
+      fileName: [],
       selectedUserID: 0,
       selectedProfilePicture: "",
       selectedFirstName: "",
@@ -54,12 +54,12 @@ class UserProfile extends Component {
   }
   fileUpload(e) {
     debugger;
-   // var allFiles = [];
+    var allFiles = [];
     var selectedFiles = e.target.files;
-    //allFiles.push(selectedFiles[0]);
+    allFiles.push(selectedFiles[0]);
     this.setState({
       //fileName: e.target.files[0].name
-      fileName: selectedFiles
+      fileName: allFiles
     });
   }
   fileDrop = e => {
@@ -114,7 +114,10 @@ class UserProfile extends Component {
     this.state.selectedEmailID = userData.emailId;
     this.state.selectedDesignation = userData.designationID;
     this.state.selectedProfilePicture = userData.profilePicture;
-   
+    // var image=this.state.selectedProfilePicture.split("/");
+    // var img=image[image.length-1];
+    // var array=[];
+    // array.push({name:img})
 
     self.setState({
       selectedUserID: userData.userId,
@@ -122,8 +125,8 @@ class UserProfile extends Component {
       selectedLastName: userData.lastName,
       selectedMobile: userData.mobileNo,
       selectedEmailID: userData.emailId,
-      selectedDesignation: userData.designationID
-     
+      selectedDesignation: userData.designationID,
+      //fileName:array
     });
   };
 
@@ -162,7 +165,7 @@ class UserProfile extends Component {
     debugger;
     if (
      
-     
+      // this.state.fileName.length > 0 &&
       this.state.selectedFirstName.length > 0 &&
       this.state.selectedLastName.length > 0 &&
       this.state.selectedMobile.length > 0 &&
@@ -204,7 +207,7 @@ class UserProfile extends Component {
         });
     } else {
       this.setState({
-        fileNameCompulsion: "Please select profile picture.",
+        // fileNameCompulsion: "Please select profile picture.",
         FirstNameCompulsion: "Please enter first name.",
         LastNameCompulsion: "Please enter last name.",
         MobileCompulsion: "Please enter mobile number.",
@@ -266,8 +269,7 @@ class UserProfile extends Component {
                           {/* <div className="file-icon">
                         <img src="{FileUpload}" alt="file-upload" />
                       </div> */}
-                          <span className="uploadtextprofile1">Upload </span>{" "}
-                          choose photo
+                          <span className="uploadtextprofile1">Upload Photo</span>
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -314,7 +316,7 @@ class UserProfile extends Component {
                         />
                         {this.state.selectedFirstName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.FirstNameCompulsion}
+                            {this.state.fileNameCompulsion}
                           </p>
                         )}
                       </div>
