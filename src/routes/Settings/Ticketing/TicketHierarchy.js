@@ -401,7 +401,10 @@ class TicketHierarchy extends Component {
             self.setState({
               designation_name: "",
               selectReportTo: 0,
-              selectedStatus: 1
+              selectStatus: 0,
+              designationNameCompulsion: "",
+              reportToCompulsion: "",
+              statusCompulsion: ""
             });
           }
         })
