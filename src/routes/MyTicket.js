@@ -148,6 +148,7 @@ class MyTicket extends Component {
       tempName: "",
       selectTicketTemplateId: 0,
       mailBodyData: "",
+      replymailBodyData: "",
       SearchStore: "",
       custID: 0,
       loading: false,
@@ -269,6 +270,13 @@ class MyTicket extends Component {
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
+    });
+  };
+  onreplyCKEditorChange = evt => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      replymailBodyData: newContent
     });
   };
 
@@ -1726,7 +1734,7 @@ class MyTicket extends Component {
             CkEditorTemplateDetails: TemplateDetails,
             tempName: tempName,
             selectTicketTemplateId: tempId,
-            mailBodyData: bodyData
+            replymailBodyData: bodyData
           });
         })
         .catch(data => {
@@ -1766,6 +1774,10 @@ class MyTicket extends Component {
     var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
     if (isSend === 1) {
+      var str = this.state.replymailBodyData;
+      var stringBody = str.replace(/<\/?p[^>]*>/g, "");
+      var ReplyText = stringBody.replace(/[&]nbsp[;]/g, " ");
+  
       if (this.state.InformStore === true) {
         var selectedStore = "";
 
@@ -1781,7 +1793,7 @@ class MyTicket extends Component {
         ToEmail: this.state.ticketDetailsData.customerEmailId,
         UserCC: this.state.mailFiled.userCC,
         UserBCC: this.state.mailFiled.userBCC,
-        TicketMailBody: finalText,
+        TicketMailBody: ReplyText,
         IsInformToStore: this.state.InformStore,
         TicketSource: this.state.ReplySourceId, // Send ticket source id
         IsSent: 0,
@@ -1813,7 +1825,7 @@ class MyTicket extends Component {
               mailFiled: {},
               ReplyFileData: [],
               ReplyfileText: 0,
-              mailBodyData: ""
+              replymailBodyData: ""
             });
           } else {
             NotificationManager.error(status, "", 1500);
@@ -6025,8 +6037,8 @@ class MyTicket extends Component {
                       <div className="col-md-12 my-tic-ckeditor">
                         <CKEditor
                           id="ckeditor1"
-                          data={this.state.mailBodyData}
-                          onChange={this.onAddCKEditorChange}
+                          data={this.state.replymailBodyData}
+                          onChange={this.onreplyCKEditorChange}
                           config={{
                             toolbar: [
                               {
