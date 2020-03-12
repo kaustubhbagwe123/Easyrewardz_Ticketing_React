@@ -31,110 +31,110 @@ const NEW_ITEM = "NEW_ITEM";
 
 // const Option = Select.Option;
 
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
+// const MyButton = props => {
+//   const { children } = props;
+//   return (
+//     <div style={{ cursor: "pointer" }} {...props}>
+//       <button className="react-tabel-button" id="p-edit-pop-2">
+//         <label className="Table-action-edit-button-text">{children}</label>
+//       </button>
+//     </div>
+//   );
+// };
 
-const Content = props => {
-  debugger;
-  const { rowData } = props;
-  // const [roleName, setRoleNameValue] = useState(rowData.roleName);
-  // const [status, setStatusValue] = useState(rowData.isRoleActive);
-  const [selectBrand, changeBrandDropdown] = useState(rowData.braindID);
+// const Content = props => {
+//   debugger;
+//   const { rowData } = props;
+//   // const [roleName, setRoleNameValue] = useState(rowData.roleName);
+//   // const [status, setStatusValue] = useState(rowData.isRoleActive);
+//   const [selectBrand, changeBrandDropdown] = useState(rowData.braindID);
 
-  // props.callBackEdit(roleName, status, rowData);
+//   // props.callBackEdit(roleName, status, rowData);
 
-  return (
-    <div>
-      <div className="edtpadding">
-        <label className="popover-header-text">EDIT CATEGORY</label>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Brand Name</label>
-          <select
-            className="store-create-select"
-            value={selectBrand}
-            onChange={props.handleBrandChange}
-            name="selectBrand"
-          >
-            <option>Select</option>
-            {props.brandData !== null &&
-              props.brandData.map((item, i) => (
-                <option
-                  key={i}
-                  value={item.brandID}
-                  className="select-category-placeholder"
-                >
-                  {item.brandName}
-                </option>
-              ))}
-          </select>
-        </div>
+//   return (
+//     <div>
+//       <div className="edtpadding">
+//         <label className="popover-header-text">EDIT CATEGORY</label>
+//         <div className="pop-over-div">
+//           <label className="edit-label-1">Brand Name</label>
+//           <select
+//             className="store-create-select"
+//             value={selectBrand}
+//             onChange={props.handleBrandChange}
+//             name="selectBrand"
+//           >
+//             <option>Select</option>
+//             {props.brandData !== null &&
+//               props.brandData.map((item, i) => (
+//                 <option
+//                   key={i}
+//                   value={item.brandID}
+//                   className="select-category-placeholder"
+//                 >
+//                   {item.brandName}
+//                 </option>
+//               ))}
+//           </select>
+//         </div>
 
-        <div className="pop-over-div">
-          <label className="edit-label-1">Category</label>
-          <Select
-            showSearch={true}
-            // value={props.list1Value}
-            style={{ width: "100%" }}
-            // onChange={this.handleCategoryChange}
-          >
-            {props.list1SelectOptions}
-            <Option value={NEW_ITEM}>
-              <span className="sweetAlert-inCategory">+ ADD NEW</span>
-            </Option>
-          </Select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Sub Category</label>
-          <Select
-            showSearch={true}
-            // value={props.list1Value}
-            style={{ width: "100%" }}
-            // onChange={this.handleCategoryChange}
-          >
-            {props.list1SelectOptions}
-            <Option value={NEW_ITEM}>
-              <span className="sweetAlert-inCategory">+ ADD NEW</span>
-            </Option>
-          </Select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Issue Type</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <a
-            className="pop-over-cancle"
-            href={Demo.BLANK_LINK}
-            style={{ marginRight: "20px" }}
-          >
-            CANCEL
-          </a>
-          <button className="pop-over-button">SAVE</button>
-        </div>
-      </div>
-    </div>
-  );
-};
+//         <div className="pop-over-div">
+//           <label className="edit-label-1">Category</label>
+//           <Select
+//             showSearch={true}
+//             // value={props.list1Value}
+//             style={{ width: "100%" }}
+//             // onChange={this.handleCategoryChange}
+//           >
+//             {props.list1SelectOptions}
+//             <Option value={NEW_ITEM}>
+//               <span className="sweetAlert-inCategory">+ ADD NEW</span>
+//             </Option>
+//           </Select>
+//         </div>
+//         <div className="pop-over-div">
+//           <label className="edit-label-1">Sub Category</label>
+//           <Select
+//             showSearch={true}
+//             // value={props.list1Value}
+//             style={{ width: "100%" }}
+//             // onChange={this.handleCategoryChange}
+//           >
+//             {props.list1SelectOptions}
+//             <Option value={NEW_ITEM}>
+//               <span className="sweetAlert-inCategory">+ ADD NEW</span>
+//             </Option>
+//           </Select>
+//         </div>
+//         <div className="pop-over-div">
+//           <label className="edit-label-1">Issue Type</label>
+//           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+//             <option>Bata</option>
+//             <option>Bata1</option>
+//             <option>Bata3</option>
+//           </select>
+//         </div>
+//         <div className="pop-over-div">
+//           <label className="edit-label-1">Status</label>
+//           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+//             <option>Active</option>
+//             <option>Inactive</option>
+//           </select>
+//         </div>
+//         <br />
+//         <div>
+//           <a
+//             className="pop-over-cancle"
+//             href={Demo.BLANK_LINK}
+//             style={{ marginRight: "20px" }}
+//           >
+//             CANCEL
+//           </a>
+//           <button className="pop-over-button">SAVE</button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 class CategoryMaster extends Component {
   constructor(props) {
     super(props);
@@ -489,18 +489,18 @@ class CategoryMaster extends Component {
   handleAddSubCategory(value) {
     debugger;
     let self = this;
-    // var finalId = 0;
-    // if (this.state.category_Id === 1) {
-    //   finalId = this.state.list1Value;
-    // } else {
-    //   finalId = this.state.category_Id;
-    // }
+    var finalId = 0;
+    if (this.state.category_Id === 1) {
+      finalId = this.state.list1Value;
+    } else {
+      finalId = this.state.category_Id;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/AddSubCategory",
       headers: authHeader(),
       params: {
-        categoryID: this.state.list1Value,
+        categoryID: finalId,
         SubcategoryName: value
       }
     }).then(function(res) {
@@ -525,18 +525,18 @@ class CategoryMaster extends Component {
   handleAddIssueType(value) {
     debugger;
     let self = this;
-    // var finalId = 0;
-    // if (this.state.subCategory_Id === 0) {
-    //   finalId = this.state.ListOfSubCate;
-    // } else {
-    //   finalId = this.state.subCategory_Id;
-    // }
+    var finalId = 0;
+   if (this.state.subCategory_Id === 0) {
+      finalId = this.state.ListOfSubCate;
+    } else {
+      finalId = this.state.subCategory_Id;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/AddIssueType",
       headers: authHeader(),
       params: {
-        SubcategoryID: this.state.ListOfSubCate,
+        SubcategoryID: finalId,
         IssuetypeName: value
       }
     }).then(function(res) {
@@ -621,6 +621,9 @@ class CategoryMaster extends Component {
             ListOfIssue: "",
             selectStatus: 0
           });
+        }else{
+          NotificationManager.error(status,"",
+          3000);
         }
       }).catch(data => {
         console.log(data);
@@ -670,6 +673,7 @@ class CategoryMaster extends Component {
     }
   };
   handleIssueOnChange = value => {
+    debugger
     if (value !== NEW_ITEM) {
       this.setState({ ListOfIssue: value });
     } else {
@@ -788,6 +792,7 @@ class CategoryMaster extends Component {
     }
   };
   handleModalIssueOnChange = value => {
+    debugger
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["issueTypeID"] = value;
@@ -1199,7 +1204,7 @@ class CategoryMaster extends Component {
                                 value={item.brandID}
                                 className="select-category-placeholder"
                               >
-                                {item.brandName}
+                                {item.brandCode}
                               </option>
                             ))}
                         </select>

@@ -651,6 +651,7 @@ class StoreMaster extends Component {
     });
   }
   handleSubmitData() {
+    debugger
     if (
       this.state.selectedBrand !== null &&
       this.state.store_code.length > 0 &&
@@ -691,15 +692,16 @@ class StoreMaster extends Component {
           StateID: this.state.selectState,
           CityID: this.state.selectCity,
           Pincode: this.state.pin_code,
-          Address: this.state.store_Address,
+          Address: this.state.store_Address.trim(),
           RegionID: this.state.selectRegion,
           ZoneID: this.state.selectZone,
           StoreTypeID: this.state.store_type,
-          StoreEmailID: this.state.contact_email,
+          StoreEmailID: this.state.contact_email.trim(),
           StorePhoneNo: this.state.contact_Phone,
           IsActive: activeStatus
         }
       }).then(function(res) {
+        debugger
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();

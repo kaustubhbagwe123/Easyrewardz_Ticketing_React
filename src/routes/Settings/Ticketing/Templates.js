@@ -897,12 +897,12 @@ class Templates extends Component {
                             // showNewOptionAtTop={false}
                             isMulti
                           />
+                        </div>
                           {this.state.selectedSlaIssueType.length === 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.issurtupeCompulsion}
                             </p>
                           )}
-                        </div>
                       </div>
                     </div>
                     <div className="divSpace">

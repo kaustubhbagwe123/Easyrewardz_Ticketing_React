@@ -28,8 +28,8 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
-import Schedule from "./../assets/Images/schedule.png";
-import Assign from "./../assets/Images/assign.png";
+// import Schedule from "./../assets/Images/schedule.png";
+// import Assign from "./../assets/Images/assign.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -147,7 +147,6 @@ class MyTicketList extends Component {
       byReassignedCount: 0,
       byClosedCount: 0,
       byReOpenCount: 0,
-
       byAllCount: 0,
       byFollowUpCount: 0,
       draftCountStatus: 0,
@@ -161,7 +160,6 @@ class MyTicketList extends Component {
       resultCount: 0,
       selectedAssignedTo: 0,
       AssignToData: [],
-      resultCount: 0,
       TeamMemberData: [],
       NameOfDayForWeek: [
         {
@@ -265,7 +263,8 @@ class MyTicketList extends Component {
       sortAllData: [],
       cSelectedRow: {},
       notiType: "",
-      moduleIDMyticket:0
+      moduleIDMyticket: 0,
+      ClearfollowUp: ""
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -319,6 +318,7 @@ class MyTicketList extends Component {
     this.handleMyTicketsearchOption = this.handleMyTicketsearchOption.bind(
       this
     );
+    this.handleClearFollowUpData = this.handleClearFollowUpData.bind(this);
   }
 
   componentDidMount() {
@@ -387,10 +387,10 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status = res.data.message;
+      // let status = res.data.message;
       let data = res.data.responseData;
-      let moduleID = data[0].moduleID;
-      let selTab = data[0].moduleName;
+      // let moduleID = data[0].moduleID;
+      // let selTab = data[0].moduleName;
       let moduleIDMyticket = data[1].moduleID;
 
       // if (status === "Success") {
@@ -399,7 +399,6 @@ class MyTicketList extends Component {
       //   self.setState({ modulesNames: [] });
       // }
       self.handleMyTicketsearchOption(moduleIDMyticket);
-      
     });
   }
   handleMyTicketsearchOption(id) {
@@ -668,6 +667,9 @@ class MyTicketList extends Component {
         let Status = res.data.message;
 
         if (data !== null) {
+          if (self.state.headerActiveId === 1003) {
+            self.handleClearFollowUpData();
+          }
           self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
@@ -717,12 +719,12 @@ class MyTicketList extends Component {
             self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
           }
 
-          var unique = [];
+          var Assignunique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].assignedTo]) {
+            if (!Assignunique[data[i].assignedTo]) {
               distinct.push(data[i].assignedTo);
-              unique[data[i].assignedTo] = 1;
+              Assignunique[data[i].assignedTo] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
@@ -752,7 +754,61 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
-
+  handleClearFollowUpData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Ticketing/getticketsforfollowup",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            ClearfollowUp: data
+          });
+        } else {
+          self.setState({
+            ClearfollowUp: ""
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  handleSearchClearFollowUp() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/ticketunassigfromfollowup",
+      headers: authHeader(),
+      params: {
+        TicketIDs: this.state.ClearfollowUp
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success(
+            "Clear Follow up notification successfully.",
+            "",
+            2000
+          );
+          self.handleSearchTicketAllTabCount();
+          self.handleSearchTicket(1003);
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   handleSchedulePopup() {
     debugger;
     // if (this.state.selectedTeamMember.length > 0 && ) {
@@ -1489,21 +1545,21 @@ class MyTicketList extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == 'categoryTab') {
+    if (param === "categoryTab") {
       this.setState({
         SubCategoryData: [],
         IssueTypeData: [],
         selectedSubCategory: 0,
         selectedIssueType: 0
       });
-    } else if (param == 'allTab') {
+    } else if (param === "allTab") {
       this.setState({
         SubCategoryAllData: [],
         IssueTypeAllData: [],
         selectedSubCategoryAll: 0,
         selectedIssueTypeAll: 0
       });
-    } else if (param == 'allClaimTab') {
+    } else if (param === "allClaimTab") {
       this.setState({
         ClaimSubCategoryData: [],
         selectedClaimSubCategory: 0,
@@ -1516,12 +1572,12 @@ class MyTicketList extends Component {
     //     ? this.state.selectedCategory
     //     : this.state.selectedCategoryAll;
     let cateId;
-    if (param == 'categoryTab') {
-      cateId = this.state.selectedCategory
-    } else if (param == 'allTab') {
-      cateId = this.state.selectedCategoryAll
-    } else if (param == 'allClaimTab') {
-      cateId = this.state.selectedClaimCategory
+    if (param == "categoryTab") {
+      cateId = this.state.selectedCategory;
+    } else if (param === "allTab") {
+      cateId = this.state.selectedCategoryAll;
+    } else if (param === "allClaimTab") {
+      cateId = this.state.selectedClaimCategory;
     }
 
     axios({
@@ -1544,15 +1600,15 @@ class MyTicketList extends Component {
         //     SubCategoryAllData: data
         //   });
         // }
-        if (param == 'categoryTab') {
+        if (param === "categoryTab") {
           self.setState({
             SubCategoryData: data
           });
-        } else if (param == 'allTab') {
+        } else if (param === "allTab") {
           self.setState({
             SubCategoryAllData: data
           });
-        } else if (param == 'allClaimTab') {
+        } else if (param === "allClaimTab") {
           self.setState({
             ClaimSubCategoryData: data
           });
@@ -1594,17 +1650,17 @@ class MyTicketList extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == 'categoryTab') {
+    if (param === "categoryTab") {
       self.setState({
         IssueTypeData: [],
         selectedIssueType: 0
       });
-    } else if (param == 'allTab') {
+    } else if (param === "allTab") {
       self.setState({
         IssueTypeAllData: [],
         selectedIssueTypeAll: 0
       });
-    } else if (param == 'allClaimTab') {
+    } else if (param === "allClaimTab") {
       self.setState({
         ClaimIssueTypeData: [],
         selectedClaimIssueType: 0
@@ -1615,12 +1671,12 @@ class MyTicketList extends Component {
     //     ? this.state.selectedSubCategory
     //     : this.state.selectedSubCategoryAll;
     let subCateId;
-    if (param == 'categoryTab') {
-      subCateId = this.state.selectedSubCategory
-    } else if (param == 'allTab') {
-      subCateId = this.state.selectedSubCategoryAll
-    } else if (param == 'allClaimTab') {
-      subCateId = this.state.selectedClaimSubCategory
+    if (param === "categoryTab") {
+      subCateId = this.state.selectedSubCategory;
+    } else if (param === "allTab") {
+      subCateId = this.state.selectedSubCategoryAll;
+    } else if (param === "allClaimTab") {
+      subCateId = this.state.selectedClaimSubCategory;
     }
 
     axios({
@@ -1644,17 +1700,17 @@ class MyTicketList extends Component {
         //     IssueTypeAllData: IssueTypeAllData
         //   });
         // }
-        if (param == 'categoryTab') {
+        if (param === "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
             IssueTypeData: IssueTypeData
           });
-        } else if (param == 'allTab') {
+        } else if (param === "allTab") {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
             IssueTypeAllData: IssueTypeAllData
           });
-        } else if (param == 'allClaimTab') {
+        } else if (param === "allClaimTab") {
           var ClaimIssueTypeData = res.data.responseData;
           self.setState({
             ClaimIssueTypeData: ClaimIssueTypeData
@@ -2265,7 +2321,7 @@ class MyTicketList extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList('categoryTab');
+        this.handleGetSubCategoryList("categoryTab");
       }
     }, 1);
   };
@@ -2274,7 +2330,7 @@ class MyTicketList extends Component {
     this.setState({ selectedClaimCategory: claimCategoryValue });
     setTimeout(() => {
       if (this.state.selectedClaimCategory) {
-        this.handleGetSubCategoryList('allClaimTab');
+        this.handleGetSubCategoryList("allClaimTab");
       }
     }, 1);
   };
@@ -2283,7 +2339,7 @@ class MyTicketList extends Component {
     this.setState({ selectedCategoryAll: categoryAllValue });
     setTimeout(() => {
       if (this.state.selectedCategoryAll) {
-        this.handleGetSubCategoryList('allTab');
+        this.handleGetSubCategoryList("allTab");
       }
     }, 1);
   };
@@ -2293,7 +2349,7 @@ class MyTicketList extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList('categoryTab');
+        this.handleGetIssueTypeList("categoryTab");
       }
     }, 1);
   };
@@ -2303,7 +2359,7 @@ class MyTicketList extends Component {
 
     setTimeout(() => {
       if (this.state.selectedClaimSubCategory) {
-        this.handleGetIssueTypeList('allClaimTab');
+        this.handleGetIssueTypeList("allClaimTab");
       }
     }, 1);
   };
@@ -2313,7 +2369,7 @@ class MyTicketList extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategoryAll) {
-        this.handleGetIssueTypeList('allTab');
+        this.handleGetIssueTypeList("allTab");
       }
     }, 1);
   };
@@ -2370,9 +2426,9 @@ class MyTicketList extends Component {
   hanleChange = () => {
     this.props.history.push("/admin/addSearchMyTicket");
   };
-  hanleChange_MyTicket = () => {
-    this.props.history.push("/admin/myticket");
-  };
+  // hanleChange_MyTicket = () => {
+  //   this.props.history.push("/admin/myticket");
+  // };
   handleAssignModalOpen() {
     this.setState({ AssignModal: true });
   }
@@ -2890,7 +2946,7 @@ class MyTicketList extends Component {
               const element = actionId[i];
               for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
                 if (
-                  element ==
+                  element ===
                   self.state.TicketActionTypeData[j].ticketActionTypeID
                 ) {
                   actionArr.push(self.state.TicketActionTypeData[j]);
@@ -2934,7 +2990,7 @@ class MyTicketList extends Component {
                   dataSearch.searchDataByCategoryType.TicketStatusID
               },
               () => {
-                self.handleGetSubCategoryList('categoryTab');
+                self.handleGetSubCategoryList("categoryTab");
               }
             );
             self.setState(
@@ -2943,7 +2999,7 @@ class MyTicketList extends Component {
                   dataSearch.searchDataByCategoryType.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList('categoryTab');
+                self.handleGetIssueTypeList("categoryTab");
               }
             );
             self.setState({
@@ -3050,7 +3106,7 @@ class MyTicketList extends Component {
                 allFlag: 5
               },
               () => {
-                self.handleGetSubCategoryList('allTab');
+                self.handleGetSubCategoryList("allTab");
               }
             );
             self.setState(
@@ -3058,7 +3114,7 @@ class MyTicketList extends Component {
                 selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList('allTab');
+                self.handleGetIssueTypeList("allTab");
               }
             );
             self.setState({
@@ -3532,7 +3588,7 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("FollowUp");
                   }}
                 >
-                  Follow Up:{" "}
+                  Follow Up:
                   <span className="myTciket-tab-span">
                     {this.state.byFollowUpCount < 9
                       ? "0" + this.state.byFollowUpCount
@@ -3568,6 +3624,19 @@ class MyTicketList extends Component {
               >
                 ASSIGN
               </button> */}
+              {this.state.SearchTicketData.length > 0 ? (
+                <div>
+                  {this.state.headerActiveId === 1003 ? (
+                    <label
+                      className="clrFlwUp"
+                      onClick={this.handleSearchClearFollowUp.bind(this)}
+                    >
+                      Clear FollowUp
+                    </label>
+                  ) : null}
+                </div>
+              ) : null}
+             
               <button
                 className="Add-ticket-button"
                 type="button"
@@ -6049,7 +6118,7 @@ class MyTicketList extends Component {
                             defaultPageSize={10}
                             showPagination={true}
                             getTrProps={this.HandleRowClickPage}
-                            minRows={1}
+                            minRows={2}
                             defaultSorted={[
                               {
                                 id: "ticketID",

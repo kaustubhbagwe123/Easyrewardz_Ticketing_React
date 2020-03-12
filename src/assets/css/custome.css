@@ -3486,8 +3486,9 @@ table tr th:last-child {
   border: 1px solid #eaeaea;
   padding: 4px 10px;
   border-radius: 5px;
+  width: 100%;
 }
-.custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th {
+.custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th span {
   font-weight: 700;
   color: #4a4a4a;
   white-space: nowrap;
@@ -3495,12 +3496,18 @@ table tr th:last-child {
   background: transparent !important;
   border-bottom: 0;
 }
+.custom-react-table .rt-thead .rt-th span {
+  padding: 0 !important;
+  font-size: 12px;
+}
 .custom-antd-table .ant-table-thead > tr {
   background: transparent !important;
 }
-.custom-antd-table .ant-table-tbody > tr > td {
-  white-space: nowrap;
+.custom-antd-table .ant-table-tbody > tr > td, .custom-react-table .rt-tbody .rt-td {
+  /* white-space: nowrap !important; */
   padding: 20px !important;
+  font-weight: 700 !important;
+  font-size: 13px;
 }
 .custom-antd-table .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td {
   background: transparent;
@@ -3511,19 +3518,26 @@ table tr th:last-child {
 .custom-antd-table .ant-table-expanded-row > td:first-child {
   display: none;
 }
-.custom-antd-table .ant-table-expanded-row {
+.custom-antd-table .ant-table-expanded-row, .inner-custom-react-table .ReactTable {
   background: #f8f8f8;
+}
+.inner-custom-react-table .ReactTable {
+  border-radius: 0 !important;
+  border-top: 1px solid #e8e8e8 !important;
+}
+.inner-custom-react-table .ReactTable .rt-tbody .rt-tr-group {
+  border-bottom: 0;
 }
 .custom-antd-table .ant-table-expanded-row .ant-table-tbody > tr > td {
   border-bottom: 0;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
-.custom-antd-table .filter-checkbox input + label {
+.custom-antd-table .filter-checkbox input + label, .custom-react-table .filter-checkbox input + label {
   padding-left: 0;
   top: -5px;
 }
-.custom-antd-table table {
+.custom-antd-table table, .custom-react-table .ReactTable {
   padding: 0 20px;
 }
 .custom-antd-table .ant-table-expanded-row table {
@@ -3635,6 +3649,19 @@ table tr th:last-child {
 }
 .ck-edit-mar {
   margin-bottom: 14px !important;
+}
+.tic-det-ck-user {
+  position: absolute;
+  right: 230px;
+  z-index: 1;
+  background: #fff !important;
+  top: 5px;
+}
+.tic-det-ck-user select {
+  background-color: #ecf2f4 !important;
+  height: auto;
+  padding: 5px 25px 5px 15px !important;
+  background-position: right 10px center !important;
 }
 /* my ticket ends */
 
@@ -6687,6 +6714,13 @@ font-weight: normal;
   border-right: none !important;
   font-weight: 500;
 }
+.inner-custom-react-table .ReactTable .rt-tbody .rt-td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+#inner-custom-react-table .ReactTable .rt-thead .rt-th.-cursor-pointer {
+  padding: 15px 20px 9px !important;
+}
 .ReactTable .rt-thead .rt-th.-cursor-pointer,
 .ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 15px !important;
@@ -9000,7 +9034,8 @@ table tr th:last-child {
 }
 .reactstoreselect .ReactTable .rt-thead .rt-th.-cursor-pointer,
 .ReactTable .rt-thead .rt-td.-cursor-pointer {
-  padding: 12px 15px !important;
+  padding: 10px 20px 4px !important;
+  /* padding: 12px 15px !important; */
 }
 .reactstoreselect .ReactTable .rt-thead.-header {
   box-shadow: none !important;
@@ -10687,15 +10722,25 @@ table tr th:last-child {
 .noti-count label {
   padding-right: 9px;
 }
+.notification-popover {
+  max-width: 150px;
+  max-height: 200px;
+  overflow: auto;
+  padding-right: 10px;
+}
 .cus-drp .css-yk16xz-control {
   border: none;
-  background: #ecf2f4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAA/klEQ…j3UuJad2BC/F5+Er2dlJryf+sGhAHjNwWV88XXdixkp/UFw/tTyABncXQAAAAASUVORK5CYII=) no-repeat right 25px center;
-  background-size: 13px;
-  height: 43px;
   color: #000;
-  display: block;
-  border: 0;
+  /* display: block; */
   margin-top: 5px;
+}
+.cus-drp .css-1hwfws3 {
+  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 25px center;
+  background-size: 13px;
+  min-height: 43px;
+  border-radius: 4px;
+  padding-right: 45px;
+  padding-top: 4px;
 }
 .cus-drp .css-1g48xl4-IndicatorsContainer {
   display: none;
@@ -10704,7 +10749,6 @@ table tr th:last-child {
   border-color: transparent;
   margin-top: 5px;
   border:none;
-  min-height: 43px;
   box-shadow: none;
   background-color: #ecf2f4;
 }
@@ -10986,4 +11030,13 @@ table tr th:last-child {
   float: right;
   margin: 0;
   color: #2561a8 !important;
+}
+
+.clrFlwUp{
+  color: #2561A8;
+    width: 18px;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-table;
 }
