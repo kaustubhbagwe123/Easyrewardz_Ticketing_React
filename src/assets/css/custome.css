@@ -10673,12 +10673,15 @@ table tr th:last-child {
     cursor: pointer;
 }
 
-.datePickertable .react-datepicker__input-container input {
+.datePickertable .react-datepicker__input-container input, .date-picker-arrows .react-datepicker__input-container input {
   width: 100%;
   border: 1px solid #dcd4d4;
   padding: 1px 5px;
   border-radius: 3px;
   font-weight: 500;
+}
+.date-picker-arrows .react-datepicker__input-container input {
+  width: auto;
 }
 .datePickertable button {
   min-width: initial;
