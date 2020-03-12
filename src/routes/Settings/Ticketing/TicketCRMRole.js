@@ -24,6 +24,7 @@ import DownExcel from "../../../assets/Images/csv.png";
 import SimpleReactValidator from "simple-react-validator";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const MyButton = props => {
   const { children } = props;
@@ -163,7 +164,8 @@ class TicketCRMRole extends Component {
       updateRoleNameCompulsion: "",
       modulesData: [],
       crmRoleID: 0,
-      modulestatus: ""
+      modulestatus: "",
+      editSaveLoading: false
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -321,7 +323,7 @@ class TicketCRMRole extends Component {
       } else if (e === "update") {
         CRMRoleID = this.state.crmRoleID;
         RoleName = this.state.RoleName;
-         
+
         for (let j = 0; j < this.state.modulesData.length; j++) {
           if (this.state.modulesData[j].modulestatus) {
             ModulesEnabled += this.state.modulesData[j].moduleID + ",";
@@ -338,6 +340,7 @@ class TicketCRMRole extends Component {
         //   self.state.updateModulesDisabled.length - 1
         // );
       }
+      this.setState({ editSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CRMRole/CreateUpdateCRMRole",
@@ -357,6 +360,7 @@ class TicketCRMRole extends Component {
             if (e === "add") {
               NotificationManager.success("CRM Role added successfully.");
               self.setState({
+                
                 RoleName: "",
                 RoleisActive: "true",
                 ModulesEnabled: "",
@@ -366,6 +370,7 @@ class TicketCRMRole extends Component {
               });
               self.handleGetCRMRoles();
             } else if (e === "update") {
+              self.setState({editSaveLoading: false})
               NotificationManager.success("CRM Role updated successfully.");
               self.handleGetCRMRoles();
               self.toggleEditModal();
@@ -374,11 +379,13 @@ class TicketCRMRole extends Component {
             if (e === "add") {
               NotificationManager.error("CRM Role not added.");
             } else if (e === "update") {
+              self.setState({editSaveLoading: false})
               NotificationManager.error("CRM Role not updated.");
             }
           }
         })
         .catch(data => {
+          self.setState({ editSaveLoading: false, editmodel: false });
           console.log(data);
         });
     } else {
@@ -1059,11 +1066,25 @@ class TicketCRMRole extends Component {
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
                   CANCEL
                 </a>
-                <button className="pop-over-button">
-                  <label
-                    className="pop-over-btnsave-text"
-                    onClick={ this.createUpdateCrmRole.bind(this,"update",this.state.crmRoleID)}
-                  >
+                <button
+                  className="pop-over-button"
+                  onClick={this.createUpdateCrmRole.bind(
+                    this,
+                    "update",
+                    this.state.crmRoleID
+                  )}
+                  disabled={this.state.editSaveLoading}
+                >
+                  <label className="pop-over-btnsave-text">
+                    {this.state.editSaveLoading ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )}
                     SAVE
                   </label>
                 </button>
