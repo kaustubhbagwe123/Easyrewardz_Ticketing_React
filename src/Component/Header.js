@@ -61,8 +61,10 @@ class Header extends Component {
       WaitingCall: false,
       userProfile: "",
       notifiMessages: [],
+      NotifiTicketIds: [],
       percentLog: 0,
       workTime: 0,
+      ticketDetailID: 0,
       workTimeHours: "0H 0M",
       selectedUserProfilePicture: "",
       notificationAccess: "yes",
@@ -180,11 +182,16 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  handleViewTicketModalOpen = () => {
+  handleViewTicketModalOpen(data) {
+    debugger;
+    var Ticket_Ids = data.ticketIDs;
+    var Ids = Ticket_Ids.split(",");
+
     this.setState({
-      ViewTicketModal: true
+      // ViewTicketModal: true,
+      NotifiTicketIds: Ids
     });
-  };
+  }
   handleViewTicketModalClose = () => {
     this.setState({
       ViewTicketModal: false
@@ -201,7 +208,7 @@ class Header extends Component {
         url: config.apiUrl + "/Notification/ReadNotification",
         headers: authHeader(),
         params: {
-          TicketIDS: notiIds
+          TicketID: notiIds
         }
       }).then(function(res) {
         debugger;
@@ -431,6 +438,12 @@ class Header extends Component {
         });
       }
     });
+  }
+
+  handleShowTicket(Ids) {
+    debugger;
+    this.closeModal();
+    this.onViewTicket(Ids);
   }
 
   render() {
@@ -1000,7 +1013,7 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           {this.state.notifiMessages.map((item, i) => {
-            debugger;
+            // debugger;
             return (
               <div className="row rowpadding" key={i}>
                 <div className="md-2 rectangle-2 lable05 noti-count">
@@ -1012,22 +1025,44 @@ class Header extends Component {
                   </label>
                 </div>
                 <div className="viewticketspeadding">
-                  {/* <Link
-                    to={{
-                      pathname: "myTicketlist",
-                      state: {
-                        isType: "New"
-                      }
-                    }}
-                    onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
-                  > */}
+                  <Popover
+                    content={
+                      <div className="notification-popover">
+                        {this.state.NotifiTicketIds.map((data, j) => {
+                          return (
+                            <p key={j}>
+                              Ticket No. :
+                              <Link
+                                to={{
+                                  pathname: "myticket",
+                                  ticketDetailID: data
+                                }}
+                                
+                                onClick={this.handleShowTicket.bind(this, data)}
+                              >
+                                {data}
+                              </Link>
+                            </p>
+                          );
+                        })}
+                      </div>
+                    }
+                    placement="bottom"
+                    trigger="click"
+                  >
                     <div
                       className="md-4 view-tickets"
-                      onClick={this.handleViewTicketModalOpen}
+                      onClick={this.handleViewTicketModalOpen.bind(this, item)}
                     >
                       VIEW TICKETS
                     </div>
-                  {/* </Link> */}
+                  </Popover>
+                  {/* <div
+                    className="md-4 view-tickets"
+                    onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                  >
+                    VIEW TICKETS
+                  </div> */}
                 </div>
               </div>
             );
@@ -1039,7 +1074,26 @@ class Header extends Component {
           modalId="Notification-popup"
           overlayId="logout-ovrly"
         >
-          Hello
+          {/* <Link
+            to={{
+              pathname: "myticket",
+              ticketDetailID: 428
+            }}
+            target="_blank"
+          > */}
+          {this.state.NotifiTicketIds.map((data, j) => {
+            return (
+              <a
+                href="#!"
+                style={{ wordWrap: "break-word" }}
+                key={j}
+                onClick={this.handleShowTicket.bind(this)}
+              >
+                {data + ", "}
+              </a>
+            );
+          })}
+          {/* </Link> */}
         </Modal>
         <div>
           <Modal

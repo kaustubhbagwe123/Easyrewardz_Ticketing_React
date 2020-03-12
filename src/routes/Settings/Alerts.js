@@ -144,6 +144,7 @@ class Alerts extends Component {
       AddAlertTabsPopup: false,
       content: "",
       tabIndex: 0,
+      innerTabIndex: 0,
       alert: [],
       updateAlertTypeName: "",
       updateAlertisActive: "",
@@ -282,11 +283,6 @@ class Alerts extends Component {
     debugger;
     let check = e.target.checked;
     let val = e.target.value;
-    if (val === "smsCust") {
-      this.setState({
-        tabIndex: 1
-      });
-    }
     if (check === true) {
       this.setState({
         [val]: true
@@ -296,6 +292,34 @@ class Alerts extends Component {
         [val]: false
       });
     }
+    setTimeout(() => {
+      if (this.state.emailCust || this.state.emailInt || this.state.emailStore) {
+        this.setState({
+          tabIndex: 0
+        });
+      } else if (this.state.smsCust) {
+        this.setState({
+          tabIndex: 1
+        });
+      } else if (this.state.notiInt) {
+        this.setState({
+          tabIndex: 2
+        });
+      }
+      if (this.state.emailCust) {
+        this.setState({
+          innerTabIndex: 0
+        });
+      } else if (this.state.emailInt) {
+        this.setState({
+          innerTabIndex: 1
+        });
+      } else if (this.state.emailStore) {
+        this.setState({
+          innerTabIndex: 2
+        });
+      }
+    }, 100);
     if (val === "emailCust" && check === true) {
       this.state.selectedEmailCustomer = true;
     } else if (val === "emailCust" && check === false) {
@@ -455,7 +479,8 @@ class Alerts extends Component {
       this.state.selectedSMSCustomer === true ||
       this.state.selectedNotifInternal === true
     ) {
-      this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
+      this.setState({ AddAlertTabsPopup: true });
+      // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
     } else {
       this.setState({
         alertTypeCompulsion: "Please Enter Alert Type",
@@ -1115,7 +1140,8 @@ class Alerts extends Component {
                                 {this.state.emailCust && (
                                   <li className="nav-item">
                                     <a
-                                      className="nav-link active"
+                                      className={`nav-link ${this.state.innerTabIndex ===
+                                        0 && "active"}`}
                                       data-toggle="tab"
                                       href="#customer-tab"
                                       role="tab"
@@ -1129,7 +1155,8 @@ class Alerts extends Component {
                                 {this.state.emailInt && (
                                   <li className="nav-item">
                                     <a
-                                      className="nav-link"
+                                      className={`nav-link ${this.state.innerTabIndex ===
+                                        1 && "active"}`}
                                       data-toggle="tab"
                                       href="#Internal-tab"
                                       role="tab"
@@ -1143,7 +1170,8 @@ class Alerts extends Component {
                                 {this.state.emailStore && (
                                   <li className="nav-item">
                                     <a
-                                      className="nav-link"
+                                      className={`nav-link ${this.state.innerTabIndex ===
+                                        2 && "active"}`}
                                       data-toggle="tab"
                                       href="#ticket-tab"
                                       role="tab"
@@ -1158,7 +1186,8 @@ class Alerts extends Component {
                             </div>
                             <div className="tab-content p-0 alert-p1">
                               <div
-                                className="tab-pane fade show active"
+                                className={`tab-pane fade ${this.state.innerTabIndex ===
+                                  0 && "show active"}`}
                                 id="customer-tab"
                                 role="tabpanel"
                                 aria-labelledby="customer-tab"
@@ -1287,7 +1316,8 @@ class Alerts extends Component {
                               </div> */}
                               </div>
                               <div
-                                className="tab-pane fade"
+                                className={`tab-pane fade ${this.state.innerTabIndex ===
+                                  1 && "show active"}`}
                                 id="Internal-tab"
                                 role="tabpanel"
                                 aria-labelledby="Internal-tab"
@@ -1414,7 +1444,8 @@ class Alerts extends Component {
                               </div>*/}
                               </div>
                               <div
-                                className="tab-pane fade"
+                                className={`tab-pane fade ${this.state.innerTabIndex ===
+                                  2 && "show active"}`}
                                 id="ticket-tab"
                                 role="tabpanel"
                                 aria-labelledby="ticket-tab"

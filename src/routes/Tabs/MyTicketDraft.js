@@ -98,7 +98,7 @@ class MyTicketDraft extends Component {
             // resizable={false}
             defaultPageSize={5}
             showPagination={true}
-            minRows={0}
+            minRows={2}
           />
           {/* <div className="position-relative">
             <div className="pagi">

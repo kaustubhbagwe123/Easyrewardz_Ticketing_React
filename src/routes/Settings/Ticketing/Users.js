@@ -75,62 +75,58 @@ class Users extends Component {
       multicategoryIDs: "",
       multisubcategoryIDs: "",
       editreporteeDesign: 0,
-
       userEditData: {},
       editmodel: false,
       selectedAgentRadio: false,
       selectedSupervisorRadio: false,
       editAgentRadio: true,
       editSupervisorRadio: false,
-      buttonToggle:false,
-      buttonProfileToggle:false,
+      buttonToggle: false,
+      buttonProfileToggle: false,
       forEditID: 0,
       test: "",
-      usernameCompulsion:"",
-      firstnameCompulsion:"",
-      lastnameCompulsion:"",
-      mobilenumberCompulsion:"",
-      emailCompulsion:"",
-      userdesignCompulsion:"",
-      reporteeDesignCompulsion:"",
-      reportToCompulsion:"",
-      brandCompulsion:"",
-      categoryCompulsion:"",
-      subcategoryCompulsion:"",
-      isuuetypeCompulsion:"",
-      crmroleCompulsion:"",
-      copyescCompulsion:"",
-      assignescCompulsion:"",
-      agentCompulsion:"",
-      editusernameCompulsion:"",
-      editfirstnameCompulsion:"",
-      editlastnameCompulsion:"",
-      editmobilenumberCompulsion:"",
-      editemailCompulsion:"",
-      edituserdesignCompulsion:"",
-      editreporteeDesignCompulsion:"",
-      editreportToCompulsion:"",
-      editbrandCompulsion:"",
-      editcategoryCompulsion:"",
-      editsubcategoryCompulsion:"",
-      editisuuetypeCompulsion:"",
-      editcrmroleCompulsion:"",
-      editcopyescCompulsion:"",
-      editassignescCompulsion:"",
-      editagentCompulsion:"",
-      emailValidation:"",
-      mobileValidation:"",
-      personalReadOnly:false,
-      profileReadOnly:false,
-      StatusModel:false,
-      sortAllData:"",
-      sortDesignation:[],
-      selTab: 'Personal Details'
-
-
+      usernameCompulsion: "",
+      firstnameCompulsion: "",
+      lastnameCompulsion: "",
+      mobilenumberCompulsion: "",
+      emailCompulsion: "",
+      userdesignCompulsion: "",
+      reporteeDesignCompulsion: "",
+      reportToCompulsion: "",
+      brandCompulsion: "",
+      categoryCompulsion: "",
+      subcategoryCompulsion: "",
+      isuuetypeCompulsion: "",
+      crmroleCompulsion: "",
+      copyescCompulsion: "",
+      assignescCompulsion: "",
+      agentCompulsion: "",
+      editusernameCompulsion: "",
+      editfirstnameCompulsion: "",
+      editlastnameCompulsion: "",
+      editmobilenumberCompulsion: "",
+      editemailCompulsion: "",
+      edituserdesignCompulsion: "",
+      editreporteeDesignCompulsion: "",
+      editreportToCompulsion: "",
+      editbrandCompulsion: "",
+      editcategoryCompulsion: "",
+      editsubcategoryCompulsion: "",
+      editisuuetypeCompulsion: "",
+      editcrmroleCompulsion: "",
+      editcopyescCompulsion: "",
+      editassignescCompulsion: "",
+      editagentCompulsion: "",
+      emailValidation: "",
+      mobileValidation: "",
+      personalReadOnly: false,
+      profileReadOnly: false,
+      StatusModel: false,
+      sortAllData: "",
+      sortDesignation: [],
+      selTab: "Personal Details"
     };
-    this.handleUserList = this.handleUserList.bind(this);
-    this.handleOnChangeUserData = this.handleOnChangeUserData.bind(this);
+    this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
@@ -138,7 +134,9 @@ class Users extends Component {
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleGetCRMRoleList = this.handleGetCRMRoleList.bind(this);
-    this.handleGetReporteedesignationList = this.handleGetReporteedesignationList.bind(this);
+    this.handleGetReporteedesignationList = this.handleGetReporteedesignationList.bind(
+      this
+    );
     this.handleGetReportTOList = this.handleGetReportTOList.bind(this);
     this.handleAddProfileDetails = this.handleAddProfileDetails.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
@@ -147,32 +145,30 @@ class Users extends Component {
     this.handleGetUserListByID = this.handleGetUserListByID.bind(this);
     this.togglePopover = this.togglePopover.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
-    this.handleSendMail=this.handleSendMail.bind(this);
-    this.handleValidationEmailIdMob=this.handleValidationEmailIdMob.bind(this);
+    this.handleSendMail = this.handleSendMail.bind(this);
+    this.handleValidationEmailIdMob = this.handleValidationEmailIdMob.bind(
+      this
+    );
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   componentDidMount() {
     debugger;
-    this.handleUserList();
+    this.handleGetUserList();
     this.handleGetBrandList();
-   
     this.handleGetDesignationList();
     this.handleGetCRMRoleList();
     this.handleGetReporteedesignationList();
     this.handleGetReportTOList();
-
   }
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
-    itemsArray.sort(function(a, b)  {
-      return    a.ticketStatus > b.ticketStatus ? 1:-1;
-        });
-
-    
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
 
     this.setState({
       userData: itemsArray
@@ -183,10 +179,8 @@ class Users extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
-    itemsArray.sort((a, b)=> {
-      return a.ticketStatus < b.ticketStatus
-         
-      
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
     });
     this.setState({
       userData: itemsArray
@@ -196,40 +190,34 @@ class Users extends Component {
 
   StatusOpenModel(data) {
     debugger;
-  
-    this.setState({ StatusModel: true,sortColumn:data });
+    this.setState({ StatusModel: true, sortColumn: data });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
 
-  setSortCheckStatus = (column,e) => {
+  setSortCheckStatus = (column, e) => {
     debugger;
-    
+
     var itemsArray = [];
     var data = e.currentTarget.value;
-    if(column==="all"){
-      itemsArray=this.state.sortAllData;
-      
-    }else if(column==="designation"){
-        this.state.userData=this.state.sortAllData;
-        itemsArray = this.state.userData.filter(
-          a => a.designation === data
-        );
-        
-      }
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "designation") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.designation === data);
+    }
     this.setState({
       userData: itemsArray
     });
     this.StatusCloseModel();
   };
 
-  opneEditModal=()=> {
+  opneEditModal = () => {
     this.setState({ editmodel: true });
-
-  }
+  };
   closeEditModal() {
-    this.setState({ editmodel: false, selTab: 'Personal Details' });
+    this.setState({ editmodel: false, selTab: "Personal Details" });
   }
 
   togglePopover() {
@@ -239,18 +227,23 @@ class Users extends Component {
   hide(e, id) {
     debugger;
     // document.getElementById(id).style.display="none";
-    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+    document.getElementById(
+      id
+    ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+      "none";
   }
   show(e, id) {
     debugger;
     if (document.getElementById(id))
       // document.getElementById(id).style.display="block";
-      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+      document.getElementById(
+        id
+      ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+        "block";
   }
-  setUserEditData = (e) => {
-
+  setUserEditData = e => {
     debugger;
-    let self =this
+    let self = this;
     var brand = [];
     var cat = [];
     var subcat = [];
@@ -289,50 +282,56 @@ class Users extends Component {
     if (userEditData.assign_Escalation === "Agent") {
       var agent = true;
       var supervi = false;
-    }
-    else if (userEditData.assign_Escalation === "Supervisor") {
+    } else if (userEditData.assign_Escalation === "Supervisor") {
       var supervi = true;
       var agent = false;
     }
-    var bname = userEditData.brand_Names.split(',');
-    var bid = userEditData.brand_IDs.split(',').map(Number);
+    var bname = userEditData.brand_Names.split(",");
+    var bid = userEditData.brand_IDs.split(",").map(Number);
 
-    var catname = userEditData.category_Names.split(',');
-    var catid = userEditData.category_IDs.split(',').map(Number);
+    var catname = userEditData.category_Names.split(",");
+    var catid = userEditData.category_IDs.split(",").map(Number);
 
-    var subcatname = userEditData.subCategory_Names.split(',');
-    var subcatid = userEditData.subCategory_IDs.split(',').map(Number);
+    var subcatname = userEditData.subCategory_Names.split(",");
+    var subcatid = userEditData.subCategory_IDs.split(",").map(Number);
 
-    var issuename = userEditData.issueType_Names.split(',');
-    var issueid = userEditData.issueType_IDs.split(',').map(Number);
-    if(userEditData.brand_IDs !==""){
-    for (let i = 0; i < bid.length; i++) {
-      brand.push({ brandID: bid[i], brandName: bname[i] });
+    var issuename = userEditData.issueType_Names.split(",");
+    var issueid = userEditData.issueType_IDs.split(",").map(Number);
+    if (userEditData.brand_IDs !== "") {
+      for (let i = 0; i < bid.length; i++) {
+        brand.push({ brandID: bid[i], brandName: bname[i] });
+      }
     }
-  }
 
-  if(userEditData.category_IDs !==""){
-    for (let i = 0; i < catid.length; i++) {
-      cat.push({ categoryID: catid[i], categoryName: catname[i] });
+    if (userEditData.category_IDs !== "") {
+      for (let i = 0; i < catid.length; i++) {
+        cat.push({ categoryID: catid[i], categoryName: catname[i] });
+      }
     }
-  }
-if(userEditData.subCategory_IDs !==""){
-    for (let i = 0; i < subcatid.length; i++) {
-      subcat.push({ subCategoryID: subcatid[i], subCategoryName: subcatname[i] });
+    if (userEditData.subCategory_IDs !== "") {
+      for (let i = 0; i < subcatid.length; i++) {
+        subcat.push({
+          subCategoryID: subcatid[i],
+          subCategoryName: subcatname[i]
+        });
+      }
     }
-  }
-  if(userEditData.issueType_IDs !==""){
-    for (let i = 0; i < issueid.length; i++) {
-      issue.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
+    if (userEditData.issueType_IDs !== "") {
+      for (let i = 0; i < issueid.length; i++) {
+        issue.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
+      }
     }
-  }
-    debugger
-  
+    debugger;
     self.setState({
-      userEditData, editBrand: brand, editCategory: cat, editSubCategory: subcat, editIssuetype: issue, editAgentRadio: agent,
-      editSupervisorRadio: supervi,
-    })
-   
+      userEditData,
+      editBrand: brand,
+      editCategory: cat,
+      editSubCategory: subcat,
+      editIssuetype: issue,
+      editAgentRadio: agent,
+      editSupervisorRadio: supervi
+    });
+
     self.handleGetReporteedesignationList("edit");
     self.handleGetReportTOList("edit");
     self.handleGetCategoryList("edit");
@@ -340,13 +339,15 @@ if(userEditData.subCategory_IDs !==""){
     self.handleGetIssueTypeList("edit");
     self.handleGetAgentList("edit");
     self.opneEditModal();
-   
-  }
+  };
 
-  handleAgentValue =(datar,e)  => {
+  handleAgentValue = (datar, e) => {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({selectedSupervisorRadio:false, selectedAgentRadio: subjectvalue });
+    this.setState({
+      selectedSupervisorRadio: false,
+      selectedAgentRadio: subjectvalue
+    });
     setTimeout(() => {
       if (this.state.selectedAgentRadio === true) {
         this.handleGetAgentList(datar);
@@ -354,10 +355,13 @@ if(userEditData.subCategory_IDs !==""){
     }, 1);
   };
 
-  handleSuperValue =(datar,e)=> {
+  handleSuperValue = (datar, e) => {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({ selectedAgentRadio:false, selectedSupervisorRadio: subjectvalue });
+    this.setState({
+      selectedAgentRadio: false,
+      selectedSupervisorRadio: subjectvalue
+    });
     setTimeout(() => {
       if (this.state.selectedSupervisorRadio === true) {
         this.handleGetAgentList(datar);
@@ -365,10 +369,10 @@ if(userEditData.subCategory_IDs !==""){
     }, 1);
   };
 
-  editAgentValue =(datar,e)=> {
+  editAgentValue = (datar, e) => {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({editSupervisorRadio:false, editAgentRadio: subjectvalue });
+    this.setState({ editSupervisorRadio: false, editAgentRadio: subjectvalue });
     setTimeout(() => {
       if (this.state.editAgentRadio === true) {
         this.handleGetAgentList(datar);
@@ -376,10 +380,10 @@ if(userEditData.subCategory_IDs !==""){
     }, 1);
   };
 
-  editSuperValue =(datar,e)=> {
+  editSuperValue = (datar, e) => {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({editAgentRadio:false, editSupervisorRadio: subjectvalue });
+    this.setState({ editAgentRadio: false, editSupervisorRadio: subjectvalue });
     setTimeout(() => {
       if (this.state.editSupervisorRadio === true) {
         this.handleGetAgentList(datar);
@@ -389,12 +393,9 @@ if(userEditData.subCategory_IDs !==""){
 
   setEscn = e => {
     debugger;
-
     this.setState({ [e.target.name]: e.currentTarget.checked });
-
   };
 
-  
   editsetEscn = e => {
     debugger;
     var name = e.target.name;
@@ -402,11 +403,8 @@ if(userEditData.subCategory_IDs !==""){
     var data = e.currentTarget.checked;
     var data = this.state.userEditData;
     data[name] = value;
-    this.setState({ EditTemp: data});
-    
+    this.setState({ EditTemp: data });
   };
-
-
 
   handleOnChangeEditData = e => {
     debugger;
@@ -419,36 +417,28 @@ if(userEditData.subCategory_IDs !==""){
     this.setState({
       EditTemp: data
     });
-   
-    
   };
 
   handleOnChangeUserData = e => {
     debugger;
-
-
     this.setState({
-      [e.target.name]: e.target.value,
-
+      [e.target.name]: e.target.value
     });
-   
   };
-  handleReporteeDesgnDropDown=(data2,e)=>{
+  handleReporteeDesgnDropDown(data2, e) {
     debugger;
-    
-    this.setState({
-      [e.target.name]: e.target.value,
 
+    this.setState({
+      [e.target.name]: e.target.value
     });
-   
+
     setTimeout(() => {
       if (this.state.selectedReporteeDesign) {
         this.handleGetReportTOList(data2);
       }
     }, 1);
-   
-  };
-  handleEditReporteeDesgnDropDown=(data2,e)=>{
+  }
+  handleEditReporteeDesgnDropDown(data2, e) {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
@@ -458,50 +448,45 @@ if(userEditData.subCategory_IDs !==""){
 
     this.setState({
       EditTemp: data
-
     });
-   
+
     setTimeout(() => {
       if (this.state.userEditData.reporteeDesignation_ID) {
         this.handleGetReportTOList(data2);
       }
     }, 1);
+  }
+  handleDesination = (data1, e) => {
+    debugger;
+
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    setTimeout(() => {
+      if (this.state.selectedDesignation) {
+        this.handleGetReporteedesignationList(data1);
+      }
+    }, 1);
   };
-handleDesination =(data1,e)  =>{
-  debugger;
+  handleEditDesination = (data1, e) => {
+    debugger;
+    e.preventDefault();
+    e.stopPropagation();
+    var name = e.target.name;
+    var value = e.target.value;
 
+    var data = this.state.userEditData;
+    data[name] = value;
 
-  this.setState({
-    [e.target.name]: e.target.value,
-
-  });
-  setTimeout(() => {
-    if (this.state.selectedDesignation) {
-      this.handleGetReporteedesignationList(data1);
-
-    }
-  }, 1);
-};
-handleEditDesination =(data1,e)  =>{
-  debugger;
-  e.preventDefault();
-  e.stopPropagation();
-  var name = e.target.name;
-  var value = e.target.value;
-
-  var data = this.state.userEditData;
-  data[name] = value;
-
-  this.setState({
-    EditTemp: data,
-  });
-  setTimeout(() => {
-    if (this.state.userEditData.designation_ID) {
-      this.handleGetReporteedesignationList(data1);
-      
-    }
-  }, 1);
-};
+    this.setState({
+      EditTemp: data
+    });
+    setTimeout(() => {
+      if (this.state.userEditData.designation_ID) {
+        this.handleGetReporteedesignationList(data1);
+      }
+    }, 1);
+  };
 
   handleBrandChange = (data, e) => {
     debugger;
@@ -515,19 +500,23 @@ handleEditDesination =(data1,e)  =>{
   };
   handleEditBrandChange = (data, e) => {
     debugger;
-    if(e !== null){
+    if (e !== null) {
       this.setState({ editBrand: e });
-     }else{
-      this.setState({ editBrand: [],editCategory: [],editSubCategory: [],editIssuetype: [] });
-     }
-  
+    } else {
+      this.setState({
+        editBrand: [],
+        editCategory: [],
+        editSubCategory: [],
+        editIssuetype: []
+      });
+    }
+
     setTimeout(() => {
       if (this.state.editBrand) {
         this.setState({ editCategory: [] });
         this.handleGetCategoryList(data);
       }
     }, 1);
-
   };
   handleCategoryChange = (data, e) => {
     debugger;
@@ -541,12 +530,16 @@ handleEditDesination =(data1,e)  =>{
   };
   handleEditCategoryChange = (data, e) => {
     debugger;
-   if(e !== null){
-    this.setState({ editCategory: e });
-   }else{
-    this.setState({ editCategory: [] ,editSubCategory: [],editIssuetype: []});
-   }
-   
+    if (e !== null) {
+      this.setState({ editCategory: e });
+    } else {
+      this.setState({
+        editCategory: [],
+        editSubCategory: [],
+        editIssuetype: []
+      });
+    }
+
     setTimeout(() => {
       if (this.state.editCategory) {
         this.setState({ editSubCategory: [] });
@@ -566,23 +559,22 @@ handleEditDesination =(data1,e)  =>{
   };
   handleEditSubCategoryChange = (data, e) => {
     debugger;
-    if(this.state.editCategory !==null){
-      if(e !== null){
+    if (this.state.editCategory !== null) {
+      if (e !== null) {
         this.setState({ editSubCategory: e });
-       }else{
-        this.setState({ editSubCategory: [],editIssuetype: [] });
-       }
-     
+      } else {
+        this.setState({ editSubCategory: [], editIssuetype: [] });
+      }
+
       setTimeout(() => {
         if (this.state.editSubCategory) {
           this.setState({ editIssuetype: [] });
           this.handleGetIssueTypeList(data);
         }
       }, 1);
-    }else{
+    } else {
       this.setState({ editSubCategory: [] });
     }
-    
   };
   handleIssueTypeChange = e => {
     debugger;
@@ -591,67 +583,63 @@ handleEditDesination =(data1,e)  =>{
   };
   handleEditIssueTypeChange = e => {
     debugger;
-    if(e !== null){
+    if (e !== null) {
       this.setState({ editIssuetype: e });
-     }else{
+    } else {
       this.setState({ editIssuetype: [] });
-     }
-   
+    }
   };
   handleGetCRMRoleList() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetCRMRoleDropdown",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let crmroledata = res.data.responseData;
-
-      self.setState({
-        CRMRoleData: crmroledata
-
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let crmroledata = res.data.responseData;
+        self.setState({
+          CRMRoleData: crmroledata
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
-  editMethod(){
+  editMethod() {
     debugger;
     this.setState({
-      personalReadOnly:false,
-      buttonToggle:true
+      personalReadOnly: false,
+      buttonToggle: true
     });
   }
-  editProfileMethod(){
+  editProfileMethod() {
     debugger;
     this.setState({
-      profileReadOnly:false,
-      buttonProfileToggle:true
+      profileReadOnly: false,
+      buttonProfileToggle: true
     });
   }
   handleGetDesignationList() {
     debugger;
-
     let self = this;
-   
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let designationdata = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let designationdata = res.data.responseData;
 
-      self.setState({
-        DesignationData: designationdata
-
-      });
-      
-    }).catch(data => {
-      console.log(data);
+        self.setState({
+          DesignationData: designationdata
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -659,12 +647,11 @@ handleEditDesination =(data1,e)  =>{
     debugger;
     let self = this;
     let id;
-     if(data1==="add"){
-       id = this.state.selectedDesignation;
-     }else if(data1==="edit"){
-     id = this.state.userEditData.designation_ID;
-     }
-    
+    if (data1 === "add") {
+      id = this.state.selectedDesignation;
+    } else if (data1 === "edit") {
+      id = this.state.userEditData.designation_ID;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetReporteeDesignation",
@@ -672,29 +659,28 @@ handleEditDesination =(data1,e)  =>{
       params: {
         DesignationID: id
       }
-    }).then(function (res) {
-      debugger;
-      let reportdesign = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
 
-      self.setState({
-        ReporteeDesignData: reportdesign
-
-      });
-    }).catch(data => {
-      console.log(data);
+        self.setState({
+          ReporteeDesignData: data
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetReportTOList(data2) {
     debugger;
     let self = this;
     let id;
-    if(data2==="add"){
-  id = this.state.selectedReporteeDesign;
-    }else if(data2==="edit"){
-    id= this.state.userEditData.reporteeDesignation_ID;
+    if (data2 === "add") {
+      id = this.state.selectedReporteeDesign;
+    } else if (data2 === "edit") {
+      id = this.state.userEditData.reporteeDesignation_ID;
     }
-   
-    
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetReportTo",
@@ -702,16 +688,24 @@ handleEditDesination =(data1,e)  =>{
       params: {
         DesignationID: id
       }
-    }).then(function (res) {
-      debugger;
-      let reportto = res.data.responseData;
-
-      self.setState({
-        ReportToData: reportto
-
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status=res.data.message;
+        let data = res.data.responseData;
+        if(status === "Success"){
+          self.setState({
+            ReportToData: data
+          });
+        }else{
+          self.setState({
+            ReportToData: []
+          });
+        }
+        
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetBrandList() {
@@ -720,42 +714,38 @@ handleEditDesination =(data1,e)  =>{
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ brandData: data });
-      } else {
-        self.setState({ brandData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ brandData: data });
+        } else {
+          self.setState({ brandData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetCategoryList(data) {
     debugger;
-
     let self = this;
     var finalBrandId = "";
-
     if (data === "add") {
-
       if (this.state.selectedBrand !== null) {
         for (let i = 0; i < this.state.selectedBrand.length; i++) {
           finalBrandId += this.state.selectedBrand[i].brandID + ",";
         }
       }
-
     } else if (data === "edit") {
-
       if (this.state.editBrand !== null) {
         for (let i = 0; i < this.state.editBrand.length; i++) {
           finalBrandId += this.state.editBrand[i].brandID + ",";
         }
       }
     }
-
 
     axios({
       method: "post",
@@ -764,23 +754,24 @@ handleEditDesination =(data1,e)  =>{
       params: {
         BrandIDs: finalBrandId
       }
-    }).then(function (res) {
-      debugger;
-      let CategoryData = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let CategoryData = res.data.responseData;
 
-      self.setState({
-        CategoryData: CategoryData,
-        multibrandIDs: finalBrandId
-      });
-    }).catch(data => {
-      console.log(data);
+        self.setState({
+          CategoryData: CategoryData,
+          multibrandIDs: finalBrandId
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetSubCategoryList(data) {
     debugger;
     let self = this;
     var finalCategoryId = "";
-
     if (data === "add") {
       if (this.state.selectedCategory !== null) {
         for (let i = 0; i < this.state.selectedCategory.length; i++) {
@@ -795,8 +786,6 @@ handleEditDesination =(data1,e)  =>{
       }
     }
 
-
-
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByMultiCategoryID",
@@ -804,15 +793,17 @@ handleEditDesination =(data1,e)  =>{
       params: {
         CategoryIDs: finalCategoryId
       }
-    }).then(function (res) {
-      debugger;
-      var SubCategoryData = res.data.responseData;
-      self.setState({
-        SubCategoryData: SubCategoryData,
-        multicategoryIDs: finalCategoryId
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        var SubCategoryData = res.data.responseData;
+        self.setState({
+          SubCategoryData: SubCategoryData,
+          multicategoryIDs: finalCategoryId
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetIssueTypeList(data) {
@@ -823,17 +814,18 @@ handleEditDesination =(data1,e)  =>{
     if (data === "add") {
       if (this.state.selectedSubCategory !== null) {
         for (let i = 0; i < this.state.selectedSubCategory.length; i++) {
-          finalSubCategoryId += this.state.selectedSubCategory[i].subCategoryID + ",";
+          finalSubCategoryId +=
+            this.state.selectedSubCategory[i].subCategoryID + ",";
         }
       }
     } else if (data === "edit") {
       if (this.state.editSubCategory !== null) {
         for (let i = 0; i < this.state.editSubCategory.length; i++) {
-          finalSubCategoryId += this.state.editSubCategory[i].subCategoryID + ",";
+          finalSubCategoryId +=
+            this.state.editSubCategory[i].subCategoryID + ",";
         }
       }
     }
-
 
     axios({
       method: "post",
@@ -842,15 +834,17 @@ handleEditDesination =(data1,e)  =>{
       params: {
         SubCategoryIDs: finalSubCategoryId
       }
-    }).then(function (res) {
-      debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({
-        IssueTypeData: IssueTypeData,
-        multisubcategoryIDs: finalSubCategoryId
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let IssueTypeData = res.data.responseData;
+        self.setState({
+          IssueTypeData: IssueTypeData,
+          multisubcategoryIDs: finalSubCategoryId
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetAgentList(datar) {
@@ -860,79 +854,78 @@ handleEditDesination =(data1,e)  =>{
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getagentlist",
-      headers: authHeader(),
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        var array = [];
+        var agentdata = res.data.responseData;
+        var addvalue1 = self.state.selectedAgentRadio;
+        var addvalue2 = self.state.selectedSupervisorRadio;
+        var editvalue1 = self.state.editAgentRadio;
+        var editvalue2 = self.state.editSupervisorRadio;
+        if (datar === "add") {
+          if (addvalue1 === true) {
+            array = agentdata.filter(a => a.designation === "Agent");
+          } else if (addvalue2 === true) {
+            array = agentdata.filter(a => a.designation === "Supervisor");
+          }
+        } else if (datar === "edit") {
+          if (editvalue1 === true) {
+            array = agentdata.filter(a => a.designation === "Agent");
+          } else if (editvalue2 === true) {
+            array = agentdata.filter(a => a.designation === "Supervisor");
+          }
+        }
 
-    }).then(function (res) {
-      debugger;
-      var array = [];
-      var agentdata = res.data.responseData;
-      var addvalue1 = self.state.selectedAgentRadio;
-      var addvalue2 = self.state.selectedSupervisorRadio;
-      var editvalue1 = self.state.editAgentRadio;
-      var editvalue2 = self.state.editSupervisorRadio;
-if(datar==="add"){
-  if (addvalue1 === true) {
-    array = agentdata.filter(a => a.designation === "Agent");
-  } else if(addvalue2 === true) {
-    array = agentdata.filter(a => a.designation === "Supervisor");
-  }
-
-}else if(datar==="edit"){
-  if (editvalue1 === true) {
-    array = agentdata.filter(a => a.designation === "Agent");
-  } else if(editvalue2 === true) {
-    array = agentdata.filter(a => a.designation === "Supervisor");
-  }
-}
-      
-
-      self.setState({ AgentData: array });
-    }).catch(data => {
-      console.log(data);
+        self.setState({ AgentData: array });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
-  handleUserList() {
+  handleGetUserList() {
     debugger;
     let self = this;
     axios({
       method: "get",
       url: config.apiUrl + "/User/GetUserListData",
       headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      var userdata = res.data.responseData;
-      var status = res.data.message;
+    })
+      .then(function(res) {
+        debugger;
+        var userdata = res.data.responseData;
+        var status = res.data.message;
 
-      if(userdata !== null){
-        
-        self.state.sortAllData=userdata;
-        var unique=[];
-      var distinct = [];
-      for( let i = 0; i < userdata.length; i++ ){
-        if( !unique[userdata[i].designation]&& userdata[i].designation !==""){
-          distinct.push(userdata[i].designation);
-          unique[userdata[i].designation]=1;
+        if (userdata !== null) {
+          self.state.sortAllData = userdata;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].designation] &&
+              userdata[i].designation !== ""
+            ) {
+              distinct.push(userdata[i].designation);
+              unique[userdata[i].designation] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortDesignation.push({ designation: distinct[i] });
+          }
         }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortDesignation.push({ designation: distinct[i] });
-      }
-
-      }
-      if(status === "Success"){
-        self.setState({
-          userData:userdata
-        });
-        
-      }else{
-        self.setState({
-          userData:[]
-        });
-        
-      }
-      
-    }).catch(data => {
-      console.log(data);
+        if (status === "Success") {
+          self.setState({
+            userData: userdata
+          });
+        } else {
+          self.setState({
+            userData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -947,395 +940,391 @@ if(datar==="add"){
       params: {
         UserID: id
       }
-    }).then(function (res) {
-      debugger;
-      var status = res.data.message;
-      var userdata = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          GetUserData: userdata
-        });
-        self.setUserEditData(userdata, id);
-      } else {
-        self.setState({
-          GetUserData: []
-        });
-      }
-
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        var status = res.data.message;
+        var userdata = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            GetUserData: userdata
+          });
+          self.setUserEditData(userdata, id);
+        } else {
+          self.setState({
+            GetUserData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
   handleValidationEmailIdMob() {
     debugger;
-    if(
-      this.state.selectUserName.length > 0 && 
+    if (
+      this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
       this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
-    ){
-    this.state.emailValidation="";
-    this.state.mobileValidation="";
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/validateUserExist",
-      headers: authHeader(),
-      params: {
-        UserEmailID:this.state.selectEmail,
-        UserMobile:this.state.selectMobile
-      }
-    }).then(function (res) {
-      debugger;
-      var status = res.data.message;
-      var userdata = res.data.responseData;
-      if (status === "Success") {
-        if(userdata==="Email Id already exist!"){
-          self.setState({
-          emailValidation:"Email Id already exist!"
-          });
-        }else if(userdata==="Phone number already exist!"){
-          self.setState({
-            mobileValidation:"Phone number already exist!"
-          });
-        }else if(userdata==="Email Id and Phone number both are already exist!"){
-          self.setState({
-            emailValidation:"Email Id already exist!",
-            mobileValidation:"Phone number already exist!"
-          });
-        }else if(userdata==="Not Exist"){
-         
-            self.handleAddPersonalDetails();
-         
-         
-        }  
-      } 
-
-    }).catch(data => {
-      console.log(data);
+    ) {
+      this.state.emailValidation = "";
+      this.state.mobileValidation = "";
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/validateUserExist",
+        headers: authHeader(),
+        params: {
+          UserEmailID: this.state.selectEmail,
+          UserMobile: this.state.selectMobile
+        }
+      })
+        .then(function(res) {
+          debugger;
+          var status = res.data.message;
+          var userdata = res.data.responseData;
+          if (status === "Success") {
+            if (userdata === "Email Id already exist!") {
+              self.setState({
+                emailValidation: "Email Id already exist!"
+              });
+            } else if (userdata === "Phone number already exist!") {
+              self.setState({
+                mobileValidation: "Phone number already exist!"
+              });
+            } else if (
+              userdata === "Email Id and Phone number both are already exist!"
+            ) {
+              self.setState({
+                emailValidation: "Email Id already exist!",
+                mobileValidation: "Phone number already exist!"
+              });
+            } else if (userdata === "Not Exist") {
+              self.handleAddPersonalDetails();
+            }
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        usernameCompulsion: "Please enter user name.",
+        firstnameCompulsion: "Please enter first name.",
+        lastnameCompulsion: "Please enter last name.",
+        mobilenumberCompulsion: "Please enter mobile number.",
+        emailCompulsion: "Please enter emailID."
       });
-  }else{
-    this.setState({
-      usernameCompulsion:"Please enter user name.",
-      firstnameCompulsion:"Please enter first name.",
-      lastnameCompulsion:"Please enter last name.",
-      mobilenumberCompulsion:"Please enter mobile number.",
-      emailCompulsion:"Please enter emailID."
-    });
-  }
+    }
   }
 
   handleAddPersonalDetails() {
     debugger;
-    if(
-      this.state.selectUserName.length > 0 && 
+    if (
+      this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
       this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
-    ){
-    let self = this;
-    var json = {
-      UserName: this.state.selectUserName,
-      FirstName: this.state.selectFirstName,
-      LastName: this.state.selectLastName,
-      MobileNo: this.state.selectMobile,
-      EmailID: this.state.selectEmail
-
-    };
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/AddUserPersonalDetail",
-      headers: authHeader(),
-      data: json
-    }).then(function (res) {
-      debugger;
-      let id = res.data.responseData;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-
-        NotificationManager.success("Record Saved successfully.");
-
-      } else {
-        NotificationManager.error("Record Not Saved .");
-      }
-      self.setState({
-       
-        getID: id,
-        personalReadOnly:true
+    ) {
+      let self = this;
+      var json = {
+        UserName: this.state.selectUserName.trim(),
+        FirstName: this.state.selectFirstName.trim(),
+        LastName: this.state.selectLastName.trim(),
+        MobileNo: this.state.selectMobile.trim(),
+        EmailID: this.state.selectEmail.trim()
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/AddUserPersonalDetail",
+        headers: authHeader(),
+        data: json
+      })
+        .then(function(res) {
+          debugger;
+          let id = res.data.responseData;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Record Save successfully.");
+            self.setState({
+              getID: id,
+              personalReadOnly: true,
+              selectUserName: "",
+              selectFirstName: "",
+              selectLastName: "",
+              selectMobile: "",
+              selectEmail: ""
+            });
+            self.handleGetUserList();
+          } else {
+            NotificationManager.error("Record Not Saved .");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        usernameCompulsion: "Please enter user name.",
+        firstnameCompulsion: "Please enter first name.",
+        lastnameCompulsion: "Please enter last name.",
+        mobilenumberCompulsion: "Please enter mobile number.",
+        emailCompulsion: "Please enter emailID."
       });
-      self.handleUserList();
-    }).catch(data => {
-      console.log(data);
-      });
-  }else{
-    this.setState({
-      usernameCompulsion:"Please enter user name.",
-      firstnameCompulsion:"Please enter first name.",
-      lastnameCompulsion:"Please enter last name.",
-      mobilenumberCompulsion:"Please enter mobile number.",
-      emailCompulsion:"Please enter emailID."
-    });
-  }
+    }
   }
 
   handleEditPersonalDetails() {
     debugger;
-    if(
-      this.state.selectUserName.length > 0 && 
+    if (
+      this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
       this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
-    ){
-    let self = this;
-    var id=this.state.getID;
-    var json = {
-      UserName: this.state.selectUserName,
-      FirstName: this.state.selectFirstName,
-      LastName: this.state.selectLastName,
-      MobileNo: this.state.selectMobile,
-      EmailID: this.state.selectEmail,
-      UserID:id
+    ) {
+      let self = this;
+      var id = this.state.getID;
+      var json = {
+        UserName: this.state.selectUserName,
+        FirstName: this.state.selectFirstName,
+        LastName: this.state.selectLastName,
+        MobileNo: this.state.selectMobile,
+        EmailID: this.state.selectEmail,
+        UserID: id
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/EditUserPersonalDetail",
+        headers: authHeader(),
+        data: json
+      })
+        .then(function(res) {
+          debugger;
 
-    };
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/EditUserPersonalDetail",
-      headers: authHeader(),
-      data: json
-    }).then(function (res) {
-      debugger;
-      
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-
-        NotificationManager.success("Record Updated successfully.");
-
-      } else {
-        NotificationManager.error("Record Not Updated.");
-      }
-      self.setState({
-       
-        getID:id,
-        personalReadOnly:true
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Record Updated successfully.");
+          } else {
+            NotificationManager.error("Record Not Updated.");
+          }
+          self.setState({
+            getID: id,
+            personalReadOnly: true
+          });
+          self.handleGetUserList();
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        usernameCompulsion: "Please enter user name.",
+        firstnameCompulsion: "Please enter first name.",
+        lastnameCompulsion: "Please enter last name.",
+        mobilenumberCompulsion: "Please enter mobile number.",
+        emailCompulsion: "Please enter emailID."
       });
-      self.handleUserList();
-    }).catch(data => {
-      console.log(data);
-      });
-  }else{
-    this.setState({
-      usernameCompulsion:"Please enter user name.",
-      firstnameCompulsion:"Please enter first name.",
-      lastnameCompulsion:"Please enter last name.",
-      mobilenumberCompulsion:"Please enter mobile number.",
-      emailCompulsion:"Please enter emailID."
-    });
-  }
+    }
   }
 
   handleAddProfileDetails() {
     debugger;
-    if(
+    if (
       this.state.selectedDesignation > 0 &&
       this.state.selectedReporteeDesign > 0 &&
-      this.state.selectedReportTO > 0 
-    ){
-    let self = this;
-    let id = this.state.getID;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/AddUserProfileDetail",
-      headers: authHeader(),
-      params: {
-        UserID: id,
-        DesignationID: this.state.selectedDesignation,
-        ReportTo: this.state.selectedReportTO
-      }
-    }).then(function (res) {
-      debugger;
-
-      let Msg = res.data.message;
-      if(self.state.buttonProfileToggle===true){
-        if (Msg === "Success") {
-
-          NotificationManager.success("Record Updated successfully.");
-  
+      this.state.selectedReportTO > 0
+    ) {
+      let self = this;
+      let id = this.state.getID;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/AddUserProfileDetail",
+        headers: authHeader(),
+        params: {
+          UserID: id,
+          DesignationID: this.state.selectedDesignation,
+          ReportTo: this.state.selectedReportTO
         }
-        else {
-          NotificationManager.error("Please Add Personal Details.");
-        }
-      }else{
-        if (Msg === "Success") {
-
-          NotificationManager.success("Record Saved successfully.");
-  
-        }
-        else {
-          NotificationManager.error("Please Add Personal Details.");
-        }
-      }
-      
-      self.setState({
-        
-         getID: id,
-         profileReadOnly:true
-
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          if (self.state.buttonProfileToggle === true) {
+            if (Msg === "Success") {
+              NotificationManager.success("Record Updated successfully.");
+            } else {
+              NotificationManager.error("Please Add Personal Details.");
+            }
+          } else {
+            if (Msg === "Success") {
+              NotificationManager.success("Record Saved successfully.");
+              self.setState({
+                getID: id,
+                profileReadOnly: true,
+                selectedDesignation: 0,
+                selectedReportTO: 0,
+                selectedReporteeDesign: 0
+              });
+              self.handleGetUserList();
+            } else {
+              NotificationManager.error("Please Add Personal Details.");
+            }
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        userdesignCompulsion: "Please select designation.",
+        reporteeDesignCompulsion: "Please select reportee designation.",
+        reportToCompulsion: "Please select reportee"
       });
-      self.handleUserList();
-    }).catch(data => {
-      console.log(data);
-      });
-  }else{
-    this.setState({
-      userdesignCompulsion:"Please select designation.",
-      reporteeDesignCompulsion:"Please select reportee designation.",
-      reportToCompulsion:"Please select reportee"
-    });
-  }
+    }
   }
 
   handleAddMapCategory() {
     debugger;
-    if(
+    if (
       this.state.selectedBrand !== null &&
-      this.state.selectedCategory  !== null &&
-      this.state.selectedSubCategory  !== null &&
-      this.state.selectedIssueType  !== null &&
+      this.state.selectedCategory !== null &&
+      this.state.selectedSubCategory !== null &&
+      this.state.selectedIssueType !== null &&
       this.state.selectedCRMRoles > 0 &&
-      this.state.selectedCopyEscalation ===true &&
+      this.state.selectedCopyEscalation === true &&
       this.state.selectedAssignEscalation === true &&
       this.state.selectedAgent > 0
-    ){
-    let self = this;
-    var finalIssueTypeId = "";
+    ) {
+      let self = this;
+      var finalIssueTypeId = "";
 
-
-
-    if (this.state.selectedIssueType !== null) {
-      for (let i = 0; i < this.state.selectedIssueType.length; i++) {
-        finalIssueTypeId += this.state.selectedIssueType[i].issueTypeID + ",";
+      if (this.state.selectedIssueType !== null) {
+        for (let i = 0; i < this.state.selectedIssueType.length; i++) {
+          finalIssueTypeId += this.state.selectedIssueType[i].issueTypeID + ",";
+        }
       }
-    }
-    var activeStatus = 0;
-    var copyescn = 0;
-    var assignescn = 0;
-    var SuperAgent = 0;
-    var superAgentValue = this.state.selectedAgentRadio;
-    if (superAgentValue === true) {
-      SuperAgent = 1;
-    }
-    else {
-      SuperAgent = 0;
-    }
-    var CopyE = this.state.selectedCopyEscalation;
-    var AssignE = this.state.selectedAssignEscalation;
-    if (CopyE === true && AssignE === false) {
-      copyescn = 1;
-      assignescn = 0;
-    }
-    else if (CopyE === false && AssignE === true) {
-      copyescn = 0;
-      assignescn = 1;
-    }
-    else if (CopyE === true && AssignE === true) {
-      copyescn = 1;
-      assignescn = 1;
-    }
-    else if (CopyE === false && AssignE === false) {
-      copyescn = 0;
-      assignescn = 0;
-    }
+      var activeStatus = 0;
+      var copyescn = 0;
+      var assignescn = 0;
+      var SuperAgent = 0;
+      var superAgentValue = this.state.selectedAgentRadio;
+      if (superAgentValue === true) {
+        SuperAgent = 1;
+      } else {
+        SuperAgent = 0;
+      }
+      var CopyE = this.state.selectedCopyEscalation;
+      var AssignE = this.state.selectedAssignEscalation;
+      if (CopyE === true && AssignE === false) {
+        copyescn = 1;
+        assignescn = 0;
+      } else if (CopyE === false && AssignE === true) {
+        copyescn = 0;
+        assignescn = 1;
+      } else if (CopyE === true && AssignE === true) {
+        copyescn = 1;
+        assignescn = 1;
+      } else if (CopyE === false && AssignE === false) {
+        copyescn = 0;
+        assignescn = 0;
+      }
 
-    var status = this.state.selectedStatus;
-    if (status === "true") {
-      activeStatus = 1;
+      var status = this.state.selectedStatus;
+      if (status === "true") {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
+      }
+      var brand = this.state.multibrandIDs.substring(
+        0,
+        this.state.multibrandIDs.length - 1
+      );
+      var category = this.state.multicategoryIDs.substring(
+        0,
+        this.state.multicategoryIDs.length - 1
+      );
+      var subcat = this.state.multisubcategoryIDs.substring(
+        0,
+        this.state.multisubcategoryIDs.length - 1
+      );
+      var issue = finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
+      var json = {
+        UserId: this.state.getID,
+        BrandIds: brand,
+        categoryIds: category,
+        subCategoryIds: subcat,
+        IssuetypeIds: issue,
+        RoleID: this.state.selectedCRMRoles,
+        IsCopyEscalation: copyescn,
+        IsAssignEscalation: assignescn,
+        IsAgent: SuperAgent,
+        IsActive: activeStatus,
+        EscalateAssignToId: this.state.selectedAgent
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/Mapcategory",
+        headers: authHeader(),
+        data: json
+      })
+        .then(function(res) {
+          debugger;
+
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("User Created successfully.");
+            self.handleSendMail(self.state.getID);
+          } else {
+            NotificationManager.error("User Not Created .");
+          }
+          self.setState({
+            selectUserName: "",
+            selectFirstName: "",
+            selectLastName: "",
+            selectMobile: "",
+            selectEmail: "",
+            selectedDesignation: 0,
+            selectedReporteeDesign: 0,
+            selectedReportTO: 0,
+            selectedBrand: [],
+            selectedCategory: [],
+            selectedSubCategory: [],
+            selectedIssueType: [],
+            selectedCRMRoles: 0,
+            selectedCopyEscalation: false,
+            selectedAssignEscalation: false,
+            selectedSupervisorAgent: "",
+            selectedAgent: 0,
+            selectedStatus: "",
+            buttonToggle: false,
+            buttonProfileToggle: false,
+            personalReadOnly: false,
+            profileReadOnly: false,
+            getID: 0
+          });
+          self.handleGetUserList();
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
-      activeStatus = 0;
-    }
-    var brand = this.state.multibrandIDs.substring(0, this.state.multibrandIDs.length - 1);
-    var category = this.state.multicategoryIDs.substring(0, this.state.multicategoryIDs.length - 1);
-    var subcat = this.state.multisubcategoryIDs.substring(0, this.state.multisubcategoryIDs.length - 1);
-    var issue = finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
-    var json = {
-      UserId: this.state.getID,
-      BrandIds: brand,
-      categoryIds: category,
-      subCategoryIds: subcat,
-      IssuetypeIds: issue,
-      RoleID: this.state.selectedCRMRoles,
-      IsCopyEscalation: copyescn,
-      IsAssignEscalation: assignescn,
-      IsAgent: SuperAgent,
-      IsActive: activeStatus,
-      EscalateAssignToId: this.state.selectedAgent
-
-    }
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/Mapcategory",
-      headers: authHeader(),
-      data: json
-    }).then(function (res) {
-      debugger;
-
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-
-        NotificationManager.success("User Created successfully.");
-        self.handleSendMail(self.state.getID);
-
-      }
-      else {
-        NotificationManager.error("User Not Created .");
-      }
-      self.setState({
-        selectUserName:"",
-        selectFirstName:"",
-        selectLastName:"",
-        selectMobile:"",
-        selectEmail:"",
-        selectedDesignation:0,
-        selectedReporteeDesign:0,
-        selectedReportTO:0,
-        selectedBrand: [],
-        selectedCategory: [],
-        selectedSubCategory: [],
-        selectedIssueType: [],
-        selectedCRMRoles: 0,
-        selectedCopyEscalation: false,
-        selectedAssignEscalation: false,
-        selectedSupervisorAgent: "",
-        selectedAgent: 0,
-        selectedStatus: "",
-        buttonToggle:false,
-        buttonProfileToggle:false,
-         personalReadOnly:false,
-         profileReadOnly:false,
-        getID: 0
+      this.setState({
+        brandCompulsion: "Please select brands",
+        categoryCompulsion: "Please select category",
+        subcategoryCompulsion: "Please select subcategory",
+        isuuetypeCompulsion: "Please select issuetype",
+        crmroleCompulsion: "Please select  crm roles",
+        copyescCompulsion: "Please select copy escalation",
+        assignescCompulsion: "Please select assign escalation",
+        agentCompulsion: "Please select agent"
       });
-      self.handleUserList();
-    }).catch(data => {
-      console.log(data);
-      });
-  }else{
-    this.setState({
-      brandCompulsion:"Please select brands",
-      categoryCompulsion:"Please select category",
-      subcategoryCompulsion:"Please select subcategory",
-      isuuetypeCompulsion:"Please select issuetype",
-      crmroleCompulsion:"Please select  crm roles",
-      copyescCompulsion:"Please select copy escalation",
-      assignescCompulsion:"Please select assign escalation",
-      agentCompulsion:"Please select agent"
-
-    });
+    }
   }
-  }
-
 
   handleDeleteUser(id) {
     debugger;
@@ -1348,26 +1337,25 @@ if(datar==="add"){
       params: {
         userID: id
       }
-    }).then(function (res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Record In use") {
-        NotificationManager.error("Record in use.");
-        
-      }else if(Msg==="Record deleted Successfully") {
-        NotificationManager.success("Record deleted Successfully.");
-        self.handleUserList();
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Record In use") {
+          NotificationManager.error("Record in use.");
+        } else if (Msg === "Record deleted Successfully") {
+          NotificationManager.success("Record deleted Successfully.");
+          self.handleGetUserList();
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleSendMail(id) {
     debugger;
     let self = this;
-    
-   
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/User/SendMailforchangepassword",
@@ -1375,21 +1363,21 @@ if(datar==="add"){
       params: {
         userID: id
       }
-    }).then(function (res) {
-      debugger;
-      let reportto = res.data.responseData;
-       if(reportto==="Mail sent successfully"){
-        NotificationManager.success("Please Check Email.");
-       }
-      
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let reportto = res.data.responseData;
+        if (reportto === "Mail sent successfully") {
+          NotificationManager.success("Please Check Email.");
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleUpdateUser() {
-
     debugger;
-    if(
+    if (
       this.state.userEditData.selectUserName.length > 0 &&
       this.state.userEditData.first_Name.length > 0 &&
       this.state.userEditData.last_Name.length > 0 &&
@@ -1405,147 +1393,146 @@ if(datar==="add"){
       this.state.userEditData.role_ID > 0 &&
       this.state.userEditData.is_Copy_Escalation === true &&
       this.state.userEditData.is_Assign_Escalation === true &&
-      this.state.userEditData.assign_ID > 0 
-    ){
-    let self = this;
-    
-    var finalIssueTypeId = "";
-    var finalBrandId = "";
-    var finalCategoryId = "";
-    var finalSubCategoryId = "";
-    var copyescn = 0;
-    var assignescn = 0;
-    var activeStatus = 0;
+      this.state.userEditData.assign_ID > 0
+    ) {
+      let self = this;
 
-    if (this.state.editBrand !== null) {
-      for (let i = 0; i < this.state.editBrand.length; i++) {
-        finalBrandId += this.state.editBrand[i].brandID + ",";
+      var finalIssueTypeId = "";
+      var finalBrandId = "";
+      var finalCategoryId = "";
+      var finalSubCategoryId = "";
+      var copyescn = 0;
+      var assignescn = 0;
+      var activeStatus = 0;
 
+      if (this.state.editBrand !== null) {
+        for (let i = 0; i < this.state.editBrand.length; i++) {
+          finalBrandId += this.state.editBrand[i].brandID + ",";
+        }
       }
-    }
 
-    if (this.state.editCategory !== null) {
-      for (let i = 0; i < this.state.editCategory.length; i++) {
-        finalCategoryId += this.state.editCategory[i].categoryID + ",";
+      if (this.state.editCategory !== null) {
+        for (let i = 0; i < this.state.editCategory.length; i++) {
+          finalCategoryId += this.state.editCategory[i].categoryID + ",";
+        }
       }
-    }
 
-    if (this.state.editIssuetype !== null) {
-      for (let i = 0; i < this.state.editIssuetype.length; i++) {
-        finalIssueTypeId += this.state.editIssuetype[i].issueTypeID + ",";
+      if (this.state.editIssuetype !== null) {
+        for (let i = 0; i < this.state.editIssuetype.length; i++) {
+          finalIssueTypeId += this.state.editIssuetype[i].issueTypeID + ",";
+        }
       }
-    }
-    if (this.state.editSubCategory !== null) {
-      for (let i = 0; i < this.state.editSubCategory.length; i++) {
-        finalSubCategoryId += this.state.editSubCategory[i].subCategoryID + ",";
+      if (this.state.editSubCategory !== null) {
+        for (let i = 0; i < this.state.editSubCategory.length; i++) {
+          finalSubCategoryId +=
+            this.state.editSubCategory[i].subCategoryID + ",";
+        }
       }
-    }
-    var CopyE = this.state.userEditData.is_Copy_Escalation;
-    var AssignE = this.state.userEditData.is_Assign_Escalation;
-    if (CopyE === true && AssignE === false) {
-      copyescn = 1;
-      assignescn = 0;
-    }
-    else if (CopyE === false && AssignE === true) {
-      copyescn = 0;
-      assignescn = 1;
-    }
-    else if (CopyE === true && AssignE === true) {
-      copyescn = 1;
-      assignescn = 1;
-    }
-    else if (CopyE === false && AssignE === false) {
-      copyescn = 0;
-      assignescn = 0;
-    }
-    var SuperAgent = 0;
-    var superAgentValue = this.state.editAgentRadio;
-    if (superAgentValue === true) {
-      SuperAgent = 1;
-    }
-    else {
-      SuperAgent = 0;
-    }
-    var status = this.state.userEditData.is_Active;
-    if (status === "true") {
-      activeStatus = 1;
-    } else {
-      activeStatus = 0;
-    }
+      var CopyE = this.state.userEditData.is_Copy_Escalation;
+      var AssignE = this.state.userEditData.is_Assign_Escalation;
+      if (CopyE === true && AssignE === false) {
+        copyescn = 1;
+        assignescn = 0;
+      } else if (CopyE === false && AssignE === true) {
+        copyescn = 0;
+        assignescn = 1;
+      } else if (CopyE === true && AssignE === true) {
+        copyescn = 1;
+        assignescn = 1;
+      } else if (CopyE === false && AssignE === false) {
+        copyescn = 0;
+        assignescn = 0;
+      }
+      var SuperAgent = 0;
+      var superAgentValue = this.state.editAgentRadio;
+      if (superAgentValue === true) {
+        SuperAgent = 1;
+      } else {
+        SuperAgent = 0;
+      }
+      var status = this.state.userEditData.is_Active;
+      if (status === "true") {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
+      }
 
-    var brand = finalBrandId.substring(0, finalBrandId.length - 1);
-    var category = finalCategoryId.substring(0, finalCategoryId.length - 1);
-    var subcat = finalSubCategoryId.substring(0, finalSubCategoryId.length - 1);
-    var issue = finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
-    var json = {
-      UserID: this.state.userEditData.userId,
-      DesignationID: this.state.userEditData.designation_ID,
-      ReporteeID: this.state.userEditData.reportee_ID,
-      // UserName: this.state.userEditData.userName,
-      UserName: this.state.userEditData.selectUserName,
-      EmailID: this.state.userEditData.email_ID,
-      MobileNo: this.state.userEditData.mobile_Number,
-      FirstName: this.state.userEditData.first_Name,
-      LastName: this.state.userEditData.last_Name,
-      BrandIds: brand,
-      categoryIds: category,
-      subCategoryIds: subcat,
-      IssuetypeIds: issue,
-      RoleID: this.state.userEditData.role_ID,
-      IsCopyEscalation: copyescn,
-      IsAssignEscalation: assignescn,
-      IsAgent: SuperAgent,
-      EscalateAssignToId: this.state.userEditData.assign_ID,
-      IsActive: activeStatus
-
-    };
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/EditUserDetails",
-      headers: authHeader(),
-      data: json
-    }).then(function (res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Record Updated successfully.");
-        self.setState({
-          multibrandIDs: finalBrandId,
-          multicategoryIDs: finalCategoryId,
-          multisubcategoryIDs: finalSubCategoryId
+      var brand = finalBrandId.substring(0, finalBrandId.length - 1);
+      var category = finalCategoryId.substring(0, finalCategoryId.length - 1);
+      var subcat = finalSubCategoryId.substring(
+        0,
+        finalSubCategoryId.length - 1
+      );
+      var issue = finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
+      var json = {
+        UserID: this.state.userEditData.userId,
+        DesignationID: this.state.userEditData.designation_ID,
+        ReporteeID: this.state.userEditData.reportee_ID,
+        // UserName: this.state.userEditData.userName,
+        UserName: this.state.userEditData.selectUserName,
+        EmailID: this.state.userEditData.email_ID,
+        MobileNo: this.state.userEditData.mobile_Number,
+        FirstName: this.state.userEditData.first_Name,
+        LastName: this.state.userEditData.last_Name,
+        BrandIds: brand,
+        categoryIds: category,
+        subCategoryIds: subcat,
+        IssuetypeIds: issue,
+        RoleID: this.state.userEditData.role_ID,
+        IsCopyEscalation: copyescn,
+        IsAssignEscalation: assignescn,
+        IsAgent: SuperAgent,
+        EscalateAssignToId: this.state.userEditData.assign_ID,
+        IsActive: activeStatus
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/User/EditUserDetails",
+        headers: authHeader(),
+        data: json
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Record Updated successfully.");
+            self.setState({
+              multibrandIDs: finalBrandId,
+              multicategoryIDs: finalCategoryId,
+              multisubcategoryIDs: finalSubCategoryId
+            });
+          } else {
+            NotificationManager.error(
+              "Record not Selected OR Sequence is Wrong"
+            );
+          }
+          self.closeEditModal();
+          self.handleGetUserList();
+        })
+        .catch(error => {
+          console.log(error);
         });
-      }
-      else {
-        NotificationManager.error("Record not Selected OR Sequence is Wrong")
-      }
-      self.closeEditModal();
-      self.handleUserList();
-
-    }).catch(error => {
-      console.log(error)
-    });
-  }else{
-    this.setState({
-      editusernameCompulsion:"Please enter user name.",
-      editfirstnameCompulsion:"Please enter first name.",
-      editlastnameCompulsion:"Please enter last name.",
-      editmobilenumberCompulsion:"Please enter mobile number.",
-      editemailCompulsion:"Please enter emailID.",
-      edituserdesignCompulsion:"Please select designation.",
-      editreporteeDesignCompulsion:"Please select reportee designation.",
-      editreportToCompulsion:"Please select reportee",
-      editbrandCompulsion:"Please select brands",
-      editcategoryCompulsion:"Please select category",
-      editsubcategoryCompulsion:"Please select subcategory",
-      editisuuetypeCompulsion:"Please select issuetype",
-      editcrmroleCompulsion:"Please select  crm roles",
-      editcopyescCompulsion:"Please select copy escalation",
-      editassignescCompulsion:"Please select assign escalation",
-      editagentCompulsion:"Please select agent"
-    });
+    } else {
+      this.setState({
+        editusernameCompulsion: "Please enter user name.",
+        editfirstnameCompulsion: "Please enter first name.",
+        editlastnameCompulsion: "Please enter last name.",
+        editmobilenumberCompulsion: "Please enter mobile number.",
+        editemailCompulsion: "Please enter emailID.",
+        edituserdesignCompulsion: "Please select designation.",
+        editreporteeDesignCompulsion: "Please select reportee designation.",
+        editreportToCompulsion: "Please select reportee",
+        editbrandCompulsion: "Please select brands",
+        editcategoryCompulsion: "Please select category",
+        editsubcategoryCompulsion: "Please select subcategory",
+        editisuuetypeCompulsion: "Please select issuetype",
+        editcrmroleCompulsion: "Please select  crm roles",
+        editcopyescCompulsion: "Please select copy escalation",
+        editassignescCompulsion: "Please select assign escalation",
+        editagentCompulsion: "Please select agent"
+      });
+    }
   }
-  }
-
 
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
@@ -1562,9 +1549,7 @@ if(datar==="add"){
   };
 
   render() {
-
-    const {userData} = this.state
-
+    const { userData } = this.state;
 
     return (
       <React.Fragment>
@@ -1579,7 +1564,8 @@ if(datar==="add"){
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a href="#!"
+                  <a
+                    href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
                     className="sorting-icon"
                   >
@@ -1588,7 +1574,8 @@ if(datar==="add"){
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a href="#!"
+                  <a
+                    href="#!"
                     onClick={this.sortStatusZtoA.bind(this)}
                     className="sorting-icon"
                   >
@@ -1598,52 +1585,42 @@ if(datar==="add"){
                 </div>
               </div>
               <div className="filter-type">
-        
                 <p>FILTER BY TYPE</p>
-                 <div className="filter-checkbox">
-                <input
+                <div className="filter-checkbox">
+                  <input
                     type="checkbox"
-                    
                     name="filter-type"
-                    id={"fil-open" }
-                  
+                    id={"fil-open"}
                     value="all"
-                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
                   <label htmlFor={"fil-open"}>
                     <span className="table-btn table-blue-btn">ALL</span>
                   </label>
-                  </div>
-                {this.state.sortColumn==="designation" ? 
-                
-                this.state.sortDesignation !== null && 
-                  this.state.sortDesignation.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.designation}
-                  
-                    value={item.designation}
-                    onChange={this.setSortCheckStatus.bind(this,"designation")}
-                  />
-                  <label htmlFor={"fil-open" + item.designation}>
-                    <span className="table-btn table-blue-btn">{item.designation}</span>
-                  </label>
                 </div>
-                  ))
-
-                :null}
-
-               
-
+                {this.state.sortColumn === "designation"
+                  ? this.state.sortDesignation !== null &&
+                    this.state.sortDesignation.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.designation}
+                          value={item.designation}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "designation"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.designation}>
+                          <span className="table-btn table-blue-btn">
+                            {item.designation}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
-             
-
-             
-              
             </div>
           </Modal>
         </div>
@@ -1653,89 +1630,108 @@ if(datar==="add"){
           onClose={this.closeEditModal}
           modalId="UsEdit-popup"
         >
-        <div>
-          <Tabs onSelect={(index, label) => this.setState({selTab: label})} selected={this.state.selTab}>
-            <Tab label="Personal Details">
+          <div>
+            <Tabs
+              onSelect={(index, label) => this.setState({ selTab: label })}
+              selected={this.state.selTab}
+            >
+              <Tab label="Personal Details">
                 <div>
-                  <h4 style={{textAlign:"center"}}>Personal Details</h4>
-                <div className="pop-over-div">
+                  <h4 style={{ textAlign: "center" }}>Personal Details</h4>
+                  <div className="pop-over-div">
                     <label className="edit-label-1">User Name</label>
-                    <input type="text" className="txt-edit-popover" maxLength={25}
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      maxLength={25}
                       name="selectUserName"
                       value={this.state.userEditData.selectUserName}
                       onChange={this.handleOnChangeEditData}
                     />
-                      {this.state.userEditData.selectUserName === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editusernameCompulsion}
-                    </p>
-                  )} 
+                    {this.state.userEditData.selectUserName === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editusernameCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">First Name</label>
-                    <input type="text" className="txt-edit-popover" maxLength={25}
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      maxLength={25}
                       name="first_Name"
                       value={this.state.userEditData.first_Name}
                       onChange={this.handleOnChangeEditData}
                     />
-                     {this.state.userEditData.first_Name === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editfirstnameCompulsion}
-                    </p>
-                  )} 
+                    {this.state.userEditData.first_Name === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editfirstnameCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Last Name</label>
-                    <input type="text" className="txt-edit-popover" maxLength={25}
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      maxLength={25}
                       name="last_Name"
                       value={this.state.userEditData.last_Name}
                       onChange={this.handleOnChangeEditData}
                     />
-                     {this.state.userEditData.last_Name === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editlastnameCompulsion}
-                    </p>
-                  )} 
+                    {this.state.userEditData.last_Name === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editlastnameCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Mobile Number</label>
-                    <input type="text" className="txt-edit-popover" maxLength={10}
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      maxLength={10}
                       name="mobile_Number"
                       value={this.state.userEditData.mobile_Number}
                       onChange={this.handleOnChangeEditData}
                     />
-               {this.state.userEditData.mobile_Number === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editmobilenumberCompulsion}
-                    </p>
-                  )}
+                    {this.state.userEditData.mobile_Number === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editmobilenumberCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Email ID</label>
-                    <input type="text" className="txt-edit-popover" maxLength={100}
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      maxLength={100}
                       name="email_ID"
                       value={this.state.userEditData.email_ID}
                       onChange={this.handleOnChangeEditData}
                     />
                     {this.state.userEditData.email_ID === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editemailCompulsion}
-                    </p>
-                  )}
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editemailCompulsion}
+                      </p>
+                    )}
                   </div>
                 </div>
-            </Tab>
-            <Tab label="Profile Details">
-              <div>
-              <h4 style={{textAlign:"center"}}>Profile Details</h4>
-              <div className="pop-over-div">
+              </Tab>
+              <Tab label="Profile Details">
+                <div>
+                  <h4 style={{ textAlign: "center" }}>Profile Details</h4>
+                  <div className="pop-over-div">
                     <label className="edit-label-1">User Designation</label>
-                    <select className="add-select-category"
+                    <select
+                      className="add-select-category"
                       name="designation_ID"
                       value={this.state.userEditData.designation_ID}
-                      onChange={this.handleEditDesination.bind(this,"edit")}
+                      onChange={this.handleEditDesination.bind(this, "edit")}
                     >
-                      <option value={0}>Select Designation</option>
+                      <option>Select Designation</option>
                       {this.state.DesignationData !== null &&
                         this.state.DesignationData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -1744,19 +1740,23 @@ if(datar==="add"){
                         ))}
                     </select>
                     {this.state.userEditData.designation_ID === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.edituserdesignCompulsion}
-                    </p>
-                  )}
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.edituserdesignCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Reportee Designation</label>
-                    <select className="add-select-category"
+                    <select
+                      className="add-select-category"
                       name="reporteeDesignation_ID"
                       value={this.state.userEditData.reporteeDesignation_ID}
-                      onChange={this.handleEditReporteeDesgnDropDown.bind(this,"edit")}
+                      onChange={this.handleEditReporteeDesgnDropDown.bind(
+                        this,
+                        "edit"
+                      )}
                     >
-                      <option value="">Select Reportee Designation</option>
+                      <option>Select Reportee Designation</option>
                       {this.state.ReporteeDesignData !== null &&
                         this.state.ReporteeDesignData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -1765,14 +1765,15 @@ if(datar==="add"){
                         ))}
                     </select>
                     {this.state.userEditData.reporteeDesignation_ID === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editreporteeDesignCompulsion}
-                    </p>
-                  )}
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editreporteeDesignCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Report To</label>
-                    <select className="add-select-category"
+                    <select
+                      className="add-select-category"
                       name="reportee_ID"
                       value={this.state.userEditData.reportee_ID}
                       onChange={this.handleOnChangeEditData}
@@ -1786,37 +1787,36 @@ if(datar==="add"){
                         ))}
                     </select>
                     {this.state.userEditData.reportee_ID === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editreportToCompulsion}
-                    </p>
-                  )}
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editreportToCompulsion}
+                      </p>
+                    )}
                   </div>
-              </div>
-            </Tab>
-            <Tab label="Mapped Category">
+                </div>
+              </Tab>
+              <Tab label="Mapped Category">
                 <div>
-                <h4 style={{textAlign:"center"}}>Mapped Category</h4>
-                <div className="pop-over-div">
+                  <h4 style={{ textAlign: "center" }}>Mapped Category</h4>
+                  <div className="pop-over-div">
                     <label className="edit-label-1">Brand</label>
-                    {<Select
-                      getOptionLabel={option => option.brandName}
-                      getOptionValue={option => option.brandID}
-                      options={this.state.brandData}
-                      placeholder="Select"
-
-                      closeMenuOnSelect={false}
-                      name="editBrand"
-                      onChange={this.handleEditBrandChange.bind(this, "edit")}
-                      value={this.state.editBrand}
-
-                      isMulti
-                    />}
+                    {
+                      <Select
+                        getOptionLabel={option => option.brandName}
+                        getOptionValue={option => option.brandID}
+                        options={this.state.brandData}
+                        placeholder="Select"
+                        closeMenuOnSelect={false}
+                        name="editBrand"
+                        onChange={this.handleEditBrandChange.bind(this, "edit")}
+                        value={this.state.editBrand}
+                        isMulti
+                      />
+                    }
                     {this.state.editBrand.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editbrandCompulsion}
-                    </p>
-                  )}
-
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editbrandCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label>Categories</label>
@@ -1829,16 +1829,19 @@ if(datar==="add"){
                       // menuIsOpen={true}
                       name="editCategory"
                       closeMenuOnSelect={false}
-                      onChange={this.handleEditCategoryChange.bind(this, "edit")}
+                      onChange={this.handleEditCategoryChange.bind(
+                        this,
+                        "edit"
+                      )}
                       value={this.state.editCategory}
                       // showNewOptionAtTop={false}
                       isMulti
                     />
                     {this.state.editCategory.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editcategoryCompulsion}
-                    </p>
-                  )}
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editcategoryCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label>Sub Categories</label>
@@ -1851,16 +1854,19 @@ if(datar==="add"){
                       // menuIsOpen={true}
                       name="selectedSubCategory"
                       closeMenuOnSelect={false}
-                      onChange={this.handleEditSubCategoryChange.bind(this, "edit")}
+                      onChange={this.handleEditSubCategoryChange.bind(
+                        this,
+                        "edit"
+                      )}
                       value={this.state.editSubCategory}
                       // showNewOptionAtTop={false}
                       isMulti
                     />
-                     {this.state.editSubCategory.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editsubcategoryCompulsion}
-                    </p>
-                  )}
+                    {this.state.editSubCategory.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editsubcategoryCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="pop-over-div">
                     <label>Issue Type</label>
@@ -1878,21 +1884,22 @@ if(datar==="add"){
                       // showNewOptionAtTop={false}
                       isMulti
                     />
-                     {this.state.editIssuetype.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editisuuetypeCompulsion}
-                    </p>
-                  )}
+                    {this.state.editIssuetype.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editisuuetypeCompulsion}
+                      </p>
+                    )}
                   </div>
                   <div className="mapped-cate-extra">
                     <div className="pop-over-div">
                       <label className="edit-label-1">CRM Role</label>
-                      <select className="add-select-category"
+                      <select
+                        className="add-select-category"
                         name="role_ID"
                         value={this.state.userEditData.role_ID}
                         onChange={this.handleOnChangeEditData}
                       >
-                        <option value={0}>Select Designation</option>
+                        <option>Select Designation</option>
                         {this.state.CRMRoleData !== null &&
                           this.state.CRMRoleData.map((item, i) => (
                             <option key={i} value={item.crmRoleID}>
@@ -1901,10 +1908,10 @@ if(datar==="add"){
                           ))}
                       </select>
                       {this.state.userEditData.role_ID === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editcrmroleCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.editcrmroleCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="pop-over-div escalation-options">
                       <div className="filter-checkbox">
@@ -1912,83 +1919,76 @@ if(datar==="add"){
                           type="checkbox"
                           id="copy-esc1"
                           name="is_Copy_Escalation"
-                          checked={
-                            this.state.userEditData.is_Copy_Escalation
-                          }
+                          checked={this.state.userEditData.is_Copy_Escalation}
                           value={this.state.userEditData.is_Copy_Escalation}
                           onChange={this.editsetEscn}
                         />
                         <label htmlFor="copy-esc1">Copy Escalation</label>
-
                       </div>
                       {this.state.userEditData.is_Copy_Escalation === false && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editcopyescCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.editcopyescCompulsion}
+                        </p>
+                      )}
 
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
                           id="assign-esc1"
                           name="is_Assign_Escalation"
-                          checked={
-                            this.state.userEditData.is_Assign_Escalation
-                          }
+                          checked={this.state.userEditData.is_Assign_Escalation}
                           value={this.state.userEditData.is_Assign_Escalation}
                           onChange={this.editsetEscn}
                         />
-                        <label htmlFor="assign-esc1">
-                          Assign Escalation
-                                                          </label>
+                        <label htmlFor="assign-esc1">Assign Escalation</label>
                       </div>
-                      {this.state.userEditData.is_Assign_Escalation === false && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editassignescCompulsion}
-                    </p>
-                  )}
-                      {this.state.userEditData.is_Assign_Escalation===true ?(
-                         <div className="sup-agent-cntr">
-                         <div className="status-options">
-                           <input
-                             type="radio"
-                             name="selectedSupervisoragent"
-                             id="supervisor1"
-                             checked={this.state.editSupervisorRadio}
-                             value={this.state.editSupervisorRadio}
-                             onChange={this.editSuperValue.bind(this,"edit")}
-                           />
-                           <label
-                             htmlFor="supervisor1"
-                             className="logout-label"
-                           >
-                             Supervisor
-                                                             </label>
-                         </div>
-                         <div className="status-options">
-                           <input
-                             type="radio"
-                             name="selectedSupervisoragent"
-                             id="agent1"
-                             checked={this.state.editAgentRadio}
-                             value={this.state.editAgentRadio}
-                             onChange={this.editAgentValue.bind(this,"edit")}
-                           />
-                           <label htmlFor="agent1" className="logout-label">
-                             Agent
-                                                             </label>
-                         </div>
-                       </div>
-                      ):null}
-                     
+                      {this.state.userEditData.is_Assign_Escalation ===
+                        false && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.editassignescCompulsion}
+                        </p>
+                      )}
+                      {this.state.userEditData.is_Assign_Escalation === true ? (
+                        <div className="sup-agent-cntr">
+                          <div className="status-options">
+                            <input
+                              type="radio"
+                              name="selectedSupervisoragent"
+                              id="supervisor1"
+                              checked={this.state.editSupervisorRadio}
+                              value={this.state.editSupervisorRadio}
+                              onChange={this.editSuperValue.bind(this, "edit")}
+                            />
+                            <label
+                              htmlFor="supervisor1"
+                              className="logout-label"
+                            >
+                              Supervisor
+                            </label>
+                          </div>
+                          <div className="status-options">
+                            <input
+                              type="radio"
+                              name="selectedSupervisoragent"
+                              id="agent1"
+                              checked={this.state.editAgentRadio}
+                              value={this.state.editAgentRadio}
+                              onChange={this.editAgentValue.bind(this, "edit")}
+                            />
+                            <label htmlFor="agent1" className="logout-label">
+                              Agent
+                            </label>
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                     <div className="pop-over-div">
                       <label className="edit-label-1">Select Agent</label>
-                      <select className="add-select-category"
+                      <select
+                        className="add-select-category"
                         name="assign_ID"
                         value={this.state.userEditData.assign_ID}
                         onChange={this.handleOnChangeEditData}
-
                       >
                         <option>Select Agent</option>
                         {this.state.AgentData !== null &&
@@ -1999,44 +1999,53 @@ if(datar==="add"){
                           ))}
                       </select>
                       {this.state.userEditData.assign_ID === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editagentCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.editagentCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="pop-over-div">
                       <label className="edit-label-1">Status</label>
-                      <select className="txt-edit-popover"
+                      <select
+                        className="txt-edit-popover"
                         name="is_Active"
                         value={this.state.userEditData.is_Active}
                         onChange={this.handleOnChangeEditData}
                       >
-                      
- 
                         <option value="true">Active</option>
                         <option value="false">Inactive</option>
                       </select>
                     </div>
                   </div>
                 </div>
-            </Tab>
-          </Tabs>
-          <div style={{textAlign:"center",margin:"10px 0"}}>
-              <a className="pop-over-cancle canblue" onClick={this.closeEditModal.bind(this)}>CANCEL</a>
-              <button className="Save-Use" onClick={this.handleUpdateUser.bind(this)}>SAVE</button>
+              </Tab>
+            </Tabs>
+            <div style={{ textAlign: "center", margin: "10px 0" }}>
+              <a
+                className="pop-over-cancle canblue"
+                onClick={this.closeEditModal.bind(this)}
+              >
+                CANCEL
+              </a>
+              <button
+                className="Save-Use"
+                onClick={this.handleUpdateUser.bind(this)}
+              >
+                SAVE
+              </button>
             </div>
-        </div>
-         
-
-
-
+          </div>
         </Modal>
 
         {/* ----------------------------------end------------------------------------ */}
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to="settings" className="header-path">Ticketing</Link>
+          <Link to="settings" className="header-path">
+            Ticketing
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
             Users
@@ -2049,7 +2058,7 @@ if(datar==="add"){
                 <div className="table-cntr table-height TicketUserReact">
                   <ReactTable
                     data={userData}
-                    minRows={1}
+                    minRows={2}
                     columns={[
                       {
                         Header: (
@@ -2083,7 +2092,12 @@ if(datar==="add"){
                       },
                       {
                         Header: (
-                          <span onClick={this.StatusOpenModel.bind(this,"designation")}>
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "designation"
+                            )}
+                          >
                             Designation
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2095,80 +2109,122 @@ if(datar==="add"){
                             <div>
                               <span>
                                 {row.original.designation}
-                                <Popover content={<>
-                                  <div className=" row d-flex">
-                                    <div className="col-md-6">
+                                <Popover
+                                  content={
+                                    <>
+                                      <div className=" row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Reportee Designation: <b>Admin</b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            Issue Type:{" "}
+                                            <b>{row.original.issueTypeNames}</b>
+                                          </p>
+                                        </div>
+                                      </div>
 
-                                      <p className="title">Reportee Designation: <b>Admin</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">Issue Type: <b>{row.original.issueTypeNames}</b></p>
-                                    </div>
-                                  </div>
+                                      <div className="row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Report To:{" "}
+                                            <b>{row.original.reportTo}</b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            CRM Role:{" "}
+                                            <b>{row.original.crmRoleName}</b>
+                                          </p>
+                                        </div>
+                                      </div>
 
-                                  <div className="row d-flex">
-                                    <div className="col-md-6">
-
-                                      <p className="title">Report To: <b>{row.original.reportTo}</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">CRM Role: <b>{row.original.crmRoleName}</b></p>
-                                    </div>
-
-                                  </div>
-
-                                  <div className="row d-flex">
-                                    <div className="col-md-6">
-
-                                      <p className="title">Brand: <b>{row.original.brandNames}</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">Copy Escalation: <b>{row.original.is_CopyEscalation}</b></p>
-                                    </div>
-                                  </div>
-                                  <div className="row d-flex">
-                                    <div className="col-md-6">
-
-                                      <p className="title">Category: <b>{row.original.categoryNames}</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">Assign Escalation: <b>{row.original.assignEscalation}</b></p>
-                                    </div>
-                                  </div>
-                                  <div className="row d-flex">
-                                    <div className="col-md-6">
-
-                                      <p className="title">Sub Category: <b>{row.original.subCategoryNames}</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">Agent Name: </p>
-                                    </div>
-                                  </div>
-                                  <div className="row d-flex">
-                                    <div className="col-md-6">
-
-                                      <p className="title">Created By: <b>{row.original.createdBy}</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">Updated By: <b>{row.original.updatedBy}</b></p>
-                                    </div>
-                                  </div>
-                                  <div className="row d-flex">
-                                    <div className="col-md-6">
-
-                                      <p className="title">Created Date: <b>{row.original.createdDate}</b></p>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <p className="sub-title mx-2">Updated Date: <b>{row.original.updatedDate}</b></p>
-                                    </div>
-                                  </div>
-                                </>} placement="bottom" >
+                                      <div className="row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Brand:{" "}
+                                            <b>{row.original.brandNames}</b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            Copy Escalation:{" "}
+                                            <b>
+                                              {row.original.is_CopyEscalation}
+                                            </b>
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Category:{" "}
+                                            <b>{row.original.categoryNames}</b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            Assign Escalation:{" "}
+                                            <b>
+                                              {row.original.assignEscalation}
+                                            </b>
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Sub Category:{" "}
+                                            <b>
+                                              {row.original.subCategoryNames}
+                                            </b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            Agent Name:{" "}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Created By:{" "}
+                                            <b>{row.original.createdBy}</b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            Updated By:{" "}
+                                            <b>{row.original.updatedBy}</b>
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="row d-flex">
+                                        <div className="col-md-6">
+                                          <p className="title">
+                                            Created Date:{" "}
+                                            <b>{row.original.createdDate}</b>
+                                          </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p className="sub-title mx-2">
+                                            Updated Date:{" "}
+                                            <b>{row.original.updatedDate}</b>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
                                   <img
                                     className="info-icon-cp"
                                     src={BlackInfoIcon}
                                     alt="info-icon"
                                     id={ids}
-
                                   />
                                 </Popover>
                               </span>
@@ -2182,26 +2238,47 @@ if(datar==="add"){
                         Cell: row => {
                           var ids = row.original["userId"];
                           return (
-
                             <>
                               <span>
-
                                 <Popover
-                                  content={<div className="samdel d-flex general-popover popover-body" id={"samdel" + ids}>
-                                    <div className="del-big-icon">
-                                      <img src={DelBigIcon} alt="del-icon" />
-                                    </div>
-                                    <div>
-                                      <p className="font-weight-bold blak-clr">Delete file?</p>
-                                      <p className="mt-1 fs-12">
-                                        Are you sure you want to delete this file?
-                                    </p>
-                                      <div className="del-can">
-                                        <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
-                                        <button className="butn" onClick={this.handleDeleteUser.bind(this, row.original.userId)}>Delete</button>
+                                  content={
+                                    <div
+                                      className="samdel d-flex general-popover popover-body"
+                                      id={"samdel" + ids}
+                                    >
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a
+                                            className="canblue"
+                                            onClick={() =>
+                                              this.hide(this, "samdel" + ids)
+                                            }
+                                          >
+                                            CANCEL
+                                          </a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.handleDeleteUser.bind(
+                                              this,
+                                              row.original.userId
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>}
+                                  }
                                   placement="bottom"
                                   trigger="click"
                                 >
@@ -2210,18 +2287,19 @@ if(datar==="add"){
                                     alt="del-icon"
                                     className="del-btn"
                                     id={ids}
-                                  //onClick={() => this.show(this, "samdel" + ids)}
-
+                                    //onClick={() => this.show(this, "samdel" + ids)}
                                   />
                                 </Popover>
 
-                                <button className="react-tabel-button editre"
-                                  onClick={this.handleGetUserListByID.bind(this, row.original.userId)}
+                                <button
+                                  className="react-tabel-button editre"
+                                  onClick={this.handleGetUserListByID.bind(
+                                    this,
+                                    row.original.userId
+                                  )}
                                 >
                                   EDIT
-
                                 </button>
-
                               </span>
                             </>
                           );
@@ -2229,11 +2307,9 @@ if(datar==="add"){
                       }
                     ]}
                     // resizable={false}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     showPagination={true}
                   />
-
-
 
                   {/* <div className="position-relative">
                     <div className="pagi">
@@ -2285,103 +2361,109 @@ if(datar==="add"){
                     <div className="multi-collapse show" id="personal-details">
                       <div className="div-cntr">
                         <label>User Name</label>
-                        <input type="text" maxLength={25}
+                        <input
+                          type="text"
+                          maxLength={25}
                           readOnly={this.state.personalReadOnly}
                           name="selectUserName"
                           value={this.state.selectUserName}
                           onChange={this.handleOnChangeUserData}
                         />
-                         {this.state.selectUserName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.usernameCompulsion}
-                    </p>
-                  )}
+                        {this.state.selectUserName.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.usernameCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>First Name</label>
-                        <input type="text" maxLength={25}
-                        readOnly={this.state.personalReadOnly}
+                        <input
+                          type="text"
+                          maxLength={25}
+                          readOnly={this.state.personalReadOnly}
                           name="selectFirstName"
                           value={this.state.selectFirstName}
                           onChange={this.handleOnChangeUserData}
                         />
-                         {this.state.selectFirstName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.firstnameCompulsion}
-                    </p>
-                  )}
+                        {this.state.selectFirstName.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.firstnameCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Last Name</label>
-                        <input type="text" maxLength={25}
-                        readOnly={this.state.personalReadOnly}
+                        <input
+                          type="text"
+                          maxLength={25}
+                          readOnly={this.state.personalReadOnly}
                           name="selectLastName"
                           value={this.state.selectLastName}
                           onChange={this.handleOnChangeUserData}
                         />
-                         {this.state.selectLastName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.lastnameCompulsion}
-                    </p>
-                  )}
+                        {this.state.selectLastName.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.lastnameCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
-                        <input type="text" maxLength={10}
-                        readOnly={this.state.personalReadOnly}
+                        <input
+                          type="text"
+                          maxLength={10}
+                          readOnly={this.state.personalReadOnly}
                           name="selectMobile"
                           value={this.state.selectMobile}
                           onChange={this.handleOnChangeUserData}
                         />
-                         {this.state.selectMobile.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.mobilenumberCompulsion}
-                    </p>
-                  )}
-                   <p style={{ color: "red", marginBottom: "0px" }}>
-                   {this.state.mobileValidation}
-                    </p>
-                 
+                        {this.state.selectMobile.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.mobilenumberCompulsion}
+                          </p>
+                        )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.mobileValidation}
+                        </p>
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
-                        <input type="text" maxLength={100}
-                        readOnly={this.state.personalReadOnly}
+                        <input
+                          type="text"
+                          maxLength={100}
+                          readOnly={this.state.personalReadOnly}
                           name="selectEmail"
                           value={this.state.selectEmail}
                           onChange={this.handleOnChangeUserData}
                         />
                         {this.state.selectEmail.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.emailCompulsion}
-                    </p>
-                  )}
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                  {this.state.emailValidation}
-                    </p>
-                 
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.emailCompulsion}
+                          </p>
+                        )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.emailValidation}
+                        </p>
                       </div>
 
-                      {this.state.personalReadOnly===true ? (
-                         <div className="btn-coll">
-                         <button
-                          //data-toggle="collapse"
-                          //href="#personal-details"
-                           //data-target="#profile-details"
-                           //data-toggle="collapse"
-                           className="butn"
-                           onClick={this.editMethod.bind(this)}
-                         >
-                           Update 
-                         </button>
-                       </div>
-                      ):(
-
-                        this.state.buttonToggle===true ? (
-                          <div className="btn-coll">
+                      {this.state.personalReadOnly === true ? (
+                        <div className="btn-coll">
                           <button
-                           data-toggle="collapse"
-                           href="#personal-details"
+                            //data-toggle="collapse"
+                            //href="#personal-details"
+                            //data-target="#profile-details"
+                            //data-toggle="collapse"
+                            className="butn"
+                            onClick={this.editMethod.bind(this)}
+                          >
+                            Update
+                          </button>
+                        </div>
+                      ) : this.state.buttonToggle === true ? (
+                        <div className="btn-coll">
+                          <button
+                            data-toggle="collapse"
+                            href="#personal-details"
                             //data-target="#profile-details"
                             //data-toggle="collapse"
                             className="butn"
@@ -2390,27 +2472,20 @@ if(datar==="add"){
                             Update &amp;Next
                           </button>
                         </div>
-                      ):(
-                       <div className="btn-coll">
-                       <button
-                        // data-toggle="collapse"
-                        // href="#personal-details"
-                         //data-target="#profile-details"
-                         //data-toggle="collapse"
-                         className="butn"
-                         onClick={this.handleValidationEmailIdMob.bind(this)}
-                       >
-                         SAVE &amp; NEXT
-                       </button>
-                     </div>
-                      )
-
+                      ) : (
+                        <div className="btn-coll">
+                          <button
+                            // data-toggle="collapse"
+                            // href="#personal-details"
+                            //data-target="#profile-details"
+                            //data-toggle="collapse"
+                            className="butn"
+                            onClick={this.handleValidationEmailIdMob.bind(this)}
+                          >
+                            SAVE &amp; NEXT
+                          </button>
+                        </div>
                       )}
-                     
-                       
-                         
-                      
-                         
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -2430,11 +2505,12 @@ if(datar==="add"){
                     >
                       <div className="div-cntr">
                         <label>User Designation</label>
-                        <select className="add-select-category"
+                        <select
+                          className="add-select-category"
                           disabled={this.state.profileReadOnly}
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
-                          onChange={this.handleDesination.bind(this,"add")}
+                          onChange={this.handleDesination.bind(this, "add")}
                         >
                           <option>Select Designation</option>
                           {this.state.DesignationData !== null &&
@@ -2445,18 +2521,22 @@ if(datar==="add"){
                             ))}
                         </select>
                         {this.state.selectedDesignation === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.userdesignCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.userdesignCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
-                        <select className="add-select-category"
-                        disabled={this.state.profileReadOnly}
+                        <select
+                          className="add-select-category"
+                          disabled={this.state.profileReadOnly}
                           name="selectedReporteeDesign"
                           value={this.state.selectedReporteeDesign}
-                          onChange={this.handleReporteeDesgnDropDown.bind(this,"add")}
+                          onChange={this.handleReporteeDesgnDropDown.bind(
+                            this,
+                            "add"
+                          )}
                         >
                           <option>Select Reportee Designation</option>
                           {this.state.ReporteeDesignData !== null &&
@@ -2467,15 +2547,15 @@ if(datar==="add"){
                             ))}
                         </select>
                         {this.state.selectedReporteeDesign === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.reporteeDesignCompulsion}
-                    </p>
-                  )}
-                  
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.reporteeDesignCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Report To</label>
-                        <select className="add-select-category"
+                        <select
+                          className="add-select-category"
                           disabled={this.state.profileReadOnly}
                           name="selectedReportTO"
                           value={this.state.selectedReportTO}
@@ -2490,56 +2570,50 @@ if(datar==="add"){
                             ))}
                         </select>
                         {this.state.selectedReportTO === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.reportToCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.reportToCompulsion}
+                          </p>
+                        )}
                       </div>
-                      {this.state.profileReadOnly===true ? (
-                         <div className="btn-coll">
-                         <button
-                          //data-toggle="collapse"
-                          //href="#profile-details"
-                           //data-target="#mapped-category"
-                           //data-toggle="collapse"
-                           className="butn"
-                           onClick={this.editProfileMethod.bind(this)}
-                         >
-                          Update 
-                         </button>
-                       </div>
-                      ):(
-
-                        this.state.buttonProfileToggle===true ? (
-                          <div className="btn-coll">
+                      {this.state.profileReadOnly === true ? (
+                        <div className="btn-coll">
                           <button
-                           data-toggle="collapse"
-                           href="#profile-details"
+                            //data-toggle="collapse"
+                            //href="#profile-details"
+                            //data-target="#mapped-category"
+                            //data-toggle="collapse"
+                            className="butn"
+                            onClick={this.editProfileMethod.bind(this)}
+                          >
+                            Update
+                          </button>
+                        </div>
+                      ) : this.state.buttonProfileToggle === true ? (
+                        <div className="btn-coll">
+                          <button
+                            data-toggle="collapse"
+                            href="#profile-details"
                             //data-target="#mapped-category"
                             //data-toggle="collapse"
                             className="butn"
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
-                           Update &amp;Next
+                            Update &amp;Next
                           </button>
                         </div>
-                       ):(
-                         <div className="btn-coll">
-                         <button
-                           //data-target="#mapped-category"
-                          // data-toggle="collapse"
-                           //href="#profile-details"
-                           className="butn"
-                           onClick={this.handleAddProfileDetails.bind(this)}
-                         >
-                           SAVE &amp; NEXT
-                         </button>
-                       </div>
-                       )
-
+                      ) : (
+                        <div className="btn-coll">
+                          <button
+                            //data-target="#mapped-category"
+                            // data-toggle="collapse"
+                            //href="#profile-details"
+                            className="butn"
+                            onClick={this.handleAddProfileDetails.bind(this)}
+                          >
+                            SAVE &amp; NEXT
+                          </button>
+                        </div>
                       )}
-                      
-                      
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -2572,11 +2646,11 @@ if(datar==="add"){
                           // showNewOptionAtTop={false}
                           isMulti
                         />
-                         {this.state.selectedBrand.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.brandCompulsion}
-                    </p>
-                  )}
+                        {this.state.selectedBrand.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.brandCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Categories</label>
@@ -2595,10 +2669,10 @@ if(datar==="add"){
                           isMulti
                         />
                         {this.state.selectedCategory.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.categoryCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.categoryCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Sub Categories</label>
@@ -2611,16 +2685,19 @@ if(datar==="add"){
                           // menuIsOpen={true}
                           name="selectedSubCategory"
                           closeMenuOnSelect={false}
-                          onChange={this.handleSubCategoryChange.bind(this, "add")}
+                          onChange={this.handleSubCategoryChange.bind(
+                            this,
+                            "add"
+                          )}
                           value={this.state.selectedSubCategory}
                           // showNewOptionAtTop={false}
                           isMulti
                         />
                         {this.state.selectedSubCategory.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.subcategoryCompulsion}
-                    </p>
-                  )}
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.subcategoryCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Issue Type</label>
@@ -2638,16 +2715,17 @@ if(datar==="add"){
                           // showNewOptionAtTop={false}
                           isMulti
                         />
-                         {this.state.selectedIssueType.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.isuuetypeCompulsion}
-                    </p>
-                  )}
+                        {this.state.selectedIssueType.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.isuuetypeCompulsion}
+                          </p>
+                        )}
                       </div>
                       <div className="mapped-cate-extra">
                         <div className="div-cntr">
                           <label>CRM Role</label>
-                          <select className="add-select-category"
+                          <select
+                            className="add-select-category"
                             name="selectedCRMRoles"
                             value={this.state.selectedCRMRoles}
                             onChange={this.handleOnChangeUserData}
@@ -2661,10 +2739,10 @@ if(datar==="add"){
                               ))}
                           </select>
                           {this.state.selectedCRMRoles === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.crmroleCompulsion}
-                    </p>
-                  )}
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.crmroleCompulsion}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr escalation-options">
                           <div className="filter-checkbox">
@@ -2674,16 +2752,15 @@ if(datar==="add"){
                               name="selectedCopyEscalation"
                               value={this.state.selectedCopyEscalation}
                               onChange={this.setEscn}
-
                             />
-                             
+
                             <label htmlFor="copy-esc">Copy Escalation</label>
                           </div>
                           {this.state.selectedCopyEscalation === false && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.copyescCompulsion}
-                    </p>
-                  )}
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.copyescCompulsion}
+                            </p>
+                          )}
                           <div className="filter-checkbox">
                             <input
                               type="checkbox"
@@ -2691,18 +2768,17 @@ if(datar==="add"){
                               name="selectedAssignEscalation"
                               value={this.state.selectedAssignEscalation}
                               onChange={this.setEscn}
-
                             />
-                            
+
                             <label htmlFor="assign-esc">
                               Assign Escalation
                             </label>
                           </div>
                           {this.state.selectedAssignEscalation === false && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.assignescCompulsion}
-                    </p>
-                  )}
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.assignescCompulsion}
+                            </p>
+                          )}
                           {this.state.selectedAssignEscalation === true ? (
                             <div className="sup-agent-cntr">
                               <div className="status-options">
@@ -2711,14 +2787,17 @@ if(datar==="add"){
                                   name="selectedSupervisorAgent"
                                   id="supervisor"
                                   value={this.state.selectedSupervisorRadio}
-                                  onChange={this.handleSuperValue.bind(this,"add")}
+                                  onChange={this.handleSuperValue.bind(
+                                    this,
+                                    "add"
+                                  )}
                                 />
                                 <label
                                   htmlFor="supervisor"
                                   className="logout-label"
                                 >
                                   Supervisor
-                            </label>
+                                </label>
                               </div>
                               <div className="status-options">
                                 <input
@@ -2726,24 +2805,25 @@ if(datar==="add"){
                                   name="selectedSupervisorAgent"
                                   id="agent"
                                   value={this.state.selectedAgentRadio}
-                                  onChange={this.handleAgentValue.bind(this,"add")}
+                                  onChange={this.handleAgentValue.bind(
+                                    this,
+                                    "add"
+                                  )}
                                 />
                                 <label htmlFor="agent" className="logout-label">
                                   Agent
-                            </label>
+                                </label>
                               </div>
                             </div>
-
                           ) : null}
-
                         </div>
                         <div className="div-cntr">
                           <label>Select Agent</label>
-                          <select className="add-select-category"
+                          <select
+                            className="add-select-category"
                             name="selectedAgent"
                             value={this.state.selectedAgent}
                             onChange={this.handleOnChangeUserData}
-
                           >
                             <option>Select Agent</option>
                             {this.state.AgentData !== null &&
@@ -2753,11 +2833,11 @@ if(datar==="add"){
                                 </option>
                               ))}
                           </select>
-                          {this.state.selectedAgent ===0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.agentCompulsion}
-                    </p>
-                  )}
+                          {this.state.selectedAgent === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.agentCompulsion}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label>Status</label>
@@ -2768,14 +2848,16 @@ if(datar==="add"){
                           >
                             <option value="true">Active</option>
                             <option value="false">Inactive</option>
-
                           </select>
                         </div>
                       </div>
                       <div className="btn-coll">
-                        <button className="butn"
+                        <button
+                          className="butn"
                           onClick={this.handleAddMapCategory.bind(this)}
-                        >ADD</button>
+                        >
+                          ADD
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -2813,14 +2895,19 @@ if(datar==="add"){
                         <div className="file-dtls">
                           <p className="file-name">{this.state.fileName}</p>
                           <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" onClick={this.togglePopover} />
+                            <img
+                              src={DelBlack}
+                              alt="delete-black"
+                              onClick={this.togglePopover}
+                            />
                           </div>
                           <UncontrolledPopover
                             trigger="legacy"
                             placement="auto"
                             target="del-file-1"
                             className="general-popover delete-popover"
-                            isOpen={this.state.isOpen} toggle={this.togglePopover}
+                            isOpen={this.state.isOpen}
+                            toggle={this.togglePopover}
                           >
                             <PopoverBody className="d-flex">
                               <div className="del-big-icon">
@@ -2834,7 +2921,12 @@ if(datar==="add"){
                                   Are you sure you want to delete this file?
                                 </p>
                                 <div className="del-can">
-                                  <a className="canblue" onClick={this.togglePopover}>CANCEL</a>
+                                  <a
+                                    className="canblue"
+                                    onClick={this.togglePopover}
+                                  >
+                                    CANCEL
+                                  </a>
                                   <button className="butn">Delete</button>
                                 </div>
                               </div>

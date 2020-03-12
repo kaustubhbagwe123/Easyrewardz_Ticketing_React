@@ -12,9 +12,9 @@ let config = {
     ["Low","In-Active"],
     ],
     userTemplate:[
-    ["UserName","MobileNo","UserEmailID","UserDesignation","ReporteeDesignation","ReportsTo","CRMRole","CopyEscalation","EscalationAgentName","Status"],
-    ["Shlok.barot","9665958061","shlok@gmail.com","Manager","mangesh@gmail.com","Executive","yes","Chetan","Active"],
-    ["Vipin.Singh","9665958061","vipin@gmail.com","Manager","vipin@gmail.com","Agent","no","Mangesh","In-Active"],
+    ["UserName","FirstName","LastName","Mobile Number","User Email ID","User Designation","Reportee Designation","Reports To","CRM Role","Copy Escalation","Assign Escalation","Escalation Agent Name","Status"],
+    ["Shlok.barot","Shlok","barot","9665958060","mangesh@gmail.com","Executive","Manager","Chetan","Admin","Yes","Yes","Vikas","Active"],
+    ["Mangesh.Mishra","Mangesh","Mishra","9665958060","mangesh@gmail.com","Executive","Supervisor","Chetan","Admin","Yes","Yes","Vikas","Active"]
     
     ],
     alertTemplate:[
@@ -33,9 +33,9 @@ let config = {
     ["IssueType-2","Low,Medium,High","In-Active"],
     ],
     crmRoleTemplate:[
-    ["RoleName","Status"],
-    ["Super Manager","Active"],
-    ["Manager","In-Active"],
+    ["RoleName","Status","EnabledModules","DisabledModules"],
+    ["HOD","InActive","Dashboard|Tickets|Knowledge Base","Settings|Chat|Notification|Reports"],
+    ["Agent","Active","Settings|Chat|Notification|Reports","Settings|Chat|Notification|Reports"],
     ],
     storeTemplate:[
     ["Brand","StoreCode","StoreName","State","City","PinCode","Address","Region","Zone","StoreType","Email","Phone","Status"],
@@ -46,7 +46,7 @@ let config = {
     //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
     // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
     //apiUrl: 'http://10.50.250.18:9512/api'
-//    apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
+    //apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
     };
     
     
