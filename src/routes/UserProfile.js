@@ -114,10 +114,10 @@ class UserProfile extends Component {
     this.state.selectedEmailID = userData.emailId;
     this.state.selectedDesignation = userData.designationID;
     this.state.selectedProfilePicture = userData.profilePicture;
-    var image=this.state.selectedProfilePicture.split("/");
-    var img=image[image.length-1];
-    var array=[];
-    array.push({name:img})
+    // var image=this.state.selectedProfilePicture.split("/");
+    // var img=image[image.length-1];
+    // var array=[];
+    // array.push({name:img})
 
     self.setState({
       selectedUserID: userData.userId,
@@ -126,7 +126,7 @@ class UserProfile extends Component {
       selectedMobile: userData.mobileNo,
       selectedEmailID: userData.emailId,
       selectedDesignation: userData.designationID,
-      fileName:array
+      //fileName:array
     });
   };
 
