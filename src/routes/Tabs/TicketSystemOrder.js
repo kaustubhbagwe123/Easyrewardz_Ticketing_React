@@ -274,8 +274,9 @@ class TicketSystemOrder extends Component {
       });
   }
 
-  handleOrderSearchData(OrdData) {
+  handleOrderSearchData(OrdData,e) {
     debugger;
+    e.preventDefault()
     let self = this;
     var CustID = this.props.custDetails;
     if (OrdData === 1) {
@@ -1590,10 +1591,13 @@ class TicketSystemOrder extends Component {
           {this.state.AddManuallyData === true ? null : (
             <div>
               <div className="row m-b-10">
+             
                 <div
                   className="col-md-11"
                   style={{ marginLeft: "25px", marginTop: "20px" }}
                 >
+                   <form name="form" onSubmit={this.handleOrderSearchData.bind(this, 1)}>
+                  <div>
                   <input
                     type="text"
                     className="systemordersearch"
@@ -1612,6 +1616,8 @@ class TicketSystemOrder extends Component {
                     onClick={this.handleOrderSearchData.bind(this, 1)}
                     // disabled={this.state.custAttachOrder === 1 ? true : false}
                   />
+                  </div>
+                  </form>
                   {this.state.orderNumber.length === 0 && (
                     <p
                       style={{
@@ -1623,6 +1629,7 @@ class TicketSystemOrder extends Component {
                     </p>
                   )}
                 </div>
+               
               </div>
               {this.state.message === "Record Not Found" ? (
                 <div>

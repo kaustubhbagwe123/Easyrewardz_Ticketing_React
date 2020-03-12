@@ -42,7 +42,7 @@ class AddSearchMyTicket extends Component {
       SearchData: [],
       value: "",
       copied: false,
-      searchCompulsion: ''
+      searchCompulsion: ""
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -56,10 +56,7 @@ class AddSearchMyTicket extends Component {
   handleCopyToaster() {
     //debugger;
     setTimeout(() => {
-      if (
-        this.state.copied &&
-        this.state.copied
-      ) {
+      if (this.state.copied && this.state.copied) {
         NotificationManager.success("Copied.");
       }
     }, 100);
@@ -80,47 +77,50 @@ class AddSearchMyTicket extends Component {
     });
     this.validator.hideMessages();
   }
-  handleSearchCustomer() {
+  handleSearchCustomer(e) {
+    e.preventDefault();
     //debugger;
     if (this.state.SrchEmailPhone.length > 0) {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Customer/searchCustomer",
-      headers: authHeader(),
-      params: {
-        SearchText: this.state.SrchEmailPhone.trim()
-      }
-    }).then(function(res) {
-      //debugger;
-      let SearchData = res.data.responseData[0];
-      // let GetCustId = SearchData.customerID;
-      if (SearchData) {
-        let GetCustId = SearchData.customerID;
-        setTimeout(function() {
-          self.props.history.push({
-            pathname: "ticketsystem",
-            state: self.state
-          });
-        }, 100);
-        self.setState({
-          customerId: GetCustId
-          // message: res.data.message
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Customer/searchCustomer",
+        headers: authHeader(),
+        params: {
+          SearchText: this.state.SrchEmailPhone.trim()
+        }
+      })
+        .then(function(res) {
+          //debugger;
+          let SearchData = res.data.responseData[0];
+          // let GetCustId = SearchData.customerID;
+          if (SearchData) {
+            let GetCustId = SearchData.customerID;
+            setTimeout(function() {
+              self.props.history.push({
+                pathname: "ticketsystem",
+                state: self.state
+              });
+            }, 100);
+            self.setState({
+              customerId: GetCustId
+              // message: res.data.message
+            });
+          } else {
+            self.setState({
+              message: res.data.message
+            });
+            // NotificationManager.error(res.data.message);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
-      } else {
-        self.setState({
-          message: res.data.message
-        });
-        // NotificationManager.error(res.data.message);
-      }
-    }).catch(data => {
-      console.log(data);
+    } else {
+      this.setState({
+        searchCompulsion: "Search field is compulsory."
       });
-  } else {
-    this.setState({
-      searchCompulsion: 'Search field is compulsory.'
-    })
-  }
+    }
   }
   CheckValidCustomerEmailPhoneNo() {
     //debugger;
@@ -134,17 +134,19 @@ class AddSearchMyTicket extends Component {
           Cust_EmailId: this.state.customerEmailId.trim(),
           Cust_PhoneNumber: this.state.customerPhoneNumber.trim()
         }
-      }).then(function(res) {
-        //debugger;
-        let validCheck =res.data.message;
-        if (validCheck === "Success") {
-          self.handleAddCustomerSave();
-        } else {
-          NotificationManager.error(res.data.responseData);
-        }
-        // let GetCustId = SearchData.customerID;
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          //debugger;
+          let validCheck = res.data.message;
+          if (validCheck === "Success") {
+            self.handleAddCustomerSave();
+          } else {
+            NotificationManager.error(res.data.responseData);
+          }
+          // let GetCustId = SearchData.customerID;
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       this.validator.showMessages();
@@ -173,28 +175,30 @@ class AddSearchMyTicket extends Component {
         ModifyBy: 1,
         ModifiedDate: "2019-12-17"
       }
-    }).then(function(res) {
-      //debugger;
-      let responseMessage = res.data.message;
-      let custId = res.data.responseData;
-      self.setState({
-        loading: true
-      });
-      if (responseMessage === "Success") {
-        //debugger
-        NotificationManager.success("New Customer added successfully.");
-        setTimeout(function() {
-          self.props.history.push({
-            pathname: "ticketsystem",
-            state: self.state
-          });
-        }, 500);
+    })
+      .then(function(res) {
+        //debugger;
+        let responseMessage = res.data.message;
+        let custId = res.data.responseData;
         self.setState({
-          customerId: custId
+          loading: true
         });
-      }
-    }).catch(data => {
-      console.log(data);
+        if (responseMessage === "Success") {
+          //debugger
+          NotificationManager.success("New Customer added successfully.");
+          setTimeout(function() {
+            self.props.history.push({
+              pathname: "ticketsystem",
+              state: self.state
+            });
+          }, 500);
+          self.setState({
+            customerId: custId
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   genderSelect = e => {
@@ -229,42 +233,52 @@ class AddSearchMyTicket extends Component {
             text={"Hello"}
             onCopy={() => this.setState({ copied: true })}
           >
-            <img src={PasteImg} 
-              alt="PasteImage" 
-              className="paste-addSearch" 
-              onClick={this.handleCopyToaster} />
+            <img
+              src={PasteImg}
+              alt="PasteImage"
+              className="paste-addSearch"
+              onClick={this.handleCopyToaster}
+            />
           </CopyToClipboard>
         </div>
         <div className="addsearch-div">
           <div className="card">
             <div className="addSearchCard">
-              <label className="label1-AddSearch">
-                SEARCH CUSTOMER BY
-                <label className="label2-AddSearch">
-                  &nbsp;(PHONE NUMBER, EMAIL ID)
-                  <span className="span-color">*</span>
+            <form name="form" onSubmit={this.handleSearchCustomer}>
+              <div>
+                <label className="label1-AddSearch">
+                  SEARCH CUSTOMER BY
+                  <label className="label2-AddSearch">
+                    &nbsp;(PHONE NUMBER, EMAIL ID)
+                    <span className="span-color">*</span>
+                  </label>
                 </label>
-              </label>
 
-              <input
-                type="text"
-                className="search-customerAddSrch"
-                placeholder="Search Customer"
-                name="SrchEmailPhone"
-                value={this.state.SrchEmailPhone}
-                onChange={this.addCustomerData}
-                maxLength="100"
-                autoComplete="off"
-              />
-              <div className="seacrh-img-addsearch">
-                <img
-                  src={SearchBlueImg}
-                  alt="SearchBlueImg"
-                  className="srch-imge"
-                  onClick={this.handleSearchCustomer}
+                <input
+                  type="text"
+                  className="search-customerAddSrch"
+                  placeholder="Search Customer"
+                  name="SrchEmailPhone"
+                  value={this.state.SrchEmailPhone}
+                  onChange={this.addCustomerData}
+                  maxLength="100"
+                  autoComplete="off"
                 />
+                <div className="seacrh-img-addsearch">
+                  <img
+                    src={SearchBlueImg}
+                    alt="SearchBlueImg"
+                    className="srch-imge"
+                    onClick={this.handleSearchCustomer}
+                  />
+                </div>
               </div>
-              {this.state.SrchEmailPhone.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.searchCompulsion}</p>}
+              </form>
+              {this.state.SrchEmailPhone.length == 0 && (
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.searchCompulsion}
+                </p>
+              )}
 
               {this.state.message === "Record Not Found" ? (
                 <div>
