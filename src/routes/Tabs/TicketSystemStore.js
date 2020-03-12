@@ -1159,7 +1159,7 @@ className="custom-antd-table"
                         showPagination={false}
                       /> */}
                        <Table
-                       className="custom-antd-table"
+                       className="custom-antd-table date-picker-arrows"
                         columns={[
                           {
                             title: "",
@@ -1236,7 +1236,7 @@ className="custom-antd-table"
                             dataIndex: "visitDate",
                             render:(row,data)=>{
                               return(
-                                <div className="col-sm-12 p-0">
+                                <div className="col-sm-12 p-0 position-static">
                                 <DatePicker
                                   selected={data.VisitedDate}
                                   placeholderText="DD/MM/YYYY"
