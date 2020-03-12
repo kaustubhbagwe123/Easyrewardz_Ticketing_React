@@ -217,14 +217,14 @@ class Templates extends Component {
         if (status === "Success") {
           NotificationManager.success("Template update successfully.");
           self.handleGetTemplate();
-          self.setState({ editSaveLoading: true });
+          self.setState({ editSaveLoading: false,ConfigTabsModal:false });
         } else {
-          self.setState({ editSaveLoading: true });
+          self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
           NotificationManager.error("Template not update.");
         }
       })
       .catch(data => {
-        self.setState({ editSaveLoading: true });
+        self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
         console.log(data);
       });
   }
@@ -544,7 +544,7 @@ class Templates extends Component {
     return <div className="rt-noData">No rows found</div>;
   };
   handleEditSave = e => {
-    this.setState({ ConfigTabsModal: true });
+    this.setState({ ConfigTabsModal: true,editmodel:false });
   };
   render() {
     const columns = [

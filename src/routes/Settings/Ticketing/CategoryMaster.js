@@ -1204,7 +1204,7 @@ class CategoryMaster extends Component {
                                 value={item.brandID}
                                 className="select-category-placeholder"
                               >
-                                {item.brandCode}
+                                {item.brandName}
                               </option>
                             ))}
                         </select>

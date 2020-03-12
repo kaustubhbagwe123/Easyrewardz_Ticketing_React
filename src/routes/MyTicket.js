@@ -141,6 +141,7 @@ class MyTicket extends Component {
       selectedCategoryKB: 0,
       selectedSubCategoryKB: 0,
       CkEditorTemplateData: [],
+      ReplyCKEditoertemplat:[],
       CkEditorTemplateDetails: [],
       selectedStore: [],
       selectedProduct: [],
@@ -235,13 +236,12 @@ class MyTicket extends Component {
   }
 
   componentDidUpdate() {
-    var ticketIds=this.props.location.ticketDetailID;
-    if(ticketIds){
+    var ticketIds = this.props.location.ticketDetailID;
+    if (ticketIds) {
       if (this.state.ticket_Id !== ticketIds) {
         this.componentDidMount();
       }
     }
-    
   }
 
   componentDidMount() {
@@ -1696,8 +1696,9 @@ class MyTicket extends Component {
     })
       .then(function(res) {
         debugger;
-        let CkEditorTemplateData = res.data.responseData;
-        self.setState({ CkEditorTemplateData: CkEditorTemplateData });
+        let data = res.data.responseData;
+        self.setState({ CkEditorTemplateData: data,
+          ReplyCKEditoertemplat:data });
       })
       .catch(data => {
         console.log(data);
@@ -1705,31 +1706,57 @@ class MyTicket extends Component {
   }
 
   //get Template data for select template funcation
-  handleCkEditorTemplateData(tempId, tempName) {
+  handleCkEditorTemplateData(tempId, tempName,row) {
     debugger;
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Template/getTemplateContent",
-      headers: authHeader(),
-      params: {
-        TemplateId: tempId
-      }
-    })
-      .then(function(res) {
-        debugger;
-        let TemplateDetails = res.data.responseData;
-        let bodyData = res.data.responseData.templateBody;
-        self.setState({
-          CkEditorTemplateDetails: TemplateDetails,
-          tempName: tempName,
-          selectTicketTemplateId: tempId,
-          mailBodyData: bodyData
-        });
+    if(row === 1){
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Template/getTemplateContent",
+        headers: authHeader(),
+        params: {
+          TemplateId: tempId
+        }
       })
-      .catch(data => {
-        console.log(data);
-      });
+        .then(function(res) {
+          debugger;
+          let TemplateDetails = res.data.responseData;
+          let bodyData = res.data.responseData.templateBody;
+          self.setState({
+            CkEditorTemplateDetails: TemplateDetails,
+            tempName: tempName,
+            selectTicketTemplateId: tempId,
+            mailBodyData: bodyData
+          });
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    }else{
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Template/getTemplateContent",
+        headers: authHeader(),
+        params: {
+          TemplateId: tempId
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let TemplateDetails = res.data.responseData;
+          let bodyData = res.data.responseData.templateBody;
+          self.setState({
+            CkEditorTemplateDetails: TemplateDetails,
+            tempName: tempName,
+            selectTicketTemplateId: tempId,
+            mailBodyData: bodyData
+          });
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    }
+    
   }
   handleSendMailData(isSend) {
     debugger;
@@ -1817,7 +1844,8 @@ class MyTicket extends Component {
         IsInformToStore: this.state.ReplyInformStore,
         TicketSource: this.state.ticketSourceId, // Send ticket source id
         IsSent: 0,
-        IsCustomerComment: 0,
+        IsCustomerComment: 1,
+        IsResponseToCustomer: 1,
         MailID: 0,
         StoreID: store_Id.substring(",", store_Id.length - 1)
       };
@@ -4960,7 +4988,8 @@ class MyTicket extends Component {
                                 onClick={this.handleCkEditorTemplateData.bind(
                                   this,
                                   item.templateID,
-                                  item.templateName
+                                  item.templateName,
+                                  2
                                 )}
                               >
                                 {item.templateName}
@@ -5941,7 +5970,6 @@ class MyTicket extends Component {
                                 />
                                 Kb Link
                               </a>
-
                               <div
                                 className="dropdown collapbtn"
                                 style={{ display: "inherit" }}
@@ -5950,23 +5978,31 @@ class MyTicket extends Component {
                                   className="dropdown-toggle my-tic-email"
                                   type="button"
                                   data-toggle="dropdown"
+                                  onClick={this.handleTemplateBindByIssueType.bind(
+                                    this,1
+                                  )}
                                 >
-                                  <FontAwesomeIcon icon={faCalculator} />{" "}
+                                  <FontAwesomeIcon icon={faCalculator} />
                                   Template
                                 </button>
                                 <ul className="dropdown-menu">
-                                  <li>
-                                    <a href="#!">Template 1</a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">Template 2</a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">Template 3</a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">Template 4</a>
-                                  </li>
+                                  {this.state.ReplyCKEditoertemplat !== null &&
+                                    this.state.ReplyCKEditoertemplat.map(
+                                      (item, i) => (
+                                        <li key={i} value={item.templateID}>
+                                          <span
+                                            onClick={this.handleCkEditorTemplateData.bind(
+                                              this,
+                                              item.templateID,
+                                              item.templateName,
+                                              1
+                                            )}
+                                          >
+                                            {item.templateName}
+                                          </span>
+                                        </li>
+                                      )
+                                    )}
                                 </ul>
                               </div>
                             </div>
