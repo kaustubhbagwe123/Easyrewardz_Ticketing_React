@@ -2210,6 +2210,19 @@ class Dashboard extends Component {
     debugger;
 
     let self = this;
+
+    var month, day, year, hours, minutes, seconds;
+        var date = new Date(this.state.selectedScheduleTime),
+            month = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+        hours = ("0" + date.getHours()).slice(-2);
+        minutes = ("0" + date.getMinutes()).slice(-2);
+        seconds = ("0" + date.getSeconds()).slice(-2);
+
+        var mySQLDate = [date.getFullYear(), month, day].join("-");
+        var mySQLTime = [hours, minutes, seconds].join(":");
+        this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
+
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/Schedule",
