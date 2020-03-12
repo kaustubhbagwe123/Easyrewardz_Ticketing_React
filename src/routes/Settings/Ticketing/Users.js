@@ -1052,12 +1052,8 @@ class Users extends Component {
             NotificationManager.success("Record Save successfully.");
             self.setState({
               getID: id,
-              personalReadOnly: true,
-              selectUserName: "",
-              selectFirstName: "",
-              selectLastName: "",
-              selectMobile: "",
-              selectEmail: ""
+              personalReadOnly: true
+             
             });
             self.handleGetUserList();
           } else {
@@ -1166,9 +1162,7 @@ class Users extends Component {
               self.setState({
                 getID: id,
                 profileReadOnly: true,
-                selectedDesignation: 0,
-                selectedReportTO: 0,
-                selectedReporteeDesign: 0
+                buttonProfileToggle:false
               });
               self.handleGetUserList();
             } else {
@@ -2185,6 +2179,9 @@ class Users extends Component {
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             Agent Name:{" "}
+                                            <b>
+                                              {row.original.assignName}
+                                            </b>
                                           </p>
                                         </div>
                                       </div>

@@ -19,7 +19,7 @@ class UserProfile extends Component {
 
     this.state = {
       open: false,
-      fileName: [],
+      fileName: {},
       selectedUserID: 0,
       selectedProfilePicture: "",
       selectedFirstName: "",
@@ -54,12 +54,12 @@ class UserProfile extends Component {
   }
   fileUpload(e) {
     debugger;
-    var allFiles = [];
+   // var allFiles = [];
     var selectedFiles = e.target.files;
-    allFiles.push(selectedFiles[0]);
+    //allFiles.push(selectedFiles[0]);
     this.setState({
       //fileName: e.target.files[0].name
-      fileName: allFiles
+      fileName: selectedFiles
     });
   }
   fileDrop = e => {
@@ -114,10 +114,7 @@ class UserProfile extends Component {
     this.state.selectedEmailID = userData.emailId;
     this.state.selectedDesignation = userData.designationID;
     this.state.selectedProfilePicture = userData.profilePicture;
-    // var image=this.state.selectedProfilePicture.split("/");
-    // var img=image[image.length-1];
-    // var array=[];
-    // array.push({name:img})
+   
 
     self.setState({
       selectedUserID: userData.userId,
@@ -125,8 +122,8 @@ class UserProfile extends Component {
       selectedLastName: userData.lastName,
       selectedMobile: userData.mobileNo,
       selectedEmailID: userData.emailId,
-      selectedDesignation: userData.designationID,
-      //fileName:array
+      selectedDesignation: userData.designationID
+     
     });
   };
 
@@ -165,7 +162,7 @@ class UserProfile extends Component {
     debugger;
     if (
      
-      this.state.fileName.length > 0 &&
+     
       this.state.selectedFirstName.length > 0 &&
       this.state.selectedLastName.length > 0 &&
       this.state.selectedMobile.length > 0 &&
@@ -317,7 +314,7 @@ class UserProfile extends Component {
                         />
                         {this.state.selectedFirstName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.fileNameCompulsion}
+                            {this.state.FirstNameCompulsion}
                           </p>
                         )}
                       </div>
