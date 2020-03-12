@@ -6112,7 +6112,7 @@ font-weight: normal;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
   width: 406px;
-  height: 438px;
+  /* height: 438px; */
 }
 .forgot-pass-text {
   color: #4a4a4a;
