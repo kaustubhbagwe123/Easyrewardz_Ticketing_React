@@ -1808,6 +1808,7 @@
   display: block;
   margin-bottom: 5px;
   margin-top: 10px;
+  margin-left: 5px;
 }
 .qaus .edit-label-1 {
   color: #4a4a4a;
@@ -1902,11 +1903,11 @@
 }
 
 .pop-over-cancle {
-  color: #2561a8;
+  color: #2561a8 !important;
   font-family: Lato;
   font-size: 12px;
   font-weight: 400;
-  line-height: 36px;
+  line-height: 31px;
   text-align: left;
   margin: 12px 0 0 0;
   cursor: pointer;
@@ -1920,7 +1921,8 @@
   height: 30px;
   float: right;
   margin-left: 20px;
-  line-height: 1;
+  line-height: 0;
+  padding: 5px 10px;
   cursor: pointer;
   color:#ffffff
 }
@@ -1931,7 +1933,7 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 14px;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
 }
 .btn-rm-p button {
@@ -3213,10 +3215,40 @@ background: transparent;
 
 .store-pop-over-div {
   display: block;
-  margin-top: 42px;
+  margin-top: 65px;
 }
 .storecancel{
   float: right;
   margin: 0;
   
+}
+.ReNewBtn {
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 23px;
+  text-align: center;
+  cursor: pointer;
+}
+.FlNone {
+  float: none;
+}
+.dropDrownSpace .btn-primary {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #2561a8;
+  border: 1px solid #2561a8;
+  border-radius: 4px;
+  min-width: 75px;
+  height: 30px;
+  line-height: 0;
+  padding: 5px 10px;
+}
+.sweet-alert {
+  margin-left: -170px !important;
 }

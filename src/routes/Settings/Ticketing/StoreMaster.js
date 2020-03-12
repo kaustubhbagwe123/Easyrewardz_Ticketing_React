@@ -1039,7 +1039,7 @@ class StoreMaster extends Component {
                                   </Popover>
 
                                   <button
-                                    className="react-tabel-button"
+                                    className="react-tabel-button ReNewBtn"
                                     type="button"
                                     onClick={this.handleEditStoreMasterData.bind(
                                       this,
@@ -1725,10 +1725,16 @@ class StoreMaster extends Component {
                     ></textarea>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="store-pop-over-div">
+                <div className="col-md-12">
+                  <div className="text-center mt-3">
+                  <span
+                      className="pop-over-cancle"
+                      onClick={this.toggleEditModal}
+                    >
+                      CANCEL
+                    </span>
                     <button
-                      className="pop-over-button"
+                      className="pop-over-button FlNone"
                       onClick={this.handleUpdateData.bind(this)}
                     >
                       <label className="pop-over-btnsave-text">
@@ -1744,13 +1750,6 @@ class StoreMaster extends Component {
                         SAVE
                       </label>
                     </button>
-                    
-                    <span
-                      className="pop-over-cancle storecancel"
-                      onClick={this.toggleEditModal}
-                    >
-                      CANCEL
-                    </span>
                   </div>
                 </div>
               </div>

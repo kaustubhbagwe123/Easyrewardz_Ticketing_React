@@ -1101,7 +1101,7 @@ class CategoryMaster extends Component {
                                   </Popover>
 
                                   <button
-                                    className="react-tabel-button"
+                                    className="react-tabel-button ReNewBtn"
                                     type="button"
                                     onClick={this.hanldeEditCategory.bind(
                                       this,
@@ -1744,15 +1744,11 @@ class CategoryMaster extends Component {
                 </select>
               </div>
               <br />
-              <div>
-                <button className="pop-over-button">SAVE</button>
-                <a
-                  className="pop-over-cancle editcatcnl"
-                  onClick={this.toggleEditModal}
-                  style={{ marginRight: "20px" }}
-                >
+              <div className="text-center">
+                <a className="pop-over-cancle" onClick={this.toggleEditModal} >
                   CANCEL
                 </a>
+                <button className="pop-over-button FlNone pop-over-btnsave-text">SAVE</button>
               </div>
             </div>
           </Modal>
