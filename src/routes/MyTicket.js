@@ -74,7 +74,7 @@ import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { Dropdown } from "semantic-ui-react";
-
+import { withRouter } from "react-router";
 // import DatePicker from "react-date-picker";
 
 class MyTicket extends Component {
@@ -202,7 +202,7 @@ class MyTicket extends Component {
       oldAgentId: 0,
       AssignCommentCompulsory: "",
       AssignToData: [],
-      followUpIds: ''
+      followUpIds: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -219,7 +219,9 @@ class MyTicket extends Component {
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
-    this.handleTicketAssignFollowUp = this.handleTicketAssignFollowUp.bind(this);
+    this.handleTicketAssignFollowUp = this.handleTicketAssignFollowUp.bind(
+      this
+    );
     this.handleAssignDataList = this.handleAssignDataList.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
@@ -230,6 +232,16 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
+  }
+
+  componentDidUpdate() {
+    var ticketIds=this.props.location.ticketDetailID;
+    if(ticketIds){
+      if (this.state.ticket_Id !== ticketIds) {
+        this.componentDidMount();
+      }
+    }
+    
   }
 
   componentDidMount() {
@@ -290,7 +302,10 @@ class MyTicket extends Component {
 
   handleTicketAssignFollowUp() {
     debugger;
-    let followUpIds = this.state.followUpIds.substring(0, this.state.followUpIds.length - 1);
+    let followUpIds = this.state.followUpIds.substring(
+      0,
+      this.state.followUpIds.length - 1
+    );
     let self = this;
     axios({
       method: "post",
@@ -492,7 +507,8 @@ class MyTicket extends Component {
           }, 100);
         } else {
           self.setState({
-            messageDetails: []
+            messageDetails: [],
+            hasAttachmentFile: []
           });
         }
       })
@@ -614,11 +630,13 @@ class MyTicket extends Component {
     debugger;
     let assign = e.currentTarget.value;
     let followUpIds = this.state.followUpIds;
-    followUpIds += assign + ',';
+    followUpIds += assign + ",";
     let ckData = this.state.mailBodyData;
-    let matchedArr = this.state.AssignToData.filter(x => x.userID == e.currentTarget.value);
+    let matchedArr = this.state.AssignToData.filter(
+      x => x.userID == e.currentTarget.value
+    );
     let userName = matchedArr[0].fullName;
-    ckData += '@' + userName;
+    ckData += "@" + userName;
     this.setState({ mailBodyData: ckData, followUpIds });
   };
   handleGetStoreDetails() {
@@ -1766,8 +1784,8 @@ class MyTicket extends Component {
             NotificationManager.success("Mail send successfully.", "", 1500);
             self.setState({
               mailFiled: {},
-              ReplyFileData:[],
-              ReplyfileText:0,
+              ReplyFileData: [],
+              ReplyfileText: 0,
               mailBodyData: ""
             });
           } else {
@@ -1887,7 +1905,7 @@ class MyTicket extends Component {
       }
     } else if (isSend === 4) {
       // ---------------API call for ReAssign To Ticket---------------------
-      if(this.state.addReassignCmmt.length > 0){
+      if (this.state.addReassignCmmt.length > 0) {
         const formData = new FormData();
         var paramData = {
           TicketID: this.state.ticket_Id,
@@ -1900,7 +1918,7 @@ class MyTicket extends Component {
           NewAgentID: this.state.agentId
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramData));
-  
+
         axios({
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
@@ -1933,12 +1951,11 @@ class MyTicket extends Component {
           .catch(data => {
             console.log(data);
           });
-      }else{
+      } else {
         this.setState({
           AssignCommentCompulsory: "Comment field is compulsory."
         });
       }
-     
     } else {
       const formData = new FormData();
       var paramData = {
@@ -3660,7 +3677,7 @@ class MyTicket extends Component {
                                     data={this.state.selectedStoreData}
                                     columns={[
                                       {
-                                        Header: '',
+                                        Header: "",
                                         accessor: "storeID",
                                         width: 20,
                                         Cell: row => (
@@ -3689,8 +3706,7 @@ class MyTicket extends Component {
                                               htmlFor={
                                                 "i" + row.original.storeID
                                               }
-                                            >
-                                            </label>
+                                            ></label>
                                           </div>
                                         )
                                       },
@@ -3972,9 +3988,7 @@ class MyTicket extends Component {
                                         accessor: "orderMasterID",
                                         width: 20,
                                         Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                          >
+                                          <div className="filter-checkbox">
                                             {/* <input
                                               type="checkbox"
                                               id={
@@ -4095,9 +4109,7 @@ class MyTicket extends Component {
                                         accessor: "orderMasterID",
                                         width: 20,
                                         Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                          >
+                                          <div className="filter-checkbox">
                                             <input
                                               type="checkbox"
                                               id={
@@ -4165,7 +4177,10 @@ class MyTicket extends Component {
                                     showPagination={false}
                                     SubComponent={row => {
                                       return (
-                                        <div className="inner-custom-react-table" id="inner-custom-react-table">
+                                        <div
+                                          className="inner-custom-react-table"
+                                          id="inner-custom-react-table"
+                                        >
                                           <ReactTable
                                             // data={row.original.orderItems}
                                             data={this.state.OrderSubItem.filter(
@@ -4181,9 +4196,7 @@ class MyTicket extends Component {
                                                 Cell: row => {
                                                   // debugger
                                                   return (
-                                                    <div
-                                                      className="filter-checkbox"
-                                                    >
+                                                    <div className="filter-checkbox">
                                                       <input
                                                         type="checkbox"
                                                         id={
@@ -4331,9 +4344,7 @@ class MyTicket extends Component {
                                         accessor: "orderMasterID",
                                         width: 20,
                                         Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                          >
+                                          <div className="filter-checkbox">
                                             {/* <input
                                               type="checkbox"
                                               id={
@@ -4462,9 +4473,7 @@ class MyTicket extends Component {
                                         accessor: "orderMasterID",
                                         width: 20,
                                         Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                          >
+                                          <div className="filter-checkbox">
                                             {/* <input
                                               type="checkbox"
                                               id={
@@ -4556,7 +4565,10 @@ class MyTicket extends Component {
                                     showPagination={false}
                                     SubComponent={row => {
                                       return (
-                                        <div className="inner-custom-react-table" id="inner-custom-react-table">
+                                        <div
+                                          className="inner-custom-react-table"
+                                          id="inner-custom-react-table"
+                                        >
                                           <ReactTable
                                             data={this.state.OrderSubItem.filter(
                                               x =>
@@ -4569,9 +4581,7 @@ class MyTicket extends Component {
                                                 accessor: "size",
                                                 width: 20,
                                                 Cell: row => (
-                                                  <div
-                                                    className="filter-checkbox"
-                                                  >
+                                                  <div className="filter-checkbox">
                                                     {/* <input
                                                       type="checkbox"
                                                       id={
@@ -4960,19 +4970,19 @@ class MyTicket extends Component {
                       </ul>
                     </div>
                     <div className="tic-det-ck-user myticlist-expand-sect">
-                    <select
-                      className="add-select-category"
-                      value="0"
-                      onChange={this.setAssignedToValue}
-                    >
-                      <option value="0">Users</option>
-                      {this.state.AssignToData !== null &&
-                        this.state.AssignToData.map((item, i) => (
-                          <option key={i} value={item.userID}>
-                            {item.fullName}
-                          </option>
-                        ))}
-                    </select>
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setAssignedToValue}
+                      >
+                        <option value="0">Users</option>
+                        {this.state.AssignToData !== null &&
+                          this.state.AssignToData.map((item, i) => (
+                            <option key={i} value={item.userID}>
+                              {item.fullName}
+                            </option>
+                          ))}
+                      </select>
                     </div>
                     <Card>
                       <CardBody>
@@ -6638,4 +6648,4 @@ class MyTicket extends Component {
     );
   }
 }
-export default MyTicket;
+export default withRouter(MyTicket);

@@ -440,7 +440,7 @@ class Header extends Component {
     });
   }
 
-  handleShowTicket(Ids){
+  handleShowTicket(Ids) {
     debugger;
     this.closeModal();
     this.onViewTicket(Ids);
@@ -1025,33 +1025,38 @@ class Header extends Component {
                   </label>
                 </div>
                 <div className="viewticketspeadding">
-                <Popover
-                  content={
-                    <div className="notification-popover">
-                      {this.state.NotifiTicketIds.map((data, j) => {
-                        return (
-                          <p>Ticket No. :
-                            <Link to={{
-              pathname: "myticket",
-              ticketDetailID: data
-            }} key={j} onClick={this.handleShowTicket.bind(this, data)}>
-                              {data}
-                            </Link>
-                          </p>
-                        );
-                      })}
-                    </div>
-                  }
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <div
-                    className="md-4 view-tickets"
-                    onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                  <Popover
+                    content={
+                      <div className="notification-popover">
+                        {this.state.NotifiTicketIds.map((data, j) => {
+                          return (
+                            <p key={j}>
+                              Ticket No. :
+                              <Link
+                                to={{
+                                  pathname: "myticket",
+                                  ticketDetailID: data
+                                }}
+                                
+                                onClick={this.handleShowTicket.bind(this, data)}
+                              >
+                                {data}
+                              </Link>
+                            </p>
+                          );
+                        })}
+                      </div>
+                    }
+                    placement="bottom"
+                    trigger="click"
                   >
-                    VIEW TICKETS
-                  </div>
-                </Popover>
+                    <div
+                      className="md-4 view-tickets"
+                      onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                    >
+                      VIEW TICKETS
+                    </div>
+                  </Popover>
                   {/* <div
                     className="md-4 view-tickets"
                     onClick={this.handleViewTicketModalOpen.bind(this, item)}
@@ -1076,13 +1081,18 @@ class Header extends Component {
             }}
             target="_blank"
           > */}
-            {this.state.NotifiTicketIds.map((data, j) => {
-              return (
-                <a href="#!" style={{ wordWrap: "break-word" }} key={j} onClick={this.handleShowTicket.bind(this,)}>
-                  {data + ", "}
-                </a>
-              );
-            })}
+          {this.state.NotifiTicketIds.map((data, j) => {
+            return (
+              <a
+                href="#!"
+                style={{ wordWrap: "break-word" }}
+                key={j}
+                onClick={this.handleShowTicket.bind(this)}
+              >
+                {data + ", "}
+              </a>
+            );
+          })}
           {/* </Link> */}
         </Modal>
         <div>
