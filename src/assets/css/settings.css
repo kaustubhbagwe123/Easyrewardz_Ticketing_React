@@ -3252,3 +3252,9 @@ background: transparent;
 .sweet-alert {
   margin-left: -170px !important;
 }
+.EditModa .modal-dialog {
+  width: 20%;
+}
+.EditModa .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin: 0;
+}

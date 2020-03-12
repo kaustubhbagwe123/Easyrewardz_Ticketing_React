@@ -1720,7 +1720,7 @@ class Alerts extends Component {
             </div>
           </div>
         </div>
-        <Modal show={this.state.editModal} onHide={this.handleEditModal}>
+        <Modal className="EditModa" show={this.state.editModal} onHide={this.handleEditModal}>
           <div className="edtpadding right-sect-div">
             <div className="">
               <label className="popover-header-text">EDIT ALERTS</label>
@@ -1822,12 +1822,13 @@ class Alerts extends Component {
             </div>
 
             <br />
-            <div>
+            <div className="text-center">
               <span className="pop-over-cancle" onClick={this.handleEditModal} >
                 CANCEL
               </span>
-              <button className="pop-over-button">
-                <label
+              <button className="pop-over-button FlNone">
+                  SAVE
+                {/* <label
                   className="pop-over-btnsave-text"
                   // onClick={this.handleUpdateAlert.bind(
                   //   this,
@@ -1842,7 +1843,7 @@ class Alerts extends Component {
                   >
                     SAVE
                   </label>
-                </label>
+                </label> */}
               </button>
             </div>
           </div>
