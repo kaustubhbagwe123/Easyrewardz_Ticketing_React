@@ -544,7 +544,7 @@ class Templates extends Component {
     return <div className="rt-noData">No rows found</div>;
   };
   handleEditSave = e => {
-    this.setState({ ConfigTabsModal: true });
+    this.setState({ ConfigTabsModal: true,editmodel:false });
   };
   render() {
     const columns = [
