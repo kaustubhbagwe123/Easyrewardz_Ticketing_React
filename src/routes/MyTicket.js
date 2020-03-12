@@ -5972,7 +5972,7 @@ class MyTicket extends Component {
                               </a>
                               <div
                                 className="dropdown collapbtn"
-                                style={{ display: "inherit", top: "5px" }}
+                                style={{ display: "inherit" }}
                               >
                                 <button
                                   className="dropdown-toggle my-tic-email"
