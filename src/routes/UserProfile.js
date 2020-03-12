@@ -196,10 +196,10 @@ class UserProfile extends Component {
           debugger;
           let msg = res.data.message;
           if (msg === "Success") {
-            NotificationManager.success("Profile updated successfully.");
+            NotificationManager.success("Profile updated successfully.", '', 1000);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
-            }, 400);
+            }, 1000);
           }
         })
         .catch(data => {
