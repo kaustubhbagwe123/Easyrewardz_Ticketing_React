@@ -1439,11 +1439,11 @@ class Reports extends Component {
     let self=this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Report/DownloadDefaultReport",
+      url: config.apiUrl + "/Report/SendReportMail",
       headers: authHeader(),
       data: {
-        Email:this.state.DefaultEmailID,
-        FileURL:this.state.FileURL
+        EmailID:this.state.DefaultEmailID,
+        FilePath:this.state.FileURL
       }
     })
       .then(function(res) {
@@ -1454,6 +1454,9 @@ class Reports extends Component {
         });
       })
       .catch(data => {
+        self.setState({
+          loadingDownload: false
+        });
         console.log(data);
       });
   }
