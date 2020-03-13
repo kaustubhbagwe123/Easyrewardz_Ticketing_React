@@ -79,7 +79,7 @@ class AddSearchMyTicket extends Component {
   }
   handleSearchCustomer(e) {
     e.preventDefault();
-    //debugger;
+    debugger;
     if (this.state.SrchEmailPhone.length > 0) {
       let self = this;
       axios({
@@ -91,9 +91,8 @@ class AddSearchMyTicket extends Component {
         }
       })
         .then(function(res) {
-          //debugger;
+          debugger;
           let SearchData = res.data.responseData[0];
-          // let GetCustId = SearchData.customerID;
           if (SearchData) {
             let GetCustId = SearchData.customerID;
             setTimeout(function() {
@@ -155,7 +154,7 @@ class AddSearchMyTicket extends Component {
   }
 
   handleAddCustomerSave() {
-    //debugger;
+    debugger;
     let self = this;
 
     axios({
@@ -207,7 +206,6 @@ class AddSearchMyTicket extends Component {
     });
   };
   handleChange(date) {
-    //debugger;
     this.setState({
       dob: date
     });
