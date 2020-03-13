@@ -89,7 +89,7 @@ class ChangePassword extends Component {
         <div className="auth-content">
           <div
             className="card forgotpass-card changepass-card"
-            style={{ height: "500px" }}
+            style={{ height: "auto" }}
           >
             <div className="card-body text-center">
               <div className="mb-4">
@@ -115,7 +115,7 @@ class ChangePassword extends Component {
                   <input
                     type="password"
                     name="oldPassword"
-                    placeholder="Enter Old Password"
+                    placeholder="Old Password"
                     className="program-code-textbox"
                     value={this.state.oldPassword}
                     onChange={this.handlechange}
@@ -132,7 +132,7 @@ class ChangePassword extends Component {
                   <input
                     type="password"
                     name="newPassword"
-                    placeholder="Enter New Password"
+                    placeholder="New Password"
                     className="program-code-textbox"
                     onChange={this.handlechange}
                     maxLength={25}
@@ -152,7 +152,7 @@ class ChangePassword extends Component {
                   <input
                     type="password"
                     name="confimPassword"
-                    placeholder="Enter Confirm Password"
+                    placeholder="Confirm Password"
                     className="program-code-textbox"
                     onChange={this.handlechange}
                     maxLength={25}
