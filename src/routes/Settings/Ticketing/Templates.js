@@ -25,102 +25,7 @@ import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
 
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = (props, e) => {
-  debugger;
-  var array = [];
-  const { rowData } = props;
-  var issuename = rowData.issueTypeName.split(",");
-  var issueid = rowData.issueTypeID.split(",").map(Number);
-  for (let i = 0; i < issueid.length; i++) {
-    array.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
-  }
-  const [templateName, settemplateNameValue] = useState(rowData.templateName);
-  const [arraydata, setarrayValue] = useState(array);
-  const [templateStatus, settemplateStatusValue] = useState(
-    rowData.templateStatus
-  );
-  const [templateID] = useState(rowData.templateID);
-
-  props.callBackEdit(templateName, arraydata, templateStatus, rowData);
-  return (
-    <div className="edtpadding">
-      <div className="">
-        <label className="popover-header-text">EDIT TEMPLATES</label>
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Name</label>
-        <input
-          type="text"
-          className="txt-edit-popover"
-          placeholder="Enter Name"
-          maxLength={25}
-          name="template_Name"
-          value={templateName}
-          onChange={e => settemplateNameValue(e.target.value)}
-        />
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Issue Type</label>
-        <Select
-          getOptionLabel={option => option.issueTypeName}
-          getOptionValue={
-            option => option.issueTypeID //id
-          }
-          options={props.slaIssueType}
-          placeholder="Select"
-          // menuIsOpen={true}
-          closeMenuOnSelect={false}
-          onChange={e => setarrayValue(e)}
-          value={arraydata}
-          // showNewOptionAtTop={false}
-          defaultValue={{ label: "asd", value: 1 }}
-          isMulti
-        />
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Status</label>
-        <select
-          id="inputStatus"
-          className="edit-dropDwon dropdown-setting"
-          name="template_Status"
-          value={templateStatus}
-          onChange={e => settemplateStatusValue(e.target.value)}
-        >
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-      </div>
-      <br />
-      <div className="float-right">
-        <a href={Demo.BLANK_LINK} className="pop-over-cancle">
-          CANCEL
-        </a>
-        <button className="pop-over-button">
-          <label
-            className="pop-over-btnsave-text"
-            onClick={e => {
-              props.handleUpdateTemplate(e, templateID);
-            }}
-          >
-            SAVE
-          </label>
-        </button>
-      </div>
-    </div>
-  );
-};
-
+ 
 class Templates extends Component {
   constructor(props) {
     super(props);
@@ -153,7 +58,8 @@ class Templates extends Component {
       rowData: {},
       editmodel: false,
       isEdit: false,
-      isLoading: false
+      isLoading: false,
+      editSaveLoading:false
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -206,8 +112,8 @@ class Templates extends Component {
         TemplateID: self.state.templateEdit.template_ID,
         TemplateName: self.state.templateEdit.TemplateName.trim(),
         issueType: issue,
-        // templateSubject: this.state.TemplateSubject,
-        // templateContent: this.state.editorContent,
+        templateSubject: this.state.TemplateSubject,
+        templateContent: this.state.editorContent,
         isTemplateActive: activeStatus
       }
     })

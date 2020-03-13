@@ -11091,3 +11091,15 @@ table tr th:last-child {
     cursor: pointer;
     display: inline-table;
 }
+.dropdown-settings{
+  color: #9b9b9b;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: left;
+    padding-right: 40px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
