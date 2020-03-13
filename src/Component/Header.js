@@ -70,33 +70,33 @@ class Header extends Component {
       notificationAccess: "yes",
       settingAccess: "yes",
       cont: [
-        {
-          data: "Dashboards",
-          urls: "dashboard",
-          logoBlack: DashboardLogo,
-          logoBlue: DashboardLogoBlue,
-          imgAlt: "dashboard icon",
-          imgClass: "dashboardImg1",
-          activeClass: "active single-menu"
-        },
-        {
-          data: "My Tickets",
-          urls: "myTicketlist",
-          logoBlack: TicketLogo,
-          logoBlue: TicketLogoBlue,
-          imgAlt: "ticket icon",
-          imgClass: "myTicket",
-          activeClass: "single-menu"
-        },
-        {
-          data: "Knowledge Base",
-          urls: "knowledgebase",
-          logoBlack: KnowledgeLogo,
-          logoBlue: KnowledgeLogoBlue,
-          imgAlt: "knowledge icon",
-          imgClass: "knowledgeNav",
-          activeClass: "single-menu"
-        }
+        // {
+        //   data: "Dashboards",
+        //   urls: "dashboard",
+        //   logoBlack: DashboardLogo,
+        //   logoBlue: DashboardLogoBlue,
+        //   imgAlt: "dashboard icon",
+        //   imgClass: "dashboardImg1",
+        //   activeClass: "active single-menu"
+        // },
+        // {
+        //   data: "My Tickets",
+        //   urls: "myTicketlist",
+        //   logoBlack: TicketLogo,
+        //   logoBlue: TicketLogoBlue,
+        //   imgAlt: "ticket icon",
+        //   imgClass: "myTicket",
+        //   activeClass: "single-menu"
+        // },
+        // {
+        //   data: "Knowledge Base",
+        //   urls: "knowledgebase",
+        //   logoBlack: KnowledgeLogo,
+        //   logoBlue: KnowledgeLogoBlue,
+        //   imgAlt: "knowledge icon",
+        //   imgClass: "knowledgeNav",
+        //   activeClass: "single-menu"
+        // }
       ]
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);

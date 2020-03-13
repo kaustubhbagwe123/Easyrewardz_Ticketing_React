@@ -1509,7 +1509,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1557,7 +1557,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1622,7 +1622,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1691,7 +1691,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1735,7 +1735,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1779,7 +1779,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1823,7 +1823,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }

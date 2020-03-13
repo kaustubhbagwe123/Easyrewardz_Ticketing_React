@@ -71,7 +71,10 @@ class SingIn extends Component {
           if (data !== null) {
             for (var i = 0; i <= data.length; i++) {
               if (i == data.length) {
-                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.");
+                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2500);
+                self.setState({
+                  loading: false
+                });
               } else if (
                 data[i].moduleName === "Dashboard" &&
                 data[i].modulestatus === true
