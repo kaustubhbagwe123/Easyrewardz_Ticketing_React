@@ -268,6 +268,9 @@ class Header extends Component {
 
   setAccessUser(data) {
     debugger;
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    console.log( page );
     var accessdata = [];
     var dashboard = {
       data: "Dashboards",
@@ -276,7 +279,7 @@ class Header extends Component {
       logoBlue: DashboardLogoBlue,
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
-      activeClass: "active single-menu"
+      activeClass: page == 'dashboard' ? "active single-menu" : 'single-menu'
     };
     var myticket = {
       data: "My Tickets",
@@ -285,7 +288,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: "single-menu"
+      activeClass: page == 'myTicketlist' ? "active single-menu" : 'single-menu'
     };
     var knowledgebase = {
       data: "Knowledge Base",
@@ -294,7 +297,7 @@ class Header extends Component {
       logoBlue: KnowledgeLogoBlue,
       imgAlt: "knowledge icon",
       imgClass: "knowledgeNav",
-      activeClass: "single-menu"
+      activeClass: page == 'knowledgebase' ? "active single-menu" : 'single-menu'
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
