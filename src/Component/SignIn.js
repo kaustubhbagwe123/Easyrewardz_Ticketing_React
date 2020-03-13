@@ -88,8 +88,6 @@ class SingIn extends Component {
           }
         }).then(function (res) {
           debugger;
-          //alert(1);
-          // let data = res.data.responseData;
           let resValid = res.data.message;
           self.setState({
             loading: true
@@ -97,10 +95,7 @@ class SingIn extends Component {
           if (resValid === "Valid Login") {
             debugger;
             //NotificationManager.success("Login Successfull.");
-            // self.setState({
-            //   fullUserName: data.firstName + " " + data.lastName,
-            //   UserEmail: data.userEmailID
-            // });
+           
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function () {
               self.props.history.push("/admin/dashboard");
@@ -169,7 +164,6 @@ class SingIn extends Component {
                   type="submit"
                   className="program-code-button"
                   disabled={this.state.loading}
-                // onClick={this.handleSubmit}
                 >
 
                   {this.state.loading ? (
