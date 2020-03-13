@@ -84,10 +84,23 @@ class StoreMaster extends Component {
       sortColumn: "",
       editmodel: false,
       modalSelectedBrand: [],
-      editSaveLoading:false,
+      editSaveLoading: false,
       emailFlag: true,
       pinCodeFlag: true,
-      phoneFlag: true
+      phoneFlag: true,
+      editBrandValidation: "",
+      editStoreCodeValidation: "",
+      editStoreNameValidation: "",
+      editStateValidation: "",
+      editCityValidation: "",
+      editPinCodeValidation: "",
+      editStoreAddressValidation: "",
+      editRegionValidation: "",
+      editZoneValidation: "",
+      editStoreTypeValidation: "",
+      editContactEmailValidation: "",
+      editContactPhoneValidation: "",
+      editStatusValidation: ""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -371,7 +384,7 @@ class StoreMaster extends Component {
     });
   }
   handleSubmitData() {
-    debugger
+    debugger;
     if (
       this.state.selectedBrand !== null &&
       this.state.store_code.length > 0 &&
@@ -424,7 +437,7 @@ class StoreMaster extends Component {
           IsActive: activeStatus
         }
       }).then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
@@ -440,7 +453,7 @@ class StoreMaster extends Component {
             selectRegion: 0,
             selectZone: 0,
             store_type: 0,
-            selectStatus: '',
+            selectStatus: "",
             contact_email: "",
             contact_Phone: "",
             store_codeCompulsion: "",
@@ -483,67 +496,87 @@ class StoreMaster extends Component {
 
   handleUpdateData() {
     debugger;
-    let self = this;
-    var activeStatus = 0;
-    var finalBrandId = "";
-    var status = this.state.userEditData.status_ID;
-    if (status === true) {
-      activeStatus = 1;
-    } else {
-      activeStatus = 0;
-    }
-    debugger;
-    if (this.state.modalSelectedBrand.length > 0) {
-      for (let i = 0; i < this.state.modalSelectedBrand.length; i++) {
-        finalBrandId += this.state.modalSelectedBrand[i].brandID + ",";
+    if (
+      this.state.modalSelectedBrand !== null &&
+      this.state.userEditData.store_Code.length > 0 &&
+      this.state.userEditData.store_Name.length > 0 &&
+      this.state.userEditData.state_ID > 0
+    ) {
+      let self = this;
+      var activeStatus = 0;
+      var finalBrandId = "";
+      var status = this.state.userEditData.status_ID;
+      if (status === true) {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
       }
-    }
-    this.setState({editSaveLoading:true});
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Store/editstore",
-      headers: authHeader(),
-      data: {
-        StoreID: this.state.userEditData.store_ID,
-        BrandIDs: finalBrandId,
-        StoreCode: this.state.userEditData.store_Code,
-        StoreName: this.state.userEditData.store_Name,
-        StateID: this.state.userEditData.state_ID,
-        CityID: this.state.userEditData.city_ID,
-        PincodeID: this.state.userEditData.strPin_Code,
-        Address: this.state.userEditData.address_,
-        RegionID: this.state.userEditData.region_ID,
-        ZoneID: this.state.userEditData.zone_ID,
-        StoreTypeID: this.state.userEditData.storeType_ID,
-        StoreEmailID: this.state.userEditData.email_,
-        StorePhoneNo: this.state.userEditData.phoneNumber_,
-        IsActive: activeStatus
+      debugger;
+      if (this.state.modalSelectedBrand.length > 0) {
+        for (let i = 0; i < this.state.modalSelectedBrand.length; i++) {
+          finalBrandId += this.state.modalSelectedBrand[i].brandID + ",";
+        }
       }
-    }).then(function(res) {
-      let status = res.data.message;
-      if (status === "Success") {
-        self.handleGetStoreMasterData();
-        NotificationManager.success("Store updated successfully.");
-        
-        self.setState({
-          editSaveLoading:false,
-          editmodel:false,
-          store_code: "",
-          store_name: "",
-          selectedBrand: [],
-          pin_code: "",
-          address_: "",
-          selectCcity_IDity: 0,
-          region_ID: 0,
-          zone_ID: 0,
-          storeType_ID: 0,
-          email_: "",
-          phoneNumber_: ""
+      this.setState({ editSaveLoading: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Store/editstore",
+        headers: authHeader(),
+        data: {
+          StoreID: this.state.userEditData.store_ID,
+          BrandIDs: finalBrandId,
+          StoreCode: this.state.userEditData.store_Code,
+          StoreName: this.state.userEditData.store_Name,
+          StateID: this.state.userEditData.state_ID,
+          CityID: this.state.userEditData.city_ID,
+          PincodeID: this.state.userEditData.strPin_Code,
+          Address: this.state.userEditData.address_,
+          RegionID: this.state.userEditData.region_ID,
+          ZoneID: this.state.userEditData.zone_ID,
+          StoreTypeID: this.state.userEditData.storeType_ID,
+          StoreEmailID: this.state.userEditData.email_,
+          StorePhoneNo: this.state.userEditData.phoneNumber_,
+          IsActive: activeStatus
+        }
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetStoreMasterData();
+            NotificationManager.success("Store updated successfully.");
+
+            self.setState({
+              editSaveLoading: false,
+              editmodel: false,
+              store_code: "",
+              store_name: "",
+              selectedBrand: [],
+              pin_code: "",
+              address_: "",
+              selectCcity_IDity: 0,
+              region_ID: 0,
+              zone_ID: 0,
+              storeType_ID: 0,
+              email_: "",
+              phoneNumber_: "",
+              editBrandValidation: "",
+              editStoreCodeValidation: "",
+              editStoreNameValidation: "",
+              editStateValidation: ""
+            });
+          }
+        })
+        .catch(response => {
+          console.log(response);
         });
-      }
-    }).catch(response=>{
-      console.log(response);
-    });
+    } else {
+      this.setState({
+        editBrandValidation: "Please Select Brand.",
+        editStoreCodeValidation: "Please Enter Store Code.",
+        editStoreNameValidation: "Please Enter Store Name",
+        editStateValidation: "Please Select State."
+      });
+    }
   }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
@@ -561,7 +594,7 @@ class StoreMaster extends Component {
   handleBrandChange = e => {
     debugger;
     if (e === null) {
-      e = []
+      e = [];
     }
     this.setState({ selectedBrand: e });
   };
@@ -683,8 +716,7 @@ class StoreMaster extends Component {
       this.setState({
         emailFlag: true
       });
-    } else if (reg.test(e.target.value) == false) 
-    {
+    } else if (reg.test(e.target.value) == false) {
       this.setState({
         emailFlag: false
       });
@@ -697,10 +729,10 @@ class StoreMaster extends Component {
   hanldeOnPhoneChange = e => {
     debugger;
     var reg = /^[0-9\b]+$/;
-    if (e.target.value === '' || reg.test(e.target.value)) {
-      this.setState({[e.target.name]: e.target.value})
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({ [e.target.name]: e.target.value });
     } else {
-      e.target.value = ''
+      e.target.value = "";
     }
     if (e.target.value.length == 10 || e.target.value.length == 0) {
       this.setState({
@@ -715,10 +747,10 @@ class StoreMaster extends Component {
   hanldeOnPinCodeChange = e => {
     debugger;
     var reg = /^[0-9\b]+$/;
-    if (e.target.value === '' || reg.test(e.target.value)) {
-      this.setState({[e.target.name]: e.target.value})
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({ [e.target.name]: e.target.value });
     } else {
-      e.target.value = ''
+      e.target.value = "";
     }
     if (e.target.value.length == 6 || e.target.value.length == 0) {
       this.setState({
@@ -743,7 +775,7 @@ class StoreMaster extends Component {
   };
 
   handleModalEditData = e => {
-  debugger;
+    debugger;
 
     var name = e.target.name;
     var value = e.target.value;
@@ -1606,6 +1638,11 @@ class StoreMaster extends Component {
                       showNewOptionAtTop={false}
                       isMulti
                     />
+                    {this.state.modalSelectedBrand.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editBrandValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1618,9 +1655,13 @@ class StoreMaster extends Component {
                       name="store_Code"
                       maxLength={10}
                       value={this.state.userEditData.store_Code}
-                      // value={this.state.userEditData.store_ID}
                       onChange={this.handleModalEditData}
                     />
+                    {this.state.userEditData.store_Code === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStoreCodeValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1635,6 +1676,11 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.store_Name}
                       onChange={this.handleModalEditData}
                     />
+                    {this.state.userEditData.store_Name === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStoreNameValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1658,11 +1704,15 @@ class StoreMaster extends Component {
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.state_ID === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStateValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div className="col-md-6">
-                  {" "}
                   <div className="pop-over-div">
                     <label className="edit-label-1">City</label>
                     <select
@@ -1686,7 +1736,6 @@ class StoreMaster extends Component {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  {" "}
                   <div className="pop-over-div">
                     <label className="edit-label-1">Pin Code</label>
                     <input
@@ -1738,7 +1787,6 @@ class StoreMaster extends Component {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  {" "}
                   <div className="pop-over-div">
                     <label className="edit-label-1">Zone</label>
                     <select
@@ -1777,7 +1825,6 @@ class StoreMaster extends Component {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  {" "}
                   <div className="pop-over-div">
                     <label className="edit-label-1">
                       Contact Details:Email
@@ -1794,7 +1841,6 @@ class StoreMaster extends Component {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  {" "}
                   <div className="pop-over-div">
                     <label className="edit-label-1">
                       Contact Details:Phone
@@ -1811,7 +1857,6 @@ class StoreMaster extends Component {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  {" "}
                   <div className="pop-over-div">
                     <label className="edit-label-1">Address</label>
                     <textarea
@@ -1828,7 +1873,7 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-12">
                   <div className="text-center mt-3">
-                  <span
+                    <span
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >

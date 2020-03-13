@@ -652,7 +652,7 @@ class MyTicketTask extends Component {
                 accessor: "assignName"
               }
             ]}
-            minRows={1}
+            minRows={2}
             // resizable={false}
             defaultPageSize={10}
             showPagination={false}
