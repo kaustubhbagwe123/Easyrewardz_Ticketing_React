@@ -39,6 +39,7 @@ class UserProfile extends Component {
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleEditUserProfile = this.handleEditUserProfile.bind(this);
     this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
+    this.redirectToChangePassword=this.redirectToChangePassword.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -216,6 +217,15 @@ class UserProfile extends Component {
       });
     }
   }
+
+  redirectToChangePassword(){
+    debugger;
+    
+    setTimeout(function() {
+      this.props.history.push("/changePassword");
+    }, 400);
+  }
+  
 
   render() {
     return (
@@ -411,8 +421,11 @@ class UserProfile extends Component {
                       </button>
                     </div>
                   </div>
-                  <div className="userChangePW">
-                      <Link to="/changePassword">Change Password</Link>
+                  <div className="userChangePW" 
+                  //onClick={this.redirectToChangePassword}
+                  >
+                     <Link to="/changePassword">Change Password</Link>
+                    
                     </div>
 
                   {/* <div className="row">

@@ -100,6 +100,7 @@ class Users extends Component {
       crmroleCompulsion: "",
       copyescCompulsion: "",
       assignescCompulsion: "",
+      RadioCompulsion:"",
       agentCompulsion: "",
       editusernameCompulsion: "",
       editfirstnameCompulsion: "",
@@ -116,6 +117,7 @@ class Users extends Component {
       editcrmroleCompulsion: "",
       editcopyescCompulsion: "",
       editassignescCompulsion: "",
+      editRadioCompulsion:"",
       editagentCompulsion: "",
       emailValidation: "",
       mobileValidation: "",
@@ -1184,15 +1186,23 @@ class Users extends Component {
 
   handleAddMapCategory() {
     debugger;
+    // var radiob=false;
+    // var agentb=false;
+    // if(this.state.selectedCopyEscalation === true){
+    //     if(this.state.selectedSupervisorRadio=== true || this.state.selectedAgentRadio===true){
+    //       radiob=true;
+    //     }
+    // }
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedCategory !== null &&
       this.state.selectedSubCategory !== null &&
       this.state.selectedIssueType !== null &&
-      this.state.selectedCRMRoles > 0 &&
+      this.state.selectedCRMRoles > 0 
+      
       // this.state.selectedCopyEscalation === true &&
       // this.state.selectedAssignEscalation === true &&
-      this.state.selectedAgent > 0
+     // this.state.selectedAgent > 0
     ) {
       let self = this;
       var finalIssueTypeId = "";
@@ -1323,7 +1333,7 @@ class Users extends Component {
         crmroleCompulsion: "Please select  crm roles",
         // copyescCompulsion: "Please select copy escalation",
         // assignescCompulsion: "Please select assign escalation",
-        agentCompulsion: "Please select agent"
+        //agentCompulsion: "Please select agent"
       });
     }
   }
@@ -1392,13 +1402,14 @@ class Users extends Component {
       this.state.editCategory !== null &&
       this.state.editSubCategory !== null &&
       this.state.editIssuetype !== null &&
-      this.state.userEditData.role_ID > 0 &&
-      this.state.userEditData.is_Copy_Escalation === true &&
-      this.state.userEditData.is_Assign_Escalation === true &&
-      this.state.userEditData.assign_ID > 0
+      this.state.userEditData.role_ID > 0 
+      // this.state.userEditData.is_Copy_Escalation === true &&
+      // this.state.userEditData.is_Assign_Escalation === true &&
+      //this.state.userEditData.assign_ID > 0
     ) {
+      this.handleGetUserListByID( this.state.userEditData.userId);
       let self = this;
-
+       
       var finalIssueTypeId = "";
       var finalBrandId = "";
       var finalCategoryId = "";
@@ -1446,12 +1457,20 @@ class Users extends Component {
         assignescn = 0;
       }
       var SuperAgent = 0;
-      var superAgentValue = this.state.editAgentRadio;
-      if (superAgentValue === true) {
-        SuperAgent = 1;
-      } else {
-        SuperAgent = 0;
-      }
+     
+     
+        var superAgentValue = this.state.editAgentRadio;
+        if (superAgentValue === true) {
+          SuperAgent = 1;
+         
+        } else {
+          SuperAgent = 0;
+          
+        };
+
+        
+     
+     
       var status = this.state.userEditData.is_Active;
       if (status === "true") {
         activeStatus = 1;
@@ -1484,7 +1503,7 @@ class Users extends Component {
         IsCopyEscalation: copyescn,
         IsAssignEscalation: assignescn,
         IsAgent: SuperAgent,
-        EscalateAssignToId: this.state.userEditData.assign_ID,
+        EscalateAssignToId:this.state.userEditData.assign_ID ,
         IsActive: activeStatus
       };
       axios({
@@ -1498,6 +1517,9 @@ class Users extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success("Record Updated successfully.");
+            if(self.state.GetUserData.isActive===false){
+              self.handleSendMail(self.state.userEditData.userId);
+            };
             self.setState({
               multibrandIDs: finalBrandId,
               multicategoryIDs: finalCategoryId,
@@ -1505,7 +1527,7 @@ class Users extends Component {
             });
           } else {
             NotificationManager.error(
-              "Record not Selected OR Sequence is Wrong"
+              "Record not Updated."
             );
           }
           self.closeEditModal();
@@ -1529,9 +1551,9 @@ class Users extends Component {
         editsubcategoryCompulsion: "Please select subcategory",
         editisuuetypeCompulsion: "Please select issuetype",
         editcrmroleCompulsion: "Please select  crm roles",
-        editcopyescCompulsion: "Please select copy escalation",
-        editassignescCompulsion: "Please select assign escalation",
-        editagentCompulsion: "Please select agent"
+        // editcopyescCompulsion: "Please select copy escalation",
+        // editassignescCompulsion: "Please select assign escalation",
+        //editagentCompulsion: "Please select agent"
       });
     }
   }
@@ -1984,28 +2006,32 @@ class Users extends Component {
                         </div>
                       ) : null}
                     </div>
-                    <div className="pop-over-div">
-                      <label className="edit-label-1">Select Agent</label>
-                      <select
-                        className="add-select-category"
-                        name="assign_ID"
-                        value={this.state.userEditData.assign_ID}
-                        onChange={this.handleOnChangeEditData}
-                      >
-                        <option>Select Agent</option>
-                        {this.state.AgentData !== null &&
-                          this.state.AgentData.map((item, i) => (
-                            <option key={i} value={item.user_ID}>
-                              {item.agentName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.userEditData.assign_ID === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.editagentCompulsion}
-                        </p>
-                      )}
-                    </div>
+                    {this.state.editAgentRadio === true && this.state.userEditData.is_Assign_Escalation === true ? (
+                       <div className="pop-over-div">
+                       <label className="edit-label-1">Select Agent</label>
+                       <select
+                         className="add-select-category"
+                         name="assign_ID"
+                         value={this.state.userEditData.assign_ID}
+                         onChange={this.handleOnChangeEditData}
+                       >
+                         <option>Select Agent</option>
+                         {this.state.AgentData !== null &&
+                           this.state.AgentData.map((item, i) => (
+                             <option key={i} value={item.user_ID}>
+                               {item.agentName}
+                             </option>
+                           ))}
+                       </select>
+                       {this.state.userEditData.assign_ID === 0 && (
+                         <p style={{ color: "red", marginBottom: "0px" }}>
+                           {this.state.editagentCompulsion}
+                         </p>
+                       )}
+                     </div>
+
+                    ):(null)}
+                   
                     <div className="pop-over-div">
                       <label className="edit-label-1">Status</label>
                       <select
@@ -2151,12 +2177,22 @@ class Users extends Component {
                                           </p>
                                         </div>
                                         <div className="col-md-6">
+                                        {row.original.isCopyEscalation==="Yes" ? (
+                                          <p className="sub-title mx-2">
+                                          Copy Escalation:{" "}
+                                          <b>
+                                           Yes
+                                          </b>
+                                        </p>
+                                        ):(
                                           <p className="sub-title mx-2">
                                             Copy Escalation:{" "}
                                             <b>
-                                              {row.original.is_CopyEscalation}
+                                             No
                                             </b>
                                           </p>
+                                        )}
+                                          
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -2822,33 +2858,38 @@ class Users extends Component {
                             </div>
                           ) : null}
                         </div>
-                        <div className="div-cntr">
-                          {this.state.selectedSupervisorRadio === true?(
-                            <label>Select Supervisor</label>
-                          ):(
-                            <label>Select Agent</label>
-                          )}
-                          
-                          <select
-                            className="add-select-category"
-                            name="selectedAgent"
-                            value={this.state.selectedAgent}
-                            onChange={this.handleOnChangeUserData}
-                          >
-                            <option>Select Agent</option>
-                            {this.state.AgentData !== null &&
-                              this.state.AgentData.map((item, i) => (
-                                <option key={i} value={item.user_ID}>
-                                  {item.agentName}
-                                </option>
-                              ))}
-                          </select>
-                          {this.state.selectedAgent === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.agentCompulsion}
-                            </p>
-                          )}
-                        </div>
+                        {this.state.selectedAgentRadio === true && this.state.selectedAssignEscalation === true ? (
+
+<div className="div-cntr">
+                        
+<label>Select Agent</label>
+
+
+<select
+className="add-select-category"
+name="selectedAgent"
+value={this.state.selectedAgent}
+onChange={this.handleOnChangeUserData}
+>
+<option>Select Agent</option>
+{this.state.AgentData !== null &&
+  this.state.AgentData.map((item, i) => (
+    <option key={i} value={item.user_ID}>
+      {item.agentName}
+    </option>
+  ))}
+</select>
+{this.state.selectedAgent === 0 && (
+<p style={{ color: "red", marginBottom: "0px" }}>
+  {this.state.agentCompulsion}
+</p>
+)}
+</div>
+
+                        ):(
+                          null
+                        )}
+                        
                         <div className="div-cntr">
                           <label>Status</label>
                           <select
