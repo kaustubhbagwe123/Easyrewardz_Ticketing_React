@@ -6573,6 +6573,16 @@ font-weight: normal;
 .disabled-link {
   pointer-events: none;
 }
+.text-disabled{
+  pointer-events: none;
+    color: #2561a8;
+    font-family: Lato;
+    font-size: 14px;
+    line-height: 50px;
+    width: 121px;
+    text-align: left;
+    cursor: pointer;
+}
 /* ---------------------------------------------- */
 /* Css Store_CRM Roles Shlok */
 /**  =====================

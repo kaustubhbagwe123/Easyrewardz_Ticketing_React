@@ -1010,7 +1010,6 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           {this.state.notifiMessages.map((item, i) => {
-            // debugger;
             return (
               <div className="row rowpadding" key={i}>
                 <div className="md-2 rectangle-2 lable05 noti-count">
@@ -1034,7 +1033,6 @@ class Header extends Component {
                                   pathname: "myticket",
                                   ticketDetailID: data
                                 }}
-                                
                                 onClick={this.handleShowTicket.bind(this, data)}
                               >
                                 {data}
@@ -1048,18 +1046,17 @@ class Header extends Component {
                     trigger="click"
                   >
                     <div
-                      className="md-4 view-tickets"
+                      className={
+                        item.ticketIDs !== ""
+                          ? "md-4 view-tickets"
+                          : "text-disabled"
+                      }
                       onClick={this.handleViewTicketModalOpen.bind(this, item)}
                     >
                       VIEW TICKETS
                     </div>
                   </Popover>
-                  {/* <div
-                    className="md-4 view-tickets"
-                    onClick={this.handleViewTicketModalOpen.bind(this, item)}
-                  >
-                    VIEW TICKETS
-                  </div> */}
+                  
                 </div>
               </div>
             );
