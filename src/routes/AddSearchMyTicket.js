@@ -106,6 +106,17 @@ class AddSearchMyTicket extends Component {
               // message: res.data.message
             });
           } else {
+            var email = document.getElementById("EmailPhoneNo");
+            var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!filter.test(email.value)) {
+              self.setState({
+                customerPhoneNumber: self.state.SrchEmailPhone.trim()
+              });
+            } else {
+              self.setState({
+                customerEmailId: self.state.SrchEmailPhone.trim()
+              });
+            }
             self.setState({
               message: res.data.message
             });
@@ -184,7 +195,11 @@ class AddSearchMyTicket extends Component {
         });
         if (responseMessage === "Success") {
           //debugger
-          NotificationManager.success("New Customer added successfully.", '', 1000);
+          NotificationManager.success(
+            "New Customer added successfully.",
+            "",
+            1000
+          );
           setTimeout(function() {
             self.props.history.push({
               pathname: "ticketsystem",
@@ -242,35 +257,36 @@ class AddSearchMyTicket extends Component {
         <div className="addsearch-div">
           <div className="card">
             <div className="addSearchCard">
-            <form name="form" onSubmit={this.handleSearchCustomer}>
-              <div>
-                <label className="label1-AddSearch">
-                  SEARCH CUSTOMER BY
-                  <label className="label2-AddSearch">
-                    &nbsp;(PHONE NUMBER, EMAIL ID)
-                    <span className="span-color">*</span>
+              <form name="form" onSubmit={this.handleSearchCustomer}>
+                <div>
+                  <label className="label1-AddSearch">
+                    SEARCH CUSTOMER BY
+                    <label className="label2-AddSearch">
+                      &nbsp;(PHONE NUMBER, EMAIL ID)
+                      <span className="span-color">*</span>
+                    </label>
                   </label>
-                </label>
 
-                <input
-                  type="text"
-                  className="search-customerAddSrch"
-                  placeholder="Search Customer"
-                  name="SrchEmailPhone"
-                  value={this.state.SrchEmailPhone}
-                  onChange={this.addCustomerData}
-                  maxLength="100"
-                  autoComplete="off"
-                />
-                <div className="seacrh-img-addsearch">
-                  <img
-                    src={SearchBlueImg}
-                    alt="SearchBlueImg"
-                    className="srch-imge"
-                    onClick={this.handleSearchCustomer}
+                  <input
+                    type="text"
+                    className="search-customerAddSrch"
+                    placeholder="Search Customer"
+                    name="SrchEmailPhone"
+                    value={this.state.SrchEmailPhone}
+                    onChange={this.addCustomerData}
+                    maxLength="100"
+                    autoComplete="off"
+                    id="EmailPhoneNo"
                   />
+                  <div className="seacrh-img-addsearch">
+                    <img
+                      src={SearchBlueImg}
+                      alt="SearchBlueImg"
+                      className="srch-imge"
+                      onClick={this.handleSearchCustomer}
+                    />
+                  </div>
                 </div>
-              </div>
               </form>
               {this.state.SrchEmailPhone.length == 0 && (
                 <p style={{ color: "red", marginBottom: "0px" }}>

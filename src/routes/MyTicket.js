@@ -61,7 +61,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-import TicketStatus from "./TicketStatus";
+import TicketStatus from "./MyTicketStatus";
 // import Select from "react-select";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
