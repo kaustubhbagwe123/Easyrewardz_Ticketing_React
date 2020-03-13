@@ -1054,12 +1054,8 @@ class Users extends Component {
             NotificationManager.success("Record Save successfully.");
             self.setState({
               getID: id,
-              personalReadOnly: true,
-              selectUserName: "",
-              selectFirstName: "",
-              selectLastName: "",
-              selectMobile: "",
-              selectEmail: ""
+              personalReadOnly: true
+              
             });
             self.handleGetUserList();
           } else {
@@ -1167,10 +1163,8 @@ class Users extends Component {
               NotificationManager.success("Record Saved successfully.");
               self.setState({
                 getID: id,
-                profileReadOnly: true,
-                selectedDesignation: 0,
-                selectedReportTO: 0,
-                selectedReporteeDesign: 0
+                profileReadOnly: true
+               
               });
               self.handleGetUserList();
             } else {
