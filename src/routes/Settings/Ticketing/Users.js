@@ -1196,8 +1196,8 @@ class Users extends Component {
       this.state.selectedSubCategory !== null &&
       this.state.selectedIssueType !== null &&
       this.state.selectedCRMRoles > 0 &&
-      this.state.selectedCopyEscalation === true &&
-      this.state.selectedAssignEscalation === true &&
+      // this.state.selectedCopyEscalation === true &&
+      // this.state.selectedAssignEscalation === true &&
       this.state.selectedAgent > 0
     ) {
       let self = this;
@@ -1305,7 +1305,15 @@ class Users extends Component {
             buttonProfileToggle: false,
             personalReadOnly: false,
             profileReadOnly: false,
-            getID: 0
+            getID: 0,
+            brandCompulsion: "",
+        categoryCompulsion: "",
+        subcategoryCompulsion: "",
+        isuuetypeCompulsion: "",
+        crmroleCompulsion: "",
+        copyescCompulsion: "",
+        assignescCompulsion: "",
+        agentCompulsion: ""
           });
           self.handleGetUserList();
         })
@@ -1319,8 +1327,8 @@ class Users extends Component {
         subcategoryCompulsion: "Please select subcategory",
         isuuetypeCompulsion: "Please select issuetype",
         crmroleCompulsion: "Please select  crm roles",
-        copyescCompulsion: "Please select copy escalation",
-        assignescCompulsion: "Please select assign escalation",
+        // copyescCompulsion: "Please select copy escalation",
+        // assignescCompulsion: "Please select assign escalation",
         agentCompulsion: "Please select agent"
       });
     }
@@ -2818,7 +2826,12 @@ class Users extends Component {
                           ) : null}
                         </div>
                         <div className="div-cntr">
-                          <label>Select Agent</label>
+                          {this.state.selectedSupervisorRadio === true?(
+                            <label>Select Supervisor</label>
+                          ):(
+                            <label>Select Agent</label>
+                          )}
+                          
                           <select
                             className="add-select-category"
                             name="selectedAgent"

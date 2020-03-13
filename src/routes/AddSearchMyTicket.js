@@ -185,13 +185,13 @@ class AddSearchMyTicket extends Component {
         });
         if (responseMessage === "Success") {
           //debugger
-          NotificationManager.success("New Customer added successfully.");
+          NotificationManager.success("New Customer added successfully.", '', 1000);
           setTimeout(function() {
             self.props.history.push({
               pathname: "ticketsystem",
               state: self.state
             });
-          }, 500);
+          }, 1000);
           self.setState({
             customerId: custId
           });
