@@ -251,10 +251,7 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
-      headers: authHeader(),
-      params: {
-        UserId: id
-      }
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
