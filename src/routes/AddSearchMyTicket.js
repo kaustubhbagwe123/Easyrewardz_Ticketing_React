@@ -106,9 +106,8 @@ class AddSearchMyTicket extends Component {
               // message: res.data.message
             });
           } else {
-            var email = document.getElementById("EmailPhoneNo");
-            var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (!filter.test(email.value)) {
+            var filter = Number(self.state.SrchEmailPhone.trim());
+            if (filter) {
               self.setState({
                 customerPhoneNumber: self.state.SrchEmailPhone.trim()
               });
@@ -276,7 +275,6 @@ class AddSearchMyTicket extends Component {
                     onChange={this.addCustomerData}
                     maxLength="100"
                     autoComplete="off"
-                    id="EmailPhoneNo"
                   />
                   <div className="seacrh-img-addsearch">
                     <img
