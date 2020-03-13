@@ -79,7 +79,7 @@ class AddSearchMyTicket extends Component {
   }
   handleSearchCustomer(e) {
     e.preventDefault();
-    //debugger;
+    debugger;
     if (this.state.SrchEmailPhone.length > 0) {
       let self = this;
       axios({
@@ -91,9 +91,8 @@ class AddSearchMyTicket extends Component {
         }
       })
         .then(function(res) {
-          //debugger;
+          debugger;
           let SearchData = res.data.responseData[0];
-          // let GetCustId = SearchData.customerID;
           if (SearchData) {
             let GetCustId = SearchData.customerID;
             setTimeout(function() {
@@ -107,6 +106,16 @@ class AddSearchMyTicket extends Component {
               // message: res.data.message
             });
           } else {
+            var filter = Number(self.state.SrchEmailPhone.trim());
+            if (filter) {
+              self.setState({
+                customerPhoneNumber: self.state.SrchEmailPhone.trim()
+              });
+            } else {
+              self.setState({
+                customerEmailId: self.state.SrchEmailPhone.trim()
+              });
+            }
             self.setState({
               message: res.data.message
             });
@@ -155,7 +164,7 @@ class AddSearchMyTicket extends Component {
   }
 
   handleAddCustomerSave() {
-    //debugger;
+    debugger;
     let self = this;
 
     axios({
@@ -185,13 +194,17 @@ class AddSearchMyTicket extends Component {
         });
         if (responseMessage === "Success") {
           //debugger
-          NotificationManager.success("New Customer added successfully.");
+          NotificationManager.success(
+            "New Customer added successfully.",
+            "",
+            1000
+          );
           setTimeout(function() {
             self.props.history.push({
               pathname: "ticketsystem",
               state: self.state
             });
-          }, 500);
+          }, 1000);
           self.setState({
             customerId: custId
           });
@@ -207,7 +220,6 @@ class AddSearchMyTicket extends Component {
     });
   };
   handleChange(date) {
-    //debugger;
     this.setState({
       dob: date
     });
@@ -244,35 +256,35 @@ class AddSearchMyTicket extends Component {
         <div className="addsearch-div">
           <div className="card">
             <div className="addSearchCard">
-            <form name="form" onSubmit={this.handleSearchCustomer}>
-              <div>
-                <label className="label1-AddSearch">
-                  SEARCH CUSTOMER BY
-                  <label className="label2-AddSearch">
-                    &nbsp;(PHONE NUMBER, EMAIL ID)
-                    <span className="span-color">*</span>
+              <form name="form" onSubmit={this.handleSearchCustomer}>
+                <div>
+                  <label className="label1-AddSearch">
+                    SEARCH CUSTOMER BY
+                    <label className="label2-AddSearch">
+                      &nbsp;(PHONE NUMBER, EMAIL ID)
+                      <span className="span-color">*</span>
+                    </label>
                   </label>
-                </label>
 
-                <input
-                  type="text"
-                  className="search-customerAddSrch"
-                  placeholder="Search Customer"
-                  name="SrchEmailPhone"
-                  value={this.state.SrchEmailPhone}
-                  onChange={this.addCustomerData}
-                  maxLength="100"
-                  autoComplete="off"
-                />
-                <div className="seacrh-img-addsearch">
-                  <img
-                    src={SearchBlueImg}
-                    alt="SearchBlueImg"
-                    className="srch-imge"
-                    onClick={this.handleSearchCustomer}
+                  <input
+                    type="text"
+                    className="search-customerAddSrch"
+                    placeholder="Search Customer"
+                    name="SrchEmailPhone"
+                    value={this.state.SrchEmailPhone}
+                    onChange={this.addCustomerData}
+                    maxLength="100"
+                    autoComplete="off"
                   />
+                  <div className="seacrh-img-addsearch">
+                    <img
+                      src={SearchBlueImg}
+                      alt="SearchBlueImg"
+                      className="srch-imge"
+                      onClick={this.handleSearchCustomer}
+                    />
+                  </div>
                 </div>
-              </div>
               </form>
               {this.state.SrchEmailPhone.length == 0 && (
                 <p style={{ color: "red", marginBottom: "0px" }}>

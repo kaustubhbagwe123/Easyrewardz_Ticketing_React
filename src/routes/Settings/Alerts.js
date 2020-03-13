@@ -30,111 +30,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = props => {
-  debugger;
-  const { rowData } = props;
-  const [alertTypeName, setalertTypeNameValue] = useState(
-    rowData.alertTypeName
-  );
-  const [isAlertActive, setisAlertActiveValue] = useState(
-    rowData.isAlertActive
-  );
-  const [alertID] = useState(rowData.alertID);
-
-  props.callBackEdit(alertTypeName, isAlertActive, rowData);
-  return (
-    <div className="edtpadding">
-      <div className="">
-        <label className="popover-header-text">EDIT ALERTS</label>
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Alert Type</label>
-        <input
-          type="text"
-          className="txt-edit-popover"
-          placeholder="Enter Alert Type"
-          maxLength={25}
-          value={alertTypeName}
-          onChange={e => setalertTypeNameValue(e.target.value)}
-        />
-        {alertTypeName === "" && (
-          <p style={{ color: "red", marginBottom: "0px" }}>
-            {props.editAlertNameCopulsion}
-          </p>
-        )}
-        {/* <select
-                                          className="add-select-category"
-                                          name="selectedAlertType"
-                                          value={alertTypeName}
-                                          onChange={e => setalertTypeNameValue(e.target.value)}
-                                        >
-                                          <option >Select Alert</option>
-                    {props.alertData !== null &&
-                      props.alertData.map((item, i) => (
-                        <option key={i} value={item.alertID}>
-                          {item.alertTypeName}
-                        </option>
-                      ))}
-                                        </select> */}
-      </div>
-      {/* <div className="pop-over-div">
-                                    <label className="edit-label-1">Issue Type</label>
-                                    <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-                                      <option>Select</option>
-                                      <option>Admin</option>
-                                    </select>
-                                  </div> */}
-      <div className="pop-over-div">
-        <label className="edit-label-1">Status</label>
-        <select
-          id="inputStatus"
-          className="edit-dropDwon dropdown-setting"
-          value={isAlertActive}
-          onChange={e => setisAlertActiveValue(e.target.value)}
-        >
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-      </div>
-      <br />
-      <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-          CANCEL
-        </a>
-        <button className="pop-over-button">
-          <label
-            className="pop-over-btnsave-text"
-            // onClick={this.handleUpdateAlert.bind(
-            //   this,
-            //   row.original.alertID
-            // )}
-          >
-            <label
-              className="pop-over-btnsave-text"
-              onClick={e => {
-                props.handleUpdateAlert(e, alertID);
-              }}
-            >
-              SAVE
-            </label>
-          </label>
-        </button>
-      </div>
-    </div>
-  );
-};
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 class Alerts extends Component {
   constructor(props) {
@@ -195,7 +91,9 @@ class Alerts extends Component {
       rowData: {},
       editAlertNameCopulsion: "Please enter alerttype name.",
       editModal: false,
-      alertEdit: {}
+      alertEdit: {},
+      isEdit: false,
+      editSaveLoading: false
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -293,7 +191,11 @@ class Alerts extends Component {
       });
     }
     setTimeout(() => {
-      if (this.state.emailCust || this.state.emailInt || this.state.emailStore) {
+      if (
+        this.state.emailCust ||
+        this.state.emailInt ||
+        this.state.emailStore
+      ) {
         this.setState({
           tabIndex: 0
         });
@@ -394,20 +296,22 @@ class Alerts extends Component {
   }
   handleUpdateAlert() {
     debugger;
-    if (this.state.updateAlertTypeName.length > 0) {
+    if (this.state.alertEdit.updateAlertTypeName.length > 0) {
       let AlertisActive;
-      if (this.state.updateAlertisActive === "Active") {
+      if (this.state.alertEdit.alertIsActive === "Active") {
         AlertisActive = true;
       } else if (this.state.updateAlertisActive === "Inactive") {
         AlertisActive = false;
       }
+      this.setState({ editSaveLoading: true });
+      let self = this;
       axios({
         method: "post",
         url: config.apiUrl + "/Alert/ModifyAlert",
         headers: authHeader(),
         params: {
-          AlertID: 0,
-          AlertTypeName: this.state.updateAlertTypeName,
+          AlertID: this.state.alertEdit.selectedAlertType,
+          AlertTypeName: this.state.alertEdit.updateAlertTypeName,
           isAlertActive: AlertisActive
         }
       })
@@ -416,12 +320,15 @@ class Alerts extends Component {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Alert updated successfully.");
-            this.handleGetAlert();
+            self.handleGetAlert();
+            self.setState({ AddAlertTabsPopup: false, editSaveLoading: false });
           } else {
+            self.setState({ editSaveLoading: false, AddAlertTabsPopup: false });
             NotificationManager.error("Alert not updated.");
           }
         })
         .catch(data => {
+          self.setState({ editSaveLoading: false, AddAlertTabsPopup: false });
           console.log(data);
         });
     } else {
@@ -435,13 +342,28 @@ class Alerts extends Component {
   updateAlert(individualData) {
     debugger;
     var alertEdit = {};
-    alertEdit.updateAlertId = individualData.alertID;
+    alertEdit.selectedAlertType = individualData.alertID;
     alertEdit.updateAlertTypeName = individualData.alertTypeName;
     alertEdit.alertIsActive = individualData.isAlertActive;
+    var selectedSubjectCustomer = individualData.subject;
+    var selectedCKCustomer = individualData.mailContent;
+    var emailCust = individualData.isEmailCustomer;
+    var emailInt = individualData.isEmailInternal;
+    var emailStore = individualData.isEmailStore;
+    var smsCust = individualData.isSMSCustomer;
+    var notiInt = individualData.isNotificationInternal;
 
     this.setState({
+      selectedSubjectCustomer,
+      selectedCKCustomer,
+      emailCust,
+      emailInt,
+      emailStore,
+      smsCust,
+      notiInt,
       alertEdit,
-      editModal: true
+      editModal: true,
+      isEdit: true
     });
   }
 
@@ -490,7 +412,16 @@ class Alerts extends Component {
     }
   }
   handleAddAlertTabsClose() {
-    this.setState({ AddAlertTabsPopup: false });
+    this.setState({
+      AddAlertTabsPopup: false,
+      selectedSubjectCustomer: "",
+      selectedCKCustomer: "",
+      emailCust: false,
+      emailInt: false,
+      emailStore: false,
+      smsCust: false,
+      notiInt: false
+    });
   }
   updateContent(newContent) {
     this.setState({
@@ -673,7 +604,7 @@ class Alerts extends Component {
       });
   }
   handleEditModal() {
-    this.setState({ editModal: false });
+    this.setState({ editModal: false, isEdit: false });
   }
 
   editAlertModalData(e) {
@@ -681,15 +612,18 @@ class Alerts extends Component {
     const { name, value } = e.target;
 
     var data = this.state.alertEdit;
-    if (name === "alertID") {
+    if (name === "updateAlertId") {
       var alertName = e.target.selectedOptions[0].innerText;
       data[name] = value;
-      data["alertTypeName"] = alertName;
+      data["updateAlertTypeName"] = alertName;
     } else {
       data[name] = value;
     }
 
     this.setState({ alertEdit: data });
+  }
+  handleOpenAdd() {
+    this.setState({ AddAlertTabsPopup: true, editModal: false });
   }
   render() {
     return (
@@ -874,41 +808,21 @@ class Alerts extends Component {
                                     id={ids}
                                   />
                                 </Popover>
-                                <Popover
-                                  content={
-                                    <Content
-                                      rowData={row.original}
-                                      callBackEdit={this.callBackEdit}
-                                      editAlertNameCopulsion={
-                                        this.state.editAlertNameCopulsion
-                                      }
-                                      alertData={this.state.alertData}
-                                      handleUpdateAlert={this.handleUpdateAlert.bind(
-                                        this
-                                      )}
-                                    />
-                                  }
-                                  placement="bottom"
-                                  trigger="click"
+
+                                <button
+                                  className="react-tabel-button"
+                                  id="p-edit-pop-2"
                                 >
-                                  <button
-                                    className="react-tabel-button"
-                                    id="p-edit-pop-2"
+                                  <label
+                                    className="Table-action-edit-button-text"
+                                    onClick={this.updateAlert.bind(
+                                      this,
+                                      row.original
+                                    )}
                                   >
-                                    <label
-                                      className="Table-action-edit-button-text"
-                                      onClick={this.updateAlert.bind(
-                                        this,
-                                        row.original
-                                      )}
-                                    >
-                                      EDIT
-                                    </label>
-                                  </button>
-                                  {/* <label className="Table-action-edit-button-text">
-                                    <MyButton>EDIT</MyButton>
-                                  </label> */}
-                                </Popover>
+                                    EDIT
+                                  </label>
+                                </button>
                               </span>
                             </>
                           );
@@ -1140,8 +1054,8 @@ class Alerts extends Component {
                                 {this.state.emailCust && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${this.state.innerTabIndex ===
-                                        0 && "active"}`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 0 && "active"}`}
                                       data-toggle="tab"
                                       href="#customer-tab"
                                       role="tab"
@@ -1155,8 +1069,8 @@ class Alerts extends Component {
                                 {this.state.emailInt && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${this.state.innerTabIndex ===
-                                        1 && "active"}`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 1 && "active"}`}
                                       data-toggle="tab"
                                       href="#Internal-tab"
                                       role="tab"
@@ -1170,8 +1084,8 @@ class Alerts extends Component {
                                 {this.state.emailStore && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${this.state.innerTabIndex ===
-                                        2 && "active"}`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 2 && "active"}`}
                                       data-toggle="tab"
                                       href="#ticket-tab"
                                       role="tab"
@@ -1186,8 +1100,8 @@ class Alerts extends Component {
                             </div>
                             <div className="tab-content p-0 alert-p1">
                               <div
-                                className={`tab-pane fade ${this.state.innerTabIndex ===
-                                  0 && "show active"}`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 0 && "show active"}`}
                                 id="customer-tab"
                                 role="tabpanel"
                                 aria-labelledby="customer-tab"
@@ -1316,8 +1230,8 @@ class Alerts extends Component {
                               </div> */}
                               </div>
                               <div
-                                className={`tab-pane fade ${this.state.innerTabIndex ===
-                                  1 && "show active"}`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 1 && "show active"}`}
                                 id="Internal-tab"
                                 role="tabpanel"
                                 aria-labelledby="Internal-tab"
@@ -1444,8 +1358,8 @@ class Alerts extends Component {
                               </div>*/}
                               </div>
                               <div
-                                className={`tab-pane fade ${this.state.innerTabIndex ===
-                                  2 && "show active"}`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 2 && "show active"}`}
                                 id="ticket-tab"
                                 role="tabpanel"
                                 aria-labelledby="ticket-tab"
@@ -1637,8 +1551,22 @@ class Alerts extends Component {
                           <button
                             className="butn-2"
                             type="submit"
-                            onClick={this.validationInsertAlert.bind(this)}
+                            disabled={this.state.editSaveLoading}
+                            onClick={
+                              this.state.isEdit
+                                ? this.handleUpdateAlert.bind(this)
+                                : this.validationInsertAlert.bind(this)
+                            }
                           >
+                            {this.state.editSaveLoading ? (
+                              <FontAwesomeIcon
+                                className="circular-loader"
+                                icon={faCircleNotch}
+                                spin
+                              />
+                            ) : (
+                              ""
+                            )}
                             SAVE
                           </button>
                         </div>
@@ -1720,7 +1648,11 @@ class Alerts extends Component {
             </div>
           </div>
         </div>
-        <Modal className="EditModa" show={this.state.editModal} onHide={this.handleEditModal}>
+        <Modal
+          className="EditModa"
+          show={this.state.editModal}
+          onHide={this.handleEditModal}
+        >
           <div className="edtpadding right-sect-div">
             <div className="">
               <label className="popover-header-text">EDIT ALERTS</label>
@@ -1747,8 +1679,8 @@ class Alerts extends Component {
 
               <select
                 className="add-select-category"
-                name="alertID"
-                value={this.state.alertEdit.alertID}
+                name="selectedAlertType"
+                value={this.state.alertEdit.selectedAlertType}
                 onChange={this.editAlertModalData.bind(this)}
               >
                 <option>Select Alert</option>
@@ -1759,7 +1691,7 @@ class Alerts extends Component {
                     </option>
                   ))}
               </select>
-              {this.state.alertEdit.alertID === 0 && (
+              {this.state.alertEdit.selectedAlertType === 0 && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
                   {this.state.alertTypeCompulsion}
                 </p>
@@ -1778,27 +1710,47 @@ class Alerts extends Component {
             <div className="div-cntr">
               <label>Email</label>
               <br />
-              <Checkbox onChange={this.handleAlertTabs} value="emailCust">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.emailCust}
+                value="emailCust"
+              >
                 Customer
               </Checkbox>
-              <Checkbox onChange={this.handleAlertTabs} value="emailInt">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.emailInt}
+                value="emailInt"
+              >
                 Internal
               </Checkbox>
-              <Checkbox onChange={this.handleAlertTabs} value="emailStore">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.emailStore}
+                value="emailStore"
+              >
                 Store
               </Checkbox>
             </div>
             <div className="div-cntr">
               <label>SMS</label>
               <br />
-              <Checkbox onChange={this.handleAlertTabs} value="smsCust">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.smsCust}
+                value="smsCust"
+              >
                 Customer
               </Checkbox>
             </div>
             <div className="div-cntr">
               <label>Notification</label>
               <br />
-              <Checkbox onChange={this.handleAlertTabs} value="notiInt">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.notiInt}
+                value="notiInt"
+              >
                 Internal
               </Checkbox>
             </div>
@@ -1807,12 +1759,14 @@ class Alerts extends Component {
               <label>Status</label>
               <select
                 name="alertIsActive"
-                value={this.state.alertEdit.alertIsActive}
+                value={
+                  this.state.alertEdit.alertIsActive === "Active" ? true : false
+                }
                 onChange={this.editAlertModalData.bind(this)}
               >
                 <option value="">Select</option>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value={true}>Active</option>
+                <option value={false}>Inactive</option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
@@ -1823,11 +1777,14 @@ class Alerts extends Component {
 
             <br />
             <div className="text-center">
-              <span className="pop-over-cancle" onClick={this.handleEditModal} >
+              <span className="pop-over-cancle" onClick={this.handleEditModal}>
                 CANCEL
               </span>
-              <button className="pop-over-button FlNone">
-                  SAVE
+              <button
+                className="pop-over-button FlNone"
+                onClick={this.handleOpenAdd.bind(this)}
+              >
+                SAVE
                 {/* <label
                   className="pop-over-btnsave-text"
                   // onClick={this.handleUpdateAlert.bind(

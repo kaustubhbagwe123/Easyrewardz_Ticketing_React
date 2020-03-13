@@ -292,13 +292,12 @@ class UserProfile extends Component {
                           <span className="uploadtextprofile1"  >Upload</span>
                         </label> */}
                         {this.state.fileName[0] && (
-                          <div className="file-info">
-                            <div className="file-cntr">
-                              <div className="file-dtls">
-                                <p className="file-name">
+                          <div className="file-info pb-0">
+                            <div className="">
+                              <div className="user-profile-file-dtls">
+                                <p className="mb-0">
                                   {this.state.fileName[0].name}
                                 </p>
-                                <div className="del-file" id="del-file-1"></div>
                               </div>
                             </div>
                           </div>

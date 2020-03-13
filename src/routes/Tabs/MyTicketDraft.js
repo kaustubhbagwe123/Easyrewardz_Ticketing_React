@@ -21,7 +21,9 @@ class MyTicketDraft extends Component {
 
     return (
       <Fragment>
-        <div className="newReact">
+        {/* <div className="newReact"> */}
+        <div className="container-fluid mt-3">
+          <div className="MyTicketListReact cus-head" style={{backgroundColor: '#fff'}}>
           <ReactTable
             data={dataDraft}
             columns={[
@@ -138,6 +140,7 @@ class MyTicketDraft extends Component {
               <p>Items per page</p>
             </div>
           </div> */}
+        </div>
         </div>
       </Fragment>
     );

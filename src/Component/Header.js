@@ -70,33 +70,33 @@ class Header extends Component {
       notificationAccess: "yes",
       settingAccess: "yes",
       cont: [
-        {
-          data: "Dashboards",
-          urls: "dashboard",
-          logoBlack: DashboardLogo,
-          logoBlue: DashboardLogoBlue,
-          imgAlt: "dashboard icon",
-          imgClass: "dashboardImg1",
-          activeClass: "active single-menu"
-        },
-        {
-          data: "My Tickets",
-          urls: "myTicketlist",
-          logoBlack: TicketLogo,
-          logoBlue: TicketLogoBlue,
-          imgAlt: "ticket icon",
-          imgClass: "myTicket",
-          activeClass: "single-menu"
-        },
-        {
-          data: "Knowledge Base",
-          urls: "knowledgebase",
-          logoBlack: KnowledgeLogo,
-          logoBlue: KnowledgeLogoBlue,
-          imgAlt: "knowledge icon",
-          imgClass: "knowledgeNav",
-          activeClass: "single-menu"
-        }
+        // {
+        //   data: "Dashboards",
+        //   urls: "dashboard",
+        //   logoBlack: DashboardLogo,
+        //   logoBlue: DashboardLogoBlue,
+        //   imgAlt: "dashboard icon",
+        //   imgClass: "dashboardImg1",
+        //   activeClass: "active single-menu"
+        // },
+        // {
+        //   data: "My Tickets",
+        //   urls: "myTicketlist",
+        //   logoBlack: TicketLogo,
+        //   logoBlue: TicketLogoBlue,
+        //   imgAlt: "ticket icon",
+        //   imgClass: "myTicket",
+        //   activeClass: "single-menu"
+        // },
+        // {
+        //   data: "Knowledge Base",
+        //   urls: "knowledgebase",
+        //   logoBlack: KnowledgeLogo,
+        //   logoBlue: KnowledgeLogoBlue,
+        //   imgAlt: "knowledge icon",
+        //   imgClass: "knowledgeNav",
+        //   activeClass: "single-menu"
+        // }
       ]
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
@@ -251,10 +251,7 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
-      headers: authHeader(),
-      params: {
-        UserId: id
-      }
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -271,6 +268,9 @@ class Header extends Component {
 
   setAccessUser(data) {
     debugger;
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    console.log( page );
     var accessdata = [];
     var dashboard = {
       data: "Dashboards",
@@ -279,7 +279,7 @@ class Header extends Component {
       logoBlue: DashboardLogoBlue,
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
-      activeClass: "active single-menu"
+      activeClass: page == 'dashboard' ? "active single-menu" : 'single-menu'
     };
     var myticket = {
       data: "My Tickets",
@@ -288,7 +288,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: "single-menu"
+      activeClass: page == 'myTicketlist' ? "active single-menu" : 'single-menu'
     };
     var knowledgebase = {
       data: "Knowledge Base",
@@ -297,7 +297,7 @@ class Header extends Component {
       logoBlue: KnowledgeLogoBlue,
       imgAlt: "knowledge icon",
       imgClass: "knowledgeNav",
-      activeClass: "single-menu"
+      activeClass: page == 'knowledgebase' ? "active single-menu" : 'single-menu'
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -966,12 +966,11 @@ class Header extends Component {
             </div>
 
             <a href="#!">
-              <div className="position-relative" onClick={this.openModal}>
+              <div className="position-relative" style={{ display: this.state.notificationAccess }} onClick={this.openModal}>
                 <img
                   src={NotificationLogo}
                   alt="logo"
                   className="notifi"
-                  style={{ display: this.state.notificationAccess }}
                 />
                 {this.state.notiCount > 0 && (
                   <span className="upper-noti-count">
@@ -1013,7 +1012,6 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           {this.state.notifiMessages.map((item, i) => {
-            // debugger;
             return (
               <div className="row rowpadding" key={i}>
                 <div className="md-2 rectangle-2 lable05 noti-count">
@@ -1037,7 +1035,6 @@ class Header extends Component {
                                   pathname: "myticket",
                                   ticketDetailID: data
                                 }}
-                                
                                 onClick={this.handleShowTicket.bind(this, data)}
                               >
                                 {data}
@@ -1051,18 +1048,17 @@ class Header extends Component {
                     trigger="click"
                   >
                     <div
-                      className="md-4 view-tickets"
+                      className={
+                        item.ticketIDs !== ""
+                          ? "md-4 view-tickets"
+                          : "text-disabled"
+                      }
                       onClick={this.handleViewTicketModalOpen.bind(this, item)}
                     >
                       VIEW TICKETS
                     </div>
                   </Popover>
-                  {/* <div
-                    className="md-4 view-tickets"
-                    onClick={this.handleViewTicketModalOpen.bind(this, item)}
-                  >
-                    VIEW TICKETS
-                  </div> */}
+                  
                 </div>
               </div>
             );

@@ -221,7 +221,6 @@ class CategoryMaster extends Component {
 
   StatusOpenModel(data) {
     debugger;
-
     this.setState({ StatusModel: true, sortColumn: data });
   }
   StatusCloseModel() {

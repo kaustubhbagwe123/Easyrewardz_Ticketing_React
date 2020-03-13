@@ -769,7 +769,6 @@ class Dashboard extends Component {
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-     
     } else if (column === "status") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
@@ -777,23 +776,18 @@ class Dashboard extends Component {
       );
       this.setState({
         statusColor: "sort-column"
-       
       });
     } else if (column === "category") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
-       
         categoryColor: "sort-column"
-      
       });
     } else if (column === "priority") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
       this.setState({
-       
         priorityColor: "sort-column"
-      
       });
     } else if (column === "assignedTo") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -801,9 +795,7 @@ class Dashboard extends Component {
         a => a.assignedTo === data
       );
       this.setState({
-       
         assignColor: "sort-column"
-        
       });
     } else if (column === "createdOn") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -811,22 +803,18 @@ class Dashboard extends Component {
         a => a.createdOn === data
       );
       this.setState({
-      
         creationColor: "sort-column"
-       
       });
     } else if (column === "colorred") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.isEscalation === 1
       );
-     
     } else if (column === "colororange") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
         a => a.isSLANearBreach === true
       );
-     
     } else if (column === "colorwhite") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(
@@ -1067,6 +1055,8 @@ class Dashboard extends Component {
     this.setState({ loadingAbove: true });
     debugger;
     let self = this;
+    var fromdate = moment(this.state.start).format("YYYY-MM-DD");
+    var todate = moment(this.state.end).format("YYYY-MM-DD");
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/DashBoardCountData",
@@ -1075,10 +1065,10 @@ class Dashboard extends Component {
         UserIds: this.state.AgentIds,
         // UserIds: "6,7,8",
         // fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
-        fromdate: moment(this.state.start).format("YYYY-MM-DD"),
+        fromdate: fromdate,
         // fromdate: this.state.start._d,
         // fromdate: "2019-12-26",
-        todate: moment(this.state.end).format("YYYY-MM-DD"),
+        todate: todate,
         // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         // todate: this.state.end._d,
         // todate: "2020-01-15",
@@ -1090,7 +1080,7 @@ class Dashboard extends Component {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        if(status === "Success"){
+        if (status === "Success") {
           self.setState({ DashboardNumberData: data });
           if (
             Object.keys(self.state.DashboardGraphData).length > 0 &&
@@ -1098,10 +1088,9 @@ class Dashboard extends Component {
           ) {
             self.setState({ loadingAbove: false });
           }
-        }else{
+        } else {
           self.setState({ DashboardNumberData: {} });
         }
-        
       })
       .catch(data => {
         console.log(data);
@@ -1111,6 +1100,9 @@ class Dashboard extends Component {
     this.setState({ loadingAbove: true });
     debugger;
     let self = this;
+    var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
+    var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
+
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/DashBoardGraphData",
@@ -1123,10 +1115,10 @@ class Dashboard extends Component {
         UserIds: this.state.AgentIds,
         // fromdate: this.state.start._d,
         // fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
-        fromdate: moment(this.state.start).format("YYYY-MM-DD"),
+        fromdate: fromdate,
         // todate: this.state.end._d,
         // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
-        todate: moment(this.state.end).format("YYYY-MM-DD"),
+        todate: todate,
         BrandID: this.state.BrandIds
       }
     })
@@ -2013,7 +2005,7 @@ class Dashboard extends Component {
     setTimeout(() => {
       if (this.state.selectedClaimCategory) {
         // this.handleGetClaimSubCategoryList();
-        this.handleGetSubCategoryList('allClaimTab');
+        this.handleGetSubCategoryList("allClaimTab");
       }
     }, 1);
   };
@@ -2038,7 +2030,7 @@ class Dashboard extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList('categoryTab');
+        this.handleGetSubCategoryList("categoryTab");
       }
     }, 1);
   };
@@ -2047,7 +2039,7 @@ class Dashboard extends Component {
     this.setState({ selectedCategoryAll: categoryAllValue });
     setTimeout(() => {
       if (this.state.selectedCategoryAll) {
-        this.handleGetSubCategoryList('allTab');
+        this.handleGetSubCategoryList("allTab");
       }
     }, 1);
   };
@@ -2057,7 +2049,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList('categoryTab');
+        this.handleGetIssueTypeList("categoryTab");
       }
     }, 1);
   };
@@ -2067,7 +2059,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedSubCategoryAll) {
-        this.handleGetIssueTypeList('allTab');
+        this.handleGetIssueTypeList("allTab");
       }
     }, 1);
   };
@@ -2077,7 +2069,7 @@ class Dashboard extends Component {
 
     setTimeout(() => {
       if (this.state.selectedClaimSubCategory) {
-        this.handleGetIssueTypeList('allClaimTab');
+        this.handleGetIssueTypeList("allClaimTab");
         // this.handleGetClaimIssueTypeList();
       }
     }, 1);
@@ -2212,16 +2204,16 @@ class Dashboard extends Component {
     let self = this;
 
     var month, day, year, hours, minutes, seconds;
-        var date = new Date(this.state.selectedScheduleTime),
-            month = ("0" + (date.getMonth() + 1)).slice(-2),
-            day = ("0" + date.getDate()).slice(-2);
-        hours = ("0" + date.getHours()).slice(-2);
-        minutes = ("0" + date.getMinutes()).slice(-2);
-        seconds = ("0" + date.getSeconds()).slice(-2);
+    var date = new Date(this.state.selectedScheduleTime),
+      month = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    hours = ("0" + date.getHours()).slice(-2);
+    minutes = ("0" + date.getMinutes()).slice(-2);
+    seconds = ("0" + date.getSeconds()).slice(-2);
 
-        var mySQLDate = [date.getFullYear(), month, day].join("-");
-        var mySQLTime = [hours, minutes, seconds].join(":");
-        this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
+    var mySQLDate = [date.getFullYear(), month, day].join("-");
+    var mySQLTime = [hours, minutes, seconds].join(":");
+    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
 
     axios({
       method: "post",
@@ -2461,17 +2453,17 @@ class Dashboard extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == 'categoryTab') {
+    if (param == "categoryTab") {
       self.setState({
         IssueTypeData: [],
         selectedIssueType: 0
       });
-    } else if (param == 'allTab') {
+    } else if (param == "allTab") {
       self.setState({
         IssueTypeAllData: [],
         selectedIssueTypeAll: 0
       });
-    } else if (param == 'allClaimTab') {
+    } else if (param == "allClaimTab") {
       self.setState({
         ClaimIssueTypeData: [],
         selectedClaimIssueType: 0
@@ -2482,12 +2474,12 @@ class Dashboard extends Component {
     //     ? this.state.selectedSubCategory
     //     : this.state.selectedSubCategoryAll;
     let subCateId;
-    if (param == 'categoryTab') {
-      subCateId = this.state.selectedSubCategory
-    } else if (param == 'allTab') {
-      subCateId = this.state.selectedSubCategoryAll
-    } else if (param == 'allClaimTab') {
-      subCateId = this.state.selectedClaimSubCategory
+    if (param == "categoryTab") {
+      subCateId = this.state.selectedSubCategory;
+    } else if (param == "allTab") {
+      subCateId = this.state.selectedSubCategoryAll;
+    } else if (param == "allClaimTab") {
+      subCateId = this.state.selectedClaimSubCategory;
     }
 
     axios({
@@ -2511,17 +2503,17 @@ class Dashboard extends Component {
         //     IssueTypeAllData: IssueTypeAllData
         //   });
         // }
-        if (param == 'categoryTab') {
+        if (param == "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
             IssueTypeData: IssueTypeData
           });
-        } else if (param == 'allTab') {
+        } else if (param == "allTab") {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
             IssueTypeAllData: IssueTypeAllData
           });
-        } else if (param == 'allClaimTab') {
+        } else if (param == "allClaimTab") {
           var ClaimIssueTypeData = res.data.responseData;
           self.setState({
             ClaimIssueTypeData: ClaimIssueTypeData
@@ -2596,21 +2588,21 @@ class Dashboard extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == 'categoryTab') {
+    if (param == "categoryTab") {
       this.setState({
         SubCategoryData: [],
         IssueTypeData: [],
         selectedSubCategory: 0,
         selectedIssueType: 0
       });
-    } else if (param == 'allTab') {
+    } else if (param == "allTab") {
       this.setState({
         SubCategoryAllData: [],
         IssueTypeAllData: [],
         selectedSubCategoryAll: 0,
         selectedIssueTypeAll: 0
       });
-    } else if (param == 'allClaimTab') {
+    } else if (param == "allClaimTab") {
       this.setState({
         ClaimSubCategoryData: [],
         selectedClaimSubCategory: 0,
@@ -2623,12 +2615,12 @@ class Dashboard extends Component {
     //     ? this.state.selectedCategory
     //     : this.state.selectedCategoryAll;
     let cateId;
-    if (param == 'categoryTab') {
-      cateId = this.state.selectedCategory
-    } else if (param == 'allTab') {
-      cateId = this.state.selectedCategoryAll
-    } else if (param == 'allClaimTab') {
-      cateId = this.state.selectedClaimCategory
+    if (param == "categoryTab") {
+      cateId = this.state.selectedCategory;
+    } else if (param == "allTab") {
+      cateId = this.state.selectedCategoryAll;
+    } else if (param == "allClaimTab") {
+      cateId = this.state.selectedClaimCategory;
     }
 
     axios({
@@ -2652,17 +2644,17 @@ class Dashboard extends Component {
         //     SubCategoryAllData: SubCategoryAllData
         //   });
         // }
-        if (param == 'categoryTab') {
+        if (param == "categoryTab") {
           var SubCategoryData = res.data.responseData;
           self.setState({
             SubCategoryData: SubCategoryData
           });
-        } else if (param == 'allTab') {
+        } else if (param == "allTab") {
           var SubCategoryAllData = res.data.responseData;
           self.setState({
             SubCategoryAllData: SubCategoryAllData
           });
-        } else if (param == 'allClaimTab') {
+        } else if (param == "allClaimTab") {
           var ClaimSubCategoryData = res.data.responseData;
           self.setState({
             ClaimSubCategoryData: ClaimSubCategoryData
@@ -3491,7 +3483,7 @@ class Dashboard extends Component {
                   dataSearch.searchDataByCategoryType.TicketStatusID
               },
               () => {
-                self.handleGetSubCategoryList('categoryTab');
+                self.handleGetSubCategoryList("categoryTab");
               }
             );
             self.setState(
@@ -3500,7 +3492,7 @@ class Dashboard extends Component {
                   dataSearch.searchDataByCategoryType.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList('categoryTab');
+                self.handleGetIssueTypeList("categoryTab");
               }
             );
             self.setState({
@@ -3607,7 +3599,7 @@ class Dashboard extends Component {
                 allFlag: 5
               },
               () => {
-                self.handleGetSubCategoryList('allTab');
+                self.handleGetSubCategoryList("allTab");
               }
             );
             self.setState(
@@ -3615,7 +3607,7 @@ class Dashboard extends Component {
                 selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId
               },
               () => {
-                self.handleGetIssueTypeList('allTab');
+                self.handleGetIssueTypeList("allTab");
               }
             );
             self.setState({
@@ -3639,7 +3631,7 @@ class Dashboard extends Component {
               },
               () => {
                 // self.handleGetClaimSubCategoryList();
-                self.handleGetSubCategoryList('allClaimTab');
+                self.handleGetSubCategoryList("allClaimTab");
               }
             );
             self.setState(
@@ -3649,7 +3641,7 @@ class Dashboard extends Component {
               },
               () => {
                 // self.handleGetClaimIssueTypeList();
-                self.handleGetIssueTypeList('allClaimTab');
+                self.handleGetIssueTypeList("allClaimTab");
               }
             );
             self.setState({
@@ -4058,7 +4050,7 @@ class Dashboard extends Component {
                         moment(this.state.end, "DD-MM-YYYY")
                       ]}
                     /> */}
-                    <DatePickerComponenet applyCallback={this.applyCallback}/>
+                    <DatePickerComponenet applyCallback={this.applyCallback} />
                   </Col>
                   {/* <Col xs={3} md={4} /> */}
                 </Row>
@@ -6583,7 +6575,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.categoryColor}
+                            className={this.state.categoryColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "category"
@@ -6632,7 +6624,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.priorityColor}
+                            className={this.state.priorityColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "priority"
@@ -6647,7 +6639,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.assignColor}
+                            className={this.state.assignColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "assignedTo"
@@ -6661,7 +6653,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.creationColor}
+                            className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdOn"

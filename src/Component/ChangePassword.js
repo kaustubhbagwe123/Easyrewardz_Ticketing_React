@@ -188,7 +188,7 @@ class ChangePassword extends Component {
                   <input
                     type="password"
                     name="oldPassword"
-                    placeholder="Enter Old Password"
+                    placeholder="Old Password"
                     className="program-code-textbox"
                     value={this.state.oldPassword}
                     onChange={this.handlechange}
@@ -205,7 +205,7 @@ class ChangePassword extends Component {
                   <input
                     type="password"
                     name="newPassword"
-                    placeholder="Enter New Password"
+                    placeholder="New Password"
                     className="program-code-textbox"
                     onChange={this.handlechange}
                     maxLength={25}
@@ -225,7 +225,7 @@ class ChangePassword extends Component {
                   <input
                     type="password"
                     name="confimPassword"
-                    placeholder="Enter Confirm Password"
+                    placeholder="Confirm Password"
                     className="program-code-textbox"
                     onChange={this.handlechange}
                     maxLength={25}
