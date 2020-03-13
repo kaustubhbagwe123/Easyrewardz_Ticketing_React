@@ -84,7 +84,8 @@ class StoreMaster extends Component {
       sortColumn: "",
       editmodel: false,
       modalSelectedBrand: [],
-      editSaveLoading:false
+      editSaveLoading:false,
+      emailFlag: true
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -428,11 +429,26 @@ class StoreMaster extends Component {
             pin_code: "",
             store_Address: "",
             selectCity: 0,
+            selectState: 0,
             selectRegion: 0,
             selectZone: 0,
             store_type: 0,
+            selectStatus: '',
             contact_email: "",
-            contact_Phone: ""
+            contact_Phone: "",
+            store_codeCompulsion: "",
+            store_nameCompulsion: "",
+            pin_codeCompulsion: "",
+            store_AddressCompulsion: "",
+            RegionCompulsion: "",
+            ZoneCompulsion: "",
+            store_typeCompulsion: "",
+            contact_emailCompulsion: "",
+            contact_PhoneCompulsion: "",
+            StateCompulsion: "",
+            CityCompulsion: "",
+            brandCompulsion: "",
+            statusCompulsion: ""
           });
         } else {
           NotificationManager.error("Store Not added.");
@@ -544,7 +560,8 @@ class StoreMaster extends Component {
   };
 
   handleStateChange = e => {
-    let value = e.target.value;
+    debugger;
+    let value = parseInt(e.target.value);
     this.setState({ selectState: value, cityData: [] });
     setTimeout(() => {
       if (this.state.selectState) {
@@ -616,22 +633,22 @@ class StoreMaster extends Component {
     }, 1);
   };
   handleCityChange = e => {
-    let value = e.target.value;
+    let value = parseInt(e.target.value);
     this.setState({ selectCity: value });
   };
 
   handleZoneChange = e => {
-    let value = e.target.value;
+    let value = parseInt(e.target.value);
     this.setState({ selectZone: value });
   };
 
   handleRegionChange = e => {
-    let value = e.target.value;
+    let value = parseInt(e.target.value);
     this.setState({ selectRegion: value });
   };
 
   handleStoreTypeChange = e => {
-    let value = e.target.value;
+    let value = parseInt(e.target.value);
     this.setState({ store_type: value });
   };
 
@@ -644,6 +661,22 @@ class StoreMaster extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  };
+  hanldeOnEmailChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if (reg.test(e.target.value) == false) 
+    {
+      this.setState({
+        emailFlag: false
+      });
+    } else {
+      this.setState({
+        emailFlag: true
+      });
+    }
   };
   toggleEditModal() {
     this.setState({ editmodel: false });
@@ -1166,7 +1199,7 @@ class StoreMaster extends Component {
                         value={this.state.selectState}
                         onChange={this.handleStateChange}
                       >
-                        <option>Select</option>
+                        <option value={0}>Select</option>
                         {this.state.stateData !== null &&
                           this.state.stateData.map((item, i) => (
                             <option
@@ -1191,7 +1224,7 @@ class StoreMaster extends Component {
                         value={this.state.selectCity}
                         onChange={this.handleCityChange}
                       >
-                        <option>Select</option>
+                        <option value="0">Select</option>
                         {this.state.cityData !== null &&
                           this.state.cityData.map((item, i) => (
                             <option
@@ -1251,7 +1284,7 @@ class StoreMaster extends Component {
                         value={this.state.selectRegion}
                         onChange={this.handleRegionChange}
                       >
-                        <option>Select</option>
+                        <option value="0">Select</option>
                         {this.state.regionData !== null &&
                           this.state.regionData.map((item, s) => (
                             <option key={s} value={item.regionID}>
@@ -1272,7 +1305,7 @@ class StoreMaster extends Component {
                         value={this.state.selectZone}
                         onChange={this.handleZoneChange}
                       >
-                        <option>Select</option>
+                        <option value="0">Select</option>
                         {this.state.zoneData !== null &&
                           this.state.zoneData.map((item, s) => (
                             <option key={s} value={item.zoneID}>
@@ -1293,7 +1326,7 @@ class StoreMaster extends Component {
                         value={this.state.store_type}
                         onChange={this.handleStoreTypeChange}
                       >
-                        <option>Select</option>
+                        <option value="0">Select</option>
                         {this.state.storeTypeData !== null &&
                           this.state.storeTypeData.map((item, t) => (
                             <option key={t} value={item.storeTypeID}>
@@ -1318,8 +1351,13 @@ class StoreMaster extends Component {
                         maxLength={100}
                         name="contact_email"
                         value={this.state.contact_email}
-                        onChange={this.hanldeOnChangeData}
+                        onChange={this.hanldeOnEmailChange}
                       />
+                      {this.state.emailFlag === false && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          Please enter valid Email Id.
+                        </p>
+                      )}
                       {this.state.contact_email.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.contact_emailCompulsion}

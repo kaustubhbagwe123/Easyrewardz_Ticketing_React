@@ -165,7 +165,7 @@ class UserProfile extends Component {
     debugger;
     if (
      
-      this.state.fileName.length > 0 &&
+      // this.state.fileName.length > 0 &&
       this.state.selectedFirstName.length > 0 &&
       this.state.selectedLastName.length > 0 &&
       this.state.selectedMobile.length > 0 &&
@@ -196,10 +196,10 @@ class UserProfile extends Component {
           debugger;
           let msg = res.data.message;
           if (msg === "Success") {
-            NotificationManager.success("Profile updated successfully.");
+            NotificationManager.success("Profile updated successfully.", '', 1000);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
-            }, 400);
+            }, 1000);
           }
         })
         .catch(data => {
@@ -207,7 +207,7 @@ class UserProfile extends Component {
         });
     } else {
       this.setState({
-        fileNameCompulsion: "Please select profile picture.",
+        // fileNameCompulsion: "Please select profile picture.",
         FirstNameCompulsion: "Please enter first name.",
         LastNameCompulsion: "Please enter last name.",
         MobileCompulsion: "Please enter mobile number.",
@@ -269,8 +269,7 @@ class UserProfile extends Component {
                           {/* <div className="file-icon">
                         <img src="{FileUpload}" alt="file-upload" />
                       </div> */}
-                          <span className="uploadtextprofile1">Upload </span>{" "}
-                          choose photo
+                          <span className="uploadtextprofile1">Upload Photo</span>
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -283,13 +282,12 @@ class UserProfile extends Component {
                           <span className="uploadtextprofile1"  >Upload</span>
                         </label> */}
                         {this.state.fileName[0] && (
-                          <div className="file-info">
-                            <div className="file-cntr">
-                              <div className="file-dtls">
-                                <p className="file-name">
+                          <div className="file-info pb-0">
+                            <div className="">
+                              <div className="user-profile-file-dtls">
+                                <p className="mb-0">
                                   {this.state.fileName[0].name}
                                 </p>
-                                <div className="del-file" id="del-file-1"></div>
                               </div>
                             </div>
                           </div>

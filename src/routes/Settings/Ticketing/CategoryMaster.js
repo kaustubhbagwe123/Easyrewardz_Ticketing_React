@@ -619,7 +619,12 @@ class CategoryMaster extends Component {
             list1Value: "",
             ListOfSubCate: "",
             ListOfIssue: "",
-            selectStatus: 0
+            selectStatus: 0,
+            brandCompulsion: "",
+            categoryCompulsion: "",
+            subcategoryCompulsion: "",
+            issueCompulsion: "",
+            statusCompulsion: ""
           });
         }else{
           NotificationManager.error(status,"",

@@ -464,7 +464,9 @@ class Templates extends Component {
               TemplateSubject: "",
               editorContent: "",
               TemplateName: "",
-              selectedSlaIssueType: []
+              selectedSlaIssueType: [],
+              templatesubjectCompulsion: "",
+              templatebodyCompulsion: ""
             });
           } else {
             NotificationManager.error("Template not added.");

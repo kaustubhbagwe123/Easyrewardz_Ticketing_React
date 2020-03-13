@@ -85,8 +85,9 @@ class TicketSystemStore extends Component {
     //   });
     // }
   };
-  handleSearchStoreDetails() {
+  handleSearchStoreDetails(e) {
     debugger;
+    e.preventDefault();
     if (this.state.SwitchBtnStatus === false) {
       let self = this;
       if (this.state.SrchStoreNameCode.length > 0) {
@@ -97,21 +98,23 @@ class TicketSystemStore extends Component {
           params: {
             SearchText: this.state.SrchStoreNameCode.trim()
           }
-        }).then(function(res) {
-          debugger;
-          let data = res.data.responseData;
-          let Msg = res.data.message;
-          if (Msg === "Success") {
-            self.setState({ SearchData: data, message: Msg });
-            self.handleCheckStoreID = self.handleCheckStoreID.bind(self);
-          } else {
-            self.setState({
-              message: res.data.message,
-              SearchData: []
-            });
-          }
-        }).catch(data => {
-          console.log(data);
+        })
+          .then(function(res) {
+            debugger;
+            let data = res.data.responseData;
+            let Msg = res.data.message;
+            if (Msg === "Success") {
+              self.setState({ SearchData: data, message: Msg });
+              self.handleCheckStoreID = self.handleCheckStoreID.bind(self);
+            } else {
+              self.setState({
+                message: res.data.message,
+                SearchData: []
+              });
+            }
+          })
+          .catch(data => {
+            console.log(data);
           });
       } else {
         self.setState({
@@ -221,7 +224,6 @@ class TicketSystemStore extends Component {
     });
   };
 
-  
   render() {
     const { SearchData, selectedStoreData } = this.state;
     return (
@@ -513,63 +515,60 @@ class TicketSystemStore extends Component {
                       defaultPageSize={5}
                       showPagination={false}
                     /> */}
-<Table
-className="custom-antd-table"
-                        columns={[
-                          {
-                            title: "",
-                            dataIndex: "storeID",
-                            render: (row, data) => {
-                              // debugger;
-                              return (
-                                <div className="filter-checkbox">
-                                   <input
-                                      type="checkbox"
-                                      className="d-none"
-                                      id={"i" + data.storeID}
-                                      name="ticket-store"
-                                      checked={
-                                        this.state.CheckStoreID[
-                                          data.storeID
-                                        ] === true
-                                      }
-                                      onChange={this.handleCheckStoreID.bind(
-                                        this,
-                                        data.storeID,
-                                        data
-                                      )}
-                                    />
-                                    <label
-                                      htmlFor={"i" + data.storeID}
-                                    ></label>
-                                </div>
-                              );
-                            }
-                          },
-                          {
-                            title: "Store Code",
-                            dataIndex: "storeCode"
-                          },
-                          {
-                            title: "Store Name",
-                            dataIndex: "storeName" 
-                          },
-                          {
-                            title: "Store Pin Code",
-                            dataIndex: "pincode" 
-                          },
-                          {
-                            title: "Store Email ID",
-                            dataIndex: "storeEmailID"
-                          },
-                          {
-                            title: "Store Addres",
-                            dataIndex: "address"
+                    <Table
+                      className="custom-antd-table"
+                      columns={[
+                        {
+                          title: "",
+                          dataIndex: "storeID",
+                          render: (row, data) => {
+                            // debugger;
+                            return (
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  className="d-none"
+                                  id={"i" + data.storeID}
+                                  name="ticket-store"
+                                  checked={
+                                    this.state.CheckStoreID[data.storeID] ===
+                                    true
+                                  }
+                                  onChange={this.handleCheckStoreID.bind(
+                                    this,
+                                    data.storeID,
+                                    data
+                                  )}
+                                />
+                                <label htmlFor={"i" + data.storeID}></label>
+                              </div>
+                            );
                           }
-                        ]}
-                        dataSource={SearchData}
-                        pagination={false}
-                      />
+                        },
+                        {
+                          title: "Store Code",
+                          dataIndex: "storeCode"
+                        },
+                        {
+                          title: "Store Name",
+                          dataIndex: "storeName"
+                        },
+                        {
+                          title: "Store Pin Code",
+                          dataIndex: "pincode"
+                        },
+                        {
+                          title: "Store Email ID",
+                          dataIndex: "storeEmailID"
+                        },
+                        {
+                          title: "Store Addres",
+                          dataIndex: "address"
+                        }
+                      ]}
+                      dataSource={SearchData}
+                      pagination={false}
+                    />
                   </div>
                 </div>
                 <div
@@ -666,25 +665,24 @@ className="custom-antd-table"
                       defaultPageSize={5}
                       showPagination={false}
                     /> */}
-                     <Table
-                     className="custom-antd-table datepicker-overflow"
-                        columns={[
-                          {
-                            title: "",
-                            dataIndex: "storeID",
-                            render: (row, data) => {
-                              // debugger;
-                              return (
-                                <div className="filter-checkbox">
-                                   <input
-                                   className="d-none"
+                    <Table
+                      className="custom-antd-table datepicker-overflow"
+                      columns={[
+                        {
+                          title: "",
+                          dataIndex: "storeID",
+                          render: (row, data) => {
+                            // debugger;
+                            return (
+                              <div className="filter-checkbox">
+                                <input
+                                  className="d-none"
                                   type="checkbox"
                                   id={"selected" + data.storeID}
                                   name="ticket-store"
                                   checked={
-                                    this.state.CheckStoreID[
-                                      data.storeID
-                                    ] === true
+                                    this.state.CheckStoreID[data.storeID] ===
+                                    true
                                   }
                                   onChange={this.handleCheckStoreID.bind(
                                     this,
@@ -693,58 +691,56 @@ className="custom-antd-table"
                                   )}
                                 />
                                 <label
-                                      htmlFor={"selected" + data.storeID}
-                                    ></label>
-                                </div>
-                              );
-                            }
-                          },
-                          {
-                            title:"Purpose",
-                            dataIndex:"storeID",
-                            render:(row,data)=>{
-                              return(
-                                <div
+                                  htmlFor={"selected" + data.storeID}
+                                ></label>
+                              </div>
+                            );
+                          }
+                        },
+                        {
+                          title: "Purpose",
+                          dataIndex: "storeID",
+                          render: (row, data) => {
+                            return (
+                              <div
                                 className="filter-checkbox"
                                 style={{ marginLeft: "15px" }}
                               >
-                                <label
-                                  htmlFor={"selected" + data.storeID}
-                                >
+                                <label htmlFor={"selected" + data.storeID}>
                                   {data.purposeId === "0"
                                     ? "Customer Want to visit store"
                                     : "Customer Already visited store"}
                                 </label>
                               </div>
-                              )
-                            }
-                          }, 
-                          {
-                            title: "Store Code",
-                            dataIndex: "storeCode"
-                          },
-                          {
-                            title: "Store Name",
-                            dataIndex: "storeName" 
-                          },
-                          {
-                            title: "Store Pin Code",
-                            dataIndex: "pincode" 
-                          },
-                          {
-                            title: "Store Email ID",
-                            dataIndex: "storeEmailID"
-                          },
-                          {
-                            title: "Store Addres",
-                            dataIndex: "address"
-                          },
-                          {
-                            title: "Visit Date",
-                            dataIndex: "visitDate",
-                            render:(row,data)=>{
-                              return(
-                                <div className="col-sm-12 p-0">
+                            );
+                          }
+                        },
+                        {
+                          title: "Store Code",
+                          dataIndex: "storeCode"
+                        },
+                        {
+                          title: "Store Name",
+                          dataIndex: "storeName"
+                        },
+                        {
+                          title: "Store Pin Code",
+                          dataIndex: "pincode"
+                        },
+                        {
+                          title: "Store Email ID",
+                          dataIndex: "storeEmailID"
+                        },
+                        {
+                          title: "Store Addres",
+                          dataIndex: "address"
+                        },
+                        {
+                          title: "Visit Date",
+                          dataIndex: "visitDate",
+                          render: (row, data) => {
+                            return (
+                              <div className="col-sm-12 p-0">
                                 <DatePicker
                                   selected={data.VisitedDate}
                                   placeholderText="DD/MM/YYYY"
@@ -760,13 +756,13 @@ className="custom-antd-table"
                                   )}
                                 />
                               </div>
-                              )
-                            }
+                            );
                           }
-                        ]}
-                        dataSource={selectedStoreData}
-                        pagination={false}
-                      />
+                        }
+                      ]}
+                      dataSource={selectedStoreData}
+                      pagination={false}
+                    />
                   </div>
                 </div>
               </div>
@@ -776,22 +772,30 @@ className="custom-antd-table"
                 className="col-md-11 m-b-10 m-t-10"
                 style={{ marginLeft: "25px" }}
               >
-                <input
-                  type="text"
-                  className="systemordersearch"
-                  placeholder="Search By Store Name, Pin Code, Store Code"
-                  name="SrchStoreNameCode"
-                  value={this.state.SrchStoreNameCode}
-                  onChange={this.handleStoreChange}
-                  disabled={this.state.SwitchBtnStatus === true}
-                />
+                <form
+                  name="form"
+                  onSubmit={this.handleSearchStoreDetails.bind(this)}
+                >
+                  <div>
+                    <input
+                      type="text"
+                      className="systemordersearch"
+                      placeholder="Search By Store Name, Pin Code, Store Code"
+                      name="SrchStoreNameCode"
+                      value={this.state.SrchStoreNameCode}
+                      onChange={this.handleStoreChange}
+                      autoComplete="off"
+                      disabled={this.state.SwitchBtnStatus === true}
+                    />
 
-                <img
-                  src={SearchBlackImg}
-                  alt="Search"
-                  className="systemorder-imgsearch"
-                  onClick={this.handleSearchStoreDetails.bind(this)}
-                />
+                    <img
+                      src={SearchBlackImg}
+                      alt="Search"
+                      className="systemorder-imgsearch"
+                      onClick={this.handleSearchStoreDetails.bind(this)}
+                    />
+                  </div>
+                </form>
                 {this.state.SrchStoreNameCode.length === 0 && (
                   <p
                     style={{
@@ -874,7 +878,7 @@ className="custom-antd-table"
                   >
                     <div className="reactstoreselect ordermainrow">
                       <Table
-                      className="custom-antd-table"
+                        className="custom-antd-table"
                         columns={[
                           {
                             title: "",
@@ -883,25 +887,22 @@ className="custom-antd-table"
                               // debugger;
                               return (
                                 <div className="filter-checkbox">
-                                   <input
-                                      type="checkbox"
-                                      className="d-none"
-                                      id={"i" + data.storeID}
-                                      name="ticket-store"
-                                      checked={
-                                        this.state.CheckStoreID[
-                                          data.storeID
-                                        ] === true
-                                      }
-                                      onChange={this.handleCheckStoreID.bind(
-                                        this,
-                                        data.storeID,
-                                        data
-                                      )}
-                                    />
-                                    <label
-                                      htmlFor={"i" + data.storeID}
-                                    ></label>
+                                  <input
+                                    type="checkbox"
+                                    className="d-none"
+                                    id={"i" + data.storeID}
+                                    name="ticket-store"
+                                    checked={
+                                      this.state.CheckStoreID[data.storeID] ===
+                                      true
+                                    }
+                                    onChange={this.handleCheckStoreID.bind(
+                                      this,
+                                      data.storeID,
+                                      data
+                                    )}
+                                  />
+                                  <label htmlFor={"i" + data.storeID}></label>
                                 </div>
                               );
                             }
@@ -912,11 +913,11 @@ className="custom-antd-table"
                           },
                           {
                             title: "Store Name",
-                            dataIndex: "storeName" 
+                            dataIndex: "storeName"
                           },
                           {
                             title: "Store Pin Code",
-                            dataIndex: "pincode" 
+                            dataIndex: "pincode"
                           },
                           {
                             title: "Store Email ID",
@@ -1158,8 +1159,8 @@ className="custom-antd-table"
                         defaultPageSize={5}
                         showPagination={false}
                       /> */}
-                       <Table
-                       className="custom-antd-table"
+                      <Table
+                        className="custom-antd-table date-picker-arrows"
                         columns={[
                           {
                             title: "",
@@ -1168,47 +1169,44 @@ className="custom-antd-table"
                               // debugger;
                               return (
                                 <div className="filter-checkbox">
-                                   <input
-                                   className="d-none"
-                                  type="checkbox"
-                                  id={"selected" + data.storeID}
-                                  name="ticket-store"
-                                  checked={
-                                    this.state.CheckStoreID[
-                                      data.storeID
-                                    ] === true
-                                  }
-                                  onChange={this.handleCheckStoreID.bind(
-                                    this,
-                                    data.storeID,
-                                    data
-                                  )}
-                                />
-                                <label
-                                  htmlFor={"selected" + data.storeID}
-                                ></label>
+                                  <input
+                                    className="d-none"
+                                    type="checkbox"
+                                    id={"selected" + data.storeID}
+                                    name="ticket-store"
+                                    checked={
+                                      this.state.CheckStoreID[data.storeID] ===
+                                      true
+                                    }
+                                    onChange={this.handleCheckStoreID.bind(
+                                      this,
+                                      data.storeID,
+                                      data
+                                    )}
+                                  />
+                                  <label
+                                    htmlFor={"selected" + data.storeID}
+                                  ></label>
                                 </div>
                               );
                             }
                           },
                           {
-                            title:"Purpose",
-                            dataIndex:"storeID",
-                            render:(row,data)=>{
-                              return(
+                            title: "Purpose",
+                            dataIndex: "storeID",
+                            render: (row, data) => {
+                              return (
                                 <div
-                                className="filter-checkbox"
-                                style={{ marginLeft: "15px" }}
-                              >
-                                <label
-                                  htmlFor={"selected" + data.storeID}
+                                  className="filter-checkbox"
+                                  style={{ marginLeft: "15px" }}
                                 >
-                                  {data.purposeId === "0"
-                                    ? "Customer Want to visit store"
-                                    : "Customer Already visited store"}
-                                </label>
-                              </div>
-                              )
+                                  <label htmlFor={"selected" + data.storeID}>
+                                    {data.purposeId === "0"
+                                      ? "Customer Want to visit store"
+                                      : "Customer Already visited store"}
+                                  </label>
+                                </div>
+                              );
                             }
                           },
                           {
@@ -1217,11 +1215,11 @@ className="custom-antd-table"
                           },
                           {
                             title: "Store Name",
-                            dataIndex: "storeName" 
+                            dataIndex: "storeName"
                           },
                           {
                             title: "Store Pin Code",
-                            dataIndex: "pincode" 
+                            dataIndex: "pincode"
                           },
                           {
                             title: "Store Email ID",
@@ -1234,25 +1232,25 @@ className="custom-antd-table"
                           {
                             title: "Visit Date",
                             dataIndex: "visitDate",
-                            render:(row,data)=>{
-                              return(
-                                <div className="col-sm-12 p-0">
-                                <DatePicker
-                                  selected={data.VisitedDate}
-                                  placeholderText="DD/MM/YYYY"
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dateFormat="dd/MM/yyyy"
-                                  id={"visitDate" + data.storeID}
-                                  value={data.VisitedDate}
-                                  name="visitDate"
-                                  onChange={this.handleByvisitDate.bind(
-                                    this,
-                                    data
-                                  )}
-                                />
-                              </div>
-                              )
+                            render: (row, data) => {
+                              return (
+                                <div className="col-sm-12 p-0 position-static">
+                                  <DatePicker
+                                    selected={data.VisitedDate}
+                                    placeholderText="DD/MM/YYYY"
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dateFormat="dd/MM/yyyy"
+                                    id={"visitDate" + data.storeID}
+                                    value={data.VisitedDate}
+                                    name="visitDate"
+                                    onChange={this.handleByvisitDate.bind(
+                                      this,
+                                      data
+                                    )}
+                                  />
+                                </div>
+                              );
                             }
                           }
                         ]}
@@ -1260,7 +1258,6 @@ className="custom-antd-table"
                         pagination={false}
                       />
                     </div>
-                    
                   </div>
                 </div>
               </div>

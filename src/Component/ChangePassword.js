@@ -89,7 +89,7 @@ class ChangePassword extends Component {
         <div className="auth-content">
           <div
             className="card forgotpass-card changepass-card"
-            style={{ height: "auto" }}
+            // style={{ height: "500px" }}
           >
             <div className="card-body text-center">
               <div className="mb-4">

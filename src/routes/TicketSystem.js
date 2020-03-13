@@ -367,18 +367,24 @@ class TicketSystem extends Component {
           // DateOfBirth: Dob,
           IsActive: 1
         }
-      }).then(function(res) {
-        debugger;
-        let Message = res.data.message;
-        if (Message === "Success") {
-          NotificationManager.success("Record updated Successfull.", "", 2000);
+      })
+        .then(function(res) {
+          debugger;
+          let Message = res.data.message;
+          if (Message === "Success") {
+            NotificationManager.success(
+              "Record updated Successfull.",
+              "",
+              2000
+            );
 
-          self.componentDidMount();
+            self.componentDidMount();
 
-          self.handleEditCustomerClose.bind(this);
-        }
-      }).catch(data => {
-        console.log(data);
+            self.handleEditCustomerClose.bind(this);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       this.validator.showMessages();
@@ -395,17 +401,19 @@ class TicketSystem extends Component {
       params: {
         TikcketTitle: this.state.titleSuggValue
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ TicketTitleData: data });
-      } else {
-        self.setState({ TicketTitleData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ TicketTitleData: data });
+        } else {
+          self.setState({ TicketTitleData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleCkEditorTemplate() {
@@ -417,12 +425,14 @@ class TicketSystem extends Component {
       params: {
         IssueTypeID: this.state.selectedIssueType
       }
-    }).then(function(res) {
-      debugger;
-      let CkEditorTemplateData = res.data.responseData;
-      self.setState({ CkEditorTemplateData: CkEditorTemplateData });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let CkEditorTemplateData = res.data.responseData;
+        self.setState({ CkEditorTemplateData: CkEditorTemplateData });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleCkEditorTemplateData(tempId, tempName) {
@@ -435,18 +445,20 @@ class TicketSystem extends Component {
       params: {
         TemplateId: tempId
       }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData.templateBody;
-      let bodyData = res.data.responseData.templateBody;
-      self.setState({
-        editorTemplateDetails: data,
-        tempName: tempName,
-        selectTicketTemplateId: tempId,
-        mailBodyData: bodyData
-      });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData.templateBody;
+        let bodyData = res.data.responseData.templateBody;
+        self.setState({
+          editorTemplateDetails: data,
+          tempName: tempName,
+          selectTicketTemplateId: tempId,
+          mailBodyData: bodyData
+        });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleKbLinkPopupSearch() {
@@ -465,15 +477,17 @@ class TicketSystem extends Component {
           Category_ID: this.state.selectedCategoryKB,
           SubCategor_ID: this.state.selectedSubCategoryKB
         }
-      }).then(function(res) {
-        debugger;
-        let KbPopupData = res.data.responseData;
-        if (KbPopupData.length === 0 || KbPopupData === null) {
-          NotificationManager.error("No Record Found.", "", 2000);
-        }
-        self.setState({ KbPopupData: KbPopupData });
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let KbPopupData = res.data.responseData;
+          if (KbPopupData.length === 0 || KbPopupData === null) {
+            NotificationManager.error("No Record Found.", "", 2000);
+          }
+          self.setState({ KbPopupData: KbPopupData });
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       this.setState({
@@ -490,12 +504,14 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({ BrandData: data });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({ BrandData: data });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetCategoryList(brandId = 0) {
@@ -517,11 +533,12 @@ class TicketSystem extends Component {
         BrandID: brandId
       }
     }).then(function(res) {
-      debugger;
-      let CategoryData = res.data;
-      self.setState({ CategoryData: CategoryData });
-    }).catch(data => {
-      console.log(data);
+        debugger;
+        let data = res.data;
+        self.setState({ CategoryData: data });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetSubCategoryList() {
@@ -545,12 +562,14 @@ class TicketSystem extends Component {
         CategoryID: cateId
         // CategoryID: this.state.selectedCategory
       }
-    }).then(function(res) {
-      debugger;
-      let SubCategoryData = res.data.responseData;
-      self.setState({ SubCategoryData: SubCategoryData });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let SubCategoryData = res.data.responseData;
+        self.setState({ SubCategoryData: SubCategoryData });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetIssueTypeList() {
@@ -567,12 +586,14 @@ class TicketSystem extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({ IssueTypeData: data });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({ IssueTypeData: data });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetTicketPriorityList() {
@@ -582,17 +603,19 @@ class TicketSystem extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ TicketPriorityData: data });
-      } else {
-        self.setState({ TicketPriorityData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ TicketPriorityData: data });
+        } else {
+          self.setState({ TicketPriorityData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetChannelOfPurchaseList() {
@@ -601,12 +624,14 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let ChannelOfPurchaseData = res.data.responseData;
-      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let ChannelOfPurchaseData = res.data.responseData;
+        self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -620,29 +645,31 @@ class TicketSystem extends Component {
       params: {
         CustomerID: CustId
       }
-    }).then(function(res) {
-      debugger;
-      var CustMsg = res.data.message;
-      var customerData = res.data.responseData;
-      var CustData = res.data.responseData;
-      CustData.customerPhone = CustData.customerPhoneNumber;
-      CustData.customername = CustData.customerName;
-      CustData.custEmailId = CustData.customerEmailId;
-      CustData.altNo = CustData.altNumber;
-      CustData.altEmail = CustData.altEmailID;
-      CustData.editDOB = CustData.dob;
+    })
+      .then(function(res) {
+        debugger;
+        var CustMsg = res.data.message;
+        var customerData = res.data.responseData;
+        var CustData = res.data.responseData;
+        CustData.customerPhone = CustData.customerPhoneNumber;
+        CustData.customername = CustData.customerName;
+        CustData.custEmailId = CustData.customerEmailId;
+        CustData.altNo = CustData.altNumber;
+        CustData.altEmail = CustData.altEmailID;
+        CustData.editDOB = CustData.dob;
 
-      if (CustMsg === "Success") {
-        self.setState({ customerData: customerData, loading: false });
-        self.handleEditCustomerClose();
-      }
-      if (mode === "Edit") {
-        // var editDOB = moment(customerData.dateOfBirth).format("DD/MM/YYYY");
-        self.handleEditCustomerOpen();
-        self.setState({ customerData: customerData, CustData });
-      }
-    }).catch(data => {
-      console.log(data);
+        if (CustMsg === "Success") {
+          self.setState({ customerData: customerData, loading: false });
+          self.handleEditCustomerClose();
+        }
+        if (mode === "Edit") {
+          // var editDOB = moment(customerData.dateOfBirth).format("DD/MM/YYYY");
+          self.handleEditCustomerOpen();
+          self.setState({ customerData: customerData, CustData });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -887,20 +914,22 @@ class TicketSystem extends Component {
         url: config.apiUrl + "/Ticketing/createTicket",
         headers: authHeader(),
         data: formData
-      }).then(function(res) {
-        debugger;
-        let Msg = res.data.status;
-        self.setState({ loading: false });
-        if (Msg) {
-          NotificationManager.success(res.data.message, "", 2000);
-          setTimeout(function() {
-            self.props.history.push("myTicketlist");
-          }, 2000);
-        } else {
-          NotificationManager.error(res.data.message, "", 2000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.status;
+          self.setState({ loading: false });
+          if (Msg) {
+            NotificationManager.success(res.data.message, "", 2000);
+            setTimeout(function() {
+              self.props.history.push("myTicketlist");
+            }, 2000);
+          } else {
+            NotificationManager.error(res.data.message, "", 2000);
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       this.setState({
@@ -1558,17 +1587,21 @@ class TicketSystem extends Component {
                       </ul>
                     </div>
 
-                    <a href="#!" className="kblink1">
-                      <img
-                        src={KnowledgeLogo}
-                        alt="KnowledgeLogo"
-                        className="knoim"
-                        onClick={this.HandleKbLinkModalOpen.bind(this)}
-                      />
-                      <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
-                        Kb Link
-                      </label>
-                    </a>
+                    {this.state.selectedBrand === "" ? (
+                      <label className="kblink1" title="Please select brand for KB Link">Please select Brand</label>
+                    ) : (
+                      <a href="#!" className="kblink1">
+                        <img
+                          src={KnowledgeLogo}
+                          alt="KnowledgeLogo"
+                          className="knoim"
+                          onClick={this.HandleKbLinkModalOpen.bind(this)}
+                        />
+                        <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                          Kb Link
+                        </label>
+                      </a>
+                    )}
                   </div>
                   <div className="row">
                     <div className="col-md-12 ck-det-cntr">
