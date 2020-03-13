@@ -963,12 +963,11 @@ class Header extends Component {
             </div>
 
             <a href="#!">
-              <div className="position-relative" onClick={this.openModal}>
+              <div className="position-relative" style={{ display: this.state.notificationAccess }} onClick={this.openModal}>
                 <img
                   src={NotificationLogo}
                   alt="logo"
                   className="notifi"
-                  style={{ display: this.state.notificationAccess }}
                 />
                 {this.state.notiCount > 0 && (
                   <span className="upper-noti-count">
