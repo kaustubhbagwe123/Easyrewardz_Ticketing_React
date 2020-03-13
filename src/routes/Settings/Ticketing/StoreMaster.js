@@ -85,7 +85,9 @@ class StoreMaster extends Component {
       editmodel: false,
       modalSelectedBrand: [],
       editSaveLoading:false,
-      emailFlag: true
+      emailFlag: true,
+      pinCodeFlag: true,
+      phoneFlag: true
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -350,6 +352,7 @@ class StoreMaster extends Component {
     });
   }
   handleDeleteStore(store_Id) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -359,8 +362,9 @@ class StoreMaster extends Component {
         StoreID: store_Id
       }
     }).then(function(res) {
+      debugger;
       let status = res.data.message;
-      if (status === "Success") {
+      if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
         NotificationManager.success("Store deleted successfully.");
       }
@@ -381,7 +385,10 @@ class StoreMaster extends Component {
       this.state.contact_Phone.length > 0 &&
       this.state.selectState > 0 &&
       this.state.selectCity > 0 &&
-      this.state.selectStatus !== ""
+      this.state.selectStatus !== "" &&
+      this.state.emailFlag == true &&
+      this.state.phoneFlag == true &&
+      this.state.pinCodeFlag == true
     ) {
       let self = this;
       var activeStatus = 0;
@@ -448,7 +455,8 @@ class StoreMaster extends Component {
             StateCompulsion: "",
             CityCompulsion: "",
             brandCompulsion: "",
-            statusCompulsion: ""
+            statusCompulsion: "",
+            cityData: []
           });
         } else {
           NotificationManager.error("Store Not added.");
@@ -552,6 +560,9 @@ class StoreMaster extends Component {
   };
   handleBrandChange = e => {
     debugger;
+    if (e === null) {
+      e = []
+    }
     this.setState({ selectedBrand: e });
   };
   handleEditBrandChange = e => {
@@ -663,11 +674,16 @@ class StoreMaster extends Component {
     });
   };
   hanldeOnEmailChange = e => {
+    debugger;
     this.setState({
       [e.target.name]: e.target.value
     });
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    if (reg.test(e.target.value) == false) 
+    if (e.target.value == "") {
+      this.setState({
+        emailFlag: true
+      });
+    } else if (reg.test(e.target.value) == false) 
     {
       this.setState({
         emailFlag: false
@@ -675,6 +691,42 @@ class StoreMaster extends Component {
     } else {
       this.setState({
         emailFlag: true
+      });
+    }
+  };
+  hanldeOnPhoneChange = e => {
+    debugger;
+    var reg = /^[0-9\b]+$/;
+    if (e.target.value === '' || reg.test(e.target.value)) {
+      this.setState({[e.target.name]: e.target.value})
+    } else {
+      e.target.value = ''
+    }
+    if (e.target.value.length == 10 || e.target.value.length == 0) {
+      this.setState({
+        phoneFlag: true
+      });
+    } else {
+      this.setState({
+        phoneFlag: false
+      });
+    }
+  };
+  hanldeOnPinCodeChange = e => {
+    debugger;
+    var reg = /^[0-9\b]+$/;
+    if (e.target.value === '' || reg.test(e.target.value)) {
+      this.setState({[e.target.name]: e.target.value})
+    } else {
+      e.target.value = ''
+    }
+    if (e.target.value.length == 6 || e.target.value.length == 0) {
+      this.setState({
+        pinCodeFlag: true
+      });
+    } else {
+      this.setState({
+        pinCodeFlag: false
       });
     }
   };
@@ -1248,11 +1300,16 @@ class StoreMaster extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Pin Code"
-                        maxLength={11}
+                        maxLength={6}
                         name="pin_code"
                         value={this.state.pin_code}
-                        onChange={this.hanldeOnChangeData}
+                        onChange={this.hanldeOnPinCodeChange}
                       />
+                      {this.state.pinCodeFlag === false && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          Please enter valid Pin Code.
+                        </p>
+                      )}
                       {this.state.pin_code.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.pin_codeCompulsion}
@@ -1375,8 +1432,13 @@ class StoreMaster extends Component {
                         maxLength={10}
                         name="contact_Phone"
                         value={this.state.contact_Phone}
-                        onChange={this.hanldeOnChangeData}
+                        onChange={this.hanldeOnPhoneChange}
                       />
+                      {this.state.phoneFlag === false && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          Please enter valid Phone Number.
+                        </p>
+                      )}
                       {this.state.contact_Phone.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.contact_PhoneCompulsion}
@@ -1555,7 +1617,8 @@ class StoreMaster extends Component {
                       placeholder="Enter Store Code"
                       name="store_Code"
                       maxLength={10}
-                      value={this.state.userEditData.store_ID}
+                      value={this.state.userEditData.store_Code}
+                      // value={this.state.userEditData.store_ID}
                       onChange={this.handleModalEditData}
                     />
                   </div>
