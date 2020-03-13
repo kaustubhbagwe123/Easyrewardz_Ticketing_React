@@ -94,6 +94,14 @@ class SingIn extends Component {
                   self.props.history.push("/admin/knowledgebase");
                 }, 400);
                 return;
+              } else if (
+                data[i].moduleName === "Settings" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function () {
+                  self.props.history.push("/admin/settings");
+                }, 400);
+                return;
               }
             }
           }
@@ -146,9 +154,8 @@ class SingIn extends Component {
           if (resValid === "Valid Login") {
             debugger;
             //NotificationManager.success("Login Successfull.");
-            self.handleCRMRole();
-           
             window.localStorage.setItem("token", res.data.responseData.token);
+            self.handleCRMRole();
             // setTimeout(function () {
             //   self.props.history.push("/admin/dashboard");
             // }, 400);
