@@ -596,6 +596,8 @@ class Alerts extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success("Record Saved successfully.");
+        }else if(status === "Record Already Exists "){
+          NotificationManager.error("Record Already Exists.");
         }
         self.handleAddAlertTabsClose();
       })

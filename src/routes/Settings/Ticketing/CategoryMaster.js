@@ -625,6 +625,8 @@ class CategoryMaster extends Component {
             issueCompulsion: "",
             statusCompulsion: ""
           });
+        }else if(status === "Record Already Exists "){
+          NotificationManager.error("Record Already Exists.");
         }else{
           NotificationManager.error(status,"",
           3000);

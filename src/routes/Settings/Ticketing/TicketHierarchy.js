@@ -406,6 +406,8 @@ class TicketHierarchy extends Component {
               reportToCompulsion: "",
               statusCompulsion: ""
             });
+          }else if(status === "Record Already Exists "){
+            NotificationManager.error("Record Already Exists.");
           }
         })
         .catch(data => {
