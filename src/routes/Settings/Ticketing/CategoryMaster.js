@@ -39,10 +39,13 @@ class CategoryMaster extends Component {
       list1Value: "",
       inputValue: "",
       showList1: false,
+      editshowList1: false,
       ListOfSubCate: "",
       ListOfIssue: "",
       ShowSubCate: false,
+      editShowSubCate: false,
       ShowIssuetype: false,
+      editShowIssuetype: false,
       loading: false,
       categoryGridData: [],
       brandData: [],
@@ -68,7 +71,8 @@ class CategoryMaster extends Component {
       sortSubCategory: [],
       sortIssueType: [],
       editmodel: false,
-      editCategory: {}
+      editCategory: {},
+      brandCatmapId: 0
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -371,9 +375,14 @@ class CategoryMaster extends Component {
       });
   }
 
-  handleAddCategory(value) {
+  handleAddCategory(value, check) {
     debugger;
-
+    var brand_Id = "";
+    if (check === "edit") {
+      brand_Id = this.state.editCategory.brandID;
+    } else {
+      brand_Id = this.state.selectBrand;
+    }
     let self = this;
     axios({
       method: "post",
@@ -381,7 +390,7 @@ class CategoryMaster extends Component {
       headers: authHeader(),
       params: {
         category: value,
-        BrandID: this.state.selectBrand
+        BrandID: brand_Id
       }
     })
       .then(function(res) {
@@ -404,15 +413,24 @@ class CategoryMaster extends Component {
         console.log(data);
       });
   }
-  handleAddSubCategory(value) {
+  handleAddSubCategory(value, check) {
     debugger;
     let self = this;
     var finalId = 0;
-    if (this.state.category_Id === 1) {
-      finalId = this.state.list1Value;
+    if (check === "edit") {
+      if (this.state.editCategory.subCategoryID === 1) {
+        finalId = this.state.list1Value;
+      } else {
+        finalId = this.state.editCategory.subCategoryID;
+      }
     } else {
-      finalId = this.state.category_Id;
+      if (this.state.category_Id === 1) {
+        finalId = this.state.list1Value;
+      } else {
+        finalId = this.state.category_Id;
+      }
     }
+
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/AddSubCategory",
@@ -578,6 +596,81 @@ class CategoryMaster extends Component {
     }
   }
 
+  // Update category
+  handleUpdateCategory() {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var categorydata = 0;
+    var subCategoryData = 0;
+    var IssueData = 0;
+    var status = this.state.selectStatus;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    if (isNaN(this.state.list1Value)) {
+      categorydata = this.state.editCategory.categoryID;
+    } else {
+      categorydata = this.state.list1Value;
+    }
+
+    if (isNaN(this.state.ListOfSubCate)) {
+      subCategoryData = this.state.editCategory.subCategoryID;
+    } else {
+      subCategoryData = this.state.ListOfSubCate;
+    }
+
+    if (isNaN(this.state.ListOfIssue)) {
+      IssueData = this.state.editCategory.issueTypeID;
+    } else {
+      IssueData = this.state.ListOfIssue;
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/CreateCategorybrandmapping",
+      headers: authHeader(),
+      data: {
+        BrandCategoryMappingID: this.state.brandCatmapId,
+        BraindID: this.state.editCategory.brandID,
+        CategoryID: categorydata,
+        SubCategoryID: subCategoryData,
+        IssueTypeID: IssueData,
+        Status: activeStatus,
+        Deleteflag: 0
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetCategoryGridData();
+          NotificationManager.success("Category added successfully.", "", 2000);
+          self.setState({
+            selectBrand: 0,
+            list1Value: "",
+            ListOfSubCate: "",
+            ListOfIssue: "",
+            selectStatus: 0,
+            brandCompulsion: "",
+            categoryCompulsion: "",
+            subcategoryCompulsion: "",
+            issueCompulsion: "",
+            statusCompulsion: ""
+          });
+        } else if (status === "Record Already Exists ") {
+          NotificationManager.error("Record Already Exists.");
+        } else {
+          NotificationManager.error(status, "", 3000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
   HandleMultiSelect() {
     this.setState({ catmulti: true });
   }
@@ -661,8 +754,9 @@ class CategoryMaster extends Component {
     editCategory.issueTypeID = rowData.issueTypeID;
     editCategory.issueTypeName = rowData.issueTypeName;
     editCategory.statusName = rowData.statusName;
+    var Id = rowData.brandCategoryMappingID;
 
-    this.setState({ editmodel: true, editCategory });
+    this.setState({ editmodel: true, editCategory, brandCatmapId: Id });
   };
 
   toggleEditModal() {
@@ -709,7 +803,7 @@ class CategoryMaster extends Component {
         }
       }, 1);
     } else {
-      this.setState({ showList1: true });
+      this.setState({ editshowList1: true });
     }
   };
   handleModalSubCatOnChange = value => {
@@ -724,7 +818,7 @@ class CategoryMaster extends Component {
         }
       }, 1);
     } else {
-      this.setState({ ShowSubCate: true });
+      this.setState({ editShowSubCate: true });
     }
   };
   handleModalIssueOnChange = value => {
@@ -734,7 +828,7 @@ class CategoryMaster extends Component {
       editCategory["issueTypeID"] = value;
       this.setState({ editCategory });
     } else {
-      this.setState({ ShowIssuetype: true });
+      this.setState({ editShowIssuetype: true });
     }
   };
   render() {
@@ -1478,7 +1572,7 @@ class CategoryMaster extends Component {
                     <label className="edit-label-1">Category</label>
                     <Select
                       showSearch={true}
-                      value={this.state.editCategory.categoryName}
+                      value={this.state.editCategory.categoryID}
                       style={{ width: "100%" }}
                       onChange={this.handleModalCategoryChange}
                     >
@@ -1494,7 +1588,7 @@ class CategoryMaster extends Component {
                     )}
 
                     <SweetAlert
-                      show={this.state.showList1}
+                      show={this.state.editshowList1}
                       style={{ width: "320px" }}
                       title="Add New Category"
                       text="Enter new Category"
@@ -1508,22 +1602,26 @@ class CategoryMaster extends Component {
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.setState({
-                            showList1: false,
+                            editshowList1: false,
                             list1Value: inputValue
                           });
-                          this.handleAddCategory(inputValue);
+                          this.handleAddCategory(inputValue, "edit");
                         } else {
                           this.setState({
-                            showList1: false,
+                            editshowList1: false,
                             list1Value: inputValue
                           });
                         }
                       }}
                       onCancel={() => {
-                        this.setState({ showList1: false });
+                        this.setState({ editshowList1: false });
                       }}
-                      onEscapeKey={() => this.setState({ showList1: false })}
-                      onOutsideClick={() => this.setState({ showList1: false })}
+                      onEscapeKey={() =>
+                        this.setState({ editshowList1: false })
+                      }
+                      onOutsideClick={() =>
+                        this.setState({ editshowList1: false })
+                      }
                     />
                   </div>
                 </div>
@@ -1534,7 +1632,7 @@ class CategoryMaster extends Component {
                     <label className="edit-label-1">Sub Category</label>
                     <Select
                       showSearch={true}
-                      value={this.state.editCategory.subCategoryName}
+                      value={this.state.editCategory.subCategoryID}
                       style={{ width: "100%" }}
                       onChange={this.handleModalSubCatOnChange}
                     >
@@ -1550,7 +1648,7 @@ class CategoryMaster extends Component {
                     )}
 
                     <SweetAlert
-                      show={this.state.ShowSubCate}
+                      show={this.state.editShowSubCate}
                       style={{ width: "320px" }}
                       title="Add New Sub Category"
                       text="Enter new Category"
@@ -1564,23 +1662,25 @@ class CategoryMaster extends Component {
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.setState({
-                            ShowSubCate: false,
+                            editShowSubCate: false,
                             ListOfSubCate: inputValue
                           });
-                          this.handleAddSubCategory(inputValue);
+                          this.handleAddSubCategory(inputValue, "edit");
                         } else {
                           this.setState({
-                            ShowSubCate: false,
+                            editShowSubCate: false,
                             ListOfSubCate: inputValue
                           });
                         }
                       }}
                       onCancel={() => {
-                        this.setState({ ShowSubCate: false });
+                        this.setState({ editShowSubCate: false });
                       }}
-                      onEscapeKey={() => this.setState({ ShowSubCate: false })}
+                      onEscapeKey={() =>
+                        this.setState({ editShowSubCate: false })
+                      }
                       onOutsideClick={() =>
-                        this.setState({ ShowSubCate: false })
+                        this.setState({ editShowSubCate: false })
                       }
                     />
                   </div>
@@ -1592,7 +1692,7 @@ class CategoryMaster extends Component {
                     <label className="edit-label-1">Issue Type</label>
                     <Select
                       showSearch={true}
-                      value={this.state.editCategory.issueTypeName}
+                      value={this.state.editCategory.issueTypeID}
                       style={{ width: "100%" }}
                       onChange={this.handleModalIssueOnChange}
                     >
@@ -1607,7 +1707,7 @@ class CategoryMaster extends Component {
                       </p>
                     )}
                     <SweetAlert
-                      show={this.state.ShowIssuetype}
+                      show={this.state.editShowIssuetype}
                       style={{ width: "320px" }}
                       title="Add New Issue type"
                       text="Enter new Issue Type"
@@ -1620,25 +1720,25 @@ class CategoryMaster extends Component {
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.setState({
-                            ShowIssuetype: false,
+                            editShowIssuetype: false,
                             ListOfIssue: inputValue
                           });
                           this.handleAddIssueType(inputValue);
                         } else {
                           this.setState({
-                            ShowIssuetype: false,
+                            editShowIssuetype: false,
                             ListOfIssue: inputValue
                           });
                         }
                       }}
                       onCancel={() => {
-                        this.setState({ ShowIssuetype: false });
+                        this.setState({ editShowIssuetype: false });
                       }}
                       onEscapeKey={() =>
-                        this.setState({ ShowIssuetype: false })
+                        this.setState({ editShowIssuetype: false })
                       }
                       onOutsideClick={() =>
-                        this.setState({ ShowIssuetype: false })
+                        this.setState({ editShowIssuetype: false })
                       }
                     />
                   </div>
@@ -1660,7 +1760,10 @@ class CategoryMaster extends Component {
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
                   CANCEL
                 </a>
-                <button className="pop-over-button FlNone pop-over-btnsave-text">
+                <button
+                  className="pop-over-button FlNone pop-over-btnsave-text"
+                  onClick={this.handleUpdateCategory.bind(this)}
+                >
                   SAVE
                 </button>
               </div>
