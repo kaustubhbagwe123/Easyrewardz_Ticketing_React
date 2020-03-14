@@ -1166,6 +1166,7 @@ table tr th:last-child {
   width: 13px;
   height: 13px;
   margin-top: -10px;
+  cursor: pointer;
 }
 .card-details {
   background-color: #fafafa;

@@ -1420,31 +1420,11 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    ////debugger;
+    debugger;
     // let self = this;
 
     var selectedRow = "";
 
-    // for (let i = 0; i < this.state.selectedDataRow.length; i++) {
-    //   var data = this.state.selectedDataRow.filter(
-    //     x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
-    //   );
-    //   if (data.length === 1) {
-    //     selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
-    //   } else if (data === 0) {
-    //   } else {
-    //     if (
-    //       "orderMasterID" in this.state.selectedDataRow[i] &&
-    //       "orderItemID" in this.state.selectedDataRow[i]
-    //     ) {
-    //       selectedRow +=
-    //         this.state.selectedDataRow[i]["orderItemID"] +
-    //         "|" +
-    //         this.state.selectedDataRow[i]["requireSize"] +
-    //         "|0,";
-    //     }
-    //   }
-    // }
     if (this.state.SelectedAllOrder.length > 1) {
       if (this.state.SelectedAllItem.length === 0) {
         for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
@@ -1549,50 +1529,8 @@ class MyTicket extends Component {
     this.setState({ selectedTicketActionType: e });
   };
 
-  // handleCheckOrderID(orderMasterID, rowData) {
-  //   ////debugger;
-  //   const newSelected = Object.assign({}, this.state.CheckOrderID);
-  //   newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
-  //   this.setState({
-  //     CheckOrderID: orderMasterID ? newSelected : false
-  //   });
-  //   var selectedRow = [];
-  //   if (this.state.selectedDataRow.length === 0) {
-  //     selectedRow.push(rowData);
-  //     this.setState({
-  //       selectedDataRow: rowData
-  //     });
-  //   } else {
-  //     if (newSelected[orderMasterID] === true) {
-  //       for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-  //         if (this.state.selectedDataRow[i] === rowData) {
-  //           selectedRow.splice(i, 1);
-
-  //           break;
-  //         } else {
-  //           selectedRow = this.state.selectedDataRow;
-  //           selectedRow.push(rowData);
-  //           break;
-  //         }
-  //       }
-  //     } else {
-  //       for (var j = 0; j < this.state.selectedDataRow.length; j++) {
-  //         if (this.state.selectedDataRow[j] === rowData) {
-  //           selectedRow = this.state.selectedDataRow;
-  //           selectedRow.splice(j, 1);
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   this.setState({
-  //     selectedDataRow: selectedRow
-  //   });
-  // }
-
   handleCheckStoreID(storeMasterID, rowData) {
-    ////debugger;
+    debugger;
 
     const newSelected = Object.assign({}, this.state.CheckStoreID);
     newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
@@ -4058,25 +3996,6 @@ class MyTicket extends Component {
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
-                                            {/* <input
-                                              type="checkbox"
-                                              id={
-                                                "i" + row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            /> */}
                                             <input
                                               type="checkbox"
                                               id={
@@ -4334,7 +4253,6 @@ class MyTicket extends Component {
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: row => {
-                                                  // ////debugger;
                                                   return (
                                                     <div>
                                                       <input
@@ -4414,32 +4332,6 @@ class MyTicket extends Component {
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
-                                            {/* <input
-                                              type="checkbox"
-                                              id={
-                                                "id" +
-                                                row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              // defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "id" +
-                                                row.original.orderMasterID
-                                              }
-                                            ></label> */}
                                             <input
                                               type="checkbox"
                                               id={
@@ -4543,30 +4435,6 @@ class MyTicket extends Component {
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
-                                            {/* <input
-                                              type="checkbox"
-                                              id={
-                                                "i" + row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.orderMasterID
-                                              }
-                                            ></label> */}
                                             <input
                                               type="checkbox"
                                               id={
@@ -4651,29 +4519,6 @@ class MyTicket extends Component {
                                                 width: 20,
                                                 Cell: row => (
                                                   <div className="filter-checkbox">
-                                                    {/* <input
-                                                      type="checkbox"
-                                                      id={
-                                                        "order" +
-                                                        row.original.orderItemID
-                                                      }
-                                                      style={{
-                                                        display: "none"
-                                                      }}
-                                                      name="ticket-order"
-                                                      checked={
-                                                        this.state.CheckOrderID[
-                                                          row.original
-                                                            .orderItemID
-                                                        ] === true
-                                                      }
-                                                      onChange={this.handleCheckOrderID.bind(
-                                                        this,
-                                                        row.original
-                                                          .orderItemID,
-                                                        row.original
-                                                      )}
-                                                    /> */}
                                                     <input
                                                       type="checkbox"
                                                       id={
@@ -5166,7 +5011,6 @@ class MyTicket extends Component {
                                   onChange={() =>
                                     this.showInformStoreFuncation()
                                   }
-
                                   // disabled={this.state.selectedStoreIDs.length === 0}
                                 />
                                 <label
@@ -5570,7 +5414,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                // ////debugger;
+                                //debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -5688,10 +5532,9 @@ class MyTicket extends Component {
                                             className="label-5"
                                             style={{ display: "inline-block" }}
                                           >
-                                            {
-                                              details.latestMessageDetails
-                                              .ticketMailBody.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, " ")
-                                            }
+                                            {details.latestMessageDetails.ticketMailBody
+                                              .replace(/<[^>]+>/g, "")
+                                              .replace(/&nbsp;/gi, " ")}
                                           </p>
                                         </div>
 
@@ -6049,7 +5892,6 @@ class MyTicket extends Component {
                               </div>
                             </div>
                             <div className="mob-float my-tic-mob-float">
-                              {/* <div className="line-1"></div> */}
                               <div
                                 style={{ cursor: "pointer" }}
                                 onClick={this.hanldeCommentClose2.bind(this)}
@@ -6282,205 +6124,6 @@ class MyTicket extends Component {
                         </div>
                       </div>
                     </Modal>
-                    {/* <div className="row" style={{ width: "100%" }}>
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                      <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                        <div className="commentcollapseTicket">
-                          <Collapse isOpen={this.state.CommentCollapse}>
-                            <Card>
-                              <CardBody>
-                                <div className="commenttextborder">
-                                  <div className="Commentlabel">
-                                    <label className="Commentlabel1">
-                                      Comment
-                                    </label>
-                                  </div>
-                                  <div>
-                                    <span className="comment-line"></span>
-                                    <div
-                                      style={{
-                                        float: "right",
-                                        cursor: "pointer",
-                                        height: "30px",
-                                        marginTop: "-33px"
-                                      }}
-                                    >
-                                      <img
-                                        src={MinusImg}
-                                        alt="Minus"
-                                        className="CommentMinus-img"
-                                        onClick={this.handleCommentCollapseOpen.bind(
-                                          this
-                                        )}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="commenttextmessage">
-                                    <textarea
-                                      cols="31"
-                                      rows="3"
-                                      className="ticketMSGCmt-textarea"
-                                      name="ticketcommentMSG"
-                                      maxLength={300}
-                                      value={this.state.ticketcommentMSG}
-                                      onChange={this.handleNoteOnChange}
-                                    ></textarea>
-                                  </div>
-                                  <div className="SendCommentBtn">
-                                    <button
-                                      className="SendCommentBtn1"
-                                      onClick={this.handleSendMessagaData.bind(
-                                        this
-                                      )}
-                                    >
-                                      SEND
-                                    </button>
-                                  </div>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </Collapse>
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div className="row new-top-bottom-margin">
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                        <img
-                          src={Loading1Img}
-                          alt="right"
-                          className="oval-loading"
-                        />
-                        <label className="rashmi-c">
-                          Rashmi.C
-                          <span>
-                            <label className="updated-2-d-ago">
-                              Reassign to
-                              <label className="lable-name">Naman.R</label>
-                            </label>
-                          </span>
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                        <label className="hi-naman-please-hel">
-                          Hi @Naman Please help customer with voucher Issue
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-2 mob-flex">
-                        <label
-                          className="comment-text"
-                          onClick={this.handleCommentCollapseOpen.bind(this)}
-                        >
-                          Comment
-                        </label>
-                      </div>
-                      <div className="row" style={{ width: "100%" }}>
-                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                        <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                          <div className="commentcollapseTicket">
-                            <Collapse isOpen={this.state.CommentCollapse}>
-                              <Card>
-                                <CardBody>
-                                  <div className="commenttextborder">
-                                    <div className="Commentlabel">
-                                      <label className="Commentlabel1">
-                                        Comment
-                                      </label>
-                                    </div>
-                                    <div>
-                                      <span className="comment-line"></span>
-                                      <div
-                                        style={{
-                                          float: "right",
-                                          cursor: "pointer",
-                                          height: "30px",
-                                          marginTop: "-33px"
-                                        }}
-                                      >
-                                        <img
-                                          src={MinusImg}
-                                          alt="Minus"
-                                          className="CommentMinus-img"
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="commenttextmessage">
-                                      <label style={{ marginBottom: "10px" }}>
-                                        Hello,
-                                      </label>
-                                      <label>
-                                        I saw a vintage table lamp on your site
-                                        last month and I'd bookmarked it to buy
-                                        it later for a friend. I can't seem to
-                                        find it anymore through.
-                                        <br></br>Is it out of stock or do you
-                                        not sell those anymore ?
-                                      </label>
-                                      <label
-                                        style={{
-                                          marginTop: "10px",
-                                          display: "block"
-                                        }}
-                                      >
-                                        Thanks
-                                      </label>
-                                      <label>Naman Rampal.</label>
-                                    </div>
-                                    <div className="SendCommentBtn">
-                                      <button
-                                        className="SendCommentBtn1"
-                                        onClick={this.handleCommentCollapseOpen2.bind(
-                                          this
-                                        )}
-                                      >
-                                        SEND
-                                      </button>
-                                    </div>
-                                  </div>
-                                </CardBody>
-                              </Card>
-                            </Collapse>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div>
-                      <div className="row row-spacing new-top-bottom-margin">
-                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                          <img
-                            src={BlackUserIcon}
-                            alt="Avatar"
-                            className="oval-6"
-                          />
-                          <label className="rashmi-c">
-                            {this.state.messageDetails.commentBy}
-                          </label>
-                          <img
-                            src={Headphone2Img}
-                            alt="headphone"
-                            className="headphone1"
-                          />
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                          <label className="need-to-change-my-sh">
-                            Need to change my shipping address
-                          </label>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-2">
-                          {this.state.messageDetails.isCustomerComment === 1 ? (
-                            <label
-                              className="reply-comment"
-                              onClick={this.hanldeCommentOpen2.bind(this)}
-                            >
-                              Reply
-                            </label>
-                          ) : null}
-                          <br />
-                          <label className="reply-comment">Comment</label>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
 
                   <div

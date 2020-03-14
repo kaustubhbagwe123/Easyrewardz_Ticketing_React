@@ -211,7 +211,9 @@ class TicketSystem extends Component {
     this.setState({ KbLink: true });
   }
   HandleKbLinkModalClose() {
-    this.setState({ KbLink: false });
+    this.setState({
+      KbLink: false
+    });
   }
   handleThumbModalOpen() {
     this.setState({ Plus: true });
@@ -428,8 +430,8 @@ class TicketSystem extends Component {
     })
       .then(function(res) {
         debugger;
-        let CkEditorTemplateData = res.data.responseData;
-        self.setState({ CkEditorTemplateData: CkEditorTemplateData });
+        let data = res.data.responseData;
+        self.setState({ CkEditorTemplateData: data });
       })
       .catch(data => {
         console.log(data);
@@ -532,7 +534,8 @@ class TicketSystem extends Component {
       params: {
         BrandID: brandId
       }
-    }).then(function(res) {
+    })
+      .then(function(res) {
         debugger;
         let data = res.data;
         self.setState({ CategoryData: data });
@@ -543,7 +546,6 @@ class TicketSystem extends Component {
   }
   handleGetSubCategoryList() {
     debugger;
-
     let self = this;
     self.setState({
       SubCategoryData: [],
@@ -560,13 +562,12 @@ class TicketSystem extends Component {
       headers: authHeader(),
       params: {
         CategoryID: cateId
-        // CategoryID: this.state.selectedCategory
       }
     })
       .then(function(res) {
         debugger;
-        let SubCategoryData = res.data.responseData;
-        self.setState({ SubCategoryData: SubCategoryData });
+        let data = res.data.responseData;
+        self.setState({ SubCategoryData: data });
       })
       .catch(data => {
         console.log(data);
@@ -747,7 +748,6 @@ class TicketSystem extends Component {
     }
     for (let i = 0; i < e.target.files.length; i++) {
       debugger;
-
       var objFile = new Object();
       var name = e.target.files[i].name;
       var value = e.target.value;
@@ -862,13 +862,13 @@ class TicketSystem extends Component {
         actionStatusId = 100;
       }
       var editoreData = this.state.editorTemplateDetails;
-      var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
-      var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
+      // var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
+      // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
       var mailData = [];
       mailData = this.state.mailData;
       this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
       this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
-      this.state.mailFiled["TicketMailBody"] = finalText;
+      this.state.mailFiled["TicketMailBody"] = this.state.editorTemplateDetails;
       this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
       this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
       mailData.push(this.state.mailFiled);
@@ -895,12 +895,11 @@ class TicketSystem extends Component {
         IsInstantEscalateToHighLevel: this.state.escalationLevel,
         IsWantToAttachOrder: this.state.customerAttachOrder,
         TicketTemplateID: this.state.selectTicketTemplateId,
-        TicketMailBody: finalText,
+        TicketMailBody: this.state.editorTemplateDetails,
         IsWantToVisitedStore: this.state.custVisit,
         IsAlreadyVisitedStore: this.state.AlreadycustVisit,
         TicketSourceID: 1,
         OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
-        // OrderItemID: this.state.idSizeArray.join(),
         StoreID: selectedStore.substring(",", selectedStore.length - 1),
         ticketingMailerQues: mailData
       };
@@ -1005,8 +1004,8 @@ class TicketSystem extends Component {
     this.setState({ selectedTicketActionType: ticketActionTypeValue });
   };
   setCategoryValue = e => {
-    let categoryValue = e.currentTarget.value;
-    this.setState({ selectedCategory: categoryValue });
+    let value = e.currentTarget.value;
+    this.setState({ selectedCategory: value });
     setTimeout(() => {
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
@@ -1021,8 +1020,8 @@ class TicketSystem extends Component {
     }, 1);
   };
   setCategoryValueKB = e => {
-    let categoryValue = e.currentTarget.value;
-    this.setState({ selectedCategoryKB: categoryValue });
+    let value = e.currentTarget.value;
+    this.setState({ selectedCategoryKB: value });
     setTimeout(() => {
       if (this.state.selectedCategoryKB) {
         this.handleGetSubCategoryList();
@@ -1588,7 +1587,12 @@ class TicketSystem extends Component {
                     </div>
 
                     {this.state.selectedBrand === "" ? (
-                      <label className="kblink1" title="Please select brand for KB Link">Please select Brand</label>
+                      <label
+                        className="kblink1"
+                        title="Please select brand for KB Link"
+                      >
+                        Please select Brand
+                      </label>
                     ) : (
                       <a href="#!" className="kblink1">
                         <img
