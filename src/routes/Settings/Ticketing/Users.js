@@ -492,99 +492,145 @@ class Users extends Component {
 
   handleBrandChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedBrand: e });
-    setTimeout(() => {
-      if (this.state.selectedBrand) {
-        this.handleGetCategoryList(data);
-      }
-    }, 1);
+    if (e === null) {
+      e = [];
+      this.setState({ selectedBrand: e,
+        CategoryData:[] });
+      
+    }else{
+      this.setState({ selectedBrand: e });
+      setTimeout(() => {
+        if (this.state.selectedBrand ) {
+          this.handleGetCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleEditBrandChange = (data, e) => {
     debugger;
-    if (e !== null) {
-      this.setState({ editBrand: e });
-    } else {
-      this.setState({
-        editBrand: [],
-        editCategory: [],
-        editSubCategory: [],
-        editIssuetype: []
-      });
-    }
-
-    setTimeout(() => {
-      if (this.state.editBrand) {
-        this.setState({ editCategory: [] });
-        this.handleGetCategoryList(data);
+    if (e === null) {
+      e = [];
+      this.setState({ editBrand: e,
+        CategoryData:[]
+       });
+    }else{
+      if (e !== null) {
+        this.setState({ editBrand: e });
+      } else {
+        this.setState({
+          editBrand: [],
+          editCategory: [],
+          editSubCategory: [],
+          editIssuetype: []
+        });
       }
-    }, 1);
+  
+      setTimeout(() => {
+        if (this.state.editBrand) {
+          this.setState({ editCategory: [] });
+          this.handleGetCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleCategoryChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedCategory: e });
-    setTimeout(() => {
-      if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList(data);
-      }
-    }, 1);
+    if (e === null) {
+      e = [];
+      this.setState({ selectedCategory: e,
+      SubCategoryData:[] });
+    }else{
+      this.setState({ selectedCategory: e });
+      setTimeout(() => {
+        if (this.state.selectedCategory) {
+          this.handleGetSubCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleEditCategoryChange = (data, e) => {
     debugger;
-    if (e !== null) {
-      this.setState({ editCategory: e });
-    } else {
-      this.setState({
-        editCategory: [],
-        editSubCategory: [],
-        editIssuetype: []
-      });
-    }
-
-    setTimeout(() => {
-      if (this.state.editCategory) {
-        this.setState({ editSubCategory: [] });
-        this.handleGetSubCategoryList(data);
+    if (e === null) {
+      e = [];
+      this.setState({ editCategory: e ,
+      SubCategoryData:[]});
+    }else{
+      if (e !== null) {
+        this.setState({ editCategory: e });
+      } else {
+        this.setState({
+          editCategory: [],
+          editSubCategory: [],
+          editIssuetype: []
+        });
       }
-    }, 1);
+  
+      setTimeout(() => {
+        if (this.state.editCategory) {
+          this.setState({ editSubCategory: [] });
+          this.handleGetSubCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleSubCategoryChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedSubCategory: e });
-    setTimeout(() => {
-      if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList(data);
-      }
-    }, 1);
-  };
-  handleEditSubCategoryChange = (data, e) => {
-    debugger;
-    if (this.state.editCategory !== null) {
-      if (e !== null) {
-        this.setState({ editSubCategory: e });
-      } else {
-        this.setState({ editSubCategory: [], editIssuetype: [] });
-      }
-
+    if (e === null) {
+      e = [];
+      this.setState({ selectedSubCategory: e,
+      IssueTypeData:[] });
+    }else{
+      this.setState({ selectedSubCategory: e });
       setTimeout(() => {
-        if (this.state.editSubCategory) {
-          this.setState({ editIssuetype: [] });
+        if (this.state.selectedSubCategory) {
           this.handleGetIssueTypeList(data);
         }
       }, 1);
-    } else {
-      this.setState({ editSubCategory: [] });
     }
+   
+  };
+  handleEditSubCategoryChange = (data, e) => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ editSubCategory: e,
+      IssueTypeData:[] });
+    }else{
+      if (this.state.editCategory !== null) {
+        if (e !== null) {
+          this.setState({ editSubCategory: e });
+        } else {
+          this.setState({ editSubCategory: [], editIssuetype: [] });
+        }
+  
+        setTimeout(() => {
+          if (this.state.editSubCategory) {
+            this.setState({ editIssuetype: [] });
+            this.handleGetIssueTypeList(data);
+          }
+        }, 1);
+      } else {
+        this.setState({ editSubCategory: [] });
+      }
+    }
+    
   };
   handleIssueTypeChange = e => {
     debugger;
-
+    if (e === null) {
+      e = [];
+    }
     this.setState({ selectedIssueType: e });
   };
   handleEditIssueTypeChange = e => {
     debugger;
+    if (e === null) {
+      e = [];
+    }
     if (e !== null) {
       this.setState({ editIssuetype: e });
     } else {
@@ -1186,19 +1232,31 @@ class Users extends Component {
 
   handleAddMapCategory() {
     debugger;
-    // var radiob=false;
-    // var agentb=false;
-    // if(this.state.selectedCopyEscalation === true){
-    //     if(this.state.selectedSupervisorRadio=== true || this.state.selectedAgentRadio===true){
-    //       radiob=true;
-    //     }
-    // }
+    var radiob=true;
+    var agentb=true;
+    if(this.state.selectedAssignEscalation === true){
+        if(this.state.selectedSupervisorRadio !== true && this.state.selectedAgentRadio !==true){
+          radiob=false;
+        }else{
+          radiob=true;
+        }
+       
+    }
+    if(this.state.selectedAgentRadio === true){
+      if(this.state.selectedAgent === 0 || this.state.selectedAgent==="Select Agent"){
+       agentb=false;
+      }else{
+       agentb=true;
+      }
+     }
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedCategory !== null &&
       this.state.selectedSubCategory !== null &&
       this.state.selectedIssueType !== null &&
-      this.state.selectedCRMRoles > 0 
+      this.state.selectedCRMRoles > 0 &&
+      radiob===true &&
+      agentb===true
       
       // this.state.selectedCopyEscalation === true &&
       // this.state.selectedAssignEscalation === true &&
@@ -1333,7 +1391,8 @@ class Users extends Component {
         crmroleCompulsion: "Please select  crm roles",
         // copyescCompulsion: "Please select copy escalation",
         // assignescCompulsion: "Please select assign escalation",
-        //agentCompulsion: "Please select agent"
+        RadioCompulsion:"Please select any option.",
+        agentCompulsion: "Please select agent"
       });
     }
   }
@@ -1389,6 +1448,25 @@ class Users extends Component {
   }
   handleUpdateUser() {
     debugger;
+
+    var radiob=true;
+    var agentb=true;
+    if(this.state.userEditData.is_Assign_Escalation === true){
+        if(this.state.editSupervisorRadio !== true && this.state.editAgentRadio !==true){
+          radiob=false;
+        }else{
+          radiob=true;
+        }
+       
+    }
+    if(this.state.editAgentRadio === true){
+      if(this.state.userEditData.assign_ID === 0 || this.state.userEditData.assign_ID==="Select Agent"){
+       agentb=false;
+      }else{
+       agentb=true;
+      }
+     }
+
     if (
       this.state.userEditData.selectUserName.length > 0 &&
       this.state.userEditData.first_Name.length > 0 &&
@@ -1402,7 +1480,9 @@ class Users extends Component {
       this.state.editCategory !== null &&
       this.state.editSubCategory !== null &&
       this.state.editIssuetype !== null &&
-      this.state.userEditData.role_ID > 0 
+      this.state.userEditData.role_ID > 0 &&
+       radiob===true &&
+     agentb===true
       // this.state.userEditData.is_Copy_Escalation === true &&
       // this.state.userEditData.is_Assign_Escalation === true &&
       //this.state.userEditData.assign_ID > 0
@@ -1551,9 +1631,10 @@ class Users extends Component {
         editsubcategoryCompulsion: "Please select subcategory",
         editisuuetypeCompulsion: "Please select issuetype",
         editcrmroleCompulsion: "Please select  crm roles",
+        editRadioCompulsion:"Please select any option.",
         // editcopyescCompulsion: "Please select copy escalation",
         // editassignescCompulsion: "Please select assign escalation",
-        //editagentCompulsion: "Please select agent"
+        editagentCompulsion: "Please select agent"
       });
     }
   }
@@ -2818,6 +2899,7 @@ class Users extends Component {
                             </p>
                           )}
                           {this.state.selectedAssignEscalation === true ? (
+                            <>
                             <div className="sup-agent-cntr">
                               <div className="status-options">
                                 <input
@@ -2830,6 +2912,7 @@ class Users extends Component {
                                     "add"
                                   )}
                                 />
+                               
                                 <label
                                   htmlFor="supervisor"
                                   className="logout-label"
@@ -2853,8 +2936,19 @@ class Users extends Component {
                                 </label>
                               </div>
                             </div>
+
+                            {/* {this.state.selectedSupervisorRadio===false && this.state.selectedAgentRadio ===false (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.RadioCompulsion}
+                              </p>
+                            )}
+                             */}
+                            </>
+                            
                           ) : null}
+                         
                         </div>
+                        
                         {this.state.selectedAgentRadio === true && this.state.selectedAssignEscalation === true ? (
 
 <div className="div-cntr">
