@@ -58,6 +58,7 @@ class CreateSLA extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
+      issueColor:"",
       issueTypeName: "",
       brandName: "",
       categoryName: "",
@@ -122,11 +123,17 @@ class CreateSLA extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      issueColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "issueTpeName") {
       this.state.sla = this.state.sortAllData;
       itemsArray = this.state.sla.filter(a => a.issueTpeName === data);
+      this.setState({
+        issueColor:"sort-column"
+      });
     }
 
     this.setState({
@@ -834,7 +841,7 @@ class CreateSLA extends Component {
                     columns={[
                       {
                         Header: (
-                          <span
+                          <span className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "issueTpeName"

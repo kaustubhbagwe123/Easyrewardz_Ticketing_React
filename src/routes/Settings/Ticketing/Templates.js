@@ -59,7 +59,8 @@ class Templates extends Component {
       editmodel: false,
       isEdit: false,
       isLoading: false,
-      editSaveLoading:false
+      editSaveLoading:false,
+      issueColor:""
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -176,11 +177,17 @@ class Templates extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      issueColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-    } else if (column === "issueType") {
+    } else if (column === "issueTypeName") {
       this.state.template = this.state.sortAllData;
-      itemsArray = this.state.template.filter(a => a.issueType === data);
+      itemsArray = this.state.template.filter(a => a.issueTypeName === data);
+      this.setState({
+        issueColor:"sort-column"
+      });
     }
 
     this.setState({
@@ -406,13 +413,13 @@ class Templates extends Component {
           var unique = [];
           var distinct = [];
           for (let i = 0; i < template.length; i++) {
-            if (!unique[template[i].issueType]) {
-              distinct.push(template[i].issueType);
-              unique[template[i].issueType] = 1;
+            if (!unique[template[i].issueTypeName]) {
+              distinct.push(template[i].issueTypeName);
+              unique[template[i].issueTypeName] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortIssueType.push({ issueType: distinct[i] });
+            self.state.sortIssueType.push({ issueTypeName: distinct[i] });
           }
         }
         if (template !== null && template !== undefined) {
@@ -467,7 +474,7 @@ class Templates extends Component {
       },
       {
         Header: (
-          <span onClick={this.StatusOpenModel.bind(this, "issueType")}>
+          <span  className={this.state.issueColor} onClick={this.StatusOpenModel.bind(this, "issueTypeName")}>
             Issue Type
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -684,23 +691,23 @@ class Templates extends Component {
                     <span className="table-btn table-blue-btn">ALL</span>
                   </label>
                 </div>
-                {this.state.sortColumn === "issueType"
+                {this.state.sortColumn === "issueTypeName"
                   ? this.state.sortIssueType !== null &&
                     this.state.sortIssueType.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
                           name="filter-type"
-                          id={"fil-open" + item.issueType}
-                          value={item.issueType}
+                          id={"fil-open" + item.issueTypeName}
+                          value={item.issueTypeName}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "issueType"
+                            "issueTypeName"
                           )}
                         />
-                        <label htmlFor={"fil-open" + item.issueType}>
+                        <label htmlFor={"fil-open" + item.issueTypeName}>
                           <span className="table-btn table-blue-btn">
-                            {item.issueType}
+                            {item.issueTypeName}
                           </span>
                         </label>
                       </div>
