@@ -86,8 +86,10 @@ class StoreMaster extends Component {
       modalSelectedBrand: [],
       editSaveLoading: false,
       emailFlag: true,
+      EditEmailFlag: true,
       pinCodeFlag: true,
       phoneFlag: true,
+      EditPhoneFlag: true,
       editBrandValidation: "",
       editStoreCodeValidation: "",
       editStoreNameValidation: "",
@@ -399,9 +401,9 @@ class StoreMaster extends Component {
       this.state.selectState > 0 &&
       this.state.selectCity > 0 &&
       this.state.selectStatus !== "" &&
-      this.state.emailFlag == true &&
-      this.state.phoneFlag == true &&
-      this.state.pinCodeFlag == true
+      this.state.emailFlag === true &&
+      this.state.phoneFlag === true &&
+      this.state.pinCodeFlag === true
     ) {
       let self = this;
       var activeStatus = 0;
@@ -500,7 +502,18 @@ class StoreMaster extends Component {
       this.state.modalSelectedBrand !== null &&
       this.state.userEditData.store_Code.length > 0 &&
       this.state.userEditData.store_Name.length > 0 &&
-      this.state.userEditData.state_ID > 0
+      this.state.userEditData.state_ID === "0" &&
+      this.state.userEditData.city_ID === "0" &&
+      this.state.userEditData.strPin_Code.length > 0 &&
+      this.state.userEditData.status_ID === "0" &&
+      this.state.userEditData.region_ID === "0" &&
+      this.state.userEditData.zone_ID === "0" &&
+      this.state.userEditData.storeType_ID === "0" &&
+      this.state.userEditData.email_.length > 0 &&
+      this.state.EditEmailFlag === true &&
+      this.state.EditPhoneFlag === true &&
+      this.state.userEditData.phoneNumber_.length > 0 &&
+      this.state.userEditData.address_.length > 0
     ) {
       let self = this;
       var activeStatus = 0;
@@ -562,7 +575,16 @@ class StoreMaster extends Component {
               editBrandValidation: "",
               editStoreCodeValidation: "",
               editStoreNameValidation: "",
-              editStateValidation: ""
+              editStateValidation: "",
+              editCityValidation: "",
+              editPinCodeValidation: "",
+              editStoreAddressValidation: "",
+              editRegionValidation: "",
+              editZoneValidation: "",
+              editStoreTypeValidation: "",
+              editContactEmailValidation: "",
+              editContactPhoneValidation: "",
+              editStatusValidation: ""
             });
           }
         })
@@ -574,7 +596,16 @@ class StoreMaster extends Component {
         editBrandValidation: "Please Select Brand.",
         editStoreCodeValidation: "Please Enter Store Code.",
         editStoreNameValidation: "Please Enter Store Name",
-        editStateValidation: "Please Select State."
+        editStateValidation: "Please Select State.",
+        editCityValidation: "Please Select City.",
+        editPinCodeValidation: "Please Enter Pin Code.",
+        editStoreAddressValidation: "Please Enter Store Address.",
+        editRegionValidation: "Please Select Region.",
+        editZoneValidation: "Please Select Zone.",
+        editStoreTypeValidation: "Please Select Store Type.",
+        editContactEmailValidation: "Please Enter EmailID.",
+        editContactPhoneValidation: "Please Enter Phone Number.",
+        editStatusValidation: "Please Select Status."
       });
     }
   }
@@ -785,6 +816,36 @@ class StoreMaster extends Component {
 
     if ((name = "state_ID")) {
       this.handleGetCityList(value);
+    }
+    // Email validation
+    if (name === "email_") {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (e.target.value == "") {
+        this.setState({
+          EditEmailFlag: true
+        });
+      } else if (reg.test(e.target.value) == false) {
+        this.setState({
+          EditEmailFlag: false
+        });
+      } else {
+        this.setState({
+          EditEmailFlag: true
+        });
+      }
+    }
+
+    if (name === "phoneNumber_") {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          EditPhoneFlag: true
+        });
+      } else {
+        this.setState({
+          EditPhoneFlag: false
+        });
+      }
     }
   };
 
@@ -1692,7 +1753,7 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.state_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option>select</option>
+                      <option value={0}>Select</option>
                       {this.state.stateData !== null &&
                         this.state.stateData.map((item, i) => (
                           <option
@@ -1704,7 +1765,7 @@ class StoreMaster extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.userEditData.state_ID === 0 && (
+                    {this.state.userEditData.state_ID === "0" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editStateValidation}
                       </p>
@@ -1721,7 +1782,7 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.city_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option>select</option>
+                      <option value={0}>Select</option>
                       {this.state.cityData !== null &&
                         this.state.cityData.map((item, i) => (
                           <option
@@ -1733,6 +1794,11 @@ class StoreMaster extends Component {
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.city_ID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editCityValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1747,6 +1813,11 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.strPin_Code}
                       onChange={this.handleModalEditData}
                     />
+                    {this.state.userEditData.strPin_Code === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editPinCodeValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1762,9 +1833,15 @@ class StoreMaster extends Component {
                       }
                       onChange={this.handleModalEditData}
                     >
+                      <option value={0}>Select</option>
                       <option value="Active">Active</option>
                       <option value="Inactive">Inactive</option>
                     </select>
+                    {this.state.userEditData.status_ID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStatusValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1776,7 +1853,7 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.region_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option>Select</option>
+                      <option value={0}>Select</option>
                       {this.state.regionData !== null &&
                         this.state.regionData.map((item, s) => (
                           <option key={s} value={item.regionID}>
@@ -1784,6 +1861,11 @@ class StoreMaster extends Component {
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.region_ID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editRegionValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1795,7 +1877,7 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.zone_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option>Select</option>
+                      <option value={0}>Select</option>
                       {this.state.zoneData !== null &&
                         this.state.zoneData.map((item, s) => (
                           <option key={s} value={item.zoneID}>
@@ -1803,6 +1885,11 @@ class StoreMaster extends Component {
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.zone_ID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editZoneValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1814,7 +1901,7 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.storeType_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option>Select</option>
+                      <option value={0}>Select</option>
                       {this.state.storeTypeData !== null &&
                         this.state.storeTypeData.map((item, t) => (
                           <option key={t} value={item.storeTypeID}>
@@ -1822,6 +1909,11 @@ class StoreMaster extends Component {
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.storeType_ID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStoreTypeValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1838,6 +1930,16 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.email_}
                       onChange={this.handleModalEditData}
                     />
+                    {this.state.EditEmailFlag === false && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        Please enter valid Email Id.
+                      </p>
+                    )}
+                    {this.state.userEditData.email_ === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editContactEmailValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1854,6 +1956,16 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.phoneNumber_}
                       onChange={this.handleModalEditData}
                     />
+                    {this.state.EditPhoneFlag === false && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        Please enter valid Phone Number.
+                      </p>
+                    )}
+                    {this.state.userEditData.phoneNumber_ === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editContactPhoneValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -1869,6 +1981,11 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.address_}
                       onChange={this.handleModalEditData}
                     ></textarea>
+                    {this.state.userEditData.address_ === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStoreAddressValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="col-md-12">
