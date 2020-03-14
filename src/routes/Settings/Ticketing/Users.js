@@ -1563,10 +1563,10 @@ class Users extends Component {
       this.state.userEditData.designation_ID > 0 &&
       this.state.userEditData.reporteeDesignation_ID > 0 &&
       this.state.userEditData.reportee_ID > 0 &&
-      this.state.editBrand !== null &&
-      this.state.editCategory !== null &&
-      this.state.editSubCategory !== null &&
-      this.state.editIssuetype !== null &&
+      (this.state.editBrand !== null && this.state.editBrand.length > 0) &&
+      (this.state.editCategory !== null && this.state.editCategory.length>0) &&
+      (this.state.editSubCategory !== null && this.state.editSubCategory.length > 0) &&
+      (this.state.editIssuetype !== null && this.state.editIssuetype.length > 0) &&
       this.state.userEditData.role_ID > 0 &&
        radiob===true &&
      agentb===true
