@@ -58,9 +58,7 @@ class CreateSLA extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
-<<<<<<< HEAD
-      issueColor:""
-=======
+      issueColor:"",
       issueTypeName: "",
       brandName: "",
       categoryName: "",
@@ -68,7 +66,6 @@ class CreateSLA extends Component {
       SLAId: 0,
       editmodel: false,
       editSaveLoading: false
->>>>>>> 8768328ad4c899149cb71510162784d0ec3a43bc
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);

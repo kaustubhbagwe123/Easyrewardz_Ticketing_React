@@ -72,14 +72,11 @@ class CategoryMaster extends Component {
       sortIssueType: [],
       editmodel: false,
       editCategory: {},
-<<<<<<< HEAD
       brandColor:"",
       categoryColor:"",
       subCategoryColor:"",
-      issueColor:""
-=======
+      issueColor:"",
       brandCatmapId: 0
->>>>>>> 8768328ad4c899149cb71510162784d0ec3a43bc
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
