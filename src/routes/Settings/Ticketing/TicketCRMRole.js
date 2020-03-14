@@ -270,6 +270,11 @@ class TicketCRMRole extends Component {
              
              
             }
+          }else if(status === "Record Already Exists "){
+            if(e === "add") {
+              NotificationManager.error("Record Already Exists ");
+            }
+            
           } else {
             if (e === "add") {
               NotificationManager.error("CRM Role not added.");

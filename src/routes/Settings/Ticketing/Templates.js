@@ -246,15 +246,22 @@ class Templates extends Component {
   };
   setIssueType = e => {
     debugger;
-    if (e !== null) {
-      var selectedIssueTypeCommaSeperated = Array.prototype.map
-        .call(e, s => s.issueTypeID)
-        .toString();
+    if (e === null) {
+      e = [];
+      this.setState({ selectedSlaIssueType: e,
+     });
+    }else{
+      if (e !== null) {
+        var selectedIssueTypeCommaSeperated = Array.prototype.map
+          .call(e, s => s.issueTypeID)
+          .toString();
+      }
+      this.setState({
+        selectedSlaIssueType: e,
+        selectedIssueTypeCommaSeperated
+      });
     }
-    this.setState({
-      selectedSlaIssueType: e,
-      selectedIssueTypeCommaSeperated
-    });
+   
   };
 
   setEditIssueType = e => {
@@ -892,7 +899,7 @@ class Templates extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Template Subject"
-                            maxLength={25}
+                            
                             onChange={this.handleTemplateSubject}
                             value={this.state.TemplateSubject}
                           />
