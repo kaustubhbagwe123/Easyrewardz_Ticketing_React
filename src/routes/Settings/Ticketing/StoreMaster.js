@@ -412,7 +412,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
-        NotificationManager.success("Store deleted successfully.");
+        NotificationManager.success("Store deleted successfully.", '', 1000);
       }
     });
   }
@@ -474,7 +474,7 @@ class StoreMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
-          NotificationManager.success("Store added successfully.");
+          NotificationManager.success("Store added successfully.", '', 1000);
           self.setState({
             store_code: "",
             store_name: "",
@@ -505,7 +505,7 @@ class StoreMaster extends Component {
             cityData: []
           });
         } else {
-          NotificationManager.error("Store Not added.");
+          NotificationManager.error("Store Not added.", '', 1000);
         }
       });
     } else {
@@ -587,7 +587,7 @@ class StoreMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetStoreMasterData();
-            NotificationManager.success("Store updated successfully.");
+            NotificationManager.success("Store updated successfully.", '', 1000);
 
             self.setState({
               editSaveLoading: false,

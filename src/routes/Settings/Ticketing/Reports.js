@@ -273,7 +273,7 @@ class Reports extends Component {
   ScheduleOpenModel = () => {
     debugger;
     if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please enter report name");
+      NotificationManager.error("Please enter report name", '', 1000);
     } else {
       if (this.state.selectedTeamMemberCommaSeperated) {
         var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
@@ -1452,7 +1452,7 @@ class Reports extends Component {
     })
       .then(function(res) {
         debugger;
-        NotificationManager.success("Email has been sent");
+        NotificationManager.success("Email has been sent", '', 1000);
         self.setState({
           loadingDownload: false
         });
@@ -1868,7 +1868,7 @@ class Reports extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Deleted successfully.");
+          NotificationManager.success("Record Deleted successfully.", '', 1000);
           self.handleReportList();
         }
       })
@@ -1985,7 +1985,7 @@ class Reports extends Component {
 
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (self.state.selectedReportName == "") {
-      NotificationManager.error("Please enter report name");
+      NotificationManager.error("Please enter report name", '', 1000);
       return;
     }
     self = this;
@@ -2006,7 +2006,7 @@ class Reports extends Component {
           self.handleReportList();
           self.handleNextPopupClose();
           NotificationManager.success(
-            "Report saved successfully for download."
+            "Report saved successfully for download.", '', 1000
           );
         })
         .catch(data => {
@@ -2063,7 +2063,7 @@ class Reports extends Component {
             // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
-            NotificationManager.success("Report saved successfully.");
+            NotificationManager.success("Report saved successfully.", '', 1000);
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
@@ -2079,7 +2079,7 @@ class Reports extends Component {
             });
           } else if (status == "duplicate") {
             self.setState({ Schedule_ID: 0 });
-            NotificationManager.error("Report name already exist.");
+            NotificationManager.error("Report name already exist.", '', 1000);
           }
         })
         .catch(data => {
@@ -2110,20 +2110,20 @@ class Reports extends Component {
 
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please add report name.");
+      NotificationManager.error("Please add report name.", '', 1000);
       return;
     }
     debugger;
     if (this.state.selectedTeamMemberCommaSeperated == undefined) {
-      NotificationManager.error("Please add team name for schedule.");
+      NotificationManager.error("Please add team name for schedule.", '', 1000);
       return;
     }
     if (this.state.selectScheduleDate == "") {
-      NotificationManager.error("Please select schedule type.");
+      NotificationManager.error("Please select schedule type.", '', 1000);
       return;
     }
     if (this.state.selectedScheduleTime == "") {
-      NotificationManager.error("Please select schedule time.");
+      NotificationManager.error("Please select schedule time.", '', 1000);
       return;
     }
     if (SearchParams != "") {
@@ -2179,7 +2179,7 @@ class Reports extends Component {
             // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
-            NotificationManager.success("Scheduler created successfully.");
+            NotificationManager.success("Scheduler created successfully.", '', 1000);
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
@@ -2195,14 +2195,14 @@ class Reports extends Component {
             });
           } else if (status == "duplicate") {
             self.setState({ Schedule_ID: 0 });
-            NotificationManager.error("Report name already exist.");
+            NotificationManager.error("Report name already exist.", '', 1000);
           }
         })
         .catch(data => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please add report for create scheduler.");
+      NotificationManager.error("Please add report for create scheduler.", '', 1000);
     }
   }
 

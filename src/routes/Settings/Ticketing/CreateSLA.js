@@ -607,7 +607,7 @@ class CreateSLA extends Component {
           NotificationManager.success("SLA deleted successfully.", "", 2000);
           self.handleGetSLA();
         } else {
-          NotificationManager.error("SLA not deleted.");
+          NotificationManager.error("SLA not deleted.", '', 1000);
         }
       })
       .catch(data => {
@@ -728,16 +728,16 @@ class CreateSLA extends Component {
           var statusCode = res.data.statusCode;
           if (message === "Success" && statusCode === 200) {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Updated Successfully");
+            NotificationManager.success("SLA Updated Successfully", '', 1000);
             self.handleGetSLA();
           } else {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Not Updated");
+            NotificationManager.success("SLA Not Updated", '', 1000);
           }
         })
         .catch(response => {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Not Updated");
+          NotificationManager.success("SLA Not Updated", '', 1000);
           console.log(response);
         });
     } else {
