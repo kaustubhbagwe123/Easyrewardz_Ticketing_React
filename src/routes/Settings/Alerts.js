@@ -256,6 +256,7 @@ class Alerts extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/GetAlertList",
+      params:{alertId:0},
       headers: authHeader()
     })
       .then(function(res) {
@@ -303,7 +304,74 @@ class Alerts extends Component {
       } else if (this.state.updateAlertisActive === "Inactive") {
         AlertisActive = false;
       }
-      this.setState({ editSaveLoading: true });
+      this.setState({
+        editSaveLoading: true
+      });
+
+      var CommunicationModeDetails = [];
+
+      var emailCustomer = {
+        Communication_Mode: 240,
+        CommunicationFor: 250,
+        Content: this.state.selectedCKCustomer,
+        Subject: this.state.selectedSubjectCustomer
+      };
+      var emailInternal = {
+        Communication_Mode: 240,
+        CommunicationFor: 251,
+        Content: this.state.selectedCKInternal,
+        Subject: this.state.selectedSubjectInternal
+      };
+      var emailStore = {
+        Communication_Mode: 240,
+        CommunicationFor: 252,
+        Content: this.state.selectedCKStore,
+        Subject: this.state.selectedSubjectStore
+      };
+      var sms = {
+        Communication_Mode: 241,
+        CommunicationFor: 250,
+        Content: this.state.selectedSMSContent
+      };
+      var notification = {
+        Communication_Mode: 242,
+        CommunicationFor: 251,
+        Content: this.state.selectedNotifContent
+      };
+      if (this.state.emailCust) {
+        CommunicationModeDetails.push(emailCustomer); //// for Email For Customer
+      } else {
+        return false;
+      }
+      if (
+        this.state.emailInt &&
+        this.state.selectedCKInternal &&
+        this.state.selectedSubjectInternal
+      ) {
+        CommunicationModeDetails.push(emailInternal); //// for Email for Internal
+      } else {
+        return false;
+      }
+      if (
+        this.state.emailStore &&
+        this.state.selectedCKStore &&
+        this.state.selectedSubjectStore
+      ) {
+        CommunicationModeDetails.push(emailStore); //// for Email for Store
+      } else {
+        return false;
+      }
+      if (this.state.smsCust && this.state.selectedSMSContent !== "") {
+        CommunicationModeDetails.push(sms); /// for SMS
+      } else {
+        return false;
+      }
+      if (this.state.notiInt && this.state.selectedNotifContent !== "") {
+        CommunicationModeDetails.push(notification); ////for Notification
+      } else {
+        return false;
+      }
+
       let self = this;
       axios({
         method: "post",
@@ -312,7 +380,8 @@ class Alerts extends Component {
         params: {
           AlertID: this.state.alertEdit.selectedAlertType,
           AlertTypeName: this.state.alertEdit.updateAlertTypeName,
-          isAlertActive: AlertisActive
+          isAlertActive: AlertisActive,
+          CommunicationModeDetails: CommunicationModeDetails
         }
       })
         .then(res => {
@@ -321,14 +390,23 @@ class Alerts extends Component {
           if (status === "Success") {
             NotificationManager.success("Alert updated successfully.");
             self.handleGetAlert();
-            self.setState({ AddAlertTabsPopup: false, editSaveLoading: false });
+            self.setState({
+              AddAlertTabsPopup: false,
+              editSaveLoading: false
+            });
           } else {
-            self.setState({ editSaveLoading: false, AddAlertTabsPopup: false });
+            self.setState({
+              editSaveLoading: false,
+              AddAlertTabsPopup: false
+            });
             NotificationManager.error("Alert not updated.");
           }
         })
         .catch(data => {
-          self.setState({ editSaveLoading: false, AddAlertTabsPopup: false });
+          self.setState({
+            editSaveLoading: false,
+            AddAlertTabsPopup: false
+          });
           console.log(data);
         });
     } else {
@@ -345,17 +423,40 @@ class Alerts extends Component {
     alertEdit.selectedAlertType = individualData.alertID;
     alertEdit.updateAlertTypeName = individualData.alertTypeName;
     alertEdit.alertIsActive = individualData.isAlertActive;
-    var selectedSubjectCustomer = individualData.subject;
-    var selectedCKCustomer = individualData.mailContent;
+
     var emailCust = individualData.isEmailCustomer;
     var emailInt = individualData.isEmailInternal;
     var emailStore = individualData.isEmailStore;
     var smsCust = individualData.isSMSCustomer;
     var notiInt = individualData.isNotificationInternal;
 
+    
+    if (emailCust) {
+      var selectedSubjectCustomer = individualData.subject;
+    var selectedCKCustomer = individualData.mailContent;
+      var selectedSMSContent = individualData.mailContent;
+      this.setState({ selectedSMSContent });
+    }
+
+    if (emailStore) {
+      var selectedSMSContent = individualData.mailContent;
+      this.setState({ selectedSMSContent });
+    }
+
+    if (emailCust) {
+      var selectedSMSContent = individualData.mailContent;
+      this.setState({ selectedSMSContent });
+    }
+    if (smsCust) {
+      var selectedSMSContent = individualData.mailContent;
+      this.setState({ selectedSMSContent });
+    }
+    if (notiInt) {
+      var selectedNotifContent = individualData.mailContent;
+      this.setState({ selectedNotifContent });
+    }
+
     this.setState({
-      selectedSubjectCustomer,
-      selectedCKCustomer,
       emailCust,
       emailInt,
       emailStore,
@@ -668,7 +769,7 @@ class Alerts extends Component {
                         Cell: row => {
                           return (
                             <div>
-                              {row.original.modeOfCommunication.isByEmail ===
+                              {row.original.isByEmail ===
                                 true && (
                                 <img
                                   src={LetterBox}
@@ -676,7 +777,7 @@ class Alerts extends Component {
                                   className="alert-tableImge"
                                 />
                               )}
-                              {row.original.modeOfCommunication.isBySMS ===
+                              {row.original.isBySMS ===
                                 true && (
                                 <img
                                   src={SmsImg}
@@ -684,8 +785,7 @@ class Alerts extends Component {
                                   className="alert-tableImge"
                                 />
                               )}
-                              {row.original.modeOfCommunication
-                                .isByNotification === true && (
+                              {row.original.isByNotification === true && (
                                 <img
                                   src={NotificationImg}
                                   alt="Notification"
