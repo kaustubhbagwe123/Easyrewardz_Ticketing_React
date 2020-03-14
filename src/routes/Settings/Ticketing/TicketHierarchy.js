@@ -435,8 +435,8 @@ class TicketHierarchy extends Component {
     })
       .then(function(res) {
         debugger;
-        let status = res.data.statusCode;
-        if (status === 1010) {
+        let status = res.data.message;
+        if (status === "Success") {
           self.handleGetHierarchyData();
           NotificationManager.success("Designation deleted successfully.", '', 1000);
           self.hanldeGetReportListDropDown();
