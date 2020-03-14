@@ -187,7 +187,9 @@ class Brands extends Component {
       rowData: {},
       editbrandcodeCompulsion: "Please enter brand code.",
       editbrandnameCompulsion: "Please enter brand name.",
-      editstatusCompulsion: "Please select status."
+      editstatusCompulsion: "Please select status.",
+      brandcodeColor:"",
+      brandnameColor:""
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -263,14 +265,26 @@ class Brands extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      brandcodeColor:"",
+      brandnameColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "brandCode") {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.brandCode === data);
+      this.setState({
+        brandcodeColor:"sort-column"
+      
+      });
     } else if (column === "brandName") {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.brandName === data);
+      this.setState({
+        brandnameColor:"sort-column"
+      
+      });
     }
 
     this.setState({
@@ -610,7 +624,7 @@ class Brands extends Component {
                       columns={[
                         {
                           Header: (
-                            <span
+                            <span className={this.state.brandcodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandCode"
@@ -624,7 +638,7 @@ class Brands extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.brandnameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName"

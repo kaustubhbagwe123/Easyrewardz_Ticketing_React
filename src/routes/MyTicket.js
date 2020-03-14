@@ -141,7 +141,7 @@ class MyTicket extends Component {
       selectedCategoryKB: 0,
       selectedSubCategoryKB: 0,
       CkEditorTemplateData: [],
-      ReplyCKEditoertemplat:[],
+      ReplyCKEditoertemplat: [],
       CkEditorTemplateDetails: [],
       selectedStore: [],
       selectedProduct: [],
@@ -204,7 +204,9 @@ class MyTicket extends Component {
       oldAgentId: 0,
       AssignCommentCompulsory: "",
       AssignToData: [],
-      followUpIds: ""
+      followUpIds: "",
+      ticketFreeTextcomment: "",
+      freetextCommentCompulsory: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -246,7 +248,7 @@ class MyTicket extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    ////debugger;
     if (this.props.location.ticketDetailID) {
       var ticketId = this.props.location.ticketDetailID;
       this.setState({ HistOrderShow: true, ticket_Id: ticketId });
@@ -266,14 +268,14 @@ class MyTicket extends Component {
   }
 
   onAddCKEditorChange = evt => {
-    debugger;
+    ////debugger;
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
     });
   };
   onreplyCKEditorChange = evt => {
-    debugger;
+    ////debugger;
     var newContent = evt.editor.getData();
     this.setState({
       replymailBodyData: newContent
@@ -281,7 +283,7 @@ class MyTicket extends Component {
   };
 
   handleGetAgentList() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -289,7 +291,7 @@ class MyTicket extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -309,7 +311,7 @@ class MyTicket extends Component {
   }
 
   handleTicketAssignFollowUp() {
-    debugger;
+    ////debugger;
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
@@ -325,7 +327,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
       })
@@ -420,9 +422,9 @@ class MyTicket extends Component {
       });
   }
   handleOnLoadFiles() {
-    debugger;
+    ////debugger;
     for (let i = 0; i < this.state.fileDummy.length; i++) {
-      debugger;
+      ////debugger;
 
       var objFile = new Object();
       var name = this.state.fileDummy[i].attachmentName;
@@ -436,7 +438,7 @@ class MyTicket extends Component {
     }
   }
   handleAssignDataList() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -444,7 +446,7 @@ class MyTicket extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let data = res.data.responseData;
         self.setState({
           SearchAssignData: data
@@ -456,7 +458,7 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketStatus(ticStaId) {
-    debugger;
+    ////debugger;
     // let self = this;
     axios({
       method: "post",
@@ -468,7 +470,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.status;
         if (status === true) {
           if (ticStaId === 103) {
@@ -491,7 +493,7 @@ class MyTicket extends Component {
       });
   }
   handleGetMessageDetails(ticketId) {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -502,7 +504,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -526,31 +528,32 @@ class MyTicket extends Component {
   }
 
   handleHasAttachmentFileData() {
-    debugger;
+    //debugger;
     for (let i = 0; i < this.state.hasAttachmentFile.length; i++) {
       var data = [];
-      data = this.state.hasAttachmentFile[i].msgDetails;
+      if (data !== null) {
+        data = this.state.hasAttachmentFile[i].msgDetails;
+        for (let j = 0; j < data.length; j++) {
+          var details = [];
+          details = data[j].latestMessageDetails;
 
-      for (let j = 0; j < data.length; j++) {
-        var details = [];
-        details = data[j].latestMessageDetails;
+          var Files = details.messageAttachments;
 
-        var Files = details.messageAttachments;
+          if (Files.length > 0) {
+            for (let k = 0; k < Files.length; k++) {
+              var objFile = new Object();
 
-        if (Files.length > 0) {
-          for (let k = 0; k < Files.length; k++) {
-            var objFile = new Object();
+              var name = Files[k].attachmentName;
+              var FileId = Files[k].ticketMessageID;
+              var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+              objFile.Type = type;
+              objFile.name = name;
+              objFile.id = FileId;
 
-            var name = Files[k].attachmentName;
-            var FileId = Files[k].ticketMessageID;
-            var type = name.substring(name.lastIndexOf(".") + 1, name.length);
-            objFile.Type = type;
-            objFile.name = name;
-            objFile.id = FileId;
+              objFile.File = Files[k];
 
-            objFile.File = Files[k];
-
-            this.state.FileAttachment.push(objFile);
+              this.state.FileAttachment.push(objFile);
+            }
           }
         }
       }
@@ -558,7 +561,7 @@ class MyTicket extends Component {
   }
 
   handleGetOrderDetails() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -569,7 +572,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -583,7 +586,7 @@ class MyTicket extends Component {
       });
   }
   handleGetProductData() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -594,12 +597,12 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
           const newSelected = Object.assign({}, self.state.CheckOrderID);
-          debugger;
+          ////debugger;
 
           var OrderSubItem = [];
           var selectedRow = [];
@@ -635,7 +638,7 @@ class MyTicket extends Component {
       });
   }
   setAssignedToValue = e => {
-    debugger;
+    ////debugger;
     let assign = e.currentTarget.value;
     let followUpIds = this.state.followUpIds;
     followUpIds += assign + ",";
@@ -658,7 +661,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let data = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -674,7 +677,7 @@ class MyTicket extends Component {
       });
   }
   handleGetCountOfTabs(ID) {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -685,7 +688,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -699,7 +702,7 @@ class MyTicket extends Component {
       });
   }
   handleUpdateTicketDetails() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -719,7 +722,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Ticket updated successfully.", "", 2000);
@@ -733,7 +736,7 @@ class MyTicket extends Component {
       });
   }
   handleRequireSize(e, rowData) {
-    debugger;
+    ////debugger;
 
     var id = rowData.original.orderItemID;
     var value = document.getElementById("requireSizeTxt" + id).value;
@@ -747,7 +750,7 @@ class MyTicket extends Component {
     this.setState({ OrderSubItem });
   }
   handleOrderSearchData() {
-    debugger;
+    ////debugger;
     let self = this;
     if (this.state.orderNumber.length > 0) {
       axios({
@@ -760,7 +763,7 @@ class MyTicket extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          ////debugger;
           let Msg = res.data.message;
           let mainData = res.data.responseData;
 
@@ -806,7 +809,7 @@ class MyTicket extends Component {
   };
 
   hanldeStatusChange(e) {
-    debugger;
+    ////debugger;
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
@@ -819,7 +822,7 @@ class MyTicket extends Component {
     }
   }
   handleDropDownChange = e => {
-    debugger;
+    ////debugger;
     let name = e.target.name;
     let Value = e.target.value;
     var data = this.state.selectetedParameters;
@@ -889,7 +892,7 @@ class MyTicket extends Component {
   };
 
   handleGetBrandList() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -897,7 +900,7 @@ class MyTicket extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -911,7 +914,7 @@ class MyTicket extends Component {
       });
   }
   handleGetCategoryList() {
-    debugger;
+    ////debugger;
 
     let self = this;
     axios({
@@ -923,7 +926,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         // let status=
         let data = res.data;
         self.setState({ CategoryData: data });
@@ -933,7 +936,7 @@ class MyTicket extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "get",
@@ -941,7 +944,7 @@ class MyTicket extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -955,7 +958,7 @@ class MyTicket extends Component {
       });
   }
   handleGetSubCategoryList() {
-    debugger;
+    ////debugger;
 
     let self = this;
     axios({
@@ -967,7 +970,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -981,7 +984,7 @@ class MyTicket extends Component {
       });
   }
   handleGetIssueTypeList() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -992,7 +995,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1013,7 +1016,7 @@ class MyTicket extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1027,7 +1030,7 @@ class MyTicket extends Component {
       });
   }
   handleAssignTickets() {
-    debugger;
+    ////debugger;
     let self = this;
 
     axios({
@@ -1041,7 +1044,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
           NotificationManager.success(
@@ -1142,11 +1145,18 @@ class MyTicket extends Component {
       ReAssignComment: !this.state.ReAssignComment
     });
   }
-  handleFreeTextCommentOpen() {
+  handleFreeTextCommentOpen(row) {
     debugger;
-    this.setState({
-      FreeTextComment: !this.state.FreeTextComment
-    });
+    if (row === "close") {
+      this.setState({
+        FreeTextComment: !this.state.FreeTextComment,
+        ticketFreeTextcomment: ""
+      });
+    } else {
+      this.setState({
+        FreeTextComment: !this.state.FreeTextComment
+      });
+    }
   }
   handleCommentCollapseOpen(Mail_Id) {
     debugger;
@@ -1156,7 +1166,7 @@ class MyTicket extends Component {
     }));
   }
   handleCommentCollapseClose() {
-    this.setState(state => ({ CommentCollapse: false }));
+    this.setState({ CommentCollapse: false, ticketcommentMSG: "" });
   }
   hanldeCommentOpen2(Mail_Id) {
     debugger;
@@ -1192,7 +1202,7 @@ class MyTicket extends Component {
     this.setState({ Plus: false });
   }
   handleHasAttachmetModalOpen(msgID) {
-    debugger;
+    ////debugger;
     var filedata = this.state.FileAttachment.filter(x => x.id === msgID);
     // for (let i = 0; i < filedata.length; i++) {
 
@@ -1244,7 +1254,7 @@ class MyTicket extends Component {
     }, 100);
   }
   handleNoteAddComments() {
-    debugger;
+    ////debugger;
     if (this.state.NoteAddComment.length > 0) {
       let self = this;
 
@@ -1259,7 +1269,7 @@ class MyTicket extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          ////debugger;
           let status = res.data.status;
           if (status === true) {
             var id = self.state.ticket_Id;
@@ -1287,7 +1297,7 @@ class MyTicket extends Component {
     }
   }
   handleGetHistoricalData() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -1298,7 +1308,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.status;
         let details = res.data.responseData;
         self.onOpenModal();
@@ -1312,7 +1322,7 @@ class MyTicket extends Component {
   }
 
   hanldeGetSelectedStoreData() {
-    debugger;
+    ////debugger;
     let self = this;
     // this.setState({ loading: true });
     axios({
@@ -1324,13 +1334,13 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
         if (status === "Success") {
           const newSelected = Object.assign({}, self.state.CheckStoreID);
-          debugger;
+          ////debugger;
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
             if (data[i].storeID) {
@@ -1360,7 +1370,7 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
-    debugger;
+    ////debugger;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1393,7 +1403,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         // let details = res.data.responseData;
         if (status === "Success") {
@@ -1415,26 +1425,6 @@ class MyTicket extends Component {
 
     var selectedRow = "";
 
-    // for (let i = 0; i < this.state.selectedDataRow.length; i++) {
-    //   var data = this.state.selectedDataRow.filter(
-    //     x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
-    //   );
-    //   if (data.length === 1) {
-    //     selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
-    //   } else if (data === 0) {
-    //   } else {
-    //     if (
-    //       "orderMasterID" in this.state.selectedDataRow[i] &&
-    //       "orderItemID" in this.state.selectedDataRow[i]
-    //     ) {
-    //       selectedRow +=
-    //         this.state.selectedDataRow[i]["orderItemID"] +
-    //         "|" +
-    //         this.state.selectedDataRow[i]["requireSize"] +
-    //         "|0,";
-    //     }
-    //   }
-    // }
     if (this.state.SelectedAllOrder.length > 1) {
       if (this.state.SelectedAllItem.length === 0) {
         for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
@@ -1477,7 +1467,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         // let details = res.data.responseData;
         if (status === "Success") {
@@ -1495,7 +1485,7 @@ class MyTicket extends Component {
       });
   }
   handleGetNotesTabDetails(ticket_Id) {
-    debugger;
+    ////debugger;
     let self = this;
     // this.setState({ loading: true });
     axios({
@@ -1507,7 +1497,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let details = res.data.responseData;
         if (status === "Success") {
@@ -1538,48 +1528,6 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
-
-  // handleCheckOrderID(orderMasterID, rowData) {
-  //   debugger;
-  //   const newSelected = Object.assign({}, this.state.CheckOrderID);
-  //   newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
-  //   this.setState({
-  //     CheckOrderID: orderMasterID ? newSelected : false
-  //   });
-  //   var selectedRow = [];
-  //   if (this.state.selectedDataRow.length === 0) {
-  //     selectedRow.push(rowData);
-  //     this.setState({
-  //       selectedDataRow: rowData
-  //     });
-  //   } else {
-  //     if (newSelected[orderMasterID] === true) {
-  //       for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-  //         if (this.state.selectedDataRow[i] === rowData) {
-  //           selectedRow.splice(i, 1);
-
-  //           break;
-  //         } else {
-  //           selectedRow = this.state.selectedDataRow;
-  //           selectedRow.push(rowData);
-  //           break;
-  //         }
-  //       }
-  //     } else {
-  //       for (var j = 0; j < this.state.selectedDataRow.length; j++) {
-  //         if (this.state.selectedDataRow[j] === rowData) {
-  //           selectedRow = this.state.selectedDataRow;
-  //           selectedRow.splice(j, 1);
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   this.setState({
-  //     selectedDataRow: selectedRow
-  //   });
-  // }
 
   handleCheckStoreID(storeMasterID, rowData) {
     debugger;
@@ -1626,7 +1574,7 @@ class MyTicket extends Component {
   }
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
-    debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -1639,7 +1587,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
           NotificationManager.error("No Record Found.", "", 2000);
@@ -1674,7 +1622,7 @@ class MyTicket extends Component {
 
   //Sub-Category change funcation in KB Templete Modal
   setSubCategoryValueKB = e => {
-    debugger;
+    ////debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryKB: subCategoryValue });
 
@@ -1703,10 +1651,12 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let data = res.data.responseData;
-        self.setState({ CkEditorTemplateData: data,
-          ReplyCKEditoertemplat:data });
+        self.setState({
+          CkEditorTemplateData: data,
+          ReplyCKEditoertemplat: data
+        });
       })
       .catch(data => {
         console.log(data);
@@ -1714,10 +1664,10 @@ class MyTicket extends Component {
   }
 
   //get Template data for select template funcation
-  handleCkEditorTemplateData(tempId, tempName,row) {
-    debugger;
+  handleCkEditorTemplateData(tempId, tempName, row) {
+    ////debugger;
     let self = this;
-    if(row === 1){
+    if (row === 1) {
       axios({
         method: "post",
         url: config.apiUrl + "/Template/getTemplateContent",
@@ -1727,7 +1677,7 @@ class MyTicket extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          ////debugger;
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -1740,7 +1690,7 @@ class MyTicket extends Component {
         .catch(data => {
           console.log(data);
         });
-    }else{
+    } else {
       axios({
         method: "post",
         url: config.apiUrl + "/Template/getTemplateContent",
@@ -1750,7 +1700,7 @@ class MyTicket extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          ////debugger;
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -1764,142 +1714,150 @@ class MyTicket extends Component {
           console.log(data);
         });
     }
-    
   }
   handleSendMailData(isSend) {
     debugger;
     let self = this;
     var str = this.state.mailBodyData;
-    var stringBody = str.replace(/<\/?p[^>]*>/g, "");
-    var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
+    // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
+    // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
     if (isSend === 1) {
-      var str = this.state.replymailBodyData;
-      var stringBody = str.replace(/<\/?p[^>]*>/g, "");
-      var ReplyText = stringBody.replace(/[&]nbsp[;]/g, " ");
-  
-      if (this.state.InformStore === true) {
-        var selectedStore = "";
+      if (this.state.replymailBodyData.length > 0) {
+        var str = this.state.replymailBodyData;
+        // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
+        // var ReplyText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
-        for (let i = 0; i < this.state.selectedStoreData.length; i++) {
-          selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
-        }
-      } else {
-        var selectedStore = "";
-      }
-      const formData = new FormData();
-      var paramData = {
-        TicketID: this.state.ticket_Id,
-        ToEmail: this.state.ticketDetailsData.customerEmailId,
-        UserCC: this.state.mailFiled.userCC,
-        UserBCC: this.state.mailFiled.userBCC,
-        TicketMailBody: ReplyText,
-        IsInformToStore: this.state.InformStore,
-        TicketSource: this.state.ReplySourceId, // Send ticket source id
-        IsSent: 0,
-        IsCustomerComment: 0,
-        IsResponseToCustomer: 1,
-        IsInternalComment: 0,
-        MailID: this.state.mailId,
-        StoreID: selectedStore.substring(",", selectedStore.length - 1)
-      };
-      formData.append("ticketingMailerQue", JSON.stringify(paramData));
-      for (let j = 0; j < this.state.ReplyFileData.length; j++) {
-        formData.append("Filedata", this.state.ReplyFileData[j]);
-      }
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/MessageComment",
-        headers: authHeader(),
-        data: formData
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            self.handleGetMessageDetails(self.state.ticket_Id);
-            self.handleGetCountOfTabs(self.state.ticket_Id);
-            self.hanldeCommentClose2();
-            NotificationManager.success("Mail send successfully.", "", 1500);
-            self.setState({
-              mailFiled: {},
-              ReplyFileData: [],
-              ReplyfileText: 0,
-              replymailBodyData: ""
-            });
-          } else {
-            NotificationManager.error(status, "", 1500);
+        if (this.state.InformStore === true) {
+          var selectedStore = "";
+
+          for (let i = 0; i < this.state.selectedStoreData.length; i++) {
+            selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
           }
+        } else {
+          var selectedStore = "";
+        }
+        const formData = new FormData();
+        var paramData = {
+          TicketID: this.state.ticket_Id,
+          ToEmail: this.state.ticketDetailsData.customerEmailId,
+          UserCC: this.state.mailFiled.userCC,
+          UserBCC: this.state.mailFiled.userBCC,
+          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+          TicketMailBody: this.state.replymailBodyData,
+          IsInformToStore: this.state.InformStore,
+          TicketSource: this.state.ReplySourceId, // Send ticket source id
+          IsSent: 0,
+          IsCustomerComment: 0,
+          IsResponseToCustomer: 1,
+          IsInternalComment: 0,
+          MailID: this.state.mailId,
+          StoreID: selectedStore.substring(",", selectedStore.length - 1)
+        };
+        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        for (let j = 0; j < this.state.ReplyFileData.length; j++) {
+          formData.append("Filedata", this.state.ReplyFileData[j]);
+        }
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/MessageComment",
+          headers: authHeader(),
+          data: formData
         })
-        .catch(data => {
-          console.log(data);
-        });
+          .then(function(res) {
+            ////debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              self.handleGetMessageDetails(self.state.ticket_Id);
+              self.handleGetCountOfTabs(self.state.ticket_Id);
+              self.hanldeCommentClose2();
+              NotificationManager.success("Mail send successfully.", "", 1500);
+              self.setState({
+                mailFiled: {},
+                ReplyFileData: [],
+                ReplyfileText: 0,
+                replymailBodyData: ""
+              });
+            } else {
+              NotificationManager.error(status, "", 1500);
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Enter Body Section.", "", 2000);
+      }
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
-      if (this.state.ReplyInformStore === true) {
-        var store_Id = "";
+      if (this.state.mailBodyData.length > 0) {
+        if (this.state.ReplyInformStore === true) {
+          var store_Id = "";
 
-        for (let i = 0; i < this.state.selectedStoreData.length; i++) {
-          store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
-        }
-      } else {
-        var store_Id = "";
-      }
-      const formData = new FormData();
-      var paramData = {
-        TicketID: this.state.ticket_Id,
-        ToEmail: this.state.ticketDetailsData.customerEmailId,
-        UserCC: this.state.mailFiled.userCC,
-        UserBCC: this.state.mailFiled.userBCC,
-        TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-        TicketMailBody: finalText,
-        IsInformToStore: this.state.ReplyInformStore,
-        TicketSource: this.state.ticketSourceId, // Send ticket source id
-        IsSent: 0,
-        IsCustomerComment: 1,
-        IsResponseToCustomer: 1,
-        MailID: 0,
-        StoreID: store_Id.substring(",", store_Id.length - 1)
-      };
-      formData.append("ticketingMailerQue", JSON.stringify(paramData));
-      for (let j = 0; j < this.state.FileData.length; j++) {
-        formData.append("Filedata", this.state.FileData[j]);
-      }
-
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/MessageComment",
-        headers: authHeader(),
-        data: formData
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            self.handleGetMessageDetails(self.state.ticket_Id);
-            self.handleGetCountOfTabs(self.state.ticket_Id);
-            self.handleTicketAssignFollowUp();
-            self.HandleEmailCollapseOpen();
-            NotificationManager.success("Mail send successfully.", "", 1500);
-            self.setState({
-              mailFiled: {},
-              // mailSubject: "",
-              mailBodyData: ""
-            });
-          } else {
-            NotificationManager.error(status, "", 1500);
+          for (let i = 0; i < this.state.selectedStoreData.length; i++) {
+            store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
           }
+        } else {
+          var store_Id = "";
+        }
+        const formData = new FormData();
+        var paramData = {
+          TicketID: this.state.ticket_Id,
+          ToEmail: this.state.ticketDetailsData.customerEmailId,
+          UserCC: this.state.mailFiled.userCC,
+          UserBCC: this.state.mailFiled.userBCC,
+          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+          TicketMailBody: this.state.mailBodyData,
+          IsInformToStore: this.state.ReplyInformStore,
+          TicketSource: this.state.ticketSourceId, // Send ticket source id
+          IsSent: 0,
+          IsCustomerComment: 1,
+          IsResponseToCustomer: 1,
+          MailID: 0,
+          StoreID: store_Id.substring(",", store_Id.length - 1)
+        };
+        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        for (let j = 0; j < this.state.FileData.length; j++) {
+          formData.append("Filedata", this.state.FileData[j]);
+        }
+
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/MessageComment",
+          headers: authHeader(),
+          data: formData
         })
-        .catch(data => {
-          console.log(data);
-        });
+          .then(function(res) {
+            ////debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              self.handleGetMessageDetails(self.state.ticket_Id);
+              self.handleGetCountOfTabs(self.state.ticket_Id);
+              self.handleTicketAssignFollowUp();
+              self.HandleEmailCollapseOpen();
+              NotificationManager.success("Mail send successfully.", "", 2000);
+              self.setState({
+                mailFiled: {},
+                // mailSubject: "",
+                mailBodyData: ""
+              });
+            } else {
+              NotificationManager.error(status, "", 2000);
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Enter Body Section.", "", 2000);
+      }
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
       if (this.state.ticketcommentMSG.length > 0) {
         const formData = new FormData();
         var paramData = {
           TicketID: this.state.ticket_Id,
-          TicketMailBody: this.state.ticketcommentMSG,
+          TicketMailBody: this.state.ticketcommentMSG.trim(),
           IsSent: 1,
           IsCustomerComment: 0,
           IsInternalComment: 1,
@@ -1914,7 +1872,7 @@ class MyTicket extends Component {
           data: formData
         })
           .then(function(res) {
-            debugger;
+            ////debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
@@ -1926,7 +1884,8 @@ class MyTicket extends Component {
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleCommentCollapseOpen();
               self.setState({
-                ticketcommentMSG: ""
+                ticketcommentMSG: "",
+                tckcmtMSGCompulsory: ""
               });
             } else {
               NotificationManager.error(status, "", 2000);
@@ -1966,7 +1925,7 @@ class MyTicket extends Component {
           data: formData
         })
           .then(function(res) {
-            debugger;
+            ////debugger;
             let status = res.data.message;
             if (status === "Success") {
               // NotificationManager.success(
@@ -1979,7 +1938,8 @@ class MyTicket extends Component {
               self.handleReAssignCommentOpen();
               self.handleAssignTickets();
               self.setState({
-                addReassignCmmt: ""
+                addReassignCmmt: "",
+                AssignCommentCompulsory: ""
               });
             } else {
               NotificationManager.error(status, "", 2000);
@@ -1997,49 +1957,56 @@ class MyTicket extends Component {
         });
       }
     } else {
-      const formData = new FormData();
-      var paramData = {
-        TicketID: this.state.ticket_Id,
-        TicketMailBody: this.state.ticketcommentMSG,
-        IsSent: 1,
-        IsCustomerComment: 0,
-        IsInternalComment: 1
-      };
-      formData.append("ticketingMailerQue", JSON.stringify(paramData));
+      if (this.state.ticketFreeTextcomment.length > 0) {
+        const formData = new FormData();
+        var paramData = {
+          TicketID: this.state.ticket_Id,
+          TicketMailBody: this.state.ticketFreeTextcomment.trim(),
+          IsSent: 1,
+          IsCustomerComment: 0,
+          IsInternalComment: 1
+        };
+        formData.append("ticketingMailerQue", JSON.stringify(paramData));
 
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/MessageComment",
-        headers: authHeader(),
-        data: formData
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success(
-              "Comment Added successfully.",
-              "",
-              2000
-            );
-            self.handleGetMessageDetails(self.state.ticket_Id);
-            self.handleGetCountOfTabs(self.state.ticket_Id);
-            self.handleFreeTextCommentOpen();
-            self.setState({
-              ticketcommentMSG: ""
-            });
-          } else {
-            NotificationManager.error(status, "", 2000);
-          }
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/MessageComment",
+          headers: authHeader(),
+          data: formData
         })
-        .catch(data => {
-          console.log(data);
+          .then(function(res) {
+            ////debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success(
+                "Comment Added successfully.",
+                "",
+                2000
+              );
+              self.handleGetMessageDetails(self.state.ticket_Id);
+              self.handleGetCountOfTabs(self.state.ticket_Id);
+              self.handleFreeTextCommentOpen();
+              self.setState({
+                ticketFreeTextcomment: "",
+                freetextCommentCompulsory: ""
+              });
+            } else {
+              NotificationManager.error(status, "", 2000);
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      } else {
+        this.setState({
+          freetextCommentCompulsory: "Comment field is compulsory."
         });
+      }
     }
   }
 
   handleMailOnChange(filed, e) {
-    debugger;
+    ////debugger;
     var mailFiled = this.state.mailFiled;
     mailFiled[filed] = e.target.value;
 
@@ -2064,7 +2031,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2092,7 +2059,7 @@ class MyTicket extends Component {
       });
   }
   handleReplyFileUpload(e) {
-    debugger;
+    ////debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -2112,7 +2079,7 @@ class MyTicket extends Component {
     //   }
     // }
     for (let i = 0; i < e.target.files.length; i++) {
-      debugger;
+      ////debugger;
 
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -2133,7 +2100,7 @@ class MyTicket extends Component {
     });
   }
   handleFileUpload(e) {
-    debugger;
+    ////debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -2153,7 +2120,7 @@ class MyTicket extends Component {
       }
     }
     for (let i = 0; i < e.target.files.length; i++) {
-      debugger;
+      ////debugger;
 
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -2173,7 +2140,7 @@ class MyTicket extends Component {
   }
 
   handleByvisitDate(e, rowData) {
-    debugger;
+    ////debugger;
     var id = e.original.storeID;
     var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
     // this.state.selectedStoreData["VisitedDate"] = rowData;
@@ -2183,7 +2150,7 @@ class MyTicket extends Component {
     this.setState({ selectedStoreData });
   }
   handleChangeOrderItem = e => {
-    debugger;
+    ////debugger;
 
     var values = e.target.checked;
     if (!this.state.selectProductOrd) {
@@ -2222,7 +2189,7 @@ class MyTicket extends Component {
   };
 
   handleRemoveImage(i) {
-    debugger;
+    ////debugger;
     let file = this.state.file;
     file.splice(i, 1);
     var fileText = file.length;
@@ -2232,7 +2199,7 @@ class MyTicket extends Component {
   }
 
   handleSetDataTab = () => {
-    debugger;
+    ////debugger;
     this.setState({
       selectProductOrd: !this.state.selectProductOrd
     });
@@ -2241,7 +2208,7 @@ class MyTicket extends Component {
   // -------------------------------Check box selected all code start-------------------------------
 
   onCheckMasterAllChange(orderMasterID, rowData) {
-    debugger;
+    ////debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
     newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
     this.setState({
@@ -2334,7 +2301,7 @@ class MyTicket extends Component {
   }
 
   checkIndividualItem(orderItemID, rowData) {
-    debugger;
+    ////debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
     this.setState({
@@ -2424,7 +2391,7 @@ class MyTicket extends Component {
   // -------------------------------Check box selected all code end-------------------------------
 
   callbackToParent = () => {
-    debugger;
+    ////debugger;
     this.handleGetCountOfTabs(this.state.ticket_Id);
   };
   handleTicketSourceChange = e => {
@@ -2437,7 +2404,7 @@ class MyTicket extends Component {
     this.setState({ ReplySourceId: value });
   };
   handleSkipComment() {
-    debugger;
+    ////debugger;
     let self = this;
     const formData = new FormData();
     var paramData = {
@@ -2459,7 +2426,7 @@ class MyTicket extends Component {
       data: formData
     })
       .then(function(res) {
-        debugger;
+        ////debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
@@ -2728,11 +2695,11 @@ class MyTicket extends Component {
                         showPagination={false}
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
-                          // debugger;
+                          // ////debugger;
                           const index = column ? column.index : -1;
                           return {
                             onClick: e => {
-                              debugger;
+                              ////debugger;
                               this.selectedRow = index;
                               var agentId = column.original["user_ID"];
                               this.setState({ agentId });
@@ -3642,7 +3609,7 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: row => {
-                                          // debugger;
+                                          // ////debugger;
                                           return (
                                             <div
                                               className="filter-checkbox"
@@ -4029,25 +3996,6 @@ class MyTicket extends Component {
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
-                                            {/* <input
-                                              type="checkbox"
-                                              id={
-                                                "i" + row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            /> */}
                                             <input
                                               type="checkbox"
                                               id={
@@ -4234,7 +4182,7 @@ class MyTicket extends Component {
                                                 accessor: "invoiceNo",
                                                 width: 20,
                                                 Cell: row => {
-                                                  // debugger
+                                                  // ////debugger
                                                   return (
                                                     <div className="filter-checkbox">
                                                       <input
@@ -4305,7 +4253,6 @@ class MyTicket extends Component {
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: row => {
-                                                  // debugger;
                                                   return (
                                                     <div>
                                                       <input
@@ -4385,32 +4332,6 @@ class MyTicket extends Component {
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
-                                            {/* <input
-                                              type="checkbox"
-                                              id={
-                                                "id" +
-                                                row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              // defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "id" +
-                                                row.original.orderMasterID
-                                              }
-                                            ></label> */}
                                             <input
                                               type="checkbox"
                                               id={
@@ -4514,30 +4435,6 @@ class MyTicket extends Component {
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
-                                            {/* <input
-                                              type="checkbox"
-                                              id={
-                                                "i" + row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.orderMasterID
-                                              }
-                                            ></label> */}
                                             <input
                                               type="checkbox"
                                               id={
@@ -4622,29 +4519,6 @@ class MyTicket extends Component {
                                                 width: 20,
                                                 Cell: row => (
                                                   <div className="filter-checkbox">
-                                                    {/* <input
-                                                      type="checkbox"
-                                                      id={
-                                                        "order" +
-                                                        row.original.orderItemID
-                                                      }
-                                                      style={{
-                                                        display: "none"
-                                                      }}
-                                                      name="ticket-order"
-                                                      checked={
-                                                        this.state.CheckOrderID[
-                                                          row.original
-                                                            .orderItemID
-                                                        ] === true
-                                                      }
-                                                      onChange={this.handleCheckOrderID.bind(
-                                                        this,
-                                                        row.original
-                                                          .orderItemID,
-                                                        row.original
-                                                      )}
-                                                    /> */}
                                                     <input
                                                       type="checkbox"
                                                       id={
@@ -4713,7 +4587,7 @@ class MyTicket extends Component {
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: row => {
-                                                  // debugger;
+                                                  // ////debugger;
                                                   return (
                                                     <div>
                                                       <input
@@ -5137,7 +5011,6 @@ class MyTicket extends Component {
                                   onChange={() =>
                                     this.showInformStoreFuncation()
                                   }
-
                                   // disabled={this.state.selectedStoreIDs.length === 0}
                                 />
                                 <label
@@ -5357,7 +5230,7 @@ class MyTicket extends Component {
                     <div className="row my-3 mx-1">
                       {this.state.FinalAttachmentData !== null &&
                         this.state.FinalAttachmentData.map((item, k) => {
-                          // debugger
+                          // ////debugger
                           return (
                             <div style={{ position: "relative" }} key={k}>
                               <div>
@@ -5541,7 +5414,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                // debugger;
+                                //debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -5659,10 +5532,9 @@ class MyTicket extends Component {
                                             className="label-5"
                                             style={{ display: "inline-block" }}
                                           >
-                                            {
-                                              details.latestMessageDetails
-                                                .ticketMailBody
-                                            }
+                                            {details.latestMessageDetails.ticketMailBody
+                                              .replace(/<[^>]+>/g, "")
+                                              .replace(/&nbsp;/gi, " ")}
                                           </p>
                                         </div>
 
@@ -5852,7 +5724,7 @@ class MyTicket extends Component {
                               src={CrossIcon}
                               alt="Minus"
                               className="pro-cross-icn m-0"
-                              onClick={this.handleCommentCollapseOpen.bind(
+                              onClick={this.handleCommentCollapseClose.bind(
                                 this
                               )}
                             />
@@ -5991,7 +5863,8 @@ class MyTicket extends Component {
                                   type="button"
                                   data-toggle="dropdown"
                                   onClick={this.handleTemplateBindByIssueType.bind(
-                                    this,1
+                                    this,
+                                    1
                                   )}
                                 >
                                   <FontAwesomeIcon icon={faCalculator} />
@@ -6019,7 +5892,6 @@ class MyTicket extends Component {
                               </div>
                             </div>
                             <div className="mob-float my-tic-mob-float">
-                              {/* <div className="line-1"></div> */}
                               <div
                                 style={{ cursor: "pointer" }}
                                 onClick={this.hanldeCommentClose2.bind(this)}
@@ -6220,7 +6092,8 @@ class MyTicket extends Component {
                               alt="Minus"
                               className="pro-cross-icn m-0"
                               onClick={this.handleFreeTextCommentOpen.bind(
-                                this
+                                this,
+                                "close"
                               )}
                             />
                           </div>
@@ -6230,15 +6103,15 @@ class MyTicket extends Component {
                             cols="31"
                             rows="3"
                             className="ticketMSGCmt-textarea"
-                            name="ticketcommentMSG"
+                            name="ticketFreeTextcomment"
                             maxLength={300}
-                            value={this.state.ticketcommentMSG}
+                            value={this.state.ticketFreeTextcomment}
                             onChange={this.handleNoteOnChange}
                           ></textarea>
                         </div>
-                        {this.state.ticketcommentMSG.length === 0 && (
+                        {this.state.ticketFreeTextcomment.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.tckcmtMSGCompulsory}
+                            {this.state.freetextCommentCompulsory}
                           </p>
                         )}
                         <div className="SendCommentBtn">
@@ -6251,205 +6124,6 @@ class MyTicket extends Component {
                         </div>
                       </div>
                     </Modal>
-                    {/* <div className="row" style={{ width: "100%" }}>
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                      <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                        <div className="commentcollapseTicket">
-                          <Collapse isOpen={this.state.CommentCollapse}>
-                            <Card>
-                              <CardBody>
-                                <div className="commenttextborder">
-                                  <div className="Commentlabel">
-                                    <label className="Commentlabel1">
-                                      Comment
-                                    </label>
-                                  </div>
-                                  <div>
-                                    <span className="comment-line"></span>
-                                    <div
-                                      style={{
-                                        float: "right",
-                                        cursor: "pointer",
-                                        height: "30px",
-                                        marginTop: "-33px"
-                                      }}
-                                    >
-                                      <img
-                                        src={MinusImg}
-                                        alt="Minus"
-                                        className="CommentMinus-img"
-                                        onClick={this.handleCommentCollapseOpen.bind(
-                                          this
-                                        )}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="commenttextmessage">
-                                    <textarea
-                                      cols="31"
-                                      rows="3"
-                                      className="ticketMSGCmt-textarea"
-                                      name="ticketcommentMSG"
-                                      maxLength={300}
-                                      value={this.state.ticketcommentMSG}
-                                      onChange={this.handleNoteOnChange}
-                                    ></textarea>
-                                  </div>
-                                  <div className="SendCommentBtn">
-                                    <button
-                                      className="SendCommentBtn1"
-                                      onClick={this.handleSendMessagaData.bind(
-                                        this
-                                      )}
-                                    >
-                                      SEND
-                                    </button>
-                                  </div>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </Collapse>
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div className="row new-top-bottom-margin">
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                        <img
-                          src={Loading1Img}
-                          alt="right"
-                          className="oval-loading"
-                        />
-                        <label className="rashmi-c">
-                          Rashmi.C
-                          <span>
-                            <label className="updated-2-d-ago">
-                              Reassign to
-                              <label className="lable-name">Naman.R</label>
-                            </label>
-                          </span>
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                        <label className="hi-naman-please-hel">
-                          Hi @Naman Please help customer with voucher Issue
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-2 mob-flex">
-                        <label
-                          className="comment-text"
-                          onClick={this.handleCommentCollapseOpen.bind(this)}
-                        >
-                          Comment
-                        </label>
-                      </div>
-                      <div className="row" style={{ width: "100%" }}>
-                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                        <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                          <div className="commentcollapseTicket">
-                            <Collapse isOpen={this.state.CommentCollapse}>
-                              <Card>
-                                <CardBody>
-                                  <div className="commenttextborder">
-                                    <div className="Commentlabel">
-                                      <label className="Commentlabel1">
-                                        Comment
-                                      </label>
-                                    </div>
-                                    <div>
-                                      <span className="comment-line"></span>
-                                      <div
-                                        style={{
-                                          float: "right",
-                                          cursor: "pointer",
-                                          height: "30px",
-                                          marginTop: "-33px"
-                                        }}
-                                      >
-                                        <img
-                                          src={MinusImg}
-                                          alt="Minus"
-                                          className="CommentMinus-img"
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="commenttextmessage">
-                                      <label style={{ marginBottom: "10px" }}>
-                                        Hello,
-                                      </label>
-                                      <label>
-                                        I saw a vintage table lamp on your site
-                                        last month and I'd bookmarked it to buy
-                                        it later for a friend. I can't seem to
-                                        find it anymore through.
-                                        <br></br>Is it out of stock or do you
-                                        not sell those anymore ?
-                                      </label>
-                                      <label
-                                        style={{
-                                          marginTop: "10px",
-                                          display: "block"
-                                        }}
-                                      >
-                                        Thanks
-                                      </label>
-                                      <label>Naman Rampal.</label>
-                                    </div>
-                                    <div className="SendCommentBtn">
-                                      <button
-                                        className="SendCommentBtn1"
-                                        onClick={this.handleCommentCollapseOpen2.bind(
-                                          this
-                                        )}
-                                      >
-                                        SEND
-                                      </button>
-                                    </div>
-                                  </div>
-                                </CardBody>
-                              </Card>
-                            </Collapse>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div>
-                      <div className="row row-spacing new-top-bottom-margin">
-                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                          <img
-                            src={BlackUserIcon}
-                            alt="Avatar"
-                            className="oval-6"
-                          />
-                          <label className="rashmi-c">
-                            {this.state.messageDetails.commentBy}
-                          </label>
-                          <img
-                            src={Headphone2Img}
-                            alt="headphone"
-                            className="headphone1"
-                          />
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                          <label className="need-to-change-my-sh">
-                            Need to change my shipping address
-                          </label>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-2">
-                          {this.state.messageDetails.isCustomerComment === 1 ? (
-                            <label
-                              className="reply-comment"
-                              onClick={this.hanldeCommentOpen2.bind(this)}
-                            >
-                              Reply
-                            </label>
-                          ) : null}
-                          <br />
-                          <label className="reply-comment">Comment</label>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
 
                   <div

@@ -421,10 +421,7 @@ class CreateSLA extends Component {
       });
   }
 
-  // handleSlaIssueType = e => {
-  //   let slaIssueType = e.currentTarget.value;
-  //   this.setState({ selectedSlaIssueType: slaIssueType });
-  // };
+ 
   handleUpdateSlaIssueType = e => {
     let updateSlaIssueType = e.currentTarget.value;
     this.setState({ updateIssueTypeId: updateSlaIssueType });
@@ -847,7 +844,48 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "issueTpeName"
+                        accessor: "issueTpeName",
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.issueTpeName}
+                                <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <p className="title">
+                                          <b> Brand: </b>
+                                          {row.original.brandName}
+                                        </p>
+
+                                        <p className="sub-title">
+                                          <b>Category: </b>
+                                          {row.original.categoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <p className="sub-title">
+                                          <b> Sub Category:</b>
+                                          {row.original.subCategoryName}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
                       },
                       {
                         Header: (
@@ -1107,7 +1145,7 @@ class CreateSLA extends Component {
                                   type="text"
                                   className="searchf"
                                   placeholder="Search"
-                                  maxLength={10}
+                                  maxLength={25}
                                   name="store_code"
                                   onChange={this.handleSearchSla}
                                   id="SlaInput"

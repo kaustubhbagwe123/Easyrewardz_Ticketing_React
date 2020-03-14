@@ -1498,9 +1498,19 @@ class Dashboard extends Component {
   };
   applyCallback = async (startDate, endDate) => {
     debugger;
+    var startArr = endDate[0].split('-');
+    var dummyStart = startArr[0];
+    startArr[0] = startArr[1];
+    startArr[1] = dummyStart;
+    var start = startArr.join('-');
+    var endArr = endDate[1].split('-');
+    var dummyEnd = endArr[0];
+    endArr[0] = endArr[1];
+    endArr[1] = dummyEnd;
+    var end = endArr.join('-');
     await this.setState({
-      start: endDate[0],
-      end: endDate[1],
+      start,
+      end,
       DashboardTaskGraphData: [],
       DashboardClaimGraphData: [],
       DashboardBillGraphData: [],

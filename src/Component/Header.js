@@ -230,9 +230,9 @@ class Header extends Component {
     }).then(function(res) {
       debugger;
       var status = res.data.message;
-      var id = res.data.responseData[0].userId;
-      var userdata = res.data.responseData[0].profilePicture;
       if (status === "Success") {
+        var id = res.data.responseData[0].userId;
+        var userdata = res.data.responseData[0].profilePicture;
         self.setState({
           selectedUserProfilePicture: userdata
         });
@@ -270,7 +270,7 @@ class Header extends Component {
     debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
-    console.log( page );
+    console.log(page);
     var accessdata = [];
     var dashboard = {
       data: "Dashboards",
@@ -279,7 +279,7 @@ class Header extends Component {
       logoBlue: DashboardLogoBlue,
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
-      activeClass: page == 'dashboard' ? "active single-menu" : 'single-menu'
+      activeClass: page == "dashboard" ? "active single-menu" : "single-menu"
     };
     var myticket = {
       data: "My Tickets",
@@ -288,7 +288,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page == 'myTicketlist' ? "active single-menu" : 'single-menu'
+      activeClass: page == "myTicketlist" ? "active single-menu" : "single-menu"
     };
     var knowledgebase = {
       data: "Knowledge Base",
@@ -297,7 +297,8 @@ class Header extends Component {
       logoBlue: KnowledgeLogoBlue,
       imgAlt: "knowledge icon",
       imgClass: "knowledgeNav",
-      activeClass: page == 'knowledgebase' ? "active single-menu" : 'single-menu'
+      activeClass:
+        page == "knowledgebase" ? "active single-menu" : "single-menu"
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -966,12 +967,12 @@ class Header extends Component {
             </div>
 
             <a href="#!">
-              <div className="position-relative" style={{ display: this.state.notificationAccess }} onClick={this.openModal}>
-                <img
-                  src={NotificationLogo}
-                  alt="logo"
-                  className="notifi"
-                />
+              <div
+                className="position-relative"
+                style={{ display: this.state.notificationAccess }}
+                onClick={this.openModal}
+              >
+                <img src={NotificationLogo} alt="logo" className="notifi" />
                 {this.state.notiCount > 0 && (
                   <span className="upper-noti-count">
                     {this.state.notiCount}
@@ -1058,7 +1059,6 @@ class Header extends Component {
                       VIEW TICKETS
                     </div>
                   </Popover>
-                  
                 </div>
               </div>
             );

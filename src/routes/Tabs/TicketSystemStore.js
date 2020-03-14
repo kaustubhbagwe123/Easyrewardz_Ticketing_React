@@ -73,17 +73,7 @@ class TicketSystemStore extends Component {
         this.state.AlreadyCustomerVisit
       );
     }
-    // if (this.state.SwitchBtnStatus === true) {
-    //   this.setState({
-    //     custVisit: 1,
-    //     AlreadyCustVisit: 0
-    //   });
-    // } else {
-    //   this.setState({
-    //     custVisit: 0,
-    //     AlreadyCustVisit: 0
-    //   });
-    // }
+   
   };
   handleSearchStoreDetails(e) {
     debugger;
@@ -411,110 +401,6 @@ class TicketSystemStore extends Component {
                   aria-labelledby="storedetail-tab"
                 >
                   <div className="reactstoreselect">
-                    {/* <ReactTable
-                      data={SearchData}
-                      onFilteredChange={this.onFilteredChange.bind(this)}
-                      filtered={this.state.filtered}
-                      defaultFilterMethod={(filter, row) =>
-                        String(row[filter.id]) === filter.value
-                      }
-                      columns={[
-                        {
-                          columns: [
-                            {
-                              Header: <></>,
-                              accessor: "storeID",
-                              Cell: row => (
-                                <div
-                                  className="filter-checkbox"
-                                  style={{ marginLeft: "15px" }}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    id={"i" + row.original.storeID}
-                                    style={{ display: "none" }}
-                                    name="ticket-store"
-                                    checked={
-                                      this.state.CheckStoreID[
-                                        row.original.storeID
-                                      ] === true
-                                    }
-                                    onChange={this.handleCheckStoreID.bind(
-                                      this,
-                                      row.original.storeID,
-                                      row.original
-                                    )}
-                                  />
-                                  <label
-                                    htmlFor={"i" + row.original.storeID}
-                                  ></label>
-                                </div>
-                              )
-                            },
-                            {
-                              Header: <span>Store Code</span>,
-                              accessor: "storeCode"
-                            },
-                            {
-                              Header: <span>Store Name</span>,
-                              accessor: "storeName"
-                            },
-                            {
-                              Header: <span>Store Pin Code</span>,
-                              accessor: "pincode"
-                            },
-                            {
-                              Header: <span>Store Email ID</span>,
-                              accessor: "storeEmailID"
-                            },
-                            {
-                              Header: <span>Store Addres</span>,
-                              accessor: "address"
-                            }
-                          ]
-                        },
-                        {
-                          show: false,
-                          Header: "All",
-                          id: "all",
-                          width: 0,
-                          resizable: true,
-                          sortable: false,
-                          Filter: () => {},
-                          getProps: () => {
-                            return {
-                              // style: { padding: "0px"}
-                            };
-                          },
-                          filterMethod: (filter, rows) => {
-                            debugger;
-                            var result = matchSorter(rows, filter.value, {
-                              keys: [
-                                "invoiceNumber",
-                                "storeCode",
-                                "storeName",
-                                "storeEmailID",
-                                "address",
-                                "visitDate"
-                              ],
-                              threshold: matchSorter.rankings.WORD_STARTS_WITH
-                            });
-                            if (result.length > 0) {
-                              debugger;
-                              return result;
-                            } else {
-                              debugger;
-                              result = [{ storeEmailID: "No Record Found" }];
-                              return result;
-                            }
-                          },
-                          filterAll: true
-                        }
-                      ]}
-                      // resizable={false}
-                      defaultPageSize={5}
-                      showPagination={false}
-                    /> */}
                     <Table
                       className="custom-antd-table"
                       columns={[
@@ -522,7 +408,6 @@ class TicketSystemStore extends Component {
                           title: "",
                           dataIndex: "storeID",
                           render: (row, data) => {
-                            // debugger;
                             return (
                               <div className="filter-checkbox">
                                 <input
@@ -578,93 +463,6 @@ class TicketSystemStore extends Component {
                   aria-labelledby="selectedstore-tab"
                 >
                   <div className="reactstoreselect datePickertable">
-                    {/* <ReactTable
-                      data={selectedStoreData}
-                      columns={[
-                        {
-                          Header: (
-                            <span style={{ paddingLeft: "50px" }}>Purpose</span>
-                          ),
-                          accessor: "purposeId",
-                          Cell: row => (
-                            <div
-                              className="filter-checkbox"
-                              style={{ marginLeft: "15px" }}
-                            >
-                              <input
-                                type="checkbox"
-                                id={"selected" + row.original.storeID}
-                                style={{ display: "none" }}
-                                name="ticket-store"
-                                checked={
-                                  this.state.CheckStoreID[
-                                    row.original.storeID
-                                  ] === true
-                                }
-                                onChange={this.handleCheckStoreID.bind(
-                                  this,
-                                  row.original.storeID,
-                                  row.original
-                                )}
-                              />
-                              <label
-                                htmlFor={"selected" + row.original.storeID}
-                              >
-                                {row.original.purposeId === "0"
-                                  ? "Customer Want to visit store"
-                                  : "Customer Already visited store"}
-                              </label>
-                            </div>
-                          )
-                        },
-                        {
-                          Header: <span>Store Code</span>,
-                          accessor: "storeCode"
-                        },
-                        {
-                          Header: <span>Store Name</span>,
-                          accessor: "storeName"
-                        },
-                        {
-                          Header: <span>Store Pin Code</span>,
-                          accessor: "pincode"
-                        },
-                        {
-                          Header: <span>Store Email ID</span>,
-                          accessor: "storeEmailID"
-                        },
-                        {
-                          Header: <span>Store Addres</span>,
-                          accessor: "address"
-                        },
-                        {
-                          Header: <span>Visit Date</span>,
-                          accessor: "visitDate",
-                          Cell: row => {
-                            return (
-                              <div className="col-sm-12 p-0">
-                                <DatePicker
-                                  selected={row.original.VisitedDate}
-                                  placeholderText="Visited Date"
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dateFormat="dd/MM/yyyy"
-                                  id={"visitDate" + row.original.storeID}
-                                  value={row.original.VisitedDate}
-                                  name="visitDate"
-                                  onChange={this.handleByvisitDate.bind(
-                                    this,
-                                    row
-                                  )}
-                                />
-                              </div>
-                            );
-                          }
-                        }
-                      ]}
-                      defaultPageSize={5}
-                      showPagination={false}
-                    /> */}
                     <Table
                       className="custom-antd-table datepicker-overflow"
                       columns={[
@@ -672,7 +470,6 @@ class TicketSystemStore extends Component {
                           title: "",
                           dataIndex: "storeID",
                           render: (row, data) => {
-                            // debugger;
                             return (
                               <div className="filter-checkbox">
                                 <input
@@ -884,7 +681,6 @@ class TicketSystemStore extends Component {
                             title: "",
                             dataIndex: "storeID",
                             render: (row, data) => {
-                              // debugger;
                               return (
                                 <div className="filter-checkbox">
                                   <input
@@ -931,111 +727,7 @@ class TicketSystemStore extends Component {
                         dataSource={SearchData}
                         pagination={false}
                       />
-                      {/* <ReactTable
-                        data={SearchData}
-                        onFilteredChange={this.onFilteredChange.bind(this)}
-                        filtered={this.state.filtered}
-                        defaultFilterMethod={(filter, row) =>
-                          String(row[filter.id]) === filter.value
-                        }
-                        columns={[
-                          {
-                            columns: [
-                              {
-                                Header: <></>,
-                                accessor: "storeID",
-                                Cell: row => (
-                                  <div
-                                    className="filter-checkbox"
-                                    style={{ marginLeft: "15px" }}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      id={"i" + row.original.storeID}
-                                      style={{ display: "none" }}
-                                      name="ticket-store"
-                                      checked={
-                                        this.state.CheckStoreID[
-                                          row.original.storeID
-                                        ] === true
-                                      }
-                                      onChange={this.handleCheckStoreID.bind(
-                                        this,
-                                        row.original.storeID,
-                                        row.original
-                                      )}
-                                    />
-                                    <label
-                                      htmlFor={"i" + row.original.storeID}
-                                    ></label>
-                                  </div>
-                                )
-                              },
-                              {
-                                Header: <span>Store Code</span>,
-                                accessor: "storeCode"
-                              },
-                              {
-                                Header: <span>Store Name</span>,
-                                accessor: "storeName"
-                              },
-                              {
-                                Header: <span>Store Pin Code</span>,
-                                accessor: "pincode"
-                              },
-                              {
-                                Header: <span>Store Email ID</span>,
-                                accessor: "storeEmailID"
-                              },
-                              {
-                                Header: <span>Store Addres</span>,
-                                accessor: "address"
-                              }
-                              
-                            ]
-                          },
-                          {
-                            show: false,
-                            Header: "All",
-                            id: "all",
-                            width: 0,
-                            resizable: false,
-                            sortable: false,
-                            Filter: () => {},
-                            getProps: () => {
-                              return {
-                                // style: { padding: "0px"}
-                              };
-                            },
-                            filterMethod: (filter, rows) => {
-                              debugger;
-                              var result = matchSorter(rows, filter.value, {
-                                keys: [
-                                  "invoiceNumber",
-                                  "storeCode",
-                                  "storeName",
-                                  "storeEmailID",
-                                  "address",
-                                  "visitDate"
-                                ],
-                                threshold: matchSorter.rankings.WORD_STARTS_WITH
-                              });
-                              if (result.length > 0) {
-                                debugger;
-                                return result;
-                              } else {
-                                debugger;
-                                result = [{ storeEmailID: "No Record Found" }];
-                                return result;
-                              }
-                            },
-                            filterAll: true
-                          }
-                        ]}
-                        // resizable={false}
-                        defaultPageSize={5}
-                        showPagination={false}
-                      /> */}
+                      
                     </div>
                     {this.state.selectedStoreData.length !== 0 ? (
                       <div className="storedetailtabsbutton">
@@ -1058,107 +750,6 @@ class TicketSystemStore extends Component {
                     aria-labelledby="selectedSubstore-tab"
                   >
                     <div className="reactstoreselect ordermainrow">
-                      {/* <ReactTable
-                        data={selectedStoreData}
-                        columns={[
-                          {
-                            Header: <span></span>,
-                            accessor: "invoiceNumber",
-                            Cell: row => (
-                              <div
-                                className="filter-checkbox"
-                                style={{ marginLeft: "15px" }}
-                              >
-                                <input
-                                  type="checkbox"
-                                  id={"selected" + row.original.storeID}
-                                  style={{ display: "none" }}
-                                  name="ticket-store"
-                                  checked={
-                                    this.state.CheckStoreID[
-                                      row.original.storeID
-                                    ] === true
-                                  }
-                                  onChange={this.handleCheckStoreID.bind(
-                                    this,
-                                    row.original.storeID,
-                                    row.original
-                                  )}
-                                />
-                                <label
-                                  htmlFor={"selected" + row.original.storeID}
-                                >
-                                  {row.original.storeID}
-                                </label>
-                              </div>
-                            )
-                          },
-                          {
-                            Header: <span>Purpose</span>,
-                            accessor: "storeCode",
-                            Cell: row => (
-                              <div
-                                className="filter-checkbox"
-                                style={{ marginLeft: "15px" }}
-                              >
-                                <label
-                                  htmlFor={"selected" + row.original.storeID}
-                                >
-                                  {row.original.purposeId === "0"
-                                    ? "Customer Want to visit store"
-                                    : "Customer Already visited store"}
-                                </label>
-                              </div>
-                            )
-                          },
-                          {
-                            Header: <span>Store Code</span>,
-                            accessor: "storeCode"
-                          },
-                          {
-                            Header: <span>Store Name</span>,
-                            accessor: "storeName"
-                          },
-                          {
-                            Header: <span>Store Pin Code</span>,
-                            accessor: "pincode"
-                          },
-                          {
-                            Header: <span>Store Email ID</span>,
-                            accessor: "storeEmailID"
-                          },
-                          {
-                            Header: <span>Store Addres</span>,
-                            accessor: "address"
-                          },
-                          {
-                            Header: <span>Visit Date</span>,
-                            accessor: "visitDate",
-                            Cell: row => {
-                              return (
-                                <div className="col-sm-12 p-0">
-                                  <DatePicker
-                                    selected={row.original.VisitedDate}
-                                    placeholderText="Visited Date"
-                                    showMonthDropdown
-                                    showYearDropdown
-                                    dateFormat="dd/MM/yyyy"
-                                    id={"visitDate" + row.original.storeID}
-                                    value={row.original.VisitedDate}
-                                    name="visitDate"
-                                    onChange={this.handleByvisitDate.bind(
-                                      this,
-                                      row
-                                    )}
-                                  />
-                                </div>
-                              );
-                            }
-                          }
-                        ]}
-                        defaultPageSize={5}
-                        showPagination={false}
-                      /> */}
                       <Table
                         className="custom-antd-table date-picker-arrows"
                         columns={[
