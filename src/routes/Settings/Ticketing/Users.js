@@ -2749,7 +2749,7 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editMethod.bind(this)}
                           >
-                            Update
+                            Edit
                           </button>
                         </div>
                       ) : this.state.buttonToggle === true ? (
@@ -2878,7 +2878,7 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editProfileMethod.bind(this)}
                           >
-                            Update
+                            Edit
                           </button>
                         </div>
                       ) : this.state.buttonProfileToggle === true ? (
