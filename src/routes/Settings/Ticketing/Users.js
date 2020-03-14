@@ -126,7 +126,14 @@ class Users extends Component {
       StatusModel: false,
       sortAllData: "",
       sortDesignation: [],
-      selTab: "Personal Details"
+      sortUsername:[],
+      sortEmail:[],
+      sortMobile:[],
+      selTab: "Personal Details",
+      userColor:"",
+      mobileColor:"",
+      emailColor:"",
+      designationColor:""
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -203,11 +210,42 @@ class Users extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      userColor:"",
+      mobileColor:"",
+      emailColor:"",
+      designationColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "designation") {
       this.state.userData = this.state.sortAllData;
       itemsArray = this.state.userData.filter(a => a.designation === data);
+      this.setState({
+        designationColor: "sort-column"
+       
+      });
+    }else if (column === "userName") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.userName === data);
+      this.setState({
+        userColor: "sort-column"
+       
+      });
+    }else if (column === "mobileNumber") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.mobileNumber === data);
+      this.setState({
+        mobileColor: "sort-column"
+       
+      });
+    }else if (column === "emailID") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.emailID === data);
+      this.setState({
+        emailColor: "sort-column"
+       
+      });
     }
     this.setState({
       userData: itemsArray
@@ -492,99 +530,145 @@ class Users extends Component {
 
   handleBrandChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedBrand: e });
-    setTimeout(() => {
-      if (this.state.selectedBrand) {
-        this.handleGetCategoryList(data);
-      }
-    }, 1);
+    if (e === null) {
+      e = [];
+      this.setState({ selectedBrand: e,
+        CategoryData:[] });
+      
+    }else{
+      this.setState({ selectedBrand: e });
+      setTimeout(() => {
+        if (this.state.selectedBrand ) {
+          this.handleGetCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleEditBrandChange = (data, e) => {
     debugger;
-    if (e !== null) {
-      this.setState({ editBrand: e });
-    } else {
-      this.setState({
-        editBrand: [],
-        editCategory: [],
-        editSubCategory: [],
-        editIssuetype: []
-      });
-    }
-
-    setTimeout(() => {
-      if (this.state.editBrand) {
-        this.setState({ editCategory: [] });
-        this.handleGetCategoryList(data);
+    if (e === null) {
+      e = [];
+      this.setState({ editBrand: e,
+        CategoryData:[]
+       });
+    }else{
+      if (e !== null) {
+        this.setState({ editBrand: e });
+      } else {
+        this.setState({
+          editBrand: [],
+          editCategory: [],
+          editSubCategory: [],
+          editIssuetype: []
+        });
       }
-    }, 1);
+  
+      setTimeout(() => {
+        if (this.state.editBrand) {
+          this.setState({ editCategory: [] });
+          this.handleGetCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleCategoryChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedCategory: e });
-    setTimeout(() => {
-      if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList(data);
-      }
-    }, 1);
+    if (e === null) {
+      e = [];
+      this.setState({ selectedCategory: e,
+      SubCategoryData:[] });
+    }else{
+      this.setState({ selectedCategory: e });
+      setTimeout(() => {
+        if (this.state.selectedCategory) {
+          this.handleGetSubCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleEditCategoryChange = (data, e) => {
     debugger;
-    if (e !== null) {
-      this.setState({ editCategory: e });
-    } else {
-      this.setState({
-        editCategory: [],
-        editSubCategory: [],
-        editIssuetype: []
-      });
-    }
-
-    setTimeout(() => {
-      if (this.state.editCategory) {
-        this.setState({ editSubCategory: [] });
-        this.handleGetSubCategoryList(data);
+    if (e === null) {
+      e = [];
+      this.setState({ editCategory: e ,
+      SubCategoryData:[]});
+    }else{
+      if (e !== null) {
+        this.setState({ editCategory: e });
+      } else {
+        this.setState({
+          editCategory: [],
+          editSubCategory: [],
+          editIssuetype: []
+        });
       }
-    }, 1);
+  
+      setTimeout(() => {
+        if (this.state.editCategory) {
+          this.setState({ editSubCategory: [] });
+          this.handleGetSubCategoryList(data);
+        }
+      }, 1);
+    }
+    
   };
   handleSubCategoryChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedSubCategory: e });
-    setTimeout(() => {
-      if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList(data);
-      }
-    }, 1);
-  };
-  handleEditSubCategoryChange = (data, e) => {
-    debugger;
-    if (this.state.editCategory !== null) {
-      if (e !== null) {
-        this.setState({ editSubCategory: e });
-      } else {
-        this.setState({ editSubCategory: [], editIssuetype: [] });
-      }
-
+    if (e === null) {
+      e = [];
+      this.setState({ selectedSubCategory: e,
+      IssueTypeData:[] });
+    }else{
+      this.setState({ selectedSubCategory: e });
       setTimeout(() => {
-        if (this.state.editSubCategory) {
-          this.setState({ editIssuetype: [] });
+        if (this.state.selectedSubCategory) {
           this.handleGetIssueTypeList(data);
         }
       }, 1);
-    } else {
-      this.setState({ editSubCategory: [] });
     }
+   
+  };
+  handleEditSubCategoryChange = (data, e) => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ editSubCategory: e,
+      IssueTypeData:[] });
+    }else{
+      if (this.state.editCategory !== null) {
+        if (e !== null) {
+          this.setState({ editSubCategory: e });
+        } else {
+          this.setState({ editSubCategory: [], editIssuetype: [] });
+        }
+  
+        setTimeout(() => {
+          if (this.state.editSubCategory) {
+            this.setState({ editIssuetype: [] });
+            this.handleGetIssueTypeList(data);
+          }
+        }, 1);
+      } else {
+        this.setState({ editSubCategory: [] });
+      }
+    }
+    
   };
   handleIssueTypeChange = e => {
     debugger;
-
+    if (e === null) {
+      e = [];
+    }
     this.setState({ selectedIssueType: e });
   };
   handleEditIssueTypeChange = e => {
     debugger;
+    if (e === null) {
+      e = [];
+    }
     if (e !== null) {
       this.setState({ editIssuetype: e });
     } else {
@@ -899,6 +983,18 @@ class Users extends Component {
         var userdata = res.data.responseData;
         var status = res.data.message;
 
+       
+
+        if (status === "Success") {
+          self.setState({
+            userData: userdata
+          });
+        } else {
+          self.setState({
+            userData: []
+          });
+        }
+        
         if (userdata !== null) {
           self.state.sortAllData = userdata;
           var unique = [];
@@ -915,16 +1011,53 @@ class Users extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({ designation: distinct[i] });
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].userName] &&
+              userdata[i].userName !== ""
+            ) {
+              distinct.push(userdata[i].userName);
+              unique[userdata[i].userName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortUsername.push({ userName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].mobileNumber] &&
+              userdata[i].mobileNumber !== ""
+            ) {
+              distinct.push(userdata[i].mobileNumber);
+              unique[userdata[i].mobileNumber] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortMobile.push({ mobileNumber: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].emailID] &&
+              userdata[i].emailID !== ""
+            ) {
+              distinct.push(userdata[i].emailID);
+              unique[userdata[i].emailID] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortEmail.push({ emailID: distinct[i] });
+          }
         }
-        if (status === "Success") {
-          self.setState({
-            userData: userdata
-          });
-        } else {
-          self.setState({
-            userData: []
-          });
-        }
+
       })
       .catch(data => {
         console.log(data);
@@ -1186,19 +1319,31 @@ class Users extends Component {
 
   handleAddMapCategory() {
     debugger;
-    // var radiob=false;
-    // var agentb=false;
-    // if(this.state.selectedCopyEscalation === true){
-    //     if(this.state.selectedSupervisorRadio=== true || this.state.selectedAgentRadio===true){
-    //       radiob=true;
-    //     }
-    // }
+    var radiob=true;
+    var agentb=true;
+    if(this.state.selectedAssignEscalation === true){
+        if(this.state.selectedSupervisorRadio !== true && this.state.selectedAgentRadio !==true){
+          radiob=false;
+        }else{
+          radiob=true;
+        }
+       
+    }
+    if(this.state.selectedAgentRadio === true){
+      if(this.state.selectedAgent === 0 || this.state.selectedAgent==="Select Agent"){
+       agentb=false;
+      }else{
+       agentb=true;
+      }
+     }
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedCategory !== null &&
       this.state.selectedSubCategory !== null &&
       this.state.selectedIssueType !== null &&
-      this.state.selectedCRMRoles > 0 
+      this.state.selectedCRMRoles > 0 &&
+      radiob===true &&
+      agentb===true
       
       // this.state.selectedCopyEscalation === true &&
       // this.state.selectedAssignEscalation === true &&
@@ -1333,7 +1478,8 @@ class Users extends Component {
         crmroleCompulsion: "Please select  crm roles",
         // copyescCompulsion: "Please select copy escalation",
         // assignescCompulsion: "Please select assign escalation",
-        //agentCompulsion: "Please select agent"
+        RadioCompulsion:"Please select any option.",
+        agentCompulsion: "Please select agent"
       });
     }
   }
@@ -1389,6 +1535,25 @@ class Users extends Component {
   }
   handleUpdateUser() {
     debugger;
+
+    var radiob=true;
+    var agentb=true;
+    if(this.state.userEditData.is_Assign_Escalation === true){
+        if(this.state.editSupervisorRadio !== true && this.state.editAgentRadio !==true){
+          radiob=false;
+        }else{
+          radiob=true;
+        }
+       
+    }
+    if(this.state.editAgentRadio === true){
+      if(this.state.userEditData.assign_ID === 0 || this.state.userEditData.assign_ID==="Select Agent"){
+       agentb=false;
+      }else{
+       agentb=true;
+      }
+     }
+
     if (
       this.state.userEditData.selectUserName.length > 0 &&
       this.state.userEditData.first_Name.length > 0 &&
@@ -1402,7 +1567,9 @@ class Users extends Component {
       this.state.editCategory !== null &&
       this.state.editSubCategory !== null &&
       this.state.editIssuetype !== null &&
-      this.state.userEditData.role_ID > 0 
+      this.state.userEditData.role_ID > 0 &&
+       radiob===true &&
+     agentb===true
       // this.state.userEditData.is_Copy_Escalation === true &&
       // this.state.userEditData.is_Assign_Escalation === true &&
       //this.state.userEditData.assign_ID > 0
@@ -1551,9 +1718,10 @@ class Users extends Component {
         editsubcategoryCompulsion: "Please select subcategory",
         editisuuetypeCompulsion: "Please select issuetype",
         editcrmroleCompulsion: "Please select  crm roles",
+        editRadioCompulsion:"Please select any option.",
         // editcopyescCompulsion: "Please select copy escalation",
         // editassignescCompulsion: "Please select assign escalation",
-        //editagentCompulsion: "Please select agent"
+        editagentCompulsion: "Please select agent"
       });
     }
   }
@@ -1644,6 +1812,78 @@ class Users extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "userName"
+                  ? this.state.sortUsername !== null &&
+                    this.state.sortUsername.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.userName}
+                          value={item.userName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "userName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.userName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.userName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+                  
+                  {this.state.sortColumn === "mobileNumber"
+                  ? this.state.sortMobile !== null &&
+                    this.state.sortMobile.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.mobileNumber}
+                          value={item.mobileNumber}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "mobileNumber"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.mobileNumber}>
+                          <span className="table-btn table-blue-btn">
+                            {item.mobileNumber}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+                  
+{this.state.sortColumn === "emailID"
+                  ? this.state.sortEmail !== null &&
+                    this.state.sortEmail.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.emailID}
+                          value={item.emailID}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "emailID"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.emailID}>
+                          <span className="table-btn table-blue-btn">
+                            {item.emailID}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+
               </div>
             </div>
           </Modal>
@@ -2090,7 +2330,12 @@ class Users extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span className={this.state.userColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "userName"
+                          )}
+                          >
                             User Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2100,7 +2345,12 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span className={this.state.mobileColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "mobileNumber"
+                          )}
+                          >
                             Mobile No.
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2110,7 +2360,12 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span className={this.state.emailColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "emailID"
+                          )}
+                          >
                             Email ID
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2120,7 +2375,7 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span
+                          <span className={this.state.designationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designation"
@@ -2403,6 +2658,7 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectUserName"
                           value={this.state.selectUserName}
                           onChange={this.handleOnChangeUserData}
@@ -2419,6 +2675,7 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectFirstName"
                           value={this.state.selectFirstName}
                           onChange={this.handleOnChangeUserData}
@@ -2435,6 +2692,7 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectLastName"
                           value={this.state.selectLastName}
                           onChange={this.handleOnChangeUserData}
@@ -2451,6 +2709,7 @@ class Users extends Component {
                           type="text"
                           maxLength={10}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectMobile"
                           value={this.state.selectMobile}
                           onChange={this.handleOnChangeUserData}
@@ -2470,6 +2729,7 @@ class Users extends Component {
                           type="text"
                           maxLength={100}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectEmail"
                           value={this.state.selectEmail}
                           onChange={this.handleOnChangeUserData}
@@ -2494,7 +2754,7 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editMethod.bind(this)}
                           >
-                            Update
+                            Edit
                           </button>
                         </div>
                       ) : this.state.buttonToggle === true ? (
@@ -2544,8 +2804,9 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>User Designation</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={this.state.profileReadOnly ? 'disabled-input add-select-category' : 'add-select-category'}
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.handleDesination.bind(this, "add")}
@@ -2567,8 +2828,9 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={this.state.profileReadOnly ? 'disabled-input add-select-category' : 'add-select-category'}
                           name="selectedReporteeDesign"
                           value={this.state.selectedReporteeDesign}
                           onChange={this.handleReporteeDesgnDropDown.bind(
@@ -2593,8 +2855,9 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Report To</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={this.state.profileReadOnly ? 'disabled-input add-select-category' : 'add-select-category'}
                           name="selectedReportTO"
                           value={this.state.selectedReportTO}
                           onChange={this.handleOnChangeUserData}
@@ -2623,7 +2886,7 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editProfileMethod.bind(this)}
                           >
-                            Update
+                            Edit
                           </button>
                         </div>
                       ) : this.state.buttonProfileToggle === true ? (
@@ -2818,6 +3081,7 @@ class Users extends Component {
                             </p>
                           )}
                           {this.state.selectedAssignEscalation === true ? (
+                            <>
                             <div className="sup-agent-cntr">
                               <div className="status-options">
                                 <input
@@ -2830,6 +3094,7 @@ class Users extends Component {
                                     "add"
                                   )}
                                 />
+                               
                                 <label
                                   htmlFor="supervisor"
                                   className="logout-label"
@@ -2853,8 +3118,19 @@ class Users extends Component {
                                 </label>
                               </div>
                             </div>
+
+                            {/* {this.state.selectedSupervisorRadio===false && this.state.selectedAgentRadio ===false (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.RadioCompulsion}
+                              </p>
+                            )}
+                             */}
+                            </>
+                            
                           ) : null}
+                         
                         </div>
+                        
                         {this.state.selectedAgentRadio === true && this.state.selectedAssignEscalation === true ? (
 
 <div className="div-cntr">

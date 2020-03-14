@@ -102,7 +102,12 @@ class StoreMaster extends Component {
       editStoreTypeValidation: "",
       editContactEmailValidation: "",
       editContactPhoneValidation: "",
-      editStatusValidation: ""
+      editStatusValidation: "",
+      storeNameColor:"",
+      storeCodecolor:"",
+      cityColor:"",
+      stateColor:"",
+      pincodeColor:""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -158,23 +163,49 @@ class StoreMaster extends Component {
   setSortCheckStatus = (column, e) => {
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      storeNameColor:"",
+      storeCodecolor:"",
+      cityColor:"",
+      stateColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "storeName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.storeName === data);
+      this.setState({
+        storeNameColor:"sort-column"
+        
+      });
     } else if (column === "storeCode") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.storeCode === data);
+      this.setState({
+        storeCodecolor:"sort-column"
+        
+      });
     } else if (column === "cityName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.cityName === data);
+      this.setState({
+        cityColor:"sort-column"
+        
+      });
     } else if (column === "stateName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.stateName === data);
+      this.setState({
+        stateColor:"sort-column"
+        
+      });
     } else if (column === "pinCode") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.pinCode === data);
+      this.setState({
+        pincodeColor:"sort-column"
+        
+      });
     }
 
     this.setState({
@@ -1046,7 +1077,7 @@ class StoreMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span
+                            <span className={this.state.storeNameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName"
@@ -1060,7 +1091,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.storeCodecolor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeCode"
@@ -1118,13 +1149,13 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.cityColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "cityName"
                               )}
                             >
-                              City
+                              City 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1132,7 +1163,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.stateColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "stateName"
@@ -1146,7 +1177,8 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span 
+                            //className={this.state.pincodeColor}
                             //onClick={this.StatusOpenModel.bind(this,"pinCode")}
                             >
                               Pincode

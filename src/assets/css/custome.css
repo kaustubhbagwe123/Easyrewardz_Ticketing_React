@@ -4648,7 +4648,9 @@ progress::-webkit-progress-bar {
   border: none;
 }
 /* #endregion */
-
+.disabled-input {
+  cursor: not-allowed !important;
+}
 /* Deepak Savani for Program Code Page add CSS  */
 
 .program-code-button {
@@ -10619,6 +10621,10 @@ table tr th:last-child {
     center;
   background-size: 60px;
   z-index: 5;
+}
+.loader-icon-cntr-ovrlay .loader-icon {
+  position: fixed;
+  background-color: rgba(0,0,0,0.1);
 }
 .loader-icon-height {
   height: 200px;
