@@ -10619,6 +10619,10 @@ table tr th:last-child {
   background-size: 60px;
   z-index: 5;
 }
+.loader-icon-cntr-ovrlay .loader-icon {
+  position: fixed;
+  background-color: rgba(0,0,0,0.1);
+}
 .loader-icon-height {
   height: 200px;
 }
