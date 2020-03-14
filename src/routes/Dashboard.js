@@ -316,7 +316,10 @@ class Dashboard extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      moduleID: 0
+      moduleID: 0,
+      ticketGenerationSourceFlag: false,
+      ticketToBillBarFlag: false,
+      openByPriorityFlag: false
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -1145,17 +1148,32 @@ class Dashboard extends Component {
           }
           if (DashboardBillGraphData !== null) {
             self.setState({
-              DashboardBillGraphData
+              DashboardBillGraphData,
+              ticketToBillBarFlag: false
+            });
+          } else {
+            self.setState({
+              ticketToBillBarFlag: true
             });
           }
           if (DashboardSourceGraphData !== null) {
             self.setState({
-              DashboardSourceGraphData
+              DashboardSourceGraphData,
+              ticketGenerationSourceFlag: false
+            });
+          } else {
+            self.setState({
+              ticketGenerationSourceFlag: true
             });
           }
           if (DashboardPriorityGraphData !== null) {
             self.setState({
-              DashboardPriorityGraphData
+              DashboardPriorityGraphData,
+              openByPriorityFlag: false
+            });
+          } else {
+            self.setState({
+              openByPriorityFlag: true
             });
           }
           self.setState({
@@ -1190,8 +1208,7 @@ class Dashboard extends Component {
     this.setState({
       AgentIds: strAgentIds
     });
-    // if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
-    if (this.state.AgentIds !== "") {
+    if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
       this.handleTicketsOnLoad();
@@ -1215,8 +1232,7 @@ class Dashboard extends Component {
     this.setState({
       BrandIds: strBrandIds
     });
-    // if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
-    if (this.state.BrandIds !== "") {
+    if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
       this.handleTicketsOnLoad();
@@ -4210,6 +4226,7 @@ class Dashboard extends Component {
                                 </>
                               ) : null}
                             </div>
+                              {this.state.openByPriorityFlag && <p>No Data Available</p>}
                           </div>
                         </div>
                         <div className="col-lg-6 col-md-8">
@@ -4276,6 +4293,7 @@ class Dashboard extends Component {
                                     ) : null}
                                   </div>
                                 </div>
+                                {this.state.ticketToBillBarFlag && <p>No Data Available</p>}
                               </div>
                               <div
                                 className="tab-pane fade"
@@ -4309,6 +4327,7 @@ class Dashboard extends Component {
                                     ) : null}
                                   </div>
                                 </div>
+                                {this.state.ticketGenerationSourceFlag && <p>No Data Available</p>}
                               </div>
                             </div>
                           </div>
