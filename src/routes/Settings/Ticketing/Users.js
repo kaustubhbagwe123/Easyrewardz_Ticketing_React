@@ -126,7 +126,14 @@ class Users extends Component {
       StatusModel: false,
       sortAllData: "",
       sortDesignation: [],
-      selTab: "Personal Details"
+      sortUsername:[],
+      sortEmail:[],
+      sortMobile:[],
+      selTab: "Personal Details",
+      userColor:"",
+      mobileColor:"",
+      emailColor:"",
+      designationColor:""
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -203,11 +210,42 @@ class Users extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      userColor:"",
+      mobileColor:"",
+      emailColor:"",
+      designationColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "designation") {
       this.state.userData = this.state.sortAllData;
       itemsArray = this.state.userData.filter(a => a.designation === data);
+      this.setState({
+        designationColor: "sort-column"
+       
+      });
+    }else if (column === "userName") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.userName === data);
+      this.setState({
+        userColor: "sort-column"
+       
+      });
+    }else if (column === "mobileNumber") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.mobileNumber === data);
+      this.setState({
+        mobileColor: "sort-column"
+       
+      });
+    }else if (column === "emailID") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.emailID === data);
+      this.setState({
+        emailColor: "sort-column"
+       
+      });
     }
     this.setState({
       userData: itemsArray
@@ -945,6 +983,18 @@ class Users extends Component {
         var userdata = res.data.responseData;
         var status = res.data.message;
 
+       
+
+        if (status === "Success") {
+          self.setState({
+            userData: userdata
+          });
+        } else {
+          self.setState({
+            userData: []
+          });
+        }
+        
         if (userdata !== null) {
           self.state.sortAllData = userdata;
           var unique = [];
@@ -961,16 +1011,53 @@ class Users extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({ designation: distinct[i] });
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].userName] &&
+              userdata[i].userName !== ""
+            ) {
+              distinct.push(userdata[i].userName);
+              unique[userdata[i].userName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortUsername.push({ userName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].mobileNumber] &&
+              userdata[i].mobileNumber !== ""
+            ) {
+              distinct.push(userdata[i].mobileNumber);
+              unique[userdata[i].mobileNumber] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortMobile.push({ mobileNumber: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].emailID] &&
+              userdata[i].emailID !== ""
+            ) {
+              distinct.push(userdata[i].emailID);
+              unique[userdata[i].emailID] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortEmail.push({ emailID: distinct[i] });
+          }
         }
-        if (status === "Success") {
-          self.setState({
-            userData: userdata
-          });
-        } else {
-          self.setState({
-            userData: []
-          });
-        }
+
       })
       .catch(data => {
         console.log(data);
@@ -1725,6 +1812,78 @@ class Users extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "userName"
+                  ? this.state.sortUsername !== null &&
+                    this.state.sortUsername.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.userName}
+                          value={item.userName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "userName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.userName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.userName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+                  
+                  {this.state.sortColumn === "mobileNumber"
+                  ? this.state.sortMobile !== null &&
+                    this.state.sortMobile.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.mobileNumber}
+                          value={item.mobileNumber}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "mobileNumber"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.mobileNumber}>
+                          <span className="table-btn table-blue-btn">
+                            {item.mobileNumber}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+                  
+{this.state.sortColumn === "emailID"
+                  ? this.state.sortEmail !== null &&
+                    this.state.sortEmail.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.emailID}
+                          value={item.emailID}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "emailID"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.emailID}>
+                          <span className="table-btn table-blue-btn">
+                            {item.emailID}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+
               </div>
             </div>
           </Modal>
@@ -2171,7 +2330,12 @@ class Users extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span className={this.state.userColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "userName"
+                          )}
+                          >
                             User Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2181,7 +2345,12 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span className={this.state.mobileColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "mobileNumber"
+                          )}
+                          >
                             Mobile No.
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2191,7 +2360,12 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span className={this.state.emailColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "emailID"
+                          )}
+                          >
                             Email ID
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2201,7 +2375,7 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span
+                          <span className={this.state.designationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designation"

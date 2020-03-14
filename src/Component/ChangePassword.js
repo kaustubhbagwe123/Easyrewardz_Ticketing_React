@@ -19,6 +19,7 @@ class ChangePassword extends Component {
       confimPassword: "",
       oldPassword:"",
       ProfileData: [],
+      oldPasswordCompulsion:""
      
       
     };
@@ -78,7 +79,8 @@ class ChangePassword extends Component {
     debugger;
     e.preventDefault();
 
-    if (this.validator.allValid()) {
+    if (this.validator.allValid()
+    ) {
       const { newPassword, confimPassword } = this.state;
       if (newPassword === confimPassword) {
         this.handleChangePassword(newPassword);
@@ -88,6 +90,7 @@ class ChangePassword extends Component {
         );
       }
     } else {
+      
       this.validator.showMessages();
       // rerender to show messages for the first time
       // you can use the autoForceUpdate option to do this automatically`
@@ -106,9 +109,6 @@ class ChangePassword extends Component {
     .slice(window.location.href.indexOf("?") + 1)
     .split(":")[1];
 
-
-
-
     var field = 'Id';
     var changePasswordType="system";
     var emailIDsystem="";
@@ -119,17 +119,12 @@ class ChangePassword extends Component {
         changePasswordType="mail";
         emailIDsystem=emaiId;
      
-      
     }else {
      
         changePasswordType="system";
         emailIDsystem=email;
      
-     
     }
-
-     
-
 
     axios({
       method: "post",
@@ -194,6 +189,11 @@ class ChangePassword extends Component {
                     onChange={this.handlechange}
                     maxLength={25}
                   />
+                 {this.validator.message(
+"Old Password",
+this.state.oldPassword,
+"required"
+)}
                   
                 </div>
                 <div className="input-group sb-2">
