@@ -285,10 +285,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.");
+          NotificationManager.success("Alert deleted successfully.", '', 1000);
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.");
+          NotificationManager.error("Alert not deleted.", '', 1000);
         }
       })
       .catch(data => {
@@ -388,7 +388,7 @@ class Alerts extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Alert updated successfully.");
+            NotificationManager.success("Alert updated successfully.", '', 1000);
             self.handleGetAlert();
             self.setState({
               AddAlertTabsPopup: false,
@@ -399,7 +399,7 @@ class Alerts extends Component {
               editSaveLoading: false,
               AddAlertTabsPopup: false
             });
-            NotificationManager.error("Alert not updated.");
+            NotificationManager.error("Alert not updated.", '', 1000);
           }
         })
         .catch(data => {
@@ -410,7 +410,7 @@ class Alerts extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.");
+      NotificationManager.error("Alert not updated.", '', 1000);
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name."
       });
@@ -696,9 +696,9 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.");
+          NotificationManager.success("Record Saved successfully.", '', 1000);
         }else if(status === "Record Already Exists "){
-          NotificationManager.error("Record Already Exists.");
+          NotificationManager.error("Record Already Exists.", '', 1000);
         }
         self.handleAddAlertTabsClose();
       })

@@ -121,12 +121,12 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template update successfully.");
+          NotificationManager.success("Template update successfully.", '', 1000);
           self.handleGetTemplate();
           self.setState({ editSaveLoading: false,ConfigTabsModal:false });
         } else {
           self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
-          NotificationManager.error("Template not update.");
+          NotificationManager.error("Template not update.", '', 1000);
         }
       })
       .catch(data => {
@@ -322,10 +322,10 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template deleted successfully.");
+          NotificationManager.success("Template deleted successfully.", '', 1000);
           self.handleGetTemplate();
         } else {
-          NotificationManager.error("Template not deleted.");
+          NotificationManager.error("Template not deleted.", '', 1000);
         }
       })
       .catch(data => {
@@ -364,7 +364,7 @@ class Templates extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Template added successfully.");
+            NotificationManager.success("Template added successfully.", '', 1000);
             self.handleGetTemplate();
             self.setState({
               TemplateSubject: "",
@@ -375,7 +375,7 @@ class Templates extends Component {
               templatebodyCompulsion: ""
             });
           } else {
-            NotificationManager.error("Template not added.");
+            NotificationManager.error("Template not added.", '', 1000);
           }
         })
         .catch(data => {

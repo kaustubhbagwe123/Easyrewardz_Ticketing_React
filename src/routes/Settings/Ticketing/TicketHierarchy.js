@@ -396,7 +396,7 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success("Hierarchy added successfully.");
+            NotificationManager.success("Hierarchy added successfully.", '', 1000);
             self.hanldeGetReportListDropDown();
             self.setState({
               designation_name: "",
@@ -407,7 +407,7 @@ class TicketHierarchy extends Component {
               statusCompulsion: ""
             });
           }else if(status === "Record Already Exists "){
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error("Record Already Exists.", '', 1000);
           }
         })
         .catch(data => {
@@ -438,10 +438,10 @@ class TicketHierarchy extends Component {
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetHierarchyData();
-          NotificationManager.success("Designation deleted successfully.");
+          NotificationManager.success("Designation deleted successfully.", '', 1000);
           self.hanldeGetReportListDropDown();
         } else {
-          NotificationManager.error(res.data.message);
+          NotificationManager.error(res.data.message, '', 1000);
         }
       })
       .catch(data => {
@@ -479,17 +479,17 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success("Hierarchy update successfully.");
+            NotificationManager.success("Hierarchy update successfully.", '', 1000);
             self.hanldeGetReportListDropDown();
           } else {
-            NotificationManager.error("Hierarchy not update.");
+            NotificationManager.error("Hierarchy not update.", '', 1000);
           }
         })
         .catch(data => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Hierarchy not update.");
+      NotificationManager.error("Hierarchy not update.", '', 1000);
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",

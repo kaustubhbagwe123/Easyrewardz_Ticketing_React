@@ -406,7 +406,7 @@ class CategoryMaster extends Component {
           });
           self.handleGetCategoryList();
         } else {
-          NotificationManager.error("Category not added.");
+          NotificationManager.error("Category not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -455,7 +455,7 @@ class CategoryMaster extends Component {
           });
           self.handleGetSubCategoryList();
         } else {
-          NotificationManager.error("SubCategory not added.");
+          NotificationManager.error("SubCategory not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -496,7 +496,7 @@ class CategoryMaster extends Component {
           });
           self.handleGetIssueTypeList();
         } else {
-          NotificationManager.error("Issue Type not added.");
+          NotificationManager.error("Issue Type not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -577,7 +577,7 @@ class CategoryMaster extends Component {
               statusCompulsion: ""
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error("Record Already Exists.", '', 1000);
           } else {
             NotificationManager.error(status, "", 3000);
           }
@@ -661,7 +661,7 @@ class CategoryMaster extends Component {
             statusCompulsion: ""
           });
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.");
+          NotificationManager.error("Record Already Exists.", '', 1000);
         } else {
           NotificationManager.error(status, "", 3000);
         }
