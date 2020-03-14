@@ -4647,7 +4647,9 @@ progress::-webkit-progress-bar {
   border: none;
 }
 /* #endregion */
-
+.disabled-input {
+  cursor: not-allowed !important;
+}
 /* Deepak Savani for Program Code Page add CSS  */
 
 .program-code-button {

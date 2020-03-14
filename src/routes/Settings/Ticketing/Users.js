@@ -2658,6 +2658,7 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectUserName"
                           value={this.state.selectUserName}
                           onChange={this.handleOnChangeUserData}
@@ -2674,6 +2675,7 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectFirstName"
                           value={this.state.selectFirstName}
                           onChange={this.handleOnChangeUserData}
@@ -2690,6 +2692,7 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectLastName"
                           value={this.state.selectLastName}
                           onChange={this.handleOnChangeUserData}
@@ -2706,6 +2709,7 @@ class Users extends Component {
                           type="text"
                           maxLength={10}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectMobile"
                           value={this.state.selectMobile}
                           onChange={this.handleOnChangeUserData}
@@ -2725,6 +2729,7 @@ class Users extends Component {
                           type="text"
                           maxLength={100}
                           readOnly={this.state.personalReadOnly}
+                          className={this.state.personalReadOnly ? 'disabled-input' : ''}
                           name="selectEmail"
                           value={this.state.selectEmail}
                           onChange={this.handleOnChangeUserData}
@@ -2799,8 +2804,9 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>User Designation</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={this.state.profileReadOnly ? 'disabled-input add-select-category' : 'add-select-category'}
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.handleDesination.bind(this, "add")}
@@ -2822,8 +2828,9 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={this.state.profileReadOnly ? 'disabled-input add-select-category' : 'add-select-category'}
                           name="selectedReporteeDesign"
                           value={this.state.selectedReporteeDesign}
                           onChange={this.handleReporteeDesgnDropDown.bind(
@@ -2848,8 +2855,9 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Report To</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={this.state.profileReadOnly ? 'disabled-input add-select-category' : 'add-select-category'}
                           name="selectedReportTO"
                           value={this.state.selectedReportTO}
                           onChange={this.handleOnChangeUserData}
