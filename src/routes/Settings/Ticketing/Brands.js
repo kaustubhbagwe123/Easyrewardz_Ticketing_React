@@ -409,6 +409,8 @@ class Brands extends Component {
             brandnameCompulsion: "",
             statusCompulsion: ""
           });
+        } else if (status === "Record Already Exists ") {
+          NotificationManager.error(status, '', 1000);
         }
       }).catch(data => {
         console.log(data);
