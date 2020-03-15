@@ -6626,7 +6626,7 @@ progress::-webkit-progress-bar {
   font-family: Lato;
   font-size: 14px;
   line-height: 50px;
-  width: 121px;
+  width: 100px;
   text-align: left;
   cursor: pointer;
 }
