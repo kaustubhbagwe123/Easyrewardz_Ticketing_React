@@ -705,7 +705,8 @@ class TicketSystem extends Component {
       .getElementById("titleSuggestion")
       .value.substring(startPoint, textLength);
     // alert(textBefore + "....." + textAfter);
-    let clickedInfo = e.currentTarget.innerText;
+    // let clickedInfo = e.currentTarget.innerText;
+    let clickedInfo = e.currentTarget.title;
     let titleSuggValue = this.state.titleSuggValue;
     titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
     this.setState({ titleSuggValue });
