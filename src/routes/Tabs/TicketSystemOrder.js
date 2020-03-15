@@ -1480,6 +1480,7 @@ class TicketSystemOrder extends Component {
                     // onChange={this.handleNumberOnchange}
                     onChange={this.handleManuallyOnchange}
                     autoComplete="off"
+                    maxLength={10}
                   />
                 </div>
               </div>

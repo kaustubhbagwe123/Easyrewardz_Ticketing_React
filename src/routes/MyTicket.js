@@ -443,7 +443,10 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getagentlist",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        TicketID:this.state.ticket_Id
+      }
     })
       .then(function(res) {
         ////debugger;
@@ -1322,7 +1325,7 @@ class MyTicket extends Component {
   }
 
   hanldeGetSelectedStoreData() {
-    ////debugger;
+    debugger;
     let self = this;
     // this.setState({ loading: true });
     axios({
@@ -1334,13 +1337,12 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
         if (status === "Success") {
           const newSelected = Object.assign({}, self.state.CheckStoreID);
-          ////debugger;
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
             if (data[i].storeID) {
@@ -2690,7 +2692,7 @@ class MyTicket extends Component {
                           }
                         ]}
                         // resizable={false}
-                        minRows={1}
+                        minRows={2}
                         // defaultPageSize={5}
                         showPagination={false}
                         resizable={false}
@@ -3666,7 +3668,7 @@ class MyTicket extends Component {
                                     // resizable={false}
                                     defaultPageSize={5}
                                     showPagination={false}
-                                    minRows={1}
+                                    minRows={2}
                                   />
                                 </div>
                               </div>
@@ -3792,7 +3794,7 @@ class MyTicket extends Component {
                                     // resizable={false}
                                     defaultPageSize={5}
                                     showPagination={false}
-                                    minRows={1}
+                                    minRows={2}
                                   />
                                 </div>
                               </div>
@@ -4058,7 +4060,7 @@ class MyTicket extends Component {
                                       }
                                     ]}
                                     //resizable={false}
-                                    minRows={1}
+                                    minRows={2}
                                     defaultPageSize={5}
                                     showPagination={false}
                                   />
@@ -4160,7 +4162,7 @@ class MyTicket extends Component {
                                       }
                                     ]}
                                     //resizable={false}
-                                    minRows={1}
+                                    minRows={2}
                                     defaultPageSize={5}
                                     showPagination={false}
                                     SubComponent={row => {
@@ -4281,7 +4283,7 @@ class MyTicket extends Component {
                                               }
                                             ]}
                                             defaultPageSize={5}
-                                            minRows={1}
+                                            minRows={2}
                                             showPagination={false}
                                           />
                                         </div>
@@ -4394,7 +4396,7 @@ class MyTicket extends Component {
                                       }
                                     ]}
                                     //resizable={false}
-                                    minRows={1}
+                                    minRows={2}
                                     defaultPageSize={5}
                                     showPagination={false}
                                   />
@@ -4497,7 +4499,7 @@ class MyTicket extends Component {
                                       }
                                     ]}
                                     //resizable={false}
-                                    minRows={1}
+                                    minRows={2}
                                     defaultPageSize={5}
                                     showPagination={false}
                                     SubComponent={row => {
@@ -4617,7 +4619,7 @@ class MyTicket extends Component {
                                             ]}
                                             defaultPageSize={5}
                                             showPagination={false}
-                                            minRows={1}
+                                            minRows={2}
                                           />
                                         </div>
                                       );
@@ -5656,8 +5658,9 @@ class MyTicket extends Component {
                                                                 }}
                                                               >
                                                                 {
-                                                                  MsgData.ticketMailBody
-                                                                }
+                                                                  MsgData.ticketMailBody.replace(/<[^>]+>/g, "")
+                                                                  .replace(/&nbsp;/gi, " ")}
+                                                                
                                                               </label>
                                                             </div>
                                                           </div>
@@ -5684,8 +5687,9 @@ class MyTicket extends Component {
                                                           {
                                                             details
                                                               .trailMessageDetails
-                                                              .ticketMailBody
-                                                          }
+                                                              .ticketMailBody.replace(/<[^>]+>/g, "")
+                                                              .replace(/&nbsp;/gi, " ")}
+                                                          
                                                         </label>
                                                       </div>
                                                     </div>
