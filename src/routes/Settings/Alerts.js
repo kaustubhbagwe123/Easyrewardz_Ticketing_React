@@ -250,20 +250,94 @@ class Alerts extends Component {
     }
   };
 
-  handleGetAlert() {
+  handleGetAlert(id) {
+    var alertId = 0;
+    if (id) {
+      alertId = id;
+    } else {
+      alertId = 0;
+    }
     debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/GetAlertList",
-      params:{alertId:0},
+      params: { alertId: alertId },
       headers: authHeader()
     })
       .then(function(res) {
         debugger;
         let alert = res.data.responseData;
-        if (alert !== null && alert !== undefined) {
-          self.setState({ alert });
+        if (id) {
+          var data = alert[0].alertContent;
+          var selectedSubjectCustomer = "";
+          var selectedCKCustomer = "";
+          var selectedSubjectInternal = "";
+          var selectedCKInternal = "";
+          var selectedSubjectStore = "";
+          var selectedCKStore = "";
+          var selectedSMSContent = "";
+          var selectedNotifContent = "";
+          var emailCust = false;
+          var emailInt = false;
+          var emailStore = false;
+          var smsCust = false;
+          var notiInt = false;
+          var alertEdit = {};
+          alertEdit.alertIsActive = res.data.responseData[0].isAlertActive;
+          alertEdit.selectedAlertType = res.data.responseData[0].alertID;
+          alertEdit.AlertTypeName = res.data.responseData[0].alertTypeName;
+
+          if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].isEmailCustomer) {
+                emailCust = data[i].isEmailCustomer;
+                selectedSubjectCustomer = data[i].subject;
+                selectedCKCustomer = data[i].mailContent;
+              }
+              if (data[i].isEmailInternal) {
+                emailInt = data[i].isEmailInternal;
+                selectedSubjectInternal = data[i].subject;
+                selectedCKInternal = data[i].mailContent;
+              }
+              if (data[i].isEmailStore) {
+                emailStore = data[i].isEmailStore;
+                selectedSubjectStore = data[i].subject;
+                selectedCKStore = data[i].mailContent;
+              }
+              if (data[i].isSMSCustomer) {
+                smsCust = data[i].isSMSCustomer;
+                selectedSMSContent = data[i].smsContent;
+              }
+              if (data[i].isNotificationInternal) {
+                notiInt = data[i].isNotificationInternal;
+                selectedNotifContent = data[i].notificationContent;
+              }
+            }
+          }
+
+          self.setState({
+            selectedSubjectCustomer,
+            selectedCKCustomer,
+            selectedSubjectInternal,
+            selectedCKInternal,
+            selectedSubjectStore,
+            selectedCKStore,
+            selectedSMSContent,
+            selectedNotifContent,
+            emailCust,
+            emailInt,
+            emailStore,
+            smsCust,
+            notiInt,
+            alertEdit,
+            editModal: true,
+            isEdit: true
+          });
+        } else {
+          if (alert !== null && alert !== undefined) {
+            self.setState({ alert });
+          }
         }
       })
       .catch(data => {
@@ -297,11 +371,11 @@ class Alerts extends Component {
   }
   handleUpdateAlert() {
     debugger;
-    if (this.state.alertEdit.updateAlertTypeName.length > 0) {
+    if (this.state.alertEdit.selectedAlertType) {
       let AlertisActive;
       if (this.state.alertEdit.alertIsActive === "Active") {
         AlertisActive = true;
-      } else if (this.state.updateAlertisActive === "Inactive") {
+      } else if (this.state.alertEdit.alertIsActive === "Inactive") {
         AlertisActive = false;
       }
       this.setState({
@@ -341,35 +415,27 @@ class Alerts extends Component {
       if (this.state.emailCust) {
         CommunicationModeDetails.push(emailCustomer); //// for Email For Customer
       } else {
-        return false;
+        // return false;
       }
-      if (
-        this.state.emailInt &&
-        this.state.selectedCKInternal &&
-        this.state.selectedSubjectInternal
-      ) {
+      if (this.state.emailInt) {
         CommunicationModeDetails.push(emailInternal); //// for Email for Internal
       } else {
-        return false;
+        // return false;
       }
-      if (
-        this.state.emailStore &&
-        this.state.selectedCKStore &&
-        this.state.selectedSubjectStore
-      ) {
+      if (this.state.emailStore) {
         CommunicationModeDetails.push(emailStore); //// for Email for Store
       } else {
-        return false;
+        // return false;
       }
-      if (this.state.smsCust && this.state.selectedSMSContent !== "") {
+      if (this.state.smsCust) {
         CommunicationModeDetails.push(sms); /// for SMS
       } else {
-        return false;
+        // return false;
       }
-      if (this.state.notiInt && this.state.selectedNotifContent !== "") {
+      if (this.state.notiInt) {
         CommunicationModeDetails.push(notification); ////for Notification
       } else {
-        return false;
+        // return false;
       }
 
       let self = this;
@@ -377,9 +443,9 @@ class Alerts extends Component {
         method: "post",
         url: config.apiUrl + "/Alert/ModifyAlert",
         headers: authHeader(),
-        params: {
+        data: {
           AlertID: this.state.alertEdit.selectedAlertType,
-          AlertTypeName: this.state.alertEdit.updateAlertTypeName,
+          AlertTypeName: this.state.alertEdit.AlertTypeName,
           isAlertActive: AlertisActive,
           CommunicationModeDetails: CommunicationModeDetails
         }
@@ -419,53 +485,54 @@ class Alerts extends Component {
 
   updateAlert(individualData) {
     debugger;
-    var alertEdit = {};
-    alertEdit.selectedAlertType = individualData.alertID;
-    alertEdit.updateAlertTypeName = individualData.alertTypeName;
-    alertEdit.alertIsActive = individualData.isAlertActive;
 
-    var emailCust = individualData.isEmailCustomer;
-    var emailInt = individualData.isEmailInternal;
-    var emailStore = individualData.isEmailStore;
-    var smsCust = individualData.isSMSCustomer;
-    var notiInt = individualData.isNotificationInternal;
+    this.handleGetAlert(individualData.alertID || 0);
+    // var alertEdit = {};
+    // alertEdit.selectedAlertType = individualData.alertID;
+    // alertEdit.updateAlertTypeName = individualData.alertTypeName;
+    // alertEdit.alertIsActive = individualData.isAlertActive;
 
-    
-    if (emailCust) {
-      var selectedSubjectCustomer = individualData.subject;
-    var selectedCKCustomer = individualData.mailContent;
-      var selectedSMSContent = individualData.mailContent;
-      this.setState({ selectedSMSContent });
-    }
+    // var emailCust = individualData.isEmailCustomer;
+    // var emailInt = individualData.isEmailInternal;
+    // var emailStore = individualData.isEmailStore;
+    // var smsCust = individualData.isSMSCustomer;
+    // var notiInt = individualData.isNotificationInternal;
 
-    if (emailStore) {
-      var selectedSMSContent = individualData.mailContent;
-      this.setState({ selectedSMSContent });
-    }
+    // if (emailCust) {
+    //   var selectedSubjectCustomer = individualData.subject;
+    // var selectedCKCustomer = individualData.mailContent;
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
 
-    if (emailCust) {
-      var selectedSMSContent = individualData.mailContent;
-      this.setState({ selectedSMSContent });
-    }
-    if (smsCust) {
-      var selectedSMSContent = individualData.mailContent;
-      this.setState({ selectedSMSContent });
-    }
-    if (notiInt) {
-      var selectedNotifContent = individualData.mailContent;
-      this.setState({ selectedNotifContent });
-    }
+    // if (emailStore) {
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
 
-    this.setState({
-      emailCust,
-      emailInt,
-      emailStore,
-      smsCust,
-      notiInt,
-      alertEdit,
-      editModal: true,
-      isEdit: true
-    });
+    // if (emailCust) {
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
+    // if (smsCust) {
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
+    // if (notiInt) {
+    //   var selectedNotifContent = individualData.mailContent;
+    //   this.setState({ selectedNotifContent });
+    // }
+
+    // this.setState({
+    //   emailCust,
+    //   emailInt,
+    //   emailStore,
+    //   smsCust,
+    //   notiInt,
+    //   alertEdit,
+    //   editModal: true,
+    //   isEdit: true
+    // });
   }
 
   handleUpdateAlertTypeName(e) {
@@ -697,7 +764,7 @@ class Alerts extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success("Record Saved successfully.");
-        }else if(status === "Record Already Exists "){
+        } else if (status === "Record Already Exists ") {
           NotificationManager.error("Record Already Exists.");
         }
         self.handleAddAlertTabsClose();
@@ -715,10 +782,10 @@ class Alerts extends Component {
     const { name, value } = e.target;
 
     var data = this.state.alertEdit;
-    if (name === "updateAlertId") {
+    if (name === "selectedAlertType") {
       var alertName = e.target.selectedOptions[0].innerText;
       data[name] = value;
-      data["updateAlertTypeName"] = alertName;
+      data["AlertTypeName"] = alertName;
     } else {
       data[name] = value;
     }
@@ -769,16 +836,14 @@ class Alerts extends Component {
                         Cell: row => {
                           return (
                             <div>
-                              {row.original.isByEmail ===
-                                true && (
+                              {row.original.isByEmail === true && (
                                 <img
                                   src={LetterBox}
                                   alt="Letter"
                                   className="alert-tableImge"
                                 />
                               )}
-                              {row.original.isBySMS ===
-                                true && (
+                              {row.original.isBySMS === true && (
                                 <img
                                   src={SmsImg}
                                   alt="Sms"
@@ -1759,23 +1824,7 @@ class Alerts extends Component {
             <div className="">
               <label className="popover-header-text">EDIT ALERTS</label>
             </div>
-            {/* <div className="pop-over-div">
-              <label className="edit-label-1">Alert Type</label>
-              <input
-                type="text"
-                className="txt-edit-popover"
-                placeholder="Enter Alert Type"
-                maxLength={25}
-                name="updateAlertTypeName"
-                value={this.state.alertEdit.updateAlertTypeName}
-                onChange={this.editAlertModalData.bind(this)}
-              />
-              {this.state.alertEdit.updateAlertTypeName === "" && (
-                <p style={{ color: "red", marginBottom: "0px" }}>
-                  {this.state.editAlertNameCopulsion}
-                </p>
-              )}
-            </div> */}
+
             <div className="div-cntr">
               <label>Alert Type</label>
 
@@ -1861,14 +1910,12 @@ class Alerts extends Component {
               <label>Status</label>
               <select
                 name="alertIsActive"
-                value={
-                  this.state.alertEdit.alertIsActive === "Active" ? true : false
-                }
+                value={this.state.alertEdit.alertIsActive}
                 onChange={this.editAlertModalData.bind(this)}
               >
                 <option value="">Select</option>
-                <option value={true}>Active</option>
-                <option value={false}>Inactive</option>
+                <option value={"Active"}>Active</option>
+                <option value={"Inactive"}>Inactive</option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
@@ -1887,22 +1934,6 @@ class Alerts extends Component {
                 onClick={this.handleOpenAdd.bind(this)}
               >
                 SAVE
-                {/* <label
-                  className="pop-over-btnsave-text"
-                  // onClick={this.handleUpdateAlert.bind(
-                  //   this,
-                  //   row.original.alertID
-                  // )}
-                >
-                  <label
-                    className="pop-over-btnsave-text"
-                    // onClick={e => {
-                    //   props.handleUpdateAlert(e, alertID);
-                    // }}
-                  >
-                    SAVE
-                  </label>
-                </label> */}
               </button>
             </div>
           </div>
