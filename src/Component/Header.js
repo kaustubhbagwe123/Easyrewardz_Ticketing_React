@@ -966,10 +966,10 @@ class Header extends Component {
               </Drawer>
             </div>
 
-            <a href="#!">
+            <a href="#!" style={{ display: this.state.notificationAccess }}>
               <div
                 className="position-relative"
-                style={{ display: this.state.notificationAccess }}
+                // style={{ display: this.state.notificationAccess }}
                 onClick={this.openModal}
               >
                 <img src={NotificationLogo} alt="logo" className="notifi" />
@@ -983,12 +983,12 @@ class Header extends Component {
                 Notifications
               </span>
             </a>
-            <Link to="settings">
+            <Link to="settings" style={{ display: this.state.settingAccess }}>
               <img
                 src={SettingLogo}
                 alt="logo"
                 className="setting"
-                style={{ display: this.state.settingAccess }}
+                // style={{ display: this.state.settingAccess }}
               />
               <img
                 src={SettingLogoBlue}

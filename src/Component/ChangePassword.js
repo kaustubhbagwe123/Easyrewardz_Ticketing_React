@@ -163,7 +163,7 @@ class ChangePassword extends Component {
               <div className="mb-4">
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
               </div>
-              <div style={{ marginBottom: "18px" }}>
+              <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
                   <label
                     className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
@@ -236,7 +236,7 @@ this.state.oldPassword,
                     "required"
                   )}
                 </div>
-                <div className="input-group mb-3">
+                <div className="input-group">
                   <button
                     type="submit"
                     className="recovery-pass-button program-code-button"

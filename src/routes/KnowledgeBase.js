@@ -533,9 +533,9 @@ class KnowledgeBase extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error("Record in use.", '', 1000);
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record deleted Successfully.", '', 1000);
           self.handleKBList();
         }
       })
@@ -569,7 +569,7 @@ class KnowledgeBase extends Component {
           let Msg = res.data.message;
 
           if (Msg === "Success") {
-            NotificationManager.success("Record Rejected successfully.");
+            NotificationManager.success("Record Rejected successfully.", '', 1000);
           }
 
           self.handleKBList();
@@ -609,7 +609,7 @@ class KnowledgeBase extends Component {
             let Msg = res.data.message;
 
             if (Msg === "Success") {
-              NotificationManager.success("Record Approved successfully.");
+              NotificationManager.success("Record Approved successfully.", '', 1000);
             }
             self.closeEditAproveModal1();
             self.handleKBList();
@@ -827,9 +827,9 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
+            NotificationManager.success("Record Updated successfully.", '', 1000);
           } else {
-            NotificationManager.error("Record Not Updated.");
+            NotificationManager.error("Record Not Updated.", '', 1000);
           }
           self.closeEditAproveModal();
           self.handleKBList();
@@ -881,7 +881,7 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Saved successfully.");
+            NotificationManager.success("Record Saved successfully.", '', 1000);
           }
           self.setState({
             selectedCategory: "",

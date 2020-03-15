@@ -25,114 +25,7 @@ import SimpleReactValidator from "simple-react-validator";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = props => {
-  debugger;
-  const { rowData } = props;
-  const [roleName, setRoleNameValue] = useState(rowData.roleName);
-  const [modules] = useState(rowData.modules);
-  const [status, setStatusValue] = useState(rowData.isRoleActive);
-  const [crmRoleID] = useState(rowData.crmRoleID);
-
-  function onchaneRadio(e, value) {
-    debugger;
-    // e.preventdefault();
-    var index = props.rowData.modules.findIndex(x => x.moduleID == value);
-    props.rowData.modules[index].modulestatus = !props.rowData.modules[index]
-      .modulestatus;
-    return false;
-  }
-  props.callBackEdit(roleName, modules, status, rowData);
-  return (
-    <div>
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CRM ROLE</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Role Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Role Name"
-            maxLength={25}
-            value={roleName}
-            onChange={e => setRoleNameValue(e.target.value)}
-          />
-        </div>
-        {rowData.modules !== null &&
-          rowData.modules.map((item, i) => (
-            <div
-              className="module-switch crm-margin-div crm-padding-div"
-              key={i}
-            >
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">{item.moduleName}</label>
-                <input
-                  type="checkbox"
-                  id={"k" + item.moduleID}
-                  name="allModules"
-                  attrIds={item.moduleID}
-                  checked={item.modulestatus}
-                  onChange={e => {
-                    props.checkModule(e, item.moduleID);
-                  }}
-                  onClick={e => {
-                    // props.updateCheckModule(e, item.moduleID);
-                    onchaneRadio(e, item.moduleID);
-                  }}
-                  //onChange={props.updateCheckModule.bind(e, item.moduleID) }
-                />
-                <label
-                  htmlFor={"k" + item.moduleID}
-                  className="cr cr-float-auto"
-                ></label>
-              </div>
-            </div>
-          ))}
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select
-            id="inputStatus"
-            className="edit-dropDwon dropdown-setting"
-            value={status}
-            onChange={e => setStatusValue(e.target.value)}
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Deactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-            CANCEL
-          </a>
-          <button className="pop-over-button">
-            <label
-              className="pop-over-btnsave-text"
-              onClick={e => {
-                props.createUpdateCrmRole(e, "update", crmRoleID);
-              }}
-            >
-              SAVE
-            </label>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+ 
 class TicketCRMRole extends Component {
   constructor(props) {
     super(props);
@@ -358,7 +251,7 @@ class TicketCRMRole extends Component {
           let status = res.data.message;
           if (status === "Success") {
             if (e === "add") {
-              NotificationManager.success("CRM Role added successfully.");
+              NotificationManager.success("CRM Role added successfully.", '', 1000);
               self.setState({
                 
                 RoleName: "",
@@ -370,17 +263,24 @@ class TicketCRMRole extends Component {
               });
               self.handleGetCRMRoles();
             } else if (e === "update") {
-              self.setState({editSaveLoading: false})
-              NotificationManager.success("CRM Role updated successfully.");
-              self.handleGetCRMRoles();
               self.toggleEditModal();
+              self.setState({editSaveLoading: false})
+              NotificationManager.success("CRM Role updated successfully.", '', 1000);
+              self.handleGetCRMRoles();
+             
+             
             }
+          }else if(status === "Record Already Exists "){
+            if(e === "add") {
+              NotificationManager.error("Record Already Exists ");
+            }
+            
           } else {
             if (e === "add") {
-              NotificationManager.error("CRM Role not added.");
+              NotificationManager.error("CRM Role not added.", '', 1000);
             } else if (e === "update") {
               self.setState({editSaveLoading: false})
-              NotificationManager.error("CRM Role not updated.");
+              NotificationManager.error("CRM Role not updated.", '', 1000);
             }
           }
         })
@@ -409,9 +309,9 @@ class TicketCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error("Record in use.", '', 1000);
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record deleted Successfully.", '', 1000);
           self.handleGetCRMRoles();
         }
       })
@@ -893,7 +793,7 @@ class TicketCRMRole extends Component {
                         className="form-control dropdown-setting"
                       >
                         <option value="true">Active</option>
-                        <option value="false">Deactive</option>
+                        <option value="false">Inactive</option>
                       </select>
                     </div>
                     <div className="btnSpace">
@@ -1058,7 +958,7 @@ class TicketCRMRole extends Component {
                   onChange={this.handleModaleDataChange.bind(this)}
                 >
                   <option value="Active">Active</option>
-                  <option value="Inactive">Deactive</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </div>
               <br />

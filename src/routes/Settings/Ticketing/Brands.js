@@ -400,7 +400,7 @@ class Brands extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetBrandList();
-          NotificationManager.success("Brand Added successfully.");
+          NotificationManager.success("Brand Added successfully.", '', 1000);
           self.setState({
             brand_Code: "",
             brand_name: "",
@@ -435,9 +435,9 @@ class Brands extends Component {
       let status = res.data.statusCode;
       if (status === 1010) {
         self.handleGetBrandList();
-        NotificationManager.success("Brand delete successfully.");
+        NotificationManager.success("Brand delete successfully.", '', 1000);
       } else {
-        NotificationManager.error(res.data.message);
+        NotificationManager.error(res.data.message, '', 1000);
       }
     }).catch(data => {
       console.log(data);
@@ -473,13 +473,13 @@ class Brands extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetBrandList();
-          NotificationManager.success("Brand updated successfully.");
+          NotificationManager.success("Brand updated successfully.", '', 1000);
         }
       }).catch(data => {
         console.log(data);
         });
     } else {
-      NotificationManager.error("Brand not updated .");
+      NotificationManager.error("Brand not updated .", '', 1000);
       this.setState({
         editbrandcodeCompulsion: "Please enter brand code.",
         editbrandnameCompulsion: "Please enter brand name.",

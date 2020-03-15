@@ -1,4 +1,4 @@
-.cr-pnt{
+.cr-pnt {
   cursor: pointer;
 }
 a {
@@ -28,9 +28,8 @@ a {
   text-align: left;
 }
 
-.cls-hide
-{
-  display:none;
+.cls-hide {
+  display: none;
 }
 .my-tickets {
   color: #4a4a4a;
@@ -164,7 +163,7 @@ a {
 }
 .ordermainrow .rt-table::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
-}  
+}
 .headers-menu::-webkit-scrollbar {
   height: 5px;
 }
@@ -296,7 +295,8 @@ a {
   text-align: left;
   padding-top: 10px;
   display: block;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+  /* margin-bottom: 30px; */
 }
 .dashboardImg1 {
   width: 21px;
@@ -403,7 +403,7 @@ a {
 }
 .upper-noti-count {
   position: absolute;
-  background-color: #FFB629;
+  background-color: #ffb629;
   width: 20px;
   height: 20px;
   line-height: 20px;
@@ -616,7 +616,7 @@ table tr th:last-child {
   height: 43px;
   margin-left: 35px;
   cursor: pointer;
-  color: #FFFF;
+  color: #ffff;
 }
 
 .myticket-submit-solve-button-text {
@@ -668,7 +668,7 @@ table tr th:last-child {
   padding: 30px; */
 }
 .text-editor .row {
-  margin:20px 0 0 0;
+  margin: 20px 0 0 0;
 }
 .card-rectangle {
   background: #f5f8f9;
@@ -1247,7 +1247,7 @@ table tr th:last-child {
   display: block;
   cursor: pointer;
 }
-.inlineGridTicket{
+.inlineGridTicket {
   display: inline-grid;
   float: right;
 }
@@ -1354,12 +1354,12 @@ table tr th:last-child {
   font-weight: 400;
   line-height: 17px;
   width: auto;
-    min-width: 160px;
-    text-align: center;
+  min-width: 160px;
+  text-align: center;
 }
 
-.btnMdlSubmit{
-  background: #FFF;
+.btnMdlSubmit {
+  background: #fff;
   border: none;
   height: 0px;
   padding: 0px;
@@ -1550,10 +1550,10 @@ table {
   height: 23px;
 }
 
-.sort-column{
-  color:#0066CC;
-   font-Weight: bold;
-   text-decoration-line: underline;
+.sort-column {
+  color: #0066cc;
+  font-weight: bold;
+  text-decoration-line: underline;
 }
 .add-note {
   color: #9b9b9b;
@@ -1886,7 +1886,8 @@ body {
 .fs-12 {
   font-size: 12px;
 }
-button, .csv-button {
+button,
+.csv-button {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
   border-radius: 5px;
@@ -1945,7 +1946,7 @@ button, .csv-button {
   z-index: 1;
 }
 .dashboard-collapse-icon-inv {
-  background-color: #2561A8;
+  background-color: #2561a8;
 }
 .dash-popup {
   position: absolute;
@@ -2189,7 +2190,7 @@ table td span {
   margin-left: 3px;
 }
 .info-iconcus {
-  float:right;
+  float: right;
   margin-top: 3px;
 }
 .table-btn {
@@ -2568,8 +2569,8 @@ table tr th:last-child {
   border-top: none;
 }
 #logout-popup .logout {
-  background-color: #ECF2F4;
-  border: 1px solid #2561A8;
+  background-color: #ecf2f4;
+  border: 1px solid #2561a8;
   border-radius: 5px;
   width: 100px;
   height: 38px;
@@ -2677,7 +2678,7 @@ table tr th:last-child {
 #logout-popup .styles_closeButton__20ID4 {
   display: none;
 }
-.dis-btn{
+.dis-btn {
   background-color: #2561a8 !important;
   color: #fff;
   opacity: 0.4;
@@ -2833,10 +2834,15 @@ table tr th:last-child {
   padding-right: 20px;
   padding-left: 20px;
 }
-.dash-timepicker .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box, .dash-timepicker .react-datepicker__time-container {
+.dash-timepicker
+  .react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box,
+.dash-timepicker .react-datepicker__time-container {
   width: 185px !important;
 }
-.dash-timepicker .react-datepicker-wrapper, .dash-timepicker input {
+.dash-timepicker .react-datepicker-wrapper,
+.dash-timepicker input {
   width: 100% !important;
 }
 .dash-timepicker {
@@ -3137,7 +3143,8 @@ table tr th:last-child {
 }
 .auth-content .card .card-block,
 .auth-content .card .card-body {
-  padding: 35px 60px 50px;
+  padding: 25px 60px 25px;
+  /* padding: 35px 60px 50px; */
   /*box-shadow: 0 0 4px 0px #ddd;*/
 }
 .auth-wrapper .auth-content {
@@ -3147,7 +3154,8 @@ table tr th:last-child {
   display: block;
 }
 .auth-wrapper .auth-content {
-  margin: 50px auto;
+  margin: 20px auto;
+  /* margin: 50px auto; */
 }
 .auth-wrapper input {
   border: 0;
@@ -3164,7 +3172,7 @@ table tr th:last-child {
   padding-right: 35px;
   width: 151px;
   font-size: 14px;
-  background: #dbe4e7  url("../Images/down-1.png") no-repeat right 12px center;
+  background: #dbe4e7 url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
 }
@@ -3210,16 +3218,20 @@ table tr th:last-child {
 /* extra css end */
 
 /* my ticket list starts */
-.normal-dropdown .css-yk16xz-control, .normal-dropdown .css-1pahdxg-control {
+.normal-dropdown .css-yk16xz-control,
+.normal-dropdown .css-1pahdxg-control {
   min-height: 41px;
   border-color: transparent;
   box-shadow: none;
 }
-.normal-dropdown .css-yk16xz-control:hover, .normal-dropdown .css-1pahdxg-control:hover {
+.normal-dropdown .css-yk16xz-control:hover,
+.normal-dropdown .css-1pahdxg-control:hover {
   border-color: transparent;
   box-shadow: none;
 }
-.normal-dropdown .css-1n7v3ny-option, .normal-dropdown .css-yt9ioa-option, .normal-dropdown .css-9gakcf-option {
+.normal-dropdown .css-1n7v3ny-option,
+.normal-dropdown .css-yt9ioa-option,
+.normal-dropdown .css-9gakcf-option {
   padding: 6px 19px;
 }
 .normal-dropdown .css-w8afj7-Input {
@@ -3235,7 +3247,9 @@ table tr th:last-child {
 .normal-dropdown .css-1ml51p6-MenuList {
   padding: 0;
 }
-.normal-dropdown .css-yt9ioa-option, .normal-dropdown .css-1uccc91-singleValue, .normal-dropdown .css-1wa3eu0-placeholder {
+.normal-dropdown .css-yt9ioa-option,
+.normal-dropdown .css-1uccc91-singleValue,
+.normal-dropdown .css-1wa3eu0-placeholder {
   color: #a7a7a7;
 }
 .normal-dropdown .css-1wa3eu0-placeholder {
@@ -3243,7 +3257,7 @@ table tr th:last-child {
 }
 .normal-dropdown .css-1n7v3ny-option {
   color: #fff;
-  background-color: #2684FF;
+  background-color: #2684ff;
 }
 .normal-dropdown .css-1g48xl4-IndicatorsContainer {
   display: none;
@@ -3252,7 +3266,7 @@ table tr th:last-child {
   background-color: #fff;
 }
 .normal-dropdown .css-1n7v3ny-option:active {
-  background-color: #2684FF;
+  background-color: #2684ff;
 }
 .normal-dropdown .css-1hwfws3 {
   padding-right: 44px;
@@ -3268,7 +3282,8 @@ table tr th:last-child {
   border-radius: 5px;
   margin-top: 15px;
 }
-.schedule-multi .css-yk16xz-control, .schedule-multi .css-1pahdxg-control {
+.schedule-multi .css-yk16xz-control,
+.schedule-multi .css-1pahdxg-control {
   min-height: 43px;
   background: #ecf2f4;
 }
@@ -3277,10 +3292,13 @@ table tr th:last-child {
   padding-left: 11px;
   background-position: right 4px center;
 }
-.schedule-multi .css-1n7v3ny-option, .schedule-multi .css-yt9ioa-option, .schedule-multi .css-9gakcf-option {
+.schedule-multi .css-1n7v3ny-option,
+.schedule-multi .css-yt9ioa-option,
+.schedule-multi .css-9gakcf-option {
   padding: 6px 12px;
 }
-.schedule-multi .css-yt9ioa-option, .schedule-multi .css-1uccc91-singleValue {
+.schedule-multi .css-yt9ioa-option,
+.schedule-multi .css-1uccc91-singleValue {
   color: #495057;
 }
 .schedule-multi .css-1ml51p6-MenuList {
@@ -3312,13 +3330,15 @@ table tr th:last-child {
 /* my ticket list ends */
 
 /* ticket system starts */
-.ticket-title-select .css-yk16xz-control, .ticket-title-select .css-1pahdxg-control {
+.ticket-title-select .css-yk16xz-control,
+.ticket-title-select .css-1pahdxg-control {
   background-color: #ecf2f4;
   min-height: 42px;
   border-color: transparent;
   box-shadow: none;
 }
-.ticket-title-select .css-yk16xz-control:hover, .ticket-title-select .css-1pahdxg-control:hover {
+.ticket-title-select .css-yk16xz-control:hover,
+.ticket-title-select .css-1pahdxg-control:hover {
   border-color: transparent;
   box-shadow: none;
 }
@@ -3330,7 +3350,8 @@ table tr th:last-child {
   font-family: Lato;
   font-weight: 700;
 }
-.ticket-title-select .css-1uccc91-singleValue, .ticket-title-select .css-w8afj7-Input input {
+.ticket-title-select .css-1uccc91-singleValue,
+.ticket-title-select .css-w8afj7-Input input {
   color: #000 !important;
   font-family: Lato;
   font-weight: 700;
@@ -3342,24 +3363,26 @@ table tr th:last-child {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   margin: 0;
 }
-.ticket-title-select .css-1n7v3ny-option, .ticket-title-select .css-yt9ioa-option {
-  color: #9B9B9B;
+.ticket-title-select .css-1n7v3ny-option,
+.ticket-title-select .css-yt9ioa-option {
+  color: #9b9b9b;
   font-family: Lato;
 }
 .ticket-title-select .css-9gakcf-option {
   font-family: Lato;
-  background-color: #2561A8;
+  background-color: #2561a8;
 }
 .ticket-title-select .css-1ml51p6-MenuList div {
   display: inline-block;
   width: auto;
-  border: 1px solid #2561A8;
+  border: 1px solid #2561a8;
   border-radius: 8px;
   padding: 5px 10px;
   margin: 7px;
   cursor: pointer;
 }
-.priority-butns label, .action-type-butns label {
+.priority-butns label,
+.action-type-butns label {
   border-radius: 4px;
   font-weight: 700;
   font-family: Lato;
@@ -3376,7 +3399,8 @@ table tr th:last-child {
   border-color: #2561a8;
   color: #2561a8;
 }
-.priority-butns, .action-type-butns {
+.priority-butns,
+.action-type-butns {
   display: inline-block;
 }
 .priority-butns-cntr .priority-butns:nth-child(3n + 1) label {
@@ -3403,7 +3427,8 @@ table tr th:last-child {
   background: #5aa805;
   color: #fff;
 }
-.priority-butns-cntr .priority-butns:last-child label, .action-type-butns-cntr .action-type-butns:last-child label {
+.priority-butns-cntr .priority-butns:last-child label,
+.action-type-butns-cntr .action-type-butns:last-child label {
   margin-right: 0;
 }
 .kb-acc-cntr {
@@ -3436,30 +3461,30 @@ table tr th:last-child {
 }
 .custom-ticket-title-suggestions span {
   display: inline-block;
-    width: auto;
-    border: 1px solid #2561A8;
-    border-radius: 8px;
-    padding: 5px 10px;
-    margin: 7px;
-    cursor: pointer;
-    color: #9b9b9b;
-    transition: all 0.2s linear;
+  width: auto;
+  border: 1px solid #2561a8;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin: 7px;
+  cursor: pointer;
+  color: #9b9b9b;
+  transition: all 0.2s linear;
 }
 .custom-ticket-title-suggestions span:hover {
-  background: #DEEBFF;
+  background: #deebff;
 }
 .custom-ticket-title-suggestions {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   padding: 12px;
   position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #fff;
-    z-index: 1;
-    max-height: 200px;
-    overflow: auto;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 1;
+  max-height: 200px;
+  overflow: auto;
 }
 .custom-ticket-title-suggestions::-webkit-scrollbar {
   width: 5px;
@@ -3483,7 +3508,7 @@ table tr th:last-child {
   height: 5px;
 }
 .custom-antd-table .ant-table-content::-webkit-scrollbar-track {
-  background: #F3F0F0;
+  background: #f3f0f0;
   border-radius: 10px;
 }
 .custom-antd-table .ant-table-content::-webkit-scrollbar-thumb {
@@ -3496,7 +3521,8 @@ table tr th:last-child {
   border-radius: 5px;
   width: 100%;
 }
-.custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th span {
+.custom-antd-table .ant-table-thead > tr > th,
+.custom-react-table .rt-thead .rt-th span {
   font-weight: 700;
   color: #4a4a4a;
   white-space: nowrap;
@@ -3511,13 +3537,17 @@ table tr th:last-child {
 .custom-antd-table .ant-table-thead > tr {
   background: transparent !important;
 }
-.custom-antd-table .ant-table-tbody > tr > td, .custom-react-table .rt-tbody .rt-td {
+.custom-antd-table .ant-table-tbody > tr > td,
+.custom-react-table .rt-tbody .rt-td {
   /* white-space: nowrap !important; */
   padding: 20px !important;
   font-weight: 700 !important;
   font-size: 13px;
 }
-.custom-antd-table .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td {
+.custom-antd-table
+  .ant-table-tbody
+  > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+  > td {
   background: transparent;
 }
 .custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
@@ -3526,7 +3556,8 @@ table tr th:last-child {
 .custom-antd-table .ant-table-expanded-row > td:first-child {
   display: none;
 }
-.custom-antd-table .ant-table-expanded-row, .inner-custom-react-table .ReactTable {
+.custom-antd-table .ant-table-expanded-row,
+.inner-custom-react-table .ReactTable {
   background: #f8f8f8;
 }
 .inner-custom-react-table .ReactTable {
@@ -3541,11 +3572,13 @@ table tr th:last-child {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
-.custom-antd-table .filter-checkbox input + label, .custom-react-table .filter-checkbox input + label {
+.custom-antd-table .filter-checkbox input + label,
+.custom-react-table .filter-checkbox input + label {
   padding-left: 0;
   top: -5px;
 }
-.custom-antd-table table, .custom-react-table .ReactTable {
+.custom-antd-table table,
+.custom-react-table .ReactTable {
   padding: 0 20px;
 }
 .custom-antd-table .ant-table-expanded-row table {
@@ -3557,10 +3590,12 @@ table tr th:last-child {
 .date-picker-arrows .react-datepicker span {
   display: inline-block;
 }
-.datepicker-overflow table, .datepicker-overflow .ant-table-content {
+.datepicker-overflow table,
+.datepicker-overflow .ant-table-content {
   overflow: visible;
 }
-.datepicker-overflow .react-datepicker__month-read-view span, .datepicker-overflow .react-datepicker__year-read-view span {
+.datepicker-overflow .react-datepicker__month-read-view span,
+.datepicker-overflow .react-datepicker__year-read-view span {
   display: inline-block;
 }
 /* ticket system ends */
@@ -3590,7 +3625,7 @@ table tr th:last-child {
 }
 .my-ticket-notes {
   max-height: 245px;
-    overflow: auto;
+  overflow: auto;
 }
 .my-ticket-notes::-webkit-scrollbar {
   width: 5px;
@@ -3612,18 +3647,18 @@ table tr th:last-child {
 .ReactTable.limit-react-table-body .rt-thead {
   margin-right: 4px;
 }
-.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar{
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar {
   width: 4px;
 }
-.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-track{
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-track {
   background: #ddd;
   border-radius: 10px;
 }
-.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb{
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 10px;
 }
-.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb:hover{
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 .ReactTable.limit-react-table-body .rt-thead .rt-tr {
@@ -3685,13 +3720,13 @@ table tr th:last-child {
 
 /* settings starts */
 .module-switch .switch input[type="checkbox"]:checked + .cr {
-  border: 1px solid #50D462;
+  border: 1px solid #50d462;
 }
 .module-switch .switch input[type="checkbox"] + .cr:before {
   background: #c9c9c9;
 }
 .module-switch .switch input[type="checkbox"]:checked + .cr:before {
-  background: #50D462 !important;
+  background: #50d462 !important;
 }
 .temp-sub {
   padding: 0 40px 30px 40px;
@@ -3719,7 +3754,7 @@ table tr th:last-child {
 .category-box input {
   display: none;
 }
-#overlaySla{
+#overlaySla {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -3728,7 +3763,7 @@ table tr th:last-child {
   z-index: 1000;
   display: none;
 }
-#overlaySla.show{
+#overlaySla.show {
   display: block;
 }
 .dropdown-menu-sla {
@@ -3740,8 +3775,8 @@ table tr th:last-child {
 .sla-cancel-search img {
   position: absolute;
   top: 15px;
-    right: 10px;
-    width: 12px;
+  right: 10px;
+  width: 12px;
 }
 /* sla ends */
 
@@ -3988,10 +4023,10 @@ table tr th:last-child {
   padding-left: 25px;
   height: auto;
 }
-.displayNn{
+.displayNn {
   display: none;
 }
-.displayShw{
+.displayShw {
   display: block;
 }
 /**************************************/
@@ -4097,7 +4132,7 @@ table tr th:last-child {
 }
 #Historical-popup .rt-table::-webkit-scrollbar-thumb:hover {
   background: yellow;
-}  
+}
 /**Historical popup css edn**/
 
 /*Progress bar in my tickeyt page*/
@@ -4536,7 +4571,6 @@ progress::-webkit-progress-bar {
   text-align: left;
 }
 
-
 .add-comment-button {
   background-color: #2561a8;
   border-radius: 4px;
@@ -4589,13 +4623,15 @@ progress::-webkit-progress-bar {
 .reacttableclaimdrawer .ReactTable {
   border: none;
 }
-.reacttableclaimdrawer .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.reacttableclaimdrawer .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 10px 7px !important;
 }
 .reacttableclaimdrawer .ReactTable .rt-tbody .rt-td {
   padding: 10px 20px !important;
 }
-.reacttableclaimdrawe .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.reacttableclaimdrawe .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 10px 20px !important;
 }
 .reacttableclaimdrawe .ReactTable .rt-tbody .rt-td {
@@ -4605,7 +4641,7 @@ progress::-webkit-progress-bar {
   background-color: #f8f8f8;
 }
 .reacttableclaimdrawe .ReactTable .rt-thead.-header {
-  background-color: #f8f8f8
+  background-color: #f8f8f8;
 }
 .borderless table tr {
   border-bottom: none !important;
@@ -4665,7 +4701,7 @@ progress::-webkit-progress-bar {
 .chpass {
   font-weight: bold;
   color: #a5a5a5;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 .program-code-button-text {
   color: #ffffff;
@@ -4721,12 +4757,12 @@ progress::-webkit-progress-bar {
 }
 .textbhead {
   display: inline;
-    font-size: 14px;
-    padding: 0 15px;
-    font-weight: bold;
+  font-size: 14px;
+  padding: 0 15px;
+  font-weight: bold;
 }
 .textbhead span {
-font-weight: normal;
+  font-weight: normal;
 }
 .collapbtn {
   position: absolute;
@@ -4851,14 +4887,15 @@ font-weight: normal;
     padding: 18px 5px;
   }
   /* HierarchyMaster */
-  .hiermas table th{
+  .hiermas table th {
     padding: 20px 10px;
   }
   .hiermas table td {
     padding: 20px 10px;
   }
   /* Setting/Template */
-  .template-table .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  .template-table .ReactTable .rt-thead .rt-th.-cursor-pointer,
+  .ReactTable .rt-thead .rt-td.-cursor-pointer {
     padding: 20px 15px !important;
   }
   .template-table .ReactTable .rt-tbody .rt-td {
@@ -4876,7 +4913,8 @@ font-weight: normal;
     padding-right: 32px;
   }
   /*  */
-  .ChatElementReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  .ChatElementReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+  .ReactTable .rt-thead .rt-td.-cursor-pointer {
     padding: 20px 5px !important;
   }
   .ChatElementReact .ReactTable .rt-tbody .rt-td {
@@ -4998,14 +5036,20 @@ font-weight: normal;
   .setting-tabs ul {
     border: none;
     margin-bottom: 25px;
-}
+  }
   /* dashboard ends */
 }
 
 @media only screen and (max-width: 991px) {
-  .target-closure-date {font-size: 11px;}
-  .Date-target{font-size: 12px;}
-  .bata-rajouri-garden {line-height: 22px;}
+  .target-closure-date {
+    font-size: 11px;
+  }
+  .Date-target {
+    font-size: 12px;
+  }
+  .bata-rajouri-garden {
+    line-height: 22px;
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -5027,16 +5071,15 @@ font-weight: normal;
   /* dashboard ends */
 }
 @media only screen and (max-width: 768px) {
-  
   .mobilenumber-resp .respo {
     margin-left: 0 !important;
-}
-.mobilenumber-resp .resol {
-  margin-right: 0!important;
-}
-.card-details-1 {
-  height: auto;
-}
+  }
+  .mobilenumber-resp .resol {
+    margin-right: 0 !important;
+  }
+  .card-details-1 {
+    height: auto;
+  }
 }
 @media only screen and (max-width: 767px) {
   .storebox {
@@ -5100,7 +5143,7 @@ font-weight: normal;
   }
   .sectiontenant select {
     margin-bottom: 10px;
-}
+  }
   /* dashboard ends */
 }
 
@@ -5124,11 +5167,11 @@ font-weight: normal;
     width: 200px;
     height: auto;
     margin-left: 5px;
-}
-.myticket-submit-solve-button-text {
-  font-size: 12px;
-  margin-left: 0;
-}
+  }
+  .myticket-submit-solve-button-text {
+    font-size: 12px;
+    margin-left: 0;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -5389,20 +5432,20 @@ font-weight: normal;
   .mob-mar-btm button:last-child {
     margin-bottom: 0px;
   }
-  
-.grapwid {
-  max-width: 100% !important;
-  overflow: auto;
-}
-.dash-top-cards1 {
-  padding: 12px 20px !important;
-}
-.mid-sec {
-  padding: 15px;
-}
-.arrow-img {
-  margin: 5px 30px 0;
-}
+
+  .grapwid {
+    max-width: 100% !important;
+    overflow: auto;
+  }
+  .dash-top-cards1 {
+    padding: 12px 20px !important;
+  }
+  .mid-sec {
+    padding: 15px;
+  }
+  .arrow-img {
+    margin: 5px 30px 0;
+  }
   /* dashboard ends */
 }
 
@@ -5431,7 +5474,7 @@ font-weight: normal;
   .btnSearchQa {
     width: 100%;
     margin-top: 15px;
-}
+  }
   /* dashboard ends */
 }
 
@@ -5447,12 +5490,12 @@ font-weight: normal;
   .mlistbtn {
     float: none;
     text-align: center;
-}
-.setting-tabs ul {
-  border: none;
-  display: flex !important;
-  margin-bottom: 25px;
-}
+  }
+  .setting-tabs ul {
+    border: none;
+    display: flex !important;
+    margin-bottom: 25px;
+  }
   /* dashboard ends */
 }
 /* Responsive ends */
@@ -5498,7 +5541,7 @@ font-weight: normal;
   margin-right: 20px;
   margin-top: 7px;
   cursor: pointer;
-  color: #FFFF;
+  color: #ffff;
 }
 
 .add-new-kb {
@@ -5992,7 +6035,7 @@ font-weight: normal;
   height: 43px;
   border: none;
   padding-left: 10px;
-  
+
   cursor: pointer;
 }
 
@@ -6058,7 +6101,7 @@ font-weight: normal;
   cursor: pointer;
 }
 .cancel-button-modalk {
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 4px;
   border: none;
   width: 128px;
@@ -6131,7 +6174,8 @@ font-weight: normal;
   font-weight: 300;
   line-height: 34px;
   text-align: left;
-  margin-top: 28px;
+  /* margin-top: 28px; */
+  margin-top: 10px;
 }
 
 .recovery-pass-button {
@@ -6576,15 +6620,15 @@ font-weight: normal;
 .disabled-link {
   pointer-events: none;
 }
-.text-disabled{
+.text-disabled {
   pointer-events: none;
-    color: #2561a8;
-    font-family: Lato;
-    font-size: 14px;
-    line-height: 50px;
-    width: 121px;
-    text-align: left;
-    cursor: pointer;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  line-height: 50px;
+  width: 100px;
+  text-align: left;
+  cursor: pointer;
 }
 /* ---------------------------------------------- */
 /* Css Store_CRM Roles Shlok */
@@ -6623,7 +6667,7 @@ font-weight: normal;
   height: 20px;
   width: 35px;
   border-radius: 30px;
-  background: #50D462 ;
+  background: #50d462;
 }
 .switch input[type="checkbox"] + .cr:after {
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
@@ -6774,7 +6818,7 @@ font-weight: normal;
   height: 27px;
   min-width: auto;
   padding: 0px !important;
-  color:#FFFFFF
+  color: #ffffff;
 }
 .rt-tableMoveImge {
   flex: 0 0 auto !important;
@@ -7195,7 +7239,7 @@ table thead tr {
 }
 .cancel-btn-A {
   margin-right: 20px;
-  border:none;
+  border: none;
   background: transparent;
   cursor: pointer;
   color: #2561a8;
@@ -7273,8 +7317,8 @@ table thead tr {
 .srch-mleft-spc {
   /* margin-left: 120px; */
   float: right;
-    width: auto;
-    margin-top: 5px;
+  width: auto;
+  margin-top: 5px;
 }
 .assign-btn {
   height: 43px;
@@ -7681,7 +7725,10 @@ table tr th:last-child {
   transform: rotate(90deg);
   margin-top: -15px;
 }
-#BillInvoice-popup .switch.switch-primary input[type="checkbox"]:checked + .cr:before {
+#BillInvoice-popup
+  .switch.switch-primary
+  input[type="checkbox"]:checked
+  + .cr:before {
   background: #1ab394;
 }
 #BillInvoice-popup .usericon {
@@ -7952,7 +7999,7 @@ table tr th:last-child {
   cursor: initial;
 }
 .assign-ticket-table .rt-tbody .rt-tr:hover {
-  background: #ECF2F4;
+  background: #ecf2f4;
 }
 .assign-ticket-table .rt-tbody .rt-tr.-padRow:hover {
   background: #fff;
@@ -8186,7 +8233,8 @@ table tr th:last-child {
   display: flex;
   justify-content: flex-end;
 }
-.report-action div:first-child, .report-action div:nth-child(2) {
+.report-action div:first-child,
+.report-action div:nth-child(2) {
   flex: 0 0 20%;
 }
 .report-action div:last-child {
@@ -8373,32 +8421,32 @@ table tr th:last-child {
   max-height: 190px;
   overflow-x: hidden;
 }
-.varunoverflow::-webkit-scrollbar{
+.varunoverflow::-webkit-scrollbar {
   width: 4px;
 }
-.varunoverflow::-webkit-scrollbar-track{
+.varunoverflow::-webkit-scrollbar-track {
   background: #ddd;
   border-radius: 10px;
 }
-.varunoverflow::-webkit-scrollbar-thumb{
+.varunoverflow::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 10px;
 }
-.varunoverflow::-webkit-scrollbar-thumb:hover{
+.varunoverflow::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-.assign-modal-body-mytick .rt-table::-webkit-scrollbar{
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar {
   height: 7px;
 }
-.assign-modal-body-mytick .rt-table::-webkit-scrollbar-track{
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-track {
   background: #ddd;
   border-radius: 10px;
 }
-.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb{
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 10px;
 }
-.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb:hover{
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 .assign-modal-body-mytick .item-selection {
@@ -9023,11 +9071,11 @@ table tr th:last-child {
 }
 .store-nav-tabs .nav-link {
   color: #4a4a4a !important;
-    font-weight: 700;
-    padding: 0;
-    margin-top: 3px;
-    border: 0;
-    margin-left: 15px;
+  font-weight: 700;
+  padding: 0;
+  margin-top: 3px;
+  border: 0;
+  margin-left: 15px;
 }
 .tabcontentstore {
   padding: 0px;
@@ -9142,19 +9190,19 @@ table tr th:last-child {
 }
 .half-circle::before {
   position: absolute;
-    content: "";
-    height: 210px;
-    width: 100%;
-    background-color: #2561a8;
-    border-left: 0;
-    box-sizing: border-box;
-    border-radius: 50%;
-    top: -100px;
+  content: "";
+  height: 210px;
+  width: 100%;
+  background-color: #2561a8;
+  border-left: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  top: -100px;
 }
 .profimg {
   width: 60px;
   height: 60px;
-  margin-top:30px;
+  margin-top: 30px;
 }
 .profimg1 {
   width: 150px;
@@ -9668,13 +9716,13 @@ table tr th:last-child {
   min-width: auto;
   border-right-color: #ccc;
 }
-.colladrow label{
+.colladrow label {
   font-family: lato;
   font-size: 15px;
   color: #9b9b9b;
   margin-right: 10px;
 }
- .CCdi {
+.CCdi {
   border: 1px solid #9b9b9b;
   padding: 5px 5px;
   width: 145px;
@@ -9682,10 +9730,10 @@ table tr th:last-child {
 }
 .CCdi1 {
   border: 1px solid #9b9b9b;
-    padding: 5px 5px;
-    width: 145px;
-    height: 30px;
-    border-right: none
+  padding: 5px 5px;
+  width: 145px;
+  height: 30px;
+  border-right: none;
 }
 .colladrow .fileup {
   width: 14px;
@@ -9693,7 +9741,8 @@ table tr th:last-child {
   margin-right: 7px;
   cursor: pointer;
 }
-.colladrow .send, .my-tic-send {
+.colladrow .send,
+.my-tic-send {
   background: #2561a8;
   color: #fff;
   font-size: 14px;
@@ -9715,7 +9764,7 @@ table tr th:last-child {
 .my-tic-ckeditor .cke_bottom {
   display: none;
 }
-.colladrow .sav{
+.colladrow .sav {
   background: #fff;
   color: #2561a8;
   font-size: 14px;
@@ -9726,7 +9775,7 @@ table tr th:last-child {
   border: 1px solid #2561a8;
   cursor: pointer;
 }
-.colladrow .send1{
+.colladrow .send1 {
   background: #2561a8;
   color: #fff;
   font-size: 13px;
@@ -9741,7 +9790,7 @@ table tr th:last-child {
 .colladrowa .ticsys {
   margin: 0 18px;
 }
-.colladrow .sav1{
+.colladrow .sav1 {
   background: #fff;
   color: #2561a8;
   font-size: 13px;
@@ -9761,7 +9810,7 @@ table tr th:last-child {
 .EMFCText {
   margin: 0 15px;
   color: #000;
-  text-transform: capitalize
+  text-transform: capitalize;
 }
 .kblink-auto1 {
   position: absolute;
@@ -9795,17 +9844,17 @@ table tr th:last-child {
   font-weight: 400;
   cursor: pointer;
 }
-.colladrow .one{
+.colladrow .one {
   color: #2561a8;
   margin-left: -20px;
 }
 .myTicketEmail {
   position: relative;
 }
-.colladrowa { 
-   position: absolute;
-    width: 100%;
-    bottom: 0;
+.colladrowa {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 .DashBoarReact .table-b {
   border-radius: 15px;
@@ -9868,20 +9917,20 @@ table tr th:last-child {
   background-color: rgba(77, 92, 116, 0.2);
 }
 .kblinkright {
-  background-color: #ECF2F4;
+  background-color: #ecf2f4;
   padding: 0;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
   height: 565px;
 }
 .thumbtick {
-  border: 1px solid #ECF2F4;
+  border: 1px solid #ecf2f4;
   border-radius: 5px;
   margin-right: 5px;
   height: 45px;
 }
 .thumbtick-plus {
-  border: 1px solid #ECF2F4;
+  border: 1px solid #ecf2f4;
   border-radius: 5px;
   margin-right: 5px;
   margin: auto 0;
@@ -9891,11 +9940,11 @@ table tr th:last-child {
 }
 .cancalImg-kb {
   width: 15px;
-    height: 15px;
-    float: right;
-    margin-top: -15px;
-    cursor: pointer;
-    margin-right: -25px;
+  height: 15px;
+  float: right;
+  margin-top: -15px;
+  cursor: pointer;
+  margin-right: -25px;
 }
 .knokb {
   padding: 25px 60px;
@@ -9917,15 +9966,15 @@ table tr th:last-child {
   color: #2561a8;
 }
 .kblink-search {
-    background: #2561a8;
-    color: #fff;
-    font-size: 15px;
-    height: 40px;
-    width: 125px;
-    border: 1px solid #2561a8;
-    line-height: 11px;
-    float: right;
-    cursor: pointer;
+  background: #2561a8;
+  color: #fff;
+  font-size: 15px;
+  height: 40px;
+  width: 125px;
+  border: 1px solid #2561a8;
+  line-height: 11px;
+  float: right;
+  cursor: pointer;
 }
 .down-icon-kb1 {
   width: 20px;
@@ -9972,9 +10021,9 @@ table tr th:last-child {
 }
 .viewpolicy-kb {
   margin-left: 5px;
-    width: 22px;
-    height: 25px;
-    margin-top: -5px;
+  width: 22px;
+  height: 25px;
+  margin-top: -5px;
 }
 .kblink-auto {
   position: absolute;
@@ -10023,8 +10072,8 @@ table tr th:last-child {
 }
 @media (min-width: 768px) {
   .storecards .col-md-2 {
-      flex: 0 0 20%;
-      max-width: 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
   }
 }
 /* Dashboard ReactTable Css End Kalpesh */
@@ -10059,13 +10108,14 @@ table tr th:last-child {
   display: inline-block;
   width: 25%;
 }
-.newReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.newReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 10px !important;
 }
 /* MyTicket Bottom Header Css Start Kalpesh */
 .TicketTabs {
-  background-color: #FFFFFF;
-  border: 1px solid #E7E7E7;
+  background-color: #ffffff;
+  border: 1px solid #e7e7e7;
   box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.07);
   padding: 0 5px;
   position: fixed;
@@ -10087,15 +10137,15 @@ table tr th:last-child {
 .TicketTabs .SubL {
   margin: 0 12px;
 }
-.TicketTabs .Ticket{
+.TicketTabs .Ticket {
   width: 22px;
   height: 22px;
 }
-.TicketTabs .cancel{
+.TicketTabs .cancel {
   width: 16px;
   height: 16px;
 }
-.TicketTabs .Subject{
+.TicketTabs .Subject {
   margin: 0 15px;
   color: #000000;
   font-family: Lato;
@@ -10106,7 +10156,7 @@ table tr th:last-child {
   text-align: left;
 }
 .TicketTabs .More {
-  color: #4A4A4A;
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
@@ -10150,7 +10200,7 @@ table tr th:last-child {
 .myticlist-expand-sect .nav-tabs {
   border-color: #dae2e5;
   position: relative;
-  border-bottom: 1px solid #dae2e5;;
+  border-bottom: 1px solid #dae2e5;
 }
 .myticlist-expand-sect .nav-tabs .nav-item {
   margin-bottom: -1px;
@@ -10166,7 +10216,8 @@ table tr th:last-child {
   padding-right: 25px;
   padding-left: 25px;
 }
-.myticlist-expand-sect button, .csv-button {
+.myticlist-expand-sect button,
+.csv-button {
   background-color: #fff;
   margin-right: 15px;
   padding-top: 12px;
@@ -10189,7 +10240,7 @@ table tr th:last-child {
 .myticlist-expand-sect button.btn-inv {
   color: #fff;
   background-color: #2561a8;
-      cursor: pointer;
+  cursor: pointer;
 }
 .myticlist-expand-sect .tab-content .row {
   padding: 20px 0;
@@ -10308,7 +10359,8 @@ table tr th:last-child {
   height: 30px;
   line-height: 1px;
   font-size: 14px;
-  background: #dbe4e7 url("../Images//table-arr.png") no-repeat right 12px center;
+  background: #dbe4e7 url("../Images//table-arr.png") no-repeat right 12px
+    center;
   background-size: 14px;
   text-align: left;
 }
@@ -10330,7 +10382,7 @@ table tr th:last-child {
 .ticketSycard1 {
   height: 100%;
   background-color: #ffffff;
-  border: 1px solid #EBEBEB;
+  border: 1px solid #ebebeb;
   border-radius: 8px;
 }
 .marginsystem1 {
@@ -10433,20 +10485,20 @@ table tr th:last-child {
 }
 .DashTimeRange .cancelButton:hover {
   background-color: #2561a8 !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
 .DashTimeRange .cancelButton {
-    background-color: #fff;
-    color: #2561a8;
-    font-size: 12px;
-    width: 88px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 1px solid #2561a8;
-    text-transform: uppercase;
+  background-color: #fff;
+  color: #2561a8;
+  font-size: 12px;
+  width: 88px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #2561a8;
+  text-transform: uppercase;
 }
 .DashTimeRange .rangecontainer {
   border-right: 1px solid #eeeeee;
@@ -10455,14 +10507,14 @@ table tr th:last-child {
   position: relative;
   top: 1px;
   display: inline-block;
-  font-family: 'Glyphicons Halflings';
+  font-family: "Glyphicons Halflings";
   font-style: normal;
   font-weight: 400;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.DashTimeRange .glyphicon-chevron-left{
+.DashTimeRange .glyphicon-chevron-left {
   border-right: 7px solid transparent;
   border-left: 7px solid transparent;
   border-bottom: 10px solid rgba(0, 0, 0, 0.15);
@@ -10470,7 +10522,7 @@ table tr th:last-child {
   top: 10px;
   transform: rotate(270deg);
 }
-.DashTimeRange .glyphicon-chevron-right{
+.DashTimeRange .glyphicon-chevron-right {
   border-right: 7px solid transparent;
   border-left: 7px solid transparent;
   border-bottom: 10px solid rgba(0, 0, 0, 0.15);
@@ -10487,7 +10539,7 @@ table tr th:last-child {
 .dashallbrand1 .ch1-text {
   font-size: 16px;
   font-weight: 600;
-  color: #4A4A4A;
+  color: #4a4a4a;
   font-family: lato;
   margin: 0 5px;
 }
@@ -10522,12 +10574,12 @@ table tr th:last-child {
   width: 20px !important;
 }
 #ScheduleModel .scheduleBtncancel {
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 4px;
   /* width: 245px; */
   width: 100%;
   height: 43px;
-  color: #2561A8;
+  color: #2561a8;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
@@ -10537,7 +10589,7 @@ table tr th:last-child {
   cursor: pointer;
 }
 #ScheduleModel .txt1Time {
-  background: #ecf2f4 url("../Images/Time.png") no-repeat right 12px center; 
+  background: #ecf2f4 url("../Images/Time.png") no-repeat right 12px center;
   background-size: 17px;
 }
 .Every {
@@ -10548,15 +10600,15 @@ table tr th:last-child {
   padding: 0 8px;
   margin: 0 8px;
   border-radius: 5px;
-  color: #6E6E6E;
+  color: #6e6e6e;
   font-family: Lato;
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
-  text-align: center; 
+  text-align: center;
 }
 .ScheduleDate-to .every1 {
-  color: #A7A7A7;
+  color: #a7a7a7;
   font-family: Lato;
   font-size: 16px;
   font-weight: 400;
@@ -10595,7 +10647,6 @@ table tr th:last-child {
 
 /* ****************End css ************************/
 
-
 .autocomp div {
   background: red;
 }
@@ -10617,8 +10668,7 @@ table tr th:last-child {
   left: 0;
   /* height: 100vh; */
   bottom: 0;
-  background:transparent url("../Images/loader.gif") no-repeat center
-    center;
+  background: transparent url("../Images/loader.gif") no-repeat center center;
   background-size: 60px;
   z-index: 5;
 }
@@ -10647,15 +10697,15 @@ table tr th:last-child {
 .tic-history .ReactTable .rt-tbody .rt-td {
   padding: 10px 15px !important;
 }
-.tic-history  .ReactTable .rt-thead .rt-th.-cursor-pointer, .tic-history .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.tic-history .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.tic-history .ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 10px 15px !important;
 }
 
-
-.bckHide .rt-th{
+.bckHide .rt-th {
   display: none;
 }
-.tableSrolling{
+.tableSrolling {
   max-height: 300px;
   overflow: auto;
 }
@@ -10677,28 +10727,28 @@ table tr th:last-child {
 }
 
 .datePickertable .ReactTable .rt-tr .rt-td {
-
   flex: 1 0;
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 7px 5px;
   overflow: initial;
-  transition: .3s ease;
-  transition-property: width,min-width,padding,opacity;;
+  transition: 0.3s ease;
+  transition-property: width, min-width, padding, opacity;
 }
 
 .datePickertable .ReactTable .rt-tbody {
   overflow: initial;
 }
-.circleCancle{
+.circleCancle {
   height: 18px;
-   position: absolute;
-   top: -7px;
-    right: -2px;
-    cursor: pointer;
+  position: absolute;
+  top: -7px;
+  right: -2px;
+  cursor: pointer;
 }
 
-.datePickertable .react-datepicker__input-container input, .date-picker-arrows .react-datepicker__input-container input {
+.datePickertable .react-datepicker__input-container input,
+.date-picker-arrows .react-datepicker__input-container input {
   width: 100%;
   border: 1px solid #dcd4d4;
   padding: 1px 5px;
@@ -10738,12 +10788,12 @@ table tr th:last-child {
   display: none;
 }
 
-.applySearch{
+.applySearch {
   font-size: 14px;
-    font-weight: 700;
-    color: #2561a8 !important;
-    margin-right: 12px;
-    cursor: pointer;
+  font-weight: 700;
+  color: #2561a8 !important;
+  margin-right: 12px;
+  cursor: pointer;
 }
 
 .tic-noti label {
@@ -10772,18 +10822,18 @@ table tr th:last-child {
   font-weight: 400;
   color: #2561a8;
 }
-.notification-popover::-webkit-scrollbar{
+.notification-popover::-webkit-scrollbar {
   width: 6px;
 }
-.notification-popover::-webkit-scrollbar-track{
-  background: #F3F3F3;
+.notification-popover::-webkit-scrollbar-track {
+  background: #f3f3f3;
   border-radius: 10px;
 }
-.notification-popover::-webkit-scrollbar-thumb{
-  background: #D2DDEB;
+.notification-popover::-webkit-scrollbar-thumb {
+  background: #d2ddeb;
   border-radius: 10px;
 }
-.notification-popover::-webkit-scrollbar-thumb:hover{
+.notification-popover::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 .cus-drp .css-yk16xz-control {
@@ -10793,7 +10843,8 @@ table tr th:last-child {
   margin-top: 5px;
 }
 .cus-drp .css-1hwfws3 {
-  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 25px center;
+  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 25px
+    center;
   background-size: 13px;
   min-height: 43px;
   border-radius: 4px;
@@ -10806,19 +10857,20 @@ table tr th:last-child {
 .cus-drp .css-1pahdxg-control {
   border-color: transparent;
   margin-top: 5px;
-  border:none;
+  border: none;
   box-shadow: none;
   background-color: #ecf2f4;
 }
-.cus-drp .css-1pahdxg-control:hover, .cus-drp .css-1pahdxg-control:focus {
+.cus-drp .css-1pahdxg-control:hover,
+.cus-drp .css-1pahdxg-control:focus {
   border-color: transparent;
 }
 .cus-scroll {
-  max-height:300px;
-  overflow:auto;
+  max-height: 300px;
+  overflow: auto;
 }
 .agentlist .ReactTable .rt-tbody .rt-tr-group:hover {
-  background-color: #ECF2F4;
+  background-color: #ecf2f4;
   cursor: pointer;
 }
 .agentlist .ReactTable .rt-thead.-header {
@@ -10831,7 +10883,7 @@ table tr th:last-child {
 }
 .agentlist .ReactTable .rt-thead .rt-resizable-header-content {
   color: #a0a0a0 !important;
-} 
+}
 .agentlist .ReactTable .rt-td {
   color: #4a4a4a !important;
   padding: 12px 20px !important;
@@ -10839,14 +10891,16 @@ table tr th:last-child {
 .agentlist .ReactTable .rt-tbody .rt-tr-group {
   border-bottom: none;
 }
-.order-det .ReactTable .rt-th, .ReactTable .rt-td {
-    white-space: normal !important;
-    text-overflow: inherit !important;
-    padding: 7px 5px;
-    overflow: hidden;
-    transition: .3s ease;
+.order-det .ReactTable .rt-th,
+.ReactTable .rt-td {
+  white-space: normal !important;
+  text-overflow: inherit !important;
+  padding: 7px 5px;
+  overflow: hidden;
+  transition: 0.3s ease;
 }
-.order-det .ReactTable .rt-thead .rt-th, .order-det .ReactTable .rt-thead .rt-td {
+.order-det .ReactTable .rt-thead .rt-th,
+.order-det .ReactTable .rt-thead .rt-td {
   width: 150px !important;
   text-align: left;
 }
@@ -10854,19 +10908,22 @@ table tr th:last-child {
   width: 150px !important;
   padding: 12px 15px !important;
 }
-.order-det .ReactTable .rt-thead .rt-th, .order-det .ReactTable .rt-thead .rt-td {
+.order-det .ReactTable .rt-thead .rt-th,
+.order-det .ReactTable .rt-thead .rt-td {
   padding: 12px 15px !important;
 }
 .order-det .ReactTable .rt-tbody .rt-td:first-child {
   width: 50px !important;
 }
-.order-det .ReactTable .rt-thead .rt-th:first-child, .order-det .ReactTable .rt-thead .rt-td:first-child {
+.order-det .ReactTable .rt-thead .rt-th:first-child,
+.order-det .ReactTable .rt-thead .rt-td:first-child {
   width: 50px !important;
 }
 .order-detc2 .ReactTable .rt-tbody .rt-td:nth-child(2) {
   width: 50px !important;
 }
-.order-detc2 .ReactTable .rt-thead .rt-th:nth-child(2), .order-detc2 .ReactTable .rt-thead .rt-td:nth-child(2) {
+.order-detc2 .ReactTable .rt-thead .rt-th:nth-child(2),
+.order-detc2 .ReactTable .rt-thead .rt-td:nth-child(2) {
   width: 50px !important;
 }
 #daterangepicker .daterangepicker:after {
@@ -10877,17 +10934,17 @@ table tr th:last-child {
 }
 .tic-his {
   max-height: 300px;
-    overflow: auto;
+  overflow: auto;
 }
 .cus-head span {
   font-size: 12px !important;
   font-weight: 600 !important;
 }
 .cus-head .ReactTable .rt-thead.-header {
-  background-color: #E5E9ED;
+  background-color: #e5e9ed;
 }
 .issuetype-cusdrp .btn {
-  background-color: #ECF2F4;
+  background-color: #ecf2f4;
   font-size: 16px;
   width: 100%;
   font-weight: 600;
@@ -10908,11 +10965,11 @@ table tr th:last-child {
   content: "";
 }
 .issuetype-cusdrp .searchf {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   border-radius: 2px;
   width: 100%;
   height: 40px;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   padding: 10px;
   margin-bottom: 10px;
   padding-right: 30px;
@@ -10946,9 +11003,9 @@ table tr th:last-child {
   color: #2561a8;
   text-transform: uppercase;
   font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.5px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
 }
 .issuetype-cusdrp .category-button {
   margin-bottom: 35px;
@@ -10956,7 +11013,7 @@ table tr th:last-child {
 }
 .issuetype-cusdrp .category-box {
   margin-bottom: 15px;
-  max-height:110px;
+  max-height: 110px;
   overflow: auto;
 }
 .issuetype-cusdrp .category-box {
@@ -10973,7 +11030,7 @@ table tr th:last-child {
   font-size: 16px;
 }
 .issuetype-cusdrp .category-box span {
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   padding: 5px 10px;
   border-radius: 50px;
   font-size: 12px;
@@ -10987,18 +11044,18 @@ table tr th:last-child {
   max-height: 190px;
   overflow-x: hidden;
 }
-.category-scroll::-webkit-scrollbar{
+.category-scroll::-webkit-scrollbar {
   width: 6px;
 }
-.category-scroll::-webkit-scrollbar-track{
-  background: #F3F3F3;
+.category-scroll::-webkit-scrollbar-track {
+  background: #f3f3f3;
   border-radius: 10px;
 }
-.category-scroll::-webkit-scrollbar-thumb{
-  background: #D2DDEB;
+.category-scroll::-webkit-scrollbar-thumb {
+  background: #d2ddeb;
   border-radius: 10px;
 }
-.category-scroll::-webkit-scrollbar-thumb:hover{
+.category-scroll::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 .category-buttonbtm .cancel {
@@ -11043,21 +11100,19 @@ table tr th:last-child {
   max-width: 50%;
   min-width: 50%;
 }
-.commentImg{
+.commentImg {
   width: 25px;
-    height: 25px;
-    padding: 5px;
+  height: 25px;
+  padding: 5px;
 }
-.editstorepopover
-{
+.editstorepopover {
   min-width: 700px;
   max-width: 700px;
 }
 .emshl {
-  background: #fff url("./../Images/facebook.png") no-repeat right 15px
-  center;
+  background: #fff url("./../Images/facebook.png") no-repeat right 15px center;
 }
-.fileAttchImg{
+.fileAttchImg {
   display: inline-block;
   width: 25px;
   height: 25px;
@@ -11065,9 +11120,7 @@ table tr th:last-child {
   cursor: pointer;
 }
 
-#categoryEditModal
-{
-
+#categoryEditModal {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 10px;
@@ -11077,36 +11130,44 @@ table tr th:last-child {
   min-width: 30%;
 }
 
-#tampleteEditModal
-{
-
+#tampleteEditModal {
   width: 300px;
-  top:16%;
+  top: 16%;
 }
 
-.editcatcnl{
+.editcatcnl {
   float: right;
   margin: 0;
   color: #2561a8 !important;
 }
 
-.clrFlwUp{
-  color: #2561A8;
-    width: 18px;
-    text-align: center;
-    font-size: 13px;
-    cursor: pointer;
-    display: inline-table;
+.clrFlwUp {
+  color: #2561a8;
+  width: 18px;
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-table;
 }
-.dropdown-settings{
+.dropdown-settings {
   color: #9b9b9b;
-    font-family: Lato;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 17px;
-    text-align: left;
-    padding-right: 40px;
-    width: 100%;
-    border: none;
-    cursor: pointer;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding-right: 40px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+#slaEditModal {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+  max-width: 30%;
+  min-width: 30%;
 }

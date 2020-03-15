@@ -26,6 +26,7 @@ import ActiveStatus from "../../activeStatus";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -72,6 +73,10 @@ class CategoryMaster extends Component {
       sortIssueType: [],
       editmodel: false,
       editCategory: {},
+      brandColor:"",
+      categoryColor:"",
+      subCategoryColor:"",
+      issueColor:"",
       brandCatmapId: 0
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
@@ -130,6 +135,12 @@ class CategoryMaster extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      brandColor:"",
+      categoryColor:"",
+      subCategoryColor:"",
+      issueColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "brandName") {
@@ -137,21 +148,37 @@ class CategoryMaster extends Component {
       itemsArray = this.state.categoryGridData.filter(
         a => a.brandName === data
       );
+      this.setState({
+        brandColor:"sort-column"
+        
+      });
     } else if (column === "categoryName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.categoryName === data
       );
+      this.setState({
+        categoryColor:"sort-column"
+        
+      });
     } else if (column === "subCategoryName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.subCategoryName === data
       );
+      this.setState({
+        subCategoryColor:"sort-column"
+        
+      });
     } else if (column === "issueTypeName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.issueTypeName === data
       );
+      this.setState({
+        issueColor:"sort-column"
+        
+      });
     }
 
     this.setState({
@@ -262,15 +289,19 @@ class CategoryMaster extends Component {
       });
   }
 
-  handleGetCategoryList(id) {
+  handleGetCategoryList = async (id, type) => {
     let self = this;
     var braindID;
-    if (id) {
-      braindID = id;
+    if (type == "edit") {
+      braindID = this.state.editCategory.brandID;
     } else {
-      braindID = this.state.selectBrand;
+      if (id) {
+        braindID = id;
+      } else {
+        braindID = this.state.selectBrand;
+      }
     }
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
@@ -286,9 +317,9 @@ class CategoryMaster extends Component {
       .catch(data => {
         console.log(data);
       });
-  }
+  };
 
-  handleGetSubCategoryList(id) {
+  handleGetSubCategoryList = async id => {
     debugger;
     let self = this;
     var Category_Id = "";
@@ -297,7 +328,7 @@ class CategoryMaster extends Component {
     } else {
       Category_Id = this.state.list1Value;
     }
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
@@ -313,12 +344,12 @@ class CategoryMaster extends Component {
       .catch(data => {
         console.log(data);
       });
-  }
+  };
 
   handleGetIssueTypeList(id) {
     debugger;
     let self = this;
-    var SubCat_Id = "";
+    var SubCat_Id = 0;
     if (id === "edit") {
       SubCat_Id = this.state.editCategory.subCategoryID;
     } else {
@@ -399,14 +430,30 @@ class CategoryMaster extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Category added successfully.", "", 2000);
-          self.setState({
-            category_Id: data
-            // inputValue: "",
-            // list1Value: ""
-          });
-          self.handleGetCategoryList();
+          if (check == "edit") {
+            var editCategory = self.state.editCategory;
+            editCategory["categoryID"] = data;
+            editCategory["categoryName"] = value;
+            editCategory["subCategoryID"] = "";
+            editCategory["subCategoryName"] = "";
+            editCategory["issueTypeID"] = "";
+            editCategory["issueTypeName"] = "";
+            self.setState({
+              editCategory,
+              ListOfIssueData: [],
+              SubCategoryDropData: []
+            });
+            self.handleGetCategoryList(data,"edit");
+          } else {
+            self.setState({
+              category_Id: data
+              // inputValue: "",
+              // list1Value: ""
+            });
+            self.handleGetCategoryList();
+          }
         } else {
-          NotificationManager.error("Category not added.");
+          NotificationManager.error("Category not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -418,11 +465,7 @@ class CategoryMaster extends Component {
     let self = this;
     var finalId = 0;
     if (check === "edit") {
-      if (this.state.editCategory.subCategoryID === 1) {
-        finalId = this.state.list1Value;
-      } else {
-        finalId = this.state.editCategory.subCategoryID;
-      }
+      finalId = this.state.editCategory.categoryID;
     } else {
       if (this.state.category_Id === 1) {
         finalId = this.state.list1Value;
@@ -445,17 +488,32 @@ class CategoryMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
+          if (check === "edit") {
+            var editCategory = self.state.editCategory;
+            editCategory["subCategoryID"] = data;
+            editCategory["subCategoryName"] = value;
+            editCategory["issueTypeID"] = "";
+            editCategory["issueTypeName"] = "";
+
+            self.setState({
+              ListOfIssueData: [],
+              editCategory
+            });
+
+            self.handleGetSubCategoryList("edit");
+          } else {
+            self.setState({
+              subCategory_Id: data
+            });
+            self.handleGetSubCategoryList();
+          }
           NotificationManager.success(
             "SubCategory added successfully.",
             "",
             2000
           );
-          self.setState({
-            subCategory_Id: data
-          });
-          self.handleGetSubCategoryList();
         } else {
-          NotificationManager.error("SubCategory not added.");
+          NotificationManager.error("SubCategory not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -463,12 +521,14 @@ class CategoryMaster extends Component {
       });
   }
 
-  handleAddIssueType(value) {
+  handleAddIssueType(value, type) {
     debugger;
     let self = this;
     var finalId = 0;
-    if (this.state.subCategory_Id === 0) {
+    if (this.state.subCategory_Id === 0 && type !== "edit") {
       finalId = this.state.ListOfSubCate;
+    } else if (type === "edit") {
+      finalId = this.state.editCategory.subCategoryID;
     } else {
       finalId = this.state.subCategory_Id;
     }
@@ -485,18 +545,26 @@ class CategoryMaster extends Component {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
+
         if (status === "Success") {
           NotificationManager.success(
             "Issue Type added successfully.",
             "",
             2000
           );
-          self.setState({
-            issueType_Id: data
-          });
-          self.handleGetIssueTypeList();
+          if (type == "edit") {
+            var editCategory = self.state.editCategory;
+            editCategory["issueTypeID"] = data;
+            self.setState({ editCategory });
+            self.handleGetIssueTypeList("edit");
+          } else {
+            self.setState({
+              issueType_Id: data
+            });
+            self.handleGetIssueTypeList();
+          }
         } else {
-          NotificationManager.error("Issue Type not added.");
+          NotificationManager.error("Issue Type not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -577,7 +645,7 @@ class CategoryMaster extends Component {
               statusCompulsion: ""
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error("Record Already Exists.", '', 1000);
           } else {
             NotificationManager.error(status, "", 3000);
           }
@@ -604,30 +672,16 @@ class CategoryMaster extends Component {
     var categorydata = 0;
     var subCategoryData = 0;
     var IssueData = 0;
-    var status = this.state.selectStatus;
-    if (status === "Active") {
+
+    if (this.state.editCategory.statusName === "Active") {
       activeStatus = 1;
     } else {
       activeStatus = 0;
     }
-    if (isNaN(this.state.list1Value)) {
-      categorydata = this.state.editCategory.categoryID;
-    } else {
-      categorydata = this.state.list1Value;
-    }
-
-    if (isNaN(this.state.ListOfSubCate)) {
-      subCategoryData = this.state.editCategory.subCategoryID;
-    } else {
-      subCategoryData = this.state.ListOfSubCate;
-    }
-
-    if (isNaN(this.state.ListOfIssue)) {
-      IssueData = this.state.editCategory.issueTypeID;
-    } else {
-      IssueData = this.state.ListOfIssue;
-    }
-
+    categorydata = this.state.editCategory.categoryID;
+    subCategoryData = this.state.editCategory.subCategoryID;
+    IssueData = this.state.editCategory.issueTypeID;
+    this.setState({ editSaveLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Category/CreateCategorybrandmapping",
@@ -658,15 +712,20 @@ class CategoryMaster extends Component {
             categoryCompulsion: "",
             subcategoryCompulsion: "",
             issueCompulsion: "",
-            statusCompulsion: ""
+            statusCompulsion: "",
+            editmodel: false,
+            editSaveLoading: false
           });
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.");
+          self.setState({ editmodel: false, editSaveLoading: false });
+          NotificationManager.error("Record Already Exists.", '', 1000);
         } else {
           NotificationManager.error(status, "", 3000);
+          self.setState({ editmodel: false, editSaveLoading: false });
         }
       })
       .catch(data => {
+        self.setState({ editmodel: false, editSaveLoading: false });
         console.log(data);
       });
   }
@@ -738,19 +797,24 @@ class CategoryMaster extends Component {
     this.setState({ selectStatus: value });
   };
 
-  hanldeEditCategory = rowData => {
+  hanldeEditCategory = async rowData => {
     debugger;
     var editCategory = {};
     editCategory.brandID = rowData.braindID;
     editCategory.brandName = rowData.brandName;
-    this.handleGetCategoryList(rowData.braindID);
+
+    await this.handleGetCategoryList(rowData.braindID);
+
     editCategory.categoryID = rowData.categoryID;
     editCategory.categoryName = rowData.categoryName;
 
-    this.handleModalCategoryChange(rowData.categoryID);
+    await this.handleModalCategoryChange(rowData.categoryID);
+
     editCategory.subCategoryID = rowData.subCategoryID;
     editCategory.subCategoryName = rowData.subCategoryName;
-    this.handleModalSubCatOnChange(rowData.subCategoryID);
+
+    await this.handleModalSubCatOnChange(rowData.subCategoryID);
+
     editCategory.issueTypeID = rowData.issueTypeID;
     editCategory.issueTypeName = rowData.issueTypeName;
     editCategory.statusName = rowData.statusName;
@@ -790,13 +854,21 @@ class CategoryMaster extends Component {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
+      var categoryName = this.state.categoryDropData.filter(
+        x => x.categoryID === value
+      )[0].categoryName;
       editCategory["categoryID"] = value;
-      // var getName = this.state.categoryDropData.filter(
-      //   x => x.categoryID === value
-      // )[0].categoryName;
-      // editCategory["categoryName"] = getName;
+      editCategory["categoryName"] = categoryName;
+      editCategory["subCategoryID"] = "";
+      editCategory["subCategoryName"] = "";
+      editCategory["issueTypeID"] = "";
+      editCategory["issueTypeName"] = "";
 
-      this.setState({ editCategory, SubCategoryDropData: [] });
+      this.setState({
+        editCategory,
+        SubCategoryDropData: [],
+        ListOfIssueData: []
+      });
       setTimeout(() => {
         if (value) {
           this.handleGetSubCategoryList("edit");
@@ -806,12 +878,17 @@ class CategoryMaster extends Component {
       this.setState({ editshowList1: true });
     }
   };
-  handleModalSubCatOnChange = value => {
+  handleModalSubCatOnChange = async value => {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["subCategoryID"] = value;
-      this.setState({ editCategory: value });
+      // var subCategoryName=this.state.SubCategoryDropData.filter(x=>x.subCategoryID===value)[0].subCategoryName;
+      // editCategory["subCategoryName"] = subCategoryName;
+      editCategory["issueTypeID"] = "";
+      editCategory["issueTypeName"] = "";
+      this.setState({ editCategory, ListOfIssueData: [] });
+
       setTimeout(() => {
         if (value) {
           this.handleGetIssueTypeList("edit");
@@ -821,6 +898,7 @@ class CategoryMaster extends Component {
       this.setState({ editShowSubCate: true });
     }
   };
+  ////handle modal issue type change
   handleModalIssueOnChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
@@ -830,6 +908,14 @@ class CategoryMaster extends Component {
     } else {
       this.setState({ editShowIssuetype: true });
     }
+  };
+  ////handle model status change
+  handleModalStatusChange = e => {
+    debugger;
+    const { name, value } = e.target;
+    var editCategory = this.state.editCategory;
+    editCategory[name] = value;
+    this.setState({ editCategory });
   };
   render() {
     const { categoryGridData } = this.state;
@@ -1016,7 +1102,7 @@ class CategoryMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span
+                            <span className={this.state.brandColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName"
@@ -1030,7 +1116,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.categoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "categoryName"
@@ -1044,7 +1130,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.subCategoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName"
@@ -1058,7 +1144,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.issueColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName"
@@ -1601,9 +1687,10 @@ class CategoryMaster extends Component {
                         debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
+                          this.state.editCategory["categoryName"] = inputValue;
                           this.setState({
                             editshowList1: false,
-                            list1Value: inputValue
+                            editCategory: this.state.editCategory
                           });
                           this.handleAddCategory(inputValue, "edit");
                         } else {
@@ -1661,14 +1748,21 @@ class CategoryMaster extends Component {
                         debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
+                          this.state.editCategory[
+                            "subCategoryName"
+                          ] = inputValue;
                           this.setState({
                             editShowSubCate: false,
-                            ListOfSubCate: inputValue
+                            editCategory: this.state.editCategory
                           });
                           this.handleAddSubCategory(inputValue, "edit");
                         } else {
+                          this.state.editCategory[
+                            "subCategoryName"
+                          ] = inputValue;
                           this.setState({
                             editShowSubCate: false,
+                            editCategory: this.state.editCategory,
                             ListOfSubCate: inputValue
                           });
                         }
@@ -1701,7 +1795,7 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.ListOfIssue === "" && (
+                    {this.state.editCategory["issueTypeName"] === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.issueCompulsion}
                       </p>
@@ -1719,15 +1813,17 @@ class CategoryMaster extends Component {
                       onConfirm={inputValue => {
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
+                          this.state.editCategory["issueTypeName"] = inputValue;
                           this.setState({
                             editShowIssuetype: false,
-                            ListOfIssue: inputValue
+                            editCategory: this.state.editCategory
                           });
-                          this.handleAddIssueType(inputValue);
+                          this.handleAddIssueType(inputValue, "edit");
                         } else {
+                          this.state.editCategory["issueTypeName"] = inputValue;
                           this.setState({
                             editShowIssuetype: false,
-                            ListOfIssue: inputValue
+                            editCategory: this.state.editCategory
                           });
                         }
                       }}
@@ -1750,6 +1846,8 @@ class CategoryMaster extends Component {
                   id="inputStatus"
                   className="edit-dropDwon dropdown-setting"
                   value={this.state.editCategory.statusName}
+                  name="statusName"
+                  onChange={this.handleModalStatusChange.bind(this)}
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
@@ -1760,11 +1858,24 @@ class CategoryMaster extends Component {
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
                   CANCEL
                 </a>
+
                 <button
                   className="pop-over-button FlNone pop-over-btnsave-text"
                   onClick={this.handleUpdateCategory.bind(this)}
+                  disabled={this.state.editSaveLoading}
                 >
-                  SAVE
+                  <label className="pop-over-btnsave-text">
+                    {this.state.editSaveLoading ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )}
+                    SAVE
+                  </label>
                 </button>
               </div>
             </div>

@@ -27,6 +27,7 @@ import {
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 class CreateSLA extends Component {
   constructor(props) {
@@ -35,30 +36,15 @@ class CreateSLA extends Component {
       fileName: "",
       sla: [],
       slaIssueType: [],
-      // selectedSlaIssueType: 0,
       updateIssueTypeId: 0,
       updateSlaisActive: "",
       updateSlaTarget: [],
       SlaIsActive: "true",
-      // SLABreachPercentHigh: 0,
-      // SLABreachPercentMedium: 0,
-      // SLABreachPercentLow: 0,
-      // PriorityRespondValueHigh: 0,
-      // PriorityRespondValueMedium: 0,
-      // PriorityRespondValueLow: 0,
-      // PriorityResolutionValueHigh: 0,
-      // PriorityResolutionValueMedium: 0,
-      // PriorityResolutionValueLow: 0,
-      // PriorityRespondDurationHigh: "M",
-      // PriorityRespondDurationMedium: "M",
-      // PriorityRespondDurationLow: "M",
-      // PriorityResolutionDurationHigh: "M",
-      // PriorityResolutionDurationMedium: "M",
-      // PriorityResolutionDurationLow: "M",
       value: null,
       PriorityData: [],
       FinalDataOfSlaTarget: [],
       finalData: [],
+      finalEditData: [],
       indiSla: "",
       // searchSla: '',
       searchedSla: [],
@@ -67,18 +53,27 @@ class CreateSLA extends Component {
       SearchText: "",
       issueTypeCompulsion: "",
       slaTargetCompulsion: "",
+      slaTargetCompulsionEdit: "",
       StatusModel: false,
       sortColumn: "",
       sortAllData: [],
-      sortIssueType: []
+      sortIssueType: [],
+      issueColor:"",
+      issueTypeName: "",
+      brandName: "",
+      categoryName: "",
+      subCategoryName: "",
+      SLAId: 0,
+      editmodel: false,
+      editSaveLoading: false
     };
-
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
     this.handleSlaButton = this.handleSlaButton.bind(this);
     this.handleGetPriorityList = this.handleGetPriorityList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
   }
 
   componentDidMount() {
@@ -128,11 +123,17 @@ class CreateSLA extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      issueColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "issueTpeName") {
       this.state.sla = this.state.sortAllData;
       itemsArray = this.state.sla.filter(a => a.issueTpeName === data);
+      this.setState({
+        issueColor:"sort-column"
+      });
     }
 
     this.setState({
@@ -262,10 +263,33 @@ class CreateSLA extends Component {
     }
   };
 
+  ///handle edit sla targets
+  handleEditSlaTargets = (i, e) => {
+    debugger;
+    const { name, value } = e.target;
+    let finalEditData = [...this.state.finalEditData];
+    if (
+      name === "SlaBreach" &&
+      name === "Rerspondtime" &&
+      name === "ResolveTime"
+    ) {
+      finalEditData[i] = {
+        ...finalEditData[i],
+        [name]: parseFloat(value)
+      };
+    } else {
+      finalEditData[i] = {
+        ...finalEditData[i],
+        [name]: value
+      };
+    }
+
+    this.setState({ finalEditData });
+  };
+
   handleSlaTargets = (i, e) => {
     debugger;
     const { name, value } = e.target;
-
     let finalData = [...this.state.finalData];
     finalData[i] = {
       ...finalData[i],
@@ -417,54 +441,69 @@ class CreateSLA extends Component {
     let SlaIsActive = e.currentTarget.value;
     this.setState({ SlaIsActive });
   };
-  handleUpdateSla(slaId) {
+
+  ////handle change edit
+  handleEditSlaIsActive = e => {
+    let isActive = e.currentTarget.value;
+    this.setState({ isActive });
+  };
+
+  ////get SLA data by SLA ID
+  handleEditSLAById(idSLA) {
     debugger;
-    let SLAisActive;
-    if (this.state.updateSlaisActive === "true") {
-      SLAisActive = true;
-    } else if (this.state.updateSlaisActive === "false") {
-      SLAisActive = false;
-    }
+    var SLAId = idSLA || 0;
+    let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/SLA/ModifySLA",
+      url: config.apiUrl + "/SLA/GetSLADetail",
       headers: authHeader(),
       params: {
-        SLAID: slaId,
-        IssueTypeID: this.state.updateIssueTypeId,
-        isActive: SLAisActive
+        SLAId: SLAId
       }
     })
-      .then(res => {
+      .then(function(res) {
         debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("SLA updated successfully.", "", 2000);
-          this.handleGetSLA();
-        } else {
-          NotificationManager.error("SLA not updated.", "", 2000);
+        var message = res.data.message;
+        var statusCode = res.data.statusCode;
+        if (message === "Success" && statusCode === 200) {
+          var data = res.data.responseData;
+          var issueTypeName = data.issueTypeName;
+          var brandName = data.brandName;
+          var categoryName = data.categoryName;
+          var subCategoryName = data.subCategoryName;
+          var isActive = data.isActive;
+          var tempData = data.sLATargetDetails;
+          var tempFinalData = [];
+          if (tempData.length > 0) {
+            for (let i = 0; i < tempData.length; i++) {
+              var tempObj = {};
+              tempObj.priorityID = tempData[i].priorityID;
+              tempObj.priortyName = tempData[i].priorityName;
+              tempObj.SlaBreach = tempData[i].slaBridgeInPercantage;
+              tempObj.Rerspondtime = tempData[i].slaResponseValue;
+              tempObj.RerspondType = tempData[i].slaResponseType;
+              tempObj.ResolveTime = tempData[i].slaResolveValue;
+              tempObj.ResolveType = tempData[i].slaResolveType;
+              tempObj.isActive = tempData[i].isActive;
+              tempObj.slaTargetID = tempData[i].slaTargetID;
+              tempFinalData.push(tempObj);
+            }
+          }
+          self.setState({
+            issueTypeName,
+            brandName,
+            categoryName,
+            subCategoryName,
+            isActive,
+            SLAId,
+            finalEditData: tempFinalData,
+            editmodel: true
+          });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch(response => {
+        console.log(response);
       });
-  }
-  updateSla(individualData) {
-    debugger;
-    let updateIssueTypeId = individualData.issueTpeID,
-      slaIsActive = individualData.isSLAActive,
-      updateSlaisActive,
-      updateSlaTarget = individualData.slaTarget;
-    if (slaIsActive === "Inactive") {
-      updateSlaisActive = "false";
-    } else {
-      updateSlaisActive = "true";
-    }
-    this.setState({
-      updateIssueTypeId,
-      updateSlaisActive,
-      updateSlaTarget
-    });
   }
   createSla() {
     debugger;
@@ -568,7 +607,7 @@ class CreateSLA extends Component {
           NotificationManager.success("SLA deleted successfully.", "", 2000);
           self.handleGetSLA();
         } else {
-          NotificationManager.error("SLA not deleted.");
+          NotificationManager.error("SLA not deleted.", '', 1000);
         }
       })
       .catch(data => {
@@ -579,34 +618,6 @@ class CreateSLA extends Component {
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  handleAddNoteCheck = e => {};
-  // handleSearchSla = e => {
-  //   debugger;
-  //   let self = this;
-  //   if (e.target.value.length > 3) {
-  //     axios({
-  //       method: "post",
-  //       url: config.apiUrl + "/SLA/SearchIssueType",
-  //       headers: authHeader(),
-  //       params: {
-  //         SearchText: e.target.value
-  //       }
-  //     }).then(function (res) {
-  //       debugger;
-  //       let status = res.data.message;
-  //       let data = res.data.responseData;
-  //       if (status === "Success") {
-  //         self.setState({
-  //           searchedSla: data
-  //         });
-  //       } else {
-  //         self.setState({
-  //           searchedSla: []
-  //         });
-  //       }
-  //     });
-  //   }
-  // };
   handleSearchSla = async e => {
     debugger;
     if (e.target.value.length > 3) {
@@ -655,8 +666,85 @@ class CreateSLA extends Component {
     });
   }
 
+  toggleEditModal() {
+    this.setState({ editmodel: false });
+  }
+  ////handle update sla details by id
+  handleUpdareSLADetails() {
+    debugger;
+    var EditData = this.state.finalEditData;
+    var valid = false;
+    if (EditData.length > 0) {
+      for (var i = 0; i < EditData.length; i++) {
+        if (
+          EditData[i].SlaBreach !== "0" &&
+          EditData[i].SlaBreach !== 0 &&
+          EditData[i].Rerspondtime !== "0" &&
+          EditData[i].Rerspondtime !== 0 &&
+          EditData[i].ResolveTime !== "0" &&
+          EditData[i].ResolveTime !== 0
+        ) {
+          valid = true;
+        } else {
+          valid = false;
+        }
+      }
+    }
+    let self = this;
+    if (valid === true) {     
+      var inputParamter = {};
+      inputParamter.SLAId = this.state.SLAId;
+      inputParamter.IsActive = this.state.isActive;
+      inputParamter.BrandName = this.state.brandName;
+      inputParamter.CategoryName = this.state.categoryName;
+      inputParamter.SubCategoryName = this.state.subCategoryName;
+      inputParamter.IssueTypeName = this.state.issueTypeName;
+      var SLATargetTempData = [];
+      for (let i = 0; i < this.state.finalEditData.length > 0; i++) {
+        var obj = {};
+        obj.priorityID = this.state.finalEditData[i].priorityID;
+        obj.priorityName = this.state.finalEditData[i].priortyName;
+        obj.slaBridgeInPercantage = this.state.finalEditData[i].SlaBreach;
+        obj.slaResponseValue = this.state.finalEditData[i].Rerspondtime;
+        obj.slaResponseType = this.state.finalEditData[i].RerspondType;
+        obj.slaResolveValue = this.state.finalEditData[i].ResolveTime;
+        obj.slaResolveType = this.state.finalEditData[i].ResolveType;
+        obj.isActive = this.state.finalEditData[i].isActive;
+        obj.slaTargetID = this.state.finalEditData[i].slaTargetID;
+        SLATargetTempData.push(obj);
+      }
+      inputParamter.sLATargetDetails = SLATargetTempData;
+      this.setState({ editSaveLoading: true });
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/SLA/UpdareSLADetails",
+        headers: authHeader(),
+        data: inputParamter
+      })
+        .then(function(res) {
+          debugger;
+          var message = res.data.message;
+          var statusCode = res.data.statusCode;
+          if (message === "Success" && statusCode === 200) {
+            self.setState({ editSaveLoading: false, editmodel: false });
+            NotificationManager.success("SLA Updated Successfully", '', 1000);
+            self.handleGetSLA();
+          } else {
+            self.setState({ editSaveLoading: false, editmodel: false });
+            NotificationManager.success("SLA Not Updated", '', 1000);
+          }
+        })
+        .catch(response => {
+          self.setState({ editSaveLoading: false, editmodel: false });
+          NotificationManager.success("SLA Not Updated", '', 1000);
+          console.log(response);
+        });
+    } else {
+      self.setState({ slaTargetCompulsionEdit: "Required." });
+    }
+  }
   render() {
-    // const { slaIssueType, value } = this.state;
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -753,7 +841,7 @@ class CreateSLA extends Component {
                     columns={[
                       {
                         Header: (
-                          <span
+                          <span className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "issueTpeName"
@@ -1003,137 +1091,18 @@ class CreateSLA extends Component {
                                     id={ids}
                                   />
                                 </Popover>
-                                <Popover
-                                  content={
-                                    <div className="edtpadding">
-                                      <label className="popover-header-text">
-                                        EDIT SLA
-                                      </label>
-
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Issue Type
-                                        </label>
-                                        <select
-                                          id="inputStatus"
-                                          className="edit-dropDwon dropdown-setting"
-                                          value={this.state.updateIssueTypeId}
-                                          onChange={
-                                            this.handleUpdateSlaIssueType
-                                          }
-                                        >
-                                          {this.state.slaIssueType !== null &&
-                                            this.state.slaIssueType.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.issueTypeID}
-                                                >
-                                                  {item.issueTypeName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-
-                                      {this.state.updateSlaTarget.length >
-                                        0 && (
-                                        <div className="pop-over-div m-t-10">
-                                          <div>
-                                            <label className="slatargettext-1">
-                                              SLA TARGETS
-                                            </label>
-                                          </div>
-                                          <div>
-                                            <label className="createhead-text-1">
-                                              Priority
-                                            </label>
-                                            <label className="createhead-text-1">
-                                              %SLA
-                                            </label>
-                                            <label className="createhead-text-1">
-                                              Respond
-                                            </label>
-                                            <label className="createhead-text-1">
-                                              Resolve
-                                            </label>
-                                          </div>
-                                          {this.state.updateSlaTarget !==
-                                            null &&
-                                            this.state.updateSlaTarget.map(
-                                              (item, i) => (
-                                                <div key={i}>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.priorityName}
-                                                  </label>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.slaBreachPercent}
-                                                  </label>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.priorityRespond}
-                                                  </label>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.priorityResolution}
-                                                  </label>
-                                                </div>
-                                              )
-                                            )}
-                                        </div>
-                                      )}
-
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Status
-                                        </label>
-                                        <select
-                                          id="inputStatus"
-                                          className="edit-dropDwon dropdown-setting"
-                                          value={this.state.updateSlaisActive}
-                                          onChange={
-                                            this.handleUpdateSlaisActive
-                                          }
-                                        >
-                                          <option value="true">Active</option>
-                                          <option value="false">
-                                            Inactive
-                                          </option>
-                                        </select>
-                                      </div>
-                                      <br />
-                                      <div>
-                                        <label className="pop-over-cancle">
-                                          CANCEL
-                                        </label>
-                                        <button className="pop-over-button">
-                                          <label
-                                            className="pop-over-btnsave-text"
-                                            onClick={this.handleUpdateSla.bind(
-                                              this,
-                                              row.original.slaid
-                                            )}
-                                          >
-                                            SAVE
-                                          </label>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                  trigger="click"
+                                <button
+                                  className="react-tabel-button"
+                                  id={row.original.slaid}
+                                  onClick={this.handleEditSLAById.bind(
+                                    this,
+                                    row.original.slaid
+                                  )}
                                 >
-                                  <button
-                                    className="react-tabel-button"
-                                    id="p-edit-pop-2"
-                                    onClick={this.updateSla.bind(
-                                      this,
-                                      row.original
-                                    )}
-                                  >
-                                    <label className="Table-action-edit-button-text">
-                                      EDIT
-                                    </label>
-                                  </button>
-                                </Popover>
+                                  <label className="Table-action-edit-button-text">
+                                    EDIT
+                                  </label>
+                                </button>
                               </span>
                             </>
                           );
@@ -1141,47 +1110,10 @@ class CreateSLA extends Component {
                       }
                     ]}
                     // resizable={false}
+                    minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -1293,32 +1225,10 @@ class CreateSLA extends Component {
                                             <img src={Correct} alt="Checked" />
                                           </div>
                                         </label>
-                                        <span>{item.brandName}</span>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
                                     ))}
-                                  {/* <li>
-                                    <input type="checkbox" id="uio" />
-                                    <label htmlFor="uio">Broken Shoe <img src={Correct} alt="Checked" /></label>
-                                    <span>Defective article</span>
-                                    <span>Complaint</span>
-                                  </li>
-                                  <li>
-                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
-                                    <span>Defective article</span>
-                                    <span>Complaint</span>
-                                  </li>
-                                  <li>
-                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
-                                    <span>Defective article</span>
-                                    <span>Complaint</span>
-                                  </li>
-                                  <li>
-                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
-                                    <span>Defective article</span>
-                                    <span>Complaint</span>
-                                  </li> */}
                                 </ul>
                               </div>
                             </div>
@@ -1576,12 +1486,200 @@ class CreateSLA extends Component {
             </div>
           </div>
         </div>
+
         <NotificationContainer />
         <div
           id="overlaySla"
           className={this.state.slaOvrlayShow ? "show" : ""}
           onClick={this.handleSlaButton}
         />
+        <Modal
+          modalId="slaEditModal"
+          onClose={this.toggleEditModal}
+          open={this.state.editmodel}
+          overlayId="logout-ovrly"
+        >
+          <div className="edtpadding">
+            <label className="Create-store-text">EDIT SLA</label>
+            <div className="row">
+              <div className="col-md-6">
+                <label className="createhead-text-new">Brand Name: </label>
+                <label className="createhead-text-1">
+                  {this.state.brandName}
+                </label>
+              </div>
+              <div className="col-md-6">
+                <label className="createhead-text-new">Category Name</label>
+                <label className="createhead-text-1">
+                  {this.state.categoryName}
+                </label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">
+                <label className="createhead-text-new">Sub Category Name</label>
+                <label className="createhead-text-1">
+                  {this.state.subCategoryName}
+                </label>
+              </div>
+              <div className="col-md-6">
+                <label className="createhead-text-new">Issue Type</label>
+                <label className="createhead-text-1">
+                  {this.state.issueTypeName}
+                </label>
+              </div>
+            </div>
+            <br />
+            <div className="slatargetRow">
+              <label className="slatargettext">SLA Targets</label>
+            </div>
+            <div className="slatargetRow-1">
+              <label className="createhead-text-new">Priority</label>
+              <label className="createhead-text">
+                %SLA <br /> Breach
+              </label>
+              <label className="createhead-text">Rerspond</label>
+              <label className="createhead-text">Resolve</label>
+            </div>
+            {this.state.finalEditData !== null &&
+              this.state.finalEditData.map((item, i) => (
+                <div className="slatargetRow-1" key={i}>
+                  <div className="sla-div">
+                    <label className="createhead-text-1">
+                      {item.priortyName}
+                    </label>
+                  </div>
+                  <div className="sla-div-1">
+                    <div>
+                      <div className="inner-div">
+                        <input
+                          type="text"
+                          placeholder="30"
+                          className="text-box-crt-sla"
+                          name="SlaBreach"
+                          value={item.SlaBreach || ""}
+                          autoComplete="off"
+                          onChange={this.handleEditSlaTargets.bind(this, i)}
+                        />
+                      </div>
+                      <div className="inner-div-2-1">
+                        <label className="pers-lable">%</label>
+                      </div>
+                    </div>
+                    {item.SlaBreach === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.slaTargetCompulsionEdit}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="sla-div-1">
+                    <div>
+                      <div className="inner-div">
+                        <input
+                          type="text"
+                          placeholder="30"
+                          className="text-box-crt-sla"
+                          name="Rerspondtime"
+                          value={item.Rerspondtime}
+                          autoComplete="off"
+                          onChange={this.handleEditSlaTargets.bind(this, i)}
+                        />
+                      </div>
+                      <div className="inner-div-2">
+                        <select
+                          className="pers-lable-select"
+                          name="RerspondType"
+                          value={item.RerspondType}
+                          onChange={this.handleEditSlaTargets.bind(this, i)}
+                        >
+                          <option value="M">M</option>
+                          <option value="H">H</option>
+                          <option value="D">D</option>
+                        </select>
+                      </div>
+                    </div>
+                    {item.Rerspondtime === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.slaTargetCompulsionEdit}
+                      </p>
+                    )}
+                  </div>
+                  <div className="sla-div-1">
+                    <div>
+                      <div className="inner-div">
+                        <input
+                          type="text"
+                          placeholder="30"
+                          className="text-box-crt-sla"
+                          autoComplete="off"
+                          name="ResolveTime"
+                          value={item.ResolveTime || ""}
+                          onChange={this.handleEditSlaTargets.bind(this, i)}
+                        />
+                      </div>
+                      <div className="inner-div-2">
+                        <select
+                          className="pers-lable-select"
+                          name="ResolveType"
+                          value={item.ResolveType}
+                          onChange={this.handleEditSlaTargets.bind(this, i)}
+                        >
+                          <option value="M">M</option>
+                          <option value="H">H</option>
+                          <option value="D">D</option>
+                        </select>
+                      </div>
+                    </div>
+                    {item.ResolveTime === "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.slaTargetCompulsionEdit}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+            <div className="divSpace-3">
+              <div className="dropDrownSpace">
+                <label className="reports-to">Status</label>
+                <select
+                  className="store-create-select"
+                  value={this.state.isActive}
+                  onChange={this.handleEditSlaIsActive}
+                >
+                  <option value={true}>Active</option>
+                  <option value={false}>Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="text-center">
+              <a
+                class="pop-over-cancle"
+                onClick={this.toggleEditModal.bind(this)}
+              >
+                CANCEL
+              </a>
+              <button
+                className="pop-over-button FlNone"
+                disabled={this.state.editSaveLoading}
+                onClick={this.handleUpdareSLADetails.bind(this)}
+                type="submit"
+              >
+                {this.state.editSaveLoading ? (
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : (
+                  ""
+                )}
+                <label className="pop-over-btnsave-text">SAVE</label>
+              </button>
+            </div>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }

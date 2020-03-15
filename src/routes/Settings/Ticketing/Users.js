@@ -1263,14 +1263,14 @@ class Users extends Component {
           let id = res.data.responseData;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Save successfully.");
+            NotificationManager.success("Record Save successfully.", '', 1000);
             self.setState({
               getID: id,
               personalReadOnly: true
             });
             self.handleGetUserList();
           } else {
-            NotificationManager.error("Record Not Saved .");
+            NotificationManager.error("Record Not Saved .", '', 1000);
           }
         })
         .catch(data => {
@@ -1317,9 +1317,9 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
+            NotificationManager.success("Record Updated successfully.", '', 1000);
           } else {
-            NotificationManager.error("Record Not Updated.");
+            NotificationManager.error("Record Not Updated.", '', 1000);
           }
           self.setState({
             getID: id,
@@ -1365,20 +1365,20 @@ class Users extends Component {
           let Msg = res.data.message;
           if (self.state.buttonProfileToggle === true) {
             if (Msg === "Success") {
-              NotificationManager.success("Record Updated successfully.");
+              NotificationManager.success("Record Updated successfully.", '', 1000);
             } else {
-              NotificationManager.error("Please Add Personal Details.");
+              NotificationManager.error("Please Add Personal Details.", '', 1000);
             }
           } else {
             if (Msg === "Success") {
-              NotificationManager.success("Record Saved successfully.");
+              NotificationManager.success("Record Saved successfully.", '', 1000);
               self.setState({
                 getID: id,
                 profileReadOnly: true
               });
               self.handleGetUserList();
             } else {
-              NotificationManager.error("Please Add Personal Details.");
+              NotificationManager.error("Please Add Personal Details.", '', 1000);
             }
           }
         })
@@ -1508,10 +1508,10 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("User Created successfully.");
+            NotificationManager.success("User Created successfully.", '', 1000);
             self.handleSendMail(self.state.getID);
           } else {
-            NotificationManager.error("User Not Created .");
+            NotificationManager.error("User Not Created .", '', 1000);
           }
           self.setState({
             selectUserName: "",
@@ -1582,9 +1582,9 @@ class Users extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error("Record in use.", '', 1000);
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record deleted Successfully.", '', 1000);
           self.handleGetUserList();
         }
       })
@@ -1608,7 +1608,7 @@ class Users extends Component {
         debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
-          NotificationManager.success("Please Check Email.");
+          NotificationManager.success("Please Check Email.", '', 1000);
         }
       })
       .catch(data => {
@@ -1770,8 +1770,8 @@ class Users extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
-            if (self.state.GetUserData.isActive === false) {
+            NotificationManager.success("Record Updated successfully.", '', 1000);
+            if(self.state.GetUserData.isActive===false){
               self.handleSendMail(self.state.userEditData.userId);
             }
             self.setState({
@@ -1780,7 +1780,9 @@ class Users extends Component {
               multisubcategoryIDs: finalSubCategoryId
             });
           } else {
-            NotificationManager.error("Record not Updated.");
+            NotificationManager.error(
+              "Record not Updated.", '', 1000
+            );
           }
           self.closeEditModal();
           self.handleGetUserList();
