@@ -295,7 +295,8 @@ a {
   text-align: left;
   padding-top: 10px;
   display: block;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+  /* margin-bottom: 30px; */
 }
 .dashboardImg1 {
   width: 21px;
@@ -3142,7 +3143,8 @@ table tr th:last-child {
 }
 .auth-content .card .card-block,
 .auth-content .card .card-body {
-  padding: 35px 60px 50px;
+  padding: 25px 60px 25px;
+  /* padding: 35px 60px 50px; */
   /*box-shadow: 0 0 4px 0px #ddd;*/
 }
 .auth-wrapper .auth-content {
@@ -3152,7 +3154,8 @@ table tr th:last-child {
   display: block;
 }
 .auth-wrapper .auth-content {
-  margin: 50px auto;
+  margin: 20px auto;
+  /* margin: 50px auto; */
 }
 .auth-wrapper input {
   border: 0;
@@ -4698,7 +4701,7 @@ progress::-webkit-progress-bar {
 .chpass {
   font-weight: bold;
   color: #a5a5a5;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 .program-code-button-text {
   color: #ffffff;
@@ -6171,7 +6174,8 @@ progress::-webkit-progress-bar {
   font-weight: 300;
   line-height: 34px;
   text-align: left;
-  margin-top: 28px;
+  /* margin-top: 28px; */
+  margin-top: 10px;
 }
 
 .recovery-pass-button {

@@ -58,6 +58,7 @@ class CreateSLA extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
+      issueColor:"",
       issueTypeName: "",
       brandName: "",
       categoryName: "",
@@ -122,11 +123,17 @@ class CreateSLA extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      issueColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "issueTpeName") {
       this.state.sla = this.state.sortAllData;
       itemsArray = this.state.sla.filter(a => a.issueTpeName === data);
+      this.setState({
+        issueColor:"sort-column"
+      });
     }
 
     this.setState({
@@ -600,7 +607,7 @@ class CreateSLA extends Component {
           NotificationManager.success("SLA deleted successfully.", "", 2000);
           self.handleGetSLA();
         } else {
-          NotificationManager.error("SLA not deleted.");
+          NotificationManager.error("SLA not deleted.", '', 1000);
         }
       })
       .catch(data => {
@@ -721,16 +728,16 @@ class CreateSLA extends Component {
           var statusCode = res.data.statusCode;
           if (message === "Success" && statusCode === 200) {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Updated Successfully");
+            NotificationManager.success("SLA Updated Successfully", '', 1000);
             self.handleGetSLA();
           } else {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Not Updated");
+            NotificationManager.success("SLA Not Updated", '', 1000);
           }
         })
         .catch(response => {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Not Updated");
+          NotificationManager.success("SLA Not Updated", '', 1000);
           console.log(response);
         });
     } else {
@@ -834,7 +841,7 @@ class CreateSLA extends Component {
                     columns={[
                       {
                         Header: (
-                          <span
+                          <span className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "issueTpeName"

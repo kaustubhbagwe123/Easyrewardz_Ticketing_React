@@ -188,7 +188,7 @@ class CreatePriority extends Component {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
-          NotificationManager.error("Sorry we don't sort row of list");
+          NotificationManager.error("Sorry we don't sort row of list", '', 1000);
         }
       })
       .catch(data => {
@@ -297,7 +297,7 @@ class CreatePriority extends Component {
             2000
           );
         } else {
-          NotificationManager.error(res.data.message);
+          NotificationManager.error(res.data.message, '', 1000);
         }
       })
       .catch(data => {
@@ -349,7 +349,7 @@ class CreatePriority extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Priority not updated.");
+      NotificationManager.error("Priority not updated.", '', 1000);
       this.setState({
         editpriorityNameCompulsion: "Please enter priority name",
         editstatusCompulsion: "Please select status"

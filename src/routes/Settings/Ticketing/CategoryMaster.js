@@ -73,6 +73,10 @@ class CategoryMaster extends Component {
       sortIssueType: [],
       editmodel: false,
       editCategory: {},
+      brandColor:"",
+      categoryColor:"",
+      subCategoryColor:"",
+      issueColor:"",
       brandCatmapId: 0
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
@@ -131,6 +135,12 @@ class CategoryMaster extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      brandColor:"",
+      categoryColor:"",
+      subCategoryColor:"",
+      issueColor:""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "brandName") {
@@ -138,21 +148,37 @@ class CategoryMaster extends Component {
       itemsArray = this.state.categoryGridData.filter(
         a => a.brandName === data
       );
+      this.setState({
+        brandColor:"sort-column"
+        
+      });
     } else if (column === "categoryName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.categoryName === data
       );
+      this.setState({
+        categoryColor:"sort-column"
+        
+      });
     } else if (column === "subCategoryName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.subCategoryName === data
       );
+      this.setState({
+        subCategoryColor:"sort-column"
+        
+      });
     } else if (column === "issueTypeName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.issueTypeName === data
       );
+      this.setState({
+        issueColor:"sort-column"
+        
+      });
     }
 
     this.setState({
@@ -427,7 +453,7 @@ class CategoryMaster extends Component {
             self.handleGetCategoryList();
           }
         } else {
-          NotificationManager.error("Category not added.");
+          NotificationManager.error("Category not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -487,7 +513,7 @@ class CategoryMaster extends Component {
             2000
           );
         } else {
-          NotificationManager.error("SubCategory not added.");
+          NotificationManager.error("SubCategory not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -538,7 +564,7 @@ class CategoryMaster extends Component {
             self.handleGetIssueTypeList();
           }
         } else {
-          NotificationManager.error("Issue Type not added.");
+          NotificationManager.error("Issue Type not added.", '', 1000);
         }
       })
       .catch(data => {
@@ -619,7 +645,7 @@ class CategoryMaster extends Component {
               statusCompulsion: ""
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error("Record Already Exists.", '', 1000);
           } else {
             NotificationManager.error(status, "", 3000);
           }
@@ -691,8 +717,8 @@ class CategoryMaster extends Component {
             editSaveLoading: false
           });
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.");
           self.setState({ editmodel: false, editSaveLoading: false });
+          NotificationManager.error("Record Already Exists.", '', 1000);
         } else {
           NotificationManager.error(status, "", 3000);
           self.setState({ editmodel: false, editSaveLoading: false });
@@ -1076,7 +1102,7 @@ class CategoryMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span
+                            <span className={this.state.brandColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName"
@@ -1090,7 +1116,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.categoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "categoryName"
@@ -1104,7 +1130,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.subCategoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName"
@@ -1118,7 +1144,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
+                            <span className={this.state.issueColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName"

@@ -158,9 +158,9 @@ class Module extends Component {
 
       let Msg = res.data.message;
       if (Msg === "Success") {
-        NotificationManager.success("Record Updated successfully.");
+        NotificationManager.success("Record Updated successfully.", '', 1000);
       } else {
-        NotificationManager.error("Record Not Updated");
+        NotificationManager.error("Record Not Updated", '', 1000);
       }
       self.setState({
         activeID: [],

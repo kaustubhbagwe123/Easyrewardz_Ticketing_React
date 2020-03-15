@@ -251,7 +251,7 @@ class TicketCRMRole extends Component {
           let status = res.data.message;
           if (status === "Success") {
             if (e === "add") {
-              NotificationManager.success("CRM Role added successfully.");
+              NotificationManager.success("CRM Role added successfully.", '', 1000);
               self.setState({
                 
                 RoleName: "",
@@ -265,17 +265,22 @@ class TicketCRMRole extends Component {
             } else if (e === "update") {
               self.toggleEditModal();
               self.setState({editSaveLoading: false})
+              NotificationManager.success("CRM Role updated successfully.", '', 1000);
               self.handleGetCRMRoles();
-              NotificationManager.success("CRM Role updated successfully.");
              
              
             }
+          }else if(status === "Record Already Exists "){
+            if(e === "add") {
+              NotificationManager.error("Record Already Exists ");
+            }
+            
           } else {
             if (e === "add") {
-              NotificationManager.error("CRM Role not added.");
+              NotificationManager.error("CRM Role not added.", '', 1000);
             } else if (e === "update") {
               self.setState({editSaveLoading: false})
-              NotificationManager.error("CRM Role not updated.");
+              NotificationManager.error("CRM Role not updated.", '', 1000);
             }
           }
         })
@@ -304,9 +309,9 @@ class TicketCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error("Record in use.", '', 1000);
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record deleted Successfully.", '', 1000);
           self.handleGetCRMRoles();
         }
       })
