@@ -106,10 +106,6 @@ class Header extends Component {
     this.setAccessUser = this.setAccessUser.bind(this);
   }
 
-  componentDidUpdate() {
-    debugger;
-  }
-
   componentDidMount() {
     debugger;
     var _token = window.localStorage.getItem("token");
