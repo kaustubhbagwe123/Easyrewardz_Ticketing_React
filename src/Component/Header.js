@@ -422,9 +422,10 @@ class Header extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData.ticketNotification;
-      let count = res.data.responseData.notiCount;
+     
       if (status === "Success") {
+        let data = res.data.responseData.ticketNotification;
+        let count = res.data.responseData.notiCount;
         debugger;
 
         self.setState({

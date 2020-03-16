@@ -77,8 +77,8 @@ class Users extends Component {
       editreporteeDesign: 0,
       userEditData: {},
       editmodel: false,
-      selectedAgentRadio: true,
-      selectedSupervisorRadio: false,
+      selectedAgentRadio: false,
+      selectedSupervisorRadio: true,
       editAgentRadio: true,
       editSupervisorRadio: false,
       buttonToggle: false,
@@ -3299,6 +3299,7 @@ class Users extends Component {
                                     name="selectedSupervisorAgent"
                                     id="supervisor"
                                     value={this.state.selectedSupervisorRadio}
+                                    defaultChecked={true}
                                     onChange={this.handleSuperValue.bind(
                                       this,
                                       "add"
@@ -3318,7 +3319,6 @@ class Users extends Component {
                                     name="selectedSupervisorAgent"
                                     id="agent"
                                     value={this.state.selectedAgentRadio}
-                                    defaultChecked={true}
                                     onChange={this.handleAgentValue.bind(
                                       this,
                                       "add"
