@@ -1834,6 +1834,7 @@ class Users extends Component {
   };
   // Onchange tab Personal to Mapped tab
   handleChangeProfileTab = () => {
+    debugger
     if (
       this.state.userEditData.designation_ID > 0 &&
       this.state.userEditData.reporteeDesignation_ID > 0 &&
