@@ -81,7 +81,7 @@ class ProgramCodeSignIn extends Component {
 
   render() {    
     return (     
-      <div className="auth-wrapper">
+      <div className="auth-wrapper box-center">
       <NotificationContainer></NotificationContainer>
         <div className="auth-content">
           <div className="card programcode-card-new">

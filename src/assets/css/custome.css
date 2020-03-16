@@ -882,7 +882,6 @@ table tr th:last-child {
   width: auto;
   height: 20px;
   padding: 4px;
-  margin-top: 1.5px;
   cursor: pointer;
 }
 .bill-1 {
@@ -3153,6 +3152,16 @@ table tr th:last-child {
 .auth-wrapper {
   display: block;
 }
+.box-center {
+  display: flex;
+  height: 100%;
+}
+.settingtable .ReactTable .rt-thead {
+  text-align: left;
+}
+.settingtable .ReactTable .rt-thead .rt-tr {
+  text-align: left;
+}
 .auth-wrapper .auth-content {
   margin: 20px auto;
   /* margin: 50px auto; */
@@ -5144,6 +5153,9 @@ progress::-webkit-progress-bar {
   .sectiontenant select {
     margin-bottom: 10px;
   }
+  #Notification-popup {
+    left: 5px;
+}
   /* dashboard ends */
 }
 
@@ -5445,6 +5457,12 @@ progress::-webkit-progress-bar {
   }
   .arrow-img {
     margin: 5px 30px 0;
+  }
+  #Notification-popup .rowpadding {
+    padding-left: 5px;
+  }
+  #Notification-popup .viewticketspeadding {
+    padding-left: 5px;
   }
   /* dashboard ends */
 }
@@ -9514,6 +9532,7 @@ table tr th:last-child {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  margin-top: 5px;
 }
 .logout-label1 {
   font-size: 14px;

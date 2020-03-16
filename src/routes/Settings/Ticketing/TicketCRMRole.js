@@ -60,7 +60,16 @@ class TicketCRMRole extends Component {
       crmRoleID: 0,
       modulestatus: "",
       editSaveLoading: false,
-      editRoleNameValidMsg: ""
+      editRoleNameValidMsg: "",
+
+      sortAllData: [],
+      sortRoleName: [],
+      sortCreated: [],
+      sortStatus: [],
+      roleColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortHeader: ""
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -73,8 +82,8 @@ class TicketCRMRole extends Component {
   }
 
   componentDidMount() {
-    this.handleModulesDefault();
     this.handleGetCRMRoles();
+    this.handleModulesDefault();
   }
 
   handleGetCRMRoles() {
@@ -392,15 +401,14 @@ class TicketCRMRole extends Component {
     if (Name === "status") {
       this.setState({ modulestatus: value });
     } else {
-      if(value)
-      {
-        this.setState({ editRoleName: value,editRoleNameValidMsg:"" });  
+      if (value) {
+        this.setState({ editRoleName: value, editRoleNameValidMsg: "" });
+      } else {
+        this.setState({
+          editRoleName: value,
+          editRoleNameValidMsg: "The role name field is required."
+        });
       }
-      else
-      {
-        this.setState({ editRoleName: value ,editRoleNameValidMsg: "The role name field is required."});
-      }
-      
     }
   }
 
@@ -415,7 +423,7 @@ class TicketCRMRole extends Component {
   toggleEditModal() {
     this.setState({
       editmodel: false,
-      editRoleNameValidMsg:""
+      editRoleNameValidMsg: ""
     });
   }
   render() {
@@ -625,7 +633,7 @@ class TicketCRMRole extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketCrmRoleReact">
@@ -633,7 +641,7 @@ class TicketCRMRole extends Component {
                     minRows={2}
                     data={this.state.crmRoles}
                     columns={columnsTickCrmRole}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
                   />

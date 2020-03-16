@@ -81,6 +81,7 @@ class StoreMaster extends Component {
       sortCity: [],
       sortState: [],
       sortPincode: [],
+      sortBrandName:[],
       sortColumn: "",
       editmodel: false,
       modalSelectedBrand: [],
@@ -107,7 +108,9 @@ class StoreMaster extends Component {
       storeCodecolor: "",
       cityColor: "",
       stateColor: "",
-      pincodeColor: ""
+      pincodeColor: "",
+      brandnameColor:"",
+      sortHeader:""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -121,6 +124,7 @@ class StoreMaster extends Component {
     this.toggleEditModal = this.toggleEditModal.bind(this);
   }
   componentDidMount() {
+    debugger;
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
     this.handleGetStateList();
@@ -153,8 +157,8 @@ class StoreMaster extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
-    this.setState({ StatusModel: true, sortColumn: data });
+  StatusOpenModel(data,header) {
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header});
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -167,7 +171,9 @@ class StoreMaster extends Component {
       storeNameColor: "",
       storeCodecolor: "",
       cityColor: "",
-      stateColor: ""
+      stateColor: "",
+      pincodeColor: "",
+      brandnameColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -195,13 +201,20 @@ class StoreMaster extends Component {
       this.setState({
         stateColor: "sort-column"
       });
-    } else if (column === "pinCode") {
+    } else if (column === "strPinCode") {
       this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.pinCode === data);
+      itemsArray = this.state.storeData.filter(a => a.strPinCode === data);
       this.setState({
         pincodeColor: "sort-column"
       });
+    }else if (column === "brandNames") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.brandNames === data);
+      this.setState({
+        brandnameColor: "sort-column"
+      });
     }
+
 
     this.setState({
       storeData: itemsArray
@@ -210,6 +223,7 @@ class StoreMaster extends Component {
   };
 
   handleGetStoreMasterData() {
+    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -217,6 +231,7 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Store/StoreList",
       headers: authHeader()
     }).then(function(res) {
+      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
 
@@ -273,13 +288,25 @@ class StoreMaster extends Component {
         var unique = [];
         var distinct = [];
         for (let i = 0; i < data.length; i++) {
-          if (!unique[data[i].pinCode]) {
-            distinct.push(data[i].pinCode);
-            unique[data[i].pinCode] = 1;
+          if (!unique[data[i].strPinCode]) {
+            distinct.push(data[i].strPinCode);
+            unique[data[i].strPinCode] = 1;
           }
         }
         for (let i = 0; i < distinct.length; i++) {
-          self.state.sortPincode.push({ pinCode: distinct[i] });
+          self.state.sortPincode.push({ strPinCode: distinct[i] });
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].brandNames]) {
+            distinct.push(data[i].brandNames);
+            unique[data[i].brandNames] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortBrandName.push({ brandNames: distinct[i] });
         }
       }
 
@@ -551,7 +578,6 @@ class StoreMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      debugger;
       if (this.state.modalSelectedBrand.length > 0) {
         for (let i = 0; i < this.state.modalSelectedBrand.length; i++) {
           finalBrandId += this.state.modalSelectedBrand[i].brandID + ",";
@@ -907,6 +933,7 @@ class StoreMaster extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -928,6 +955,10 @@ class StoreMaster extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -1034,23 +1065,47 @@ class StoreMaster extends Component {
                     ))
                   : null}
 
-                {this.state.sortColumn === "pinCode"
+                {this.state.sortColumn === "strPinCode"
                   ? this.state.sortPincode !== null &&
                     this.state.sortPincode.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
                           name="filter-type"
-                          id={"fil-open" + item.pinCode}
-                          value={item.pinCode}
+                          id={"fil-open" + item.strPinCode}
+                          value={item.strPinCode}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "pinCode"
+                            "strPinCode"
                           )}
                         />
-                        <label htmlFor={"fil-open" + item.pinCode}>
+                        <label htmlFor={"fil-open" + item.strPinCode}>
                           <span className="table-btn table-blue-btn">
-                            {item.pinCode}
+                            {item.strPinCode}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+                  
+                {this.state.sortColumn === "brandNames"
+                  ? this.state.sortBrandName !== null &&
+                    this.state.sortBrandName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.brandNames}
+                          value={item.brandNames}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "brandNames"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.brandNames}>
+                          <span className="table-btn table-blue-btn">
+                            {item.brandNames}
                           </span>
                         </label>
                       </div>
@@ -1074,7 +1129,7 @@ class StoreMaster extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (
@@ -1090,7 +1145,7 @@ class StoreMaster extends Component {
                               className={this.state.storeNameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "storeName"
+                                "storeName","Store Name"
                               )}
                             >
                               Store Name
@@ -1105,7 +1160,7 @@ class StoreMaster extends Component {
                               className={this.state.storeCodecolor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "storeCode"
+                                "storeCode","Store Code"
                               )}
                             >
                               Store Code
@@ -1116,7 +1171,13 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                            className={this.state.brandnameColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "brandNames","Brand Names"
+                            )}
+                            >
                               Brand Name
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -1164,7 +1225,7 @@ class StoreMaster extends Component {
                               className={this.state.cityColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "cityName"
+                                "cityName","City"
                               )}
                             >
                               City
@@ -1179,7 +1240,7 @@ class StoreMaster extends Component {
                               className={this.state.stateColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "stateName"
+                                "stateName","State"
                               )}
                             >
                               State
@@ -1191,8 +1252,8 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                            //className={this.state.pincodeColor}
-                            //onClick={this.StatusOpenModel.bind(this,"pinCode")}
+                            className={this.state.pincodeColor}
+                            onClick={this.StatusOpenModel.bind(this,"strPinCode","Pin Code")}
                             >
                               Pincode
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -1277,7 +1338,7 @@ class StoreMaster extends Component {
                           }
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       minRows={1}
                       defaultPageSize={10}
                       showPagination={true}

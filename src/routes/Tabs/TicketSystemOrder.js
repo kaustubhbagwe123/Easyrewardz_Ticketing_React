@@ -365,7 +365,7 @@ class TicketSystemOrder extends Component {
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
-      var createdDate = moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
+      // var createdDate = moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
       if (this.state.purchaseFrmStorID > 0) {
         axios({
           method: "post",
@@ -1317,11 +1317,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.billId}
                     onChange={this.handleManuallyOnchange}
                   />
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "BillId",
                     this.state.billId,
                     "required"
-                  )}
+                  )} */}
                 </div>
               </div>
 
@@ -1370,11 +1370,11 @@ class TicketSystemOrder extends Component {
                         </option>
                       ))}
                   </select>
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "ChannelOfPurchaseData",
                     this.state.ChannelOfPurchaseData,
                     "required"
-                  )}
+                  )} */}
                 </div>
               </div>
 
@@ -1399,11 +1399,11 @@ class TicketSystemOrder extends Component {
                         </option>
                       ))}
                   </select>
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "ModeOfPayment",
                     this.state.modeOfPayment,
                     "required"
-                  )}
+                  )} */}
                 </div>
                 <div className="col-md-6 dapic">
                   <DatePicker
@@ -1545,16 +1545,16 @@ class TicketSystemOrder extends Component {
                     value={this.state.purchaseFrmStorName["store"]}
                   />
 
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "PurchaseFrmStorAddress",
                     this.state.purchaseFrmStorName["store"],
                     "required"
-                  )}
-                  {this.state.purchaseFrmStorID === 0 && (
+                  )} */}
+                  {/* {this.state.purchaseFrmStorID === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.validPurchaseStoreName}
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
 

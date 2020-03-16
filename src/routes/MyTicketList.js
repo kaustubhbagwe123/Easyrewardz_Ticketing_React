@@ -269,7 +269,8 @@ class MyTicketList extends Component {
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: ""
+      creationColor: "",
+      sortHeader:""
 
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
@@ -2392,8 +2393,8 @@ class MyTicketList extends Component {
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
-  StatusOpenModel(data) {
-    this.setState({ StatusModel: true, sortColumnName: data });
+  StatusOpenModel(data,header) {
+    this.setState({ StatusModel: true, sortColumnName: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -2473,7 +2474,7 @@ class MyTicketList extends Component {
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
        
-        categoryColor: "sort-column"
+        categoryColor: ""
       
       });
     } else if (column === "priority") {
@@ -3224,6 +3225,7 @@ class MyTicketList extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -4878,6 +4880,15 @@ class MyTicketList extends Component {
                                     >
                                       CLEAR SEARCH
                                     </p>
+                                    &nbsp;
+                              &nbsp;
+                              &nbsp;
+                              <p
+                                className="blue-clr fs-14"
+                                onClick={this.setSortCheckStatus.bind(this, "all")}
+                              >
+                                CLEAR FILTER
+                              </p>
                                   </div>
                                   <div className="col-auto mob-mar-btm">
                                     <CSVLink
@@ -5784,7 +5795,7 @@ class MyTicketList extends Component {
                                   className={this.state.statusColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "status"
+                                      "status","Status"
                                     )}
                                   >
                                     Status{" "}
@@ -5991,7 +6002,7 @@ class MyTicketList extends Component {
                                   className={this.state.categoryColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "category"
+                                      "category","Category"
                                     )}
                                   >
                                     Category{" "}
@@ -6041,7 +6052,7 @@ class MyTicketList extends Component {
                                   className={this.state.priorityColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "priority"
+                                      "priority","Priority"
                                     )}
                                   >
                                     Priority{" "}
@@ -6058,7 +6069,7 @@ class MyTicketList extends Component {
                                   className={this.state.assignColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "assignedTo"
+                                      "assignedTo","Assign To"
                                     )}
                                   >
                                     Assignee{" "}
@@ -6073,7 +6084,7 @@ class MyTicketList extends Component {
                                   className={this.state.creationColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "createdOn"
+                                      "createdOn","Creation On"
                                     )}
                                   >
                                     Creation On{" "}
