@@ -2473,7 +2473,7 @@ class MyTicketList extends Component {
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
        
-        categoryColor: "sort-column"
+        categoryColor: ""
       
       });
     } else if (column === "priority") {
