@@ -55,21 +55,21 @@ class UserForgotPassword extends Component {
     let emaiId = window.location.href
       .slice(window.location.href.indexOf("?") + 1)
       .split(":")[1];
-    let encPassword = encryption(newPassword, "enc");
+    //let encPassword = encryption(newPassword, "enc");
 
     axios({
       method: "post",
       url: config.apiUrl + "/Account/UpdatePassword",
       params: {
         cipherEmailId: emaiId,
-        Password: encPassword
+        Password: newPassword
       },
       headers: authHeader()
     }).then(function(response) {
       // let data = response;
       debugger;
       let Msg = response.data.responseData;
-      if (Msg === true) {
+      if (Msg === "Update password successfully") {
         NotificationManager.success("Password Changed successfully.");
         setTimeout(function() {
           self.props.history.push("/SignIn");
@@ -102,6 +102,11 @@ class UserForgotPassword extends Component {
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
+              <div className="input-group sb-2">
+                  <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
+                    Enter New Password
+                  </label>
+                </div>
                 <div className="input-group mb-3">
                   <input
                     type="password"
