@@ -300,7 +300,7 @@ class Templates extends Component {
   handleGetSLAIssueType() {
     debugger;
     let self = this;
-    var data = "";
+    var data = "template";
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
