@@ -1424,67 +1424,71 @@ class MyTicket extends Component {
   handleAttachProductData() {
     debugger;
     // let self = this;
+if(this.state.SelectedAllOrder.length > 0){
+  var selectedRow = "";
 
-    var selectedRow = "";
-
-    if (this.state.SelectedAllOrder.length > 1) {
-      if (this.state.SelectedAllItem.length === 0) {
-        for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
-          selectedRow +=
-            this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
-        }
-      } else {
-        for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
-          selectedRow +=
-            this.state.SelectedAllItem[i]["orderItemID"] +
-            "|" +
-            this.state.SelectedAllItem[i]["requireSize"] +
-            "|0,";
-        }
+  if (this.state.SelectedAllOrder.length > 1) {
+    if (this.state.SelectedAllItem.length === 0) {
+      for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+        selectedRow +=
+          this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
       }
     } else {
-      if (this.state.SelectedAllItem.length === 0) {
-        for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
-          selectedRow +=
-            this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
-        }
-      } else {
-        for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
-          selectedRow +=
-            this.state.SelectedAllItem[i]["orderItemID"] +
-            "|" +
-            this.state.SelectedAllItem[i]["requireSize"] +
-            "|0,";
-        }
+      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+        selectedRow +=
+          this.state.SelectedAllItem[i]["orderItemID"] +
+          "|" +
+          this.state.SelectedAllItem[i]["requireSize"] +
+          "|0,";
       }
     }
+  } else {
+    if (this.state.SelectedAllItem.length === 0) {
+      for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+        selectedRow +=
+          this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+      }
+    } else {
+      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+        selectedRow +=
+          this.state.SelectedAllItem[i]["orderItemID"] +
+          "|" +
+          this.state.SelectedAllItem[i]["requireSize"] +
+          "|0,";
+      }
+    }
+  }
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Order/attachorder",
-      headers: authHeader(),
-      params: {
-        TicketId: this.state.ticket_Id,
-        OrderID: selectedRow.substring(",", selectedRow.length - 1)
+  axios({
+    method: "post",
+    url: config.apiUrl + "/Order/attachorder",
+    headers: authHeader(),
+    params: {
+      TicketId: this.state.ticket_Id,
+      OrderID: selectedRow.substring(",", selectedRow.length - 1)
+    }
+  })
+    .then(function(res) {
+      ////debugger;
+      let status = res.data.message;
+      // let details = res.data.responseData;
+      if (status === "Success") {
+        NotificationManager.success(
+          "Product attached successfully.",
+          "",
+          2000
+        );
+      } else {
+        NotificationManager.error("Product not attached", "", 2000);
       }
     })
-      .then(function(res) {
-        ////debugger;
-        let status = res.data.message;
-        // let details = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success(
-            "Product attached successfully.",
-            "",
-            2000
-          );
-        } else {
-          NotificationManager.error("Product not attached", "", 2000);
-        }
-      })
-      .catch(data => {
-        console.log(data);
-      });
+    .catch(data => {
+      console.log(data);
+    });
+}else{
+  NotificationManager.error("Please select atleast one order.", "", 2000);
+}
+    
   }
   handleGetNotesTabDetails(ticket_Id) {
     ////debugger;
@@ -2210,7 +2214,7 @@ class MyTicket extends Component {
   // -------------------------------Check box selected all code start-------------------------------
 
   onCheckMasterAllChange(orderMasterID, rowData) {
-    ////debugger;
+    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
     newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
     this.setState({
@@ -2298,12 +2302,13 @@ class MyTicket extends Component {
 
     this.setState({
       SelectedAllOrder: selectedRow,
-      SelectedAllItem: CselectedRow
+      SelectedAllItem: CselectedRow,
+      selectedProduct:selectedRow
     });
   }
 
   checkIndividualItem(orderItemID, rowData) {
-    ////debugger;
+   debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
     this.setState({
@@ -2387,7 +2392,8 @@ class MyTicket extends Component {
       }
     }
     this.setState({
-      SelectedAllItem: selectedRow
+      SelectedAllItem: selectedRow,
+      selectedProduct:selectedRow
     });
   }
   // -------------------------------Check box selected all code end-------------------------------
@@ -3943,8 +3949,7 @@ class MyTicket extends Component {
                                         Product Details
                                       </a>
                                     </li>
-                                    {this.state.selectedDataRow.length > 0 ||
-                                    this.state.selectedProduct.length > 0 ? (
+                                    {this.state.selectedProduct.length > 0  ? (
                                       <li className="nav-item fo">
                                         <a
                                           className="nav-link"
@@ -3960,8 +3965,7 @@ class MyTicket extends Component {
                                       </li>
                                     ) : null}
                                   </ul>
-                                  {this.state.selectedDataRow.length > 0 ||
-                                  this.state.selectedProduct.length > 0 ? (
+                                  {/* {this.state.selectedProduct.length > 0 ? ( */}
                                     <div className="col-md-6 m-b-10 m-t-10 text-right">
                                       <button
                                         type="button"
@@ -3973,7 +3977,7 @@ class MyTicket extends Component {
                                         Attach Product
                                       </button>
                                     </div>
-                                  ) : null}
+                                  {/* ) : null} */}
                                 </div>
                               </div>
                             </div>
