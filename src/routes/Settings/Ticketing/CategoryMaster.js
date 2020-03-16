@@ -1110,7 +1110,7 @@ class CategoryMaster extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (
@@ -1257,6 +1257,7 @@ class CategoryMaster extends Component {
                         }
                       ]}
                       minRows={1}
+                      resizable={false}
                       defaultPageSize={10}
                       showPagination={true}
                     />

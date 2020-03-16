@@ -3755,7 +3755,7 @@ class Reports extends Component {
           {/* </div> */}
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr reactreport">
+          <div className="store-settings-cntr settingtable reactreport">
             <div style={{ backgroundColor: "#fff" }}>
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
@@ -3928,7 +3928,7 @@ class Reports extends Component {
                       )
                     }
                   ]}
-                  // resizable={false}
+                  resizable={false}
                   defaultPageSize={10}
                   showPagination={true}
                   minRows={1}

@@ -103,7 +103,10 @@ class KnowledgeBase extends Component {
       sortTable: "",
       issueColor: "",
       categoryColor: "",
-      subCategoryColor: ""
+      subCategoryColor: "",
+      searchCategoryCompulsion:"",
+      searchSubCategoryCompulsion:"",
+      searchIssueCompulsion:""
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -749,6 +752,11 @@ class KnowledgeBase extends Component {
 
   handleSeaechKB() {
     debugger;
+    if(
+      this.state.selectedCategory > 0 &&
+      this.state.selectedSubCategory > 0 &&
+      this.state.selectedIssueType > 0
+    ){
     let self = this;
     axios({
       method: "post",
@@ -773,7 +781,10 @@ class KnowledgeBase extends Component {
           // countNotApprove: notapproveconut,
           selectedCategory: "",
           selectedSubCategory: "",
-          selectedIssueType: ""
+          selectedIssueType: "",
+          searchCategoryCompulsion:"",
+        searchSubCategoryCompulsion:"",
+        searchIssueCompulsion:""
         });
         if (self.state.tabCount === 1) {
           self.setState({
@@ -793,6 +804,13 @@ class KnowledgeBase extends Component {
       .catch(data => {
         console.log(data);
       });
+    }else{
+      this.setState({
+        searchCategoryCompulsion:"Please select category.",
+        searchSubCategoryCompulsion:"Please select subcategory.",
+        searchIssueCompulsion:"Please select issuetype."
+      });
+    }
   }
 
   handleUpdateKB(kbid) {
@@ -1188,7 +1206,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                          Details <FontAwesomeIcon icon={faCaretDown} />
+                        Subject <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -1440,7 +1458,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                          Details <FontAwesomeIcon icon={faCaretDown} />
+                        Subject <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -1673,6 +1691,11 @@ class KnowledgeBase extends Component {
                     </option>
                   ))}
               </select>
+              {this.state.selectedCategory.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.searchCategoryCompulsion}
+                    </p>
+                  )}
             </div>
             <br />
             <div className="row">
@@ -1689,6 +1712,11 @@ class KnowledgeBase extends Component {
                     </option>
                   ))}
               </select>
+              {this.state.selectedSubCategory.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.searchSubCategoryCompulsion}
+                    </p>
+                  )}
             </div>
             <br />
             <div className="row">
@@ -1705,6 +1733,11 @@ class KnowledgeBase extends Component {
                     </option>
                   ))}
               </select>
+              {this.state.selectedIssueType.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.searchIssueCompulsion}
+                    </p>
+                  )}
             </div>
             <br />
           </div>

@@ -164,9 +164,14 @@ class TicketHierarchy extends Component {
       sortAllData: [],
       sortDesignation: [],
       sortReportTo: [],
+      sortCreatedBy:[],
+      sortStatus:[],
       sortColumn: "",
+      sortHeader:"",
       designationColor: "",
       reportToColor: "",
+      createdColor:"",
+      statusColor:"",
       updateDesignation: "",
       updateReprtTo: "",
       updateStatus: "",
@@ -241,10 +246,10 @@ class TicketHierarchy extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -255,27 +260,47 @@ class TicketHierarchy extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      designationColor: "",
+      reportToColor: "",
+      createdColor: "",
+      statusColor: "",
+     
+        [e.target.name]: true
+    
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-      this.setState({
-        designationColor: "",
-        reportToColor: ""
-      });
+     
     } else if (column === "designationName") {
       this.state.hierarchyData = this.state.sortAllData;
       itemsArray = this.state.hierarchyData.filter(
         a => a.designationName === data
       );
       this.setState({
-        designationColor: "blue",
-        reportToColor: ""
+        designationColor: "sort-column"
+       
       });
     } else if (column === "reportTo") {
       this.state.hierarchyData = this.state.sortAllData;
       itemsArray = this.state.hierarchyData.filter(a => a.reportTo === data);
       this.setState({
-        designationColor: "",
-        reportToColor: "blue"
+       
+        reportToColor: "sort-column"
+      });
+    }else if (column === "createdbyperson") {
+      this.state.hierarchyData = this.state.sortAllData;
+      itemsArray = this.state.hierarchyData.filter(a => a.createdbyperson === data);
+      this.setState({
+       
+        createdColor: "sort-column"
+      });
+    }else if (column === "status") {
+      this.state.hierarchyData = this.state.sortAllData;
+      itemsArray = this.state.hierarchyData.filter(a => a.status === data);
+      this.setState({
+       
+        statusColor: "sort-column"
       });
     }
 
@@ -346,6 +371,34 @@ class TicketHierarchy extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortReportTo.push({ reportTo: distinct[i] });
           }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdbyperson]) {
+              distinct.push(data[i].createdbyperson);
+              unique[data[i].createdbyperson] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdbyperson: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].status]) {
+              distinct.push(data[i].status);
+              unique[data[i].status] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ status: distinct[i] });
+          }
+
+
         }
 
         if (status === "Success") {
@@ -561,8 +614,10 @@ class TicketHierarchy extends Component {
             overlayId="logout-ovrly"
           >
             <div className="status-drop-down">
-              <div className="sort-sctn">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
+                 
                   <a
                     href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -583,6 +638,10 @@ class TicketHierarchy extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -603,7 +662,7 @@ class TicketHierarchy extends Component {
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
-                          name="filter-type"
+                          name={item.designationName}
                           id={"fil-open" + item.designationName}
                           value={item.designationName}
                           onChange={this.setSortCheckStatus.bind(
@@ -642,6 +701,53 @@ class TicketHierarchy extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "createdbyperson"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdbyperson}
+                          value={item.createdbyperson}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdbyperson"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdbyperson}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdbyperson}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+
+{this.state.sortColumn === "status"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.status}
+                          value={item.status}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "status"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.status}>
+                          <span className="table-btn table-blue-btn">
+                            {item.status}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </Modal>
@@ -660,7 +766,7 @@ class TicketHierarchy extends Component {
           </a>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr tickhierpad">
+          <div className="store-settings-cntr tickhierpad settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketHierarchyReact">
@@ -670,10 +776,11 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                            style={{ color: this.state.designationColor }}
+                          className={this.state.designationColor}
+                           
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "designationName"
+                              "designationName","Designation"
                             )}
                           >
                             Designation
@@ -685,10 +792,11 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                            style={{ color: this.state.reportToColor }}
+                          className={this.state.reportToColor}
+                            
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "reportTo"
+                              "reportTo","Report To"
                             )}
                           >
                             Report To
@@ -699,7 +807,13 @@ class TicketHierarchy extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.createdColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "createdbyperson","Created By"
+                          )}
+                          >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -755,7 +869,13 @@ class TicketHierarchy extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.statusColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "status","Status"
+                          )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
