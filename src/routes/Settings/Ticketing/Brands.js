@@ -18,6 +18,7 @@ import {
 import ActiveStatus from "../../activeStatus";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 //import useForm from "./useForm";
 
 // const stateSchema = {
@@ -188,8 +189,9 @@ class Brands extends Component {
       editbrandcodeCompulsion: "Please enter brand code.",
       editbrandnameCompulsion: "Please enter brand name.",
       editstatusCompulsion: "Please select status.",
-      brandcodeColor:"",
-      brandnameColor:""
+      brandcodeColor: "",
+      brandnameColor: "",
+      addSaveLoading: false
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -266,8 +268,8 @@ class Brands extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      brandcodeColor:"",
-      brandnameColor:""
+      brandcodeColor: "",
+      brandnameColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -275,15 +277,13 @@ class Brands extends Component {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.brandCode === data);
       this.setState({
-        brandcodeColor:"sort-column"
-      
+        brandcodeColor: "sort-column"
       });
     } else if (column === "brandName") {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.brandName === data);
       this.setState({
-        brandnameColor:"sort-column"
-      
+        brandnameColor: "sort-column"
       });
     }
 
@@ -322,53 +322,53 @@ class Brands extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/BrandList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
 
-      if (status === "Success") {
-        self.setState({
-          brandData: data,
-          loading: false
-        });
-      } else {
-        self.setState({
-          brandData: [],
-          loading: false
-        });
-      }
+        if (status === "Success") {
+          self.setState({
+            brandData: data,
+            loading: false
+          });
+        } else {
+          self.setState({
+            brandData: [],
+            loading: false
+          });
+        }
 
-      if (data !== null) {
-        self.state.sortAllData = data;
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < data.length; i++) {
-          if (!unique[data[i].brandCode] && data[i].brandCode !== "") {
-            distinct.push(data[i].brandCode);
-            unique[data[i].brandCode] = 1;
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].brandCode] && data[i].brandCode !== "") {
+              distinct.push(data[i].brandCode);
+              unique[data[i].brandCode] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortBrandCode.push({ brandCode: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].brandName] && data[i].brandName !== "") {
+              distinct.push(data[i].brandName);
+              unique[data[i].brandName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortBrandName.push({ brandName: distinct[i] });
           }
         }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortBrandCode.push({ brandCode: distinct[i] });
-        }
-
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < data.length; i++) {
-          if (!unique[data[i].brandName] && data[i].brandName !== "") {
-            distinct.push(data[i].brandName);
-            unique[data[i].brandName] = 1;
-          }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortBrandName.push({ brandName: distinct[i] });
-        }
-      }
-
-      
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleSubmitData() {
@@ -386,6 +386,7 @@ class Brands extends Component {
       } else {
         activeStatus = 0;
       }
+      this.setState({ addSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Brand/AddBrand",
@@ -395,25 +396,30 @@ class Brands extends Component {
           BrandName: this.state.brand_name.trim(),
           IsActive: activeStatus
         }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetBrandList();
-          NotificationManager.success("Brand Added successfully.", '', 1000);
-          self.setState({
-            brand_Code: "",
-            brand_name: "",
-            selectedStatus: 0,
-            brandcodeCompulsion: "",
-            brandnameCompulsion: "",
-            statusCompulsion: ""
-          });
-        } else if (status === "Record Already Exists ") {
-          NotificationManager.error(status, '', 1000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetBrandList();
+            NotificationManager.success("Brand Added successfully.", "", 1000);
+            self.setState({
+              brand_Code: "",
+              brand_name: "",
+              selectedStatus: 0,
+              brandcodeCompulsion: "",
+              brandnameCompulsion: "",
+              statusCompulsion: "",
+              addSaveLoading: false
+            });
+          } else if (status === "Record Already Exists ") {
+            self.setState({ addSaveLoading: false });
+            NotificationManager.error(status, "", 1000);
+          }
+        })
+        .catch(data => {
+          self.setState({ addSaveLoading: false });
+          console.log(data);
         });
     } else {
       this.setState({
@@ -432,17 +438,19 @@ class Brands extends Component {
       params: {
         BrandID: brand_Id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.statusCode;
-      if (status === 1010) {
-        self.handleGetBrandList();
-        NotificationManager.success("Brand delete successfully.", '', 1000);
-      } else {
-        NotificationManager.error(res.data.message, '', 1000);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.statusCode;
+        if (status === 1010) {
+          self.handleGetBrandList();
+          NotificationManager.success("Brand delete successfully.", "", 1000);
+        } else {
+          NotificationManager.error(res.data.message, "", 1000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleUpdateData(e, brandID) {
@@ -470,18 +478,24 @@ class Brands extends Component {
           BrandName: this.state.updateBrandName.trim(),
           IsActive: activeStatus
         }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetBrandList();
-          NotificationManager.success("Brand updated successfully.", '', 1000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetBrandList();
+            NotificationManager.success(
+              "Brand updated successfully.",
+              "",
+              1000
+            );
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
-      NotificationManager.error("Brand not updated .", '', 1000);
+      NotificationManager.error("Brand not updated .", "", 1000);
       this.setState({
         editbrandcodeCompulsion: "Please enter brand code.",
         editbrandnameCompulsion: "Please enter brand name.",
@@ -626,7 +640,8 @@ class Brands extends Component {
                       columns={[
                         {
                           Header: (
-                            <span className={this.state.brandcodeColor}
+                            <span
+                              className={this.state.brandcodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandCode"
@@ -640,7 +655,8 @@ class Brands extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.brandnameColor}
+                            <span
+                              className={this.state.brandnameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName"
@@ -938,9 +954,19 @@ class Brands extends Component {
                     <div className="btnSpace">
                       <button
                         className="CreateADDBtn"
-                        type="button"
                         onClick={this.handleSubmitData.bind(this)}
+                        disabled={this.state.addSaveLoading}
+                        type="button"
                       >
+                        {this.state.addSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
                         ADD
                       </button>
                     </div>

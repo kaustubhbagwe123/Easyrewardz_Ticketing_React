@@ -188,7 +188,11 @@ class CreatePriority extends Component {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
-          NotificationManager.error("Sorry we don't sort row of list", '', 1000);
+          NotificationManager.error(
+            "Sorry we don't sort row of list",
+            "",
+            1000
+          );
         }
       })
       .catch(data => {
@@ -263,7 +267,9 @@ class CreatePriority extends Component {
             );
             self.setState({
               priority_name: "",
-              selectedActiveStatus: 0
+              selectedActiveStatus: 0,
+              priorityNameCompulsion:"",
+              statusCompulsion:""
             });
           }
         })
@@ -297,7 +303,7 @@ class CreatePriority extends Component {
             2000
           );
         } else {
-          NotificationManager.error(res.data.message, '', 1000);
+          NotificationManager.error(res.data.message, "", 1000);
         }
       })
       .catch(data => {
@@ -349,7 +355,7 @@ class CreatePriority extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Priority not updated.", '', 1000);
+      NotificationManager.error("Priority not updated.", "", 1000);
       this.setState({
         editpriorityNameCompulsion: "Please enter priority name",
         editstatusCompulsion: "Please select status"
@@ -724,7 +730,7 @@ class CreatePriority extends Component {
                         value={this.state.selectedActiveStatus}
                         onChange={this.handleActiveStatus}
                       >
-                        <option>select</option>
+                        <option value="select">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, i) => (
                             <option key={i} value={item.ActiveID}>
@@ -741,9 +747,20 @@ class CreatePriority extends Component {
                     <div className="btnSpace">
                       <button
                         className="CreateADDBtn addLable"
-                        type="button"
+                        disabled={this.state.editSaveLoading}
+                        className="CreateADDBtn addLable"
                         onClick={this.handleSubmitData.bind(this)}
+                        type="submit"
                       >
+                        {this.state.editSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
                         ADD
                       </button>
                     </div>
@@ -814,7 +831,12 @@ class CreatePriority extends Component {
             </div>
             <br />
             <div className="text-center">
-              <a className="pop-over-cancle" onClick={this.toggleEditModal.bind(this)}>CANCEL</a>
+              <a
+                className="pop-over-cancle"
+                onClick={this.toggleEditModal.bind(this)}
+              >
+                CANCEL
+              </a>
               <button
                 className="pop-over-button FlNone"
                 disabled={this.state.editSaveLoading}

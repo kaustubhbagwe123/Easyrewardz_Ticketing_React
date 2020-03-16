@@ -25,7 +25,6 @@ import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
 
- 
 class Templates extends Component {
   constructor(props) {
     super(props);
@@ -59,8 +58,10 @@ class Templates extends Component {
       editmodel: false,
       isEdit: false,
       isLoading: false,
-      editSaveLoading:false,
-      issueColor:""
+      editSaveLoading: false,
+      issueColor: "",
+      editTemplateName: "",
+      editIssueTypeSelect: ""
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -122,16 +123,20 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template update successfully.", '', 1000);
+          NotificationManager.success(
+            "Template update successfully.",
+            "",
+            1000
+          );
           self.handleGetTemplate();
-          self.setState({ editSaveLoading: false,ConfigTabsModal:false });
+          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
         } else {
-          self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
-          NotificationManager.error("Template not update.", '', 1000);
+          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+          NotificationManager.error("Template not update.", "", 1000);
         }
       })
       .catch(data => {
-        self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
+        self.setState({ editSaveLoading: false, ConfigTabsModal: false });
         console.log(data);
       });
   }
@@ -178,7 +183,7 @@ class Templates extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      issueColor:""
+      issueColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -186,7 +191,7 @@ class Templates extends Component {
       this.state.template = this.state.sortAllData;
       itemsArray = this.state.template.filter(a => a.issueTypeName === data);
       this.setState({
-        issueColor:"sort-column"
+        issueColor: "sort-column"
       });
     }
 
@@ -236,8 +241,14 @@ class Templates extends Component {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
-
     var data = this.state.templateEdit;
+    if (name === "TemplateName" && value === "") {
+      data[name] = value;
+      this.setState({ editTemplateName: "Please Enter Templates Name" });
+    } else {
+      data[name] = value;
+      this.setState({ editTemplateName: "" });
+    }
     data[name] = value;
 
     this.setState({
@@ -248,9 +259,8 @@ class Templates extends Component {
     debugger;
     if (e === null) {
       e = [];
-      this.setState({ selectedSlaIssueType: e,
-     });
-    }else{
+      this.setState({ selectedSlaIssueType: e });
+    } else {
       if (e !== null) {
         var selectedIssueTypeCommaSeperated = Array.prototype.map
           .call(e, s => s.issueTypeID)
@@ -261,15 +271,30 @@ class Templates extends Component {
         selectedIssueTypeCommaSeperated
       });
     }
-   
   };
 
   setEditIssueType = e => {
     debugger;
-
-    this.setState({
-      editIssueType: e
-    });
+    if (e) {
+      if (e.length === 0) {
+        this.setState({
+          editIssueTypeSelect: "Please Select Issue Type",
+          editIssueType: e
+        });
+      }
+      else
+      {
+        this.setState({
+          editIssueType: e,
+          editIssueTypeSelect: ""
+        });
+      }
+    } else {
+      this.setState({
+        editIssueType: e,
+        editIssueTypeSelect: "Please Select Issue Type"
+      });
+    }
   };
 
   handleTemplateName(e) {
@@ -336,10 +361,14 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template deleted successfully.", '', 1000);
+          NotificationManager.success(
+            "Template deleted successfully.",
+            "",
+            1000
+          );
           self.handleGetTemplate();
         } else {
-          NotificationManager.error("Template not deleted.", '', 1000);
+          NotificationManager.error("Template not deleted.", "", 1000);
         }
       })
       .catch(data => {
@@ -378,7 +407,11 @@ class Templates extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Template added successfully.", '', 1000);
+            NotificationManager.success(
+              "Template added successfully.",
+              "",
+              1000
+            );
             self.handleGetTemplate();
             self.setState({
               TemplateSubject: "",
@@ -389,7 +422,7 @@ class Templates extends Component {
               templatebodyCompulsion: ""
             });
           } else {
-            NotificationManager.error("Template not added.", '', 1000);
+            NotificationManager.error("Template not added.", "", 1000);
           }
         })
         .catch(data => {
@@ -466,7 +499,20 @@ class Templates extends Component {
     return <div className="rt-noData">No rows found</div>;
   };
   handleEditSave = e => {
-    this.setState({ ConfigTabsModal: true,editmodel:false });
+    debugger;
+    var checkvalid = false;
+    if (this.state.templateEdit.TemplateName && this.state.editIssueType.length>0) {
+      this.setState({ ConfigTabsModal: true, editmodel: false });
+      checkvalid = true;
+    }
+    if (!checkvalid) {
+      if (!this.state.templateEdit.TemplateName) {
+        this.setState({ editTemplateName: "Please Enter Templates Name" });
+      }
+      if (e) {
+        this.setState({ editIssueTypeSelect: "Please Select Issue Type" });
+      }
+    }
   };
   render() {
     const columns = [
@@ -481,7 +527,10 @@ class Templates extends Component {
       },
       {
         Header: (
-          <span  className={this.state.issueColor} onClick={this.StatusOpenModel.bind(this, "issueTypeName")}>
+          <span
+            className={this.state.issueColor}
+            onClick={this.StatusOpenModel.bind(this, "issueTypeName")}
+          >
             Issue Type
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -838,11 +887,11 @@ class Templates extends Component {
                             isMulti
                           />
                         </div>
-                          {this.state.selectedSlaIssueType.length === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.issurtupeCompulsion}
-                            </p>
-                          )}
+                        {this.state.selectedSlaIssueType.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.issurtupeCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -899,7 +948,6 @@ class Templates extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Template Subject"
-                            
                             onChange={this.handleTemplateSubject}
                             value={this.state.TemplateSubject}
                           />
@@ -979,6 +1027,11 @@ class Templates extends Component {
                     onChange={this.handleOnChangeEditData}
                   />
                 </div>
+                {this.state.templateEdit.TemplateName == "" && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editTemplateName}
+                  </p>
+                )}
                 <div className="pop-over-div">
                   <label className="edit-label-1">Issue Type</label>
                   <Select
@@ -988,15 +1041,17 @@ class Templates extends Component {
                     }
                     options={this.state.slaIssueType}
                     placeholder="Select"
-                    // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setEditIssueType}
                     value={this.state.editIssueType}
-                    // showNewOptionAtTop={false}
-                    // defaultValue={{ label: "asd", value: 1 }}
                     isMulti
                   />
                 </div>
+                {this.state.editIssueType!==null && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editIssueTypeSelect}
+                  </p>
+                )}
                 <div className="pop-over-div">
                   <label className="edit-label-1">Status</label>
                   <select

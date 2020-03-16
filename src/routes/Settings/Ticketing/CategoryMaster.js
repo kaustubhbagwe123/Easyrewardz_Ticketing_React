@@ -714,6 +714,7 @@ class CategoryMaster extends Component {
             issueCompulsion: "",
             statusCompulsion: "",
             editmodel: false,
+            editCategory:{},            
             editSaveLoading: false
           });
         } else if (status === "Record Already Exists ") {
