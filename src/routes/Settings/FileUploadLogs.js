@@ -163,12 +163,12 @@ class FileUploadLogs extends Component {
           </Link>
         </div>
         <br />
-        <div className="fileUploadTable TicketFileUploadReact">
+        <div className="fileUploadTable TicketFileUploadReact settingtable">
                   <ReactTable
                   minRows={2}
                     data={this.state.fileUploadLog}
                     columns={columnsTickFileUpload}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={5}
                     showPagination={true}
                   />

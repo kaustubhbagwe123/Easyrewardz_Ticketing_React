@@ -600,7 +600,7 @@ class TicketCRMRole extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketCrmRoleReact">
@@ -608,7 +608,7 @@ class TicketCRMRole extends Component {
                     minRows={2}
                     data={this.state.crmRoles}
                     columns={columnsTickCrmRole}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
                   />

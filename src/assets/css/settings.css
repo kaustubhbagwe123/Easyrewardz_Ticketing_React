@@ -939,7 +939,7 @@
 .collapse-title[aria-expanded="true"] {
   background-color: #f3f3f3;
   background-image: url("./../Images/table-arr-up.png");
-  font-size: 18px;
+  font-size: 16px;
 }
 .collapse-title[aria-expanded="true"]::after {
   background-color: transparent;

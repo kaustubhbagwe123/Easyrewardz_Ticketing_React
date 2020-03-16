@@ -831,7 +831,7 @@ class CreateSLA extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketSlaReact">
@@ -1109,7 +1109,7 @@ class CreateSLA extends Component {
                         }
                       }
                     ]}
-                    // resizable={false}
+                    resizable={false}
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
