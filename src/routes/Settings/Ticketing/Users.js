@@ -134,6 +134,7 @@ class Users extends Component {
       mobileColor: "",
       emailColor: "",
       designationColor: "",
+      sortHeader:"",
       emailFlag: true,
       editEmailFlag: true,
       phoneFlag: true,
@@ -201,9 +202,9 @@ class Users extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -1878,8 +1879,9 @@ class Users extends Component {
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
-            <div className="status-drop-down">
+            <div className="status-drop-down" style={{width:"280px"}}>
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -1901,6 +1903,10 @@ class Users extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -1999,7 +2005,7 @@ class Users extends Component {
                           )}
                         />
                         <label htmlFor={"fil-open" + item.emailID}>
-                          <span className="table-btn table-blue-btn">
+                          <span >
                             {item.emailID}
                           </span>
                         </label>
@@ -2512,7 +2518,7 @@ class Users extends Component {
                             className={this.state.userColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "userName"
+                              "userName","User Name"
                             )}
                           >
                             User Name
@@ -2528,7 +2534,7 @@ class Users extends Component {
                             className={this.state.mobileColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "mobileNumber"
+                              "mobileNumber","Mobile Number"
                             )}
                           >
                             Mobile No.
@@ -2542,13 +2548,13 @@ class Users extends Component {
                         Header: (
                           <span
                             className={this.state.emailColor}
-                            onClick={this.StatusOpenModel.bind(this, "emailID")}
+                            onClick={this.StatusOpenModel.bind(this, "emailID","EmailID")}
                           >
                             Email ID
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "emailID",
+                        accessor: "email ID",
                         Cell: row => <span>{row.original.emailID}</span>
                       },
                       {
@@ -2557,7 +2563,7 @@ class Users extends Component {
                             className={this.state.designationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "designation"
+                              "designation","Designation"
                             )}
                           >
                             Designation
