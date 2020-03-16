@@ -3773,7 +3773,7 @@ class MyTicket extends Component {
                                                 placeholderText="DD/MM/YYYY"
                                                 showMonthDropdown
                                                 showYearDropdown
-                                                // dateFormat="dd/MM/yyyy"
+                                                dateFormat="MM-DD-YYYY"
                                                 id={
                                                   "visitDate" +
                                                   row.original.storeID

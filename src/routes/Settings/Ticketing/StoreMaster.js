@@ -103,11 +103,11 @@ class StoreMaster extends Component {
       editContactEmailValidation: "",
       editContactPhoneValidation: "",
       editStatusValidation: "",
-      storeNameColor:"",
-      storeCodecolor:"",
-      cityColor:"",
-      stateColor:"",
-      pincodeColor:""
+      storeNameColor: "",
+      storeCodecolor: "",
+      cityColor: "",
+      stateColor: "",
+      pincodeColor: ""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -164,10 +164,10 @@ class StoreMaster extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      storeNameColor:"",
-      storeCodecolor:"",
-      cityColor:"",
-      stateColor:""
+      storeNameColor: "",
+      storeCodecolor: "",
+      cityColor: "",
+      stateColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -175,36 +175,31 @@ class StoreMaster extends Component {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.storeName === data);
       this.setState({
-        storeNameColor:"sort-column"
-        
+        storeNameColor: "sort-column"
       });
     } else if (column === "storeCode") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.storeCode === data);
       this.setState({
-        storeCodecolor:"sort-column"
-        
+        storeCodecolor: "sort-column"
       });
     } else if (column === "cityName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.cityName === data);
       this.setState({
-        cityColor:"sort-column"
-        
+        cityColor: "sort-column"
       });
     } else if (column === "stateName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.stateName === data);
       this.setState({
-        stateColor:"sort-column"
-        
+        stateColor: "sort-column"
       });
     } else if (column === "pinCode") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.pinCode === data);
       this.setState({
-        pincodeColor:"sort-column"
-        
+        pincodeColor: "sort-column"
       });
     }
 
@@ -412,7 +407,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
-        NotificationManager.success("Store deleted successfully.", '', 1000);
+        NotificationManager.success("Store deleted successfully.", "", 1000);
       }
     });
   }
@@ -474,7 +469,7 @@ class StoreMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
-          NotificationManager.success("Store added successfully.", '', 1000);
+          NotificationManager.success("Store added successfully.", "", 1000);
           self.setState({
             store_code: "",
             store_name: "",
@@ -505,7 +500,7 @@ class StoreMaster extends Component {
             cityData: []
           });
         } else {
-          NotificationManager.error("Store Not added.", '', 1000);
+          NotificationManager.error("Store Not added.", "", 1000);
         }
       });
     } else {
@@ -531,15 +526,16 @@ class StoreMaster extends Component {
     debugger;
     if (
       this.state.modalSelectedBrand !== null &&
+      this.state.modalSelectedBrand.length > 0 &&
       this.state.userEditData.store_Code.length > 0 &&
       this.state.userEditData.store_Name.length > 0 &&
-      this.state.userEditData.state_ID === "0" &&
-      this.state.userEditData.city_ID === "0" &&
+      this.state.userEditData.state_ID !== "0" &&
+      this.state.userEditData.city_ID !== "0" &&
       this.state.userEditData.strPin_Code.length > 0 &&
-      this.state.userEditData.status_ID === "0" &&
-      this.state.userEditData.region_ID === "0" &&
-      this.state.userEditData.zone_ID === "0" &&
-      this.state.userEditData.storeType_ID === "0" &&
+      // this.state.userEditData.status_ID === "0" &&
+      this.state.userEditData.region_ID !== "0" &&
+      this.state.userEditData.zone_ID !== "0" &&
+      this.state.userEditData.storeType_ID !== "0" &&
       this.state.userEditData.email_.length > 0 &&
       this.state.EditEmailFlag === true &&
       this.state.EditPhoneFlag === true &&
@@ -587,7 +583,11 @@ class StoreMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetStoreMasterData();
-            NotificationManager.success("Store updated successfully.", '', 1000);
+            NotificationManager.success(
+              "Store updated successfully.",
+              "",
+              1000
+            );
 
             self.setState({
               editSaveLoading: false,
@@ -615,7 +615,7 @@ class StoreMaster extends Component {
               editStoreTypeValidation: "",
               editContactEmailValidation: "",
               editContactPhoneValidation: "",
-              editStatusValidation: ""
+              // editStatusValidation: ""
             });
           }
         })
@@ -636,7 +636,7 @@ class StoreMaster extends Component {
         editStoreTypeValidation: "Please Select Store Type.",
         editContactEmailValidation: "Please Enter EmailID.",
         editContactPhoneValidation: "Please Enter Phone Number.",
-        editStatusValidation: "Please Select Status."
+        // editStatusValidation: "Please Select Status."
       });
     }
   }
@@ -790,20 +790,42 @@ class StoreMaster extends Component {
   };
   hanldeOnPhoneChange = e => {
     debugger;
-    var reg = /^[0-9\b]+$/;
-    if (e.target.value === "" || reg.test(e.target.value)) {
-      this.setState({ [e.target.name]: e.target.value });
+    var name = e.target.name;
+    if (name === "phoneNumber_") {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        var value = e.target.value;
+        var userEditData = this.state.userEditData;
+        userEditData[name] = value;
+        this.setState({ userEditData });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          phoneFlag: true
+        });
+      } else {
+        this.setState({
+          phoneFlag: false
+        });
+      }
     } else {
-      e.target.value = "";
-    }
-    if (e.target.value.length == 10 || e.target.value.length == 0) {
-      this.setState({
-        phoneFlag: true
-      });
-    } else {
-      this.setState({
-        phoneFlag: false
-      });
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        this.setState({ [e.target.name]: e.target.value });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          phoneFlag: true
+        });
+      } else {
+        this.setState({
+          phoneFlag: false
+        });
+      }
     }
   };
   hanldeOnPinCodeChange = e => {
@@ -862,19 +884,6 @@ class StoreMaster extends Component {
       } else {
         this.setState({
           EditEmailFlag: true
-        });
-      }
-    }
-
-    if (name === "phoneNumber_") {
-      var reg = /^[0-9\b]+$/;
-      if (e.target.value.length == 10 || e.target.value.length == 0) {
-        this.setState({
-          EditPhoneFlag: true
-        });
-      } else {
-        this.setState({
-          EditPhoneFlag: false
         });
       }
     }
@@ -1077,7 +1086,8 @@ class StoreMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span className={this.state.storeNameColor}
+                            <span
+                              className={this.state.storeNameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName"
@@ -1091,7 +1101,8 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.storeCodecolor}
+                            <span
+                              className={this.state.storeCodecolor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeCode"
@@ -1149,13 +1160,14 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.cityColor}
+                            <span
+                              className={this.state.cityColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "cityName"
                               )}
                             >
-                              City 
+                              City
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1163,7 +1175,8 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.stateColor}
+                            <span
+                              className={this.state.stateColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "stateName"
@@ -1177,7 +1190,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span 
+                            <span
                             //className={this.state.pincodeColor}
                             //onClick={this.StatusOpenModel.bind(this,"pinCode")}
                             >
@@ -1986,7 +1999,8 @@ class StoreMaster extends Component {
                       name="phoneNumber_"
                       maxLength={10}
                       value={this.state.userEditData.phoneNumber_}
-                      onChange={this.handleModalEditData}
+                      // onChange={this.handleModalEditData}
+                      onChange={this.hanldeOnPhoneChange}
                     />
                     {this.state.EditPhoneFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
