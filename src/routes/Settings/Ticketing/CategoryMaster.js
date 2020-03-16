@@ -71,12 +71,15 @@ class CategoryMaster extends Component {
       sortCategory: [],
       sortSubCategory: [],
       sortIssueType: [],
+      sortStatus:[],
       editmodel: false,
       editCategory: {},
       brandColor: "",
       categoryColor: "",
       subCategoryColor: "",
       issueColor: "",
+      statusColor:"",
+      sortHeader:"",
       brandCatmapId: 0,
       editBrandCompulsory: "",
       editCategoryCompulsory: "",
@@ -127,9 +130,9 @@ class CategoryMaster extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -144,7 +147,8 @@ class CategoryMaster extends Component {
       brandColor: "",
       categoryColor: "",
       subCategoryColor: "",
-      issueColor: ""
+      issueColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -179,6 +183,14 @@ class CategoryMaster extends Component {
       );
       this.setState({
         issueColor: "sort-column"
+      });
+    }else if (column === "statusName") {
+      this.state.categoryGridData = this.state.sortAllData;
+      itemsArray = this.state.categoryGridData.filter(
+        a => a.statusName === data
+      );
+      this.setState({
+        statusColor: "sort-column"
       });
     }
 
@@ -250,6 +262,20 @@ class CategoryMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].statusName]) {
+              distinct.push(data[i].statusName);
+              unique[data[i].statusName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ statusName: distinct[i] });
+          }
+
+
         }
 
         if (status === "Success") {
@@ -966,6 +992,7 @@ class CategoryMaster extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -987,6 +1014,10 @@ class CategoryMaster extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -1092,6 +1123,29 @@ class CategoryMaster extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "statusName"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.statusName}
+                          value={item.statusName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "statusName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.statusName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.statusName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </Modal>
@@ -1126,7 +1180,7 @@ class CategoryMaster extends Component {
                               className={this.state.brandColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "brandName"
+                                "brandName","Brand"
                               )}
                             >
                               Brand Name
@@ -1141,7 +1195,7 @@ class CategoryMaster extends Component {
                               className={this.state.categoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "categoryName"
+                                "categoryName","Category"
                               )}
                             >
                               Category
@@ -1156,7 +1210,7 @@ class CategoryMaster extends Component {
                               className={this.state.subCategoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "subCategoryName"
+                                "subCategoryName","SubCategory"
                               )}
                             >
                               Sub Cat
@@ -1171,7 +1225,7 @@ class CategoryMaster extends Component {
                               className={this.state.issueColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "issueTypeName"
+                                "issueTypeName","IssueType"
                               )}
                             >
                               Issue Type
@@ -1182,7 +1236,13 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "statusName","Status"
+                            )}
+                            >
                               Status
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>

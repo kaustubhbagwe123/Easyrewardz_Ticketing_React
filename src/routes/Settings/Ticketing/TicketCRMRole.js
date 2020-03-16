@@ -58,8 +58,16 @@ class TicketCRMRole extends Component {
       modulesData: [],
       crmRoleID: 0,
       modulestatus: "",
-      editSaveLoading: false
-    };
+      editSaveLoading: false,
+      sortAllData:[],
+      sortRoleName:[],
+      sortCreated:[],
+      sortStatus:[],
+      roleColor:"",
+      createdColor:"",
+      statusColor:"",
+      sortHeader:""
+        };
 
     this.handleRoleName = this.handleRoleName.bind(this);
     this.handleUpdateRoleName = this.handleUpdateRoleName.bind(this);
@@ -71,8 +79,9 @@ class TicketCRMRole extends Component {
   }
 
   componentDidMount() {
-    this.handleModulesDefault();
     this.handleGetCRMRoles();
+    this.handleModulesDefault();
+    
   }
 
   handleGetCRMRoles() {
