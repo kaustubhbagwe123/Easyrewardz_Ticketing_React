@@ -264,7 +264,10 @@ class TicketHierarchy extends Component {
       designationColor: "",
       reportToColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
+     
+        [e.target.name]: true
+    
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -635,6 +638,10 @@ class TicketHierarchy extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -655,7 +662,7 @@ class TicketHierarchy extends Component {
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
-                          name="filter-type"
+                          name={item.designationName}
                           id={"fil-open" + item.designationName}
                           value={item.designationName}
                           onChange={this.setSortCheckStatus.bind(
