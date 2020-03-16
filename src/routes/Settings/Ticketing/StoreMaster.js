@@ -1130,7 +1130,7 @@ class StoreMaster extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (
@@ -1339,7 +1339,7 @@ class StoreMaster extends Component {
                           }
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       minRows={1}
                       defaultPageSize={10}
                       showPagination={true}

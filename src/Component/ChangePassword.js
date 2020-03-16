@@ -153,7 +153,7 @@ class ChangePassword extends Component {
   }
   render() {
     return (
-      <div className="auth-wrapper">
+      <div className="auth-wrapper box-center">
         <div className="auth-content">
           <div
             className="card forgotpass-card changepass-card"

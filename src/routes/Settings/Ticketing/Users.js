@@ -2498,7 +2498,7 @@ class Users extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketUserReact">
@@ -2772,7 +2772,7 @@ class Users extends Component {
                         }
                       }
                     ]}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
                   />
