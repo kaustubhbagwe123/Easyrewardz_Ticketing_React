@@ -10504,6 +10504,9 @@ table tr th:last-child {
   border: none;
   cursor: pointer;
 }
+.cursor-disabled {
+  cursor: not-allowed;
+}
 
 /* Responsive starts */
 
