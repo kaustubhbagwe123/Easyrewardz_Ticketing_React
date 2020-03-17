@@ -75,6 +75,7 @@ import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { Dropdown } from "semantic-ui-react";
 import { withRouter } from "react-router";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 // import DatePicker from "react-date-picker";
 
 class MyTicket extends Component {
@@ -5427,7 +5428,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                //debugger;
+                                debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -5545,9 +5546,10 @@ class MyTicket extends Component {
                                             className="label-5"
                                             style={{ display: "inline-block" }}
                                           >
-                                            {details.latestMessageDetails.ticketMailBody
+                                            {/* {details.latestMessageDetails.ticketMailBody
                                               .replace(/<[^>]+>/g, "")
-                                              .replace(/&nbsp;/gi, " ")}
+                                              .replace(/&nbsp;/gi, " ")} */}
+                                             {ReactHtmlParser(details.latestMessageDetails.ticketMailBody)} 
                                           </p>
                                         </div>
 
@@ -5668,7 +5670,8 @@ class MyTicket extends Component {
                                                                     "block"
                                                                 }}
                                                               >
-                                                                {MsgData.ticketMailBody
+                                                                {ReactHtmlParser(MsgData.ticketMailBody)}
+                                                                {/* {MsgData.ticketMailBody
                                                                   .replace(
                                                                     /<[^>]+>/g,
                                                                     ""
@@ -5676,7 +5679,7 @@ class MyTicket extends Component {
                                                                   .replace(
                                                                     /&nbsp;/gi,
                                                                     " "
-                                                                  )}
+                                                                  )} */}
                                                               </label>
                                                             </div>
                                                           </div>
@@ -5700,7 +5703,8 @@ class MyTicket extends Component {
                                                             display: "block"
                                                           }}
                                                         >
-                                                          {details.trailMessageDetails.ticketMailBody
+                                                          {ReactHtmlParser(details.trailMessageDetails.ticketMailBody)}
+                                                          {/* {details.trailMessageDetails.ticketMailBody
                                                             .replace(
                                                               /<[^>]+>/g,
                                                               ""
@@ -5708,7 +5712,7 @@ class MyTicket extends Component {
                                                             .replace(
                                                               /&nbsp;/gi,
                                                               " "
-                                                            )}
+                                                            )} */}
                                                         </label>
                                                       </div>
                                                     </div>
