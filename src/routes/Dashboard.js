@@ -6697,7 +6697,7 @@ class Dashboard extends Component {
                             className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "createdOn"," Createion On"
+                              "createdOn"," Creation On"
                             )}
                           >
                             Creation On <FontAwesomeIcon icon={faCaretDown} />
