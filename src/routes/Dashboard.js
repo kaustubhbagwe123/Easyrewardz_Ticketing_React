@@ -316,6 +316,7 @@ class Dashboard extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
+      sortHeader:"",
       moduleID: 0,
       ticketGenerationSourceFlag: false,
       ticketToBillBarFlag: false,
@@ -1805,10 +1806,10 @@ class Dashboard extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumnName: data });
+    this.setState({ StatusModel: true, sortColumnName: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -3732,6 +3733,7 @@ class Dashboard extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -5685,6 +5687,16 @@ class Dashboard extends Component {
                               >
                                 CLEAR SEARCH
                               </p>
+                              &nbsp;
+                              &nbsp;
+                              &nbsp;
+                              <p
+                                className="blue-clr fs-14"
+                                onClick={this.setSortCheckStatus.bind(this, "all")}
+                              >
+                                CLEAR FILTER
+                              </p>
+                          
                             </div>
                             <div className="col-auto mob-mar-btm">
                               <CSVLink
@@ -6434,7 +6446,7 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            onClick={this.StatusOpenModel.bind(this, "status")}
+                            onClick={this.StatusOpenModel.bind(this, "status","Status")}
                             className={this.state.statusColor}
                           >
                             Status <FontAwesomeIcon icon={faCaretDown} />
@@ -6607,7 +6619,7 @@ class Dashboard extends Component {
                             className={this.state.categoryColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "category"
+                              "category","Category"
                             )}
                           >
                             Category <FontAwesomeIcon icon={faCaretDown} />
@@ -6656,7 +6668,7 @@ class Dashboard extends Component {
                             className={this.state.priorityColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "priority"
+                              "priority","Priority"
                             )}
                           >
                             Priority <FontAwesomeIcon icon={faCaretDown} />
@@ -6671,7 +6683,7 @@ class Dashboard extends Component {
                             className={this.state.assignColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "assignedTo"
+                              "assignedTo","Assign To"
                             )}
                           >
                             Assignee <FontAwesomeIcon icon={faCaretDown} />
@@ -6685,7 +6697,7 @@ class Dashboard extends Component {
                             className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "createdOn"
+                              "createdOn"," Createion On"
                             )}
                           >
                             Creation On <FontAwesomeIcon icon={faCaretDown} />

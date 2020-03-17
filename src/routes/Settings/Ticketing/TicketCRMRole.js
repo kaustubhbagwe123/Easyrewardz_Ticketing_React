@@ -25,13 +25,14 @@ import SimpleReactValidator from "simple-react-validator";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
- 
+
 class TicketCRMRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileName: "",
       RoleName: "",
+      editRoleName: "",
       RoleisActive: "true",
       ModulesEnabled: "",
       ModulesDisabled: "",
@@ -58,7 +59,17 @@ class TicketCRMRole extends Component {
       modulesData: [],
       crmRoleID: 0,
       modulestatus: "",
-      editSaveLoading: false
+      editSaveLoading: false,
+      editRoleNameValidMsg: "",
+
+      sortAllData: [],
+      sortRoleName: [],
+      sortCreated: [],
+      sortStatus: [],
+      roleColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortHeader: ""
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -71,8 +82,8 @@ class TicketCRMRole extends Component {
   }
 
   componentDidMount() {
-    this.handleModulesDefault();
     this.handleGetCRMRoles();
+    this.handleModulesDefault();
   }
 
   handleGetCRMRoles() {
@@ -215,7 +226,7 @@ class TicketCRMRole extends Component {
         ModulesDisabled = self.state.ModulesDisabled;
       } else if (e === "update") {
         CRMRoleID = this.state.crmRoleID;
-        RoleName = this.state.RoleName;
+        RoleName = this.state.editRoleName;
 
         for (let j = 0; j < this.state.modulesData.length; j++) {
           if (this.state.modulesData[j].modulestatus) {
@@ -251,9 +262,12 @@ class TicketCRMRole extends Component {
           let status = res.data.message;
           if (status === "Success") {
             if (e === "add") {
-              NotificationManager.success("CRM Role added successfully.", '', 1000);
+              NotificationManager.success(
+                "CRM Role added successfully.",
+                "",
+                1000
+              );
               self.setState({
-                
                 RoleName: "",
                 RoleisActive: "true",
                 ModulesEnabled: "",
@@ -264,23 +278,27 @@ class TicketCRMRole extends Component {
               self.handleGetCRMRoles();
             } else if (e === "update") {
               self.toggleEditModal();
-              self.setState({editSaveLoading: false})
-              NotificationManager.success("CRM Role updated successfully.", '', 1000);
+              self.setState({
+                editSaveLoading: false,
+                editRoleNameValidMsg: ""
+              });
+              NotificationManager.success(
+                "CRM Role updated successfully.",
+                "",
+                1000
+              );
               self.handleGetCRMRoles();
-             
-             
             }
-          }else if(status === "Record Already Exists "){
-            if(e === "add") {
+          } else if (status === "Record Already Exists ") {
+            if (e === "add") {
               NotificationManager.error("Record Already Exists ");
             }
-            
           } else {
             if (e === "add") {
-              NotificationManager.error("CRM Role not added.", '', 1000);
+              NotificationManager.error("CRM Role not added.", "", 1000);
             } else if (e === "update") {
-              self.setState({editSaveLoading: false})
-              NotificationManager.error("CRM Role not updated.", '', 1000);
+              self.setState({ editSaveLoading: false });
+              NotificationManager.error("CRM Role not updated.", "", 1000);
             }
           }
         })
@@ -289,7 +307,14 @@ class TicketCRMRole extends Component {
           console.log(data);
         });
     } else {
-      this.validator.showMessages();
+      if (e === "update") {
+        self.setState({
+          editRoleNameValidMsg: "The role name field is required."
+        });
+      } else {
+        this.validator.showMessages();
+      }
+
       this.forceUpdate();
     }
   }
@@ -309,9 +334,9 @@ class TicketCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.", '', 1000);
+          NotificationManager.error("Record in use.", "", 1000);
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.", '', 1000);
+          NotificationManager.success("Record deleted Successfully.", "", 1000);
           self.handleGetCRMRoles();
         }
       })
@@ -363,7 +388,7 @@ class TicketCRMRole extends Component {
     this.setState({
       modulesData: rowData.modules,
       modulestatus: rowData.isRoleActive,
-      RoleName: rowData.roleName,
+      editRoleName: rowData.roleName,
       crmRoleID: rowData.crmRoleID,
       editmodel: true
     });
@@ -376,7 +401,14 @@ class TicketCRMRole extends Component {
     if (Name === "status") {
       this.setState({ modulestatus: value });
     } else {
-      this.setState({ RoleName: value });
+      if (value) {
+        this.setState({ editRoleName: value, editRoleNameValidMsg: "" });
+      } else {
+        this.setState({
+          editRoleName: value,
+          editRoleNameValidMsg: "The role name field is required."
+        });
+      }
     }
   }
 
@@ -390,7 +422,8 @@ class TicketCRMRole extends Component {
 
   toggleEditModal() {
     this.setState({
-      editmodel: false
+      editmodel: false,
+      editRoleNameValidMsg: ""
     });
   }
   render() {
@@ -915,11 +948,16 @@ class TicketCRMRole extends Component {
                   className="txt-edit-popover"
                   placeholder="Enter Role Name"
                   maxLength={25}
-                  name="rolename"
-                  value={this.state.RoleName}
+                  name="editRoleName"
+                  value={this.state.editRoleName}
                   onChange={this.handleModaleDataChange.bind(this)}
                 />
               </div>
+              {this.state.editRoleNameValidMsg && (
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.editRoleNameValidMsg}
+                </p>
+              )}
               {this.state.modulesData !== null &&
                 this.state.modulesData.map((item, i) => (
                   <div

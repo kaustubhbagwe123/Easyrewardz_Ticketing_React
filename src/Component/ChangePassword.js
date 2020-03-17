@@ -9,6 +9,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
+import { encryption } from "../helpers/encryption";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -109,6 +110,8 @@ class ChangePassword extends Component {
     .slice(window.location.href.indexOf("?") + 1)
     .split(":")[1];
 
+    let encPassword = encryption(newPassword, "enc");
+
     var field = 'Id';
     var changePasswordType="system";
     var emailIDsystem="";
@@ -132,7 +135,7 @@ class ChangePassword extends Component {
       data: {
         EmailID:emailIDsystem,
         Password:this.state.oldPassword,
-        NewPassword: newPassword,
+        NewPassword: encPassword,
         ChangePasswordType:changePasswordType
       },
       headers: authHeader()

@@ -58,7 +58,12 @@ class CreateSLA extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
+      sortCreatedBy:[],
+      sortStatus:[],
       issueColor:"",
+      createdColor:"",
+      stattusColor:"",
+      sortHeader:"",
       issueTypeName: "",
       brandName: "",
       categoryName: "",
@@ -109,10 +114,10 @@ class CreateSLA extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -124,7 +129,9 @@ class CreateSLA extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      issueColor:""
+      issueColor:"",
+      createdColor:"",
+      stattusColor:""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -134,7 +141,21 @@ class CreateSLA extends Component {
       this.setState({
         issueColor:"sort-column"
       });
+    }else if (column === "createdBy") {
+      this.state.sla = this.state.sortAllData;
+      itemsArray = this.state.sla.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor:"sort-column"
+      });
+    }else if (column === "isSLAActive") {
+      this.state.sla = this.state.sortAllData;
+      itemsArray = this.state.sla.filter(a => a.isSLAActive === data);
+      this.setState({
+        stattusColor:"sort-column"
+      });
     }
+
+
 
     this.setState({
       sla: itemsArray
@@ -377,6 +398,30 @@ class CreateSLA extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTpeName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].isSLAActive]) {
+              distinct.push(data[i].isSLAActive);
+              unique[data[i].isSLAActive] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ isSLAActive: distinct[i] });
           }
         }
 
@@ -756,6 +801,7 @@ class CreateSLA extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -777,6 +823,10 @@ class CreateSLA extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -813,6 +863,52 @@ class CreateSLA extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "isSLAActive"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.isSLAActive}
+                          value={item.isSLAActive}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "isSLAActive"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.isSLAActive}>
+                          <span className="table-btn table-blue-btn">
+                            {item.isSLAActive}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </Modal>
@@ -844,7 +940,7 @@ class CreateSLA extends Component {
                           <span className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "issueTpeName"
+                              "issueTpeName","IssueType"
                             )}
                           >
                             Issue Type
@@ -980,7 +1076,13 @@ class CreateSLA extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy","Created By"
+                            )}
+                          >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -1037,7 +1139,13 @@ class CreateSLA extends Component {
 
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.stattusColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "isSLAActive","Status"
+                          )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
