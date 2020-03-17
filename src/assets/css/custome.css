@@ -10375,7 +10375,9 @@ table tr th:last-child {
   padding: 5px 10px;
   border-radius: 50px;
   font-size: 12px;
+  margin: 2px 0;
   margin-right: 5px;
+  display: inline-block;
 }
 .issuetype-cusdrp .category-box li {
   display: block;

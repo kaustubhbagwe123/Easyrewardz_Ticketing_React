@@ -1333,6 +1333,7 @@ class CreateSLA extends Component {
                                             <img src={Correct} alt="Checked" />
                                           </div>
                                         </label>
+                                        <span>{item.brandName}</span>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
@@ -1388,7 +1389,7 @@ class CreateSLA extends Component {
                               <div className="inner-div">
                                 <input
                                   type="text"
-                                  placeholder="30"
+                                  placeholder="00"
                                   className="text-box-crt-sla"
                                   name="SlaBreach"
                                   value={item.SlaBreach || ""}
@@ -1412,7 +1413,7 @@ class CreateSLA extends Component {
                               <div className="inner-div">
                                 <input
                                   type="text"
-                                  placeholder="30"
+                                  placeholder="00"
                                   className="text-box-crt-sla"
                                   name="Rerspondtime"
                                   value={item.Rerspondtime}
@@ -1444,7 +1445,7 @@ class CreateSLA extends Component {
                               <div className="inner-div">
                                 <input
                                   type="text"
-                                  placeholder="30"
+                                  placeholder="00"
                                   className="text-box-crt-sla"
                                   autoComplete="off"
                                   name="ResolveTime"
@@ -1662,7 +1663,7 @@ class CreateSLA extends Component {
                       <div className="inner-div">
                         <input
                           type="text"
-                          placeholder="30"
+                          placeholder="00"
                           className="text-box-crt-sla"
                           name="SlaBreach"
                           value={item.SlaBreach || ""}
@@ -1686,7 +1687,7 @@ class CreateSLA extends Component {
                       <div className="inner-div">
                         <input
                           type="text"
-                          placeholder="30"
+                          placeholder="00"
                           className="text-box-crt-sla"
                           name="Rerspondtime"
                           value={item.Rerspondtime}
@@ -1718,7 +1719,7 @@ class CreateSLA extends Component {
                       <div className="inner-div">
                         <input
                           type="text"
-                          placeholder="30"
+                          placeholder="00"
                           className="text-box-crt-sla"
                           autoComplete="off"
                           name="ResolveTime"
