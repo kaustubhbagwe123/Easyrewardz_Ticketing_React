@@ -25,7 +25,6 @@ import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
 
- 
 class Templates extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +45,7 @@ class Templates extends Component {
       templatenamecopulsion: "",
       issurtupeCompulsion: "",
       statusCompulsion: "",
-      templatesubjectCompulsion: "",
+      // templatesubjectCompulsion: "",
       templatebodyCompulsion: "",
       StatusModel: false,
       sortColumn: "",
@@ -59,8 +58,11 @@ class Templates extends Component {
       editmodel: false,
       isEdit: false,
       isLoading: false,
-      editSaveLoading:false,
-      issueColor:""
+      editSaveLoading: false,
+      issueColor: "",
+      editTemplateName: "",
+      editIssueTypeSelect: "",
+      issueColor: ""
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -122,16 +124,20 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template update successfully.", '', 1000);
+          NotificationManager.success(
+            "Template update successfully.",
+            "",
+            1000
+          );
           self.handleGetTemplate();
-          self.setState({ editSaveLoading: false,ConfigTabsModal:false });
+          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
         } else {
-          self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
-          NotificationManager.error("Template not update.", '', 1000);
+          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+          NotificationManager.error("Template not update.", "", 1000);
         }
       })
       .catch(data => {
-        self.setState({ editSaveLoading: false ,ConfigTabsModal:false});
+        self.setState({ editSaveLoading: false, ConfigTabsModal: false });
         console.log(data);
       });
   }
@@ -178,7 +184,7 @@ class Templates extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      issueColor:""
+      issueColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -186,7 +192,7 @@ class Templates extends Component {
       this.state.template = this.state.sortAllData;
       itemsArray = this.state.template.filter(a => a.issueTypeName === data);
       this.setState({
-        issueColor:"sort-column"
+        issueColor: "sort-column"
       });
     }
 
@@ -236,8 +242,14 @@ class Templates extends Component {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
-
     var data = this.state.templateEdit;
+    if (name === "TemplateName" && value === "") {
+      data[name] = value;
+      this.setState({ editTemplateName: "Please Enter Templates Name" });
+    } else {
+      data[name] = value;
+      this.setState({ editTemplateName: "" });
+    }
     data[name] = value;
 
     this.setState({
@@ -248,9 +260,8 @@ class Templates extends Component {
     debugger;
     if (e === null) {
       e = [];
-      this.setState({ selectedSlaIssueType: e,
-     });
-    }else{
+      this.setState({ selectedSlaIssueType: e });
+    } else {
       if (e !== null) {
         var selectedIssueTypeCommaSeperated = Array.prototype.map
           .call(e, s => s.issueTypeID)
@@ -261,15 +272,30 @@ class Templates extends Component {
         selectedIssueTypeCommaSeperated
       });
     }
-   
   };
 
   setEditIssueType = e => {
     debugger;
-
-    this.setState({
-      editIssueType: e
-    });
+    if (e) {
+      if (e.length === 0) {
+        this.setState({
+          editIssueTypeSelect: "Please Select Issue Type",
+          editIssueType: e
+        });
+      }
+      else
+      {
+        this.setState({
+          editIssueType: e,
+          editIssueTypeSelect: ""
+        });
+      }
+    } else {
+      this.setState({
+        editIssueType: e,
+        editIssueTypeSelect: "Please Select Issue Type"
+      });
+    }
   };
 
   handleTemplateName(e) {
@@ -300,7 +326,7 @@ class Templates extends Component {
   handleGetSLAIssueType() {
     debugger;
     let self = this;
-    var data = "";
+    var data = "template";
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
@@ -336,10 +362,14 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template deleted successfully.", '', 1000);
+          NotificationManager.success(
+            "Template deleted successfully.",
+            "",
+            1000
+          );
           self.handleGetTemplate();
         } else {
-          NotificationManager.error("Template not deleted.", '', 1000);
+          NotificationManager.error("Template not deleted.", "", 1000);
         }
       })
       .catch(data => {
@@ -349,10 +379,7 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
-    if (
-      this.state.TemplateSubject.length > 0 &&
-      this.state.editorContent.length > 0
-    ) {
+    if (this.state.editorContent.length > 0) {
       let self = this;
       this.setState({ ConfigTabsModal: false });
       var TemplateIsActive;
@@ -378,18 +405,22 @@ class Templates extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Template added successfully.", '', 1000);
+            NotificationManager.success(
+              "Template added successfully.",
+              "",
+              1000
+            );
             self.handleGetTemplate();
             self.setState({
               TemplateSubject: "",
               editorContent: "",
               TemplateName: "",
               selectedSlaIssueType: [],
-              templatesubjectCompulsion: "",
+              // templatesubjectCompulsion: "",
               templatebodyCompulsion: ""
             });
           } else {
-            NotificationManager.error("Template not added.", '', 1000);
+            NotificationManager.error("Template not added.", "", 1000);
           }
         })
         .catch(data => {
@@ -397,7 +428,7 @@ class Templates extends Component {
         });
     } else {
       this.setState({
-        templatesubjectCompulsion: "Please Enter Subject",
+        // templatesubjectCompulsion: "Please Enter Subject",
         templatebodyCompulsion: "Please Enter Descriptions"
       });
     }
@@ -466,190 +497,9 @@ class Templates extends Component {
     return <div className="rt-noData">No rows found</div>;
   };
   handleEditSave = e => {
-    this.setState({ ConfigTabsModal: true,editmodel:false });
+    this.setState({ ConfigTabsModal: true, editmodel: false });
   };
   render() {
-    const columns = [
-      {
-        Header: (
-          <span>
-            Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "templateName"
-      },
-      {
-        Header: (
-          <span  className={this.state.issueColor} onClick={this.StatusOpenModel.bind(this, "issueTypeName")}>
-            Issue Type
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-
-        accessor: "issueTypeCount",
-        //Cell: props => <span className="number">{props.value}</span>
-        Cell: row => {
-          if (row.original.issueTypeCount === 1) {
-            return (
-              <span>
-                <label>{row.original.issueTypeName}</label>
-              </span>
-            );
-          } else {
-            return (
-              <span>
-                <label>{row.original.issueTypeCount}</label>
-              </span>
-            );
-          }
-        }
-      },
-      {
-        id: "createdBy",
-        Header: (
-          <span>
-            Created by
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                {row.original.createdBy}
-                <Popover
-                  content={
-                    <>
-                      <div>
-                        <b>
-                          <p className="title">
-                            Created By: {row.original.createdBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          Created Date: {row.original.createdDate}
-                        </p>
-                      </div>
-                      <div>
-                        <b>
-                          <p className="title">
-                            Updated By: {row.original.modifiedBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          Updated Date: {row.original.modifiedDate}
-                        </p>
-                      </div>
-                    </>
-                  }
-                  placement="bottom"
-                >
-                  <img
-                    src={InfoImg}
-                    className="info-icon"
-                    alt="Info"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </>
-          );
-        }
-        // accessor: "createdBy"
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "templateStatus"
-      },
-      {
-        Header: "Actions",
-        sortable: false,
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={
-                    <div className="d-flex general-popover popover-body">
-                      <div className="del-big-icon">
-                        <img src={DelBigIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button
-                            className="butn"
-                            onClick={this.deleteTemplate.bind(
-                              this,
-                              row.original.templateID
-                            )}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  }
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={DeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                {/* <Popover
-                  content={
-                    <Content
-                      rowData={row.original}
-                      callBackEdit={this.callBackEdit}
-                      handleUpdateTemplate={this.handleUpdateTemplate.bind(
-                        this
-                      )}
-                      slaIssueType={this.state.slaIssueType}
-                    />
-                  }
-                  placement="bottom"
-                  trigger="click"
-                >
-
-                 
-                  <label className="Table-action-edit-button-text">
-                    <MyButton>EDIT</MyButton>
-                  </label>
-                </Popover> */}
-                <button
-                  className="react-tabel-button editre"
-                  id="p-edit-pop-2"
-                  onClick={this.setTemplateEditData.bind(this, row.original)}
-                >
-                  EDIT
-                </button>
-              </span>
-            </>
-          );
-        }
-
-        //  className:"action-template",
-      }
-    ];
-
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -739,15 +589,188 @@ class Templates extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height template-table">
                   <ReactTable
                     minRows={2}
                     data={this.state.template}
-                    columns={columns}
-                    // resizable={false}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
+                            Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "templateName"
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.issueColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "issueTypeName"
+                            )}
+                          >
+                            Issue Type
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+
+                        accessor: "issueTypeCount",
+                        //Cell: props => <span className="number">{props.value}</span>
+                        Cell: row => {
+                          if (row.original.issueTypeCount === 1) {
+                            return (
+                              <span>
+                                <label>{row.original.issueTypeName}</label>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                <label>{row.original.issueTypeCount}</label>
+                              </span>
+                            );
+                          }
+                        }
+                      },
+                      {
+                        id: "createdBy",
+                        Header: (
+                          <span>
+                            Created by
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <>
+                              <span>
+                                {row.original.createdBy}
+                                <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Created By: {row.original.createdBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Created Date:{" "}
+                                          {row.original.createdDate}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Updated By:{" "}
+                                            {row.original.modifiedBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Updated Date:{" "}
+                                          {row.original.modifiedDate}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    src={InfoImg}
+                                    className="info-icon"
+                                    alt="Info"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </>
+                          );
+                        }
+                        // accessor: "createdBy"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Status
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "templateStatus"
+                      },
+                      {
+                        Header: "Actions",
+                        sortable: false,
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <>
+                              <span>
+                                <Popover
+                                  content={
+                                    <div className="d-flex general-popover popover-body">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.deleteTemplate.bind(
+                                              this,
+                                              row.original.templateID
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                    id={ids}
+                                  />
+                                </Popover>
+
+                                <button
+                                  className="react-tabel-button editre"
+                                  id="p-edit-pop-2"
+                                  onClick={this.setTemplateEditData.bind(
+                                    this,
+                                    row.original
+                                  )}
+                                >
+                                  EDIT
+                                </button>
+                              </span>
+                            </>
+                          );
+                        }
+
+                        //  className:"action-template",
+                      }
+                    ]}
+                    resizable={false}
                     defaultPageSize={5}
                     showPagination={true}
                   />
@@ -816,12 +839,7 @@ class Templates extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        {/* <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Select</option>
-                        </select> */}
+
                         <div className="normal-dropdown mt-0 dropdown-setting temp-multi schedule-multi">
                           <Select
                             getOptionLabel={option => option.issueTypeName}
@@ -838,11 +856,11 @@ class Templates extends Component {
                             isMulti
                           />
                         </div>
-                          {this.state.selectedSlaIssueType.length === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.issurtupeCompulsion}
-                            </p>
-                          )}
+                        {this.state.selectedSlaIssueType.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.issurtupeCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -899,15 +917,14 @@ class Templates extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Template Subject"
-                            
                             onChange={this.handleTemplateSubject}
                             value={this.state.TemplateSubject}
                           />
-                          {this.state.TemplateSubject && (
+                          {/* {this.state.TemplateSubject && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.templatesubjectCompulsion}
                             </p>
-                          )}
+                          )} */}
                         </div>
                         <Modal.Body>
                           <div className="template-editor">
@@ -979,6 +996,11 @@ class Templates extends Component {
                     onChange={this.handleOnChangeEditData}
                   />
                 </div>
+                {this.state.templateEdit.TemplateName == "" && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editTemplateName}
+                  </p>
+                )}
                 <div className="pop-over-div">
                   <label className="edit-label-1">Issue Type</label>
                   <Select
@@ -988,15 +1010,17 @@ class Templates extends Component {
                     }
                     options={this.state.slaIssueType}
                     placeholder="Select"
-                    // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setEditIssueType}
                     value={this.state.editIssueType}
-                    // showNewOptionAtTop={false}
-                    // defaultValue={{ label: "asd", value: 1 }}
                     isMulti
                   />
                 </div>
+                {this.state.editIssueType!==null && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editIssueTypeSelect}
+                  </p>
+                )}
                 <div className="pop-over-div">
                   <label className="edit-label-1">Status</label>
                   <select

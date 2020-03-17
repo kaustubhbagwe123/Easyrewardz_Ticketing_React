@@ -71,13 +71,21 @@ class CategoryMaster extends Component {
       sortCategory: [],
       sortSubCategory: [],
       sortIssueType: [],
+      sortStatus:[],
       editmodel: false,
       editCategory: {},
-      brandColor:"",
-      categoryColor:"",
-      subCategoryColor:"",
-      issueColor:"",
-      brandCatmapId: 0
+      brandColor: "",
+      categoryColor: "",
+      subCategoryColor: "",
+      issueColor: "",
+      statusColor:"",
+      sortHeader:"",
+      brandCatmapId: 0,
+      editBrandCompulsory: "",
+      editCategoryCompulsory: "",
+      editSubCatCompulsory: "",
+      editIssueCompulsory: "",
+      editStatusCompulsory: ""
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -122,9 +130,9 @@ class CategoryMaster extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -136,10 +144,11 @@ class CategoryMaster extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      brandColor:"",
-      categoryColor:"",
-      subCategoryColor:"",
-      issueColor:""
+      brandColor: "",
+      categoryColor: "",
+      subCategoryColor: "",
+      issueColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -149,8 +158,7 @@ class CategoryMaster extends Component {
         a => a.brandName === data
       );
       this.setState({
-        brandColor:"sort-column"
-        
+        brandColor: "sort-column"
       });
     } else if (column === "categoryName") {
       this.state.categoryGridData = this.state.sortAllData;
@@ -158,8 +166,7 @@ class CategoryMaster extends Component {
         a => a.categoryName === data
       );
       this.setState({
-        categoryColor:"sort-column"
-        
+        categoryColor: "sort-column"
       });
     } else if (column === "subCategoryName") {
       this.state.categoryGridData = this.state.sortAllData;
@@ -167,8 +174,7 @@ class CategoryMaster extends Component {
         a => a.subCategoryName === data
       );
       this.setState({
-        subCategoryColor:"sort-column"
-        
+        subCategoryColor: "sort-column"
       });
     } else if (column === "issueTypeName") {
       this.state.categoryGridData = this.state.sortAllData;
@@ -176,8 +182,15 @@ class CategoryMaster extends Component {
         a => a.issueTypeName === data
       );
       this.setState({
-        issueColor:"sort-column"
-        
+        issueColor: "sort-column"
+      });
+    }else if (column === "statusName") {
+      this.state.categoryGridData = this.state.sortAllData;
+      itemsArray = this.state.categoryGridData.filter(
+        a => a.statusName === data
+      );
+      this.setState({
+        statusColor: "sort-column"
       });
     }
 
@@ -249,6 +262,20 @@ class CategoryMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].statusName]) {
+              distinct.push(data[i].statusName);
+              unique[data[i].statusName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ statusName: distinct[i] });
+          }
+
+
         }
 
         if (status === "Success") {
@@ -443,7 +470,7 @@ class CategoryMaster extends Component {
               ListOfIssueData: [],
               SubCategoryDropData: []
             });
-            self.handleGetCategoryList(data,"edit");
+            self.handleGetCategoryList(data, "edit");
           } else {
             self.setState({
               category_Id: data
@@ -453,7 +480,7 @@ class CategoryMaster extends Component {
             self.handleGetCategoryList();
           }
         } else {
-          NotificationManager.error("Category not added.", '', 1000);
+          NotificationManager.error("Category not added.", "", 1000);
         }
       })
       .catch(data => {
@@ -513,7 +540,7 @@ class CategoryMaster extends Component {
             2000
           );
         } else {
-          NotificationManager.error("SubCategory not added.", '', 1000);
+          NotificationManager.error("SubCategory not added.", "", 1000);
         }
       })
       .catch(data => {
@@ -564,7 +591,7 @@ class CategoryMaster extends Component {
             self.handleGetIssueTypeList();
           }
         } else {
-          NotificationManager.error("Issue Type not added.", '', 1000);
+          NotificationManager.error("Issue Type not added.", "", 1000);
         }
       })
       .catch(data => {
@@ -645,7 +672,7 @@ class CategoryMaster extends Component {
               statusCompulsion: ""
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.", '', 1000);
+            NotificationManager.error("Record Already Exists.", "", 1000);
           } else {
             NotificationManager.error(status, "", 3000);
           }
@@ -668,66 +695,85 @@ class CategoryMaster extends Component {
   handleUpdateCategory() {
     debugger;
     let self = this;
-    var activeStatus = 0;
-    var categorydata = 0;
-    var subCategoryData = 0;
-    var IssueData = 0;
+    if (
+      this.state.editCategory.brandID !== null &&
+      this.state.editCategory.categoryID > 0 &&
+      this.state.editCategory.subCategoryID > 0 &&
+      this.state.editCategory.issueTypeID > 0
+    ) {
+      var activeStatus = 0;
+      var categorydata = 0;
+      var subCategoryData = 0;
+      var IssueData = 0;
 
-    if (this.state.editCategory.statusName === "Active") {
-      activeStatus = 1;
-    } else {
-      activeStatus = 0;
-    }
-    categorydata = this.state.editCategory.categoryID;
-    subCategoryData = this.state.editCategory.subCategoryID;
-    IssueData = this.state.editCategory.issueTypeID;
-    this.setState({ editSaveLoading: true });
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Category/CreateCategorybrandmapping",
-      headers: authHeader(),
-      data: {
-        BrandCategoryMappingID: this.state.brandCatmapId,
-        BraindID: this.state.editCategory.brandID,
-        CategoryID: categorydata,
-        SubCategoryID: subCategoryData,
-        IssueTypeID: IssueData,
-        Status: activeStatus,
-        Deleteflag: 0
+      if (this.state.editCategory.statusName === "Active") {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
       }
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetCategoryGridData();
-          NotificationManager.success("Category added successfully.", "", 2000);
-          self.setState({
-            selectBrand: 0,
-            list1Value: "",
-            ListOfSubCate: "",
-            ListOfIssue: "",
-            selectStatus: 0,
-            brandCompulsion: "",
-            categoryCompulsion: "",
-            subcategoryCompulsion: "",
-            issueCompulsion: "",
-            statusCompulsion: "",
-            editmodel: false,
-            editSaveLoading: false
-          });
-        } else if (status === "Record Already Exists ") {
-          self.setState({ editmodel: false, editSaveLoading: false });
-          NotificationManager.error("Record Already Exists.", '', 1000);
-        } else {
-          NotificationManager.error(status, "", 3000);
-          self.setState({ editmodel: false, editSaveLoading: false });
+      categorydata = this.state.editCategory.categoryID;
+      subCategoryData = this.state.editCategory.subCategoryID;
+      IssueData = this.state.editCategory.issueTypeID;
+      this.setState({ editSaveLoading: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Category/CreateCategorybrandmapping",
+        headers: authHeader(),
+        data: {
+          BrandCategoryMappingID: this.state.brandCatmapId,
+          BraindID: this.state.editCategory.brandID,
+          CategoryID: categorydata,
+          SubCategoryID: subCategoryData,
+          IssueTypeID: IssueData,
+          Status: activeStatus,
+          Deleteflag: 0
         }
       })
-      .catch(data => {
-        self.setState({ editmodel: false, editSaveLoading: false });
-        console.log(data);
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetCategoryGridData();
+            NotificationManager.success(
+              "Category updated successfully.",
+              "",
+              2000
+            );
+            self.setState({
+              selectBrand: 0,
+              list1Value: "",
+              ListOfSubCate: "",
+              ListOfIssue: "",
+              selectStatus: 0,
+              editBrandCompulsory: "",
+              editCategoryCompulsory: "",
+              editSubCatCompulsory: "",
+              editIssueCompulsory: "",
+              editStatusCompulsory: "",
+              editmodel: false,
+              editSaveLoading: false
+            });
+          } else if (status === "Record Already Exists ") {
+            self.setState({ editmodel: false, editSaveLoading: false });
+            NotificationManager.error("Record Already Exists.", "", 1000);
+          } else {
+            NotificationManager.error(status, "", 3000);
+            self.setState({ editmodel: false, editSaveLoading: false });
+          }
+        })
+        .catch(data => {
+          self.setState({ editmodel: false, editSaveLoading: false });
+          console.log(data);
+        });
+    } else {
+      self.setState({
+        editBrandCompulsory: "Please Select Brand.",
+        editCategoryCompulsory: "Please Select Category.",
+        editSubCatCompulsory: "Please Select SubCategory.",
+        editIssueCompulsory: "Please Select Issue type",
+        editStatusCompulsory: "Please Select Status"
       });
+    }
   }
 
   HandleMultiSelect() {
@@ -946,6 +992,7 @@ class CategoryMaster extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -967,6 +1014,10 @@ class CategoryMaster extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -1072,6 +1123,29 @@ class CategoryMaster extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "statusName"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.statusName}
+                          value={item.statusName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "statusName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.statusName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.statusName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </Modal>
@@ -1090,7 +1164,7 @@ class CategoryMaster extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (
@@ -1102,10 +1176,11 @@ class CategoryMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span className={this.state.brandColor}
+                            <span
+                              className={this.state.brandColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "brandName"
+                                "brandName","Brand"
                               )}
                             >
                               Brand Name
@@ -1116,10 +1191,11 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.categoryColor}
+                            <span
+                              className={this.state.categoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "categoryName"
+                                "categoryName","Category"
                               )}
                             >
                               Category
@@ -1130,10 +1206,11 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.subCategoryColor}
+                            <span
+                              className={this.state.subCategoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "subCategoryName"
+                                "subCategoryName","SubCategory"
                               )}
                             >
                               Sub Cat
@@ -1144,10 +1221,11 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.issueColor}
+                            <span
+                              className={this.state.issueColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "issueTypeName"
+                                "issueTypeName","IssueType"
                               )}
                             >
                               Issue Type
@@ -1158,7 +1236,13 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "statusName","Status"
+                            )}
+                            >
                               Status
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -1233,6 +1317,7 @@ class CategoryMaster extends Component {
                         }
                       ]}
                       minRows={1}
+                      resizable={false}
                       defaultPageSize={10}
                       showPagination={true}
                     />
@@ -1638,7 +1723,7 @@ class CategoryMaster extends Component {
                   onChange={this.handleModalBrandChange}
                   name="brandID"
                 >
-                  <option>Select</option>
+                  <option value={0}>Select</option>
                   {this.state.brandData !== null &&
                     this.state.brandData.map((item, i) => (
                       <option
@@ -1650,6 +1735,11 @@ class CategoryMaster extends Component {
                       </option>
                     ))}
                 </select>
+                {this.state.editCategory.brandID !== null && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editBrandCompulsory}
+                  </p>
+                )}
               </div>
 
               <div className="pop-over-div">
@@ -1667,9 +1757,9 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.list1Value === "" && (
+                    {this.state.editCategory.categoryID !== null && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.categoryCompulsion}
+                        {this.state.editCategoryCompulsory}
                       </p>
                     )}
 
@@ -1728,9 +1818,9 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.ListOfSubCate === "" && (
+                    {this.state.editCategory.subCategoryID !== null && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.subcategoryCompulsion}
+                        {this.state.editSubCatCompulsory}
                       </p>
                     )}
 
@@ -1795,9 +1885,9 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.editCategory["issueTypeName"] === "" && (
+                    {this.state.editCategory.issueTypeID !== null && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.issueCompulsion}
+                        {this.state.editIssueCompulsory}
                       </p>
                     )}
                     <SweetAlert

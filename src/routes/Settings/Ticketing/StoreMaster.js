@@ -81,6 +81,7 @@ class StoreMaster extends Component {
       sortCity: [],
       sortState: [],
       sortPincode: [],
+      sortBrandName:[],
       sortColumn: "",
       editmodel: false,
       modalSelectedBrand: [],
@@ -103,11 +104,13 @@ class StoreMaster extends Component {
       editContactEmailValidation: "",
       editContactPhoneValidation: "",
       editStatusValidation: "",
-      storeNameColor:"",
-      storeCodecolor:"",
-      cityColor:"",
-      stateColor:"",
-      pincodeColor:""
+      storeNameColor: "",
+      storeCodecolor: "",
+      cityColor: "",
+      stateColor: "",
+      pincodeColor: "",
+      brandnameColor:"",
+      sortHeader:""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -121,6 +124,7 @@ class StoreMaster extends Component {
     this.toggleEditModal = this.toggleEditModal.bind(this);
   }
   componentDidMount() {
+    debugger;
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
     this.handleGetStateList();
@@ -153,8 +157,8 @@ class StoreMaster extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
-    this.setState({ StatusModel: true, sortColumn: data });
+  StatusOpenModel(data,header) {
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header});
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -164,10 +168,12 @@ class StoreMaster extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      storeNameColor:"",
-      storeCodecolor:"",
-      cityColor:"",
-      stateColor:""
+      storeNameColor: "",
+      storeCodecolor: "",
+      cityColor: "",
+      stateColor: "",
+      pincodeColor: "",
+      brandnameColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -175,38 +181,40 @@ class StoreMaster extends Component {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.storeName === data);
       this.setState({
-        storeNameColor:"sort-column"
-        
+        storeNameColor: "sort-column"
       });
     } else if (column === "storeCode") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.storeCode === data);
       this.setState({
-        storeCodecolor:"sort-column"
-        
+        storeCodecolor: "sort-column"
       });
     } else if (column === "cityName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.cityName === data);
       this.setState({
-        cityColor:"sort-column"
-        
+        cityColor: "sort-column"
       });
     } else if (column === "stateName") {
       this.state.storeData = this.state.sortAllData;
       itemsArray = this.state.storeData.filter(a => a.stateName === data);
       this.setState({
-        stateColor:"sort-column"
-        
+        stateColor: "sort-column"
       });
-    } else if (column === "pinCode") {
+    } else if (column === "strPinCode") {
       this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.pinCode === data);
+      itemsArray = this.state.storeData.filter(a => a.strPinCode === data);
       this.setState({
-        pincodeColor:"sort-column"
-        
+        pincodeColor: "sort-column"
+      });
+    }else if (column === "brandNames") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.brandNames === data);
+      this.setState({
+        brandnameColor: "sort-column"
       });
     }
+
 
     this.setState({
       storeData: itemsArray
@@ -215,6 +223,7 @@ class StoreMaster extends Component {
   };
 
   handleGetStoreMasterData() {
+    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -222,6 +231,7 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Store/StoreList",
       headers: authHeader()
     }).then(function(res) {
+      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
 
@@ -278,13 +288,25 @@ class StoreMaster extends Component {
         var unique = [];
         var distinct = [];
         for (let i = 0; i < data.length; i++) {
-          if (!unique[data[i].pinCode]) {
-            distinct.push(data[i].pinCode);
-            unique[data[i].pinCode] = 1;
+          if (!unique[data[i].strPinCode]) {
+            distinct.push(data[i].strPinCode);
+            unique[data[i].strPinCode] = 1;
           }
         }
         for (let i = 0; i < distinct.length; i++) {
-          self.state.sortPincode.push({ pinCode: distinct[i] });
+          self.state.sortPincode.push({ strPinCode: distinct[i] });
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].brandNames]) {
+            distinct.push(data[i].brandNames);
+            unique[data[i].brandNames] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortBrandName.push({ brandNames: distinct[i] });
         }
       }
 
@@ -412,7 +434,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
-        NotificationManager.success("Store deleted successfully.", '', 1000);
+        NotificationManager.success("Store deleted successfully.", "", 1000);
       }
     });
   }
@@ -474,7 +496,7 @@ class StoreMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
-          NotificationManager.success("Store added successfully.", '', 1000);
+          NotificationManager.success("Store added successfully.", "", 1000);
           self.setState({
             store_code: "",
             store_name: "",
@@ -505,7 +527,7 @@ class StoreMaster extends Component {
             cityData: []
           });
         } else {
-          NotificationManager.error("Store Not added.", '', 1000);
+          NotificationManager.error("Store Not added.", "", 1000);
         }
       });
     } else {
@@ -531,15 +553,16 @@ class StoreMaster extends Component {
     debugger;
     if (
       this.state.modalSelectedBrand !== null &&
+      this.state.modalSelectedBrand.length > 0 &&
       this.state.userEditData.store_Code.length > 0 &&
       this.state.userEditData.store_Name.length > 0 &&
-      this.state.userEditData.state_ID === "0" &&
-      this.state.userEditData.city_ID === "0" &&
+      this.state.userEditData.state_ID !== "0" &&
+      this.state.userEditData.city_ID !== "0" &&
       this.state.userEditData.strPin_Code.length > 0 &&
-      this.state.userEditData.status_ID === "0" &&
-      this.state.userEditData.region_ID === "0" &&
-      this.state.userEditData.zone_ID === "0" &&
-      this.state.userEditData.storeType_ID === "0" &&
+      // this.state.userEditData.status_ID === "0" &&
+      this.state.userEditData.region_ID !== "0" &&
+      this.state.userEditData.zone_ID !== "0" &&
+      this.state.userEditData.storeType_ID !== "0" &&
       this.state.userEditData.email_.length > 0 &&
       this.state.EditEmailFlag === true &&
       this.state.EditPhoneFlag === true &&
@@ -555,7 +578,6 @@ class StoreMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      debugger;
       if (this.state.modalSelectedBrand.length > 0) {
         for (let i = 0; i < this.state.modalSelectedBrand.length; i++) {
           finalBrandId += this.state.modalSelectedBrand[i].brandID + ",";
@@ -587,7 +609,11 @@ class StoreMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetStoreMasterData();
-            NotificationManager.success("Store updated successfully.", '', 1000);
+            NotificationManager.success(
+              "Store updated successfully.",
+              "",
+              1000
+            );
 
             self.setState({
               editSaveLoading: false,
@@ -615,7 +641,7 @@ class StoreMaster extends Component {
               editStoreTypeValidation: "",
               editContactEmailValidation: "",
               editContactPhoneValidation: "",
-              editStatusValidation: ""
+              // editStatusValidation: ""
             });
           }
         })
@@ -636,7 +662,7 @@ class StoreMaster extends Component {
         editStoreTypeValidation: "Please Select Store Type.",
         editContactEmailValidation: "Please Enter EmailID.",
         editContactPhoneValidation: "Please Enter Phone Number.",
-        editStatusValidation: "Please Select Status."
+        // editStatusValidation: "Please Select Status."
       });
     }
   }
@@ -790,20 +816,42 @@ class StoreMaster extends Component {
   };
   hanldeOnPhoneChange = e => {
     debugger;
-    var reg = /^[0-9\b]+$/;
-    if (e.target.value === "" || reg.test(e.target.value)) {
-      this.setState({ [e.target.name]: e.target.value });
+    var name = e.target.name;
+    if (name === "phoneNumber_") {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        var value = e.target.value;
+        var userEditData = this.state.userEditData;
+        userEditData[name] = value;
+        this.setState({ userEditData });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          phoneFlag: true
+        });
+      } else {
+        this.setState({
+          phoneFlag: false
+        });
+      }
     } else {
-      e.target.value = "";
-    }
-    if (e.target.value.length == 10 || e.target.value.length == 0) {
-      this.setState({
-        phoneFlag: true
-      });
-    } else {
-      this.setState({
-        phoneFlag: false
-      });
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        this.setState({ [e.target.name]: e.target.value });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          phoneFlag: true
+        });
+      } else {
+        this.setState({
+          phoneFlag: false
+        });
+      }
     }
   };
   hanldeOnPinCodeChange = e => {
@@ -865,19 +913,6 @@ class StoreMaster extends Component {
         });
       }
     }
-
-    if (name === "phoneNumber_") {
-      var reg = /^[0-9\b]+$/;
-      if (e.target.value.length == 10 || e.target.value.length == 0) {
-        this.setState({
-          EditPhoneFlag: true
-        });
-      } else {
-        this.setState({
-          EditPhoneFlag: false
-        });
-      }
-    }
   };
 
   handleModalBrandChange = e => {
@@ -898,6 +933,7 @@ class StoreMaster extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -919,6 +955,10 @@ class StoreMaster extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -1025,23 +1065,47 @@ class StoreMaster extends Component {
                     ))
                   : null}
 
-                {this.state.sortColumn === "pinCode"
+                {this.state.sortColumn === "strPinCode"
                   ? this.state.sortPincode !== null &&
                     this.state.sortPincode.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
                           name="filter-type"
-                          id={"fil-open" + item.pinCode}
-                          value={item.pinCode}
+                          id={"fil-open" + item.strPinCode}
+                          value={item.strPinCode}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "pinCode"
+                            "strPinCode"
                           )}
                         />
-                        <label htmlFor={"fil-open" + item.pinCode}>
+                        <label htmlFor={"fil-open" + item.strPinCode}>
                           <span className="table-btn table-blue-btn">
-                            {item.pinCode}
+                            {item.strPinCode}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+                  
+                {this.state.sortColumn === "brandNames"
+                  ? this.state.sortBrandName !== null &&
+                    this.state.sortBrandName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.brandNames}
+                          value={item.brandNames}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "brandNames"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.brandNames}>
+                          <span className="table-btn table-blue-btn">
+                            {item.brandNames}
                           </span>
                         </label>
                       </div>
@@ -1065,7 +1129,7 @@ class StoreMaster extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (
@@ -1077,10 +1141,11 @@ class StoreMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span className={this.state.storeNameColor}
+                            <span
+                              className={this.state.storeNameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "storeName"
+                                "storeName","Store Name"
                               )}
                             >
                               Store Name
@@ -1091,10 +1156,11 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.storeCodecolor}
+                            <span
+                              className={this.state.storeCodecolor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "storeCode"
+                                "storeCode","Store Code"
                               )}
                             >
                               Store Code
@@ -1105,7 +1171,13 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                            className={this.state.brandnameColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "brandNames","Brand Names"
+                            )}
+                            >
                               Brand Name
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -1149,13 +1221,14 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.cityColor}
+                            <span
+                              className={this.state.cityColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "cityName"
+                                "cityName","City"
                               )}
                             >
-                              City 
+                              City
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1163,10 +1236,11 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.stateColor}
+                            <span
+                              className={this.state.stateColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "stateName"
+                                "stateName","State"
                               )}
                             >
                               State
@@ -1177,9 +1251,9 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span 
-                            //className={this.state.pincodeColor}
-                            //onClick={this.StatusOpenModel.bind(this,"pinCode")}
+                            <span
+                            className={this.state.pincodeColor}
+                            onClick={this.StatusOpenModel.bind(this,"strPinCode","Pin Code")}
                             >
                               Pincode
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -1264,7 +1338,7 @@ class StoreMaster extends Component {
                           }
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       minRows={1}
                       defaultPageSize={10}
                       showPagination={true}
@@ -1986,7 +2060,8 @@ class StoreMaster extends Component {
                       name="phoneNumber_"
                       maxLength={10}
                       value={this.state.userEditData.phoneNumber_}
-                      onChange={this.handleModalEditData}
+                      // onChange={this.handleModalEditData}
+                      onChange={this.hanldeOnPhoneChange}
                     />
                     {this.state.EditPhoneFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
