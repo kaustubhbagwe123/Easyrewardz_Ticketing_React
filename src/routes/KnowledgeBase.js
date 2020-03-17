@@ -978,7 +978,7 @@ class KnowledgeBase extends Component {
                style={{margin:"0 25px",textDecoration:"underline"}} 
                 onClick={this.setSortCheckStatus.bind(this, "all")}
                 >clear search</a>
-              <div className="filter-type">
+              <div className="filter-type FTypeScroll">
                 <p>FILTER BY TYPE</p>
 
                 <div className="filter-checkbox">

@@ -51,6 +51,7 @@ class Templates extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
+      
       updatedTemplatename: "",
       updatedArray: [],
       updatedStatus: "",
@@ -62,7 +63,7 @@ class Templates extends Component {
       issueColor: "",
       editTemplateName: "",
       editIssueTypeSelect: "",
-      issueColor: ""
+     
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -519,6 +520,7 @@ class Templates extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -540,8 +542,13 @@ class Templates extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -576,6 +583,8 @@ class Templates extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+                
               </div>
             </div>
           </Modal>

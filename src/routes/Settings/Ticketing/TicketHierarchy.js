@@ -271,7 +271,7 @@ class TicketHierarchy extends Component {
       createdColor: "",
       statusColor: "",
      
-        [e.target.name]: true
+        
     
     });
     if (column === "all") {
@@ -283,7 +283,8 @@ class TicketHierarchy extends Component {
         a => a.designationName === data
       );
       this.setState({
-        designationColor: "sort-column"
+        designationColor: "sort-column",
+        [e.target.name]: true
        
       });
     } else if (column === "reportTo") {
@@ -667,8 +668,9 @@ class TicketHierarchy extends Component {
                style={{margin:"0 25px",textDecoration:"underline"}} 
                 onClick={this.setSortCheckStatus.bind(this, "all")}
                 >clear search</a>
-              <div className="filter-type">
+              <div className="filter-type ">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -773,6 +775,8 @@ class TicketHierarchy extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+                
               </div>
             </div>
           </Modal>

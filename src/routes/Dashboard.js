@@ -3755,8 +3755,9 @@ class Dashboard extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <div className="filter-type">
+              <div className="filter-type ">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -3883,6 +3884,8 @@ class Dashboard extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+                
               </div>
 
               <div className="filter-type filter-color">

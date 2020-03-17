@@ -3268,3 +3268,22 @@ background: transparent;
 .EditModa .ant-checkbox-wrapper + .ant-checkbox-wrapper {
   margin: 0;
 }
+
+.FTypeScroll {
+  height: 240px;
+  overflow: auto;
+  }
+  .FTypeScroll::-webkit-scrollbar {
+  width: 7px;
+  }
+  .FTypeScroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  }
+  .FTypeScroll::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+  }
+  .FTypeScroll::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+  }
