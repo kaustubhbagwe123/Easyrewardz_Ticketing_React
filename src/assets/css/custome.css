@@ -3152,10 +3152,10 @@ table tr th:last-child {
 .auth-wrapper {
   display: block;
 }
-.box-center {
+/* .box-center {
   display: flex;
   height: 100%;
-}
+} */
 .settingtable .ReactTable .rt-thead {
   text-align: left;
 }
@@ -3163,8 +3163,11 @@ table tr th:last-child {
   text-align: left;
 }
 .auth-wrapper .auth-content {
+  /* margin: 20px auto; */
+  margin: 50px auto;
+}
+.change-password-auth-wrapper .auth-content {
   margin: 20px auto;
-  /* margin: 50px auto; */
 }
 .auth-wrapper input {
   border: 0;

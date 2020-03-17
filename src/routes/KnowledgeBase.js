@@ -779,6 +779,8 @@ class KnowledgeBase extends Component {
           // KBListnotApproveData: notapprove,
           // countApprove: approveconut,
           // countNotApprove: notapproveconut,
+          SubCategoryData: [],
+          IssueTypeData: [],
           selectedCategory: "",
           selectedSubCategory: "",
           selectedIssueType: "",

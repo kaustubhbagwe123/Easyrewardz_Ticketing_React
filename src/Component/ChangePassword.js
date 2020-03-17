@@ -156,7 +156,7 @@ class ChangePassword extends Component {
   }
   render() {
     return (
-      <div className="auth-wrapper box-center">
+      <div className="auth-wrapper box-center change-password-auth-wrapper">
         <div className="auth-content">
           <div
             className="card forgotpass-card changepass-card"
