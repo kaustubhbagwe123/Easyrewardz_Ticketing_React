@@ -3247,6 +3247,7 @@ class MyTicketList extends Component {
               </div>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -3373,6 +3374,8 @@ class MyTicketList extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+                
               </div>
 
               <div className="filter-type filter-color">
