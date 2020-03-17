@@ -937,6 +937,8 @@ class KnowledgeBase extends Component {
   }
 
   HandelOnenCloseDetailsCollapse() {
+    debugger;
+
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
@@ -1246,7 +1248,8 @@ class KnowledgeBase extends Component {
                           />
 
                           <UncontrolledCollapse
-                            toggler={"#i" + row.original.kbid}
+                            toggler={"i" + row.original.kbid}
+                            isOpen={this.state.detailscollapse}
                           >
                             <Card>
                               <CardBody>
@@ -1499,7 +1502,8 @@ class KnowledgeBase extends Component {
                             id={"i" + row.original.kbid}
                           />
                           <UncontrolledCollapse
-                            toggler={"#i" + row.original.kbid}
+                            toggler={"i" + row.original.kbid}
+                            isOpen={this.state.detailscollapse}
                           >
                             <Card>
                               <CardBody>

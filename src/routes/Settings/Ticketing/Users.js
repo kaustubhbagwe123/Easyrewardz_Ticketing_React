@@ -2007,7 +2007,7 @@ class Users extends Component {
                           )}
                         />
                         <label htmlFor={"fil-open" + item.emailID}>
-                          <span >
+                          <span className="table-btn table-blue-btn">
                             {item.emailID}
                           </span>
                         </label>
