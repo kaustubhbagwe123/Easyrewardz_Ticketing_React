@@ -78,7 +78,7 @@ class Users extends Component {
       userEditData: {},
       editmodel: false,
       selectedAgentRadio: false,
-      selectedSupervisorRadio: false,
+      selectedSupervisorRadio: true,
       editAgentRadio: true,
       editSupervisorRadio: false,
       buttonToggle: false,
@@ -87,7 +87,7 @@ class Users extends Component {
       test: "",
       usernameCompulsion: "",
       firstnameCompulsion: "",
-      lastnameCompulsion: "",
+      // lastnameCompulsion: "",
       mobilenumberCompulsion: "",
       emailCompulsion: "",
       userdesignCompulsion: "",
@@ -100,10 +100,11 @@ class Users extends Component {
       crmroleCompulsion: "",
       copyescCompulsion: "",
       assignescCompulsion: "",
+      RadioCompulsion: "",
       agentCompulsion: "",
       editusernameCompulsion: "",
       editfirstnameCompulsion: "",
-      editlastnameCompulsion: "",
+      // editlastnameCompulsion: "",
       editmobilenumberCompulsion: "",
       editemailCompulsion: "",
       edituserdesignCompulsion: "",
@@ -116,6 +117,7 @@ class Users extends Component {
       editcrmroleCompulsion: "",
       editcopyescCompulsion: "",
       editassignescCompulsion: "",
+      editRadioCompulsion: "",
       editagentCompulsion: "",
       emailValidation: "",
       mobileValidation: "",
@@ -124,7 +126,19 @@ class Users extends Component {
       StatusModel: false,
       sortAllData: "",
       sortDesignation: [],
-      selTab: "Personal Details"
+      sortUsername: [],
+      sortEmail: [],
+      sortMobile: [],
+      selTab: "Personal Details",
+      userColor: "",
+      mobileColor: "",
+      emailColor: "",
+      designationColor: "",
+      sortHeader:"",
+      emailFlag: true,
+      editEmailFlag: true,
+      phoneFlag: true,
+      EditPhoneFlag: true
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -188,9 +202,9 @@ class Users extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -201,11 +215,38 @@ class Users extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      userColor: "",
+      mobileColor: "",
+      emailColor: "",
+      designationColor: ""
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "designation") {
       this.state.userData = this.state.sortAllData;
       itemsArray = this.state.userData.filter(a => a.designation === data);
+      this.setState({
+        designationColor: "sort-column"
+      });
+    } else if (column === "userName") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.userName === data);
+      this.setState({
+        userColor: "sort-column"
+      });
+    } else if (column === "mobileNumber") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.mobileNumber === data);
+      this.setState({
+        mobileColor: "sort-column"
+      });
+    } else if (column === "emailID") {
+      this.state.userData = this.state.sortAllData;
+      itemsArray = this.state.userData.filter(a => a.emailID === data);
+      this.setState({
+        emailColor: "sort-column"
+      });
     }
     this.setState({
       userData: itemsArray
@@ -414,16 +455,91 @@ class Users extends Component {
     var data = this.state.userEditData;
     data[name] = value;
 
+    if (name === "email_ID") {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (e.target.value == "") {
+        this.setState({
+          editEmailFlag: true
+        });
+      } else if (reg.test(e.target.value) == false) {
+        this.setState({
+          editEmailFlag: false
+        });
+      } else {
+        this.setState({
+          editEmailFlag: true
+        });
+      }
+    }
+
     this.setState({
       EditTemp: data
     });
   };
 
+  hanldeMobileNoChange = e => {
+    debugger;
+    var name = e.target.name;
+    var reg = /^[0-9\b]+$/;
+    if (name === "mobile_Number") {
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        var value = e.target.value;
+
+        var data = this.state.userEditData;
+        data[name] = value;
+        this.setState({ EditTemp: data });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          EditPhoneFlag: true
+        });
+      } else {
+        this.setState({
+          EditPhoneFlag: false
+        });
+      }
+    } else {
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        this.setState({ [e.target.name]: e.target.value });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length == 10 || e.target.value.length == 0) {
+        this.setState({
+          phoneFlag: true
+        });
+      } else {
+        this.setState({
+          phoneFlag: false
+        });
+      }
+    }
+  };
+
   handleOnChangeUserData = e => {
     debugger;
+    var name = e.target.name;
     this.setState({
       [e.target.name]: e.target.value
     });
+    if (name === "selectEmail") {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (e.target.value == "") {
+        this.setState({
+          emailFlag: true
+        });
+      } else if (reg.test(e.target.value) == false) {
+        this.setState({
+          emailFlag: false
+        });
+      } else {
+        this.setState({
+          emailFlag: true
+        });
+      }
+    }
   };
   handleReporteeDesgnDropDown(data2, e) {
     debugger;
@@ -490,99 +606,131 @@ class Users extends Component {
 
   handleBrandChange = (data, e) => {
     debugger;
-
-    this.setState({ selectedBrand: e });
-    setTimeout(() => {
-      if (this.state.selectedBrand) {
-        this.handleGetCategoryList(data);
-      }
-    }, 1);
+    if (e === null) {
+      e = [];
+      this.setState({ selectedBrand: e, CategoryData: [] });
+    } else {
+      this.setState({ selectedBrand: e });
+      setTimeout(() => {
+        if (this.state.selectedBrand) {
+          this.handleGetCategoryList(data);
+        }
+      }, 1);
+    }
   };
   handleEditBrandChange = (data, e) => {
     debugger;
-    if (e !== null) {
-      this.setState({ editBrand: e });
+    if (e === null) {
+      e = [];
+      this.setState({ editBrand: e, CategoryData: [] });
     } else {
-      this.setState({
-        editBrand: [],
-        editCategory: [],
-        editSubCategory: [],
-        editIssuetype: []
-      });
-    }
-
-    setTimeout(() => {
-      if (this.state.editBrand) {
-        this.setState({ editCategory: [] });
-        this.handleGetCategoryList(data);
-      }
-    }, 1);
-  };
-  handleCategoryChange = (data, e) => {
-    debugger;
-
-    this.setState({ selectedCategory: e });
-    setTimeout(() => {
-      if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList(data);
-      }
-    }, 1);
-  };
-  handleEditCategoryChange = (data, e) => {
-    debugger;
-    if (e !== null) {
-      this.setState({ editCategory: e });
-    } else {
-      this.setState({
-        editCategory: [],
-        editSubCategory: [],
-        editIssuetype: []
-      });
-    }
-
-    setTimeout(() => {
-      if (this.state.editCategory) {
-        this.setState({ editSubCategory: [] });
-        this.handleGetSubCategoryList(data);
-      }
-    }, 1);
-  };
-  handleSubCategoryChange = (data, e) => {
-    debugger;
-
-    this.setState({ selectedSubCategory: e });
-    setTimeout(() => {
-      if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList(data);
-      }
-    }, 1);
-  };
-  handleEditSubCategoryChange = (data, e) => {
-    debugger;
-    if (this.state.editCategory !== null) {
       if (e !== null) {
-        this.setState({ editSubCategory: e });
+        this.setState({ editBrand: e });
       } else {
-        this.setState({ editSubCategory: [], editIssuetype: [] });
+        this.setState({
+          editBrand: [],
+          editCategory: [],
+          editSubCategory: [],
+          editIssuetype: []
+        });
       }
 
       setTimeout(() => {
-        if (this.state.editSubCategory) {
-          this.setState({ editIssuetype: [] });
+        if (this.state.editBrand) {
+          this.setState({ editCategory: [] });
+          this.handleGetCategoryList(data);
+        }
+      }, 1);
+    }
+  };
+  handleCategoryChange = (data, e) => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ selectedCategory: e, SubCategoryData: [] });
+    } else {
+      this.setState({ selectedCategory: e });
+      setTimeout(() => {
+        if (this.state.selectedCategory) {
+          this.handleGetSubCategoryList(data);
+        }
+      }, 1);
+    }
+  };
+  handleEditCategoryChange = (data, e) => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ editCategory: e, SubCategoryData: [] });
+    } else {
+      if (e !== null) {
+        this.setState({ editCategory: e });
+      } else {
+        this.setState({
+          editCategory: [],
+          editSubCategory: [],
+          editIssuetype: []
+        });
+      }
+
+      setTimeout(() => {
+        if (this.state.editCategory) {
+          this.setState({ editSubCategory: [] });
+          this.handleGetSubCategoryList(data);
+        }
+      }, 1);
+    }
+  };
+  handleSubCategoryChange = (data, e) => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ selectedSubCategory: e, IssueTypeData: [] });
+    } else {
+      this.setState({ selectedSubCategory: e });
+      setTimeout(() => {
+        if (this.state.selectedSubCategory) {
           this.handleGetIssueTypeList(data);
         }
       }, 1);
+    }
+  };
+  handleEditSubCategoryChange = (data, e) => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ editSubCategory: e, IssueTypeData: [] });
     } else {
-      this.setState({ editSubCategory: [] });
+      if (this.state.editCategory !== null) {
+        if (e !== null) {
+          this.setState({ editSubCategory: e });
+        } else {
+          this.setState({ editSubCategory: [], editIssuetype: [] });
+        }
+
+        setTimeout(() => {
+          if (this.state.editSubCategory) {
+            this.setState({ editIssuetype: [] });
+            this.handleGetIssueTypeList(data);
+          }
+        }, 1);
+      } else {
+        this.setState({ editSubCategory: [] });
+      }
     }
   };
   handleIssueTypeChange = e => {
     debugger;
-
+    if (e === null) {
+      e = [];
+    }
     this.setState({ selectedIssueType: e });
   };
   handleEditIssueTypeChange = e => {
     debugger;
+    if (e === null) {
+      e = [];
+    }
     if (e !== null) {
       this.setState({ editIssuetype: e });
     } else {
@@ -691,18 +839,17 @@ class Users extends Component {
     })
       .then(function(res) {
         debugger;
-        let status=res.data.message;
+        let status = res.data.message;
         let data = res.data.responseData;
-        if(status === "Success"){
+        if (status === "Success") {
           self.setState({
             ReportToData: data
           });
-        }else{
+        } else {
           self.setState({
             ReportToData: []
           });
         }
-        
       })
       .catch(data => {
         console.log(data);
@@ -757,12 +904,19 @@ class Users extends Component {
     })
       .then(function(res) {
         debugger;
-        let CategoryData = res.data.responseData;
-
-        self.setState({
-          CategoryData: CategoryData,
-          multibrandIDs: finalBrandId
-        });
+        var status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            CategoryData: data,
+            multibrandIDs: finalBrandId
+          });
+        } else {
+          self.setState({
+            CategoryData: [],
+            multibrandIDs: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -796,11 +950,19 @@ class Users extends Component {
     })
       .then(function(res) {
         debugger;
-        var SubCategoryData = res.data.responseData;
-        self.setState({
-          SubCategoryData: SubCategoryData,
-          multicategoryIDs: finalCategoryId
-        });
+        var status = res.data.message;
+        var data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            SubCategoryData: data,
+            multicategoryIDs: finalCategoryId
+          });
+        } else {
+          self.setState({
+            SubCategoryData: [],
+            multicategoryIDs: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -837,11 +999,19 @@ class Users extends Component {
     })
       .then(function(res) {
         debugger;
-        let IssueTypeData = res.data.responseData;
-        self.setState({
-          IssueTypeData: IssueTypeData,
-          multisubcategoryIDs: finalSubCategoryId
-        });
+        var status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            IssueTypeData: data,
+            multisubcategoryIDs: finalSubCategoryId
+          });
+        } else {
+          self.setState({
+            IssueTypeData: [],
+            multisubcategoryIDs: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -854,7 +1024,10 @@ class Users extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getagentlist",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        TicketID:0 // Don't change this value (Set on API side)
+      }
     })
       .then(function(res) {
         debugger;
@@ -897,6 +1070,16 @@ class Users extends Component {
         var userdata = res.data.responseData;
         var status = res.data.message;
 
+        if (status === "Success") {
+          self.setState({
+            userData: userdata
+          });
+        } else {
+          self.setState({
+            userData: []
+          });
+        }
+
         if (userdata !== null) {
           self.state.sortAllData = userdata;
           var unique = [];
@@ -913,15 +1096,45 @@ class Users extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({ designation: distinct[i] });
           }
-        }
-        if (status === "Success") {
-          self.setState({
-            userData: userdata
-          });
-        } else {
-          self.setState({
-            userData: []
-          });
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (!unique[userdata[i].userName] && userdata[i].userName !== "") {
+              distinct.push(userdata[i].userName);
+              unique[userdata[i].userName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortUsername.push({ userName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (
+              !unique[userdata[i].mobileNumber] &&
+              userdata[i].mobileNumber !== ""
+            ) {
+              distinct.push(userdata[i].mobileNumber);
+              unique[userdata[i].mobileNumber] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortMobile.push({ mobileNumber: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < userdata.length; i++) {
+            if (!unique[userdata[i].emailID] && userdata[i].emailID !== "") {
+              distinct.push(userdata[i].emailID);
+              unique[userdata[i].emailID] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortEmail.push({ emailID: distinct[i] });
+          }
         }
       })
       .catch(data => {
@@ -966,9 +1179,11 @@ class Users extends Component {
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
-      this.state.selectLastName.length > 0 &&
+      // this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
-      this.state.selectEmail.length > 0
+      this.state.selectEmail.length > 0 &&
+      this.state.emailFlag === true &&
+      this.state.phoneFlag === true
     ) {
       this.state.emailValidation = "";
       this.state.mobileValidation = "";
@@ -1014,7 +1229,7 @@ class Users extends Component {
       this.setState({
         usernameCompulsion: "Please enter user name.",
         firstnameCompulsion: "Please enter first name.",
-        lastnameCompulsion: "Please enter last name.",
+        // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion: "Please enter mobile number.",
         emailCompulsion: "Please enter emailID."
       });
@@ -1026,7 +1241,7 @@ class Users extends Component {
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
-      this.state.selectLastName.length > 0 &&
+      // this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
     ) {
@@ -1049,19 +1264,14 @@ class Users extends Component {
           let id = res.data.responseData;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Save successfully.");
+            NotificationManager.success("Record Save successfully.", '', 1000);
             self.setState({
               getID: id,
-              personalReadOnly: true,
-              selectUserName: "",
-              selectFirstName: "",
-              selectLastName: "",
-              selectMobile: "",
-              selectEmail: ""
+              personalReadOnly: true
             });
             self.handleGetUserList();
           } else {
-            NotificationManager.error("Record Not Saved .");
+            NotificationManager.error("Record Not Saved .", '', 1000);
           }
         })
         .catch(data => {
@@ -1071,7 +1281,7 @@ class Users extends Component {
       this.setState({
         usernameCompulsion: "Please enter user name.",
         firstnameCompulsion: "Please enter first name.",
-        lastnameCompulsion: "Please enter last name.",
+        // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion: "Please enter mobile number.",
         emailCompulsion: "Please enter emailID."
       });
@@ -1083,7 +1293,7 @@ class Users extends Component {
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
-      this.state.selectLastName.length > 0 &&
+      // this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
     ) {
@@ -1108,9 +1318,9 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
+            NotificationManager.success("Record Updated successfully.", '', 1000);
           } else {
-            NotificationManager.error("Record Not Updated.");
+            NotificationManager.error("Record Not Updated.", '', 1000);
           }
           self.setState({
             getID: id,
@@ -1125,7 +1335,7 @@ class Users extends Component {
       this.setState({
         usernameCompulsion: "Please enter user name.",
         firstnameCompulsion: "Please enter first name.",
-        lastnameCompulsion: "Please enter last name.",
+        // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion: "Please enter mobile number.",
         emailCompulsion: "Please enter emailID."
       });
@@ -1156,23 +1366,20 @@ class Users extends Component {
           let Msg = res.data.message;
           if (self.state.buttonProfileToggle === true) {
             if (Msg === "Success") {
-              NotificationManager.success("Record Updated successfully.");
+              NotificationManager.success("Record Updated successfully.", '', 1000);
             } else {
-              NotificationManager.error("Please Add Personal Details.");
+              NotificationManager.error("Please Add Personal Details.", '', 1000);
             }
           } else {
             if (Msg === "Success") {
-              NotificationManager.success("Record Saved successfully.");
+              NotificationManager.success("Record Saved successfully.", '', 1000);
               self.setState({
                 getID: id,
-                profileReadOnly: true,
-                selectedDesignation: 0,
-                selectedReportTO: 0,
-                selectedReporteeDesign: 0
+                profileReadOnly: true
               });
               self.handleGetUserList();
             } else {
-              NotificationManager.error("Please Add Personal Details.");
+              NotificationManager.error("Please Add Personal Details.", '', 1000);
             }
           }
         })
@@ -1190,15 +1397,40 @@ class Users extends Component {
 
   handleAddMapCategory() {
     debugger;
+    var radiob = true;
+    var agentb = true;
+    if (this.state.selectedAssignEscalation === true) {
+      if (
+        this.state.selectedSupervisorRadio !== true &&
+        this.state.selectedAgentRadio !== true
+      ) {
+        radiob = false;
+      } else {
+        radiob = true;
+      }
+    }
+    if (this.state.selectedAgentRadio === true) {
+      if (
+        this.state.selectedAgent === 0 ||
+        this.state.selectedAgent === "Select Agent"
+      ) {
+        agentb = false;
+      } else {
+        agentb = true;
+      }
+    }
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedCategory !== null &&
       this.state.selectedSubCategory !== null &&
       this.state.selectedIssueType !== null &&
       this.state.selectedCRMRoles > 0 &&
+      radiob === true &&
+      agentb === true
+
       // this.state.selectedCopyEscalation === true &&
       // this.state.selectedAssignEscalation === true &&
-      this.state.selectedAgent > 0
+      // this.state.selectedAgent > 0
     ) {
       let self = this;
       var finalIssueTypeId = "";
@@ -1277,10 +1509,10 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("User Created successfully.");
+            NotificationManager.success("User Created successfully.", '', 1000);
             self.handleSendMail(self.state.getID);
           } else {
-            NotificationManager.error("User Not Created .");
+            NotificationManager.error("User Not Created .", '', 1000);
           }
           self.setState({
             selectUserName: "",
@@ -1307,13 +1539,13 @@ class Users extends Component {
             profileReadOnly: false,
             getID: 0,
             brandCompulsion: "",
-        categoryCompulsion: "",
-        subcategoryCompulsion: "",
-        isuuetypeCompulsion: "",
-        crmroleCompulsion: "",
-        copyescCompulsion: "",
-        assignescCompulsion: "",
-        agentCompulsion: ""
+            categoryCompulsion: "",
+            subcategoryCompulsion: "",
+            isuuetypeCompulsion: "",
+            crmroleCompulsion: "",
+            copyescCompulsion: "",
+            assignescCompulsion: "",
+            agentCompulsion: ""
           });
           self.handleGetUserList();
         })
@@ -1329,6 +1561,7 @@ class Users extends Component {
         crmroleCompulsion: "Please select  crm roles",
         // copyescCompulsion: "Please select copy escalation",
         // assignescCompulsion: "Please select assign escalation",
+        RadioCompulsion: "Please select any option.",
         agentCompulsion: "Please select agent"
       });
     }
@@ -1350,9 +1583,9 @@ class Users extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error("Record in use.", '', 1000);
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record deleted Successfully.", '', 1000);
           self.handleGetUserList();
         }
       })
@@ -1376,7 +1609,7 @@ class Users extends Component {
         debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
-          NotificationManager.success("Please Check Email.");
+          NotificationManager.success("Please Check Email.", '', 1000);
         }
       })
       .catch(data => {
@@ -1385,24 +1618,57 @@ class Users extends Component {
   }
   handleUpdateUser() {
     debugger;
+
+    var radiob = true;
+    var agentb = true;
+    if (this.state.userEditData.is_Assign_Escalation === true) {
+      if (
+        this.state.editSupervisorRadio !== true &&
+        this.state.editAgentRadio !== true
+      ) {
+        radiob = false;
+      } else {
+        radiob = true;
+      }
+    }
+    if (this.state.editAgentRadio === true) {
+      if (
+        this.state.userEditData.assign_ID === 0 ||
+        this.state.userEditData.assign_ID === "Select Agent"
+      ) {
+        agentb = false;
+      } else {
+        agentb = true;
+      }
+    }
+
     if (
       this.state.userEditData.selectUserName.length > 0 &&
       this.state.userEditData.first_Name.length > 0 &&
-      this.state.userEditData.last_Name.length > 0 &&
+      // this.state.userEditData.last_Name.length > 0 &&
       this.state.userEditData.mobile_Number.length > 0 &&
       this.state.userEditData.email_ID.length > 0 &&
       this.state.userEditData.designation_ID > 0 &&
       this.state.userEditData.reporteeDesignation_ID > 0 &&
       this.state.userEditData.reportee_ID > 0 &&
       this.state.editBrand !== null &&
+      this.state.editBrand.length > 0 &&
       this.state.editCategory !== null &&
+      this.state.editCategory.length > 0 &&
       this.state.editSubCategory !== null &&
+      this.state.editSubCategory.length > 0 &&
       this.state.editIssuetype !== null &&
+      this.state.editIssuetype.length > 0 &&
       this.state.userEditData.role_ID > 0 &&
-      this.state.userEditData.is_Copy_Escalation === true &&
-      this.state.userEditData.is_Assign_Escalation === true &&
-      this.state.userEditData.assign_ID > 0
+      this.state.editEmailFlag === true &&
+      this.state.EditPhoneFlag === true &&
+      radiob === true &&
+      agentb === true
+      // this.state.userEditData.is_Copy_Escalation === true &&
+      // this.state.userEditData.is_Assign_Escalation === true &&
+      //this.state.userEditData.assign_ID > 0
     ) {
+      this.handleGetUserListByID(this.state.userEditData.userId);
       let self = this;
 
       var finalIssueTypeId = "";
@@ -1452,12 +1718,14 @@ class Users extends Component {
         assignescn = 0;
       }
       var SuperAgent = 0;
+
       var superAgentValue = this.state.editAgentRadio;
       if (superAgentValue === true) {
         SuperAgent = 1;
       } else {
         SuperAgent = 0;
       }
+
       var status = this.state.userEditData.is_Active;
       if (status === "true") {
         activeStatus = 1;
@@ -1503,7 +1771,10 @@ class Users extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
+            NotificationManager.success("Record Updated successfully.", '', 1000);
+            if(self.state.GetUserData.isActive===false){
+              self.handleSendMail(self.state.userEditData.userId);
+            }
             self.setState({
               multibrandIDs: finalBrandId,
               multicategoryIDs: finalCategoryId,
@@ -1511,7 +1782,7 @@ class Users extends Component {
             });
           } else {
             NotificationManager.error(
-              "Record not Selected OR Sequence is Wrong"
+              "Record not Updated.", '', 1000
             );
           }
           self.closeEditModal();
@@ -1524,7 +1795,7 @@ class Users extends Component {
       this.setState({
         editusernameCompulsion: "Please enter user name.",
         editfirstnameCompulsion: "Please enter first name.",
-        editlastnameCompulsion: "Please enter last name.",
+        // editlastnameCompulsion: "Please enter last name.",
         editmobilenumberCompulsion: "Please enter mobile number.",
         editemailCompulsion: "Please enter emailID.",
         edituserdesignCompulsion: "Please select designation.",
@@ -1535,12 +1806,52 @@ class Users extends Component {
         editsubcategoryCompulsion: "Please select subcategory",
         editisuuetypeCompulsion: "Please select issuetype",
         editcrmroleCompulsion: "Please select  crm roles",
-        editcopyescCompulsion: "Please select copy escalation",
-        editassignescCompulsion: "Please select assign escalation",
+        editRadioCompulsion: "Please select any option.",
+        // editcopyescCompulsion: "Please select copy escalation",
+        // editassignescCompulsion: "Please select assign escalation",
         editagentCompulsion: "Please select agent"
       });
     }
   }
+  // Onchange tab Profile to Personal tab
+  handleChangePersonalTab = () => {
+    if (
+      this.state.userEditData.selectUserName.length > 0 &&
+      this.state.userEditData.first_Name.length > 0 &&
+      this.state.userEditData.mobile_Number.length > 0 &&
+      this.state.userEditData.email_ID.length > 0
+    ) {
+      this.setState({
+        selTab: "Profile Details"
+      });
+    } else {
+      this.setState({
+        editusernameCompulsion: "Please enter user name.",
+        editfirstnameCompulsion: "Please enter first name.",
+        editmobilenumberCompulsion: "Please enter mobile number.",
+        editemailCompulsion: "Please enter emailID."
+      });
+    }
+  };
+  // Onchange tab Personal to Mapped tab
+  handleChangeProfileTab = () => {
+    debugger
+    if (
+      this.state.userEditData.designation_ID > 0 &&
+      this.state.userEditData.reporteeDesignation_ID > 0 &&
+      this.state.userEditData.reportee_ID > 0
+    ) {
+      this.setState({
+        selTab: "Mapped Category"
+      });
+    } else {
+      this.setState({
+        edituserdesignCompulsion: "Please select designation.",
+        editreporteeDesignCompulsion: "Please select reportee designation.",
+        editreportToCompulsion: "Please select reportee"
+      });
+    }
+  };
 
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
@@ -1569,8 +1880,9 @@ class Users extends Component {
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
-            <div className="status-drop-down">
+            <div className="status-drop-down" style={{width:"280px"}}>
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -1592,6 +1904,10 @@ class Users extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -1628,6 +1944,75 @@ class Users extends Component {
                       </div>
                     ))
                   : null}
+
+                {this.state.sortColumn === "userName"
+                  ? this.state.sortUsername !== null &&
+                    this.state.sortUsername.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.userName}
+                          value={item.userName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "userName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.userName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.userName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+                {this.state.sortColumn === "mobileNumber"
+                  ? this.state.sortMobile !== null &&
+                    this.state.sortMobile.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.mobileNumber}
+                          value={item.mobileNumber}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "mobileNumber"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.mobileNumber}>
+                          <span className="table-btn table-blue-btn">
+                            {item.mobileNumber}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+                {this.state.sortColumn === "emailID"
+                  ? this.state.sortEmail !== null &&
+                    this.state.sortEmail.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.emailID}
+                          value={item.emailID}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "emailID"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.emailID}>
+                          <span >
+                            {item.emailID}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </Modal>
@@ -1654,6 +2039,7 @@ class Users extends Component {
                       maxLength={25}
                       name="selectUserName"
                       value={this.state.userEditData.selectUserName}
+                      autoComplete="off"
                       onChange={this.handleOnChangeEditData}
                     />
                     {this.state.userEditData.selectUserName === "" && (
@@ -1670,6 +2056,7 @@ class Users extends Component {
                       maxLength={25}
                       name="first_Name"
                       value={this.state.userEditData.first_Name}
+                      autoComplete="off"
                       onChange={this.handleOnChangeEditData}
                     />
                     {this.state.userEditData.first_Name === "" && (
@@ -1686,13 +2073,14 @@ class Users extends Component {
                       maxLength={25}
                       name="last_Name"
                       value={this.state.userEditData.last_Name}
+                      autoComplete="off"
                       onChange={this.handleOnChangeEditData}
                     />
-                    {this.state.userEditData.last_Name === "" && (
+                    {/* {this.state.userEditData.last_Name === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editlastnameCompulsion}
                       </p>
-                    )}
+                    )} */}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Mobile Number</label>
@@ -1702,8 +2090,14 @@ class Users extends Component {
                       maxLength={10}
                       name="mobile_Number"
                       value={this.state.userEditData.mobile_Number}
-                      onChange={this.handleOnChangeEditData}
+                      autoComplete="off"
+                      onChange={this.hanldeMobileNoChange}
                     />
+                    {this.state.EditPhoneFlag === false && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        Please enter valid Mobile Number.
+                      </p>
+                    )}
                     {this.state.userEditData.mobile_Number === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editmobilenumberCompulsion}
@@ -1719,13 +2113,37 @@ class Users extends Component {
                       name="email_ID"
                       value={this.state.userEditData.email_ID}
                       onChange={this.handleOnChangeEditData}
+                      disabled
                     />
+                    {this.state.editEmailFlag === false && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        Please enter valid Email Id.
+                      </p>
+                    )}
                     {this.state.userEditData.email_ID === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editemailCompulsion}
                       </p>
                     )}
                   </div>
+                </div>
+                <div
+                  style={{ textAlign: "center", margin: "20px 0px 0px 0px" }}
+                >
+                  <a
+                    className="pop-over-cancle canblue"
+                    onClick={this.closeEditModal.bind(this)}
+                    href="#!"
+                  >
+                    CANCEL
+                  </a>
+                  <button
+                    className="Save-Use"
+                    onClick={this.handleChangePersonalTab}
+                    style={{ marginLeft: "30px" }}
+                  >
+                    NEXT
+                  </button>
                 </div>
               </Tab>
               <Tab label="Profile Details">
@@ -1801,12 +2219,31 @@ class Users extends Component {
                     )}
                   </div>
                 </div>
+                <div
+                  style={{ textAlign: "center", margin: "20px 0px 0px 0px" }}
+                >
+                  <a
+                    className="pop-over-cancle canblue"
+                    onClick={this.closeEditModal.bind(this)}
+                    href="#!"
+                  >
+                    CANCEL
+                  </a>
+                  <button
+                    className="Save-Use"
+                    // onClick={() => this.setState({ selTab: "Mapped Category" })}
+                    onClick={this.handleChangeProfileTab}
+                    style={{ marginLeft: "30px" }}
+                  >
+                    NEXT
+                  </button>
+                </div>
               </Tab>
               <Tab label="Mapped Category">
                 <div>
                   <h4 style={{ textAlign: "center" }}>Mapped Category</h4>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Brand</label>
+                    <label>Brand</label>
                     {
                       <Select
                         getOptionLabel={option => option.brandName}
@@ -1900,7 +2337,7 @@ class Users extends Component {
                   </div>
                   <div className="mapped-cate-extra">
                     <div className="pop-over-div">
-                      <label className="edit-label-1">CRM Role</label>
+                      <label>CRM Role</label>
                       <select
                         className="add-select-category"
                         name="role_ID"
@@ -1990,30 +2427,34 @@ class Users extends Component {
                         </div>
                       ) : null}
                     </div>
+                    {this.state.editAgentRadio === true &&
+                    this.state.userEditData.is_Assign_Escalation === true ? (
+                      <div className="pop-over-div">
+                        <label>Select Agent</label>
+                        <select
+                          className="add-select-category"
+                          name="assign_ID"
+                          value={this.state.userEditData.assign_ID}
+                          onChange={this.handleOnChangeEditData}
+                        >
+                          <option>Select Agent</option>
+                          {this.state.AgentData !== null &&
+                            this.state.AgentData.map((item, i) => (
+                              <option key={i} value={item.user_ID}>
+                                {item.agentName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.userEditData.assign_ID === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.editagentCompulsion}
+                          </p>
+                        )}
+                      </div>
+                    ) : null}
+
                     <div className="pop-over-div">
-                      <label className="edit-label-1">Select Agent</label>
-                      <select
-                        className="add-select-category"
-                        name="assign_ID"
-                        value={this.state.userEditData.assign_ID}
-                        onChange={this.handleOnChangeEditData}
-                      >
-                        <option>Select Agent</option>
-                        {this.state.AgentData !== null &&
-                          this.state.AgentData.map((item, i) => (
-                            <option key={i} value={item.user_ID}>
-                              {item.agentName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.userEditData.assign_ID === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.editagentCompulsion}
-                        </p>
-                      )}
-                    </div>
-                    <div className="pop-over-div">
-                      <label className="edit-label-1">Status</label>
+                      <label>Status</label>
                       <select
                         className="txt-edit-popover"
                         name="is_Active"
@@ -2026,22 +2467,26 @@ class Users extends Component {
                     </div>
                   </div>
                 </div>
+                <div
+                  style={{ textAlign: "center", margin: "20px 0px 0px 0px" }}
+                >
+                  <a
+                    className="pop-over-cancle canblue"
+                    onClick={this.closeEditModal.bind(this)}
+                    href="#!"
+                  >
+                    CANCEL
+                  </a>
+                  <button
+                    className="Save-Use"
+                    onClick={this.handleUpdateUser.bind(this)}
+                    style={{ marginLeft: "30px" }}
+                  >
+                    SAVE
+                  </button>
+                </div>
               </Tab>
             </Tabs>
-            <div style={{ textAlign: "center", margin: "10px 0" }}>
-              <a
-                className="pop-over-cancle canblue"
-                onClick={this.closeEditModal.bind(this)}
-              >
-                CANCEL
-              </a>
-              <button
-                className="Save-Use"
-                onClick={this.handleUpdateUser.bind(this)}
-              >
-                SAVE
-              </button>
-            </div>
           </div>
         </Modal>
 
@@ -2060,7 +2505,7 @@ class Users extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketUserReact">
@@ -2070,7 +2515,13 @@ class Users extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.userColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "userName","User Name"
+                            )}
+                          >
                             User Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2080,7 +2531,13 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.mobileColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "mobileNumber","Mobile Number"
+                            )}
+                          >
                             Mobile No.
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -2090,20 +2547,24 @@ class Users extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.emailColor}
+                            onClick={this.StatusOpenModel.bind(this, "emailID","EmailID")}
+                          >
                             Email ID
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "emailID",
+                        accessor: "email ID",
                         Cell: row => <span>{row.original.emailID}</span>
                       },
                       {
                         Header: (
                           <span
+                            className={this.state.designationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "designation"
+                              "designation","Designation"
                             )}
                           >
                             Designation
@@ -2157,12 +2618,16 @@ class Users extends Component {
                                           </p>
                                         </div>
                                         <div className="col-md-6">
-                                          <p className="sub-title mx-2">
-                                            Copy Escalation:{" "}
-                                            <b>
-                                              {row.original.is_CopyEscalation}
-                                            </b>
-                                          </p>
+                                          {row.original.isCopyEscalation ===
+                                          "Yes" ? (
+                                            <p className="sub-title mx-2">
+                                              Copy Escalation: <b>Yes</b>
+                                            </p>
+                                          ) : (
+                                            <p className="sub-title mx-2">
+                                              Copy Escalation: <b>No</b>
+                                            </p>
+                                          )}
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -2314,7 +2779,7 @@ class Users extends Component {
                         }
                       }
                     ]}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
                   />
@@ -2373,8 +2838,12 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="selectUserName"
                           value={this.state.selectUserName}
+                          autoComplete="off"
                           onChange={this.handleOnChangeUserData}
                         />
                         {this.state.selectUserName.length === 0 && (
@@ -2389,8 +2858,12 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="selectFirstName"
                           value={this.state.selectFirstName}
+                          autoComplete="off"
                           onChange={this.handleOnChangeUserData}
                         />
                         {this.state.selectFirstName.length === 0 && (
@@ -2405,15 +2878,19 @@ class Users extends Component {
                           type="text"
                           maxLength={25}
                           readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="selectLastName"
                           value={this.state.selectLastName}
+                          autoComplete="off"
                           onChange={this.handleOnChangeUserData}
                         />
-                        {this.state.selectLastName.length === 0 && (
+                        {/* {this.state.selectLastName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.lastnameCompulsion}
                           </p>
-                        )}
+                        )} */}
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
@@ -2421,10 +2898,19 @@ class Users extends Component {
                           type="text"
                           maxLength={10}
                           readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="selectMobile"
                           value={this.state.selectMobile}
-                          onChange={this.handleOnChangeUserData}
+                          autoComplete="off"
+                          onChange={this.hanldeMobileNoChange}
                         />
+                        {this.state.phoneFlag === false && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            Please enter valid Mobile Number.
+                          </p>
+                        )}
                         {this.state.selectMobile.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.mobilenumberCompulsion}
@@ -2440,10 +2926,19 @@ class Users extends Component {
                           type="text"
                           maxLength={100}
                           readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="selectEmail"
                           value={this.state.selectEmail}
+                          autoComplete="off"
                           onChange={this.handleOnChangeUserData}
                         />
+                        {this.state.emailFlag === false && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            Please enter valid Email Id.
+                          </p>
+                        )}
                         {this.state.selectEmail.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.emailCompulsion}
@@ -2464,7 +2959,7 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editMethod.bind(this)}
                           >
-                            Update
+                            Edit
                           </button>
                         </div>
                       ) : this.state.buttonToggle === true ? (
@@ -2514,8 +3009,13 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>User Designation</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input add-select-category"
+                              : "add-select-category"
+                          }
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.handleDesination.bind(this, "add")}
@@ -2537,8 +3037,13 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input add-select-category"
+                              : "add-select-category"
+                          }
                           name="selectedReporteeDesign"
                           value={this.state.selectedReporteeDesign}
                           onChange={this.handleReporteeDesgnDropDown.bind(
@@ -2563,8 +3068,13 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Report To</label>
                         <select
-                          className="add-select-category"
+                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input add-select-category"
+                              : "add-select-category"
+                          }
                           name="selectedReportTO"
                           value={this.state.selectedReportTO}
                           onChange={this.handleOnChangeUserData}
@@ -2593,7 +3103,7 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editProfileMethod.bind(this)}
                           >
-                            Update
+                            Edit
                           </button>
                         </div>
                       ) : this.state.buttonProfileToggle === true ? (
@@ -2788,70 +3298,85 @@ class Users extends Component {
                             </p>
                           )}
                           {this.state.selectedAssignEscalation === true ? (
-                            <div className="sup-agent-cntr">
-                              <div className="status-options">
-                                <input
-                                  type="radio"
-                                  name="selectedSupervisorAgent"
-                                  id="supervisor"
-                                  value={this.state.selectedSupervisorRadio}
-                                  onChange={this.handleSuperValue.bind(
-                                    this,
-                                    "add"
-                                  )}
-                                />
-                                <label
-                                  htmlFor="supervisor"
-                                  className="logout-label"
-                                >
-                                  Supervisor
-                                </label>
+                            <>
+                              <div className="sup-agent-cntr">
+                                <div className="status-options">
+                                  <input
+                                    type="radio"
+                                    name="selectedSupervisorAgent"
+                                    id="supervisor"
+                                    value={this.state.selectedSupervisorRadio}
+                                    defaultChecked={true}
+                                    onChange={this.handleSuperValue.bind(
+                                      this,
+                                      "add"
+                                    )}
+                                  />
+
+                                  <label
+                                    htmlFor="supervisor"
+                                    className="logout-label"
+                                  >
+                                    Supervisor
+                                  </label>
+                                </div>
+                                <div className="status-options">
+                                  <input
+                                    type="radio"
+                                    name="selectedSupervisorAgent"
+                                    id="agent"
+                                    value={this.state.selectedAgentRadio}
+                                    onChange={this.handleAgentValue.bind(
+                                      this,
+                                      "add"
+                                    )}
+                                  />
+                                  <label
+                                    htmlFor="agent"
+                                    className="logout-label"
+                                  >
+                                    Agent
+                                  </label>
+                                </div>
                               </div>
-                              <div className="status-options">
-                                <input
-                                  type="radio"
-                                  name="selectedSupervisorAgent"
-                                  id="agent"
-                                  value={this.state.selectedAgentRadio}
-                                  onChange={this.handleAgentValue.bind(
-                                    this,
-                                    "add"
-                                  )}
-                                />
-                                <label htmlFor="agent" className="logout-label">
-                                  Agent
-                                </label>
-                              </div>
-                            </div>
+
+                              {/* {this.state.selectedSupervisorRadio===false && this.state.selectedAgentRadio ===false (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.RadioCompulsion}
+                              </p>
+                            )}
+                             */}
+                            </>
                           ) : null}
                         </div>
-                        <div className="div-cntr">
-                          {this.state.selectedSupervisorRadio === true?(
-                            <label>Select Supervisor</label>
-                          ):(
+
+                        {this.state.selectedAgentRadio === true &&
+                        this.state.selectedAssignEscalation === true ? (
+                          <div className="div-cntr">
                             <label>Select Agent</label>
-                          )}
-                          
-                          <select
-                            className="add-select-category"
-                            name="selectedAgent"
-                            value={this.state.selectedAgent}
-                            onChange={this.handleOnChangeUserData}
-                          >
-                            <option>Select Agent</option>
-                            {this.state.AgentData !== null &&
-                              this.state.AgentData.map((item, i) => (
-                                <option key={i} value={item.user_ID}>
-                                  {item.agentName}
-                                </option>
-                              ))}
-                          </select>
-                          {this.state.selectedAgent === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.agentCompulsion}
-                            </p>
-                          )}
-                        </div>
+
+                            <select
+                              className="add-select-category"
+                              name="selectedAgent"
+                              value={this.state.selectedAgent}
+                              onChange={this.handleOnChangeUserData}
+                            >
+                              <option>Select Agent</option>
+                              {this.state.AgentData !== null &&
+                                this.state.AgentData.map((item, i) => (
+                                  <option key={i} value={item.user_ID}>
+                                    {item.agentName}
+                                  </option>
+                                ))}
+                            </select>
+                            {this.state.selectedAgent === 0 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.agentCompulsion}
+                              </p>
+                            )}
+                          </div>
+                        ) : null}
+
                         <div className="div-cntr">
                           <label>Status</label>
                           <select

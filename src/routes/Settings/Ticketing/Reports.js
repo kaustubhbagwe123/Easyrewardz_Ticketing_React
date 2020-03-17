@@ -29,6 +29,7 @@ import Select from "react-select";
 import { Checkbox } from "antd";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
 import SimpleReactValidator from "simple-react-validator";
+import Sorting from "./../../../assets/Images/sorting.png";
 
 // const clshide= {
 //  display:"hide"
@@ -218,7 +219,19 @@ class Reports extends Component {
       DepartmentCompulsion: "",
       FunctionCompulsion: "",
       FunctionData: [],
-      loadingDownload: false
+      loadingDownload: false,
+      sortAllData:[],
+      sortName:[],
+      sortSchedule:[],
+      sortCreatedBy:[],
+      sortStatus:[],
+      sortColumn:"",
+      sortHeader:"",
+      StatusModel:false,
+      nameColor:"",
+      scheduleColor:"",
+      createdColor:"",
+      statusColor:""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -253,6 +266,100 @@ class Reports extends Component {
     this.handleAssignTo();
     this.handleGetDepartmentList();
   }
+
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data,header) {
+    debugger;
+
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column, e) => {
+    debugger;
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    this.setState({
+     nameColor:"",
+     scheduleColor:"",
+     createdColor:"",
+     statusColor:""
+    
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+     
+    } else if (column === "reportName") {
+      this.state.ReportData = this.state.sortAllData;
+      itemsArray = this.state.ReportData.filter(
+        a => a.reportName === data
+      );
+      this.setState({
+        nameColor:"sort-column"
+       
+      });
+    } else if (column === "scheduleStatus") {
+      this.state.ReportData = this.state.sortAllData;
+      itemsArray = this.state.ReportData.filter(a => a.scheduleStatus === data);
+      this.setState({
+        scheduleColor:"sort-column"
+        
+      });
+    }else if (column === "createdBy") {
+      this.state.ReportData = this.state.sortAllData;
+      itemsArray = this.state.ReportData.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor:"sort-column"
+       
+      });
+    }else if (column === "reportStatus") {
+      this.state.ReportData = this.state.sortAllData;
+      itemsArray = this.state.ReportData.filter(a => a.reportStatus === data);
+      this.setState({
+        statusColor:"sort-column"
+       
+      });
+    }
+
+    this.setState({
+      ReportData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
+
+
+
+
   hide(e, id) {
     debugger;
     // document.getElementById(id).style.display="none";
@@ -273,7 +380,7 @@ class Reports extends Component {
   ScheduleOpenModel = () => {
     debugger;
     if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please enter report name");
+      NotificationManager.error("Please enter report name", '', 1000);
     } else {
       if (this.state.selectedTeamMemberCommaSeperated) {
         var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
@@ -1363,6 +1470,60 @@ class Reports extends Component {
             loading: false
           });
         }
+
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].reportName]) {
+              distinct.push(data[i].reportName);
+              unique[data[i].reportName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortName.push({ reportName: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].scheduleStatus]) {
+              distinct.push(data[i].scheduleStatus);
+              unique[data[i].scheduleStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortSchedule.push({ scheduleStatus: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].reportStatus]) {
+              distinct.push(data[i].reportStatus);
+              unique[data[i].reportStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ reportStatus: distinct[i] });
+          }
+
+
+        }
       })
       .catch(data => {
         console.log(data);
@@ -1452,7 +1613,7 @@ class Reports extends Component {
     })
       .then(function(res) {
         debugger;
-        NotificationManager.success("Email has been sent");
+        NotificationManager.success("Email has been sent", '', 1000);
         self.setState({
           loadingDownload: false
         });
@@ -1509,7 +1670,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1557,7 +1718,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1622,7 +1783,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1691,7 +1852,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1735,7 +1896,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1779,7 +1940,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1823,7 +1984,7 @@ class Reports extends Component {
           var resultArr=res.data.responseData.split('@');
           if(resultArr.length>1)
           { 
-             self.setState({FileURL:resultArr[1]});           
+             self.setState({FileURL:resultArr[0]});           
              self.setState({OpenDefaultMailModal:true});
              self.setState({OpenDefaultModal:false});
           }
@@ -1868,7 +2029,7 @@ class Reports extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Deleted successfully.");
+          NotificationManager.success("Record Deleted successfully.", '', 1000);
           self.handleReportList();
         }
       })
@@ -1983,21 +2144,9 @@ class Reports extends Component {
     let self = this;
     var SearchParams = {};
 
-    var month, day, year, hours, minutes, seconds;
-        var date = new Date(this.state.selectedScheduleTime),
-            month = ("0" + (date.getMonth() + 1)).slice(-2),
-            day = ("0" + date.getDate()).slice(-2);
-        hours = ("0" + date.getHours()).slice(-2);
-        minutes = ("0" + date.getMinutes()).slice(-2);
-        seconds = ("0" + date.getSeconds()).slice(-2);
-
-        var mySQLDate = [date.getFullYear(), month, day].join("-");
-        var mySQLTime = [hours, minutes, seconds].join(":");
-        this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (self.state.selectedReportName == "") {
-      NotificationManager.error("Please enter report name");
+      NotificationManager.error("Please enter report name", '', 1000);
       return;
     }
     self = this;
@@ -2018,7 +2167,7 @@ class Reports extends Component {
           self.handleReportList();
           self.handleNextPopupClose();
           NotificationManager.success(
-            "Report saved successfully for download."
+            "Report saved successfully for download.", '', 1000
           );
         })
         .catch(data => {
@@ -2075,7 +2224,7 @@ class Reports extends Component {
             // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
-            NotificationManager.success("Report saved successfully.");
+            NotificationManager.success("Report saved successfully.", '', 1000);
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
@@ -2091,7 +2240,7 @@ class Reports extends Component {
             });
           } else if (status == "duplicate") {
             self.setState({ Schedule_ID: 0 });
-            NotificationManager.error("Report name already exist.");
+            NotificationManager.error("Report name already exist.", '', 1000);
           }
         })
         .catch(data => {
@@ -2122,20 +2271,20 @@ class Reports extends Component {
 
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please add report name.");
+      NotificationManager.error("Please add report name.", '', 1000);
       return;
     }
     debugger;
     if (this.state.selectedTeamMemberCommaSeperated == undefined) {
-      NotificationManager.error("Please add team name for schedule.");
+      NotificationManager.error("Please add team name for schedule.", '', 1000);
       return;
     }
     if (this.state.selectScheduleDate == "") {
-      NotificationManager.error("Please select schedule type.");
+      NotificationManager.error("Please select schedule type.", '', 1000);
       return;
     }
     if (this.state.selectedScheduleTime == "") {
-      NotificationManager.error("Please select schedule time.");
+      NotificationManager.error("Please select schedule time.", '', 1000);
       return;
     }
     if (SearchParams != "") {
@@ -2191,7 +2340,7 @@ class Reports extends Component {
             // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
-            NotificationManager.success("Scheduler created successfully.");
+            NotificationManager.success("Scheduler created successfully.", '', 1000);
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
@@ -2207,14 +2356,14 @@ class Reports extends Component {
             });
           } else if (status == "duplicate") {
             self.setState({ Schedule_ID: 0 });
-            NotificationManager.error("Report name already exist.");
+            NotificationManager.error("Report name already exist.", '', 1000);
           }
         })
         .catch(data => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please add report for create scheduler.");
+      NotificationManager.error("Please add report for create scheduler.", '', 1000);
     }
   }
 
@@ -2223,6 +2372,153 @@ class Reports extends Component {
     return (
       <Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+         
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <div className="d-flex">
+                 
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    name="filter-type"
+                    id={"fil-open"}
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                </div>
+                {this.state.sortColumn === "reportName"
+                  ? this.state.sortName !== null &&
+                    this.state.sortName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.reportName}
+                          id={"fil-open" + item.reportName}
+                          value={item.reportName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "reportName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.reportName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.reportName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "scheduleStatus"
+                  ? this.state.sortSchedule !== null &&
+                    this.state.sortSchedule.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.scheduleStatus}
+                          id={"fil-open" + item.scheduleStatus}
+                          value={item.scheduleStatus}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "scheduleStatus"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.scheduleStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.scheduleStatus}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdBy}
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "reportStatus"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.reportStatus}
+                          id={"fil-open" + item.reportStatus}
+                          value={item.reportStatus}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "reportStatus"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.reportStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.reportStatus}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -3767,7 +4063,7 @@ class Reports extends Component {
           {/* </div> */}
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr reactreport">
+          <div className="store-settings-cntr settingtable reactreport">
             <div style={{ backgroundColor: "#fff" }}>
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
@@ -3777,7 +4073,14 @@ class Reports extends Component {
                   columns={[
                     {
                       Header: (
-                        <span>
+                        <span
+                        className={this.state.nameColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "reportName","Report Name"
+                          )}
+                        >
                           Name
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -3786,7 +4089,14 @@ class Reports extends Component {
                     },
                     {
                       Header: (
-                        <span>
+                        <span
+                        className={this.state.scheduleColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "scheduleStatus","Schedule Status"
+                          )}
+                        >
                           Schedule Status
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -3795,7 +4105,14 @@ class Reports extends Component {
                     },
                     {
                       Header: (
-                        <span>
+                        <span
+                        className={this.state.createdColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "createdBy","Created By"
+                          )}
+                        >
                           Created by
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -3849,7 +4166,14 @@ class Reports extends Component {
                     },
                     {
                       Header: (
-                        <span>
+                        <span
+                        className={this.state.statusColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "reportStatus","Status"
+                          )}
+                        >
                           Status
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -3940,7 +4264,7 @@ class Reports extends Component {
                       )
                     }
                   ]}
-                  // resizable={false}
+                  resizable={false}
                   defaultPageSize={10}
                   showPagination={true}
                   minRows={1}

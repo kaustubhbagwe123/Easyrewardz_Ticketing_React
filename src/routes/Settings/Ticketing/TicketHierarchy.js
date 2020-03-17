@@ -25,6 +25,7 @@ import {
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import { CSVLink } from "react-csv";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const MyButton = props => {
   const { children } = props;
@@ -38,7 +39,6 @@ const MyButton = props => {
 };
 
 const Content = props => {
-  debugger;
   const { rowData } = props;
   const [designationName, setDesignationvalue] = useState(
     rowData.designationName
@@ -46,7 +46,7 @@ const Content = props => {
   const [reportTo, setreportToValue] = useState(rowData.reportToDesignation);
   const [status, setStatusValue] = useState(rowData.status);
   const [designationID] = useState(rowData.designationID);
-
+  debugger;
   props.callBackEdit(designationName, reportTo, status, designationID);
   return (
     <div className="edtpadding">
@@ -121,18 +121,21 @@ const Content = props => {
         </a>
         <button
           className="pop-over-button"
-          // type="button"
-          // onClick={this.handleUpdateHierarchyData.bind(
-          //   this,
-          //   ids
-          // )}
+          onClick={e => {
+            props.handleUpdateHierarchyData(e, designationID);
+          }}
+          disabled={props.editSaveLoading}
         >
-          <label
-            className="pop-over-btnsave-text"
-            onClick={e => {
-              props.handleUpdateHierarchyData(e, designationID);
-            }}
-          >
+          <label className="pop-over-btnsave-text">
+            {props.editSaveLoading ? (
+              <FontAwesomeIcon
+                className="circular-loader"
+                icon={faCircleNotch}
+                spin
+              />
+            ) : (
+              ""
+            )}
             SAVE
           </label>
         </button>
@@ -164,13 +167,20 @@ class TicketHierarchy extends Component {
       sortAllData: [],
       sortDesignation: [],
       sortReportTo: [],
+      sortCreatedBy:[],
+      sortStatus:[],
       sortColumn: "",
+      sortHeader:"",
       designationColor: "",
       reportToColor: "",
+      createdColor:"",
+      statusColor:"",
       updateDesignation: "",
       updateReprtTo: "",
       updateStatus: "",
-      rowData: {}
+      rowData: {},
+      editSaveLoading: false,
+      addSaveLoading: false
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -241,10 +251,10 @@ class TicketHierarchy extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -255,27 +265,47 @@ class TicketHierarchy extends Component {
 
     var itemsArray = [];
     var data = e.currentTarget.value;
+    this.setState({
+      designationColor: "",
+      reportToColor: "",
+      createdColor: "",
+      statusColor: "",
+     
+        [e.target.name]: true
+    
+    });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-      this.setState({
-        designationColor: "",
-        reportToColor: ""
-      });
+     
     } else if (column === "designationName") {
       this.state.hierarchyData = this.state.sortAllData;
       itemsArray = this.state.hierarchyData.filter(
         a => a.designationName === data
       );
       this.setState({
-        designationColor: "blue",
-        reportToColor: ""
+        designationColor: "sort-column"
+       
       });
     } else if (column === "reportTo") {
       this.state.hierarchyData = this.state.sortAllData;
       itemsArray = this.state.hierarchyData.filter(a => a.reportTo === data);
       this.setState({
-        designationColor: "",
-        reportToColor: "blue"
+       
+        reportToColor: "sort-column"
+      });
+    }else if (column === "createdbyperson") {
+      this.state.hierarchyData = this.state.sortAllData;
+      itemsArray = this.state.hierarchyData.filter(a => a.createdbyperson === data);
+      this.setState({
+       
+        createdColor: "sort-column"
+      });
+    }else if (column === "status") {
+      this.state.hierarchyData = this.state.sortAllData;
+      itemsArray = this.state.hierarchyData.filter(a => a.status === data);
+      this.setState({
+       
+        statusColor: "sort-column"
       });
     }
 
@@ -346,6 +376,34 @@ class TicketHierarchy extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortReportTo.push({ reportTo: distinct[i] });
           }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdbyperson]) {
+              distinct.push(data[i].createdbyperson);
+              unique[data[i].createdbyperson] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdbyperson: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].status]) {
+              distinct.push(data[i].status);
+              unique[data[i].status] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ status: distinct[i] });
+          }
+
+
         }
 
         if (status === "Success") {
@@ -381,6 +439,7 @@ class TicketHierarchy extends Component {
       if (ReportId === "1") {
         ReportId = 0;
       }
+      this.setState({ addSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/CreateHierarchy",
@@ -396,7 +455,11 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success("Hierarchy added successfully.");
+            NotificationManager.success(
+              "Hierarchy added successfully.",
+              "",
+              1000
+            );
             self.hanldeGetReportListDropDown();
             self.setState({
               designation_name: "",
@@ -404,11 +467,16 @@ class TicketHierarchy extends Component {
               selectStatus: 0,
               designationNameCompulsion: "",
               reportToCompulsion: "",
-              statusCompulsion: ""
+              statusCompulsion: "",
+              addSaveLoading: false
             });
+          } else if (status === "Record Already Exists ") {
+            NotificationManager.error("Record Already Exists.", "", 1000);
+            self.setState({ addSaveLoading: false });
           }
         })
         .catch(data => {
+          self.setState({ addSaveLoading: false });
           console.log(data);
         });
     } else {
@@ -433,13 +501,17 @@ class TicketHierarchy extends Component {
     })
       .then(function(res) {
         debugger;
-        let status = res.data.statusCode;
-        if (status === 1010) {
+        let status = res.data.message;
+        if (status === "Success") {
           self.handleGetHierarchyData();
-          NotificationManager.success("Designation deleted successfully.");
+          NotificationManager.success(
+            "Designation deleted successfully.",
+            "",
+            1000
+          );
           self.hanldeGetReportListDropDown();
         } else {
-          NotificationManager.error(res.data.message);
+          NotificationManager.error(res.data.message, "", 1000);
         }
       })
       .catch(data => {
@@ -461,6 +533,7 @@ class TicketHierarchy extends Component {
       } else {
         activeStatus = 0;
       }
+      this.setState({ editSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/CreateHierarchy",
@@ -477,17 +550,24 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success("Hierarchy update successfully.");
+            NotificationManager.success(
+              "Hierarchy update successfully.",
+              "",
+              1000
+            );
             self.hanldeGetReportListDropDown();
+            self.setState({ editSaveLoading: false });
           } else {
-            NotificationManager.error("Hierarchy not update.");
+            self.setState({ editSaveLoading: false });
+            NotificationManager.error("Hierarchy not update.", "", 1000);
           }
         })
         .catch(data => {
+          self.setState({ editSaveLoading: false });
           console.log(data);
         });
     } else {
-      NotificationManager.error("Hierarchy not update.");
+      NotificationManager.error("Hierarchy not update.", "", 1000);
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -559,8 +639,10 @@ class TicketHierarchy extends Component {
             overlayId="logout-ovrly"
           >
             <div className="status-drop-down">
-              <div className="sort-sctn">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
+                 
                   <a
                     href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -581,6 +663,10 @@ class TicketHierarchy extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -601,7 +687,7 @@ class TicketHierarchy extends Component {
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
-                          name="filter-type"
+                          name={item.designationName}
                           id={"fil-open" + item.designationName}
                           value={item.designationName}
                           onChange={this.setSortCheckStatus.bind(
@@ -640,6 +726,53 @@ class TicketHierarchy extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "createdbyperson"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdbyperson}
+                          value={item.createdbyperson}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdbyperson"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdbyperson}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdbyperson}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+
+{this.state.sortColumn === "status"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.status}
+                          value={item.status}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "status"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.status}>
+                          <span className="table-btn table-blue-btn">
+                            {item.status}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </Modal>
@@ -658,7 +791,7 @@ class TicketHierarchy extends Component {
           </a>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr tickhierpad">
+          <div className="store-settings-cntr tickhierpad settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketHierarchyReact">
@@ -668,10 +801,11 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                            style={{ color: this.state.designationColor }}
+                          className={this.state.designationColor}
+                           
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "designationName"
+                              "designationName","Designation"
                             )}
                           >
                             Designation
@@ -683,10 +817,11 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                            style={{ color: this.state.reportToColor }}
+                          className={this.state.reportToColor}
+                            
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "reportTo"
+                              "reportTo","Report To"
                             )}
                           >
                             Report To
@@ -697,7 +832,13 @@ class TicketHierarchy extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.createdColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "createdbyperson","Created By"
+                          )}
+                          >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -753,7 +894,13 @@ class TicketHierarchy extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.statusColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "status","Status"
+                          )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -828,6 +975,9 @@ class TicketHierarchy extends Component {
                                       activeData={this.state.activeData}
                                       editdesignationNameCompulsion={
                                         this.state.editdesignationNameCompulsion
+                                      }
+                                      editSaveLoading={
+                                        this.state.editSaveLoading
                                       }
                                       editreportToCompulsion={
                                         this.state.editreportToCompulsion
@@ -983,10 +1133,21 @@ class TicketHierarchy extends Component {
                     <div className="btnSpace">
                       <button
                         className="addBtn-ticket-hierarchy"
-                        type="button"
                         onClick={this.handleSubmitData.bind(this)}
+                        disabled={this.state.addSaveLoading}
                       >
-                        ADD
+                        <label className="pop-over-btnsave-text">
+                          {this.state.addSaveLoading ? (
+                            <FontAwesomeIcon
+                              className="circular-loader"
+                              icon={faCircleNotch}
+                              spin
+                            />
+                          ) : (
+                            ""
+                          )}
+                          ADD
+                        </label>
                       </button>
                     </div>
                   </div>

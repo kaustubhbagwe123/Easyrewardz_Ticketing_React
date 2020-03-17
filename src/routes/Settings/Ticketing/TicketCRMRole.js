@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import Sorting from "./../../../assets/Images/sorting.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
@@ -26,119 +27,13 @@ import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = props => {
-  debugger;
-  const { rowData } = props;
-  const [roleName, setRoleNameValue] = useState(rowData.roleName);
-  const [modules] = useState(rowData.modules);
-  const [status, setStatusValue] = useState(rowData.isRoleActive);
-  const [crmRoleID] = useState(rowData.crmRoleID);
-
-  function onchaneRadio(e, value) {
-    debugger;
-    // e.preventdefault();
-    var index = props.rowData.modules.findIndex(x => x.moduleID == value);
-    props.rowData.modules[index].modulestatus = !props.rowData.modules[index]
-      .modulestatus;
-    return false;
-  }
-  props.callBackEdit(roleName, modules, status, rowData);
-  return (
-    <div>
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CRM ROLE</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Role Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Role Name"
-            maxLength={25}
-            value={roleName}
-            onChange={e => setRoleNameValue(e.target.value)}
-          />
-        </div>
-        {rowData.modules !== null &&
-          rowData.modules.map((item, i) => (
-            <div
-              className="module-switch crm-margin-div crm-padding-div"
-              key={i}
-            >
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">{item.moduleName}</label>
-                <input
-                  type="checkbox"
-                  id={"k" + item.moduleID}
-                  name="allModules"
-                  attrIds={item.moduleID}
-                  checked={item.modulestatus}
-                  onChange={e => {
-                    props.checkModule(e, item.moduleID);
-                  }}
-                  onClick={e => {
-                    // props.updateCheckModule(e, item.moduleID);
-                    onchaneRadio(e, item.moduleID);
-                  }}
-                  //onChange={props.updateCheckModule.bind(e, item.moduleID) }
-                />
-                <label
-                  htmlFor={"k" + item.moduleID}
-                  className="cr cr-float-auto"
-                ></label>
-              </div>
-            </div>
-          ))}
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select
-            id="inputStatus"
-            className="edit-dropDwon dropdown-setting"
-            value={status}
-            onChange={e => setStatusValue(e.target.value)}
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Deactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-            CANCEL
-          </a>
-          <button className="pop-over-button">
-            <label
-              className="pop-over-btnsave-text"
-              onClick={e => {
-                props.createUpdateCrmRole(e, "update", crmRoleID);
-              }}
-            >
-              SAVE
-            </label>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 class TicketCRMRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileName: "",
       RoleName: "",
+      editRoleName: "",
       RoleisActive: "true",
       ModulesEnabled: "",
       ModulesDisabled: "",
@@ -165,7 +60,22 @@ class TicketCRMRole extends Component {
       modulesData: [],
       crmRoleID: 0,
       modulestatus: "",
-      editSaveLoading: false
+      editSaveLoading: false,
+      StatusModel:false,
+      sortAllData:[],
+      sortRoleName:[],
+      sortCreated:[],
+      sortStatus:[],
+      sortColumn:"",
+      roleColor:"",
+      createdColor:"",
+      statusColor:"",
+      sortHeader:"",
+      editRoleNameValidMsg: ""
+
+       
+     
+     
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -178,9 +88,90 @@ class TicketCRMRole extends Component {
   }
 
   componentDidMount() {
-    this.handleModulesDefault();
     this.handleGetCRMRoles();
+    this.handleModulesDefault();
   }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data,header) {
+    debugger;
+
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column, e) => {
+    debugger;
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    this.setState({
+     roleColor:"",
+     createdColor:"",
+     statusColor:""
+    
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+     
+    } else if (column === "roleName") {
+      this.state.crmRoles = this.state.sortAllData;
+      itemsArray = this.state.crmRoles.filter(
+        a => a.roleName === data
+      );
+      this.setState({
+        roleColor:"sort-column"
+       
+      });
+    } else if (column === "createdBy") {
+      this.state.crmRoles = this.state.sortAllData;
+      itemsArray = this.state.crmRoles.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor:"sort-column"
+        
+      });
+    }else if (column === "isRoleActive") {
+      this.state.crmRoles = this.state.sortAllData;
+      itemsArray = this.state.crmRoles.filter(a => a.isRoleActive === data);
+      this.setState({
+        statusColor:"sort-column"
+       
+      });
+    }
+
+    this.setState({
+      crmRoles: itemsArray
+    });
+    this.StatusCloseModel();
+  };
 
   handleGetCRMRoles() {
     debugger;
@@ -192,9 +183,53 @@ class TicketCRMRole extends Component {
     })
       .then(function(res) {
         debugger;
+        var data =res.data.responseData;
         let crmRoles = res.data.responseData;
         if (crmRoles !== null && crmRoles !== undefined) {
           self.setState({ crmRoles });
+        }
+
+        
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].roleName]) {
+              distinct.push(data[i].roleName);
+              unique[data[i].roleName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortRoleName.push({ roleName: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreated.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].isRoleActive]) {
+              distinct.push(data[i].isRoleActive);
+              unique[data[i].isRoleActive] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ isRoleActive: distinct[i] });
+          }
+
+
         }
       })
       .catch(data => {
@@ -322,7 +357,7 @@ class TicketCRMRole extends Component {
         ModulesDisabled = self.state.ModulesDisabled;
       } else if (e === "update") {
         CRMRoleID = this.state.crmRoleID;
-        RoleName = this.state.RoleName;
+        RoleName = this.state.editRoleName;
 
         for (let j = 0; j < this.state.modulesData.length; j++) {
           if (this.state.modulesData[j].modulestatus) {
@@ -358,9 +393,12 @@ class TicketCRMRole extends Component {
           let status = res.data.message;
           if (status === "Success") {
             if (e === "add") {
-              NotificationManager.success("CRM Role added successfully.");
+              NotificationManager.success(
+                "CRM Role added successfully.",
+                "",
+                1000
+              );
               self.setState({
-                
                 RoleName: "",
                 RoleisActive: "true",
                 ModulesEnabled: "",
@@ -370,17 +408,28 @@ class TicketCRMRole extends Component {
               });
               self.handleGetCRMRoles();
             } else if (e === "update") {
-              self.setState({editSaveLoading: false})
-              NotificationManager.success("CRM Role updated successfully.");
-              self.handleGetCRMRoles();
               self.toggleEditModal();
+              self.setState({
+                editSaveLoading: false,
+                editRoleNameValidMsg: ""
+              });
+              NotificationManager.success(
+                "CRM Role updated successfully.",
+                "",
+                1000
+              );
+              self.handleGetCRMRoles();
+            }
+          } else if (status === "Record Already Exists ") {
+            if (e === "add") {
+              NotificationManager.error("Record Already Exists ");
             }
           } else {
             if (e === "add") {
-              NotificationManager.error("CRM Role not added.");
+              NotificationManager.error("CRM Role not added.", "", 1000);
             } else if (e === "update") {
-              self.setState({editSaveLoading: false})
-              NotificationManager.error("CRM Role not updated.");
+              self.setState({ editSaveLoading: false });
+              NotificationManager.error("CRM Role not updated.", "", 1000);
             }
           }
         })
@@ -389,7 +438,14 @@ class TicketCRMRole extends Component {
           console.log(data);
         });
     } else {
-      this.validator.showMessages();
+      if (e === "update") {
+        self.setState({
+          editRoleNameValidMsg: "The role name field is required."
+        });
+      } else {
+        this.validator.showMessages();
+      }
+
       this.forceUpdate();
     }
   }
@@ -409,9 +465,9 @@ class TicketCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error("Record in use.", "", 1000);
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record deleted Successfully.", "", 1000);
           self.handleGetCRMRoles();
         }
       })
@@ -463,7 +519,7 @@ class TicketCRMRole extends Component {
     this.setState({
       modulesData: rowData.modules,
       modulestatus: rowData.isRoleActive,
-      RoleName: rowData.roleName,
+      editRoleName: rowData.roleName,
       crmRoleID: rowData.crmRoleID,
       editmodel: true
     });
@@ -476,7 +532,14 @@ class TicketCRMRole extends Component {
     if (Name === "status") {
       this.setState({ modulestatus: value });
     } else {
-      this.setState({ RoleName: value });
+      if (value) {
+        this.setState({ editRoleName: value, editRoleNameValidMsg: "" });
+      } else {
+        this.setState({
+          editRoleName: value,
+          editRoleNameValidMsg: "The role name field is required."
+        });
+      }
     }
   }
 
@@ -490,14 +553,22 @@ class TicketCRMRole extends Component {
 
   toggleEditModal() {
     this.setState({
-      editmodel: false
+      editmodel: false,
+      editRoleNameValidMsg: ""
     });
   }
   render() {
     const columnsTickCrmRole = [
       {
         Header: (
-          <span>
+          <span
+          className={this.state.roleColor}
+                           
+          onClick={this.StatusOpenModel.bind(
+            this,
+            "roleName","Role Name"
+          )}
+          >
             Role Name
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -542,7 +613,14 @@ class TicketCRMRole extends Component {
       },
       {
         Header: (
-          <span>
+          <span
+          className={this.state.createdColor}
+                           
+          onClick={this.StatusOpenModel.bind(
+            this,
+            "createdBy","Created By"
+          )}
+          >
             Created By
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -595,7 +673,14 @@ class TicketCRMRole extends Component {
       },
       {
         Header: (
-          <span>
+          <span
+          className={this.state.statusColor}
+                           
+          onClick={this.StatusOpenModel.bind(
+            this,
+            "isRoleActive","Status"
+          )}
+          >
             Status
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -686,6 +771,129 @@ class TicketCRMRole extends Component {
 
     return (
       <React.Fragment>
+         <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <div className="d-flex">
+                 
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    name="filter-type"
+                    id={"fil-open"}
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                </div>
+                {this.state.sortColumn === "roleName"
+                  ? this.state.sortRoleName !== null &&
+                    this.state.sortRoleName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.roleName}
+                          id={"fil-open" + item.roleName}
+                          value={item.roleName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "roleName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.roleName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.roleName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreated !== null &&
+                    this.state.sortCreated.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdBy}
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "isRoleActive"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.isRoleActive}
+                          id={"fil-open" + item.isRoleActive}
+                          value={item.isRoleActive}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "isRoleActive"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.isRoleActive}>
+                          <span className="table-btn table-blue-btn">
+                            {item.isRoleActive}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -700,7 +908,7 @@ class TicketCRMRole extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketCrmRoleReact">
@@ -708,7 +916,7 @@ class TicketCRMRole extends Component {
                     minRows={2}
                     data={this.state.crmRoles}
                     columns={columnsTickCrmRole}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
                   />
@@ -893,7 +1101,7 @@ class TicketCRMRole extends Component {
                         className="form-control dropdown-setting"
                       >
                         <option value="true">Active</option>
-                        <option value="false">Deactive</option>
+                        <option value="false">Inactive</option>
                       </select>
                     </div>
                     <div className="btnSpace">
@@ -1015,11 +1223,16 @@ class TicketCRMRole extends Component {
                   className="txt-edit-popover"
                   placeholder="Enter Role Name"
                   maxLength={25}
-                  name="rolename"
-                  value={this.state.RoleName}
+                  name="editRoleName"
+                  value={this.state.editRoleName}
                   onChange={this.handleModaleDataChange.bind(this)}
                 />
               </div>
+              {this.state.editRoleNameValidMsg && (
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.editRoleNameValidMsg}
+                </p>
+              )}
               {this.state.modulesData !== null &&
                 this.state.modulesData.map((item, i) => (
                   <div
@@ -1058,7 +1271,7 @@ class TicketCRMRole extends Component {
                   onChange={this.handleModaleDataChange.bind(this)}
                 >
                   <option value="Active">Active</option>
-                  <option value="Inactive">Deactive</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </div>
               <br />

@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Sorting from "./../../assets/Images/sorting.png";
 import { Popover } from "antd";
 // import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
@@ -30,111 +31,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = props => {
-  debugger;
-  const { rowData } = props;
-  const [alertTypeName, setalertTypeNameValue] = useState(
-    rowData.alertTypeName
-  );
-  const [isAlertActive, setisAlertActiveValue] = useState(
-    rowData.isAlertActive
-  );
-  const [alertID] = useState(rowData.alertID);
-
-  props.callBackEdit(alertTypeName, isAlertActive, rowData);
-  return (
-    <div className="edtpadding">
-      <div className="">
-        <label className="popover-header-text">EDIT ALERTS</label>
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Alert Type</label>
-        <input
-          type="text"
-          className="txt-edit-popover"
-          placeholder="Enter Alert Type"
-          maxLength={25}
-          value={alertTypeName}
-          onChange={e => setalertTypeNameValue(e.target.value)}
-        />
-        {alertTypeName === "" && (
-          <p style={{ color: "red", marginBottom: "0px" }}>
-            {props.editAlertNameCopulsion}
-          </p>
-        )}
-        {/* <select
-                                          className="add-select-category"
-                                          name="selectedAlertType"
-                                          value={alertTypeName}
-                                          onChange={e => setalertTypeNameValue(e.target.value)}
-                                        >
-                                          <option >Select Alert</option>
-                    {props.alertData !== null &&
-                      props.alertData.map((item, i) => (
-                        <option key={i} value={item.alertID}>
-                          {item.alertTypeName}
-                        </option>
-                      ))}
-                                        </select> */}
-      </div>
-      {/* <div className="pop-over-div">
-                                    <label className="edit-label-1">Issue Type</label>
-                                    <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-                                      <option>Select</option>
-                                      <option>Admin</option>
-                                    </select>
-                                  </div> */}
-      <div className="pop-over-div">
-        <label className="edit-label-1">Status</label>
-        <select
-          id="inputStatus"
-          className="edit-dropDwon dropdown-setting"
-          value={isAlertActive}
-          onChange={e => setisAlertActiveValue(e.target.value)}
-        >
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-      </div>
-      <br />
-      <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-          CANCEL
-        </a>
-        <button className="pop-over-button">
-          <label
-            className="pop-over-btnsave-text"
-            // onClick={this.handleUpdateAlert.bind(
-            //   this,
-            //   row.original.alertID
-            // )}
-          >
-            <label
-              className="pop-over-btnsave-text"
-              onClick={e => {
-                props.handleUpdateAlert(e, alertID);
-              }}
-            >
-              SAVE
-            </label>
-          </label>
-        </button>
-      </div>
-    </div>
-  );
-};
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 class Alerts extends Component {
   constructor(props) {
@@ -195,7 +92,19 @@ class Alerts extends Component {
       rowData: {},
       editAlertNameCopulsion: "Please enter alerttype name.",
       editModal: false,
-      alertEdit: {}
+      alertEdit: {},
+      isEdit: false,
+      editSaveLoading: false,
+      sortAllData:[],
+      sortAlertType:[],
+      sortCreatedBy:[],
+      sortStatus:[],
+      sortHeader:"",
+      alertColor:"",
+      createdColor:"",
+      statusColor:"",
+      sortColumn:"",
+      StatusModel:false
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -210,10 +119,93 @@ class Alerts extends Component {
   }
 
   componentDidMount() {
+    
     this.handleGetAlert();
     this.handleAlertData();
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
   }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data,header) {
+    debugger;
+
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column, e) => {
+    debugger;
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    this.setState({
+     alertColor:"",
+     createdColor:"",
+     statusColor:""
+    
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+     
+    } else if (column === "alertTypeName") {
+      this.state.alert = this.state.sortAllData;
+      itemsArray = this.state.alert.filter(
+        a => a.alertTypeName === data
+      );
+      this.setState({
+        alertColor:"sort-column"
+       
+      });
+    } else if (column === "createdBy") {
+      this.state.alert = this.state.sortAllData;
+      itemsArray = this.state.alert.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor:"sort-column"
+        
+      });
+    }else if (column === "isAlertActive") {
+      this.state.alert = this.state.sortAllData;
+      itemsArray = this.state.alert.filter(a => a.isAlertActive === data);
+      this.setState({
+        statusColor:"sort-column"
+       
+      });
+    }
+
+    this.setState({
+      alert: itemsArray
+    });
+    this.StatusCloseModel();
+  };
+
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
     debugger;
 
@@ -293,7 +285,11 @@ class Alerts extends Component {
       });
     }
     setTimeout(() => {
-      if (this.state.emailCust || this.state.emailInt || this.state.emailStore) {
+      if (
+        this.state.emailCust ||
+        this.state.emailInt ||
+        this.state.emailStore
+      ) {
         this.setState({
           tabIndex: 0
         });
@@ -348,20 +344,140 @@ class Alerts extends Component {
     }
   };
 
-  handleGetAlert() {
+  handleGetAlert(id) {
+    var alertId = 0;
+    if (id) {
+      alertId = id;
+    } else {
+      alertId = 0;
+    }
     debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/GetAlertList",
+      params: { alertId: alertId },
       headers: authHeader()
     })
       .then(function(res) {
         debugger;
         let alert = res.data.responseData;
-        if (alert !== null && alert !== undefined) {
-          self.setState({ alert });
+        var data = res.data.responseData;
+        if (id) {
+          var data = alert[0].alertContent;
+          var selectedSubjectCustomer = "";
+          var selectedCKCustomer = "";
+          var selectedSubjectInternal = "";
+          var selectedCKInternal = "";
+          var selectedSubjectStore = "";
+          var selectedCKStore = "";
+          var selectedSMSContent = "";
+          var selectedNotifContent = "";
+          var emailCust = false;
+          var emailInt = false;
+          var emailStore = false;
+          var smsCust = false;
+          var notiInt = false;
+          var alertEdit = {};
+          alertEdit.alertIsActive = res.data.responseData[0].isAlertActive;
+          alertEdit.selectedAlertType = res.data.responseData[0].alertID;
+          alertEdit.AlertTypeName = res.data.responseData[0].alertTypeName;
+
+          if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].isEmailCustomer) {
+                emailCust = data[i].isEmailCustomer;
+                selectedSubjectCustomer = data[i].subject;
+                selectedCKCustomer = data[i].mailContent;
+              }
+              if (data[i].isEmailInternal) {
+                emailInt = data[i].isEmailInternal;
+                selectedSubjectInternal = data[i].subject;
+                selectedCKInternal = data[i].mailContent;
+              }
+              if (data[i].isEmailStore) {
+                emailStore = data[i].isEmailStore;
+                selectedSubjectStore = data[i].subject;
+                selectedCKStore = data[i].mailContent;
+              }
+              if (data[i].isSMSCustomer) {
+                smsCust = data[i].isSMSCustomer;
+                selectedSMSContent = data[i].smsContent;
+              }
+              if (data[i].isNotificationInternal) {
+                notiInt = data[i].isNotificationInternal;
+                selectedNotifContent = data[i].notificationContent;
+              }
+            }
+          }
+
+         
+          self.setState({
+            selectedSubjectCustomer,
+            selectedCKCustomer,
+            selectedSubjectInternal,
+            selectedCKInternal,
+            selectedSubjectStore,
+            selectedCKStore,
+            selectedSMSContent,
+            selectedNotifContent,
+            emailCust,
+            emailInt,
+            emailStore,
+            smsCust,
+            notiInt,
+            alertEdit,
+            editModal: true,
+            isEdit: true
+          });
+        } else {
+          if (alert !== null && alert !== undefined) {
+            self.setState({ alert });
+          }
         }
+
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].alertTypeName]) {
+              distinct.push(data[i].alertTypeName);
+              unique[data[i].alertTypeName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortAlertType.push({ alertTypeName: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].isAlertActive]) {
+              distinct.push(data[i].isAlertActive);
+              unique[data[i].isAlertActive] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ isAlertActive: distinct[i] });
+          }
+
+
+        }
+
       })
       .catch(data => {
         console.log(data);
@@ -382,10 +498,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.");
+          NotificationManager.success("Alert deleted successfully.", '', 1000);
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.");
+          NotificationManager.error("Alert not deleted.", '', 1000);
         }
       })
       .catch(data => {
@@ -394,38 +510,112 @@ class Alerts extends Component {
   }
   handleUpdateAlert() {
     debugger;
-    if (this.state.updateAlertTypeName.length > 0) {
+    if (this.state.alertEdit.selectedAlertType) {
       let AlertisActive;
-      if (this.state.updateAlertisActive === "Active") {
+      if (this.state.alertEdit.alertIsActive === "Active") {
         AlertisActive = true;
-      } else if (this.state.updateAlertisActive === "Inactive") {
+      } else if (this.state.alertEdit.alertIsActive === "Inactive") {
         AlertisActive = false;
       }
+      this.setState({
+        editSaveLoading: true
+      });
+
+      var CommunicationModeDetails = [];
+
+      var emailCustomer = {
+        Communication_Mode: 240,
+        CommunicationFor: 250,
+        Content: this.state.selectedCKCustomer,
+        Subject: this.state.selectedSubjectCustomer
+      };
+      var emailInternal = {
+        Communication_Mode: 240,
+        CommunicationFor: 251,
+        Content: this.state.selectedCKInternal,
+        Subject: this.state.selectedSubjectInternal
+      };
+      var emailStore = {
+        Communication_Mode: 240,
+        CommunicationFor: 252,
+        Content: this.state.selectedCKStore,
+        Subject: this.state.selectedSubjectStore
+      };
+      var sms = {
+        Communication_Mode: 241,
+        CommunicationFor: 250,
+        Content: this.state.selectedSMSContent
+      };
+      var notification = {
+        Communication_Mode: 242,
+        CommunicationFor: 251,
+        Content: this.state.selectedNotifContent
+      };
+      if (this.state.emailCust) {
+        CommunicationModeDetails.push(emailCustomer); //// for Email For Customer
+      } else {
+        // return false;
+      }
+      if (this.state.emailInt) {
+        CommunicationModeDetails.push(emailInternal); //// for Email for Internal
+      } else {
+        // return false;
+      }
+      if (this.state.emailStore) {
+        CommunicationModeDetails.push(emailStore); //// for Email for Store
+      } else {
+        // return false;
+      }
+      if (this.state.smsCust) {
+        CommunicationModeDetails.push(sms); /// for SMS
+      } else {
+        // return false;
+      }
+      if (this.state.notiInt) {
+        CommunicationModeDetails.push(notification); ////for Notification
+      } else {
+        // return false;
+      }
+
+      let self = this;
       axios({
         method: "post",
         url: config.apiUrl + "/Alert/ModifyAlert",
         headers: authHeader(),
-        params: {
-          AlertID: 0,
-          AlertTypeName: this.state.updateAlertTypeName,
-          isAlertActive: AlertisActive
+        data: {
+          AlertID: this.state.alertEdit.selectedAlertType,
+          AlertTypeName: this.state.alertEdit.AlertTypeName,
+          isAlertActive: AlertisActive,
+          CommunicationModeDetails: CommunicationModeDetails
         }
       })
         .then(res => {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Alert updated successfully.");
-            this.handleGetAlert();
+            NotificationManager.success("Alert updated successfully.", '', 1000);
+            self.handleGetAlert();
+            self.setState({
+              AddAlertTabsPopup: false,
+              editSaveLoading: false
+            });
           } else {
-            NotificationManager.error("Alert not updated.");
+            self.setState({
+              editSaveLoading: false,
+              AddAlertTabsPopup: false
+            });
+            NotificationManager.error("Alert not updated.", '', 1000);
           }
         })
         .catch(data => {
+          self.setState({
+            editSaveLoading: false,
+            AddAlertTabsPopup: false
+          });
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.");
+      NotificationManager.error("Alert not updated.", '', 1000);
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name."
       });
@@ -434,15 +624,54 @@ class Alerts extends Component {
 
   updateAlert(individualData) {
     debugger;
-    var alertEdit = {};
-    alertEdit.updateAlertId = individualData.alertID;
-    alertEdit.updateAlertTypeName = individualData.alertTypeName;
-    alertEdit.alertIsActive = individualData.isAlertActive;
 
-    this.setState({
-      alertEdit,
-      editModal: true
-    });
+    this.handleGetAlert(individualData.alertID || 0);
+    // var alertEdit = {};
+    // alertEdit.selectedAlertType = individualData.alertID;
+    // alertEdit.updateAlertTypeName = individualData.alertTypeName;
+    // alertEdit.alertIsActive = individualData.isAlertActive;
+
+    // var emailCust = individualData.isEmailCustomer;
+    // var emailInt = individualData.isEmailInternal;
+    // var emailStore = individualData.isEmailStore;
+    // var smsCust = individualData.isSMSCustomer;
+    // var notiInt = individualData.isNotificationInternal;
+
+    // if (emailCust) {
+    //   var selectedSubjectCustomer = individualData.subject;
+    // var selectedCKCustomer = individualData.mailContent;
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
+
+    // if (emailStore) {
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
+
+    // if (emailCust) {
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
+    // if (smsCust) {
+    //   var selectedSMSContent = individualData.mailContent;
+    //   this.setState({ selectedSMSContent });
+    // }
+    // if (notiInt) {
+    //   var selectedNotifContent = individualData.mailContent;
+    //   this.setState({ selectedNotifContent });
+    // }
+
+    // this.setState({
+    //   emailCust,
+    //   emailInt,
+    //   emailStore,
+    //   smsCust,
+    //   notiInt,
+    //   alertEdit,
+    //   editModal: true,
+    //   isEdit: true
+    // });
   }
 
   handleUpdateAlertTypeName(e) {
@@ -490,7 +719,16 @@ class Alerts extends Component {
     }
   }
   handleAddAlertTabsClose() {
-    this.setState({ AddAlertTabsPopup: false });
+    this.setState({
+      AddAlertTabsPopup: false,
+      selectedSubjectCustomer: "",
+      selectedCKCustomer: "",
+      emailCust: false,
+      emailInt: false,
+      emailStore: false,
+      smsCust: false,
+      notiInt: false
+    });
   }
   updateContent(newContent) {
     this.setState({
@@ -664,7 +902,9 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.");
+          NotificationManager.success("Record Saved successfully.", '', 1000);
+        }else if(status === "Record Already Exists "){
+          NotificationManager.error("Record Already Exists.", '', 1000);
         }
         self.handleAddAlertTabsClose();
       })
@@ -673,7 +913,7 @@ class Alerts extends Component {
       });
   }
   handleEditModal() {
-    this.setState({ editModal: false });
+    this.setState({ editModal: false, isEdit: false });
   }
 
   editAlertModalData(e) {
@@ -681,19 +921,147 @@ class Alerts extends Component {
     const { name, value } = e.target;
 
     var data = this.state.alertEdit;
-    if (name === "alertID") {
+    if (name === "selectedAlertType") {
       var alertName = e.target.selectedOptions[0].innerText;
       data[name] = value;
-      data["alertTypeName"] = alertName;
+      data["AlertTypeName"] = alertName;
     } else {
       data[name] = value;
     }
 
     this.setState({ alertEdit: data });
   }
+  handleOpenAdd() {
+    this.setState({ AddAlertTabsPopup: true, editModal: false });
+  }
   render() {
     return (
       <React.Fragment>
+          <div className="position-relative d-inline-block">
+          <Modal
+          show={this.state.StatusModel}
+          onHide={this.StatusCloseModel}
+           // onClose={this.StatusCloseModel}
+           // open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <div className="d-flex">
+                 
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    name="filter-type"
+                    id={"fil-open"}
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                </div>
+                {this.state.sortColumn === "alertTypeName"
+                  ? this.state.sortAlertType !== null &&
+                    this.state.sortAlertType.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.alertTypeName}
+                          id={"fil-open" + item.alertTypeName}
+                          value={item.alertTypeName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "alertTypeName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.alertTypeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.alertTypeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdBy}
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "isAlertActive"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.isAlertActive}
+                          id={"fil-open" + item.isAlertActive}
+                          value={item.isAlertActive}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "isAlertActive"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.isAlertActive}>
+                          <span className="table-btn table-blue-btn">
+                            {item.isAlertActive}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -708,7 +1076,7 @@ class Alerts extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height alertsTable">
@@ -717,7 +1085,14 @@ class Alerts extends Component {
                     columns={[
                       {
                         Header: (
-                          <span className="table-column">
+                          <span  className={this.state.alertColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "alertTypeName","AlertType"
+                          )}
+                          
+                          >
                             Alert Type
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -732,24 +1107,21 @@ class Alerts extends Component {
                         Cell: row => {
                           return (
                             <div>
-                              {row.original.modeOfCommunication.isByEmail ===
-                                true && (
+                              {row.original.isByEmail === true && (
                                 <img
                                   src={LetterBox}
                                   alt="Letter"
                                   className="alert-tableImge"
                                 />
                               )}
-                              {row.original.modeOfCommunication.isBySMS ===
-                                true && (
+                              {row.original.isBySMS === true && (
                                 <img
                                   src={SmsImg}
                                   alt="Sms"
                                   className="alert-tableImge"
                                 />
                               )}
-                              {row.original.modeOfCommunication
-                                .isByNotification === true && (
+                              {row.original.isByNotification === true && (
                                 <img
                                   src={NotificationImg}
                                   alt="Notification"
@@ -763,7 +1135,14 @@ class Alerts extends Component {
                       {
                         id: "createdBy",
                         Header: (
-                          <span className="table-column">
+                          <span className={this.state.createdColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "createdBy","Created By"
+                          )}
+                          
+                          >
                             Created by
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -819,7 +1198,12 @@ class Alerts extends Component {
                       },
                       {
                         Header: (
-                          <span className="table-column">
+                          <span className={this.state.statusColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "isAlertActive","Status"
+                          )}>
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -874,48 +1258,28 @@ class Alerts extends Component {
                                     id={ids}
                                   />
                                 </Popover>
-                                <Popover
-                                  content={
-                                    <Content
-                                      rowData={row.original}
-                                      callBackEdit={this.callBackEdit}
-                                      editAlertNameCopulsion={
-                                        this.state.editAlertNameCopulsion
-                                      }
-                                      alertData={this.state.alertData}
-                                      handleUpdateAlert={this.handleUpdateAlert.bind(
-                                        this
-                                      )}
-                                    />
-                                  }
-                                  placement="bottom"
-                                  trigger="click"
+
+                                <button
+                                  className="react-tabel-button"
+                                  id="p-edit-pop-2"
                                 >
-                                  <button
-                                    className="react-tabel-button"
-                                    id="p-edit-pop-2"
+                                  <label
+                                    className="Table-action-edit-button-text"
+                                    onClick={this.updateAlert.bind(
+                                      this,
+                                      row.original
+                                    )}
                                   >
-                                    <label
-                                      className="Table-action-edit-button-text"
-                                      onClick={this.updateAlert.bind(
-                                        this,
-                                        row.original
-                                      )}
-                                    >
-                                      EDIT
-                                    </label>
-                                  </button>
-                                  {/* <label className="Table-action-edit-button-text">
-                                    <MyButton>EDIT</MyButton>
-                                  </label> */}
-                                </Popover>
+                                    EDIT
+                                  </label>
+                                </button>
                               </span>
                             </>
                           );
                         }
                       }
                     ]}
-                    // resizable={false}
+                    resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
                     minRows={1}
@@ -1140,8 +1504,8 @@ class Alerts extends Component {
                                 {this.state.emailCust && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${this.state.innerTabIndex ===
-                                        0 && "active"}`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 0 && "active"}`}
                                       data-toggle="tab"
                                       href="#customer-tab"
                                       role="tab"
@@ -1155,8 +1519,8 @@ class Alerts extends Component {
                                 {this.state.emailInt && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${this.state.innerTabIndex ===
-                                        1 && "active"}`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 1 && "active"}`}
                                       data-toggle="tab"
                                       href="#Internal-tab"
                                       role="tab"
@@ -1170,8 +1534,8 @@ class Alerts extends Component {
                                 {this.state.emailStore && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${this.state.innerTabIndex ===
-                                        2 && "active"}`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 2 && "active"}`}
                                       data-toggle="tab"
                                       href="#ticket-tab"
                                       role="tab"
@@ -1186,8 +1550,8 @@ class Alerts extends Component {
                             </div>
                             <div className="tab-content p-0 alert-p1">
                               <div
-                                className={`tab-pane fade ${this.state.innerTabIndex ===
-                                  0 && "show active"}`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 0 && "show active"}`}
                                 id="customer-tab"
                                 role="tabpanel"
                                 aria-labelledby="customer-tab"
@@ -1316,8 +1680,8 @@ class Alerts extends Component {
                               </div> */}
                               </div>
                               <div
-                                className={`tab-pane fade ${this.state.innerTabIndex ===
-                                  1 && "show active"}`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 1 && "show active"}`}
                                 id="Internal-tab"
                                 role="tabpanel"
                                 aria-labelledby="Internal-tab"
@@ -1444,8 +1808,8 @@ class Alerts extends Component {
                               </div>*/}
                               </div>
                               <div
-                                className={`tab-pane fade ${this.state.innerTabIndex ===
-                                  2 && "show active"}`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 2 && "show active"}`}
                                 id="ticket-tab"
                                 role="tabpanel"
                                 aria-labelledby="ticket-tab"
@@ -1637,8 +2001,22 @@ class Alerts extends Component {
                           <button
                             className="butn-2"
                             type="submit"
-                            onClick={this.validationInsertAlert.bind(this)}
+                            disabled={this.state.editSaveLoading}
+                            onClick={
+                              this.state.isEdit
+                                ? this.handleUpdateAlert.bind(this)
+                                : this.validationInsertAlert.bind(this)
+                            }
                           >
+                            {this.state.editSaveLoading ? (
+                              <FontAwesomeIcon
+                                className="circular-loader"
+                                icon={faCircleNotch}
+                                spin
+                              />
+                            ) : (
+                              ""
+                            )}
                             SAVE
                           </button>
                         </div>
@@ -1720,35 +2098,23 @@ class Alerts extends Component {
             </div>
           </div>
         </div>
-        <Modal className="EditModa" show={this.state.editModal} onHide={this.handleEditModal}>
+        <Modal
+          className="EditModa"
+          show={this.state.editModal}
+          onHide={this.handleEditModal}
+        >
           <div className="edtpadding right-sect-div">
             <div className="">
               <label className="popover-header-text">EDIT ALERTS</label>
             </div>
-            {/* <div className="pop-over-div">
-              <label className="edit-label-1">Alert Type</label>
-              <input
-                type="text"
-                className="txt-edit-popover"
-                placeholder="Enter Alert Type"
-                maxLength={25}
-                name="updateAlertTypeName"
-                value={this.state.alertEdit.updateAlertTypeName}
-                onChange={this.editAlertModalData.bind(this)}
-              />
-              {this.state.alertEdit.updateAlertTypeName === "" && (
-                <p style={{ color: "red", marginBottom: "0px" }}>
-                  {this.state.editAlertNameCopulsion}
-                </p>
-              )}
-            </div> */}
+
             <div className="div-cntr">
               <label>Alert Type</label>
 
               <select
                 className="add-select-category"
-                name="alertID"
-                value={this.state.alertEdit.alertID}
+                name="selectedAlertType"
+                value={this.state.alertEdit.selectedAlertType}
                 onChange={this.editAlertModalData.bind(this)}
               >
                 <option>Select Alert</option>
@@ -1759,7 +2125,7 @@ class Alerts extends Component {
                     </option>
                   ))}
               </select>
-              {this.state.alertEdit.alertID === 0 && (
+              {this.state.alertEdit.selectedAlertType === 0 && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
                   {this.state.alertTypeCompulsion}
                 </p>
@@ -1778,27 +2144,47 @@ class Alerts extends Component {
             <div className="div-cntr">
               <label>Email</label>
               <br />
-              <Checkbox onChange={this.handleAlertTabs} value="emailCust">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.emailCust}
+                value="emailCust"
+              >
                 Customer
               </Checkbox>
-              <Checkbox onChange={this.handleAlertTabs} value="emailInt">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.emailInt}
+                value="emailInt"
+              >
                 Internal
               </Checkbox>
-              <Checkbox onChange={this.handleAlertTabs} value="emailStore">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.emailStore}
+                value="emailStore"
+              >
                 Store
               </Checkbox>
             </div>
             <div className="div-cntr">
               <label>SMS</label>
               <br />
-              <Checkbox onChange={this.handleAlertTabs} value="smsCust">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.smsCust}
+                value="smsCust"
+              >
                 Customer
               </Checkbox>
             </div>
             <div className="div-cntr">
               <label>Notification</label>
               <br />
-              <Checkbox onChange={this.handleAlertTabs} value="notiInt">
+              <Checkbox
+                onChange={this.handleAlertTabs}
+                checked={this.state.notiInt}
+                value="notiInt"
+              >
                 Internal
               </Checkbox>
             </div>
@@ -1811,8 +2197,8 @@ class Alerts extends Component {
                 onChange={this.editAlertModalData.bind(this)}
               >
                 <option value="">Select</option>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value={"Active"}>Active</option>
+                <option value={"Inactive"}>Inactive</option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
@@ -1823,27 +2209,14 @@ class Alerts extends Component {
 
             <br />
             <div className="text-center">
-              <span className="pop-over-cancle" onClick={this.handleEditModal} >
+              <span className="pop-over-cancle" onClick={this.handleEditModal}>
                 CANCEL
               </span>
-              <button className="pop-over-button FlNone">
-                  SAVE
-                {/* <label
-                  className="pop-over-btnsave-text"
-                  // onClick={this.handleUpdateAlert.bind(
-                  //   this,
-                  //   row.original.alertID
-                  // )}
-                >
-                  <label
-                    className="pop-over-btnsave-text"
-                    // onClick={e => {
-                    //   props.handleUpdateAlert(e, alertID);
-                    // }}
-                  >
-                    SAVE
-                  </label>
-                </label> */}
+              <button
+                className="pop-over-button FlNone"
+                onClick={this.handleOpenAdd.bind(this)}
+              >
+                SAVE
               </button>
             </div>
           </div>

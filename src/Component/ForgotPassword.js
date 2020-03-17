@@ -41,13 +41,13 @@ class ForgotPassword extends Component {
         if(res.data.statusCode===1001)
         {  
           NotificationManager.error(
-          SearchData
+          SearchData, '', 1250
          );
         }
         else if(res.data.statusCode===200)
         {
           NotificationManager.success(
-            SearchData
+            SearchData, '', 1250
            );
         }
         self.setState({ SearchData: SearchData });
@@ -67,7 +67,7 @@ class ForgotPassword extends Component {
 
   render() {
     return (
-      <div className="auth-wrapper">
+      <div className="auth-wrapper box-center">
       <NotificationContainer></NotificationContainer>
         <div className="auth-content">
           <div className="card forgotpass-card">
@@ -75,7 +75,7 @@ class ForgotPassword extends Component {
               <div className="mb-4">
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
               </div>
-              <div style={{ marginBottom: "18px" }}>
+              <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
                   <label
                     className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"

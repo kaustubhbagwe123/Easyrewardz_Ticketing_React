@@ -34,11 +34,15 @@ class UserProfile extends Component {
       LastNameCompulsion: "",
       MobileCompulsion: "",
       EmailIDCompulsion: "",
-      DesignationCompulsion: ""
+      DesignationCompulsion: "",
+      imgFlag: "",
+      loading: true
     };
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleEditUserProfile = this.handleEditUserProfile.bind(this);
     this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
+    this.handleDeleteProfilePic = this.handleDeleteProfilePic.bind(this);
+    this.redirectToChangePassword=this.redirectToChangePassword.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -114,8 +118,8 @@ class UserProfile extends Component {
     this.state.selectedEmailID = userData.emailId;
     this.state.selectedDesignation = userData.designationID;
     this.state.selectedProfilePicture = userData.profilePicture;
-    // var image=this.state.selectedProfilePicture.split("/");
-    // var img=image[image.length-1];
+    var image=this.state.selectedProfilePicture.split("/");
+    var imgFlag=image[image.length-1];
     // var array=[];
     // array.push({name:img})
 
@@ -126,6 +130,8 @@ class UserProfile extends Component {
       selectedMobile: userData.mobileNo,
       selectedEmailID: userData.emailId,
       selectedDesignation: userData.designationID,
+      imgFlag,
+      loading: false
       //fileName:array
     });
   };
@@ -153,6 +159,41 @@ class UserProfile extends Component {
         } else {
           self.setState({
             ProfileData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleDeleteProfilePic() {
+    debugger;
+
+    let self = this;
+    self.setState({
+      loading: true
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/DeleteUserProfile",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        var status = res.data.message;
+        if (status === "Success") {
+          var image=self.state.selectedProfilePicture.split("/");
+          image[image.length-1] = "";
+          var newImg = image.join('/');
+          self.setState({
+            selectedProfilePicture: newImg,
+            imgFlag: "",
+            loading: false
+          });
+        } else {
+          self.setState({
+            loading: false
           });
         }
       })
@@ -217,11 +258,23 @@ class UserProfile extends Component {
     }
   }
 
+  redirectToChangePassword(){
+    debugger;
+    
+    setTimeout(function() {
+      this.props.history.push("/changePassword");
+    }, 400);
+  }
+  
+
   render() {
     return (
       <Fragment>
         <NotificationContainer />
         <div className="container-fluid">
+          {this.state.loading && <div className="loader-icon-cntr-ovrlay">
+            <div className="loader-icon"></div>
+          </div>}
           <div className="profile-settings-cntr">
             <div className="row">
               <div className="col-md-12">
@@ -230,13 +283,11 @@ class UserProfile extends Component {
                     <div className="imguserupload">
                       <img
                         src={
-                          this.state.selectedProfilePicture ===
-                            "https://localhost:44357/Resources/Images/" &&
-                          "https://erbelltkt.dcdev.brainvire.net/Resources/Images/"
+                          this.state.imgFlag === ""
                             ? ProfileImg
                             : this.state.selectedProfilePicture
                         }
-                        alt="store-settings"
+                        alt=""
                         className="profimg"
                       />
                       {/* <img
@@ -261,6 +312,7 @@ class UserProfile extends Component {
                         />
                         <label
                           htmlFor="file-upload"
+                          className="uploadtextprofile1"
                           onDrop={this.fileDrop}
                           onDragOver={this.fileDragOver}
                           onDragEnter={this.fileDragEnter}
@@ -269,7 +321,7 @@ class UserProfile extends Component {
                           {/* <div className="file-icon">
                         <img src="{FileUpload}" alt="file-upload" />
                       </div> */}
-                          <span className="uploadtextprofile1">Upload Photo</span>
+                          {this.state.imgFlag === "" ? 'Upload' : 'Change'} Photo
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -293,6 +345,11 @@ class UserProfile extends Component {
                           </div>
                         )}
                       </div>
+                      {this.state.imgFlag !== "" && <label onClick={this.handleDeleteProfilePic} className="uploadtextprofile1"
+                          // onChange={this.fileUpload.bind(this)}
+                        >
+                          Delete Photo
+                      </label>}
                       {this.state.fileName.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.fileNameCompulsion}
@@ -410,8 +467,11 @@ class UserProfile extends Component {
                       </button>
                     </div>
                   </div>
-                  <div className="userChangePW">
-                      <Link to="/changePassword">Change Password</Link>
+                  <div className="userChangePW" 
+                  //onClick={this.redirectToChangePassword}
+                  >
+                     <Link to="/changePassword">Change Password</Link>
+                    
                     </div>
 
                   {/* <div className="row">

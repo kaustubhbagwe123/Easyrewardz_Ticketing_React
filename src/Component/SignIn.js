@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { encryption } from "../helpers/encryption";
 import axios from "axios";
+import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import {
   NotificationContainer,
@@ -28,6 +29,7 @@ class SingIn extends Component {
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCRMRole = this.handleCRMRole.bind(this);
     this.validator = new SimpleReactValidator();
   }
   hanleChange(e) {
@@ -51,6 +53,68 @@ class SingIn extends Component {
       this.props.history.push("/");
     }
 
+  }
+
+  handleCRMRole() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetRolesByUserID",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let msg = res.data.message;
+        let data = res.data.responseData.modules;
+        if (msg === "Success") {
+          if (data !== null) {
+            for (var i = 0; i <= data.length; i++) {
+              if (i == data.length) {
+                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2000);
+                self.setState({
+                  loading: false
+                });
+              } else if (
+                data[i].moduleName === "Dashboard" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function () {
+                  self.props.history.push("/admin/dashboard");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Tickets" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function () {
+                  self.props.history.push("/admin/myTicketlist");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Knowledge Base" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function () {
+                  self.props.history.push("/admin/knowledgebase");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Settings" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function () {
+                  self.props.history.push("/admin/settings");
+                }, 400);
+                return;
+              }
+            }
+          }
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
   }
 
   handleSubmit(event) {
@@ -95,13 +159,13 @@ class SingIn extends Component {
           if (resValid === "Valid Login") {
             debugger;
             //NotificationManager.success("Login Successfull.");
-           
             window.localStorage.setItem("token", res.data.responseData.token);
-            setTimeout(function () {
-              self.props.history.push("/admin/dashboard");
-            }, 400);
+            self.handleCRMRole();
+            // setTimeout(function () {
+            //   self.props.history.push("/admin/dashboard");
+            // }, 400);
           } else {
-            NotificationManager.error("Username or password is invalid.");
+            NotificationManager.error("Username or password is invalid.", '', 1250);
             self.setState({
               loading: false
             });
@@ -116,7 +180,7 @@ class SingIn extends Component {
 
   render() {
     return (
-      <div className="auth-wrapper">
+      <div className="auth-wrapper box-center">
         <div className="auth-content">
           <NotificationContainer />
           <div className="card">

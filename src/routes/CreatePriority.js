@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 //import React, { Component, } from "react";
 // import TableArr from "./../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../assets/Images/red-delete-icon.png";
+import Sorting from "./../assets/Images/sorting.png";
 import BlackDeleteIcon from "./../assets/Images/del-big.png";
 import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import Demo from "./../store/Hashtag";
@@ -17,112 +18,14 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-
+import Modal from "react-bootstrap/Modal";
 import { DndProvider, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import update from "immutability-helper";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 let dragingIndex = -1;
-
-const MyButton = props => {
-  const { children } = props;
-  return (
-    <div style={{ cursor: "pointer" }} {...props}>
-      <button className="react-tabel-button" id="p-edit-pop-2">
-        <label className="Table-action-edit-button-text">{children}</label>
-      </button>
-    </div>
-  );
-};
-
-const Content = props => {
-  debugger;
-  const { rowData } = props;
-  const [priortyName, setpriortyNameValue] = useState(rowData.priortyName);
-  const [priortyStatus, setpriortyStatusValue] = useState(
-    rowData.priortyStatus
-  );
-  const [priorityID] = useState(rowData.priorityID);
-
-  props.callBackEdit(priortyName, priortyStatus, rowData);
-  return (
-    <div>
-      <label className="popover-header-text">EDIT PRORITY</label>
-      <div className=" pop-over-div">
-        <label className="pop-over-lbl-text">Priority Name</label>
-        <input
-          type="text"
-          className="pop-over-text"
-          placeholder="Enter Priority Name"
-          maxLength={25}
-          name="name"
-          value={priortyName}
-          onChange={e => setpriortyNameValue(e.target.value)}
-        />
-        {priortyName === "" && (
-          <p
-            style={{
-              color: "red",
-              marginBottom: "0px"
-            }}
-          >
-            {props.editpriorityNameCompulsion}
-          </p>
-        )}
-      </div>
-      <div className=" pop-over-div">
-        <label className="pop-over-lbl-text">Status</label>
-        <select
-          className="form-control dropdown-setting"
-          name="status"
-          value={priortyStatus}
-          onChange={e => setpriortyStatusValue(e.target.value)}
-        >
-          <option value="">select</option>
-          {props.activeData !== null &&
-            props.activeData.map((item, j) => (
-              <option key={j} value={item.ActiveID}>
-                {item.ActiveName}
-              </option>
-            ))}
-        </select>
-        {priortyStatus === "" && (
-          <p
-            style={{
-              color: "red",
-              marginBottom: "0px"
-            }}
-          >
-            {props.editstatusCompulsion}
-          </p>
-        )}
-      </div>
-      <br />
-      <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-          CANCEL
-        </a>
-        <button
-          type="button"
-          className="pop-over-button"
-          // onClick={this.handleUpdateData.bind(
-          //   this,
-          //   record.priorityID
-          // )}
-        >
-          <label
-            className="pop-over-btnsave-text"
-            onClick={e => {
-              props.handleUpdateData(e, priorityID);
-            }}
-          >
-            SAVE
-          </label>
-        </button>
-      </div>
-    </div>
-  );
-};
 
 class BodyRow extends React.Component {
   render() {
@@ -237,8 +140,24 @@ class CreatePriority extends Component {
       editstatusCompulsion: "Please select status.",
       updatedPriorityName: "",
       updatedStatus: "",
-      rowData: {}
+      rowData: {},
+      editmodel: false,
+      editSaveLoading: false,
+      sortAllData:[],
+      sortName:[],
+      sortCreatedDate:[],
+      sortCreatedBy:[],
+      sortStatus:[],
+      sortColumn:"",
+      sortHeader:"",
+      StatusModel:false,
+      nameColor:"",
+      createdDateColor:"",
+      createdByColor:"",
+      statusColor:""
     };
+    this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
   }
   components = {
     body: {
@@ -249,15 +168,97 @@ class CreatePriority extends Component {
     this.handleGetPriorityList();
   }
 
-  
-  callBackEdit = (priortyName, priortyStatus, rowData) => {
+
+  sortStatusAtoZ() {
     debugger;
-    // this.setState({RoleName,updateRoleisActive:Status})
-    this.state.updatedPriorityName = priortyName;
-    this.state.updatedStatus = priortyStatus;
-    this.state.rowData = rowData;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
   }
-  
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data,header) {
+    debugger;
+
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column, e) => {
+    debugger;
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    this.setState({
+     nameColor:"",
+     createdDateColor:"",
+     createdByColor:"",
+     statusColor:""
+    
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+     
+    } else if (column === "priortyName") {
+      this.state.priorityData = this.state.sortAllData;
+      itemsArray = this.state.priorityData.filter(
+        a => a.priortyName === data
+      );
+      this.setState({
+        nameColor:"sort-column"
+       
+      });
+    } else if (column === "createdBy") {
+      this.state.priorityData = this.state.sortAllData;
+      itemsArray = this.state.priorityData.filter(a => a.createdBy === data);
+      this.setState({
+        createdByColor:"sort-column"
+        
+      });
+    }else if (column === "createdDate") {
+      this.state.priorityData = this.state.sortAllData;
+      itemsArray = this.state.priorityData.filter(a => a.createdDate === data);
+      this.setState({
+        createdDateColor:"sort-column"
+       
+      });
+    }else if (column === "priortyStatus") {
+      this.state.priorityData = this.state.sortAllData;
+      itemsArray = this.state.priorityData.filter(a => a.priortyStatus === data);
+      this.setState({
+        statusColor:"sort-column"
+       
+      });
+    }
+
+    this.setState({
+      priorityData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
+
+
   ////move row info
   moveRow = (dragIndex, hoverIndex) => {
     const { priorityData } = this.state;
@@ -291,7 +292,11 @@ class CreatePriority extends Component {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
-          NotificationManager.error("Sorry we don't sort row of list");
+          NotificationManager.error(
+            "Sorry we don't sort row of list",
+            "",
+            1000
+          );
         }
       })
       .catch(data => {
@@ -308,24 +313,84 @@ class CreatePriority extends Component {
       params: {
         PriorityFor: 1
       }
-    }).then(function(res) {
-      debugger;
+    })
+      .then(function(res) {
+        debugger;
 
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({
-          priorityData: data,
-          loading: false
-        });
-      } else {
-        self.setState({
-          priorityData: [],
-          loading: false
-        });
-      }
-    }).catch(data => {
-      console.log(data);
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data !== undefined) {
+          data.map(row => {
+            row["isPopoverOpen"] = false;
+          });
+          self.setState({
+            priorityData: data,
+            loading: false
+          });
+        } else {
+          self.setState({
+            priorityData: [],
+            loading: false
+          });
+        }
+
+
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].priortyName]) {
+              distinct.push(data[i].priortyName);
+              unique[data[i].priortyName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortName.push({ priortyName: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdDate]) {
+              distinct.push(data[i].createdDate);
+              unique[data[i].createdDate] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedDate.push({ createdDate: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].priortyStatus]) {
+              distinct.push(data[i].priortyStatus);
+              unique[data[i].priortyStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ priortyStatus: distinct[i] });
+          }
+
+
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleSubmitData() {
@@ -349,18 +414,26 @@ class CreatePriority extends Component {
           PriorityName: this.state.priority_name.trim(),
           status: activeStatus
         }
-      }).then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetPriorityList();
-          NotificationManager.success("Priority Added successfully.", "", 2000);
-          self.setState({
-            priority_name: "",
-            selectedActiveStatus: 0
-          });
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetPriorityList();
+            NotificationManager.success(
+              "Priority Added successfully.",
+              "",
+              2000
+            );
+            self.setState({
+              priority_name: "",
+              selectedActiveStatus: 0,
+              priorityNameCompulsion:"",
+              statusCompulsion:""
+            });
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
       this.setState({
@@ -378,60 +451,70 @@ class CreatePriority extends Component {
       params: {
         PriorityID: priority_ID
       }
-    }).then(function(res) {
-      let status = res.data.statusCode;
-      if (status === 1010) {
-        self.handleGetPriorityList();
-        NotificationManager.success("Priority delete successfully.", "", 2000);
-      } else {
-        NotificationManager.error(res.data.message);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        let status = res.data.statusCode;
+        if (status === 1010) {
+          self.handleGetPriorityList();
+          NotificationManager.success(
+            "Priority delete successfully.",
+            "",
+            2000
+          );
+        } else {
+          NotificationManager.error(res.data.message, "", 1000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
-  handleUpdateData(e, priorityID) {
+  handleUpdateData() {
     debugger;
-    if (
-      this.state.updatedPriorityName.length > 0 &&
-      this.state.updatedStatus.length > 0
-    ) {
+    if (this.state.rowData.priortyName.length > 0) {
       let self = this;
       var activeStatus = 0;
 
-      if (self.state.updatedStatus === "Active") {
+      if (this.state.rowData.isActive === true) {
         activeStatus = 1;
       } else {
         activeStatus = 0;
       }
+      this.setState({ editSaveLoading: true });
+
       axios({
         method: "post",
         url: config.apiUrl + "/Priority/UpdatePriority",
         headers: authHeader(),
         params: {
-          PriorityID: priorityID,
-          PriorityName: this.state.updatedPriorityName.trim(),
+          PriorityID: this.state.rowData.priorityID,
+          PriorityName: this.state.rowData.priortyName.trim(),
           status: activeStatus
         }
-      }).then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetPriorityList();
-          NotificationManager.success(
-            "Priority updated successfully.",
-            "",
-            2000
-          );
-          self.setState({
-            priority_name: "",
-            selectedActiveStatus: 0
-          });
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({ editSaveLoading: false, editmodel: false });
+            self.handleGetPriorityList();
+            NotificationManager.success(
+              "Priority updated successfully.",
+              "",
+              2000
+            );
+            self.setState({
+              rowData: {},
+              priority_name: "",
+              selectedActiveStatus: 0
+            });
+          }
+        })
+        .catch(data => {
+          self.setState({ editSaveLoading: false, editmodel: false });
+          console.log(data);
         });
     } else {
-      NotificationManager.error("Priority not updated.");
+      NotificationManager.error("Priority not updated.", "", 1000);
       this.setState({
         editpriorityNameCompulsion: "Please enter priority name",
         editstatusCompulsion: "Please select status"
@@ -529,10 +612,179 @@ class CreatePriority extends Component {
     this.setState({ finalData });
   }
 
+  handleOpenEditModal(Data, e) {
+    debugger;
+    var rowData = {};
+    rowData.priorityID = Data.priorityID;
+    rowData.priortyName = Data.priortyName;
+    rowData.isActive = Data.isActive;
+    this.setState({ editmodel: true, rowData });
+  }
+  toggleEditModal() {
+    this.setState({ editmodel: false });
+  }
+
+  handelEditChange(e) {
+    debugger;
+    const { name, value } = e.target;
+    var rowData = this.state.rowData;
+    rowData[name] = value;
+    this.setState({ rowData });
+  }
+
   render() {
     return (
       <React.Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+          show={this.state.StatusModel}
+          onHide={this.StatusCloseModel}
+           // onClose={this.StatusCloseModel}
+           // open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <div className="d-flex">
+                 
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    name="filter-type"
+                    id={"fil-open"}
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                </div>
+                {this.state.sortColumn === "priortyName"
+                  ? this.state.sortName !== null &&
+                    this.state.sortName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.priortyName}
+                          id={"fil-open" + item.priortyName}
+                          value={item.priortyName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "priortyName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.priortyName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.priortyName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdBy}
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdDate"
+                  ? this.state.sortCreatedDate !== null &&
+                    this.state.sortCreatedDate.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdDate}
+                          id={"fil-open" + item.createdDate}
+                          value={item.createdDate}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdDate"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdDate}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdDate}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "priortyStatus"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.priortyStatus}
+                          id={"fil-open" + item.priortyStatus}
+                          value={item.priortyStatus}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "priortyStatus"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.priortyStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.priortyStatus}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -553,233 +805,218 @@ class CreatePriority extends Component {
                 {/* {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : ( */}
-                  <div className="table-cntr table-height table-priority">
-                    <DndProvider backend={HTML5Backend}>
-                      <Table
-                        className={
-                          (this.state.dragIndex >= 0 && "dragging-container") ||
-                          ""
-                        }
-                        // columns={this.state.columns}
-                        columns={[
-                          {
-                            key: "data",
-                            render: (text, record, index) => (
-                              <span>
-                                {(this.state.dragIndex >= 0 &&
-                                  this.state.dragIndex !==
-                                    this.state.draggedIndex &&
-                                  index === this.state.draggedIndex && (
-                                    <span
-                                      className={`drag-target-line ${
-                                        this.state.draggedIndex <
-                                        this.state.dragIndex
-                                          ? "drag-target-top"
-                                          : ""
-                                      }`}
-                                    />
-                                  )) ||
-                                  ""}
-                                <a
-                                  className="drag-handle"
-                                  draggable="false"
-                                  onMouseDown={this.onMouseDown}
-                                  href="#!"
+                <div className="table-cntr table-height table-priority">
+                  <DndProvider backend={HTML5Backend}>
+                    <Table
+                      className={
+                        (this.state.dragIndex >= 0 && "dragging-container") ||
+                        ""
+                      }
+                      // columns={this.state.columns}
+                      columns={[
+                        {
+                          key: "data",
+                          render: (text, record, index) => (
+                            <span>
+                              {(this.state.dragIndex >= 0 &&
+                                this.state.dragIndex !==
+                                  this.state.draggedIndex &&
+                                index === this.state.draggedIndex && (
+                                  <span
+                                    className={`drag-target-line ${
+                                      this.state.draggedIndex <
+                                      this.state.dragIndex
+                                        ? "drag-target-top"
+                                        : ""
+                                    }`}
+                                  />
+                                )) ||
+                                ""}
+                              <a
+                                className="drag-handle"
+                                draggable="false"
+                                onMouseDown={this.onMouseDown}
+                                href="#!"
+                              >
+                                <img src={Braille} alt="braille-icon" />
+                              </a>
+                            </span>
+                          )
+                        },
+                        {
+                          title: "Priority Name",
+                          dataIndex: "priortyName",
+                          key: "priortyName",
+                          filterMultiple: false,
+                          onFilter: (value, record) =>
+                            record.priortyName.indexOf(value) === 0,
+                          sorter: (a, b) =>
+                            a.priortyName.length - b.priortyName.length,
+                          sortDirections: ["descend", "ascend"],
+                          
+                          // className:this.state.nameColor,
+                           
+                          // onClick:this.StatusOpenModel.bind(
+                          //   this,
+                          //   "priortyName","Priorty Name"
+                          // )
+
+
+                        },
+                        {
+                          title: "Created By",
+                          dataIndex: "createdByName",
+                          key: "createdByName",
+                          filterMultiple: false,
+                          onFilter: (value, record) =>
+                            record.createdByName.indexOf(value) === 0,
+                          sorter: (a, b) =>
+                            a.createdByName.length - b.createdByName.length,
+                          sortDirections: ["descend", "ascend"],
+                          render: (text, record) => {
+                            //
+                            return (
+                              <div>
+                                <Popover
+                                  content={
+                                    <div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Created By: {record.createdByName}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Created Date:{" "}
+                                          {record.createdDateFormated}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Updated By: {record.modifiedByName}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Updated Date:{" "}
+                                          {record.modifiedDateFormated}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
                                 >
-                                  <img src={Braille} alt="braille-icon" />
-                                </a>
-                              </span>
-                            )
-                          },
-                          {
-                            title: "Priority Name",
-                            dataIndex: "priortyName",
-                            key: "priortyName",
-                            filterMultiple: false,
-                            onFilter: (value, record) =>
-                              record.priortyName.indexOf(value) === 0,
-                            sorter: (a, b) =>
-                              a.priortyName.length - b.priortyName.length,
-                            sortDirections: ["descend", "ascend"]
-                          },
-                          {
-                            title: "Created By",
-                            dataIndex: "createdByName",
-                            key: "createdByName",
-                            filterMultiple: false,
-                            onFilter: (value, record) =>
-                              record.createdByName.indexOf(value) === 0,
-                            sorter: (a, b) =>
-                              a.createdByName.length - b.createdByName.length,
-                            sortDirections: ["descend", "ascend"],
-                            render: (text, record) => {
-                              //
-                              return (
-                                <div>
-                                  <Popover
-                                    content={
-                                      <div>
-                                        <div>
-                                          <b>
-                                            <p className="title">
-                                              Created By: {record.createdByName}
-                                            </p>
-                                          </b>
-                                          <p className="sub-title">
-                                            Created Date:{" "}
-                                            {record.createdDateFormated}
-                                          </p>
-                                        </div>
-                                        <div>
-                                          <b>
-                                            <p className="title">
-                                              Updated By:{" "}
-                                              {record.modifiedByName}
-                                            </p>
-                                          </b>
-                                          <p className="sub-title">
-                                            Updated Date:{" "}
-                                            {record.modifiedDateFormated}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    }
-                                    placement="bottom"
-                                  >
-                                    {record.createdByName}
-                                    <img
-                                      className="info-icon-cp"
-                                      src={BlackInfoIcon}
-                                      alt="info-icon"
-                                    />
-                                  </Popover>
-                                </div>
-                              );
-                            }
-                          },
-                          {
-                            title: "Created Date",
-                            dataIndex: "createdDateFormated",
-                            key: "createdDateFormated",
-                            onFilter: (value, record) =>
-                              record.createdDateFormated.indexOf(value) === 0,
-                            // defaultSortOrder: "descend",
-                            filterMultiple: false,
-                            sorter: (a, b) =>
-                              a.createdDateFormated.length -
-                              b.createdDateFormated.length,
-                            sortDirections: ["descend", "ascend"]
-                          },
-                          {
-                            title: "Status",
-                            dataIndex: "priortyStatus",
-                            key: "priortyStatus",
-                            filterMultiple: false,
-                            onFilter: (value, record) =>
-                              record.priortyStatus.indexOf(value) === 0,
-                            sorter: (a, b) =>
-                              a.priortyStatus.length - b.priortyStatus.length,
-                            sortDirections: ["descend", "ascend"]
-                          },
-                          {
-                            title: "Action",
-                            dataIndex: "priorityID",
-                            key: "priorityID",
-                            render: (text, record) => {
-                              //
-                              return (
-                                <span>
-                                  <Popover
-                                    content={
-                                      <div>
-                                        <div className="del-big-icon">
-                                          <img
-                                            src={BlackDeleteIcon}
-                                            alt="del-icon"
-                                          />
-                                        </div>
-                                        <div>
-                                          <p className="font-weight-bold blak-clr">
-                                            Delete file?
-                                          </p>
-                                          <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
-                                          </p>
-                                          <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                            <button
-                                              className="butn"
-                                              onClick={this.handleDeleteData.bind(
-                                                this,
-                                                record.priorityID
-                                              )}
-                                            >
-                                              Delete
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    }
-                                    trigger="click"
-                                    placement="bottom"
-                                  >
-                                    <img
-                                      src={RedDeleteIcon}
-                                      alt="del-icon"
-                                      className="del-btn"
-                                    />
-                                  </Popover>
-                                  <Popover
-                                    content={
-                                      <Content
-                                        rowData={record}
-                                        callBackEdit={this.callBackEdit}
-                                        editpriorityNameCompulsion={
-                                          this.state.editpriorityNameCompulsion
-                                        }
-                                        editstatusCompulsion={
-                                          this.state.editstatusCompulsion
-                                        }
-                                        activeData={this.state.activeData}
-                                        handleUpdateData={this.handleUpdateData.bind(
-                                          this
-                                        )}
-                                      />
-                                    }
-                                    trigger="click"
-                                    placement="bottom"
-                                  >
-                                    {/* <button
-                                    className="react-tabel-button"
-                                    onClick={this.handleroweditClick.bind(
-                                      this,
-                                      record
-                                    )}
-                                  >
-                                    EDIT
-                                  </button> */}
-                                    <label className="Table-action-edit-button-text">
-                                      <MyButton>EDIT</MyButton>
-                                    </label>
-                                  </Popover>
-                                </span>
-                              );
-                            }
+                                  {record.createdByName}
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                                {record.isPopoverOpen}
+                              </div>
+                            );
                           }
-                        ]}
-                        loading={this.state.loading}
-                        noDataContent="No Record Found"
-                        pagination={true}
-                        dataSource={this.state.priorityData}
-                        components={this.components}
-                        onRow={(record, index) => ({
-                          index,
-                          moveRow: this.moveRow
-                        })}
-                      />
-                    </DndProvider>
-                  </div>
+                        },
+                        {
+                          title: "Created Date",
+                          dataIndex: "createdDateFormated",
+                          key: "createdDateFormated",
+                          onFilter: (value, record) =>
+                            record.createdDateFormated.indexOf(value) === 0,
+                          // defaultSortOrder: "descend",
+                          filterMultiple: false,
+                          sorter: (a, b) =>
+                            a.createdDateFormated.length -
+                            b.createdDateFormated.length,
+                          sortDirections: ["descend", "ascend"]
+                        },
+                        {
+                          title: "Status",
+                          dataIndex: "priortyStatus",
+                          key: "priortyStatus",
+                          filterMultiple: false,
+                          onFilter: (value, record) =>
+                            record.priortyStatus.indexOf(value) === 0,
+                          sorter: (a, b) =>
+                            a.priortyStatus.length - b.priortyStatus.length,
+                          sortDirections: ["descend", "ascend"]
+                        },
+                        {
+                          title: "Action",
+                          dataIndex: "priorityID",
+                          key: "priorityID",
+                          render: (text, record) => {
+                            return (
+                              <span>
+                                <Popover
+                                  content={
+                                    <div>
+                                      <div className="del-big-icon">
+                                        <img
+                                          src={BlackDeleteIcon}
+                                          alt="del-icon"
+                                        />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.handleDeleteData.bind(
+                                              this,
+                                              record.priorityID
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  trigger="click"
+                                  placement="bottom"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                  />
+                                </Popover>
+
+                                <button
+                                  className="react-tabel-button editre"
+                                  onClick={this.handleOpenEditModal.bind(
+                                    this,
+                                    record
+                                  )}
+                                >
+                                  EDIT
+                                </button>
+                              </span>
+                            );
+                          }
+                        }
+                      ]}
+                      loading={this.state.loading}
+                      noDataContent="No Record Found"
+                      pagination={true}
+                      dataSource={this.state.priorityData}
+                      components={this.components}
+                      onRow={(record, index) => ({
+                        index,
+                        moveRow: this.moveRow
+                      })}
+                    />
+                  </DndProvider>
+                </div>
                 {/* // )} */}
               </div>
               <div className="col-md-4">
@@ -810,7 +1047,7 @@ class CreatePriority extends Component {
                         value={this.state.selectedActiveStatus}
                         onChange={this.handleActiveStatus}
                       >
-                        <option>select</option>
+                        <option value="select">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, i) => (
                             <option key={i} value={item.ActiveID}>
@@ -827,9 +1064,20 @@ class CreatePriority extends Component {
                     <div className="btnSpace">
                       <button
                         className="CreateADDBtn addLable"
-                        type="button"
+                        disabled={this.state.editSaveLoading}
+                        className="CreateADDBtn addLable"
                         onClick={this.handleSubmitData.bind(this)}
+                        type="submit"
                       >
+                        {this.state.editSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
                         ADD
                       </button>
                     </div>
@@ -839,6 +1087,93 @@ class CreatePriority extends Component {
             </div>
           </div>
         </div>
+        <Modal
+          show={this.state.editmodel}
+          onHide={this.toggleEditModal}
+          Id="tampleteEditModal"
+        >
+          <div className="edtpadding">
+            <label className="popover-header-text">EDIT PRORITY</label>
+            <div className=" pop-over-div">
+              <label className="pop-over-lbl-text">Priority Name</label>
+
+              <input
+                type="text"
+                className="form-control dropdown-settings"
+                placeholder="Enter Priority Name"
+                maxLength={25}
+                name="priortyName"
+                value={this.state.rowData.priortyName}
+                onChange={this.handelEditChange.bind(this)}
+              />
+              {this.state.rowData.priortyName === "" && (
+                <p
+                  style={{
+                    color: "red",
+                    marginBottom: "0px"
+                  }}
+                >
+                  {this.state.editpriorityNameCompulsion}
+                </p>
+              )}
+            </div>
+            <div className=" pop-over-div">
+              <label className="pop-over-lbl-text">Status</label>
+              <select
+                className="form-control dropdown-setting"
+                name="isActive"
+                value={
+                  this.state.rowData.isActive === true ? "Active" : "Inactive"
+                }
+                onChange={this.handelEditChange.bind(this)}
+              >
+                <option value="">select</option>
+                {this.state.activeData !== null &&
+                  this.state.activeData.map((item, j) => (
+                    <option key={j} value={item.ActiveID}>
+                      {item.ActiveName}
+                    </option>
+                  ))}
+              </select>
+              {this.state.rowData.isActive === "" && (
+                <p
+                  style={{
+                    color: "red",
+                    marginBottom: "0px"
+                  }}
+                >
+                  {this.state.editstatusCompulsion}
+                </p>
+              )}
+            </div>
+            <br />
+            <div className="text-center">
+              <a
+                className="pop-over-cancle"
+                onClick={this.toggleEditModal.bind(this)}
+              >
+                CANCEL
+              </a>
+              <button
+                className="pop-over-button FlNone"
+                disabled={this.state.editSaveLoading}
+                onClick={this.handleUpdateData.bind(this)}
+                type="submit"
+              >
+                {this.state.editSaveLoading ? (
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : (
+                  ""
+                )}
+                <label className="pop-over-btnsave-text">SAVE</label>
+              </button>
+            </div>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }
