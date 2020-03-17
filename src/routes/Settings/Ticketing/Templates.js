@@ -46,7 +46,7 @@ class Templates extends Component {
       issurtupeCompulsion: "",
       statusCompulsion: "",
       // templatesubjectCompulsion: "",
-      templatebodyCompulsion: "",
+      // templatebodyCompulsion: "",
       StatusModel: false,
       sortColumn: "",
       sortAllData: [],
@@ -354,59 +354,65 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
-    if (this.state.editorContent.length > 0) {
-      let self = this;
-      this.setState({ ConfigTabsModal: false });
-      var TemplateIsActive;
-      if (this.state.TemplateIsActive === "true") {
-        TemplateIsActive = true;
-      } else if (this.state.TemplateIsActive === "false") {
-        TemplateIsActive = false;
-      }
-
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Template/CreateTemplate",
-        headers: authHeader(),
-        params: {
-          TemplateName: this.state.TemplateName,
-          TemplateSubject: this.state.TemplateSubject,
-          TemplateBody: this.state.editorContent,
-          issueTypes: this.state.selectedIssueTypeCommaSeperated,
-          isTemplateActive: TemplateIsActive
+    if(this.state.editorContent.length > 0 && this.state.editorContent.length <= 499){
+      if (this.state.editorContent.length > 0) {
+        let self = this;
+        this.setState({ ConfigTabsModal: false });
+        var TemplateIsActive;
+        if (this.state.TemplateIsActive === "true") {
+          TemplateIsActive = true;
+        } else if (this.state.TemplateIsActive === "false") {
+          TemplateIsActive = false;
         }
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success(
-              "Template added successfully.",
-              "",
-              1000
-            );
-            self.handleGetTemplate();
-            self.setState({
-              TemplateSubject: "",
-              editorContent: "",
-              TemplateName: "",
-              selectedSlaIssueType: [],
-              // templatesubjectCompulsion: "",
-              templatebodyCompulsion: ""
-            });
-          } else {
-            NotificationManager.error("Template not added.", "", 1000);
+  
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Template/CreateTemplate",
+          headers: authHeader(),
+          params: {
+            TemplateName: this.state.TemplateName,
+            TemplateSubject: this.state.TemplateSubject,
+            TemplateBody: this.state.editorContent,
+            issueTypes: this.state.selectedIssueTypeCommaSeperated,
+            isTemplateActive: TemplateIsActive
           }
         })
-        .catch(data => {
-          console.log(data);
-        });
-    } else {
-      this.setState({
-        // templatesubjectCompulsion: "Please Enter Subject",
-        templatebodyCompulsion: "Please Enter Descriptions"
-      });
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success(
+                "Template added successfully.",
+                "",
+                1000
+              );
+              self.handleGetTemplate();
+              self.setState({
+                TemplateSubject: "",
+                editorContent: "",
+                TemplateName: "",
+                selectedSlaIssueType: [],
+                // templatesubjectCompulsion: "",
+                // templatebodyCompulsion: ""
+              });
+            } else {
+              NotificationManager.error("Template Not Added.", "", 1500);
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Enter Descriptions.", "", 1500);
+        // this.setState({
+        //   // templatesubjectCompulsion: "Please Enter Subject",
+        //   // templatebodyCompulsion: "Please Enter Descriptions"
+        // });
+      }
+    }else{
+      NotificationManager.error("Only 500 characters Allow In Descriptions.", "", 2000);
     }
+ 
   }
 
   handleGetTemplate() {
@@ -596,7 +602,7 @@ class Templates extends Component {
                         ),
 
                         accessor: "issueTypeCount",
-                        //Cell: props => <span className="number">{props.value}</span>
+                        // Cell: props => <span className="number">{props.value}</span>
                         Cell: row => {
                           if (row.original.issueTypeCount === 1) {
                             return (
@@ -801,7 +807,7 @@ class Templates extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Name"
-                        maxLength={25}
+                        maxLength={50}
                         value={this.state.TemplateName}
                         onChange={this.handleTemplateName}
                       />
@@ -892,6 +898,7 @@ class Templates extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Template Subject"
+                            maxLength={50}
                             onChange={this.handleTemplateSubject}
                             value={this.state.TemplateSubject}
                           />
@@ -912,11 +919,11 @@ class Templates extends Component {
                                 items: this.fileUpload
                               }}
                             />
-                            {this.state.editorContent && (
+                            {/* {this.state.editorContent && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
                                 {this.state.templatebodyCompulsion}
                               </p>
-                            )}
+                            )} */}
                           </div>
                           <div className="config-button">
                             <button

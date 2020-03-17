@@ -1794,68 +1794,73 @@ class MyTicket extends Component {
         NotificationManager.error("Please Enter Body Section.", "", 2000);
       }
     } else if (isSend === 2) {
-      // -------------Plush Icen Editor Call api--------------------
-      if (this.state.mailBodyData.length > 0) {
-        if (this.state.ReplyInformStore === true) {
-          var store_Id = "";
-
-          for (let i = 0; i < this.state.selectedStoreData.length; i++) {
-            store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
-          }
-        } else {
-          var store_Id = "";
-        }
-        const formData = new FormData();
-        var paramData = {
-          TicketID: this.state.ticket_Id,
-          ToEmail: this.state.ticketDetailsData.customerEmailId,
-          UserCC: this.state.mailFiled.userCC,
-          UserBCC: this.state.mailFiled.userBCC,
-          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-          TicketMailBody: this.state.mailBodyData,
-          IsInformToStore: this.state.ReplyInformStore,
-          TicketSource: this.state.ticketSourceId, // Send ticket source id
-          IsSent: 0,
-          IsCustomerComment: 1,
-          IsResponseToCustomer: 1,
-          MailID: 0,
-          StoreID: store_Id.substring(",", store_Id.length - 1)
-        };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
-        for (let j = 0; j < this.state.FileData.length; j++) {
-          formData.append("Filedata", this.state.FileData[j]);
-        }
-
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Ticketing/MessageComment",
-          headers: authHeader(),
-          data: formData
-        })
-          .then(function(res) {
-            ////debugger;
-            let status = res.data.message;
-            if (status === "Success") {
-              self.handleGetMessageDetails(self.state.ticket_Id);
-              self.handleGetCountOfTabs(self.state.ticket_Id);
-              self.handleTicketAssignFollowUp();
-              self.HandleEmailCollapseOpen();
-              NotificationManager.success("Mail send successfully.", "", 2000);
-              self.setState({
-                mailFiled: {},
-                // mailSubject: "",
-                mailBodyData: ""
-              });
-            } else {
-              NotificationManager.error(status, "", 2000);
+      // -------------Plush Icen Editor Call api--------------------  
+      if(this.state.mailBodyData.length > 0 && this.state.mailBodyData.length <= 1999){
+        if (this.state.mailBodyData.length > 0) {
+          if (this.state.ReplyInformStore === true) {
+            var store_Id = "";
+  
+            for (let i = 0; i < this.state.selectedStoreData.length; i++) {
+              store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
             }
+          } else {
+            var store_Id = "";
+          }
+          const formData = new FormData();
+          var paramData = {
+            TicketID: this.state.ticket_Id,
+            ToEmail: this.state.ticketDetailsData.customerEmailId,
+            UserCC: this.state.mailFiled.userCC,
+            UserBCC: this.state.mailFiled.userBCC,
+            TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+            TicketMailBody: this.state.mailBodyData,
+            IsInformToStore: this.state.ReplyInformStore,
+            TicketSource: this.state.ticketSourceId, // Send ticket source id
+            IsSent: 0,
+            IsCustomerComment: 1,
+            IsResponseToCustomer: 1,
+            MailID: 0,
+            StoreID: store_Id.substring(",", store_Id.length - 1)
+          };
+          formData.append("ticketingMailerQue", JSON.stringify(paramData));
+          for (let j = 0; j < this.state.FileData.length; j++) {
+            formData.append("Filedata", this.state.FileData[j]);
+          }
+  
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Ticketing/MessageComment",
+            headers: authHeader(),
+            data: formData
           })
-          .catch(data => {
-            console.log(data);
-          });
-      } else {
-        NotificationManager.error("Please Enter Body Section.", "", 2000);
+            .then(function(res) {
+              ////debugger;
+              let status = res.data.message;
+              if (status === "Success") {
+                self.handleGetMessageDetails(self.state.ticket_Id);
+                self.handleGetCountOfTabs(self.state.ticket_Id);
+                self.handleTicketAssignFollowUp();
+                self.HandleEmailCollapseOpen();
+                NotificationManager.success("Mail send successfully.", "", 2000);
+                self.setState({
+                  mailFiled: {},
+                  // mailSubject: "",
+                  mailBodyData: ""
+                });
+              } else {
+                NotificationManager.error(status, "", 2000);
+              }
+            })
+            .catch(data => {
+              console.log(data);
+            });
+        } else {
+          NotificationManager.error("Please Enter Body Section.", "", 2000);
+        }
+      }else{
+        NotificationManager.error("Only 2000 Charater Allow In Body Section.", "", 2000);
       }
+     
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
       if (this.state.ticketcommentMSG.length > 0) {
