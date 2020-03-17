@@ -2194,7 +2194,8 @@ table td span {
 }
 .table-btn {
   border-radius: 15px;
-  width: 100px;
+  min-width: 100px;
+  width: auto;
   display: inline-block;
   padding: 4px 10px;
   text-transform: uppercase;
@@ -2421,14 +2422,14 @@ table tr th:last-child {
   background-color: #fff;
   right: -25px;
   top: 25px;
-  width: 215px;
+  width: 250px;
 }
 .sort-sctn {
   padding: 13px 35px;
   border-bottom: 1px solid #eeeeee;
 }
 .sort-sctn div {
-  padding: 7px 0;
+  padding: 5px 0 0 0;
 }
 .sort-sctn p {
   margin: 0;
@@ -2445,7 +2446,7 @@ table tr th:last-child {
   margin: 0;
 }
 .filter-type {
-  padding: 20px 25px;
+  padding: 5px 25px 20px 25px;
   border-bottom: 1px solid #eeeeee;
 }
 .filter-type p {

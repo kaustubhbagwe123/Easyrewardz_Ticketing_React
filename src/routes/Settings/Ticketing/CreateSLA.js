@@ -829,6 +829,7 @@ class CreateSLA extends Component {
                 >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -909,6 +910,8 @@ class CreateSLA extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+               
               </div>
             </div>
           </Modal>

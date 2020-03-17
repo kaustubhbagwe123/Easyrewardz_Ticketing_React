@@ -150,7 +150,7 @@ class ChangePassword extends Component {
         }, 1250);
       }
       else {
-        NotificationManager.error("Password Not Changed.", '', 1250);
+        NotificationManager.error("Old password is wrong.", '', 1250);
       }
     });
   }

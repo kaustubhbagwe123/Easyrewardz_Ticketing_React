@@ -937,6 +937,8 @@ class KnowledgeBase extends Component {
   }
 
   HandelOnenCloseDetailsCollapse() {
+    debugger;
+
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
@@ -978,7 +980,7 @@ class KnowledgeBase extends Component {
                style={{margin:"0 25px",textDecoration:"underline"}} 
                 onClick={this.setSortCheckStatus.bind(this, "all")}
                 >clear search</a>
-              <div className="filter-type">
+              <div className="filter-type FTypeScroll">
                 <p>FILTER BY TYPE</p>
 
                 <div className="filter-checkbox">
@@ -1246,7 +1248,8 @@ class KnowledgeBase extends Component {
                           />
 
                           <UncontrolledCollapse
-                            toggler={"#i" + row.original.kbid}
+                            toggler={"i" + row.original.kbid}
+                            isOpen={this.state.detailscollapse}
                           >
                             <Card>
                               <CardBody>
@@ -1499,7 +1502,8 @@ class KnowledgeBase extends Component {
                             id={"i" + row.original.kbid}
                           />
                           <UncontrolledCollapse
-                            toggler={"#i" + row.original.kbid}
+                            toggler={"i" + row.original.kbid}
+                            isOpen={this.state.detailscollapse}
                           >
                             <Card>
                               <CardBody>
