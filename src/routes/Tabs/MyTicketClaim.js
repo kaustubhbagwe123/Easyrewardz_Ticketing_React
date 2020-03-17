@@ -105,9 +105,9 @@ class MyTicketClaim extends Component {
       debugger;
       let status = res.data.status;
       if (status === true) {
-        NotificationManager.success("Comment added successfully.");
+        NotificationManager.success("Comment added successfully.", '', 1000);
       } else {
-        NotificationManager.error("Comment not added.");
+        NotificationManager.error("Comment not added.", '', 1000);
       }
     }).catch(data => {
       console.log(data);

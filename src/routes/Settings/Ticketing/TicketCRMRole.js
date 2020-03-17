@@ -422,7 +422,7 @@ class TicketCRMRole extends Component {
             }
           } else if (status === "Record Already Exists ") {
             if (e === "add") {
-              NotificationManager.error("Record Already Exists ");
+              NotificationManager.error("Record Already Exists ", '', 1000);
             }
           } else {
             if (e === "add") {

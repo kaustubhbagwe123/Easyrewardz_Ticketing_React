@@ -674,7 +674,7 @@ class CategoryMaster extends Component {
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.", "", 1000);
           } else {
-            NotificationManager.error(status, "", 3000);
+            NotificationManager.error(status, "", 1000);
           }
         })
         .catch(data => {
@@ -757,7 +757,7 @@ class CategoryMaster extends Component {
             self.setState({ editmodel: false, editSaveLoading: false });
             NotificationManager.error("Record Already Exists.", "", 1000);
           } else {
-            NotificationManager.error(status, "", 3000);
+            NotificationManager.error(status, "", 1000);
             self.setState({ editmodel: false, editSaveLoading: false });
           }
         })
