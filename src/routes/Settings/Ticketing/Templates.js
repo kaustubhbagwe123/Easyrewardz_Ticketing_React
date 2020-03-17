@@ -51,7 +51,9 @@ class Templates extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
-      
+      sortName:[],
+      sortCreatedBy:[],
+      sortStatus:[],
       updatedTemplatename: "",
       updatedArray: [],
       updatedStatus: "",
@@ -61,6 +63,10 @@ class Templates extends Component {
       isLoading: false,
       editSaveLoading: false,
       issueColor: "",
+      nameColor:"",
+      createdColor:"",
+      statusColor:"",
+      sortHeader:"",
       editTemplateName: "",
       editIssueTypeSelect: "",
      
@@ -170,10 +176,10 @@ class Templates extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
+  StatusOpenModel(data,header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data });
+    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -185,7 +191,10 @@ class Templates extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      issueColor: ""
+      issueColor: "",
+      nameColor:"",
+      createdColor:"",
+      statusColor:""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -194,6 +203,24 @@ class Templates extends Component {
       itemsArray = this.state.template.filter(a => a.issueTypeName === data);
       this.setState({
         issueColor: "sort-column"
+      });
+    }else if (column === "templateName") {
+      this.state.template = this.state.sortAllData;
+      itemsArray = this.state.template.filter(a => a.templateName === data);
+      this.setState({
+        nameColor: "sort-column"
+      });
+    }else if (column === "createdBy") {
+      this.state.template = this.state.sortAllData;
+      itemsArray = this.state.template.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor: "sort-column"
+      });
+    }else if (column === "templateStatus") {
+      this.state.template = this.state.sortAllData;
+      itemsArray = this.state.template.filter(a => a.templateStatus === data);
+      this.setState({
+        statusColor: "sort-column"
       });
     }
 
@@ -466,6 +493,43 @@ class Templates extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < template.length; i++) {
+            if (!unique[template[i].templateName]) {
+              distinct.push(template[i].templateName);
+              unique[template[i].templateName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortName.push({ templateName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < template.length; i++) {
+            if (!unique[template[i].createdBy]) {
+              distinct.push(template[i].createdBy);
+              unique[template[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < template.length; i++) {
+            if (!unique[template[i].templateStatus]) {
+              distinct.push(template[i].templateStatus);
+              unique[template[i].templateStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ templateStatus: distinct[i] });
+          }
+
         }
         if (template !== null && template !== undefined) {
           self.setState({ template });
@@ -583,6 +647,75 @@ class Templates extends Component {
                       </div>
                     ))
                   : null}
+
+{this.state.sortColumn === "templateName"
+                  ? this.state.sortName !== null &&
+                    this.state.sortName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.templateName}
+                          value={item.templateName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "templateName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.templateName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.templateName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "templateStatus"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.templateStatus}
+                          value={item.templateStatus}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "templateStatus"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.templateStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.templateStatus}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
                 </div>
                 
               </div>
@@ -614,7 +747,13 @@ class Templates extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.nameColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "templateName","Template Name"
+                          )}
+                          >
                             Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -627,7 +766,7 @@ class Templates extends Component {
                             className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "issueTypeName"
+                              "issueTypeName","IssueType"
                             )}
                           >
                             Issue Type
@@ -656,7 +795,13 @@ class Templates extends Component {
                       {
                         id: "createdBy",
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.createdColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "createdBy","Created By"
+                          )}
+                          >
                             Created by
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -712,7 +857,13 @@ class Templates extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                          className={this.state.statusColor}
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "templateStatus","Status"
+                          )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
