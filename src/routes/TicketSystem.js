@@ -1559,7 +1559,11 @@ class TicketSystem extends Component {
                       style={{ display: "inherit" }}
                     >
                       <button
-                        className="dropdown-toggle my-tic-email1"
+                        className={
+                          this.state.CkEditorTemplateData.length > 0
+                            ? "dropdown-toggle my-tic-email1"
+                            : "dropdown-toggle my-tic-email1 disabled-link"
+                        }
                         type="button"
                         data-toggle="dropdown"
                       >
@@ -2392,7 +2396,7 @@ class TicketSystem extends Component {
                             SEARCH
                           </button>
                         </div>
-                        <div style={{ marginTop: "275px" }}>
+                        <div>
                           <a href="#!" className="copyblue-kbtext">
                             VIEW POLICY
                           </a>

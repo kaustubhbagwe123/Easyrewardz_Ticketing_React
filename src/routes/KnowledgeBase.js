@@ -1192,6 +1192,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 100,
                     Cell: row => {
                       return (
                         <span>
@@ -1211,6 +1212,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subject",
+                    minWidth: 175,
                     Cell: row => {
                       return (
                         <span className="table-details-data">
@@ -1327,6 +1329,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 200,
                     Cell: row => {
                       return (
                         <span>
@@ -1444,6 +1447,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 100,
                     Cell: row => {
                       return (
                         <span>
@@ -1463,6 +1467,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subject",
+                    minWidth: 175,
                     Cell: row => {
                       return (
                         <span className="table-details-data">
@@ -1577,6 +1582,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 200,
                     Cell: row => {
                       return (
                         <>

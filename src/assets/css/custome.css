@@ -4825,698 +4825,17 @@ progress::-webkit-progress-bar {
 .action-label {
   float: right;
 }
-/* Responsive starts */
 
-@media only screen and (max-width: 1200px) {
-  .colladrow label {
-    font-size: 12px !important;
-  }
-}
-@media only screen and (max-width: 1024px) {
-  /* Qa Dashboard */
-  .QAtable table th {
-    padding: 15px 10px;
-  }
-  .QAtable table td {
-    padding: 18px 10px;
-  }
-  /* MyTicketClaim */
-  .paddcla table th {
-    padding: 15px 5px;
-  }
-  .paddcla table td {
-    padding: 15px 5px;
-  }
-  /*MyTicketList  */
-  .esc1 .nav-tabs .nav-link {
-    margin-right: -15px;
-  }
-  .setting-tabs .es .nav-link.active {
-    padding: 7px 7px;
-    font-weight: 500;
-    font-size: 13px;
-  }
-  .mtictab table th {
-    padding: 16px 5px;
-    font-size: 13px;
-  }
-  .myticketlist-header table td {
-    padding: 15px 5px 15px 5px;
-  }
-  /* Setting>Store>Storemaster */
-  .store-master table td {
-    padding: 18px 5px;
-  }
-  .store-master table th {
-    padding: 20px 5px;
-  }
-  /* Qa>QaAuditView */
-  .removelinespace .mobiotw {
-    margin-left: 32px !important;
-  }
-  /*Store/StoreTask */
-  .store-task-tab-cont table th {
-    padding: 15px 5px;
-  }
-  .store-task-tab-cont table td {
-    padding: 15px 5px;
-  }
-  /* Setting/Brand */
-  .brandtable table th {
-    padding: 15px 10px;
-  }
-  .brandtable table td {
-    padding: 15px 10px;
-  }
-  /* Setting/CategoryMaster */
-  .category-master table td {
-    padding: 18px 5px;
-  }
-  .category-master table th {
-    padding: 18px 5px;
-  }
-  /* HierarchyMaster */
-  .hiermas table th {
-    padding: 20px 10px;
-  }
-  .hiermas table td {
-    padding: 20px 10px;
-  }
-  /* Setting/Template */
-  .template-table .ReactTable .rt-thead .rt-th.-cursor-pointer,
-  .ReactTable .rt-thead .rt-td.-cursor-pointer {
-    padding: 20px 15px !important;
-  }
-  .template-table .ReactTable .rt-tbody .rt-td {
-    padding: 18px 10px !important;
-  }
-  /*Store/Claim  */
-  .store-task-tab-cont table th {
-    padding: 15px 10px;
-  }
-  .store-task-tab-cont table td {
-    padding: 15px 10px;
-  }
-  /* Setting/Store/CrmRole */
-  .crm-padding-div {
-    padding-right: 32px;
-  }
-  /*  */
-  .ChatElementReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
-  .ReactTable .rt-thead .rt-td.-cursor-pointer {
-    padding: 20px 5px !important;
-  }
-  .ChatElementReact .ReactTable .rt-tbody .rt-td {
-    padding: 10px 5px !important;
-  }
-}
-@media only screen and (max-width: 992px) {
-  /* dashboard starts */
-  body {
-    font-size: 14px;
-  }
-  .dash-dropdowns select {
-    background-size: 11px;
-    padding-right: 20px;
-    margin-right: 25px;
-  }
-  .card-value {
-    font-size: 32px;
-  }
-  .card-head {
-    margin-bottom: 10px;
-  }
-  .dash-top-cards {
-    min-height: 125px;
-  }
-  .btm-mar > .row > div {
-    margin-bottom: 25px;
-  }
-  big {
-    font-size: 42px;
-  }
-  table th {
-    padding: 20px;
-  }
-  table td {
-    padding: 18px 20px;
-  }
-  .info-icon {
-    width: 15px;
-  }
-  .claim-icon {
-    width: 13px;
-  }
-  .task-icon-1 {
-    width: 16px;
-  }
-  .dash-creation-popup li p {
-    font-size: 14px;
-  }
-  .dash-creation-popup li {
-    margin-top: 12px;
-  }
-  .dash-creation-popup li.title {
-    padding-bottom: 0;
-  }
-  .dash-popup {
-    right: -8px;
-    top: 24px;
-  }
-  .dash-task-popup {
-    bottom: 30px;
-    font-size: 12px;
-  }
-  .dash-task-popup span {
-    font-size: 12px;
-  }
-  .nw-chat {
-    width: 16px;
-    margin-left: 7px;
-  }
-  .task-progress {
-    margin-top: 10px;
-    height: 8px;
-  }
-  .pagi ul li {
-    font-size: 14px;
-    width: 32px;
-    height: 32px;
-    line-height: 30px;
-  }
-  .table-expandable-sctn button {
-    font-size: 12px;
-    padding-top: 7px;
-    padding-bottom: 8px;
-  }
-  .save-view-search button.btn-inv {
-    padding-right: 30px;
-    padding-left: 30px;
-  }
-  .save-view-search button {
-    padding-right: 20px;
-    padding-left: 20px;
-  }
-  .table-expandable-sctn .nav-tabs .nav-link {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-  .table-expandable-sctn .tab-content button img {
-    top: -2px;
-  }
-  .sch-icon {
-    width: 17px;
-  }
-  .csv-icon {
-    width: 14px;
-  }
-  .assign-icon {
-    width: 16px;
-  }
-  .table-expandable-sctn .tab-content .row {
-    padding: 15px 0;
-  }
-  .table-expandable-sctn input[type="text"] {
-    background-size: 16px;
-  }
-  .table-expandable-sctn input[type="text"]::placeholder {
-    font-size: 14px;
-  }
-  .setting-tabs ul {
-    border: none;
-    margin-bottom: 25px;
-  }
-  /* dashboard ends */
+#slaEditModal {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+  max-width: 30%;
+  min-width: 30%;
 }
 
-@media only screen and (max-width: 991px) {
-  .target-closure-date {
-    font-size: 11px;
-  }
-  .Date-target {
-    font-size: 12px;
-  }
-  .bata-rajouri-garden {
-    line-height: 22px;
-  }
-}
-
-@media only screen and (max-width: 800px) {
-  /* dashboard starts */
-  .save-view-search {
-    position: static;
-    transform: none;
-    padding: 15px;
-    padding-bottom: 0;
-  }
-  .save-view-search button {
-    width: 48%;
-    margin-right: 0;
-  }
-  .save-view-search {
-    display: flex;
-    justify-content: space-between;
-  }
-  /* dashboard ends */
-}
-@media only screen and (max-width: 768px) {
-  .mobilenumber-resp .respo {
-    margin-left: 0 !important;
-  }
-  .mobilenumber-resp .resol {
-    margin-right: 0 !important;
-  }
-  .card-details-1 {
-    height: auto;
-  }
-}
-@media only screen and (max-width: 767px) {
-  .storebox {
-    padding: 0 15px;
-  }
-  .v3,
-  .v4 {
-    display: none;
-  }
-  /* dashboard starts */
-  .ticketToTask-chart .apexcharts-canvas {
-    width: 100% !important;
-    overflow: auto;
-  }
-
-  .ticketToTask-chart .apexcharts-canvas svg {
-    width: auto !important;
-    overflow: auto;
-  }
-  #bill-graph-tab .col-md-3 {
-    order: 1;
-  }
-  .bill-graph-list {
-    text-align: center;
-    margin-top: -15px;
-    margin-bottom: 10px;
-  }
-  .bill-graph-list li {
-    padding: 0px 15px;
-  }
-  .table-expandable-sctn .tab-content .row > div {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  .table-expandable-sctn .tab-content .row {
-    padding: 10px 0;
-  }
-  .nav-tabs .nav-item {
-    margin-bottom: 0;
-    white-space: nowrap;
-  }
-  .nav-tabs {
-    flex-wrap: nowrap;
-    overflow: auto;
-  }
-  .table-expandable-sctn .tab-content .row.all-row div {
-    margin-bottom: 0px;
-  }
-  .table-expandable-sctn .tab-content .row.all-row {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-  .ticketToTask-chart-1 .apexcharts-canvas {
-    width: 100% !important;
-    overflow: auto;
-  }
-
-  .ticketToTask-chart-1 .apexcharts-canvas svg {
-    width: auto !important;
-    overflow: auto;
-  }
-  .sectiontenant select {
-    margin-bottom: 10px;
-  }
-  #Notification-popup {
-    left: 5px;
-}
-  /* dashboard ends */
-}
-
-@media only screen and (max-width: 580px) {
-  /* dashboard starts */
-  .rem-table {
-    display: none;
-  }
-  .mobile-table {
-    display: block;
-  }
-  .dash-creation-popup {
-    right: -70px;
-    width: 300px;
-  }
-  .dash-popup {
-    padding: 20px 15px;
-  }
-  /* dashboard ends */
-  .myticket-submit-solve-button {
-    width: 200px;
-    height: auto;
-    margin-left: 5px;
-  }
-  .myticket-submit-solve-button-text {
-    font-size: 12px;
-    margin-left: 0;
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .hamb-menu li {
-    display: block;
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-  }
-  .hamb-menu .dropdown-menu.show:before {
-    display: none;
-  }
-  .hamb-menu ul {
-    padding: 0;
-    font-size: 12px;
-  }
-  .active a {
-    color: #fff !important;
-  }
-  .header-right-icons a:last-child {
-    margin-right: 0px;
-  }
-  .header-right-icons {
-    padding: 0 15px;
-  }
-  .vl {
-    border: 0;
-    height: auto;
-    margin: 15px 0 20px;
-    border-bottom: 2px solid #f1f1f1;
-    width: 100%;
-  }
-  .v2 {
-    border: 0;
-    height: auto;
-    margin: 5px 0 15px -15px;
-    border-bottom: 2px solid #f1f1f1;
-    width: 110%;
-  }
-  .data-store .col-md-12 {
-    padding: 0;
-  }
-  .rectangle-box {
-    height: auto;
-  }
-  .dropdrown {
-    margin-left: 0;
-  }
-  .mob-pad {
-    padding: 0 !important;
-  }
-  .drop-card {
-    padding: 0 !important;
-    margin-top: 0;
-  }
-  .label-4 {
-    width: 100px;
-  }
-  .data-store {
-    margin: 0;
-  }
-  .storeSpacing {
-    padding-left: 0;
-  }
-  .data-store .label-4 {
-    width: 45px;
-  }
-  .rectangle-box .select-category-placeholder {
-    width: 100%;
-  }
-  .notes-00,
-  .task-03,
-  .claim-00 {
-    margin-left: 0;
-  }
-  .arrow-img,
-  .plush-img,
-  .line-1 {
-    margin-left: 0;
-    margin-top: 0;
-  }
-  .mail-mask {
-    width: 100%;
-    background-color: transparent;
-  }
-  .mob-float {
-    float: right;
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-  }
-  .line-1 {
-    display: inline-block;
-    margin: 0 15px;
-  }
-  .label-2 {
-    margin-top: 0px;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  .label-3 {
-    margin-top: 2px;
-    padding-bottom: 20px;
-  }
-  .v3,
-  .v4 {
-    width: 100%;
-    margin-left: 0;
-  }
-  .v4 {
-    margin-top: 0;
-  }
-  .today-02 {
-    text-align: center;
-    display: block;
-    padding: 0;
-    margin: 10px 0;
-  }
-  .rectangle-3 .message-header {
-    display: none;
-  }
-  .i-have-solved-this-i {
-    margin-left: 0;
-  }
-  .mob-flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 5px;
-  }
-  .card-details {
-    width: auto;
-    height: auto;
-    margin: 0;
-  }
-  .card-details-1 {
-    width: auto;
-    height: auto;
-    margin: 20px;
-    padding: 20px 30px;
-  }
-  .v6 {
-    margin-left: 0;
-    margin-top: 0;
-    width: 100%;
-  }
-  .yesterday-02 {
-    display: block;
-    padding-left: 0;
-    text-align: center;
-    margin: 10px 0;
-  }
-  .hi-naman-please-hel {
-    padding-left: 0;
-  }
-  .comment {
-    margin-left: 0 !important;
-    padding-left: 0;
-    order: 1;
-  }
-  .up-1 {
-    margin: 0;
-    order: 2;
-  }
-  .card-op-out .card-details {
-    margin-top: 15px;
-  }
-  .comment-text {
-    padding-left: 0;
-  }
-  .hi-diwakar-i-really1 {
-    width: 80%;
-    display: inline-block;
-    padding-left: 10px;
-  }
-  .comment-text1 {
-    padding-left: 15px;
-    margin-top: 5px;
-  }
-  .clip {
-    margin-left: 30px;
-    vertical-align: top;
-    width: 17px;
-    height: 17px;
-  }
-  .reply-comment {
-    padding-left: 13px;
-    text-align: left;
-  }
-  .need-to-change-my-sh {
-    margin-left: 37px;
-  }
-  .head-header {
-    height: auto;
-  }
-  .oval-head {
-    margin: 0;
-    padding: 0;
-    margin-top: 10px;
-    width: 100%;
-  }
-  .myticket-submit-solve-button {
-    margin-left: 9px;
-    width: auto;
-    float: right;
-    padding: 5px 10px;
-  }
-  .myticket-submit-solve-button-text {
-    margin-left: 0;
-  }
-  .loading-rectangle {
-    margin-top: -183px;
-  }
-  .head-header-1 {
-    padding-bottom: 0;
-  }
-  .nav-tab3,
-  .nav-tab2,
-  .nav-tab1,
-  .claim-space,
-  .main-nav {
-    display: none;
-  }
-  .er {
-    padding-left: 0;
-    text-align: center;
-    width: 60px;
-    height: 55px;
-    display: inline-block;
-  }
-  .er-label {
-    font-size: 16px;
-    margin-top: 0;
-  }
-  .hamb-menu {
-    display: block;
-    margin-left: 10px;
-  }
-
-  /* dashboard starts */
-  .dash-dropdowns {
-    display: block;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  .dash-dropdowns > div {
-    padding: 5px 0;
-  }
-  .btm-mar > .row > div {
-    margin-bottom: 20px;
-  }
-  .task-claim-cont {
-    padding-right: 0;
-    padding-left: 0;
-  }
-  .mob-mar-btm button {
-    margin-bottom: 15px;
-  }
-  .mob-mar-btm button:last-child {
-    margin-bottom: 0px;
-  }
-
-  .grapwid {
-    max-width: 100% !important;
-    overflow: auto;
-  }
-  .dash-top-cards1 {
-    padding: 12px 20px !important;
-  }
-  .mid-sec {
-    padding: 15px;
-  }
-  .arrow-img {
-    margin: 5px 30px 0;
-  }
-  #Notification-popup .rowpadding {
-    padding-left: 5px;
-  }
-  #Notification-popup .viewticketspeadding {
-    padding-left: 5px;
-  }
-  /* dashboard ends */
-}
-
-@media only screen and (max-width: 400px) {
-  /* dashboard starts */
-  .pagi {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-  .pagi ul li {
-    font-size: 12px;
-    width: 30px;
-    height: 30px;
-    line-height: 28px;
-  }
-  .save-view-search {
-    display: block;
-  }
-  .save-view-search button {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  .save-view-search button:last-child {
-    margin-bottom: 0px;
-  }
-  .btnSearchQa {
-    width: 100%;
-    margin-top: 15px;
-  }
-  /* dashboard ends */
-}
-
-@media only screen and (max-width: 360px) {
-  /* dashboard starts */
-  .dash-tp-card .row > div {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .obpml {
-    margin-left: 0;
-  }
-  .mlistbtn {
-    float: none;
-    text-align: center;
-  }
-  .setting-tabs ul {
-    border: none;
-    display: flex !important;
-    margin-bottom: 25px;
-  }
-  /* dashboard ends */
-}
-/* Responsive ends */
 
 /*------------------------------Knowledge Base start-------------------------*/
 
@@ -11181,12 +10500,726 @@ table tr th:last-child {
   cursor: pointer;
 }
 
-#slaEditModal {
-  border-radius: 8px;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-  padding: 10px;
-  margin: 100px auto;
-  display: inline-block;
-  max-width: 30%;
-  min-width: 30%;
+/* Responsive starts */
+
+@media only screen and (max-width: 1200px) {
+  .colladrow label {
+    font-size: 12px !important;
+  }
+  #slaEditModal {
+    max-width: 50%;
+    min-width: 50%;
 }
+}
+@media only screen and (max-width: 1024px) {
+  /* Qa Dashboard */
+  .QAtable table th {
+    padding: 15px 10px;
+  }
+  .QAtable table td {
+    padding: 18px 10px;
+  }
+  /* MyTicketClaim */
+  .paddcla table th {
+    padding: 15px 5px;
+  }
+  .paddcla table td {
+    padding: 15px 5px;
+  }
+  /*MyTicketList  */
+  .esc1 .nav-tabs .nav-link {
+    margin-right: -15px;
+  }
+  .setting-tabs .es .nav-link.active {
+    padding: 7px 7px;
+    font-weight: 500;
+    font-size: 13px;
+  }
+  .mtictab table th {
+    padding: 16px 5px;
+    font-size: 13px;
+  }
+  .myticketlist-header table td {
+    padding: 15px 5px 15px 5px;
+  }
+  /* Setting>Store>Storemaster */
+  .store-master table td {
+    padding: 18px 5px;
+  }
+  .store-master table th {
+    padding: 20px 5px;
+  }
+  /* Qa>QaAuditView */
+  .removelinespace .mobiotw {
+    margin-left: 32px !important;
+  }
+  /*Store/StoreTask */
+  .store-task-tab-cont table th {
+    padding: 15px 5px;
+  }
+  .store-task-tab-cont table td {
+    padding: 15px 5px;
+  }
+  /* Setting/Brand */
+  .brandtable table th {
+    padding: 15px 10px;
+  }
+  .brandtable table td {
+    padding: 15px 10px;
+  }
+  /* Setting/CategoryMaster */
+  .category-master table td {
+    padding: 18px 5px;
+  }
+  .category-master table th {
+    padding: 18px 5px;
+  }
+  /* HierarchyMaster */
+  .hiermas table th {
+    padding: 20px 10px;
+  }
+  .hiermas table td {
+    padding: 20px 10px;
+  }
+  /* Setting/Template */
+  .template-table .ReactTable .rt-thead .rt-th.-cursor-pointer,
+  .ReactTable .rt-thead .rt-td.-cursor-pointer {
+    padding: 20px 15px !important;
+  }
+  .template-table .ReactTable .rt-tbody .rt-td {
+    padding: 18px 10px !important;
+  }
+  /*Store/Claim  */
+  .store-task-tab-cont table th {
+    padding: 15px 10px;
+  }
+  .store-task-tab-cont table td {
+    padding: 15px 10px;
+  }
+  /* Setting/Store/CrmRole */
+  .crm-padding-div {
+    padding-right: 32px;
+  }
+  /*  */
+  .ChatElementReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+  .ReactTable .rt-thead .rt-td.-cursor-pointer {
+    padding: 20px 5px !important;
+  }
+  .ChatElementReact .ReactTable .rt-tbody .rt-td {
+    padding: 10px 5px !important;
+  }
+}
+@media only screen and (max-width: 992px) {
+  /* dashboard starts */
+  body {
+    font-size: 14px;
+  }
+  .dash-dropdowns select {
+    background-size: 11px;
+    padding-right: 20px;
+    margin-right: 25px;
+  }
+  .card-value {
+    font-size: 32px;
+  }
+  .card-head {
+    margin-bottom: 10px;
+  }
+  .dash-top-cards {
+    min-height: 125px;
+  }
+  .btm-mar > .row > div {
+    margin-bottom: 25px;
+  }
+  big {
+    font-size: 42px;
+  }
+  table th {
+    padding: 20px;
+  }
+  table td {
+    padding: 18px 20px;
+  }
+  .info-icon {
+    width: 15px;
+  }
+  .claim-icon {
+    width: 13px;
+  }
+  .task-icon-1 {
+    width: 16px;
+  }
+  .dash-creation-popup li p {
+    font-size: 14px;
+  }
+  .dash-creation-popup li {
+    margin-top: 12px;
+  }
+  .dash-creation-popup li.title {
+    padding-bottom: 0;
+  }
+  .dash-popup {
+    right: -8px;
+    top: 24px;
+  }
+  .dash-task-popup {
+    bottom: 30px;
+    font-size: 12px;
+  }
+  .dash-task-popup span {
+    font-size: 12px;
+  }
+  .nw-chat {
+    width: 16px;
+    margin-left: 7px;
+  }
+  .task-progress {
+    margin-top: 10px;
+    height: 8px;
+  }
+  .pagi ul li {
+    font-size: 14px;
+    width: 32px;
+    height: 32px;
+    line-height: 30px;
+  }
+  .table-expandable-sctn button {
+    font-size: 12px;
+    padding-top: 7px;
+    padding-bottom: 8px;
+  }
+  .save-view-search button.btn-inv {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+  .save-view-search button {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .table-expandable-sctn .nav-tabs .nav-link {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .table-expandable-sctn .tab-content button img {
+    top: -2px;
+  }
+  .sch-icon {
+    width: 17px;
+  }
+  .csv-icon {
+    width: 14px;
+  }
+  .assign-icon {
+    width: 16px;
+  }
+  .table-expandable-sctn .tab-content .row {
+    padding: 15px 0;
+  }
+  .table-expandable-sctn input[type="text"] {
+    background-size: 16px;
+  }
+  .table-expandable-sctn input[type="text"]::placeholder {
+    font-size: 14px;
+  }
+  .setting-tabs ul {
+    border: none;
+    margin-bottom: 25px;
+  }
+  /* dashboard ends */
+}
+
+@media only screen and (max-width: 991px) {
+  .target-closure-date {
+    font-size: 11px;
+  }
+  .Date-target {
+    font-size: 12px;
+  }
+  .bata-rajouri-garden {
+    line-height: 22px;
+  }
+  #slaEditModal {
+    max-width: 50%;
+    min-width: 50%;
+}
+}
+
+@media only screen and (max-width: 800px) {
+  /* dashboard starts */
+  .save-view-search {
+    position: static;
+    transform: none;
+    padding: 15px;
+    padding-bottom: 0;
+  }
+  .save-view-search button {
+    width: 48%;
+    margin-right: 0;
+  }
+  .save-view-search {
+    display: flex;
+    justify-content: space-between;
+  }
+  /* dashboard ends */
+}
+@media only screen and (max-width: 768px) {
+  .mobilenumber-resp .respo {
+    margin-left: 0 !important;
+  }
+  .mobilenumber-resp .resol {
+    margin-right: 0 !important;
+  }
+  .card-details-1 {
+    height: auto;
+  }
+  
+  #slaEditModal {
+    max-width: 70%;
+    min-width: 70%;
+}
+}
+@media only screen and (max-width: 767px) {
+  .storebox {
+    padding: 0 15px;
+  }
+  .v3,
+  .v4 {
+    display: none;
+  }
+  /* dashboard starts */
+  .ticketToTask-chart .apexcharts-canvas {
+    width: 100% !important;
+    overflow: auto;
+  }
+
+  .ticketToTask-chart .apexcharts-canvas svg {
+    width: auto !important;
+    overflow: auto;
+  }
+  #bill-graph-tab .col-md-3 {
+    order: 1;
+  }
+  .bill-graph-list {
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: 10px;
+  }
+  .bill-graph-list li {
+    padding: 0px 15px;
+  }
+  .table-expandable-sctn .tab-content .row > div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .table-expandable-sctn .tab-content .row {
+    padding: 10px 0;
+  }
+  .nav-tabs .nav-item {
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow: auto;
+  }
+  .table-expandable-sctn .tab-content .row.all-row div {
+    margin-bottom: 0px;
+  }
+  .table-expandable-sctn .tab-content .row.all-row {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .ticketToTask-chart-1 .apexcharts-canvas {
+    width: 100% !important;
+    overflow: auto;
+  }
+
+  .ticketToTask-chart-1 .apexcharts-canvas svg {
+    width: auto !important;
+    overflow: auto;
+  }
+  .sectiontenant select {
+    margin-bottom: 10px;
+  }
+  #Notification-popup {
+    left: 5px;
+}
+  /* dashboard ends */
+}
+
+@media only screen and (max-width: 580px) {
+  /* dashboard starts */
+  .rem-table {
+    display: none;
+  }
+  .mobile-table {
+    display: block;
+  }
+  .dash-creation-popup {
+    right: -70px;
+    width: 300px;
+  }
+  .dash-popup {
+    padding: 20px 15px;
+  }
+  /* dashboard ends */
+  .myticket-submit-solve-button {
+    width: 200px;
+    height: auto;
+    margin-left: 5px;
+  }
+  .myticket-submit-solve-button-text {
+    font-size: 12px;
+    margin-left: 0;
+  }
+  #slaEditModal {
+    max-width: 70%;
+    min-width: 70%;
+}
+}
+
+@media only screen and (max-width: 480px) {
+  .hamb-menu li {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+  }
+  .hamb-menu .dropdown-menu.show:before {
+    display: none;
+  }
+  .hamb-menu ul {
+    padding: 0;
+    font-size: 12px;
+  }
+  .active a {
+    color: #fff !important;
+  }
+  .header-right-icons a:last-child {
+    margin-right: 0px;
+  }
+  .header-right-icons {
+    padding: 0 15px;
+  }
+  .vl {
+    border: 0;
+    height: auto;
+    margin: 15px 0 20px;
+    border-bottom: 2px solid #f1f1f1;
+    width: 100%;
+  }
+  .v2 {
+    border: 0;
+    height: auto;
+    margin: 5px 0 15px -15px;
+    border-bottom: 2px solid #f1f1f1;
+    width: 110%;
+  }
+  .data-store .col-md-12 {
+    padding: 0;
+  }
+  .rectangle-box {
+    height: auto;
+  }
+  .dropdrown {
+    margin-left: 0;
+  }
+  .mob-pad {
+    padding: 0 !important;
+  }
+  .drop-card {
+    padding: 0 !important;
+    margin-top: 0;
+  }
+  .label-4 {
+    width: 100px;
+  }
+  .data-store {
+    margin: 0;
+  }
+  .storeSpacing {
+    padding-left: 0;
+  }
+  .data-store .label-4 {
+    width: 45px;
+  }
+  .rectangle-box .select-category-placeholder {
+    width: 100%;
+  }
+  .notes-00,
+  .task-03,
+  .claim-00 {
+    margin-left: 0;
+  }
+  .arrow-img,
+  .plush-img,
+  .line-1 {
+    margin-left: 0;
+    margin-top: 0;
+  }
+  .mail-mask {
+    width: 100%;
+    background-color: transparent;
+  }
+  .mob-float {
+    float: right;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  .line-1 {
+    display: inline-block;
+    margin: 0 15px;
+  }
+  .label-2 {
+    margin-top: 0px;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .label-3 {
+    margin-top: 2px;
+    padding-bottom: 20px;
+  }
+  .v3,
+  .v4 {
+    width: 100%;
+    margin-left: 0;
+  }
+  .v4 {
+    margin-top: 0;
+  }
+  .today-02 {
+    text-align: center;
+    display: block;
+    padding: 0;
+    margin: 10px 0;
+  }
+  .rectangle-3 .message-header {
+    display: none;
+  }
+  .i-have-solved-this-i {
+    margin-left: 0;
+  }
+  .mob-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  .card-details {
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+  .card-details-1 {
+    width: auto;
+    height: auto;
+    margin: 20px;
+    padding: 20px 30px;
+  }
+  .v6 {
+    margin-left: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+  .yesterday-02 {
+    display: block;
+    padding-left: 0;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .hi-naman-please-hel {
+    padding-left: 0;
+  }
+  .comment {
+    margin-left: 0 !important;
+    padding-left: 0;
+    order: 1;
+  }
+  .up-1 {
+    margin: 0;
+    order: 2;
+  }
+  .card-op-out .card-details {
+    margin-top: 15px;
+  }
+  .comment-text {
+    padding-left: 0;
+  }
+  .hi-diwakar-i-really1 {
+    width: 80%;
+    display: inline-block;
+    padding-left: 10px;
+  }
+  .comment-text1 {
+    padding-left: 15px;
+    margin-top: 5px;
+  }
+  .clip {
+    margin-left: 30px;
+    vertical-align: top;
+    width: 17px;
+    height: 17px;
+  }
+  .reply-comment {
+    padding-left: 13px;
+    text-align: left;
+  }
+  .need-to-change-my-sh {
+    margin-left: 37px;
+  }
+  .head-header {
+    height: auto;
+  }
+  .oval-head {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .myticket-submit-solve-button {
+    margin-left: 9px;
+    width: auto;
+    float: right;
+    padding: 5px 10px;
+  }
+  .myticket-submit-solve-button-text {
+    margin-left: 0;
+  }
+  .loading-rectangle {
+    margin-top: -183px;
+  }
+  .head-header-1 {
+    padding-bottom: 0;
+  }
+  .nav-tab3,
+  .nav-tab2,
+  .nav-tab1,
+  .claim-space,
+  .main-nav {
+    display: none;
+  }
+  .er {
+    padding-left: 0;
+    text-align: center;
+    width: 60px;
+    height: 55px;
+    display: inline-block;
+  }
+  .er-label {
+    font-size: 16px;
+    margin-top: 0;
+  }
+  .hamb-menu {
+    display: block;
+    margin-left: 10px;
+  }
+
+  /* dashboard starts */
+  .dash-dropdowns {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .dash-dropdowns > div {
+    padding: 5px 0;
+  }
+  .btm-mar > .row > div {
+    margin-bottom: 20px;
+  }
+  .task-claim-cont {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .mob-mar-btm button {
+    margin-bottom: 15px;
+  }
+  .mob-mar-btm button:last-child {
+    margin-bottom: 0px;
+  }
+
+  .grapwid {
+    max-width: 100% !important;
+    overflow: auto;
+  }
+  .dash-top-cards1 {
+    padding: 12px 20px !important;
+  }
+  .mid-sec {
+    padding: 15px;
+  }
+  .arrow-img {
+    margin: 5px 30px 0;
+  }
+  #Notification-popup .rowpadding {
+    padding-left: 5px;
+  }
+  #Notification-popup .viewticketspeadding {
+    padding-left: 5px;
+  }
+  #slaEditModal {
+    max-width: 90%;
+    min-width: 90%;
+}
+  /* dashboard ends */
+}
+
+@media only screen and (max-width: 400px) {
+  /* dashboard starts */
+  .pagi {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .pagi ul li {
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
+  }
+  .save-view-search {
+    display: block;
+  }
+  .save-view-search button {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .save-view-search button:last-child {
+    margin-bottom: 0px;
+  }
+  .btnSearchQa {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .edtpadding {
+    padding: 0;
+}
+  /* dashboard ends */
+}
+
+@media only screen and (max-width: 360px) {
+  /* dashboard starts */
+  .dash-tp-card .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .obpml {
+    margin-left: 0;
+  }
+  .mlistbtn {
+    float: none;
+    text-align: center;
+  }
+  .setting-tabs ul {
+    border: none;
+    display: flex !important;
+    margin-bottom: 25px;
+  }
+  #slaEditModal {
+    max-width: 98%;
+    min-width: 98%;
+}
+#logout-ovrly {
+  padding: 70px 0px 0 0;
+}
+  /* dashboard ends */
+}
+/* Responsive ends */

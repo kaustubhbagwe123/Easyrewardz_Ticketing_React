@@ -365,7 +365,7 @@ class TicketSystemOrder extends Component {
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
-      var createdDate = moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
+      // var createdDate = moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
       if (this.state.purchaseFrmStorID > 0) {
         axios({
           method: "post",

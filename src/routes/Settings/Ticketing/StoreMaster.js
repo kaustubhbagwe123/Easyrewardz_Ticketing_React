@@ -578,7 +578,6 @@ class StoreMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      debugger;
       if (this.state.modalSelectedBrand.length > 0) {
         for (let i = 0; i < this.state.modalSelectedBrand.length; i++) {
           finalBrandId += this.state.modalSelectedBrand[i].brandID + ",";
