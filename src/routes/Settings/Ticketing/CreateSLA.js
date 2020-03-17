@@ -1368,7 +1368,7 @@ class CreateSLA extends Component {
                       <label className="slatargettext">SLA Targets</label>
                     </div>
                     <div className="slatargetRow-1">
-                      <label className="createhead-text-new">Priority</label>
+                      <label className="createhead-text-new  createhead-cus">Priority</label>
                       <label className="createhead-text">
                         %SLA <br /> Breach
                       </label>
@@ -1608,7 +1608,7 @@ class CreateSLA extends Component {
           overlayId="logout-ovrly"
         >
           <div className="edtpadding">
-            <label className="Create-store-text">EDIT SLA</label>
+            <label className="Create-store-text" style={{paddingTop:"0"}}>EDIT SLA</label>
             <div className="row">
               <div className="col-md-6">
                 <label className="createhead-text-new">Brand Name: </label>
@@ -1617,7 +1617,7 @@ class CreateSLA extends Component {
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Category Name</label>
+                <label className="createhead-text-new">Category Name: </label>
                 <label className="createhead-text-1">
                   {this.state.categoryName}
                 </label>
@@ -1625,13 +1625,13 @@ class CreateSLA extends Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Sub Category Name</label>
+                <label className="createhead-text-new">Sub Category Name: </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Issue Type</label>
+                <label className="createhead-text-new">Issue Type: </label>
                 <label className="createhead-text-1">
                   {this.state.issueTypeName}
                 </label>
@@ -1642,7 +1642,7 @@ class CreateSLA extends Component {
               <label className="slatargettext">SLA Targets</label>
             </div>
             <div className="slatargetRow-1">
-              <label className="createhead-text-new">Priority</label>
+              <label className="createhead-text-new createhead-cus">Priority</label>
               <label className="createhead-text">
                 %SLA <br /> Breach
               </label>
