@@ -40,7 +40,7 @@ class UserForgotPassword extends Component {
         this.handleChangePassword(newPassword);
       } else {
         NotificationManager.error(
-          "The new password and confirm password do not match."
+          "The new password and confirm password do not match.", '', 1250
         );
       }
     } else {
@@ -70,12 +70,12 @@ class UserForgotPassword extends Component {
       debugger;
       let Msg = response.data.responseData;
       if (Msg === "Update password successfully") {
-        NotificationManager.success("Password Changed successfully.");
+        NotificationManager.success("Password Changed successfully.", '', 1250);
         setTimeout(function() {
           self.props.history.push("/SignIn");
-        }, 400);
+        }, 1250);
       } else {
-        NotificationManager.error("Password Not Changed.");
+        NotificationManager.error("Password Not Changed.", '', 1250);
       }
     });
   }

@@ -41,13 +41,13 @@ class ForgotPassword extends Component {
         if(res.data.statusCode===1001)
         {  
           NotificationManager.error(
-          SearchData
+          SearchData, '', 1250
          );
         }
         else if(res.data.statusCode===200)
         {
           NotificationManager.success(
-            SearchData
+            SearchData, '', 1250
            );
         }
         self.setState({ SearchData: SearchData });

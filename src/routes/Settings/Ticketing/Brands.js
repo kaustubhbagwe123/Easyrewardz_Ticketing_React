@@ -18,6 +18,7 @@ import {
 import ActiveStatus from "../../activeStatus";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 //import useForm from "./useForm";
 
 // const stateSchema = {
@@ -181,8 +182,8 @@ class Brands extends Component {
       sortAllData: [],
       sortBrandCode: [],
       sortBrandName: [],
-      sortAddedBy:[],
-      sortStatus:[],
+      sortAddedBy: [],
+      sortStatus: [],
       updateBrandCode: "",
       updateBrandName: "",
       updateStatus: "",
@@ -190,11 +191,14 @@ class Brands extends Component {
       editbrandcodeCompulsion: "Please enter brand code.",
       editbrandnameCompulsion: "Please enter brand name.",
       editstatusCompulsion: "Please select status.",
-      brandcodeColor:"",
-      brandnameColor:"",
-      addedColor:"",
-      statusColor:"",
-      sortHeader:""
+      brandcodeColor: "",
+      brandnameColor: "",
+      addSaveLoading: false,
+      brandcodeColor: "",
+      brandnameColor: "",
+      addedColor: "",
+      statusColor: "",
+      sortHeader: ""
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -256,10 +260,10 @@ class Brands extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -271,10 +275,12 @@ class Brands extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      brandcodeColor:"",
-      brandnameColor:"",
-      addedColor:"",
-      statusColor:""
+      brandcodeColor: "",
+      brandnameColor: "",
+      brandcodeColor: "",
+      brandnameColor: "",
+      addedColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -282,29 +288,25 @@ class Brands extends Component {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.brandCode === data);
       this.setState({
-        brandcodeColor:"sort-column"
-      
+        brandcodeColor: "sort-column"
       });
     } else if (column === "brandName") {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.brandName === data);
       this.setState({
-        brandnameColor:"sort-column"
-      
+        brandnameColor: "sort-column"
       });
-    }else if (column === "created_By") {
+    } else if (column === "created_By") {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.created_By === data);
       this.setState({
-        addedColor:"sort-column"
-      
+        addedColor: "sort-column"
       });
-    }else if (column === "status") {
+    } else if (column === "status") {
       this.state.brandData = this.state.sortAllData;
       itemsArray = this.state.brandData.filter(a => a.status === data);
       this.setState({
-        statusColor:"sort-column"
-      
+        statusColor: "sort-column"
       });
     }
 
@@ -343,43 +345,48 @@ class Brands extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/BrandList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
 
-      if (status === "Success") {
-        self.setState({
-          brandData: data,
-          loading: false
-        });
-      } else {
-        self.setState({
-          brandData: [],
-          loading: false
-        });
-      }
+        if (status === "Success") {
+          self.setState({
+            brandData: data,
+            loading: false
+          });
+        } else {
+          self.setState({
+            brandData: [],
+            loading: false
+          });
+        }
 
-      if (data !== null) {
-        self.state.sortAllData = data;
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < data.length; i++) {
-          if (!unique[data[i].brandCode] && data[i].brandCode !== "") {
-            distinct.push(data[i].brandCode);
-            unique[data[i].brandCode] = 1;
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].brandCode] && data[i].brandCode !== "") {
+              distinct.push(data[i].brandCode);
+              unique[data[i].brandCode] = 1;
+            }
           }
-        }
-        for (let i = 0; i < distinct.length; i++) {
-          self.state.sortBrandCode.push({ brandCode: distinct[i] });
-        }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortBrandCode.push({ brandCode: distinct[i] });
+          }
 
-        var unique = [];
-        var distinct = [];
-        for (let i = 0; i < data.length; i++) {
-          if (!unique[data[i].brandName] && data[i].brandName !== "") {
-            distinct.push(data[i].brandName);
-            unique[data[i].brandName] = 1;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].brandName] && data[i].brandName !== "") {
+              distinct.push(data[i].brandName);
+              unique[data[i].brandName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortBrandName.push({ brandName: distinct[i] });
           }
         }
         for (let i = 0; i < distinct.length; i++) {
@@ -409,11 +416,9 @@ class Brands extends Component {
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortStatus.push({ status: distinct[i] });
         }
-      }
-
-      
-    }).catch(data => {
-      console.log(data);
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleSubmitData() {
@@ -431,6 +436,7 @@ class Brands extends Component {
       } else {
         activeStatus = 0;
       }
+      this.setState({ addSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Brand/AddBrand",
@@ -440,25 +446,30 @@ class Brands extends Component {
           BrandName: this.state.brand_name.trim(),
           IsActive: activeStatus
         }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetBrandList();
-          NotificationManager.success("Brand Added successfully.", '', 1000);
-          self.setState({
-            brand_Code: "",
-            brand_name: "",
-            selectedStatus: 0,
-            brandcodeCompulsion: "",
-            brandnameCompulsion: "",
-            statusCompulsion: ""
-          });
-        } else if (status === "Record Already Exists ") {
-          NotificationManager.error(status, '', 1000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetBrandList();
+            NotificationManager.success("Brand Added successfully.", "", 1000);
+            self.setState({
+              brand_Code: "",
+              brand_name: "",
+              selectedStatus: 0,
+              brandcodeCompulsion: "",
+              brandnameCompulsion: "",
+              statusCompulsion: "",
+              addSaveLoading: false
+            });
+          } else if (status === "Record Already Exists ") {
+            self.setState({ addSaveLoading: false });
+            NotificationManager.error(status, "", 1000);
+          }
+        })
+        .catch(data => {
+          self.setState({ addSaveLoading: false });
+          console.log(data);
         });
     } else {
       this.setState({
@@ -477,17 +488,19 @@ class Brands extends Component {
       params: {
         BrandID: brand_Id
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.statusCode;
-      if (status === 1010) {
-        self.handleGetBrandList();
-        NotificationManager.success("Brand delete successfully.", '', 1000);
-      } else {
-        NotificationManager.error(res.data.message, '', 1000);
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.statusCode;
+        if (status === 1010) {
+          self.handleGetBrandList();
+          NotificationManager.success("Brand delete successfully.", "", 1000);
+        } else {
+          NotificationManager.error(res.data.message, "", 1000);
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleUpdateData(e, brandID) {
@@ -515,18 +528,24 @@ class Brands extends Component {
           BrandName: this.state.updateBrandName.trim(),
           IsActive: activeStatus
         }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetBrandList();
-          NotificationManager.success("Brand updated successfully.", '', 1000);
-        }
-      }).catch(data => {
-        console.log(data);
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetBrandList();
+            NotificationManager.success(
+              "Brand updated successfully.",
+              "",
+              1000
+            );
+          }
+        })
+        .catch(data => {
+          console.log(data);
         });
     } else {
-      NotificationManager.error("Brand not updated .", '', 1000);
+      NotificationManager.error("Brand not updated .", "", 1000);
       this.setState({
         editbrandcodeCompulsion: "Please enter brand code.",
         editbrandnameCompulsion: "Please enter brand name.",
@@ -560,7 +579,9 @@ class Brands extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -582,10 +603,13 @@ class Brands extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
@@ -646,7 +670,7 @@ class Brands extends Component {
                     ))
                   : null}
 
-{this.state.sortColumn === "created_By"
+                {this.state.sortColumn === "created_By"
                   ? this.state.sortAddedBy !== null &&
                     this.state.sortAddedBy.map((item, i) => (
                       <div className="filter-checkbox">
@@ -669,7 +693,7 @@ class Brands extends Component {
                     ))
                   : null}
 
-{this.state.sortColumn === "status"
+                {this.state.sortColumn === "status"
                   ? this.state.sortStatus !== null &&
                     this.state.sortStatus.map((item, i) => (
                       <div className="filter-checkbox">
@@ -722,10 +746,12 @@ class Brands extends Component {
                       columns={[
                         {
                           Header: (
-                            <span className={this.state.brandcodeColor}
+                            <span
+                              className={this.state.brandcodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "brandCode","Brand Code"
+                                "brandCode",
+                                "Brand Code"
                               )}
                             >
                               Brand Code
@@ -736,10 +762,12 @@ class Brands extends Component {
                         },
                         {
                           Header: (
-                            <span className={this.state.brandnameColor}
+                            <span
+                              className={this.state.brandnameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "brandName","Brand Name"
+                                "brandName",
+                                "Brand Name"
                               )}
                             >
                               Brand Name
@@ -751,10 +779,11 @@ class Brands extends Component {
                         {
                           Header: (
                             <span
-                            className={this.state.addedColor}
+                              className={this.state.addedColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "created_By","Created By"
+                                "created_By",
+                                "Created By"
                               )}
                             >
                               Brand Added By
@@ -813,11 +842,12 @@ class Brands extends Component {
                         {
                           Header: (
                             <span
-                            className={this.state.statusColor}
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "status","Status"
-                            )}
+                              className={this.state.statusColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "status",
+                                "Status"
+                              )}
                             >
                               Status
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -1046,9 +1076,19 @@ class Brands extends Component {
                     <div className="btnSpace">
                       <button
                         className="CreateADDBtn"
-                        type="button"
                         onClick={this.handleSubmitData.bind(this)}
+                        disabled={this.state.addSaveLoading}
+                        type="button"
                       >
+                        {this.state.addSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
                         ADD
                       </button>
                     </div>

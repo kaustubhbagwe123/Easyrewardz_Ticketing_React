@@ -25,6 +25,7 @@ import {
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import { CSVLink } from "react-csv";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const MyButton = props => {
   const { children } = props;
@@ -38,7 +39,6 @@ const MyButton = props => {
 };
 
 const Content = props => {
-  debugger;
   const { rowData } = props;
   const [designationName, setDesignationvalue] = useState(
     rowData.designationName
@@ -46,7 +46,7 @@ const Content = props => {
   const [reportTo, setreportToValue] = useState(rowData.reportToDesignation);
   const [status, setStatusValue] = useState(rowData.status);
   const [designationID] = useState(rowData.designationID);
-
+  debugger;
   props.callBackEdit(designationName, reportTo, status, designationID);
   return (
     <div className="edtpadding">
@@ -121,18 +121,21 @@ const Content = props => {
         </a>
         <button
           className="pop-over-button"
-          // type="button"
-          // onClick={this.handleUpdateHierarchyData.bind(
-          //   this,
-          //   ids
-          // )}
+          onClick={e => {
+            props.handleUpdateHierarchyData(e, designationID);
+          }}
+          disabled={props.editSaveLoading}
         >
-          <label
-            className="pop-over-btnsave-text"
-            onClick={e => {
-              props.handleUpdateHierarchyData(e, designationID);
-            }}
-          >
+          <label className="pop-over-btnsave-text">
+            {props.editSaveLoading ? (
+              <FontAwesomeIcon
+                className="circular-loader"
+                icon={faCircleNotch}
+                spin
+              />
+            ) : (
+              ""
+            )}
             SAVE
           </label>
         </button>
@@ -175,7 +178,9 @@ class TicketHierarchy extends Component {
       updateDesignation: "",
       updateReprtTo: "",
       updateStatus: "",
-      rowData: {}
+      rowData: {},
+      editSaveLoading: false,
+      addSaveLoading: false
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -434,6 +439,7 @@ class TicketHierarchy extends Component {
       if (ReportId === "1") {
         ReportId = 0;
       }
+      this.setState({ addSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/CreateHierarchy",
@@ -449,7 +455,11 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success("Hierarchy added successfully.", '', 1000);
+            NotificationManager.success(
+              "Hierarchy added successfully.",
+              "",
+              1000
+            );
             self.hanldeGetReportListDropDown();
             self.setState({
               designation_name: "",
@@ -457,13 +467,16 @@ class TicketHierarchy extends Component {
               selectStatus: 0,
               designationNameCompulsion: "",
               reportToCompulsion: "",
-              statusCompulsion: ""
+              statusCompulsion: "",
+              addSaveLoading: false
             });
-          }else if(status === "Record Already Exists "){
-            NotificationManager.error("Record Already Exists.", '', 1000);
+          } else if (status === "Record Already Exists ") {
+            NotificationManager.error("Record Already Exists.", "", 1000);
+            self.setState({ addSaveLoading: false });
           }
         })
         .catch(data => {
+          self.setState({ addSaveLoading: false });
           console.log(data);
         });
     } else {
@@ -491,10 +504,14 @@ class TicketHierarchy extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetHierarchyData();
-          NotificationManager.success("Designation deleted successfully.", '', 1000);
+          NotificationManager.success(
+            "Designation deleted successfully.",
+            "",
+            1000
+          );
           self.hanldeGetReportListDropDown();
         } else {
-          NotificationManager.error(res.data.message, '', 1000);
+          NotificationManager.error(res.data.message, "", 1000);
         }
       })
       .catch(data => {
@@ -516,6 +533,7 @@ class TicketHierarchy extends Component {
       } else {
         activeStatus = 0;
       }
+      this.setState({ editSaveLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/CreateHierarchy",
@@ -532,17 +550,24 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success("Hierarchy update successfully.", '', 1000);
+            NotificationManager.success(
+              "Hierarchy update successfully.",
+              "",
+              1000
+            );
             self.hanldeGetReportListDropDown();
+            self.setState({ editSaveLoading: false });
           } else {
-            NotificationManager.error("Hierarchy not update.", '', 1000);
+            self.setState({ editSaveLoading: false });
+            NotificationManager.error("Hierarchy not update.", "", 1000);
           }
         })
         .catch(data => {
+          self.setState({ editSaveLoading: false });
           console.log(data);
         });
     } else {
-      NotificationManager.error("Hierarchy not update.", '', 1000);
+      NotificationManager.error("Hierarchy not update.", "", 1000);
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -951,6 +976,9 @@ class TicketHierarchy extends Component {
                                       editdesignationNameCompulsion={
                                         this.state.editdesignationNameCompulsion
                                       }
+                                      editSaveLoading={
+                                        this.state.editSaveLoading
+                                      }
                                       editreportToCompulsion={
                                         this.state.editreportToCompulsion
                                       }
@@ -1105,10 +1133,21 @@ class TicketHierarchy extends Component {
                     <div className="btnSpace">
                       <button
                         className="addBtn-ticket-hierarchy"
-                        type="button"
                         onClick={this.handleSubmitData.bind(this)}
+                        disabled={this.state.addSaveLoading}
                       >
-                        ADD
+                        <label className="pop-over-btnsave-text">
+                          {this.state.addSaveLoading ? (
+                            <FontAwesomeIcon
+                              className="circular-loader"
+                              icon={faCircleNotch}
+                              spin
+                            />
+                          ) : (
+                            ""
+                          )}
+                          ADD
+                        </label>
                       </button>
                     </div>
                   </div>

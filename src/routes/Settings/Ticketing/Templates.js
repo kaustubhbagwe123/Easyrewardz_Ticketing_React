@@ -59,6 +59,9 @@ class Templates extends Component {
       isEdit: false,
       isLoading: false,
       editSaveLoading: false,
+      issueColor: "",
+      editTemplateName: "",
+      editIssueTypeSelect: "",
       issueColor: ""
     };
 
@@ -239,8 +242,14 @@ class Templates extends Component {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
-
     var data = this.state.templateEdit;
+    if (name === "TemplateName" && value === "") {
+      data[name] = value;
+      this.setState({ editTemplateName: "Please Enter Templates Name" });
+    } else {
+      data[name] = value;
+      this.setState({ editTemplateName: "" });
+    }
     data[name] = value;
 
     this.setState({
@@ -267,10 +276,26 @@ class Templates extends Component {
 
   setEditIssueType = e => {
     debugger;
-
-    this.setState({
-      editIssueType: e
-    });
+    if (e) {
+      if (e.length === 0) {
+        this.setState({
+          editIssueTypeSelect: "Please Select Issue Type",
+          editIssueType: e
+        });
+      }
+      else
+      {
+        this.setState({
+          editIssueType: e,
+          editIssueTypeSelect: ""
+        });
+      }
+    } else {
+      this.setState({
+        editIssueType: e,
+        editIssueTypeSelect: "Please Select Issue Type"
+      });
+    }
   };
 
   handleTemplateName(e) {
@@ -978,6 +1003,11 @@ class Templates extends Component {
                     onChange={this.handleOnChangeEditData}
                   />
                 </div>
+                {this.state.templateEdit.TemplateName == "" && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editTemplateName}
+                  </p>
+                )}
                 <div className="pop-over-div">
                   <label className="edit-label-1">Issue Type</label>
                   <Select
@@ -987,15 +1017,17 @@ class Templates extends Component {
                     }
                     options={this.state.slaIssueType}
                     placeholder="Select"
-                    // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setEditIssueType}
                     value={this.state.editIssueType}
-                    // showNewOptionAtTop={false}
-                    // defaultValue={{ label: "asd", value: 1 }}
                     isMulti
                   />
                 </div>
+                {this.state.editIssueType!==null && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.editIssueTypeSelect}
+                  </p>
+                )}
                 <div className="pop-over-div">
                   <label className="edit-label-1">Status</label>
                   <select

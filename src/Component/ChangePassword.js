@@ -9,6 +9,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
+import { encryption } from "../helpers/encryption";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -86,7 +87,7 @@ class ChangePassword extends Component {
         this.handleChangePassword(newPassword);
       } else {
         NotificationManager.error(
-          "The new password and confirm password do not match."
+          "The new password and confirm password do not match.", '', 1250
         );
       }
     } else {
@@ -108,6 +109,8 @@ class ChangePassword extends Component {
     let emaiId = window.location.href
     .slice(window.location.href.indexOf("?") + 1)
     .split(":")[1];
+
+    let encPassword = encryption(newPassword, "enc");
 
     var field = 'Id';
     var changePasswordType="system";
@@ -132,7 +135,7 @@ class ChangePassword extends Component {
       data: {
         EmailID:emailIDsystem,
         Password:this.state.oldPassword,
-        NewPassword: newPassword,
+        NewPassword: encPassword,
         ChangePasswordType:changePasswordType
       },
       headers: authHeader()
@@ -141,19 +144,19 @@ class ChangePassword extends Component {
       debugger;
       let Msg = response.data.responseData;
       if (Msg === true) {
-        NotificationManager.success("Password Changed successfully.");
+        NotificationManager.success("Password Changed successfully.", '', 1250);
         setTimeout(function() {
           self.props.history.push("/SignIn");
-        });
+        }, 1250);
       }
       else {
-        NotificationManager.error("Password Not Changed.");
+        NotificationManager.error("Password Not Changed.", '', 1250);
       }
     });
   }
   render() {
     return (
-      <div className="auth-wrapper box-center">
+      <div className="auth-wrapper box-center change-password-auth-wrapper">
         <div className="auth-content">
           <div
             className="card forgotpass-card changepass-card"

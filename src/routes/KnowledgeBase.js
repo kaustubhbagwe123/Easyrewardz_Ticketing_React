@@ -102,6 +102,7 @@ class KnowledgeBase extends Component {
       columnTitle: "",
       sortTable: "",
       issueColor: "",
+      sortHeader:"",
       categoryColor: "",
       subCategoryColor: "",
       searchCategoryCompulsion:"",
@@ -127,13 +128,14 @@ class KnowledgeBase extends Component {
     this.handleRejectKB = this.handleRejectKB.bind(this);
     this.handleSeaechKB = this.handleSeaechKB.bind(this);
   }
-  StatusOpenModel(data, table) {
+  StatusOpenModel(data, table,header) {
     debugger;
 
     this.setState({
       StatusModel: true,
       sortColumnName: data,
-      sortTable: table
+      sortTable: table,
+      sortHeader:header
     });
     //StatusModel: true,
     // if(data==="issueTypeName"){
@@ -240,7 +242,12 @@ class KnowledgeBase extends Component {
   };
 
   opneSearchModal() {
-    this.setState({ searchmodal: true });
+    this.setState({ searchmodal: true,
+      selectedCategory:"",
+      selectedSubCategory:"",
+      selectedIssueType:""
+    
+    });
   }
   closeSearchModal() {
     this.setState({ searchmodal: false });
@@ -274,7 +281,10 @@ class KnowledgeBase extends Component {
       categoryCompulsion: "",
       subCategoryCompulsion: "",
       issueTypeCompulsion: "",
-      subjectCompulsion: ""
+      subjectCompulsion: "",
+      selectedCategory:"",
+      selectedSubCategory:"",
+      selectedIssueType:""
     });
   }
   closeAddNewKBModal() {
@@ -779,6 +789,8 @@ class KnowledgeBase extends Component {
           // KBListnotApproveData: notapprove,
           // countApprove: approveconut,
           // countNotApprove: notapproveconut,
+          SubCategoryData: [],
+          IssueTypeData: [],
           selectedCategory: "",
           selectedSubCategory: "",
           selectedIssueType: "",
@@ -940,6 +952,7 @@ class KnowledgeBase extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -961,6 +974,10 @@ class KnowledgeBase extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
 
@@ -1192,6 +1209,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 100,
                     Cell: row => {
                       return (
                         <span>
@@ -1211,6 +1229,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subject",
+                    minWidth: 175,
                     Cell: row => {
                       return (
                         <span className="table-details-data">
@@ -1247,7 +1266,7 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "issueTypeName",
-                          "notapprove"
+                          "notapprove","IssueType"
                         )}
                       >
                         <label className={this.state.issueColor}>
@@ -1276,7 +1295,7 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "categoryName",
-                          "notapprove"
+                          "notapprove","Category"
                         )}
                       >
                         <label className={this.state.categoryColor}>
@@ -1301,7 +1320,7 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "subCategoryName",
-                          "notapprove"
+                          "notapprove","SubCategory"
                         )}
                       >
                         <label className={this.state.subCategoryColor}>
@@ -1327,6 +1346,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 200,
                     Cell: row => {
                       return (
                         <span>
@@ -1444,6 +1464,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 100,
                     Cell: row => {
                       return (
                         <span>
@@ -1463,6 +1484,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subject",
+                    minWidth: 175,
                     Cell: row => {
                       return (
                         <span className="table-details-data">
@@ -1497,7 +1519,7 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "issueTypeName",
-                          "approve"
+                          "approve","IssueType"
                         )}
                       >
                         <label className={this.state.issueColor}>
@@ -1526,7 +1548,7 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "categoryName",
-                          "approve"
+                          "approve","Category"
                         )}
                       >
                         <label className={this.state.categoryColor}>
@@ -1551,7 +1573,7 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "subCategoryName",
-                          "approve"
+                          "approve","SubCategory"
                         )}
                       >
                         <label className={this.state.subCategoryColor}>
@@ -1577,6 +1599,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "kbid",
+                    width: 200,
                     Cell: row => {
                       return (
                         <>
