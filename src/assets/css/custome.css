@@ -11237,4 +11237,13 @@ table tr th:last-child {
 }
   /* dashboard ends */
 }
+
+.alertckuser {
+  top:40% !important
+}
+.alertckuserinter{
+  right: 75px;
+  top:37% !important
+}
+
 /* Responsive ends */
