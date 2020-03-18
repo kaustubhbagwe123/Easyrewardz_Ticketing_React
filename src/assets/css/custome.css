@@ -3729,6 +3729,16 @@ table tr th:last-child {
   right: 65px;
   top: 15px;
 }
+.tic-createTic{
+  right: -179px;
+  top: 45px;
+}
+.template-user{
+  right: 80px;
+    top: 38px;
+    width: 160px;
+}
+
 /* my ticket ends */
 
 /* .cke_editable {

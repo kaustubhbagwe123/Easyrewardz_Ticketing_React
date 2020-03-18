@@ -53,9 +53,9 @@ class Templates extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
-      sortName:[],
-      sortCreatedBy:[],
-      sortStatus:[],
+      sortName: [],
+      sortCreatedBy: [],
+      sortStatus: [],
       updatedTemplatename: "",
       updatedArray: [],
       updatedStatus: "",
@@ -67,15 +67,16 @@ class Templates extends Component {
       slaOvrlayShow: false,
       slaShow: false,
       issueColor: "",
-      nameColor:"",
-      createdColor:"",
-      statusColor:"",
-      sortHeader:"",
+      nameColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortHeader: "",
       editTemplateName: "",
       editIssueTypeSelect: "",
       issueColor: "",
       SearchText: "",
       indiSla: "",
+      AssignToData: []
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -87,11 +88,13 @@ class Templates extends Component {
     this.handleUpdateTemplate = this.handleUpdateTemplate.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleSlaButton = this.handleSlaButton.bind(this);
+    this.handleGetAgentList = this.handleGetAgentList.bind(this);
   }
 
   componentDidMount() {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
+    
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
     debugger;
@@ -156,6 +159,33 @@ class Templates extends Component {
       });
   }
 
+  handleGetAgentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AssignToData: data
+          });
+          self.checkAllAgentStart();
+        } else {
+          self.setState({
+            AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
@@ -183,15 +213,23 @@ class Templates extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
-    debugger;
-
-    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
+  StatusOpenModel(data, header) {
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
-
+  setAssignedToValue(e) {
+    debugger;
+    // let assign = e.currentTarget.value;
+    let ckData = this.state.editorContent;
+    let matchedArr = this.state.AssignToData.filter(
+      x => x.userID == e.currentTarget.value
+    );
+    let userName = matchedArr[0].fullName;
+    ckData += "@" + userName;
+    this.setState({ editorContent: ckData });
+  }
   setSortCheckStatus = (column, e) => {
     debugger;
 
@@ -199,9 +237,9 @@ class Templates extends Component {
     var data = e.currentTarget.value;
     this.setState({
       issueColor: "",
-      nameColor:"",
-      createdColor:"",
-      statusColor:""
+      nameColor: "",
+      createdColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -211,19 +249,19 @@ class Templates extends Component {
       this.setState({
         issueColor: "sort-column"
       });
-    }else if (column === "templateName") {
+    } else if (column === "templateName") {
       this.state.template = this.state.sortAllData;
       itemsArray = this.state.template.filter(a => a.templateName === data);
       this.setState({
         nameColor: "sort-column"
       });
-    }else if (column === "createdBy") {
+    } else if (column === "createdBy") {
       this.state.template = this.state.sortAllData;
       itemsArray = this.state.template.filter(a => a.createdBy === data);
       this.setState({
         createdColor: "sort-column"
       });
-    }else if (column === "templateStatus") {
+    } else if (column === "templateStatus") {
       this.state.template = this.state.sortAllData;
       itemsArray = this.state.template.filter(a => a.templateStatus === data);
       this.setState({
@@ -425,7 +463,7 @@ class Templates extends Component {
       indiSla
     });
   };
-  
+
   selectNoSLA = async event => {
     debugger;
     var checkboxes = document.getElementsByName("allSla");
@@ -441,7 +479,7 @@ class Templates extends Component {
   };
 
   handleSlaButton() {
-    debugger
+    debugger;
     let slaShowOriginal = this.state.slaShow;
     let slaShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
@@ -473,9 +511,7 @@ class Templates extends Component {
           editIssueTypeSelect: "Please Select Issue Type",
           editIssueType: e
         });
-      }
-      else
-      {
+      } else {
         this.setState({
           editIssueType: e,
           editIssueTypeSelect: ""
@@ -576,7 +612,10 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
-    if(this.state.editorContent.length > 0 && this.state.editorContent.length <= 499){
+    if (
+      this.state.editorContent.length > 0 &&
+      this.state.editorContent.length <= 499
+    ) {
       if (this.state.editorContent.length > 0) {
         let self = this;
         this.setState({ ConfigTabsModal: false });
@@ -586,7 +625,7 @@ class Templates extends Component {
         } else if (this.state.TemplateIsActive === "false") {
           TemplateIsActive = false;
         }
-  
+
         axios({
           method: "post",
           url: config.apiUrl + "/Template/CreateTemplate",
@@ -613,8 +652,8 @@ class Templates extends Component {
                 TemplateSubject: "",
                 editorContent: "",
                 TemplateName: "",
-                indiSla:'',
-                SearchText: "",
+                indiSla: "",
+                SearchText: ""
                 // selectedSlaIssueType: [],
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
@@ -633,10 +672,13 @@ class Templates extends Component {
         //   // templatebodyCompulsion: "Please Enter Descriptions"
         // });
       }
-    }else{
-      NotificationManager.error("Only 500 characters Allow In Descriptions.", "", 2000);
+    } else {
+      NotificationManager.error(
+        "Only 500 characters Allow In Descriptions.",
+        "",
+        2000
+      );
     }
- 
   }
 
   handleGetTemplate() {
@@ -700,7 +742,6 @@ class Templates extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ templateStatus: distinct[i] });
           }
-
         }
         if (template !== null && template !== undefined) {
           self.setState({ template });
@@ -719,6 +760,7 @@ class Templates extends Component {
       // this.state.selectedSlaIssueType !== null
     ) {
       this.setState({ ConfigTabsModal: true });
+      this.handleGetAgentList();
     } else {
       this.setState({
         templatenamecopulsion: "Please Enter Template Name",
@@ -756,7 +798,9 @@ class Templates extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -778,118 +822,120 @@ class Templates extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "issueTypeName"
+                    ? this.state.sortIssueType !== null &&
+                      this.state.sortIssueType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.issueTypeName}
+                            value={item.issueTypeName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "issueTypeName"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.issueTypeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.issueTypeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "templateName"
+                    ? this.state.sortName !== null &&
+                      this.state.sortName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.templateName}
+                            value={item.templateName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "templateName"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.templateName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.templateName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortCreatedBy !== null &&
+                      this.state.sortCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "templateStatus"
+                    ? this.state.sortStatus !== null &&
+                      this.state.sortStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.templateStatus}
+                            value={item.templateStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "templateStatus"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.templateStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.templateStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "issueTypeName"
-                  ? this.state.sortIssueType !== null &&
-                    this.state.sortIssueType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.issueTypeName}
-                          value={item.issueTypeName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "issueTypeName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.issueTypeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.issueTypeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "templateName"
-                  ? this.state.sortName !== null &&
-                    this.state.sortName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.templateName}
-                          value={item.templateName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "templateName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.templateName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.templateName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "createdBy"
-                  ? this.state.sortCreatedBy !== null &&
-                    this.state.sortCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "templateStatus"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.templateStatus}
-                          value={item.templateStatus}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "templateStatus"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.templateStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.templateStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
               </div>
             </div>
           </Modal>
@@ -920,11 +966,12 @@ class Templates extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.nameColor}
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "templateName","Template Name"
-                          )}
+                            className={this.state.nameColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "templateName",
+                              "Template Name"
+                            )}
                           >
                             Name
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -938,7 +985,8 @@ class Templates extends Component {
                             className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "issueTypeName","IssueType"
+                              "issueTypeName",
+                              "IssueType"
                             )}
                           >
                             Issue Type
@@ -968,11 +1016,12 @@ class Templates extends Component {
                         id: "createdBy",
                         Header: (
                           <span
-                          className={this.state.createdColor}
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "createdBy","Created By"
-                          )}
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy",
+                              "Created By"
+                            )}
                           >
                             Created by
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1030,11 +1079,12 @@ class Templates extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.statusColor}
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "templateStatus","Status"
-                          )}
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "templateStatus",
+                              "Status"
+                            )}
                           >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1175,120 +1225,125 @@ class Templates extends Component {
                       )}
                     </div>
                     <div className="divSpace">
-                    <div className="divSpace">
-                      <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Issue Type</label>
-                        <div className="dropdown">
-                          <button
-                            className="btn issuesladrop"
-                            type="button"
-                            id="issueTypeValue"
-                            onClick={this.handleSlaButton}
-                          >
-                            Select
-                            <span className="caret"></span>
-                          </button>
-                          {this.state.indiSla === "" && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.issurtupeCompulsory}
-                            </p>
-                          )}
-                          <div
-                            className={
-                              this.state.slaShow
-                                ? "dropdown-menu dropdown-menu-sla show"
-                                : "dropdown-menu dropdown-menu-sla"
-                            }
-                          >
-                            <div className="cat-mainbox">
-                              <div className="sla-cancel-search">
-                                <input
-                                  type="text"
-                                  className="searchf"
-                                  placeholder="Search"
-                                  maxLength={25}
-                                  name="store_code"
-                                  onChange={this.handleSearchSla}
-                                  id="SlaInput"
-                                />
+                      <div className="divSpace">
+                        <div className="dropDrownSpace issuetype-cusdrp">
+                          <label className="reports-to">Issue Type</label>
+                          <div className="dropdown">
+                            <button
+                              className="btn issuesladrop"
+                              type="button"
+                              id="issueTypeValue"
+                              onClick={this.handleSlaButton}
+                            >
+                              Select
+                              <span className="caret"></span>
+                            </button>
+                            {this.state.indiSla === "" && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.issurtupeCompulsory}
+                              </p>
+                            )}
+                            <div
+                              className={
+                                this.state.slaShow
+                                  ? "dropdown-menu dropdown-menu-sla show"
+                                  : "dropdown-menu dropdown-menu-sla"
+                              }
+                            >
+                              <div className="cat-mainbox">
+                                <div className="sla-cancel-search">
+                                  <input
+                                    type="text"
+                                    className="searchf"
+                                    placeholder="Search"
+                                    maxLength={25}
+                                    name="store_code"
+                                    onChange={this.handleSearchSla}
+                                    id="SlaInput"
+                                  />
 
-                                <img
-                                  src={Cancel}
-                                  alt="cancelimg"
-                                  onClick={this.handleClearSearchSla}
-                                />
+                                  <img
+                                    src={Cancel}
+                                    alt="cancelimg"
+                                    onClick={this.handleClearSearchSla}
+                                  />
+                                </div>
+
+                                <div className="category-button">
+                                  <ul>
+                                    <li>
+                                      <label
+                                        onClick={this.selectAllSLA.bind(this)}
+                                      >
+                                        Select All
+                                      </label>
+                                    </li>
+                                    <li>
+                                      <label
+                                        onClick={this.selectNoSLA.bind(this)}
+                                      >
+                                        Clear
+                                      </label>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div className="category-box category-scroll">
+                                  <ul>
+                                    {this.state.slaIssueType !== null &&
+                                      this.state.slaIssueType.map((item, i) => (
+                                        <li key={i}>
+                                          <input
+                                            type="checkbox"
+                                            id={"i" + item.issueTypeID}
+                                            name="allSla"
+                                            onChange={this.selectIndividualSLA.bind(
+                                              this,
+                                              item.issueTypeID
+                                            )}
+                                          />
+                                          <label
+                                            htmlFor={"i" + item.issueTypeID}
+                                          >
+                                            {item.issueTypeName}{" "}
+                                            <div>
+                                              <img
+                                                src={Correct}
+                                                alt="Checked"
+                                              />
+                                            </div>
+                                          </label>
+                                          <span>{item.brandName}</span>
+                                          <span>{item.categoryName}</span>
+                                          <span>{item.subCategoryName}</span>
+                                        </li>
+                                      ))}
+                                  </ul>
+                                </div>
                               </div>
-                             
-                              <div className="category-button">
+                              <div className="category-buttonbtm">
                                 <ul>
                                   <li>
-                                    <label
-                                      onClick={this.selectAllSLA.bind(this)}
+                                    <button
+                                      className="cancel"
+                                      onClick={this.handleSlaButton}
                                     >
-                                      Select All
-                                    </label>
+                                      Cancel
+                                    </button>
                                   </li>
-                                  <li>
-                                    <label
-                                      onClick={this.selectNoSLA.bind(this)}
+                                  <li style={{ float: "right" }}>
+                                    <button
+                                      className="done"
+                                      onClick={this.handleSlaButton}
                                     >
-                                      Clear
-                                    </label>
+                                      Done
+                                    </button>
                                   </li>
                                 </ul>
                               </div>
-                              <div className="category-box category-scroll">
-                                <ul>
-                                  {this.state.slaIssueType !== null &&
-                                    this.state.slaIssueType.map((item, i) => (
-                                      <li key={i}>
-                                        <input
-                                          type="checkbox"
-                                          id={"i" + item.issueTypeID}
-                                          name="allSla"
-                                          onChange={this.selectIndividualSLA.bind(
-                                            this,
-                                            item.issueTypeID
-                                          )}
-                                        />
-                                        <label htmlFor={"i" + item.issueTypeID}>
-                                          {item.issueTypeName}{" "}
-                                          <div>
-                                            <img src={Correct} alt="Checked" />
-                                          </div>
-                                        </label>
-                                        <span>{item.brandName}</span>
-                                        <span>{item.categoryName}</span>
-                                        <span>{item.subCategoryName}</span>
-                                      </li>
-                                    ))}
-                                </ul>
-                              </div>
-                            </div>
-                            <div className="category-buttonbtm">
-                              <ul>
-                                <li>
-                                  <button
-                                    className="cancel"
-                                    onClick={this.handleSlaButton}
-                                  >
-                                    Cancel
-                                  </button>
-                                </li>
-                                <li style={{ float: "right" }}>
-                                  <button
-                                    className="done"
-                                    onClick={this.handleSlaButton}
-                                  >
-                                    Done
-                                  </button>
-                                </li>
-                              </ul>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
                       {/* <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
 
@@ -1380,6 +1435,21 @@ class Templates extends Component {
                           )} */}
                         </div>
                         <Modal.Body>
+                          <div className="tic-det-ck-user template-user myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(this)}
+                            >
+                              <option value="0">Users</option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.userID}>
+                                    {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
                           <div className="template-editor">
                             <CKEditor
                               content={this.state.editorContent}
@@ -1469,7 +1539,7 @@ class Templates extends Component {
                     isMulti
                   />
                 </div>
-                {this.state.editIssueType!==null && (
+                {this.state.editIssueType !== null && (
                   <p style={{ color: "red", marginBottom: "0px" }}>
                     {this.state.editIssueTypeSelect}
                   </p>

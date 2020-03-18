@@ -144,7 +144,9 @@ class TicketSystem extends Component {
       userCcCount: 0,
       userBccCount: 0,
       FileData: [],
-      idSizeArray: []
+      idSizeArray: [],
+      AssignToData: [],
+      followUpIds: ""
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -170,6 +172,10 @@ class TicketSystem extends Component {
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleCopyToaster = this.handleCopyToaster.bind(this);
+    this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.handleTicketAssignFollowUp = this.handleTicketAssignFollowUp.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -183,6 +189,7 @@ class TicketSystem extends Component {
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
+      this.handleGetAgentList();
     } else {
       this.props.history.push("addSearchMyTicket");
     }
@@ -198,7 +205,7 @@ class TicketSystem extends Component {
         this.state.copiedNumber &&
         this.state.customerData.customerPhoneNumber
       ) {
-        NotificationManager.success("Copied.", '', 1000);
+        NotificationManager.success("Copied.", "", 1000);
       }
     }, 100);
   }
@@ -636,6 +643,33 @@ class TicketSystem extends Component {
       });
   }
 
+  handleGetAgentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AssignToData: data
+          });
+          self.checkAllAgentStart();
+        } else {
+          self.setState({
+            AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   handleGetCustomerData(CustId, mode) {
     this.setState({ loading: true });
     let self = this;
@@ -673,7 +707,45 @@ class TicketSystem extends Component {
         console.log(data);
       });
   }
+  setAssignedToValue(e) {
+    debugger;
 
+    let assign = e.currentTarget.value;
+    let followUpIds = this.state.followUpIds;
+    followUpIds += assign + ",";
+    let ckData = this.state.editorTemplateDetails;
+    let matchedArr = this.state.AssignToData.filter(
+      x => x.userID == e.currentTarget.value
+    );
+    let userName = matchedArr[0].fullName;
+    ckData += "@" + userName;
+    this.setState({ editorTemplateDetails: ckData, followUpIds });
+  }
+  handleTicketAssignFollowUp(ticketID_) {
+    debugger;
+    let followUpIds = this.state.followUpIds.substring(
+      0,
+      this.state.followUpIds.length - 1
+    );
+    // let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/ticketassigforfollowup",
+      headers: authHeader(),
+      params: {
+        TicketID: ticketID_,
+        FollowUPUserID: followUpIds
+      }
+    })
+      .then(function(res) {
+        ////debugger;
+        // let status = res.data.message;
+        // let data = res.data.responseData;
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   setWrapperRef(node) {
     this.wrapperRef = node;
   }
@@ -918,9 +990,11 @@ class TicketSystem extends Component {
         .then(function(res) {
           debugger;
           let Msg = res.data.status;
+          let TID = res.data.responseData;
           self.setState({ loading: false });
           if (Msg) {
             NotificationManager.success(res.data.message, "", 2000);
+            self.handleTicketAssignFollowUp(TID);
             setTimeout(function() {
               self.props.history.push("myTicketlist");
             }, 2000);
@@ -1611,6 +1685,21 @@ class TicketSystem extends Component {
                         </label>
                       </a>
                     )}
+                    <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setAssignedToValue.bind(this)}
+                      >
+                        <option value="0">Users</option>
+                        {this.state.AssignToData !== null &&
+                          this.state.AssignToData.map((item, i) => (
+                            <option key={i} value={item.userID}>
+                              {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="row">
                     <div className="col-md-12 ck-det-cntr">
