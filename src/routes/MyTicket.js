@@ -658,10 +658,10 @@ class MyTicket extends Component {
       });
   }
   // onchange on User Drop down list
-  setAssignedToValue(check, e) {
+  setAssignedToValue(e,check) {
     debugger;
-    let followUpIds = this.state.followUpIds;
     if (check === "freeCmd") {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketFreeTextcomment;
@@ -672,6 +672,7 @@ class MyTicket extends Component {
       text += "@" + userName;
       this.setState({ ticketFreeTextcomment: text, followUpIds });
     } else if (check === "comment") {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketcommentMSG;
@@ -682,11 +683,12 @@ class MyTicket extends Component {
       text += "@" + userName;
       this.setState({ ticketcommentMSG: text, followUpIds });
     } else {
-      let assign = e.currentTarget.value;
+      let followUpIds = this.state.followUpIds;
+      let assign = e.target.value;
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID == e.target.value
       );
       let userName = matchedArr[0].fullName;
       ckData += "@" + userName;
