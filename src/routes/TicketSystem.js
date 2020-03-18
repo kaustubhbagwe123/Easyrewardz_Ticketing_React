@@ -321,10 +321,7 @@ class TicketSystem extends Component {
     let details = this.state.CustData;
     details[name] = value;
     this.setState({ details });
-    // this.state.customerData[name] = value;
-    // this.setState({
-    //   customerData: this.state.customerData
-    // });
+     
   };
   handleEscalationChange() {
     this.setState({
@@ -738,7 +735,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
         // let status = res.data.message;
         // let data = res.data.responseData;
       })
@@ -881,30 +877,6 @@ class TicketSystem extends Component {
       }
       // --------------New Code end-----------------
 
-      // --------Old Code start---------
-      // for (let i = 0; i < this.state.selectedDataIds.length; i++) {
-      //   var data = this.state.selectedDataIds.filter(
-      //     x => x.orderMasterID == this.state.selectedDataIds[i].orderMasterID
-      //   );
-      //   if (data.length === 1) {
-      //     selectedRow +=
-      //       this.state.selectedDataIds[i]["orderMasterID"] + "|0|1,";
-      //   } else if (data === 0) {
-      //   } else {
-      //     if (
-      //       "orderMasterID" in this.state.selectedDataIds[i] &&
-      //       "orderItemID" in this.state.selectedDataIds[i]
-      //     ) {
-      //       selectedRow +=
-      //         this.state.selectedDataIds[i]["orderItemID"] +
-      //         "|" +
-      //         this.state.selectedDataIds[i]["requireSize"] +
-      //         "|0,";
-      //     }
-      //   }
-      // }
-      // --------Old Code start---------
-
       var selectedStore = "";
       for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
         var PurposeID = this.state.selectedStoreIDs[j]["purposeId"];
@@ -945,10 +917,7 @@ class TicketSystem extends Component {
       this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
       this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
       mailData.push(this.state.mailFiled);
-      // var want = this.state.custVisit;
-      // var Already = this.state.AlreadycustVisit;
-      // var uploadFiles = [];
-      // uploadFiles = this.state.file;
+   
 
       const formData = new FormData();
       var paramData = {
