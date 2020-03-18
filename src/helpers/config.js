@@ -50,5 +50,4 @@ let config = {
   //  apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
     };
     
-    
-    export default config;
+export default config;
