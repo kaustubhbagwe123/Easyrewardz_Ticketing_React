@@ -30,6 +30,7 @@ import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import axios from "axios";
 import PencilImg from "./../assets/Images/pencil.png";
+import {transferData} from "./../helpers/transferData";
 // import Demo from "../store/Hashtag";
 // import {
 //   NotificationContainer,
@@ -107,7 +108,17 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    // debugger;
+    console.log(transferData);
+    this.subscription = transferData.getProfilePic().subscribe(pic => {
+      console.log(1111, pic);
+      if (pic.profilePic == '') {
+        this.setState({ selectedUserProfilePicture: '' });
+      }
+      else if (pic.profilePic.length > 0) {
+          this.setState({ selectedUserProfilePicture: pic.profilePic });
+      }
+  });
     var _token = window.localStorage.getItem("token");
     if (_token === null) {
       window.location.href = "/";
@@ -133,6 +144,11 @@ class Header extends Component {
       this.handleGetNotificationList();
     }
   }
+
+  componentWillUnmount() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+}
 
   handleNextButtonShow() {
     this.setState({ NextButton: !this.state.NextButton });
@@ -233,9 +249,16 @@ class Header extends Component {
       if (status === "Success") {
         var id = res.data.responseData[0].userId;
         var userdata = res.data.responseData[0].profilePicture;
-        self.setState({
-          selectedUserProfilePicture: userdata
-        });
+        var image=userdata.split("/");
+        if (image[image.length-1] == "") {
+          self.setState({
+            selectedUserProfilePicture: ''
+          });
+        } else {
+          self.setState({
+            selectedUserProfilePicture: userdata
+          });
+        }
         self.handleCRMRole(id);
       } else {
         self.setState({
@@ -449,6 +472,7 @@ class Header extends Component {
   }
 
   render() {
+    console.log(this.state.selectedUserProfilePicture.length, 2222);
     const TransferCall = (
       <>
         <div>
@@ -1106,11 +1130,9 @@ class Header extends Component {
                   <Link to="userprofile">
                     <img
                       src={
-                        this.state.selectedUserProfilePicture ===
-                          "https://localhost:44357/Resources/Images/" &&
-                        "https://erbelltkt.dcdev.brainvire.net/Resources/Images/"
-                          ? ProfileImg
-                          : this.state.selectedUserProfilePicture
+                        this.state.selectedUserProfilePicture.length > 0
+                          ? this.state.selectedUserProfilePicture
+                          : ProfileImg
                       }
                       //this.state.userProfile === "user-img.jpg"
                       // ? require("./../assets/Images/user-img.jpg")

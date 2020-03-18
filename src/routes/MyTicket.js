@@ -75,6 +75,11 @@ import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { Dropdown } from "semantic-ui-react";
 import { withRouter } from "react-router";
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from "react-html-parser";
 // import DatePicker from "react-date-picker";
 
 class MyTicket extends Component {
@@ -206,7 +211,8 @@ class MyTicket extends Component {
       AssignToData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
-      freetextCommentCompulsory: ""
+      freetextCommentCompulsory: "",
+      viewPolicyModel:false
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -236,6 +242,8 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
+    this.handleviewPolicyModelOpen=this.handleviewPolicyModelOpen.bind(this);
+    this.handleviewPolicyModelClose=this.handleviewPolicyModelClose.bind(this);
   }
 
   componentDidUpdate() {
@@ -265,6 +273,14 @@ class MyTicket extends Component {
     } else {
       this.props.history.push("myTicketlist");
     }
+  }
+  handleviewPolicyModelOpen = () =>{
+    debugger;
+    this.setState({viewPolicyModel:true });
+  }
+  handleviewPolicyModelClose = () =>{
+    debugger;
+    this.setState({viewPolicyModel:false });
   }
 
   onAddCKEditorChange = evt => {
@@ -311,7 +327,7 @@ class MyTicket extends Component {
   }
 
   handleTicketAssignFollowUp() {
-    ////debugger;
+    debugger;
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
@@ -640,18 +656,32 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
-  setAssignedToValue = e => {
-    ////debugger;
-    let assign = e.currentTarget.value;
-    let followUpIds = this.state.followUpIds;
-    followUpIds += assign + ",";
-    let ckData = this.state.mailBodyData;
-    let matchedArr = this.state.AssignToData.filter(
-      x => x.userID == e.currentTarget.value
-    );
-    let userName = matchedArr[0].fullName;
-    ckData += "@" + userName;
-    this.setState({ mailBodyData: ckData, followUpIds });
+  setAssignedToValue (check,e)  {
+    debugger;
+    if(check === "freeCmd"){
+      let assign = e.currentTarget.value;
+      let followUpIds = this.state.followUpIds;
+      followUpIds += assign + ",";
+      let text = this.state.ticketFreeTextcomment;
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      text += "@" + userName;
+      this.setState({ ticketFreeTextcomment: text, followUpIds });
+    }else{
+      let assign = e.currentTarget.value;
+      let followUpIds = this.state.followUpIds;
+      followUpIds += assign + ",";
+      let ckData = this.state.mailBodyData;
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      ckData += "@" + userName;
+      this.setState({ mailBodyData: ckData, followUpIds });
+    }
+    
   };
   handleGetStoreDetails() {
     let self = this;
@@ -1795,66 +1825,81 @@ class MyTicket extends Component {
       }
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
-      if (this.state.mailBodyData.length > 0) {
-        if (this.state.ReplyInformStore === true) {
-          var store_Id = "";
+      if (
+        this.state.mailBodyData.length > 0 &&
+        this.state.mailBodyData.length <= 1999
+      ) {
+        if (this.state.mailBodyData.length > 0) {
+          if (this.state.ReplyInformStore === true) {
+            var store_Id = "";
 
-          for (let i = 0; i < this.state.selectedStoreData.length; i++) {
-            store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
-          }
-        } else {
-          var store_Id = "";
-        }
-        const formData = new FormData();
-        var paramData = {
-          TicketID: this.state.ticket_Id,
-          ToEmail: this.state.ticketDetailsData.customerEmailId,
-          UserCC: this.state.mailFiled.userCC,
-          UserBCC: this.state.mailFiled.userBCC,
-          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-          TicketMailBody: this.state.mailBodyData,
-          IsInformToStore: this.state.ReplyInformStore,
-          TicketSource: this.state.ticketSourceId, // Send ticket source id
-          IsSent: 0,
-          IsCustomerComment: 1,
-          IsResponseToCustomer: 1,
-          MailID: 0,
-          StoreID: store_Id.substring(",", store_Id.length - 1)
-        };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
-        for (let j = 0; j < this.state.FileData.length; j++) {
-          formData.append("Filedata", this.state.FileData[j]);
-        }
-
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Ticketing/MessageComment",
-          headers: authHeader(),
-          data: formData
-        })
-          .then(function(res) {
-            ////debugger;
-            let status = res.data.message;
-            if (status === "Success") {
-              self.handleGetMessageDetails(self.state.ticket_Id);
-              self.handleGetCountOfTabs(self.state.ticket_Id);
-              self.handleTicketAssignFollowUp();
-              self.HandleEmailCollapseOpen();
-              NotificationManager.success("Mail send successfully.", "", 2000);
-              self.setState({
-                mailFiled: {},
-                // mailSubject: "",
-                mailBodyData: ""
-              });
-            } else {
-              NotificationManager.error(status, "", 2000);
+            for (let i = 0; i < this.state.selectedStoreData.length; i++) {
+              store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
             }
+          } else {
+            var store_Id = "";
+          }
+          const formData = new FormData();
+          var paramData = {
+            TicketID: this.state.ticket_Id,
+            ToEmail: this.state.ticketDetailsData.customerEmailId,
+            UserCC: this.state.mailFiled.userCC,
+            UserBCC: this.state.mailFiled.userBCC,
+            TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+            TicketMailBody: this.state.mailBodyData,
+            IsInformToStore: this.state.ReplyInformStore,
+            TicketSource: this.state.ticketSourceId, // Send ticket source id
+            IsSent: 0,
+            IsCustomerComment: 1,
+            IsResponseToCustomer: 1,
+            MailID: 0,
+            StoreID: store_Id.substring(",", store_Id.length - 1)
+          };
+          formData.append("ticketingMailerQue", JSON.stringify(paramData));
+          for (let j = 0; j < this.state.FileData.length; j++) {
+            formData.append("Filedata", this.state.FileData[j]);
+          }
+
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Ticketing/MessageComment",
+            headers: authHeader(),
+            data: formData
           })
-          .catch(data => {
-            console.log(data);
-          });
+            .then(function(res) {
+              ////debugger;
+              let status = res.data.message;
+              if (status === "Success") {
+                self.handleGetMessageDetails(self.state.ticket_Id);
+                self.handleGetCountOfTabs(self.state.ticket_Id);
+                self.handleTicketAssignFollowUp();
+                self.HandleEmailCollapseOpen();
+                NotificationManager.success(
+                  "Mail send successfully.",
+                  "",
+                  2000
+                );
+                self.setState({
+                  mailFiled: {},
+                  // mailSubject: "",
+                  mailBodyData: ""
+                });
+              } else {
+                NotificationManager.error(status, "", 2000);
+              }
+            })
+            .catch(data => {
+              console.log(data);
+            });
+        } else {
+          NotificationManager.error("Please Enter Body Section.", "", 2000);
+        }
       } else {
-        NotificationManager.error("Please Enter Body Section.", "", 2000);
+        NotificationManager.error(
+          "Only 2000 Charater Allow In Body Section.",
+          "",
+          2000
+        );
       }
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
@@ -2562,6 +2607,19 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
+         <div>
+                <Modal
+                 open={this.state.viewPolicyModel}
+                 onClose={this.handleviewPolicyModelClose.bind(this)}
+                >
+                  <div>
+
+                    <label>View Policy</label>
+
+                  </div>
+
+                </Modal>
+                </div>
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -3783,11 +3841,9 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={
-                                                  moment(
-                                                    row.original.storeVisitDate
-                                                  ).format("MM/DD/YYYY")
-                                                }
+                                                value={moment(
+                                                  row.original.storeVisitDate
+                                                ).format("MM/DD/YYYY")}
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -4896,7 +4952,7 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue}
+                        onChange={this.setAssignedToValue.bind(this)}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
@@ -5206,8 +5262,9 @@ class MyTicket extends Component {
                               SEARCH
                             </button>
                           </div>
-                          <div style={{ marginTop: "275px" }}>
-                            <a href="#!" className="copyblue-kbtext">
+                          <div style={{ marginTop: "275px" }}  >
+                            <span>
+                            <a href="#!" className="copyblue-kbtext"  >
                               VIEW POLICY
                             </a>
                             <img
@@ -5215,12 +5272,17 @@ class MyTicket extends Component {
                               alt="viewpolicy"
                               className="viewpolicy-kb"
                             />
+                            </span>
+
+                          
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
+               
+                
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}
@@ -5422,7 +5484,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                //debugger;
+                                debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -5540,9 +5602,13 @@ class MyTicket extends Component {
                                             className="label-5"
                                             style={{ display: "inline-block" }}
                                           >
-                                            {details.latestMessageDetails.ticketMailBody
+                                            {/* {details.latestMessageDetails.ticketMailBody
                                               .replace(/<[^>]+>/g, "")
-                                              .replace(/&nbsp;/gi, " ")}
+                                              .replace(/&nbsp;/gi, " ")} */}
+                                            {ReactHtmlParser(
+                                              details.latestMessageDetails
+                                                .ticketMailBody
+                                            )}
                                           </p>
                                         </div>
 
@@ -5663,7 +5729,10 @@ class MyTicket extends Component {
                                                                     "block"
                                                                 }}
                                                               >
-                                                                {MsgData.ticketMailBody
+                                                                {ReactHtmlParser(
+                                                                  MsgData.ticketMailBody
+                                                                )}
+                                                                {/* {MsgData.ticketMailBody
                                                                   .replace(
                                                                     /<[^>]+>/g,
                                                                     ""
@@ -5671,7 +5740,7 @@ class MyTicket extends Component {
                                                                   .replace(
                                                                     /&nbsp;/gi,
                                                                     " "
-                                                                  )}
+                                                                  )} */}
                                                               </label>
                                                             </div>
                                                           </div>
@@ -5695,7 +5764,12 @@ class MyTicket extends Component {
                                                             display: "block"
                                                           }}
                                                         >
-                                                          {details.trailMessageDetails.ticketMailBody
+                                                          {ReactHtmlParser(
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailBody
+                                                          )}
+                                                          {/* {details.trailMessageDetails.ticketMailBody
                                                             .replace(
                                                               /<[^>]+>/g,
                                                               ""
@@ -5703,7 +5777,7 @@ class MyTicket extends Component {
                                                             .replace(
                                                               /&nbsp;/gi,
                                                               " "
-                                                            )}
+                                                            )} */}
                                                         </label>
                                                       </div>
                                                     </div>
@@ -5735,7 +5809,7 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">Commentt</label>
                           </div>
                           <div>
                             <img
@@ -6103,6 +6177,21 @@ class MyTicket extends Component {
                         <div className="comment-disp">
                           <div className="Commentlabel">
                             <label className="Commentlabel1">Comment</label>
+                          </div>
+                          <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(this,"freeCmd")}
+                            >
+                              <option value="0">Users</option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.userID}>
+                                    {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
                           <div>
                             <img

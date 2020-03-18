@@ -213,7 +213,7 @@ class TicketSystemTask extends Component {
           selectedPriority: ""
         });
 
-        NotificationManager.success("Task created successfully.");
+        NotificationManager.success("Task created successfully.", '', 1000);
         this.validator.hideMessages();
       }
     } else {

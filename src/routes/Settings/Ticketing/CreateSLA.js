@@ -340,7 +340,6 @@ class CreateSLA extends Component {
       .then(function(res) {
         debugger;
         let slaIssueType = res.data.responseData;
-        // let selectedSlaIssueType = slaIssueType[0].issueTypeID;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
           // self.setState({ slaIssueType, selectedSlaIssueType });
@@ -829,6 +828,7 @@ class CreateSLA extends Component {
                 >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -909,6 +909,8 @@ class CreateSLA extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+               
               </div>
             </div>
           </Modal>
@@ -1272,29 +1274,7 @@ class CreateSLA extends Component {
                                   onClick={this.handleClearSearchSla}
                                 />
                               </div>
-                              {/* <div className="filter-checkbox category-scroll">
-                                <ul>
-                                  {this.state.searchedSla !== null &&
-                                    this.state.searchedSla.map((item, i) => (
-                                      <li key={i}>
-                                        <input
-                                          type="checkbox"
-                                          id={"j" + item.issueTypeID}
-                                          name="searchedSla"
-                                          style={{ display: "none" }}
-                                          onChange={this.handleAddNoteCheck}
-                                          onChange={this.selectAboveIndividualSLA.bind(this, item.issueTypeID)}
-                                        />
-                                        <label
-                                          htmlFor={"j" + item.issueTypeID}
-                                          style={{ paddingLeft: "25px" }}
-                                        >
-                                          <span className="add-note">{item.issueTypeName}</span>
-                                        </label>
-                                      </li>
-                                    ))}
-                                </ul>
-                              </div> */}
+                             
                               <div className="category-button">
                                 <ul>
                                   <li>
@@ -1333,6 +1313,7 @@ class CreateSLA extends Component {
                                             <img src={Correct} alt="Checked" />
                                           </div>
                                         </label>
+                                        <span>{item.brandName}</span>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
@@ -1368,7 +1349,7 @@ class CreateSLA extends Component {
                       <label className="slatargettext">SLA Targets</label>
                     </div>
                     <div className="slatargetRow-1">
-                      <label className="createhead-text-new">Priority</label>
+                      <label className="createhead-text-new  createhead-cus">Priority</label>
                       <label className="createhead-text">
                         %SLA <br /> Breach
                       </label>
@@ -1388,7 +1369,7 @@ class CreateSLA extends Component {
                               <div className="inner-div">
                                 <input
                                   type="text"
-                                  placeholder="30"
+                                  placeholder="00"
                                   className="text-box-crt-sla"
                                   name="SlaBreach"
                                   value={item.SlaBreach || ""}
@@ -1412,7 +1393,7 @@ class CreateSLA extends Component {
                               <div className="inner-div">
                                 <input
                                   type="text"
-                                  placeholder="30"
+                                  placeholder="00"
                                   className="text-box-crt-sla"
                                   name="Rerspondtime"
                                   value={item.Rerspondtime}
@@ -1444,7 +1425,7 @@ class CreateSLA extends Component {
                               <div className="inner-div">
                                 <input
                                   type="text"
-                                  placeholder="30"
+                                  placeholder="00"
                                   className="text-box-crt-sla"
                                   autoComplete="off"
                                   name="ResolveTime"
@@ -1608,7 +1589,7 @@ class CreateSLA extends Component {
           overlayId="logout-ovrly"
         >
           <div className="edtpadding">
-            <label className="Create-store-text">EDIT SLA</label>
+            <label className="Create-store-text" style={{paddingTop:"0"}}>EDIT SLA</label>
             <div className="row">
               <div className="col-md-6">
                 <label className="createhead-text-new">Brand Name: </label>
@@ -1617,7 +1598,7 @@ class CreateSLA extends Component {
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Category Name</label>
+                <label className="createhead-text-new">Category Name: </label>
                 <label className="createhead-text-1">
                   {this.state.categoryName}
                 </label>
@@ -1625,13 +1606,13 @@ class CreateSLA extends Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Sub Category Name</label>
+                <label className="createhead-text-new">Sub Category Name: </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Issue Type</label>
+                <label className="createhead-text-new">Issue Type: </label>
                 <label className="createhead-text-1">
                   {this.state.issueTypeName}
                 </label>
@@ -1642,7 +1623,7 @@ class CreateSLA extends Component {
               <label className="slatargettext">SLA Targets</label>
             </div>
             <div className="slatargetRow-1">
-              <label className="createhead-text-new">Priority</label>
+              <label className="createhead-text-new createhead-cus">Priority</label>
               <label className="createhead-text">
                 %SLA <br /> Breach
               </label>
@@ -1662,7 +1643,7 @@ class CreateSLA extends Component {
                       <div className="inner-div">
                         <input
                           type="text"
-                          placeholder="30"
+                          placeholder="00"
                           className="text-box-crt-sla"
                           name="SlaBreach"
                           value={item.SlaBreach || ""}
@@ -1686,7 +1667,7 @@ class CreateSLA extends Component {
                       <div className="inner-div">
                         <input
                           type="text"
-                          placeholder="30"
+                          placeholder="00"
                           className="text-box-crt-sla"
                           name="Rerspondtime"
                           value={item.Rerspondtime}
@@ -1718,7 +1699,7 @@ class CreateSLA extends Component {
                       <div className="inner-div">
                         <input
                           type="text"
-                          placeholder="30"
+                          placeholder="00"
                           className="text-box-crt-sla"
                           autoComplete="off"
                           name="ResolveTime"

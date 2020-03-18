@@ -2279,7 +2279,7 @@ class Dashboard extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.");
+          NotificationManager.success("Scheduled successfully.", '', 1000);
           self.setState({
             scheduleRequired: "",
             selectedTeamMemberCommaSeperated: ""
@@ -2380,7 +2380,7 @@ class Dashboard extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success("Tickets assigned successfully.");
+            NotificationManager.success("Tickets assigned successfully.", '', 1000);
             // self.handleSearchTicketEscalation();
             self.ViewSearchData();
           }
@@ -3131,7 +3131,7 @@ class Dashboard extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Save Search parameter successfully.");
+            NotificationManager.success("Save Search parameter successfully.", '', 1000);
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: ""
@@ -3293,7 +3293,7 @@ class Dashboard extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully."
+            "Saved search data deleted successfully.", '', 1000
           );
           self.handleGetSaveSearchList();
         }
@@ -3755,8 +3755,9 @@ class Dashboard extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <div className="filter-type">
+              <div className="filter-type ">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -3883,6 +3884,8 @@ class Dashboard extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+                
               </div>
 
               <div className="filter-type filter-color">
@@ -6697,7 +6700,7 @@ class Dashboard extends Component {
                             className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "createdOn"," Createion On"
+                              "createdOn"," Creation On"
                             )}
                           >
                             Creation On <FontAwesomeIcon icon={faCaretDown} />

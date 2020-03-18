@@ -71,7 +71,7 @@ class SingIn extends Component {
           if (data !== null) {
             for (var i = 0; i <= data.length; i++) {
               if (i == data.length) {
-                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2500);
+                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2000);
                 self.setState({
                   loading: false
                 });
@@ -165,7 +165,7 @@ class SingIn extends Component {
             //   self.props.history.push("/admin/dashboard");
             // }, 400);
           } else {
-            NotificationManager.error("Username or password is invalid.");
+            NotificationManager.error("Username or password is invalid.", '', 1250);
             self.setState({
               loading: false
             });

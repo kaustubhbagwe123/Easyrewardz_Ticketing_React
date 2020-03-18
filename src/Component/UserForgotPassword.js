@@ -40,7 +40,7 @@ class UserForgotPassword extends Component {
         this.handleChangePassword(newPassword);
       } else {
         NotificationManager.error(
-          "The new password and confirm password do not match."
+          "The new password and confirm password do not match.", '', 1250
         );
       }
     } else {
@@ -55,14 +55,14 @@ class UserForgotPassword extends Component {
     let emaiId = window.location.href
       .slice(window.location.href.indexOf("?") + 1)
       .split(":")[1];
-    //let encPassword = encryption(newPassword, "enc");
+    let encPassword = encryption(newPassword, "enc");
 
     axios({
       method: "post",
       url: config.apiUrl + "/Account/UpdatePassword",
       params: {
         cipherEmailId: emaiId,
-        Password: newPassword
+        Password: encPassword
       },
       headers: authHeader()
     }).then(function(response) {
@@ -70,12 +70,12 @@ class UserForgotPassword extends Component {
       debugger;
       let Msg = response.data.responseData;
       if (Msg === "Update password successfully") {
-        NotificationManager.success("Password Changed successfully.");
+        NotificationManager.success("Password Changed successfully.", '', 1250);
         setTimeout(function() {
           self.props.history.push("/SignIn");
-        }, 400);
+        }, 1250);
       } else {
-        NotificationManager.error("Password Not Changed.");
+        NotificationManager.error("Password Not Changed.", '', 1250);
       }
     });
   }

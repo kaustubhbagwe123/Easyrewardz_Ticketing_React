@@ -1,6 +1,7 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Sorting from "./../../assets/Images/sorting.png";
 import { Popover } from "antd";
 // import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
@@ -94,7 +95,17 @@ class Alerts extends Component {
       alertEdit: {},
       isEdit: false,
       editSaveLoading: false,
-      editalertTypeCompulsion: "Please Enter Alert Type"
+      editalertTypeCompulsion: "Please Enter Alert Type",
+      sortAllData:[],
+      sortAlertType:[],
+      sortCreatedBy:[],
+      sortStatus:[],
+      sortHeader:"",
+      alertColor:"",
+      createdColor:"",
+      statusColor:"",
+      sortColumn:"",
+      StatusModel:false
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -109,10 +120,93 @@ class Alerts extends Component {
   }
 
   componentDidMount() {
+    
     this.handleGetAlert();
     this.handleAlertData();
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
   }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data,header) {
+    debugger;
+
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column, e) => {
+    debugger;
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    this.setState({
+     alertColor:"",
+     createdColor:"",
+     statusColor:""
+    
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+     
+    } else if (column === "alertTypeName") {
+      this.state.alert = this.state.sortAllData;
+      itemsArray = this.state.alert.filter(
+        a => a.alertTypeName === data
+      );
+      this.setState({
+        alertColor:"sort-column"
+       
+      });
+    } else if (column === "createdBy") {
+      this.state.alert = this.state.sortAllData;
+      itemsArray = this.state.alert.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor:"sort-column"
+        
+      });
+    }else if (column === "isAlertActive") {
+      this.state.alert = this.state.sortAllData;
+      itemsArray = this.state.alert.filter(a => a.isAlertActive === data);
+      this.setState({
+        statusColor:"sort-column"
+       
+      });
+    }
+
+    this.setState({
+      alert: itemsArray
+    });
+    this.StatusCloseModel();
+  };
+
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
     debugger;
 
@@ -269,6 +363,7 @@ class Alerts extends Component {
       .then(function(res) {
         debugger;
         let alert = res.data.responseData;
+        var data = res.data.responseData;
         if (id) {
           var data = alert[0].alertContent;
           var selectedSubjectCustomer = "";
@@ -317,6 +412,7 @@ class Alerts extends Component {
             }
           }
 
+         
           self.setState({
             selectedSubjectCustomer,
             selectedCKCustomer,
@@ -340,6 +436,49 @@ class Alerts extends Component {
             self.setState({ alert });
           }
         }
+
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].alertTypeName]) {
+              distinct.push(data[i].alertTypeName);
+              unique[data[i].alertTypeName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortAlertType.push({ alertTypeName: distinct[i] });
+          }
+
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].isAlertActive]) {
+              distinct.push(data[i].isAlertActive);
+              unique[data[i].isAlertActive] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ isAlertActive: distinct[i] });
+          }
+
+
+        }
+
       })
       .catch(data => {
         console.log(data);
@@ -819,6 +958,134 @@ class Alerts extends Component {
   render() {
     return (
       <React.Fragment>
+          <div className="position-relative d-inline-block">
+          <Modal
+          show={this.state.StatusModel}
+          onHide={this.StatusCloseModel}
+           // onClose={this.StatusCloseModel}
+           // open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <div className="d-flex">
+                 
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a href=""
+               style={{margin:"0 25px",textDecoration:"underline"}} 
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+                >clear search</a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    name="filter-type"
+                    id={"fil-open"}
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                </div>
+                {this.state.sortColumn === "alertTypeName"
+                  ? this.state.sortAlertType !== null &&
+                    this.state.sortAlertType.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.alertTypeName}
+                          id={"fil-open" + item.alertTypeName}
+                          value={item.alertTypeName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "alertTypeName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.alertTypeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.alertTypeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "createdBy"
+                  ? this.state.sortCreatedBy !== null &&
+                    this.state.sortCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdBy}
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+
+{this.state.sortColumn === "isAlertActive"
+                  ? this.state.sortStatus !== null &&
+                    this.state.sortStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.isAlertActive}
+                          id={"fil-open" + item.isAlertActive}
+                          value={item.isAlertActive}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "isAlertActive"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.isAlertActive}>
+                          <span className="table-btn table-blue-btn">
+                            {item.isAlertActive}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+                </div>
+                
+
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -842,7 +1109,14 @@ class Alerts extends Component {
                     columns={[
                       {
                         Header: (
-                          <span className="table-column">
+                          <span  className={this.state.alertColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "alertTypeName","AlertType"
+                          )}
+                          
+                          >
                             Alert Type
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -885,7 +1159,14 @@ class Alerts extends Component {
                       {
                         id: "createdBy",
                         Header: (
-                          <span className="table-column">
+                          <span className={this.state.createdColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "createdBy","Created By"
+                          )}
+                          
+                          >
                             Created by
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -941,7 +1222,12 @@ class Alerts extends Component {
                       },
                       {
                         Header: (
-                          <span className="table-column">
+                          <span className={this.state.statusColor}
+                           
+                          onClick={this.StatusOpenModel.bind(
+                            this,
+                            "isAlertActive","Status"
+                          )}>
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
