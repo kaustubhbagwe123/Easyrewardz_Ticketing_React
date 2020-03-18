@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sorting from "./../../assets/Images/sorting.png";
@@ -95,16 +95,19 @@ class Alerts extends Component {
       alertEdit: {},
       isEdit: false,
       editSaveLoading: false,
-      sortAllData:[],
-      sortAlertType:[],
-      sortCreatedBy:[],
-      sortStatus:[],
-      sortHeader:"",
-      alertColor:"",
-      createdColor:"",
-      statusColor:"",
-      sortColumn:"",
-      StatusModel:false
+      editalertTypeCompulsion: "Please Enter Alert Type",
+      sortAllData: [],
+      sortAlertType: [],
+      sortCreatedBy: [],
+      sortStatus: [],
+      sortHeader: "",
+      alertColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortColumn: "",
+      StatusModel: false,
+      editcommunicationModeCompulsion: "",
+      AssignToData: []
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -116,13 +119,13 @@ class Alerts extends Component {
     this.handleAlertData = this.handleAlertData.bind(this);
     this.handleUpdateAlert = this.handleUpdateAlert.bind(this);
     this.handleEditModal = this.handleEditModal.bind(this);
+    this.handleAlertTabs = this.handleAlertTabs.bind(this);
   }
 
   componentDidMount() {
-    
     this.handleGetAlert();
     this.handleAlertData();
-    this.handleAlertTabs = this.handleAlertTabs.bind(this);
+    this.handleGetAgentList();
   }
 
   sortStatusAtoZ() {
@@ -152,10 +155,10 @@ class Alerts extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel=e=> {
     this.setState({StatusModel:false});
@@ -168,36 +171,29 @@ class Alerts extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-     alertColor:"",
-     createdColor:"",
-     statusColor:""
-    
+      alertColor: "",
+      createdColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-     
     } else if (column === "alertTypeName") {
       this.state.alert = this.state.sortAllData;
-      itemsArray = this.state.alert.filter(
-        a => a.alertTypeName === data
-      );
+      itemsArray = this.state.alert.filter(a => a.alertTypeName === data);
       this.setState({
-        alertColor:"sort-column"
-       
+        alertColor: "sort-column"
       });
     } else if (column === "createdBy") {
       this.state.alert = this.state.sortAllData;
       itemsArray = this.state.alert.filter(a => a.createdBy === data);
       this.setState({
-        createdColor:"sort-column"
-        
+        createdColor: "sort-column"
       });
-    }else if (column === "isAlertActive") {
+    } else if (column === "isAlertActive") {
       this.state.alert = this.state.sortAllData;
       itemsArray = this.state.alert.filter(a => a.isAlertActive === data);
       this.setState({
-        statusColor:"sort-column"
-       
+        statusColor: "sort-column"
       });
     }
 
@@ -412,7 +408,6 @@ class Alerts extends Component {
             }
           }
 
-         
           self.setState({
             selectedSubjectCustomer,
             selectedCKCustomer,
@@ -451,7 +446,6 @@ class Alerts extends Component {
             self.state.sortAlertType.push({ alertTypeName: distinct[i] });
           }
 
-
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
@@ -475,10 +469,7 @@ class Alerts extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ isAlertActive: distinct[i] });
           }
-
-
         }
-
       })
       .catch(data => {
         console.log(data);
@@ -499,10 +490,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.", '', 1000);
+          NotificationManager.success("Alert deleted successfully.", "", 1000);
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.", '', 1000);
+          NotificationManager.error("Alert not deleted.", "", 1000);
         }
       })
       .catch(data => {
@@ -522,6 +513,73 @@ class Alerts extends Component {
         editSaveLoading: true
       });
 
+      if (this.state.notiInt == true) {
+        if (this.state.selectedNotifContent == "") {
+          this.setState({
+            NotifContentCompulsion: "Please Enter Notification."
+          });
+        } else {
+          this.setState({
+            NotifContentCompulsion: "Please Enter Notification"
+          });
+        }
+      }
+      if (this.state.smsCust == true) {
+        if (this.state.selectedSMSContent == "") {
+          this.setState({ SMSContentCompulsion: "Please Enter Message." });
+        } else {
+          this.setState({ SMSContentCompulsion: "" });
+        }
+      }
+
+      if (this.state.emailCust == true) {
+        if (this.state.selectedCKCustomer === "") {
+          this.setState({ ckCustomerCompulsion: "Please Enter Description." });
+        } else {
+          this.setState({ ckCustomerCompulsion: "" });
+        }
+        if (this.state.selectedSubjectCustomer === "") {
+          this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
+        } else {
+          this.setState({ subjectCustomerCompulsion: "" });
+        }
+
+        return false;
+      }
+
+      if (this.state.emailInt == true) {
+        if (this.state.selectedCKInternal === "") {
+          this.setState({ ckInternalCompulsion: "Please Enter Subject." });
+        } else {
+          this.setState({ ckInternalCompulsion: "" });
+        }
+        if (this.state.selectedSubjectInternal === "") {
+          this.setState({
+            subjectInternalCompulsion: "Please Enter Description."
+          });
+        } else {
+          this.setState({ subjectInternalCompulsion: "" });
+        }
+
+        return false;
+      }
+
+      if (this.state.emailStore == true) {
+        if (this.state.selectedCKStore === "") {
+          this.setState({ ckStoreCompulsion: "Please Enter Subject." });
+        } else {
+          this.setState({ ckStoreCompulsion: "" });
+        }
+        if (this.state.selectedSubjectCustomer === "") {
+          this.setState({
+            subjectStoreCompulsion: "Please Enter Description."
+          });
+        } else {
+          this.setState({ subjectStoreCompulsion: "" });
+        }
+
+        return false;
+      }
       var CommunicationModeDetails = [];
 
       var emailCustomer = {
@@ -594,7 +652,11 @@ class Alerts extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Alert updated successfully.", '', 1000);
+            NotificationManager.success(
+              "Alert updated successfully.",
+              "",
+              1000
+            );
             self.handleGetAlert();
             self.setState({
               AddAlertTabsPopup: false,
@@ -605,7 +667,7 @@ class Alerts extends Component {
               editSaveLoading: false,
               AddAlertTabsPopup: false
             });
-            NotificationManager.error("Alert not updated.", '', 1000);
+            NotificationManager.error("Alert not updated.", "", 1000);
           }
         })
         .catch(data => {
@@ -616,7 +678,7 @@ class Alerts extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.", '', 1000);
+      NotificationManager.error("Alert not updated.", "", 1000);
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name."
       });
@@ -722,8 +784,23 @@ class Alerts extends Component {
   handleAddAlertTabsClose() {
     this.setState({
       AddAlertTabsPopup: false,
+      subjectCustomerCompulsion: "",
+      ckCustomerCompulsion: "",
+      subjectInternalCompulsion: "",
+      ckInternalCompulsion: "",
+      subjectStoreCompulsion: "",
+      ckStoreCompulsion: "",
+      SMSContentCompulsion: "",
       selectedSubjectCustomer: "",
       selectedCKCustomer: "",
+      selectedSubjectInternal: "",
+      selectedCKInternal: "",
+      selectedSubjectStore: "",
+      selectedCKStore: "",
+
+      selectedSMSContent: "",
+      selectedNotifContent: "",
+      NotifContentCompulsion: "",
       emailCust: false,
       emailInt: false,
       emailStore: false,
@@ -903,9 +980,9 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.", '', 1000);
-        }else if(status === "Record Already Exists "){
-          NotificationManager.error("Record Already Exists.", '', 1000);
+          NotificationManager.success("Record Saved successfully.", "", 1000);
+        } else if (status === "Record Already Exists ") {
+          NotificationManager.error("Record Already Exists.", "", 1000);
         }
         self.handleAddAlertTabsClose();
       })
@@ -923,35 +1000,134 @@ class Alerts extends Component {
 
     var data = this.state.alertEdit;
     if (name === "selectedAlertType") {
-      var alertName = e.target.selectedOptions[0].innerText;
-      data[name] = value;
-      data["AlertTypeName"] = alertName;
+      if (value == "Select Alert") {
+        var alertName = e.target.selectedOptions[0].innerText;
+        data[name] = value;
+        data["AlertTypeName"] = alertName;
+        this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
+        this.setState({ alertEdit: data });
+      } else {
+        var alertName = e.target.selectedOptions[0].innerText;
+        data[name] = value;
+        data["AlertTypeName"] = alertName;
+        this.setState({ editalertTypeCompulsion: "" });
+        this.setState({ alertEdit: data });
+      }
     } else {
       data[name] = value;
+      this.setState({ alertEdit: data });
     }
-
-    this.setState({ alertEdit: data });
   }
   handleOpenAdd() {
-    this.setState({ AddAlertTabsPopup: true, editModal: false });
+    debugger;
+    if (this.state.alertEdit.AlertTypeName == "Select Alert") {
+      this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
+    } else if (
+      this.state.emailCust === false &&
+      this.state.emailInt === false &&
+      this.state.emailStore === false &&
+      this.state.smsCust === false &&
+      this.state.notiInt === false
+    ) {
+      this.setState({
+        editcommunicationModeCompulsion: "Please Select Any Communication Mode"
+      });
+    } else {
+      var innerTabIndex = 0;
+      if (this.state.emailCust === true) {
+        innerTabIndex = 0;
+      } else if (this.state.emailInt === true) {
+        innerTabIndex = 1;
+      } else {
+        innerTabIndex = 2;
+      }
+
+      this.setState({
+        AddAlertTabsPopup: true,
+        editModal: false,
+        innerTabIndex
+      });
+    }
+  }
+
+  ///handle get agent list
+  handleGetAgentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AssignToData: data
+          });
+          self.checkAllAgentStart();
+        } else {
+          self.setState({
+            AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  ///handle on change
+  setAssignedToValue(e, type) {
+    debugger;
+    if (type === "Customer") {
+      let ckData = this.state.selectedCKCustomer;
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      ckData += "@" + userName;
+      this.setState({ selectedCKCustomer: ckData });
+    }
+    if (type == "Internal") {
+      let ckData = this.state.selectedCKInternal;
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      ckData += "@" + userName;
+      this.setState({ selectedCKInternal: ckData });
+    }
+    if (type == "Store") {
+      let ckData = this.state.selectedCKStore;
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      ckData += "@" + userName;
+      this.setState({ selectedCKStore: ckData });
+    }
   }
   render() {
     return (
       <React.Fragment>
-          <div className="position-relative d-inline-block">
+        <div className="position-relative d-inline-block">
           <Modal
-          show={this.state.StatusModel}
-          onHide={this.StatusCloseModel}
-           // onClose={this.StatusCloseModel}
-           // open={this.state.StatusModel}
+            show={this.state.StatusModel}
+            onHide={this.StatusCloseModel}
+            // onClose={this.StatusCloseModel}
+            // open={this.state.StatusModel}
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
             <div className="status-drop-down">
               <div className="sort-sctn text-center">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
-                 
                   <a
                     href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -972,96 +1148,97 @@ class Alerts extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "alertTypeName"
+                    ? this.state.sortAlertType !== null &&
+                      this.state.sortAlertType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.alertTypeName}
+                            id={"fil-open" + item.alertTypeName}
+                            value={item.alertTypeName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "alertTypeName"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.alertTypeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.alertTypeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortCreatedBy !== null &&
+                      this.state.sortCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "isAlertActive"
+                    ? this.state.sortStatus !== null &&
+                      this.state.sortStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.isAlertActive}
+                            id={"fil-open" + item.isAlertActive}
+                            value={item.isAlertActive}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "isAlertActive"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.isAlertActive}>
+                            <span className="table-btn table-blue-btn">
+                              {item.isAlertActive}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "alertTypeName"
-                  ? this.state.sortAlertType !== null &&
-                    this.state.sortAlertType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.alertTypeName}
-                          id={"fil-open" + item.alertTypeName}
-                          value={item.alertTypeName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "alertTypeName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.alertTypeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.alertTypeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "createdBy"
-                  ? this.state.sortCreatedBy !== null &&
-                    this.state.sortCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdBy}
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "isAlertActive"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.isAlertActive}
-                          id={"fil-open" + item.isAlertActive}
-                          value={item.isAlertActive}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "isAlertActive"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.isAlertActive}>
-                          <span className="table-btn table-blue-btn">
-                            {item.isAlertActive}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
-
               </div>
             </div>
           </Modal>
@@ -1089,13 +1266,13 @@ class Alerts extends Component {
                     columns={[
                       {
                         Header: (
-                          <span  className={this.state.alertColor}
-                           
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "alertTypeName","AlertType"
-                          )}
-                          
+                          <span
+                            className={this.state.alertColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "alertTypeName",
+                              "AlertType"
+                            )}
                           >
                             Alert Type
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1139,13 +1316,13 @@ class Alerts extends Component {
                       {
                         id: "createdBy",
                         Header: (
-                          <span className={this.state.createdColor}
-                           
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "createdBy","Created By"
-                          )}
-                          
+                          <span
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy",
+                              "Created By"
+                            )}
                           >
                             Created by
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1202,12 +1379,14 @@ class Alerts extends Component {
                       },
                       {
                         Header: (
-                          <span className={this.state.statusColor}
-                           
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "isAlertActive","Status"
-                          )}>
+                          <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "isAlertActive",
+                              "Status"
+                            )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -1564,60 +1743,6 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
-                                  {/* <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      To
-                                    </label>
-                                    <div className="col-sm-8 m-t1 d-flex">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor"
-                                        name="selectedToCustomer"
-                                        value={this.state.selectedToCustomer}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                      {this.state.selectedToCustomer.length ===
-                                        0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            margin: "6px"
-                                          }}
-                                        >
-                                          {this.state.toCustomerCompulsion}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      CC
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box2"
-                                        name="selectedCCCustomer"
-                                        value={this.state.selectedCCCustomer}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      BCC
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box3"
-                                        name="selectedBCCCustomer"
-                                        value={this.state.selectedBCCCustomer}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                    </div>
-                                  </div>
-                                   */}
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -1646,16 +1771,30 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
+                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
+                                  <select
+                                    className="add-select-category"
+                                    value="0"
+                                    onChange={this.setAssignedToValue.bind(
+                                      this,
+                                      "Customer"
+                                    )}
+                                  >
+                                    <option value="0">Users</option>
+                                    {this.state.AssignToData !== null &&
+                                      this.state.AssignToData.map((item, i) => (
+                                        <option key={i} value={item.userID}>
+                                          {item.fullName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
                                 <CKEditor
+                                  content={this.state.content}
                                   name="selectedCKCustomer"
                                   data={this.state.selectedCKCustomer}
                                   onChange={this.setCKEditorCustomer}
-                                  //content={this.state.content}
                                   events={{
-                                    // "blur": this.onBlur,
-                                    // "afterPaste": this.afterPaste,
-
-                                    //change: this.onChange,
                                     items: this.fileUpload
                                   }}
                                 />
@@ -1669,19 +1808,6 @@ class Alerts extends Component {
                                     {this.state.ckCustomerCompulsion}
                                   </p>
                                 )}
-
-                                {/* <div className="div-button1">
-                                <button
-                                  className="butn-2"
-                                  type="submit"
-                                  id="sms-tab"
-                                  
-                                 
-                                  onClick={this.handleTabChange.bind(this,1)}
-                                >
-                                  SAVE & NEXT
-                                </button>
-                              </div> */}
                               </div>
                               <div
                                 className={`tab-pane fade ${this.state
@@ -1694,61 +1820,6 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
-                                  {/*                                   
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      To
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor"
-                                        name="selectedToInternal"
-                                        value={this.state.selectedToInternal}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                      {this.state.selectedToInternal.length ===
-                                        0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px"
-                                          }}
-                                        >
-                                          {this.state.toInternalCompulsion}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      CC
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box2"
-                                        name="selectedCCInternal"
-                                        value={this.state.selectedCCInternal}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      BCC
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box3"
-                                        name="selectedBCCInternal"
-                                        value={this.state.selectedBCCInternal}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                    </div>
-                                  </div>
-                                   */}
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -1777,12 +1848,28 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
+                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                  <select
+                                    className="add-select-category"
+                                    value="0"
+                                    onChange={this.setAssignedToValue.bind(
+                                      this,
+                                      "Internal"
+                                    )}
+                                  >
+                                    <option value="0">Users</option>
+                                    {this.state.AssignToData !== null &&
+                                      this.state.AssignToData.map((item, i) => (
+                                        <option key={i} value={item.userID}>
+                                          {item.fullName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+
                                 <CKEditor
-                                  //content={this.state.content}
+                                  content={this.state.content}
                                   events={{
-                                    // "blur": this.onBlur,
-                                    // "afterPaste": this.afterPaste,
-                                    //change: this.onChange,
                                     items: this.fileUpload
                                   }}
                                   name="selectedCKInternal"
@@ -1799,17 +1886,6 @@ class Alerts extends Component {
                                     {this.state.ckInternalCompulsion}
                                   </p>
                                 )}
-                                {/* <div className="div-button1">
-                                <button
-                                  className="butn-2"
-                                  type="submit"
-                                  id="sms-tab"
-                                  onClick={this.handleTabChange.bind(this,1)}
-                                  
-                                >
-                                  SAVE & NEXT
-                                </button>
-                              </div>*/}
                               </div>
                               <div
                                 className={`tab-pane fade ${this.state
@@ -1822,61 +1898,6 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
-                                  {/*                                   
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      To
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor"
-                                        name="selectedToStore"
-                                        value={this.state.selectedToStore}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                      {this.state.selectedToStore.length ===
-                                        0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px"
-                                          }}
-                                        >
-                                          {this.state.toStoreCompulsion}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      CC
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box2"
-                                        name="selectedCCStore"
-                                        value={this.state.selectedCCStore}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="form-group row">
-                                    <label className="label-color-alert">
-                                      BCC
-                                    </label>
-                                    <div className="col-sm-6 m-t1">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box3"
-                                        name="selectedBCCStore"
-                                        value={this.state.selectedBCCStore}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                    </div>
-                                  </div>
-                                   */}
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -1903,11 +1924,28 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
+                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                  <select
+                                    className="add-select-category"
+                                    value="0"
+                                    onChange={this.setAssignedToValue.bind(
+                                      this,
+                                      "Store"
+                                    )}
+                                  >
+                                    <option value="0">Users</option>
+                                    {this.state.AssignToData !== null &&
+                                      this.state.AssignToData.map((item, i) => (
+                                        <option key={i} value={item.userID}>
+                                          {item.fullName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
-                                    // "blur": this.onBlur,
-                                    // "afterPaste": this.afterPaste,
                                     change: this.onChange,
                                     items: this.fileUpload
                                   }}
@@ -2129,20 +2167,20 @@ class Alerts extends Component {
                     </option>
                   ))}
               </select>
-              {this.state.alertEdit.selectedAlertType === 0 && (
+              {this.state.alertEdit.AlertTypeName === "Select Alert" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
-                  {this.state.alertTypeCompulsion}
+                  {this.state.editalertTypeCompulsion}
                 </p>
               )}
             </div>
             <h4>Communication Mode</h4>
-            {this.state.selectedEmailCustomer === false &&
-              this.state.selectedEmailInternal === false &&
-              this.state.selectedEmailStore === false &&
-              this.state.selectedSMSCustomer === false &&
-              this.state.selectedNotifInternal === false && (
+            {this.state.emailCust === false &&
+              this.state.emailStore === false &&
+              this.state.emailInt === false &&
+              this.state.smsCust === false &&
+              this.state.notiInt === false && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
-                  {this.state.communicationModeCompulsion}
+                  {this.state.editcommunicationModeCompulsion}
                 </p>
               )}
             <div className="div-cntr">

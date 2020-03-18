@@ -212,7 +212,7 @@ class MyTicket extends Component {
       followUpIds: "",
       ticketFreeTextcomment: "",
       freetextCommentCompulsory: "",
-      viewPolicyModel:false
+      viewPolicyModel: false
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -242,8 +242,10 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
-    this.handleviewPolicyModelOpen=this.handleviewPolicyModelOpen.bind(this);
-    this.handleviewPolicyModelClose=this.handleviewPolicyModelClose.bind(this);
+    this.handleviewPolicyModelOpen = this.handleviewPolicyModelOpen.bind(this);
+    this.handleviewPolicyModelClose = this.handleviewPolicyModelClose.bind(
+      this
+    );
   }
 
   componentDidUpdate() {
@@ -274,14 +276,14 @@ class MyTicket extends Component {
       this.props.history.push("myTicketlist");
     }
   }
-  handleviewPolicyModelOpen = () =>{
+  handleviewPolicyModelOpen = () => {
     debugger;
-    this.setState({viewPolicyModel:true });
-  }
-  handleviewPolicyModelClose = () =>{
+    this.setState({ viewPolicyModel: true });
+  };
+  handleviewPolicyModelClose = () => {
     debugger;
-    this.setState({viewPolicyModel:false });
-  }
+    this.setState({ viewPolicyModel: false });
+  };
 
   onAddCKEditorChange = evt => {
     ////debugger;
@@ -297,7 +299,7 @@ class MyTicket extends Component {
       replymailBodyData: newContent
     });
   };
-
+// handle Get Agent List for User dropdown
   handleGetAgentList() {
     ////debugger;
     let self = this;
@@ -307,7 +309,6 @@ class MyTicket extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        ////debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -344,8 +345,8 @@ class MyTicket extends Component {
     })
       .then(function(res) {
         ////debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
+        // let status = res.data.message;
+        // let data = res.data.responseData;
       })
       .catch(data => {
         console.log(data);
@@ -656,11 +657,12 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
-  setAssignedToValue (check,e)  {
+  // onchange on User Drop down list
+  setAssignedToValue(check,e) {
     debugger;
-    if(check === "freeCmd"){
-      let assign = e.currentTarget.value;
+    if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
+      let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
@@ -669,9 +671,20 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       text += "@" + userName;
       this.setState({ ticketFreeTextcomment: text, followUpIds });
-    }else{
-      let assign = e.currentTarget.value;
+    } else if (check === "comment") {
       let followUpIds = this.state.followUpIds;
+      let assign = e.currentTarget.value;
+      followUpIds += assign + ",";
+      let text = this.state.ticketcommentMSG;
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      text += "@" + userName;
+      this.setState({ ticketcommentMSG: text, followUpIds });
+    } else {
+      let followUpIds = this.state.followUpIds;
+      let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
       let matchedArr = this.state.AssignToData.filter(
@@ -681,8 +694,7 @@ class MyTicket extends Component {
       ckData += "@" + userName;
       this.setState({ mailBodyData: ckData, followUpIds });
     }
-    
-  };
+  }
   handleGetStoreDetails() {
     let self = this;
     axios({
@@ -2071,6 +2083,7 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
+    debugger
     let self = this;
     axios({
       method: "post",
@@ -2081,7 +2094,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2607,19 +2620,16 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
-         <div>
-                <Modal
-                 open={this.state.viewPolicyModel}
-                 onClose={this.handleviewPolicyModelClose.bind(this)}
-                >
-                  <div>
-
-                    <label>View Policy</label>
-
-                  </div>
-
-                </Modal>
-                </div>
+        <div>
+          <Modal
+            open={this.state.viewPolicyModel}
+            onClose={this.handleviewPolicyModelClose.bind(this)}
+          >
+            <div>
+              <label>View Policy</label>
+            </div>
+          </Modal>
+        </div>
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -4952,7 +4962,7 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue.bind(this)}
+                        onChange={this.setAssignedToValue.bind(this,"rplyCmd")}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
@@ -5262,27 +5272,24 @@ class MyTicket extends Component {
                               SEARCH
                             </button>
                           </div>
-                          <div style={{ marginTop: "275px" }}  >
+                          <div style={{ marginTop: "275px" }}>
                             <span>
-                            <a href="#!" className="copyblue-kbtext"  >
-                              VIEW POLICY
-                            </a>
-                            <img
-                              src={ViewBlue}
-                              alt="viewpolicy"
-                              className="viewpolicy-kb"
-                            />
+                              <a href="#!" className="copyblue-kbtext">
+                                VIEW POLICY
+                              </a>
+                              <img
+                                src={ViewBlue}
+                                alt="viewpolicy"
+                                className="viewpolicy-kb"
+                              />
                             </span>
-
-                          
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
-               
-                
+
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}
@@ -5809,7 +5816,25 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Commentt</label>
+                            <label className="Commentlabel1">Comment</label>
+                          </div>
+                          <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(
+                                this,
+                                "comment"
+                              )}
+                            >
+                              <option value="0">Users</option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.userID}>
+                                    {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
                           <div>
                             <img
@@ -6182,7 +6207,10 @@ class MyTicket extends Component {
                             <select
                               className="add-select-category"
                               value="0"
-                              onChange={this.setAssignedToValue.bind(this,"freeCmd")}
+                              onChange={this.setAssignedToValue.bind(
+                                this,
+                                "freeCmd"
+                              )}
                             >
                               <option value="0">Users</option>
                               {this.state.AssignToData !== null &&

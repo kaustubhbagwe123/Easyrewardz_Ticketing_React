@@ -71,15 +71,15 @@ class CategoryMaster extends Component {
       sortCategory: [],
       sortSubCategory: [],
       sortIssueType: [],
-      sortStatus:[],
+      sortStatus: [],
       editmodel: false,
       editCategory: {},
       brandColor: "",
       categoryColor: "",
       subCategoryColor: "",
       issueColor: "",
-      statusColor:"",
-      sortHeader:"",
+      statusColor: "",
+      sortHeader: "",
       brandCatmapId: 0,
       editBrandCompulsory: "",
       editCategoryCompulsory: "",
@@ -99,6 +99,8 @@ class CategoryMaster extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
   }
+
+   
   componentDidMount() {
     this.handleGetCategoryGridData();
     this.handleGetBrandList();
@@ -130,9 +132,9 @@ class CategoryMaster extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -184,7 +186,7 @@ class CategoryMaster extends Component {
       this.setState({
         issueColor: "sort-column"
       });
-    }else if (column === "statusName") {
+    } else if (column === "statusName") {
       this.state.categoryGridData = this.state.sortAllData;
       itemsArray = this.state.categoryGridData.filter(
         a => a.statusName === data
@@ -274,8 +276,6 @@ class CategoryMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ statusName: distinct[i] });
           }
-
-
         }
 
         if (status === "Success") {
@@ -882,13 +882,26 @@ class CategoryMaster extends Component {
     debugger;
     let value = e.target.value;
     var editCategory = {};
-    editCategory[e.target.name] = value;
-    this.setState({
-      editCategory,
-      categoryDropData: [],
-      SubCategoryDropData: [],
-      ListOfIssueData: []
-    });
+    if (value === "0") {
+      editCategory[e.target.name] = value;
+      this.setState({
+        editBrandCompulsory:"Please Select Brand.",
+        editCategory,
+        categoryDropData: [],
+        SubCategoryDropData: [],
+        ListOfIssueData: []
+      });
+    } else {
+      editCategory[e.target.name] = value;
+      this.setState({
+        editCategory,
+        editBrandCompulsory:"",
+        categoryDropData: [],
+        SubCategoryDropData: [],
+        ListOfIssueData: []
+      });
+     
+    }
     setTimeout(() => {
       if (value) {
         this.handleGetCategoryList(value);
@@ -912,6 +925,7 @@ class CategoryMaster extends Component {
 
       this.setState({
         editCategory,
+        editCategoryCompulsory:"",
         SubCategoryDropData: [],
         ListOfIssueData: []
       });
@@ -933,7 +947,7 @@ class CategoryMaster extends Component {
       // editCategory["subCategoryName"] = subCategoryName;
       editCategory["issueTypeID"] = "";
       editCategory["issueTypeName"] = "";
-      this.setState({ editCategory, ListOfIssueData: [] });
+      this.setState({ editCategory, ListOfIssueData: [] ,editSubCatCompulsory:""});
 
       setTimeout(() => {
         if (value) {
@@ -950,7 +964,7 @@ class CategoryMaster extends Component {
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["issueTypeID"] = value;
-      this.setState({ editCategory });
+      this.setState({ editCategory,editIssueCompulsory:"" });
     } else {
       this.setState({ editShowIssuetype: true });
     }
@@ -992,7 +1006,9 @@ class CategoryMaster extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -1014,10 +1030,13 @@ class CategoryMaster extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="FTypeScroll">
@@ -1125,7 +1144,7 @@ class CategoryMaster extends Component {
                     ))
                   : null}
 
-{this.state.sortColumn === "statusName"
+                {this.state.sortColumn === "statusName"
                   ? this.state.sortStatus !== null &&
                     this.state.sortStatus.map((item, i) => (
                       <div className="filter-checkbox">
@@ -1183,7 +1202,8 @@ class CategoryMaster extends Component {
                               className={this.state.brandColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "brandName","Brand"
+                                "brandName",
+                                "Brand"
                               )}
                             >
                               Brand Name
@@ -1198,7 +1218,8 @@ class CategoryMaster extends Component {
                               className={this.state.categoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "categoryName","Category"
+                                "categoryName",
+                                "Category"
                               )}
                             >
                               Category
@@ -1213,7 +1234,8 @@ class CategoryMaster extends Component {
                               className={this.state.subCategoryColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "subCategoryName","SubCategory"
+                                "subCategoryName",
+                                "SubCategory"
                               )}
                             >
                               Sub Cat
@@ -1228,7 +1250,8 @@ class CategoryMaster extends Component {
                               className={this.state.issueColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "issueTypeName","IssueType"
+                                "issueTypeName",
+                                "IssueType"
                               )}
                             >
                               Issue Type
@@ -1240,11 +1263,12 @@ class CategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={this.state.statusColor}
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "statusName","Status"
-                            )}
+                              className={this.state.statusColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "statusName",
+                                "Status"
+                              )}
                             >
                               Status
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -1433,17 +1457,22 @@ class CategoryMaster extends Component {
                           onConfirm={inputValue => {
                             debugger;
                             inputValue = inputValue.trim();
-                            if (inputValue !== "") {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                              this.handleAddCategory(inputValue);
-                            } else {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
+                            if (
+                              inputValue.length >= 0 &&
+                              inputValue.length <= 50
+                            ) {
+                              if (inputValue !== "") {
+                                this.setState({
+                                  showList1: false,
+                                  list1Value: inputValue
+                                });
+                                this.handleAddCategory(inputValue);
+                              } else {
+                                this.setState({
+                                  showList1: false,
+                                  list1Value: inputValue
+                                });
+                              }
                             }
                           }}
                           onCancel={() => {

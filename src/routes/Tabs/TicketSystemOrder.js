@@ -3,21 +3,23 @@ import ArrowImg from "./../../assets/Images/arrow.png";
 import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import NotFoundImg from "./../../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
-import ReactTable from "react-table";
+// import ReactTable from "react-table";
 import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 import config from "./../../helpers/config";
 import ReactAutocomplete from "react-autocomplete";
 import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-import matchSorter from "match-sorter";
+// import matchSorter from "match-sorter";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -68,13 +70,13 @@ class TicketSystemOrder extends Component {
       expandedOrderPopup: {},
       validPurchaseStoreName: "",
       ModalorderNumber: "",
-      // requiredSize: "",
       ChannelOfPurchaseData: [],
       idSizeArray: [],
       CheckBoxAllOrder: {},
       CheckBoxAllItem: {},
       SelectedAllOrder: [],
-      SelectedAllItem: []
+      SelectedAllItem: [],
+      saveLoader: false
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -366,68 +368,76 @@ class TicketSystemOrder extends Component {
       let self = this;
       var CustID = this.props.custDetails;
       // var createdDate = moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
-      if (this.state.purchaseFrmStorID > 0) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Order/createOrder",
-          headers: authHeader(),
-          data: {
-            ProductBarCode: this.state.productBarCode,
-            OrderNumber: this.state.orderId,
-            BillID: this.state.billId,
-            TicketSourceID: this.state.selectedTicketSource,
-            ModeOfPaymentID: this.state.modeOfPayment,
-            TransactionDate: this.state.OrderCreatDate, ///createdDate,
-            InvoiceNumber: "",
-            InvoiceDate: this.state.OrderCreatDate, //createdDate,
-            OrderPrice: this.state.orderMRP,
-            PricePaid: this.state.pricePaid,
-            CustomerID: CustID,
-            PurchaseFromStoreId: this.state.purchaseFrmStorID,
-            Discount: this.state.discount,
-            Size: this.state.size,
-            RequireSize: this.state.requiredSize
+      this.setState({ saveLoader: true });
+      // if (this.state.purchaseFrmStorID > 0) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Order/createOrder",
+        headers: authHeader(),
+        data: {
+          ProductBarCode: this.state.productBarCode,
+          OrderNumber: this.state.orderId,
+          BillID: this.state.billId,
+          TicketSourceID: this.state.selectedTicketSource,
+          ModeOfPaymentID: this.state.modeOfPayment,
+          TransactionDate: this.state.OrderCreatDate, ///createdDate,
+          InvoiceNumber: "",
+          InvoiceDate: this.state.OrderCreatDate, //createdDate,
+          OrderPrice: this.state.orderMRP,
+          PricePaid: this.state.pricePaid,
+          CustomerID: CustID,
+          PurchaseFromStoreId: this.state.purchaseFrmStorID,
+          Discount: this.state.discount,
+          Size: this.state.size,
+          RequireSize: this.state.requiredSize
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+
+          if (status === "Success") {
+            let data = res.data.responseData;
+            NotificationManager.success(
+              "New Order added successfully.",
+              "",
+              2000
+            );
+            self.handleOrderSearchData(data);
+            self.handleChangeSaveManualTbl();
+            self.setState({
+              productBarCode: "",
+              billId: "",
+              orderId: "",
+              selectedTicketSource: 0,
+              modeOfPayment: 0,
+              OrderCreatDate: "",
+              orderMRP: "",
+              pricePaid: "",
+              purchaseFrmStorName: {},
+              discount: "",
+              size: "",
+              requiredSize: "",
+              message: status,
+              saveLoader: false
+            });
+          } else {
+            NotificationManager.error("Order not added.", "", 2000);
+            self.setState({
+              saveLoader: false
+            });
           }
         })
-          .then(function(res) {
-            debugger;
-            let status = res.data.message;
-
-            if (status === "Success") {
-              let data = res.data.responseData;
-              NotificationManager.success(
-                "New Order added successfully.",
-                "",
-                2000
-              );
-              self.handleOrderSearchData(data);
-              self.handleChangeSaveManualTbl();
-              self.setState({
-                productBarCode: "",
-                billId: "",
-                orderId: "",
-                selectedTicketSource: 0,
-                modeOfPayment: 0,
-                OrderCreatDate: "",
-                orderMRP: "",
-                pricePaid: "",
-                purchaseFrmStorName: {},
-                discount: "",
-                size: "",
-                requiredSize: "",
-                message:status
-              });
-            }
-          })
-          .catch(data => {
-            console.log(data);
-          });
-      } else {
-        NotificationManager.error("Order not added.", '', 2000);
-        self.setState({
-          validPurchaseStoreName: "Store name not exist"
+        .catch(data => {
+          console.log(data);
         });
-      }
+      // } else {
+      //   NotificationManager.error("Order not added.", "", 2000);
+      //   self.setState({
+      //     validPurchaseStoreName: "Store name not exist",
+      //     saveLoader: false
+      //   });
+      // }
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -1579,7 +1589,17 @@ class TicketSystemOrder extends Component {
                     type="button"
                     className="addmanual m-t-15"
                     onClick={this.hadleAddManuallyOrderData.bind(this)}
+                    // disabled={this.state.saveLoader}
                   >
+                    {/* {this.state.saveLoader ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )} */}
                     SAVE
                   </button>
                 </div>

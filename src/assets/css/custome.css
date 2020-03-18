@@ -3729,6 +3729,16 @@ table tr th:last-child {
   right: 65px;
   top: 15px;
 }
+.tic-createTic{
+  right: -179px;
+  top: 45px;
+}
+.template-user{
+  right: 80px;
+    top: 38px;
+    width: 160px;
+}
+
 /* my ticket ends */
 
 /* .cke_editable {
@@ -10514,6 +10524,25 @@ table tr th:last-child {
 .cursor-disabled {
   cursor: not-allowed;
 }
+.notifi-container {
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.notifi-container::-webkit-scrollbar {
+  width: 5px;
+}
+.notifi-container::-webkit-scrollbar-track {
+  background: #e9e9e9;
+  border-radius: 10px;
+}
+.notifi-container::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.notifi-container::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+}
 
 /* Responsive starts */
 
@@ -11237,4 +11266,13 @@ table tr th:last-child {
 }
   /* dashboard ends */
 }
+
+.alertckuser {
+  top:40% !important
+}
+.alertckuserinter{
+  right: 75px;
+  top:37% !important
+}
+
 /* Responsive ends */

@@ -209,11 +209,11 @@ class UserProfile extends Component {
     if (
      
       // this.state.fileName.length > 0 &&
-      this.state.selectedFirstName.length > 0 &&
-      this.state.selectedLastName.length > 0 &&
-      this.state.selectedMobile.length > 0 &&
-      this.state.selectedEmailID.length > 0 &&
-      this.state.selectedDesignation > 0
+      // this.state.selectedFirstName.length > 0 &&
+      // this.state.selectedLastName.length > 0 &&
+      this.state.selectedMobile.length > 0
+      // this.state.selectedEmailID.length > 0 &&
+      // this.state.selectedDesignation > 0
     ) {
       let self = this;
       var json = {
@@ -253,11 +253,11 @@ class UserProfile extends Component {
     } else {
       this.setState({
         // fileNameCompulsion: "Please select profile picture.",
-        FirstNameCompulsion: "Please enter first name.",
-        LastNameCompulsion: "Please enter last name.",
+        // FirstNameCompulsion: "Please enter first name.",
+        // LastNameCompulsion: "Please enter last name.",
         MobileCompulsion: "Please enter mobile number.",
-        EmailIDCompulsion: "Please enter emailID.",
-        DesignationCompulsion: "Please select designation."
+        // EmailIDCompulsion: "Please enter emailID.",
+        // DesignationCompulsion: "Please select designation."
       });
     }
   }
