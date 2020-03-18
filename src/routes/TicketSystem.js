@@ -146,7 +146,8 @@ class TicketSystem extends Component {
       FileData: [],
       idSizeArray: [],
       AssignToData: [],
-      followUpIds: ""
+      followUpIds: "",
+      viewPolicyModel: false
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -174,6 +175,10 @@ class TicketSystem extends Component {
     this.handleCopyToaster = this.handleCopyToaster.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
     this.handleTicketAssignFollowUp = this.handleTicketAssignFollowUp.bind(
+      this
+    );
+    this.handleviewPolicyModelOpen = this.handleviewPolicyModelOpen.bind(this);
+    this.handleviewPolicyModelClose = this.handleviewPolicyModelClose.bind(
       this
     );
   }
@@ -209,7 +214,14 @@ class TicketSystem extends Component {
       }
     }, 100);
   }
-
+  handleviewPolicyModelOpen = () => {
+    debugger;
+    this.setState({ viewPolicyModel: true });
+  };
+  handleviewPolicyModelClose =()=> {
+    debugger;
+    this.setState({ viewPolicyModel: false });
+  };
   toggleTitleSuggestion() {
     // this.setState({ toggleTitle: !this.state.toggleTitle });
     this.setState({ toggleTitle: true });
@@ -2455,6 +2467,7 @@ class TicketSystem extends Component {
                           </button>
                         </div>
                         <div>
+                          <span onClick={this.handleviewPolicyModelOpen}>
                           <a href="#!" className="copyblue-kbtext">
                             VIEW POLICY
                           </a>
@@ -2463,7 +2476,39 @@ class TicketSystem extends Component {
                             alt="viewpolicy"
                             className="viewpolicy-kb"
                           />
+                          </span>
+                         
                         </div>
+                        <Modal
+            open={this.state.viewPolicyModel}
+            onClose={this.handleviewPolicyModelClose}
+            modalId="viewPolicyModel"
+            classNames={{
+              modal: "schedule-width"
+            }}
+            overlayId="logout-ovrly"
+          >
+            <div>
+            <label>
+                        <b>View Policy</b>
+                      </label>
+
+
+
+
+
+
+
+
+             
+
+
+
+
+             
+            </div>
+          </Modal>
+
                       </div>
                     </div>
                   </div>

@@ -35,7 +35,7 @@ class StoreMaster extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: "",
+     
       selectState: 0,
       selectCity: 0,
       selectedBrand: [],
@@ -110,7 +110,10 @@ class StoreMaster extends Component {
       stateColor: "",
       pincodeColor: "",
       brandnameColor:"",
-      sortHeader:""
+      sortHeader:"",
+      bulkuploadCompulsion:"",
+      fileName: "",
+      fileN:[]
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -122,6 +125,7 @@ class StoreMaster extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.hanldeAddBulkUpload=this.hanldeAddBulkUpload.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -131,7 +135,47 @@ class StoreMaster extends Component {
     this.handleGetRegionList();
     this.handleGetStoreTypeList();
   }
+  hanldeAddBulkUpload() {
+    debugger;
+    if(
+      this.state.fileN.length > 0 && this.state.fileN !==[]
+    ){
+    let self = this;
 
+    const formData = new FormData();
+
+   
+    formData.append("file", this.state.fileN[0]);
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/BulkUploadStore",
+      headers: authHeader(),
+      data: formData
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success(
+            "File uploaded successfully."
+          );
+        } else {
+          NotificationManager.success(
+            "File not uploaded."
+          );
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    }else{
+      this.setState({
+        bulkuploadCompulsion:"Please select file."
+      });
+    }
+  }
   sortStatusAtoZ() {
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
@@ -667,10 +711,28 @@ class StoreMaster extends Component {
     }
   }
   fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    allFiles.push(selectedFiles[0]);
+    console.log(allFiles);
+    console.log(allFiles[0].name);
+    this.setState({
+       fileN: allFiles,
+       fileName:allFiles[0].name
+    });
+    //this.setState({ fileName: e.target.files[0].name });
   };
   fileDrop = e => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    allFiles.push(selectedFiles[0]);
+    this.setState({ 
+      fileN: allFiles,
+      fileName:allFiles[0].name
+     });
+   // this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
   fileDragOver = e => {
@@ -1776,7 +1838,7 @@ class StoreMaster extends Component {
                       </div>
                     </div>
                   )}
-                  <button className="butn" type="button">
+                  <button className="butn" onClick={this.hanldeAddBulkUpload.bind(this)}>
                     ADD
                   </button>
                 </div>

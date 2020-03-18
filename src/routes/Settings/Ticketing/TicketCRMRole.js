@@ -122,7 +122,7 @@ class TicketCRMRole extends Component {
 
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
-  StatusCloseModel() {
+  StatusCloseModel=e=> {
     this.setState({ StatusModel: false });
   }
 
