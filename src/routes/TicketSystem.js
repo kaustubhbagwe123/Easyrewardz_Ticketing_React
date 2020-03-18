@@ -906,7 +906,7 @@ class TicketSystem extends Component {
       } else {
         actionStatusId = 100;
       }
-      var editoreData = this.state.editorTemplateDetails;
+      // var editoreData = this.state.editorTemplateDetails;
       // var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
       // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
       var mailData = [];
@@ -966,7 +966,7 @@ class TicketSystem extends Component {
             self.handleTicketAssignFollowUp(TID);
             setTimeout(function() {
               self.props.history.push("myTicketlist");
-            }, 2000);
+            }, 1000);
           } else {
             NotificationManager.error(res.data.message, "", 2000);
           }

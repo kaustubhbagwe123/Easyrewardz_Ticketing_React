@@ -233,6 +233,8 @@ class Header extends Component {
         if (status === "Success") {
           self.handleGetNotificationList();
         }
+      }).catch(data => {
+        console.log(data);
       });
     }
   };
@@ -266,6 +268,8 @@ class Header extends Component {
           selectedUserProfilePicture: ""
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -377,6 +381,8 @@ class Header extends Component {
         localStorage.clear();
         window.location.href = "/";
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -422,6 +428,8 @@ class Header extends Component {
           workTimeHours: data.totalWorkingTime
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   };
 
@@ -462,6 +470,8 @@ class Header extends Component {
           notiCount: 0
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 

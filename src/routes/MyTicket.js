@@ -2083,6 +2083,7 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
+    debugger
     let self = this;
     axios({
       method: "post",
@@ -2093,7 +2094,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
