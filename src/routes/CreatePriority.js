@@ -857,6 +857,17 @@ class CreatePriority extends Component {
                             a.priortyName.length - b.priortyName.length,
                           sortDirections: ["descend", "ascend"],
                           
+                          onHeaderCell: (column) => {
+                            return {
+                            onClick: () => {
+                            this.StatusOpenModel.bind(
+                            this,
+                            "priortyName","Priorty Name"
+                          )
+                            }
+                            };
+                            }
+
                           // className:this.state.nameColor,
                            
                           // onClick:this.StatusOpenModel.bind(

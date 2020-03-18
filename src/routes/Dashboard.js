@@ -2279,7 +2279,7 @@ class Dashboard extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.");
+          NotificationManager.success("Scheduled successfully.", '', 1000);
           self.setState({
             scheduleRequired: "",
             selectedTeamMemberCommaSeperated: ""
@@ -2380,7 +2380,7 @@ class Dashboard extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success("Tickets assigned successfully.");
+            NotificationManager.success("Tickets assigned successfully.", '', 1000);
             // self.handleSearchTicketEscalation();
             self.ViewSearchData();
           }
@@ -3131,7 +3131,7 @@ class Dashboard extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Save Search parameter successfully.");
+            NotificationManager.success("Save Search parameter successfully.", '', 1000);
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: ""
@@ -3293,7 +3293,7 @@ class Dashboard extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully."
+            "Saved search data deleted successfully.", '', 1000
           );
           self.handleGetSaveSearchList();
         }

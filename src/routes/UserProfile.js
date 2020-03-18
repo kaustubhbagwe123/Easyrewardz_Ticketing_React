@@ -7,6 +7,7 @@ import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import { authHeader } from "./../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
+import {transferData} from "./../helpers/transferData";
 import {
   NotificationContainer,
   NotificationManager
@@ -45,8 +46,8 @@ class UserProfile extends Component {
     this.redirectToChangePassword=this.redirectToChangePassword.bind(this);
   }
   componentDidMount() {
-    debugger;
-   
+    // debugger;
+   console.log(transferData);
     this.handleGetUserProfileData();
     this.handleGetDesignationList();
   }
@@ -191,6 +192,7 @@ class UserProfile extends Component {
             imgFlag: "",
             loading: false
           });
+          transferData.sendProfilePic('');
         } else {
           self.setState({
             loading: false
@@ -207,11 +209,11 @@ class UserProfile extends Component {
     if (
      
       // this.state.fileName.length > 0 &&
-      this.state.selectedFirstName.length > 0 &&
-      this.state.selectedLastName.length > 0 &&
-      this.state.selectedMobile.length > 0 &&
-      this.state.selectedEmailID.length > 0 &&
-      this.state.selectedDesignation > 0
+      // this.state.selectedFirstName.length > 0 &&
+      // this.state.selectedLastName.length > 0 &&
+      this.state.selectedMobile.length > 0
+      // this.state.selectedEmailID.length > 0 &&
+      // this.state.selectedDesignation > 0
     ) {
       let self = this;
       var json = {
@@ -236,8 +238,10 @@ class UserProfile extends Component {
         .then(function(res) {
           debugger;
           let msg = res.data.message;
+          let data = res.data.responseData;
           if (msg === "Success") {
             NotificationManager.success("Profile updated successfully.", '', 1000);
+            transferData.sendProfilePic(data.profilePath);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
             }, 1000);
@@ -249,11 +253,11 @@ class UserProfile extends Component {
     } else {
       this.setState({
         // fileNameCompulsion: "Please select profile picture.",
-        FirstNameCompulsion: "Please enter first name.",
-        LastNameCompulsion: "Please enter last name.",
+        // FirstNameCompulsion: "Please enter first name.",
+        // LastNameCompulsion: "Please enter last name.",
         MobileCompulsion: "Please enter mobile number.",
-        EmailIDCompulsion: "Please enter emailID.",
-        DesignationCompulsion: "Please select designation."
+        // EmailIDCompulsion: "Please enter emailID.",
+        // DesignationCompulsion: "Please select designation."
       });
     }
   }
@@ -364,11 +368,12 @@ class UserProfile extends Component {
                         <label className="designation-name">First Name</label>
                         <input
                           type="text"
-                          className="txt-1"
+                          className="txt-1 cursor-disabled"
                           placeholder="Enter Name"
                           name="selectedFirstName"
                           value={this.state.selectedFirstName}
                           onChange={this.setUserData.bind(this)}
+                          disabled
                         />
                         {this.state.selectedFirstName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -382,11 +387,12 @@ class UserProfile extends Component {
                         <label className="designation-name">Last Name</label>
                         <input
                           type="text"
-                          className="txt-1"
+                          className="txt-1 cursor-disabled"
                           placeholder="Enter Name"
                           name="selectedLastName"
                           value={this.state.selectedLastName}
                           onChange={this.setUserData.bind(this)}
+                          disabled
                         />
                         {this.state.selectedLastName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -419,11 +425,12 @@ class UserProfile extends Component {
                         <label className="reports-to">Email ID</label>
                         <input
                           type="text"
-                          className="txt-1"
+                          className="txt-1 cursor-disabled"
                           placeholder="Enter Email"
                           name="selectedEmailID"
                           value={this.state.selectedEmailID}
                           onChange={this.setUserData.bind(this)}
+                          disabled
                         />
                         {this.state.selectedEmailID.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -437,10 +444,11 @@ class UserProfile extends Component {
                       <div className="">
                         <label className="reports-to">Designation</label>
                         <select
-                          className="add-select-category"
+                          className="add-select-category cursor-disabled"
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.setUserData.bind(this)}
+                          disabled
                         >
                           <option value="">Select Designation</option>
                           {this.state.DesignationData !== null &&

@@ -340,7 +340,6 @@ class CreateSLA extends Component {
       .then(function(res) {
         debugger;
         let slaIssueType = res.data.responseData;
-        // let selectedSlaIssueType = slaIssueType[0].issueTypeID;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
           // self.setState({ slaIssueType, selectedSlaIssueType });
@@ -1275,29 +1274,7 @@ class CreateSLA extends Component {
                                   onClick={this.handleClearSearchSla}
                                 />
                               </div>
-                              {/* <div className="filter-checkbox category-scroll">
-                                <ul>
-                                  {this.state.searchedSla !== null &&
-                                    this.state.searchedSla.map((item, i) => (
-                                      <li key={i}>
-                                        <input
-                                          type="checkbox"
-                                          id={"j" + item.issueTypeID}
-                                          name="searchedSla"
-                                          style={{ display: "none" }}
-                                          onChange={this.handleAddNoteCheck}
-                                          onChange={this.selectAboveIndividualSLA.bind(this, item.issueTypeID)}
-                                        />
-                                        <label
-                                          htmlFor={"j" + item.issueTypeID}
-                                          style={{ paddingLeft: "25px" }}
-                                        >
-                                          <span className="add-note">{item.issueTypeName}</span>
-                                        </label>
-                                      </li>
-                                    ))}
-                                </ul>
-                              </div> */}
+                             
                               <div className="category-button">
                                 <ul>
                                   <li>

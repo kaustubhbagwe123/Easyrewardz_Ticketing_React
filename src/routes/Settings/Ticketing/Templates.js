@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InfoImg from "./../../../assets/Images/icons8-info.svg";
 // import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import Cancel from "./../../../assets/Images/cancel.png";
+import Correct from "./../../../assets/Images/correct.png";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Popover } from "antd";
 import { Link } from "react-router-dom";
@@ -37,13 +39,13 @@ class Templates extends Component {
       TemplateSubject: "",
       editorContent: "",
       slaIssueType: [],
-      selectedSlaIssueType: [],
-      selectedIssueTypeCommaSeperated: "",
+      // selectedSlaIssueType: [],
+      // selectedIssueTypeCommaSeperated: "",
       editStatus: "",
       editIssueType: [],
       templateEdit: {},
       templatenamecopulsion: "",
-      issurtupeCompulsion: "",
+      issurtupeCompulsory: "",
       statusCompulsion: "",
       // templatesubjectCompulsion: "",
       // templatebodyCompulsion: "",
@@ -51,7 +53,9 @@ class Templates extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
-      
+      sortName: [],
+      sortCreatedBy: [],
+      sortStatus: [],
       updatedTemplatename: "",
       updatedArray: [],
       updatedStatus: "",
@@ -60,10 +64,19 @@ class Templates extends Component {
       isEdit: false,
       isLoading: false,
       editSaveLoading: false,
+      slaOvrlayShow: false,
+      slaShow: false,
       issueColor: "",
+      nameColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortHeader: "",
       editTemplateName: "",
       editIssueTypeSelect: "",
-     
+      issueColor: "",
+      SearchText: "",
+      indiSla: "",
+      AssignToData: []
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -74,11 +87,14 @@ class Templates extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.handleUpdateTemplate = this.handleUpdateTemplate.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.handleSlaButton = this.handleSlaButton.bind(this);
+    this.handleGetAgentList = this.handleGetAgentList.bind(this);
   }
 
   componentDidMount() {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
+    
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
     debugger;
@@ -131,18 +147,45 @@ class Templates extends Component {
             1000
           );
           self.handleGetTemplate();
-          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+          self.setState({ editSaveLoading: false, ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
         } else {
           self.setState({ editSaveLoading: false, ConfigTabsModal: false });
           NotificationManager.error("Template not update.", "", 1000);
         }
       })
       .catch(data => {
-        self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+        self.setState({ editSaveLoading: false, ConfigTabsModal: false ,TemplateSubject:"",editorContent:""});
         console.log(data);
       });
   }
 
+  handleGetAgentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AssignToData: data
+          });
+          self.checkAllAgentStart();
+        } else {
+          self.setState({
+            AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
@@ -170,22 +213,33 @@ class Templates extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data) {
-    debugger;
-
-    this.setState({ StatusModel: true, sortColumn: data });
+  StatusOpenModel(data, header) {
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
-
+  setAssignedToValue(e) {
+    debugger;
+    // let assign = e.currentTarget.value;
+    let ckData = this.state.editorContent;
+    let matchedArr = this.state.AssignToData.filter(
+      x => x.userID == e.currentTarget.value
+    );
+    let userName = matchedArr[0].fullName;
+    ckData += "@" + userName;
+    this.setState({ editorContent: ckData });
+  }
   setSortCheckStatus = (column, e) => {
     debugger;
 
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      issueColor: ""
+      issueColor: "",
+      nameColor: "",
+      createdColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -194,6 +248,24 @@ class Templates extends Component {
       itemsArray = this.state.template.filter(a => a.issueTypeName === data);
       this.setState({
         issueColor: "sort-column"
+      });
+    } else if (column === "templateName") {
+      this.state.template = this.state.sortAllData;
+      itemsArray = this.state.template.filter(a => a.templateName === data);
+      this.setState({
+        nameColor: "sort-column"
+      });
+    } else if (column === "createdBy") {
+      this.state.template = this.state.sortAllData;
+      itemsArray = this.state.template.filter(a => a.createdBy === data);
+      this.setState({
+        createdColor: "sort-column"
+      });
+    } else if (column === "templateStatus") {
+      this.state.template = this.state.sortAllData;
+      itemsArray = this.state.template.filter(a => a.templateStatus === data);
+      this.setState({
+        statusColor: "sort-column"
       });
     }
 
@@ -257,23 +329,179 @@ class Templates extends Component {
       templateEdit: data
     });
   };
-  setIssueType = e => {
+  // setIssueType = e => {
+  //   debugger;
+  //   if (e === null) {
+  //     e = [];
+  //     this.setState({ selectedSlaIssueType: e });
+  //   } else {
+  //     if (e !== null) {
+  //       var selectedIssueTypeCommaSeperated = Array.prototype.map
+  //         .call(e, s => s.issueTypeID)
+  //         .toString();
+  //     }
+  //     this.setState({
+  //       selectedSlaIssueType: e,
+  //       selectedIssueTypeCommaSeperated
+  //     });
+  //   }
+  // };
+  selectIndividualSLA = async (issueId, event) => {
     debugger;
-    if (e === null) {
-      e = [];
-      this.setState({ selectedSlaIssueType: e });
-    } else {
-      if (e !== null) {
-        var selectedIssueTypeCommaSeperated = Array.prototype.map
-          .call(e, s => s.issueTypeID)
-          .toString();
+    var indiSla = this.state.indiSla;
+    var separator = ",";
+    var values = indiSla.split(separator);
+    if (event.target.checked) {
+      // indiSla += issueId + ",";
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
       }
-      this.setState({
-        selectedSlaIssueType: e,
-        selectedIssueTypeCommaSeperated
+      await this.setState({
+        indiSla
       });
+      document.getElementById("issueTypeValue").textContent =
+        this.state.indiSla.split(",").length - 1 + " selected";
+    } else {
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
+      // var values = indiSla.split(separator);
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] == issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(",").length - 1 !== 0) {
+        document.getElementById("issueTypeValue").textContent =
+          this.state.indiSla.split(",").length - 1 + " selected";
+      } else {
+        document.getElementById("issueTypeValue").textContent = "Select";
+      }
     }
   };
+  selectAboveIndividualSLA = async (issueId, event) => {
+    debugger;
+    var indiSla = this.state.indiSla;
+    var separator = ",";
+    var values = indiSla.split(separator);
+    if (event.target.checked) {
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
+      }
+      await this.setState({
+        indiSla
+      });
+      document.getElementById("issueTypeValue").textContent =
+        this.state.indiSla.split(",").length - 1 + " selected";
+    } else {
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
+      // var values = indiSla.split(separator);
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] === issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(",").length - 1 !== 0) {
+        document.getElementById("issueTypeValue").textContent =
+          this.state.indiSla.split(",").length - 1 + " selected";
+      } else {
+        document.getElementById("issueTypeValue").textContent = "Select";
+      }
+    }
+  };
+  handleSearchSla = async e => {
+    debugger;
+    if (e.target.value.length > 3) {
+      await this.setState({
+        SearchText: e.target.value
+      });
+      this.handleGetSLAIssueType();
+    } else {
+      await this.setState({
+        SearchText: ""
+      });
+      this.handleGetSLAIssueType();
+    }
+  };
+  handleClearSearchSla = async e => {
+    debugger;
+    await this.setState({
+      SearchText: ""
+    });
+    document.getElementById("SlaInput").value = "";
+    this.handleGetSLAIssueType();
+  };
+  selectAllSLA = async event => {
+    debugger;
+    var indiSla = "";
+    var checkboxes = document.getElementsByName("allSla");
+    document.getElementById("issueTypeValue").textContent = "All Selected";
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === false) {
+        checkboxes[i].checked = true;
+      }
+    }
+    if (this.state.slaIssueType !== null) {
+      this.state.slaIssueType.forEach(allSlaId);
+      function allSlaId(item) {
+        indiSla += item.issueTypeID + ",";
+      }
+    }
+    await this.setState({
+      indiSla
+    });
+  };
+
+  selectNoSLA = async event => {
+    debugger;
+    var checkboxes = document.getElementsByName("allSla");
+    document.getElementById("issueTypeValue").textContent = "Select";
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === true) {
+        checkboxes[i].checked = false;
+      }
+    }
+    await this.setState({
+      indiSla: ""
+    });
+  };
+
+  handleSlaButton() {
+    debugger;
+    let slaShowOriginal = this.state.slaShow;
+    let slaShow = !slaShowOriginal;
+    let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
+    let slaOvrlayShow = !slaOvrlayShowOriginal;
+    this.setState({
+      slaShow,
+      slaOvrlayShow
+    });
+  }
+  handleCreate(issueTypeName) {
+    let { slaIssueType, value } = this.state;
+
+    let newOption = {
+      issueTypeName,
+      issueTypeID: slaIssueType.length + 1
+    };
+
+    this.setState({
+      value: newOption, // select new option
+      slaIssueType: [...slaIssueType, newOption] // add new option to our dataset
+    });
+  }
 
   setEditIssueType = e => {
     debugger;
@@ -283,9 +511,7 @@ class Templates extends Component {
           editIssueTypeSelect: "Please Select Issue Type",
           editIssueType: e
         });
-      }
-      else
-      {
+      } else {
         this.setState({
           editIssueType: e,
           editIssueTypeSelect: ""
@@ -327,13 +553,12 @@ class Templates extends Component {
   handleGetSLAIssueType() {
     debugger;
     let self = this;
-    var data = "template";
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
       headers: authHeader(),
       params: {
-        SearchText: data
+        SearchText: this.state.SearchText
       }
     })
       .then(function(res) {
@@ -341,6 +566,13 @@ class Templates extends Component {
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
+          // self.setState({ slaIssueType, selectedSlaIssueType });
+          var checkboxes = document.getElementsByName("allSla");
+          for (var i in checkboxes) {
+            if (checkboxes[i].checked === true) {
+              checkboxes[i].checked = false;
+            }
+          }
         }
       })
       .catch(data => {
@@ -380,7 +612,10 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
-    if(this.state.editorContent.length > 0 && this.state.editorContent.length <= 499){
+    if (
+      this.state.editorContent.length > 0 &&
+      this.state.editorContent.length <= 499
+    ) {
       if (this.state.editorContent.length > 0) {
         let self = this;
         this.setState({ ConfigTabsModal: false });
@@ -390,7 +625,7 @@ class Templates extends Component {
         } else if (this.state.TemplateIsActive === "false") {
           TemplateIsActive = false;
         }
-  
+
         axios({
           method: "post",
           url: config.apiUrl + "/Template/CreateTemplate",
@@ -399,7 +634,7 @@ class Templates extends Component {
             TemplateName: this.state.TemplateName,
             TemplateSubject: this.state.TemplateSubject,
             TemplateBody: this.state.editorContent,
-            issueTypes: this.state.selectedIssueTypeCommaSeperated,
+            issueTypes: this.state.indiSla,
             isTemplateActive: TemplateIsActive
           }
         })
@@ -417,7 +652,9 @@ class Templates extends Component {
                 TemplateSubject: "",
                 editorContent: "",
                 TemplateName: "",
-                selectedSlaIssueType: [],
+                indiSla: "",
+                SearchText: ""
+                // selectedSlaIssueType: [],
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
               });
@@ -435,10 +672,13 @@ class Templates extends Component {
         //   // templatebodyCompulsion: "Please Enter Descriptions"
         // });
       }
-    }else{
-      NotificationManager.error("Only 500 characters Allow In Descriptions.", "", 2000);
+    } else {
+      NotificationManager.error(
+        "Only 500 characters Allow In Descriptions.",
+        "",
+        2000
+      );
     }
- 
   }
 
   handleGetTemplate() {
@@ -466,6 +706,42 @@ class Templates extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < template.length; i++) {
+            if (!unique[template[i].templateName]) {
+              distinct.push(template[i].templateName);
+              unique[template[i].templateName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortName.push({ templateName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < template.length; i++) {
+            if (!unique[template[i].createdBy]) {
+              distinct.push(template[i].createdBy);
+              unique[template[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < template.length; i++) {
+            if (!unique[template[i].templateStatus]) {
+              distinct.push(template[i].templateStatus);
+              unique[template[i].templateStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ templateStatus: distinct[i] });
+          }
         }
         if (template !== null && template !== undefined) {
           self.setState({ template });
@@ -480,18 +756,21 @@ class Templates extends Component {
     debugger;
     if (
       this.state.TemplateName.length > 0 &&
-      this.state.selectedSlaIssueType !== null
+      this.state.indiSla !== ""
+      // this.state.selectedSlaIssueType !== null
     ) {
       this.setState({ ConfigTabsModal: true });
+      this.handleGetAgentList();
     } else {
       this.setState({
         templatenamecopulsion: "Please Enter Template Name",
-        issurtupeCompulsion: "Plaese Select IssueType"
+        issurtupeCompulsory: "Plaese Select IssueType"
       });
     }
   }
   handleConfigureTabsClose() {
-    this.setState({ ConfigTabsModal: false });
+    debugger;
+    this.setState({ ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
   }
 
   toggleEditModal() {
@@ -520,7 +799,9 @@ class Templates extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -542,49 +823,120 @@ class Templates extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "issueTypeName"
+                    ? this.state.sortIssueType !== null &&
+                      this.state.sortIssueType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.issueTypeName}
+                            value={item.issueTypeName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "issueTypeName"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.issueTypeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.issueTypeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "templateName"
+                    ? this.state.sortName !== null &&
+                      this.state.sortName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.templateName}
+                            value={item.templateName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "templateName"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.templateName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.templateName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortCreatedBy !== null &&
+                      this.state.sortCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "templateStatus"
+                    ? this.state.sortStatus !== null &&
+                      this.state.sortStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.templateStatus}
+                            value={item.templateStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "templateStatus"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.templateStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.templateStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "issueTypeName"
-                  ? this.state.sortIssueType !== null &&
-                    this.state.sortIssueType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.issueTypeName}
-                          value={item.issueTypeName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "issueTypeName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.issueTypeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.issueTypeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
               </div>
             </div>
           </Modal>
@@ -614,7 +966,14 @@ class Templates extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.nameColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "templateName",
+                              "Template Name"
+                            )}
+                          >
                             Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -627,7 +986,8 @@ class Templates extends Component {
                             className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "issueTypeName"
+                              "issueTypeName",
+                              "IssueType"
                             )}
                           >
                             Issue Type
@@ -656,7 +1016,14 @@ class Templates extends Component {
                       {
                         id: "createdBy",
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy",
+                              "Created By"
+                            )}
+                          >
                             Created by
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -712,7 +1079,14 @@ class Templates extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "templateStatus",
+                              "Status"
+                            )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -852,7 +1226,126 @@ class Templates extends Component {
                       )}
                     </div>
                     <div className="divSpace">
-                      <div className="dropDrownSpace">
+                      <div className="divSpace">
+                        <div className="dropDrownSpace issuetype-cusdrp">
+                          <label className="reports-to">Issue Type</label>
+                          <div className="dropdown">
+                            <button
+                              className="btn issuesladrop"
+                              type="button"
+                              id="issueTypeValue"
+                              onClick={this.handleSlaButton}
+                            >
+                              Select
+                              <span className="caret"></span>
+                            </button>
+                            {this.state.indiSla === "" && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.issurtupeCompulsory}
+                              </p>
+                            )}
+                            <div
+                              className={
+                                this.state.slaShow
+                                  ? "dropdown-menu dropdown-menu-sla show"
+                                  : "dropdown-menu dropdown-menu-sla"
+                              }
+                            >
+                              <div className="cat-mainbox">
+                                <div className="sla-cancel-search">
+                                  <input
+                                    type="text"
+                                    className="searchf"
+                                    placeholder="Search"
+                                    maxLength={25}
+                                    name="store_code"
+                                    onChange={this.handleSearchSla}
+                                    id="SlaInput"
+                                  />
+
+                                  <img
+                                    src={Cancel}
+                                    alt="cancelimg"
+                                    onClick={this.handleClearSearchSla}
+                                  />
+                                </div>
+
+                                <div className="category-button">
+                                  <ul>
+                                    <li>
+                                      <label
+                                        onClick={this.selectAllSLA.bind(this)}
+                                      >
+                                        Select All
+                                      </label>
+                                    </li>
+                                    <li>
+                                      <label
+                                        onClick={this.selectNoSLA.bind(this)}
+                                      >
+                                        Clear
+                                      </label>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div className="category-box category-scroll">
+                                  <ul>
+                                    {this.state.slaIssueType !== null &&
+                                      this.state.slaIssueType.map((item, i) => (
+                                        <li key={i}>
+                                          <input
+                                            type="checkbox"
+                                            id={"i" + item.issueTypeID}
+                                            name="allSla"
+                                            onChange={this.selectIndividualSLA.bind(
+                                              this,
+                                              item.issueTypeID
+                                            )}
+                                          />
+                                          <label
+                                            htmlFor={"i" + item.issueTypeID}
+                                          >
+                                            {item.issueTypeName}{" "}
+                                            <div>
+                                              <img
+                                                src={Correct}
+                                                alt="Checked"
+                                              />
+                                            </div>
+                                          </label>
+                                          <span>{item.brandName}</span>
+                                          <span>{item.categoryName}</span>
+                                          <span>{item.subCategoryName}</span>
+                                        </li>
+                                      ))}
+                                  </ul>
+                                </div>
+                              </div>
+                              <div className="category-buttonbtm">
+                                <ul>
+                                  <li>
+                                    <button
+                                      className="cancel"
+                                      onClick={this.handleSlaButton}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </li>
+                                  <li style={{ float: "right" }}>
+                                    <button
+                                      className="done"
+                                      onClick={this.handleSlaButton}
+                                    >
+                                      Done
+                                    </button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
 
                         <div className="normal-dropdown mt-0 dropdown-setting temp-multi schedule-multi">
@@ -876,7 +1369,7 @@ class Templates extends Component {
                             {this.state.issurtupeCompulsion}
                           </p>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
@@ -943,6 +1436,21 @@ class Templates extends Component {
                           )} */}
                         </div>
                         <Modal.Body>
+                          <div className="tic-det-ck-user template-user myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(this)}
+                            >
+                              <option value="0">Users</option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.userID}>
+                                    {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
                           <div className="template-editor">
                             <CKEditor
                               content={this.state.editorContent}
@@ -1032,7 +1540,7 @@ class Templates extends Component {
                     isMulti
                   />
                 </div>
-                {this.state.editIssueType!==null && (
+                {this.state.editIssueType !== null && (
                   <p style={{ color: "red", marginBottom: "0px" }}>
                     {this.state.editIssueTypeSelect}
                   </p>

@@ -57,7 +57,7 @@ class AddSearchMyTicket extends Component {
     //debugger;
     setTimeout(() => {
       if (this.state.copied && this.state.copied) {
-        NotificationManager.success("Copied.");
+        NotificationManager.success("Copied.", '', 1000);
       }
     }, 100);
   }
@@ -150,7 +150,7 @@ class AddSearchMyTicket extends Component {
           if (validCheck === "Success") {
             self.handleAddCustomerSave();
           } else {
-            NotificationManager.error(res.data.responseData);
+            NotificationManager.error(res.data.responseData, '', 1000);
           }
           // let GetCustId = SearchData.customerID;
         })
@@ -286,7 +286,7 @@ class AddSearchMyTicket extends Component {
                   </div>
                 </div>
               </form>
-              {this.state.SrchEmailPhone.length == 0 && (
+              {this.state.SrchEmailPhone.length === 0 && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
                   {this.state.searchCompulsion}
                 </p>
