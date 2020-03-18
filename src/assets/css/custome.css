@@ -3724,6 +3724,10 @@ table tr th:last-child {
   padding: 5px 25px 5px 15px !important;
   background-position: right 10px center !important;
 }
+.tic-det-Freecmd {
+  right: 65px;
+  top: 15px;
+}
 /* my ticket ends */
 
 /* .cke_editable {
@@ -10406,6 +10410,7 @@ table tr th:last-child {
   border: none;
   text-transform: uppercase;
   font-size: 14px;
+  cursor: pointer;
 }
 .category-buttonbtm .done {
   margin-top: 0;
@@ -10415,6 +10420,7 @@ table tr th:last-child {
   text-transform: uppercase;
   padding: 10px 40px;
   font-size: 14px;
+  cursor: pointer;
 }
 .category-buttonbtm {
   padding: 12px 15px 15px;

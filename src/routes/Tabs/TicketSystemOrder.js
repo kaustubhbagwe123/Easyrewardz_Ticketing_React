@@ -414,7 +414,8 @@ class TicketSystemOrder extends Component {
                 purchaseFrmStorName: {},
                 discount: "",
                 size: "",
-                requiredSize: ""
+                requiredSize: "",
+                message:status
               });
             }
           })

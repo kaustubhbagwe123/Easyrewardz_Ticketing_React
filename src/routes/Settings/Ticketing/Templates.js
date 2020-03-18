@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InfoImg from "./../../../assets/Images/icons8-info.svg";
 // import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import Cancel from "./../../../assets/Images/cancel.png";
+import Correct from "./../../../assets/Images/correct.png";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Popover } from "antd";
 import { Link } from "react-router-dom";
@@ -37,13 +39,13 @@ class Templates extends Component {
       TemplateSubject: "",
       editorContent: "",
       slaIssueType: [],
-      selectedSlaIssueType: [],
-      selectedIssueTypeCommaSeperated: "",
+      // selectedSlaIssueType: [],
+      // selectedIssueTypeCommaSeperated: "",
       editStatus: "",
       editIssueType: [],
       templateEdit: {},
       templatenamecopulsion: "",
-      issurtupeCompulsion: "",
+      issurtupeCompulsory: "",
       statusCompulsion: "",
       // templatesubjectCompulsion: "",
       // templatebodyCompulsion: "",
@@ -59,10 +61,14 @@ class Templates extends Component {
       isEdit: false,
       isLoading: false,
       editSaveLoading: false,
+      slaOvrlayShow: false,
+      slaShow: false,
       issueColor: "",
       editTemplateName: "",
       editIssueTypeSelect: "",
-      issueColor: ""
+      issueColor: "",
+      SearchText: "",
+      indiSla: "",
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -73,6 +79,7 @@ class Templates extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.handleUpdateTemplate = this.handleUpdateTemplate.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.handleSlaButton = this.handleSlaButton.bind(this);
   }
 
   componentDidMount() {
@@ -256,23 +263,179 @@ class Templates extends Component {
       templateEdit: data
     });
   };
-  setIssueType = e => {
+  // setIssueType = e => {
+  //   debugger;
+  //   if (e === null) {
+  //     e = [];
+  //     this.setState({ selectedSlaIssueType: e });
+  //   } else {
+  //     if (e !== null) {
+  //       var selectedIssueTypeCommaSeperated = Array.prototype.map
+  //         .call(e, s => s.issueTypeID)
+  //         .toString();
+  //     }
+  //     this.setState({
+  //       selectedSlaIssueType: e,
+  //       selectedIssueTypeCommaSeperated
+  //     });
+  //   }
+  // };
+  selectIndividualSLA = async (issueId, event) => {
     debugger;
-    if (e === null) {
-      e = [];
-      this.setState({ selectedSlaIssueType: e });
-    } else {
-      if (e !== null) {
-        var selectedIssueTypeCommaSeperated = Array.prototype.map
-          .call(e, s => s.issueTypeID)
-          .toString();
+    var indiSla = this.state.indiSla;
+    var separator = ",";
+    var values = indiSla.split(separator);
+    if (event.target.checked) {
+      // indiSla += issueId + ",";
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
       }
-      this.setState({
-        selectedSlaIssueType: e,
-        selectedIssueTypeCommaSeperated
+      await this.setState({
+        indiSla
       });
+      document.getElementById("issueTypeValue").textContent =
+        this.state.indiSla.split(",").length - 1 + " selected";
+    } else {
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
+      // var values = indiSla.split(separator);
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] == issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(",").length - 1 !== 0) {
+        document.getElementById("issueTypeValue").textContent =
+          this.state.indiSla.split(",").length - 1 + " selected";
+      } else {
+        document.getElementById("issueTypeValue").textContent = "Select";
+      }
     }
   };
+  selectAboveIndividualSLA = async (issueId, event) => {
+    debugger;
+    var indiSla = this.state.indiSla;
+    var separator = ",";
+    var values = indiSla.split(separator);
+    if (event.target.checked) {
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
+      }
+      await this.setState({
+        indiSla
+      });
+      document.getElementById("issueTypeValue").textContent =
+        this.state.indiSla.split(",").length - 1 + " selected";
+    } else {
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
+      // var values = indiSla.split(separator);
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] === issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(",").length - 1 !== 0) {
+        document.getElementById("issueTypeValue").textContent =
+          this.state.indiSla.split(",").length - 1 + " selected";
+      } else {
+        document.getElementById("issueTypeValue").textContent = "Select";
+      }
+    }
+  };
+  handleSearchSla = async e => {
+    debugger;
+    if (e.target.value.length > 3) {
+      await this.setState({
+        SearchText: e.target.value
+      });
+      this.handleGetSLAIssueType();
+    } else {
+      await this.setState({
+        SearchText: ""
+      });
+      this.handleGetSLAIssueType();
+    }
+  };
+  handleClearSearchSla = async e => {
+    debugger;
+    await this.setState({
+      SearchText: ""
+    });
+    document.getElementById("SlaInput").value = "";
+    this.handleGetSLAIssueType();
+  };
+  selectAllSLA = async event => {
+    debugger;
+    var indiSla = "";
+    var checkboxes = document.getElementsByName("allSla");
+    document.getElementById("issueTypeValue").textContent = "All Selected";
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === false) {
+        checkboxes[i].checked = true;
+      }
+    }
+    if (this.state.slaIssueType !== null) {
+      this.state.slaIssueType.forEach(allSlaId);
+      function allSlaId(item) {
+        indiSla += item.issueTypeID + ",";
+      }
+    }
+    await this.setState({
+      indiSla
+    });
+  };
+  
+  selectNoSLA = async event => {
+    debugger;
+    var checkboxes = document.getElementsByName("allSla");
+    document.getElementById("issueTypeValue").textContent = "Select";
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === true) {
+        checkboxes[i].checked = false;
+      }
+    }
+    await this.setState({
+      indiSla: ""
+    });
+  };
+
+  handleSlaButton() {
+    debugger
+    let slaShowOriginal = this.state.slaShow;
+    let slaShow = !slaShowOriginal;
+    let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
+    let slaOvrlayShow = !slaOvrlayShowOriginal;
+    this.setState({
+      slaShow,
+      slaOvrlayShow
+    });
+  }
+  handleCreate(issueTypeName) {
+    let { slaIssueType, value } = this.state;
+
+    let newOption = {
+      issueTypeName,
+      issueTypeID: slaIssueType.length + 1
+    };
+
+    this.setState({
+      value: newOption, // select new option
+      slaIssueType: [...slaIssueType, newOption] // add new option to our dataset
+    });
+  }
 
   setEditIssueType = e => {
     debugger;
@@ -326,13 +489,12 @@ class Templates extends Component {
   handleGetSLAIssueType() {
     debugger;
     let self = this;
-    var data = "template";
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
       headers: authHeader(),
       params: {
-        SearchText: data
+        SearchText: this.state.SearchText
       }
     })
       .then(function(res) {
@@ -340,6 +502,13 @@ class Templates extends Component {
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
+          // self.setState({ slaIssueType, selectedSlaIssueType });
+          var checkboxes = document.getElementsByName("allSla");
+          for (var i in checkboxes) {
+            if (checkboxes[i].checked === true) {
+              checkboxes[i].checked = false;
+            }
+          }
         }
       })
       .catch(data => {
@@ -398,7 +567,7 @@ class Templates extends Component {
             TemplateName: this.state.TemplateName,
             TemplateSubject: this.state.TemplateSubject,
             TemplateBody: this.state.editorContent,
-            issueTypes: this.state.selectedIssueTypeCommaSeperated,
+            issueTypes: this.state.indiSla,
             isTemplateActive: TemplateIsActive
           }
         })
@@ -416,7 +585,9 @@ class Templates extends Component {
                 TemplateSubject: "",
                 editorContent: "",
                 TemplateName: "",
-                selectedSlaIssueType: [],
+                indiSla:'',
+                SearchText: "",
+                // selectedSlaIssueType: [],
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
               });
@@ -479,13 +650,14 @@ class Templates extends Component {
     debugger;
     if (
       this.state.TemplateName.length > 0 &&
-      this.state.selectedSlaIssueType !== null
+      this.state.indiSla !== ""
+      // this.state.selectedSlaIssueType !== null
     ) {
       this.setState({ ConfigTabsModal: true });
     } else {
       this.setState({
         templatenamecopulsion: "Please Enter Template Name",
-        issurtupeCompulsion: "Plaese Select IssueType"
+        issurtupeCompulsory: "Plaese Select IssueType"
       });
     }
   }
@@ -843,7 +1015,121 @@ class Templates extends Component {
                       )}
                     </div>
                     <div className="divSpace">
-                      <div className="dropDrownSpace">
+                    <div className="divSpace">
+                      <div className="dropDrownSpace issuetype-cusdrp">
+                        <label className="reports-to">Issue Type</label>
+                        <div className="dropdown">
+                          <button
+                            className="btn issuesladrop"
+                            type="button"
+                            id="issueTypeValue"
+                            onClick={this.handleSlaButton}
+                          >
+                            Select
+                            <span className="caret"></span>
+                          </button>
+                          {this.state.indiSla === "" && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.issurtupeCompulsory}
+                            </p>
+                          )}
+                          <div
+                            className={
+                              this.state.slaShow
+                                ? "dropdown-menu dropdown-menu-sla show"
+                                : "dropdown-menu dropdown-menu-sla"
+                            }
+                          >
+                            <div className="cat-mainbox">
+                              <div className="sla-cancel-search">
+                                <input
+                                  type="text"
+                                  className="searchf"
+                                  placeholder="Search"
+                                  maxLength={25}
+                                  name="store_code"
+                                  onChange={this.handleSearchSla}
+                                  id="SlaInput"
+                                />
+
+                                <img
+                                  src={Cancel}
+                                  alt="cancelimg"
+                                  onClick={this.handleClearSearchSla}
+                                />
+                              </div>
+                             
+                              <div className="category-button">
+                                <ul>
+                                  <li>
+                                    <label
+                                      onClick={this.selectAllSLA.bind(this)}
+                                    >
+                                      Select All
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <label
+                                      onClick={this.selectNoSLA.bind(this)}
+                                    >
+                                      Clear
+                                    </label>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="category-box category-scroll">
+                                <ul>
+                                  {this.state.slaIssueType !== null &&
+                                    this.state.slaIssueType.map((item, i) => (
+                                      <li key={i}>
+                                        <input
+                                          type="checkbox"
+                                          id={"i" + item.issueTypeID}
+                                          name="allSla"
+                                          onChange={this.selectIndividualSLA.bind(
+                                            this,
+                                            item.issueTypeID
+                                          )}
+                                        />
+                                        <label htmlFor={"i" + item.issueTypeID}>
+                                          {item.issueTypeName}{" "}
+                                          <div>
+                                            <img src={Correct} alt="Checked" />
+                                          </div>
+                                        </label>
+                                        <span>{item.brandName}</span>
+                                        <span>{item.categoryName}</span>
+                                        <span>{item.subCategoryName}</span>
+                                      </li>
+                                    ))}
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="category-buttonbtm">
+                              <ul>
+                                <li>
+                                  <button
+                                    className="cancel"
+                                    onClick={this.handleSlaButton}
+                                  >
+                                    Cancel
+                                  </button>
+                                </li>
+                                <li style={{ float: "right" }}>
+                                  <button
+                                    className="done"
+                                    onClick={this.handleSlaButton}
+                                  >
+                                    Done
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      {/* <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
 
                         <div className="normal-dropdown mt-0 dropdown-setting temp-multi schedule-multi">
@@ -867,7 +1153,7 @@ class Templates extends Component {
                             {this.state.issurtupeCompulsion}
                           </p>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
