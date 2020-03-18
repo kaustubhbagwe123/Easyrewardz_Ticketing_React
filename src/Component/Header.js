@@ -119,6 +119,8 @@ class Header extends Component {
         else if (pic.profilePic.length > 0) {
             this.setState({ selectedUserProfilePicture: pic.profilePic });
         }
+      } else if (pic.profilePic == '') {
+        this.setState({ selectedUserProfilePicture: '' });
       }
   });
     var _token = window.localStorage.getItem("token");
