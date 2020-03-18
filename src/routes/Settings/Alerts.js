@@ -93,7 +93,8 @@ class Alerts extends Component {
       editModal: false,
       alertEdit: {},
       isEdit: false,
-      editSaveLoading: false
+      editSaveLoading: false,
+      editalertTypeCompulsion: "Please Enter Alert Type"
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -359,10 +360,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.", '', 1000);
+          NotificationManager.success("Alert deleted successfully.", "", 1000);
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.", '', 1000);
+          NotificationManager.error("Alert not deleted.", "", 1000);
         }
       })
       .catch(data => {
@@ -454,7 +455,11 @@ class Alerts extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Alert updated successfully.", '', 1000);
+            NotificationManager.success(
+              "Alert updated successfully.",
+              "",
+              1000
+            );
             self.handleGetAlert();
             self.setState({
               AddAlertTabsPopup: false,
@@ -465,7 +470,7 @@ class Alerts extends Component {
               editSaveLoading: false,
               AddAlertTabsPopup: false
             });
-            NotificationManager.error("Alert not updated.", '', 1000);
+            NotificationManager.error("Alert not updated.", "", 1000);
           }
         })
         .catch(data => {
@@ -476,7 +481,7 @@ class Alerts extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.", '', 1000);
+      NotificationManager.error("Alert not updated.", "", 1000);
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name."
       });
@@ -763,9 +768,9 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.", '', 1000);
-        }else if(status === "Record Already Exists "){
-          NotificationManager.error("Record Already Exists.", '', 1000);
+          NotificationManager.success("Record Saved successfully.", "", 1000);
+        } else if (status === "Record Already Exists ") {
+          NotificationManager.error("Record Already Exists.", "", 1000);
         }
         self.handleAddAlertTabsClose();
       })
@@ -783,17 +788,33 @@ class Alerts extends Component {
 
     var data = this.state.alertEdit;
     if (name === "selectedAlertType") {
-      var alertName = e.target.selectedOptions[0].innerText;
-      data[name] = value;
-      data["AlertTypeName"] = alertName;
+      if (value == "Select Alert") {
+        var alertName = e.target.selectedOptions[0].innerText;
+        data[name] = value;
+        data["AlertTypeName"] = alertName;
+        this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
+        this.setState({ alertEdit: data });
+      } else {
+        var alertName = e.target.selectedOptions[0].innerText;
+        data[name] = value;
+        data["AlertTypeName"] = alertName;
+        this.setState({ editalertTypeCompulsion: "" });
+        this.setState({ alertEdit: data });
+      }
     } else {
       data[name] = value;
+      this.setState({ alertEdit: data });
     }
 
-    this.setState({ alertEdit: data });
+    
   }
   handleOpenAdd() {
-    this.setState({ AddAlertTabsPopup: true, editModal: false });
+    debugger;
+    if (this.state.alertEdit.AlertTypeName == "Select Alert") {
+      this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
+    } else {
+      this.setState({ AddAlertTabsPopup: true, editModal: false });
+    }
   }
   render() {
     return (
@@ -1842,9 +1863,9 @@ class Alerts extends Component {
                     </option>
                   ))}
               </select>
-              {this.state.alertEdit.selectedAlertType === 0 && (
+              {this.state.alertEdit.AlertTypeName === "Select Alert" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
-                  {this.state.alertTypeCompulsion}
+                  {this.state.editalertTypeCompulsion}
                 </p>
               )}
             </div>
