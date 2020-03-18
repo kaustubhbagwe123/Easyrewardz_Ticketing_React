@@ -788,7 +788,7 @@ table tr th:last-child {
 .smg-Img1 {
   width: 22px;
   height: 16px;
-  margin: 7px 0 0 88px;
+  margin: 0 0 0 88px;
 }
 .up {
   width: 18px;
@@ -4755,7 +4755,7 @@ progress::-webkit-progress-bar {
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  margin-top: -6px;
+  margin-top: 0;
 }
 
 .ScheduleDate-to {
@@ -10457,8 +10457,8 @@ table tr th:last-child {
   padding: 10px;
   margin: 100px auto;
   display: inline-block;
-  max-width: 50%;
-  min-width: 50%;
+  /* max-width: 50%;
+  min-width: 50%; */
 }
 .commentImg {
   width: 25px;
@@ -10801,6 +10801,18 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 70%;
     min-width: 70%;
+}
+#categoryEditModal {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: auto;
+  display: inline-block;
+  max-width: 70%;
+  min-width: 70%;
+}
+.EditModa .modal-dialog {
+  width: 70%;
 }
 }
 @media only screen and (max-width: 767px) {
@@ -11214,8 +11226,17 @@ table tr th:last-child {
     width: 100%;
     margin-top: 15px;
   }
-  .edtpadding {
-    padding: 0;
+  #categoryEditModal {
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 10px;
+    margin: auto;
+    display: inline-block;
+    max-width: 100%;
+    min-width: 100%;
+}
+.EditModa .modal-dialog {
+  width: 100%;
 }
   /* dashboard ends */
 }

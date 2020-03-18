@@ -1,5 +1,5 @@
 let config = {
-    //apiUrl: 'https://localhost:44357/api',
+    // apiUrl: 'https://localhost:44357/api',
     hierarchyTemplate:[
     ["Designation", "ReportTo","Status"],
     ["HOD", "Root","Active"],
@@ -47,7 +47,7 @@ let config = {
     // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
     //apiUrl: 'http://10.50.250.18:9512/api'
     //  apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
-    // apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
+    apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
     };
     
     
