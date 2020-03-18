@@ -211,8 +211,8 @@ class MyTicket extends Component {
       AssignToData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
-      freetextCommentCompulsory: "",
-      viewPolicyModel: false
+      freetextCommentCompulsory: ""
+     
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -242,10 +242,7 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
-    this.handleviewPolicyModelOpen = this.handleviewPolicyModelOpen.bind(this);
-    this.handleviewPolicyModelClose = this.handleviewPolicyModelClose.bind(
-      this
-    );
+  
   }
 
   componentDidUpdate() {
@@ -276,14 +273,7 @@ class MyTicket extends Component {
       this.props.history.push("myTicketlist");
     }
   }
-  handleviewPolicyModelOpen = () => {
-    debugger;
-    this.setState({ viewPolicyModel: true });
-  };
-  handleviewPolicyModelClose = () => {
-    debugger;
-    this.setState({ viewPolicyModel: false });
-  };
+ 
 
   onAddCKEditorChange = evt => {
     ////debugger;
@@ -2620,16 +2610,9 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
-        <div>
-          <Modal
-            open={this.state.viewPolicyModel}
-            onClose={this.handleviewPolicyModelClose.bind(this)}
-          >
-            <div>
-              <label>View Policy</label>
-            </div>
-          </Modal>
-        </div>
+       
+         
+      
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -3840,9 +3823,11 @@ class MyTicket extends Component {
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
-                                                selected={moment(
-                                                  row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY")}
+                                                selected={
+                                                  // moment(
+                                                  new Date(row.original.storeVisitDate)
+                                                // ).format("MM/DD/YYYY")
+                                              }
                                                 placeholderText="MM/DD/YYYY"
                                                 showMonthDropdown
                                                 showYearDropdown
@@ -5273,23 +5258,21 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                            <span>
-                              <a href="#!" className="copyblue-kbtext">
-                                VIEW POLICY
-                              </a>
-                              <img
-                                src={ViewBlue}
-                                alt="viewpolicy"
-                                className="viewpolicy-kb"
-                              />
-                            </span>
+                          <a href="#!" className="copyblue-kbtext">
+                            VIEW POLICY
+                          </a>
+                          <img
+                            src={ViewBlue}
+                            alt="viewpolicy"
+                            className="viewpolicy-kb"
+                          />
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
-
+               
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}
