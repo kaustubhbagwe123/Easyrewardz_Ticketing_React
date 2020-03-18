@@ -5491,7 +5491,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                debugger;
+                                // debugger;
                                 return (
                                   <div key={j}>
                                     <div>
