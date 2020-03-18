@@ -112,11 +112,13 @@ class Header extends Component {
     console.log(transferData);
     this.subscription = transferData.getProfilePic().subscribe(pic => {
       console.log(1111, pic);
-      if (pic.profilePic == '') {
-        this.setState({ selectedUserProfilePicture: '' });
-      }
-      else if (pic.profilePic.length > 0) {
-          this.setState({ selectedUserProfilePicture: pic.profilePic });
+      if (pic.profilePic) {
+        if (pic.profilePic == '') {
+          this.setState({ selectedUserProfilePicture: '' });
+        }
+        else if (pic.profilePic.length > 0) {
+            this.setState({ selectedUserProfilePicture: pic.profilePic });
+        }
       }
   });
     var _token = window.localStorage.getItem("token");
