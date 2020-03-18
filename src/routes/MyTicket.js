@@ -211,7 +211,8 @@ class MyTicket extends Component {
       AssignToData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
-      freetextCommentCompulsory: ""
+      freetextCommentCompulsory: "",
+      viewPolicyModel:false
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -241,6 +242,8 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
+    this.handleviewPolicyModelOpen=this.handleviewPolicyModelOpen.bind(this);
+    this.handleviewPolicyModelClose=this.handleviewPolicyModelClose.bind(this);
   }
 
   componentDidUpdate() {
@@ -270,6 +273,14 @@ class MyTicket extends Component {
     } else {
       this.props.history.push("myTicketlist");
     }
+  }
+  handleviewPolicyModelOpen = () =>{
+    debugger;
+    this.setState({viewPolicyModel:true });
+  }
+  handleviewPolicyModelClose = () =>{
+    debugger;
+    this.setState({viewPolicyModel:false });
   }
 
   onAddCKEditorChange = evt => {
@@ -2596,6 +2607,19 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
+         <div>
+                <Modal
+                 open={this.state.viewPolicyModel}
+                 onClose={this.handleviewPolicyModelClose.bind(this)}
+                >
+                  <div>
+
+                    <label>View Policy</label>
+
+                  </div>
+
+                </Modal>
+                </div>
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -5238,8 +5262,9 @@ class MyTicket extends Component {
                               SEARCH
                             </button>
                           </div>
-                          <div style={{ marginTop: "275px" }}>
-                            <a href="#!" className="copyblue-kbtext">
+                          <div style={{ marginTop: "275px" }}  >
+                            <span>
+                            <a href="#!" className="copyblue-kbtext"  >
                               VIEW POLICY
                             </a>
                             <img
@@ -5247,12 +5272,17 @@ class MyTicket extends Component {
                               alt="viewpolicy"
                               className="viewpolicy-kb"
                             />
+                            </span>
+
+                          
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
+               
+                
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}

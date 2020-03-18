@@ -198,7 +198,7 @@ class TicketSystem extends Component {
         this.state.copiedNumber &&
         this.state.customerData.customerPhoneNumber
       ) {
-        NotificationManager.success("Copied.");
+        NotificationManager.success("Copied.", '', 1000);
       }
     }, 100);
   }

@@ -977,6 +977,7 @@ class Alerts extends Component {
                 >clear search</a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <div className="FTypeScroll">
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -1057,6 +1058,8 @@ class Alerts extends Component {
                       </div>
                     ))
                   : null}
+                </div>
+                
 
               </div>
             </div>

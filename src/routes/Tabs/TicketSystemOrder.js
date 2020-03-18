@@ -423,7 +423,7 @@ class TicketSystemOrder extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Order not added.");
+        NotificationManager.error("Order not added.", '', 2000);
         self.setState({
           validPurchaseStoreName: "Store name not exist"
         });
