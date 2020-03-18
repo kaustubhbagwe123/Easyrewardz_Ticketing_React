@@ -70,7 +70,7 @@ class SingIn extends Component {
         if (msg === "Success") {
           if (data !== null) {
             for (var i = 0; i <= data.length; i++) {
-              if (i == data.length) {
+              if (i === data.length) {
                 NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2000);
                 self.setState({
                   loading: false

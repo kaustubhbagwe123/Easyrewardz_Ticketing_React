@@ -23,8 +23,8 @@ import {
   NotificationManager
 } from "react-notifications";
 import Select from "react-select";
-import { CSVLink, CSVDownload } from "react-csv";
-import { string } from "prop-types";
+import { CSVLink } from "react-csv";
+// import { string } from "prop-types";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -457,11 +457,11 @@ class Users extends Component {
 
     if (name === "email_ID") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-      if (e.target.value == "") {
+      if (e.target.value === "") {
         this.setState({
           editEmailFlag: true
         });
-      } else if (reg.test(e.target.value) == false) {
+      } else if (reg.test(e.target.value) === false) {
         this.setState({
           editEmailFlag: false
         });
@@ -491,7 +491,7 @@ class Users extends Component {
       } else {
         e.target.value = "";
       }
-      if (e.target.value.length == 10 || e.target.value.length == 0) {
+      if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
           EditPhoneFlag: true
         });
@@ -506,7 +506,7 @@ class Users extends Component {
       } else {
         e.target.value = "";
       }
-      if (e.target.value.length == 10 || e.target.value.length == 0) {
+      if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
           phoneFlag: true
         });
@@ -526,11 +526,11 @@ class Users extends Component {
     });
     if (name === "selectEmail") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-      if (e.target.value == "") {
+      if (e.target.value === "") {
         this.setState({
           emailFlag: true
         });
-      } else if (reg.test(e.target.value) == false) {
+      } else if (reg.test(e.target.value) === false) {
         this.setState({
           emailFlag: false
         });
