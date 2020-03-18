@@ -658,10 +658,10 @@ class MyTicket extends Component {
       });
   }
   // onchange on User Drop down list
-  setAssignedToValue(check, e) {
+  setAssignedToValue(check,e) {
     debugger;
-    let followUpIds = this.state.followUpIds;
     if (check === "freeCmd") {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketFreeTextcomment;
@@ -672,6 +672,7 @@ class MyTicket extends Component {
       text += "@" + userName;
       this.setState({ ticketFreeTextcomment: text, followUpIds });
     } else if (check === "comment") {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketcommentMSG;
@@ -682,6 +683,7 @@ class MyTicket extends Component {
       text += "@" + userName;
       this.setState({ ticketcommentMSG: text, followUpIds });
     } else {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
@@ -4959,7 +4961,7 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue.bind(this)}
+                        onChange={this.setAssignedToValue.bind(this,"rplyCmd")}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
