@@ -147,14 +147,14 @@ class Templates extends Component {
             1000
           );
           self.handleGetTemplate();
-          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+          self.setState({ editSaveLoading: false, ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
         } else {
           self.setState({ editSaveLoading: false, ConfigTabsModal: false });
           NotificationManager.error("Template not update.", "", 1000);
         }
       })
       .catch(data => {
-        self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+        self.setState({ editSaveLoading: false, ConfigTabsModal: false ,TemplateSubject:"",editorContent:""});
         console.log(data);
       });
   }
@@ -769,7 +769,8 @@ class Templates extends Component {
     }
   }
   handleConfigureTabsClose() {
-    this.setState({ ConfigTabsModal: false });
+    debugger;
+    this.setState({ ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
   }
 
   toggleEditModal() {
