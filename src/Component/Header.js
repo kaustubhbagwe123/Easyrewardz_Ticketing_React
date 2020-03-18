@@ -108,10 +108,7 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    // debugger;
-    console.log(transferData);
     this.subscription = transferData.getProfilePic().subscribe(pic => {
-      console.log(1111, pic);
       if (pic.profilePic) {
         if (pic.profilePic == '') {
           this.setState({ selectedUserProfilePicture: '' });
@@ -236,6 +233,8 @@ class Header extends Component {
         if (status === "Success") {
           self.handleGetNotificationList();
         }
+      }).catch(data => {
+        console.log(data);
       });
     }
   };
@@ -269,6 +268,8 @@ class Header extends Component {
           selectedUserProfilePicture: ""
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -297,7 +298,6 @@ class Header extends Component {
     debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
-    console.log(page);
     var accessdata = [];
     var dashboard = {
       data: "Dashboards",
@@ -381,6 +381,8 @@ class Header extends Component {
         localStorage.clear();
         window.location.href = "/";
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -426,6 +428,8 @@ class Header extends Component {
           workTimeHours: data.totalWorkingTime
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   };
 
@@ -466,6 +470,8 @@ class Header extends Component {
           notiCount: 0
         });
       }
+    }).catch(data => {
+      console.log(data);
     });
   }
 
@@ -476,7 +482,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.state.selectedUserProfilePicture.length, 2222);
     const TransferCall = (
       <>
         <div>
@@ -1041,57 +1046,59 @@ class Header extends Component {
           modalId="Notification-popup"
           overlayId="logout-ovrly"
         >
-          {this.state.notifiMessages.map((item, i) => {
-            return (
-              <div className="row rowpadding" key={i}>
-                <div className="md-2 rectangle-2 lable05 noti-count">
-                  <label className="labledata">{item.ticketCount}</label>
-                </div>
-                <div className="md-6 new-tickets-assigned tic-noti">
-                  <label>
-                    <span>{item.notificationMessage}</span>
-                  </label>
-                </div>
-                <div className="viewticketspeadding">
-                  <Popover
-                    content={
-                      <div className="notification-popover">
-                        {this.state.NotifiTicketIds.map((data, j) => {
-                          return (
-                            <p key={j}>
-                              Ticket No. :
-                              <Link
-                                to={{
-                                  pathname: "myticket",
-                                  ticketDetailID: data
-                                }}
-                                onClick={this.handleShowTicket.bind(this, data)}
-                              >
-                                {data}
-                              </Link>
-                            </p>
-                          );
-                        })}
-                      </div>
-                    }
-                    placement="bottom"
-                    trigger="click"
-                  >
-                    <div
-                      className={
-                        item.ticketIDs !== ""
-                          ? "md-4 view-tickets"
-                          : "text-disabled"
+          <div className="notifi-container">
+            {this.state.notifiMessages.map((item, i) => {
+              return (
+                  <div className="row rowpadding" key={i}>
+                  <div className="md-2 rectangle-2 lable05 noti-count">
+                    <label className="labledata">{item.ticketCount}</label>
+                  </div>
+                  <div className="md-6 new-tickets-assigned tic-noti">
+                    <label>
+                      <span>{item.notificationMessage}</span>
+                    </label>
+                  </div>
+                  <div className="viewticketspeadding">
+                    <Popover
+                      content={
+                        <div className="notification-popover">
+                          {this.state.NotifiTicketIds.map((data, j) => {
+                            return (
+                              <p key={j}>
+                                Ticket No. :
+                                <Link
+                                  to={{
+                                    pathname: "myticket",
+                                    ticketDetailID: data
+                                  }}
+                                  onClick={this.handleShowTicket.bind(this, data)}
+                                >
+                                  {data}
+                                </Link>
+                              </p>
+                            );
+                          })}
+                        </div>
                       }
-                      onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                      placement="bottom"
+                      trigger="click"
                     >
-                      VIEW TICKETS
-                    </div>
-                  </Popover>
+                      <div
+                        className={
+                          item.ticketIDs !== ""
+                            ? "md-4 view-tickets"
+                            : "text-disabled"
+                        }
+                        onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                      >
+                        VIEW TICKETS
+                      </div>
+                    </Popover>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </Modal>
         <Modal
           onClose={this.handleViewTicketModalClose}

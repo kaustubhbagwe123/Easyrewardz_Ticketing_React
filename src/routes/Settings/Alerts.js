@@ -160,8 +160,9 @@ class Alerts extends Component {
 
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
-  StatusCloseModel() {
-    this.setState({ StatusModel: false });
+  StatusCloseModel=e=> {
+    this.setState({StatusModel:false});
+   // this.setState({ StatusModel: false });
   }
 
   setSortCheckStatus = (column, e) => {
