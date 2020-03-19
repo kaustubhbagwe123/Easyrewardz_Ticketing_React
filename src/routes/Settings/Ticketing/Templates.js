@@ -76,7 +76,8 @@ class Templates extends Component {
       issueColor: "",
       SearchText: "",
       indiSla: "",
-      AssignToData: []
+      AssignToData: [],
+      placeholderData: []
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -89,11 +90,13 @@ class Templates extends Component {
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleSlaButton = this.handleSlaButton.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
   }
 
   componentDidMount() {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
+    this.handlePlaceholderList();
     
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
@@ -104,6 +107,43 @@ class Templates extends Component {
     this.state.updatedStatus = templateStatus;
     this.state.rowData = rowData;
   };
+
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.editorContent;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ editorContent: ckData });
+  }
 
   handleUpdateTemplate() {
     debugger;
@@ -1400,6 +1440,7 @@ class Templates extends Component {
                         size="lg"
                         show={this.state.ConfigTabsModal}
                         onHide={this.handleConfigureTabsClose.bind(this)}
+                        className="big-modal-placeholder"
                       >
                         <Modal.Header>
                           <div className="row config-tab">
@@ -1450,6 +1491,23 @@ class Templates extends Component {
                                 this.state.AssignToData.map((item, i) => (
                                   <option key={i} value={item.userID}>
                                     {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="tic-det-ck-user template-user myticlist-expand-sect placeholder-alert">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setPlaceholderValue.bind(
+                                this
+                              )}
+                            >
+                              <option value="0">Placeholders</option>
+                              {this.state.placeholderData !== null &&
+                                this.state.placeholderData.map((item, i) => (
+                                  <option key={i} value={item.mailParameterID}>
+                                    {item.description}
                                   </option>
                                 ))}
                             </select>
