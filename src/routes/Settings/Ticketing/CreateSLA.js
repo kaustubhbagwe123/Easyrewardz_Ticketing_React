@@ -685,21 +685,7 @@ class CreateSLA extends Component {
     this.handleGetSLAIssueType();
   };
   handleSlaButton() {
-    debugger;
-    // let ele = document.getElementsByClassName('dropdown-menu')[0];
-    // let overlay = document.getElementById('overlaySla');
-    // let bool = ele.classList.contains('show');
-    // let boolOverlay = overlay.classList.contains('show');
-    // if (bool) {
-    //   ele.classList.remove('show');
-    // } else {
-    //   ele.classList.add('show');
-    // }
-    // if (boolOverlay) {
-    //   overlay.classList.remove('show');
-    // } else {
-    //   overlay.classList.add('show');
-    // }
+  
     let slaShowOriginal = this.state.slaShow;
     let slaShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.slaOvrlayShow;

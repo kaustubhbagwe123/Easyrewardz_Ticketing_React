@@ -51,6 +51,7 @@ class Alerts extends Component {
       smsCust: false,
       notiInt: false,
       selectedAlertType: 0,
+      selectedAlertTypeName: 0,
       selectedEmailCustomer: false,
       selectedEmailInternal: false,
       selectedEmailStore: false,
@@ -107,7 +108,8 @@ class Alerts extends Component {
       sortColumn: "",
       StatusModel: false,
       editcommunicationModeCompulsion: "",
-      AssignToData: []
+      AssignToData: [],
+      isExitsType: ""
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -211,10 +213,40 @@ class Alerts extends Component {
   };
   setDataOnChangeAlert = e => {
     debugger;
-
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    if (e.target.name == "selectedAlertType") {
+      if (e.target.value !== "0") {
+        this.setState({
+          [e.target.name]: e.target.value,
+          selectedAlertTypeName: e.target.selectedOptions[0].innerText
+        });
+        let self = this;
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Alert/ValidateAlertNameExist",
+          params: { alertTypeId: e.target.value },
+          headers: authHeader()
+        })
+          .then(function(res) {
+            var data = res.data.responseData;
+            var msg = res.data.message;
+            var status = res.data.status;
+            if (msg === "Success" && status == true) {
+              self.setState({ isExitsType: data });
+            } else {
+              self.setState({ isExitsType: "" });
+            }
+          })
+          .catch(response => {
+            console.log(response);
+          });
+      } else {
+        this.setState({isExitsType:"",[e.target.name]: e.target.value})
+      }
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+    }
   };
 
   setCKEditorCustomer = evt => {
@@ -508,10 +540,7 @@ class Alerts extends Component {
       } else if (this.state.alertEdit.alertIsActive === "Inactive") {
         AlertisActive = false;
       }
-      this.setState({
-        editSaveLoading: true
-      });
-
+    
       if (this.state.notiInt == true) {
         if (this.state.selectedNotifContent == "") {
           this.setState({
@@ -534,21 +563,24 @@ class Alerts extends Component {
       if (this.state.emailCust == true) {
         if (this.state.selectedCKCustomer === "") {
           this.setState({ ckCustomerCompulsion: "Please Enter Description." });
+          return false;
         } else {
           this.setState({ ckCustomerCompulsion: "" });
         }
         if (this.state.selectedSubjectCustomer === "") {
           this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
+          return false;
         } else {
           this.setState({ subjectCustomerCompulsion: "" });
         }
 
-        return false;
+   
       }
 
       if (this.state.emailInt == true) {
         if (this.state.selectedCKInternal === "") {
           this.setState({ ckInternalCompulsion: "Please Enter Subject." });
+          return false;
         } else {
           this.setState({ ckInternalCompulsion: "" });
         }
@@ -556,16 +588,19 @@ class Alerts extends Component {
           this.setState({
             subjectInternalCompulsion: "Please Enter Description."
           });
+          return false;
         } else {
           this.setState({ subjectInternalCompulsion: "" });
         }
 
-        return false;
+        
       }
 
       if (this.state.emailStore == true) {
         if (this.state.selectedCKStore === "") {
           this.setState({ ckStoreCompulsion: "Please Enter Subject." });
+          
+        return false;
         } else {
           this.setState({ ckStoreCompulsion: "" });
         }
@@ -573,11 +608,12 @@ class Alerts extends Component {
           this.setState({
             subjectStoreCompulsion: "Please Enter Description."
           });
+          
+        return false;
         } else {
           this.setState({ subjectStoreCompulsion: "" });
         }
 
-        return false;
       }
       var CommunicationModeDetails = [];
 
@@ -634,6 +670,9 @@ class Alerts extends Component {
       } else {
         // return false;
       }
+      this.setState({
+        editSaveLoading: true
+      });
 
       let self = this;
       axios({
@@ -686,54 +725,7 @@ class Alerts extends Component {
 
   updateAlert(individualData) {
     debugger;
-
     this.handleGetAlert(individualData.alertID || 0);
-    // var alertEdit = {};
-    // alertEdit.selectedAlertType = individualData.alertID;
-    // alertEdit.updateAlertTypeName = individualData.alertTypeName;
-    // alertEdit.alertIsActive = individualData.isAlertActive;
-
-    // var emailCust = individualData.isEmailCustomer;
-    // var emailInt = individualData.isEmailInternal;
-    // var emailStore = individualData.isEmailStore;
-    // var smsCust = individualData.isSMSCustomer;
-    // var notiInt = individualData.isNotificationInternal;
-
-    // if (emailCust) {
-    //   var selectedSubjectCustomer = individualData.subject;
-    // var selectedCKCustomer = individualData.mailContent;
-    //   var selectedSMSContent = individualData.mailContent;
-    //   this.setState({ selectedSMSContent });
-    // }
-
-    // if (emailStore) {
-    //   var selectedSMSContent = individualData.mailContent;
-    //   this.setState({ selectedSMSContent });
-    // }
-
-    // if (emailCust) {
-    //   var selectedSMSContent = individualData.mailContent;
-    //   this.setState({ selectedSMSContent });
-    // }
-    // if (smsCust) {
-    //   var selectedSMSContent = individualData.mailContent;
-    //   this.setState({ selectedSMSContent });
-    // }
-    // if (notiInt) {
-    //   var selectedNotifContent = individualData.mailContent;
-    //   this.setState({ selectedNotifContent });
-    // }
-
-    // this.setState({
-    //   emailCust,
-    //   emailInt,
-    //   emailStore,
-    //   smsCust,
-    //   notiInt,
-    //   alertEdit,
-    //   editModal: true,
-    //   isEdit: true
-    // });
   }
 
   handleUpdateAlertTypeName(e) {
@@ -831,7 +823,6 @@ class Alerts extends Component {
     if (this.state.selectedEmailCustomer === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedToCustomer.length > 0 &&
         this.state.selectedSubjectCustomer.length > 0 &&
         this.state.selectedCKCustomer.length > 0
       ) {
@@ -842,7 +833,6 @@ class Alerts extends Component {
     if (this.state.selectedEmailInternal === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedToInternal.length > 0 &&
         this.state.selectedSubjectInternal.length > 0 &&
         this.state.selectedCKInternal.length > 0
       ) {
@@ -853,7 +843,6 @@ class Alerts extends Component {
     if (this.state.selectedEmailStore === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedToStore.length > 0 &&
         this.state.selectedSubjectStore.length > 0 &&
         this.state.selectedCKStore.length > 0
       ) {
@@ -961,9 +950,8 @@ class Alerts extends Component {
     if (this.state.selectedNotifInternal === true) {
       jsondata.push(notn);
     }
-
     var json = {
-      AlertTypeName: this.state.selectedAlertType,
+      AlertTypeName: this.state.selectedAlertTypeName,
       isAlertActive: setstatus,
       CommunicationModeDetails: jsondata
     };
@@ -1519,7 +1507,7 @@ class Alerts extends Component {
                       value={this.state.selectedAlertType}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      <option>Select Alert</option>
+                      <option value={0}>Select Alert</option>
                       {this.state.alertData !== null &&
                         this.state.alertData.map((item, i) => (
                           <option key={i} value={item.alertID}>
@@ -1530,6 +1518,11 @@ class Alerts extends Component {
                     {this.state.selectedAlertType === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.alertTypeCompulsion}
+                      </p>
+                    )}
+                    {this.state.isExitsType !== "" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.isExitsType}
                       </p>
                     )}
                   </div>
