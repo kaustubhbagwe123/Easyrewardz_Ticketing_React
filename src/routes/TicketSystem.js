@@ -147,7 +147,8 @@ class TicketSystem extends Component {
       idSizeArray: [],
       AssignToData: [],
       followUpIds: "",
-      viewPolicyModel: false
+      viewPolicyModel: false,
+      placeholderData: []
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -161,6 +162,7 @@ class TicketSystem extends Component {
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
     this.handleEditCustomerOpen = this.handleEditCustomerOpen.bind(this);
     this.handleCustomerStoreStatus = this.handleCustomerStoreStatus.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
     this.handleCustomerAttachamentStatus = this.handleCustomerAttachamentStatus.bind(
       this
     );
@@ -195,6 +197,7 @@ class TicketSystem extends Component {
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
       this.handleGetAgentList();
+      this.handlePlaceholderList();
     } else {
       this.props.history.push("addSearchMyTicket");
     }
@@ -248,6 +251,44 @@ class TicketSystem extends Component {
       taskMaster: taskData
     });
   };
+
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.editorTemplateDetails;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ editorTemplateDetails: ckData });
+  }
+
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
   handleCustomerAttachamentStatus(custAttachOrder) {
     debugger;
     this.setState({
@@ -1677,6 +1718,21 @@ class TicketSystem extends Component {
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
                               {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">Placeholders</option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
                             </option>
                           ))}
                       </select>
