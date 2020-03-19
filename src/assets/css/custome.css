@@ -3725,6 +3725,15 @@ table tr th:last-child {
   padding: 5px 25px 5px 15px !important;
   background-position: right 10px center !important;
 }
+.placeholder-dropdown {
+  right: 410px;
+}
+.placeholder-alert {
+  right: 250px !important;
+}
+.big-modal-placeholder .modal-dialog {
+  max-width: 1000px;
+}
 .tic-det-Freecmd {
   right: 65px;
   top: 15px;
@@ -11289,11 +11298,14 @@ table tr th:last-child {
 }
 
 .alertckuser {
-  top:40% !important
+  top:39% !important
 }
 .alertckuserinter{
   right: 75px;
   top:37% !important
+}
+.placeholder-alert-2 {
+  top: 37% !important;
 }
 
 /* Responsive ends */

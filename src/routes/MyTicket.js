@@ -209,6 +209,7 @@ class MyTicket extends Component {
       oldAgentId: 0,
       AssignCommentCompulsory: "",
       AssignToData: [],
+      placeholderData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
       freetextCommentCompulsory: ""
@@ -239,6 +240,7 @@ class MyTicket extends Component {
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
     this.handleProgressBarDetails = this.handleProgressBarDetails.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
@@ -269,6 +271,7 @@ class MyTicket extends Component {
       this.handleGetMessageDetails(ticketId);
       this.handleProgressBarDetails(ticketId);
       this.handleGetAgentList();
+      this.handlePlaceholderList();
     } else {
       this.props.history.push("myTicketlist");
     }
@@ -291,7 +294,6 @@ class MyTicket extends Component {
   };
 // handle Get Agent List for User dropdown
   handleGetAgentList() {
-    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -305,10 +307,35 @@ class MyTicket extends Component {
           self.setState({
             AssignToData: data
           });
-          self.checkAllAgentStart();
+          // self.checkAllAgentStart();
         } else {
           self.setState({
             AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
           });
         }
       })
@@ -684,6 +711,16 @@ class MyTicket extends Component {
       ckData += "@" + userName;
       this.setState({ mailBodyData: ckData, followUpIds });
     }
+  }
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.mailBodyData;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ mailBodyData: ckData });
   }
   handleGetStoreDetails() {
     let self = this;
@@ -4954,6 +4991,21 @@ class MyTicket extends Component {
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
                               {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">Placeholders</option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
                             </option>
                           ))}
                       </select>
