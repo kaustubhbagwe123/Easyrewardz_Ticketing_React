@@ -715,24 +715,24 @@ class CreateSLA extends Component {
     debugger;
     var EditData = this.state.finalEditData;
     var valid = false;
-    if (EditData.length > 0) {
-      for (var i = 0; i < EditData.length; i++) {
-        if (
-          EditData[i].SlaBreach !== "0" &&
-          EditData[i].SlaBreach !== 0 &&
-          EditData[i].Rerspondtime !== "0" &&
-          EditData[i].Rerspondtime !== 0 &&
-          EditData[i].ResolveTime !== "0" &&
-          EditData[i].ResolveTime !== 0
-        ) {
-          valid = true;
-        } else {
-          valid = false;
-        }
-      }
-    }
+    // if (EditData.length > 0) {
+    //   for (var i = 0; i < EditData.length; i++) {
+    //     if (
+    //       EditData[i].SlaBreach !== "0" &&
+    //       EditData[i].SlaBreach !== 0 &&
+    //       EditData[i].Rerspondtime !== "0" &&
+    //       EditData[i].Rerspondtime !== 0 &&
+    //       EditData[i].ResolveTime !== "0" &&
+    //       EditData[i].ResolveTime !== 0
+    //     ) {
+    //       valid = true;
+    //     } else {
+    //       valid = false;
+    //     }
+    //   }
+    // }
     let self = this;
-    if (valid === true) {
+    // if (valid === true) {
       var inputParamter = {};
       inputParamter.SLAId = this.state.SLAId;
       inputParamter.IsActive = this.state.isActive;
@@ -781,9 +781,9 @@ class CreateSLA extends Component {
           NotificationManager.success("SLA Not Updated", "", 1000);
           console.log(response);
         });
-    } else {
-      self.setState({ slaTargetCompulsionEdit: "Required." });
-    }
+    // } else {
+    //   self.setState({ slaTargetCompulsionEdit: "Required." });
+    // }
   }
   render() {
     return (
