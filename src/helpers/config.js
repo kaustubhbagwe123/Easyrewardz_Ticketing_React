@@ -47,7 +47,6 @@ let config = {
     // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
     //apiUrl: 'http://10.50.250.18:9512/api'
     //  apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
-    apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
     };
     
 export default config;
