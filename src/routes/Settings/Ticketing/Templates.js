@@ -111,7 +111,7 @@ class Templates extends Component {
     var activeStatus = false;
     var issuetype = "";
 
-    if (self.state.templateEdit.template_Status === "true") {
+    if (self.state.templateEdit.template_Status === "Active") {
       activeStatus = true;
     } else {
       activeStatus = false;
@@ -278,6 +278,7 @@ class Templates extends Component {
   setTemplateEditData(editdata) {
     debugger;
     var templateEdit = {};
+    templateEdit=editdata;
     templateEdit.template_ID = editdata.templateID;
     templateEdit.TemplateName = editdata.templateName;
     templateEdit.issue_Type = editdata.issueType;
@@ -296,11 +297,11 @@ class Templates extends Component {
       iSelect.push(idata[0]);
     }
 
-    if (editdata.template_Status === "Active") {
-      templateEdit.template_Status = "true";
-    } else {
-      templateEdit.template_Status = "false";
-    }
+    // if (editdata.template_Status === "Active") {
+    //   templateEdit.template_Status = "true";
+    // } else {
+    //   templateEdit.template_Status = "false";
+    // }
 
     this.setState({
       TemplateSubject,
@@ -612,11 +613,11 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
-    if (
-      this.state.editorContent.length > 0 &&
-      this.state.editorContent.length <= 499
-    ) {
-      if (this.state.editorContent.length > 0) {
+    // if (
+    //   this.state.editorContent.length > 0 &&
+    //   this.state.editorContent.length <= 499
+    // ) {
+      // if (this.state.editorContent.length > 0) {
         let self = this;
         this.setState({ ConfigTabsModal: false });
         var TemplateIsActive;
@@ -653,7 +654,9 @@ class Templates extends Component {
                 editorContent: "",
                 TemplateName: "",
                 indiSla: "",
-                SearchText: ""
+                SearchText: "",
+                templatenamecopulsion:"",
+                issurtupeCompulsory:""
                 // selectedSlaIssueType: [],
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
@@ -665,20 +668,20 @@ class Templates extends Component {
           .catch(data => {
             console.log(data);
           });
-      } else {
-        NotificationManager.error("Please Enter Descriptions.", "", 1500);
-        // this.setState({
-        //   // templatesubjectCompulsion: "Please Enter Subject",
-        //   // templatebodyCompulsion: "Please Enter Descriptions"
-        // });
-      }
-    } else {
-      NotificationManager.error(
-        "Only 500 characters Allow In Descriptions.",
-        "",
-        2000
-      );
-    }
+      // } else {
+      //   NotificationManager.error("Please Enter Descriptions.", "", 1500);
+      //   // this.setState({
+      //   //   // templatesubjectCompulsion: "Please Enter Subject",
+      //   //   // templatebodyCompulsion: "Please Enter Descriptions"
+      //   // });
+      // }
+    // } else {
+    //   NotificationManager.error(
+    //     "Only 500 characters Allow In Descriptions.",
+    //     "",
+    //     2000
+    //   );
+    // }
   }
 
   handleGetTemplate() {

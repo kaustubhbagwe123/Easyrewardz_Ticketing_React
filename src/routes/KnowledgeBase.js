@@ -1905,10 +1905,12 @@ class KnowledgeBase extends Component {
                         {
                           name: "tools",
                           items: ["Maximize"]
+                         
                         },
                         {
                           name: "editing",
                           items: ["Scayt"]
+                         
                         }
                       ]
                     }}
