@@ -6138,21 +6138,19 @@ class MyTicketList extends Component {
                                               </li>
                                               <li>
                                                 <p>
-                                                  {row.original.updatedBy}{" "}
+                                                  {row.original.updatedBy}
                                                   updated
                                                 </p>
                                                 <p>{row.original.updatedago}</p>
                                               </li>
                                               <li>
                                                 <p>
+                                                 
                                                   Response time remaining by
                                                 </p>
-                                                <p>
-                                                  {
-                                                    row.original.responseTimeRemainingBy
-                                                  }
-                                                </p>
+                                                <p>{row.original.responseTimeRemainingBy}</p>
                                               </li>
+                                              
                                               <li>
                                                 <p>Response overdue by</p>
                                                 <p>
