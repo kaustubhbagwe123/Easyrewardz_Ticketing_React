@@ -3340,6 +3340,9 @@ table tr th:last-child {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.my-tic-ck-height iframe {
+  height: calc(100% - 50px) !important;
+}
 /* my ticket list ends */
 
 /* ticket system starts */
@@ -6631,13 +6634,15 @@ table thead tr {
   height: 18px;
   margin: -2px 3px;
 }
-.ck-det-cntr iframe {
+/* .ck-det-cntr iframe {
   padding-top: 15px;
-}
+} */
 .ck-det-cntr .cke_top {
   height: 120px !important;
 }
-
+.ck-det-cntr .cke_contents {
+  height: auto !important;
+}
 .ck-det-cntr .cke_inner {
   min-height: 380px;
   height: auto;
