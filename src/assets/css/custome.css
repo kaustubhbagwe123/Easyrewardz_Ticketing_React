@@ -3727,10 +3727,12 @@ table tr th:last-child {
 }
 .placeholder-dropdown {
   right: 410px;
+  width: 180px;
 }
 .placeholder-dropdown-tktSys {
   top: 87px;
-  right: 150px;
+  left: 25px;
+  width: 180px;
 }
 .placeholder-dropdown {
   right: 410px;
@@ -6632,7 +6634,7 @@ table thead tr {
 .ck-det-cntr iframe {
   padding-top: 15px;
 }
-.ck-det-cntr #cke_1_top {
+.ck-det-cntr .cke_top {
   height: 120px !important;
 }
 
