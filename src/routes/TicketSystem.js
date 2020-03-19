@@ -146,7 +146,9 @@ class TicketSystem extends Component {
       FileData: [],
       idSizeArray: [],
       AssignToData: [],
-      followUpIds: ""
+      followUpIds: "",
+      viewPolicyModel: false,
+      placeholderData: []
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -160,6 +162,7 @@ class TicketSystem extends Component {
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
     this.handleEditCustomerOpen = this.handleEditCustomerOpen.bind(this);
     this.handleCustomerStoreStatus = this.handleCustomerStoreStatus.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
     this.handleCustomerAttachamentStatus = this.handleCustomerAttachamentStatus.bind(
       this
     );
@@ -176,6 +179,10 @@ class TicketSystem extends Component {
     this.handleTicketAssignFollowUp = this.handleTicketAssignFollowUp.bind(
       this
     );
+    this.handleviewPolicyModelOpen = this.handleviewPolicyModelOpen.bind(this);
+    this.handleviewPolicyModelClose = this.handleviewPolicyModelClose.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -190,6 +197,7 @@ class TicketSystem extends Component {
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
       this.handleGetAgentList();
+      this.handlePlaceholderList();
     } else {
       this.props.history.push("addSearchMyTicket");
     }
@@ -209,7 +217,14 @@ class TicketSystem extends Component {
       }
     }, 100);
   }
-
+  handleviewPolicyModelOpen = () => {
+    debugger;
+    this.setState({ viewPolicyModel: true });
+  };
+  handleviewPolicyModelClose =()=> {
+    debugger;
+    this.setState({ viewPolicyModel: false });
+  };
   toggleTitleSuggestion() {
     // this.setState({ toggleTitle: !this.state.toggleTitle });
     this.setState({ toggleTitle: true });
@@ -236,6 +251,44 @@ class TicketSystem extends Component {
       taskMaster: taskData
     });
   };
+
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.editorTemplateDetails;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ editorTemplateDetails: ckData });
+  }
+
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
   handleCustomerAttachamentStatus(custAttachOrder) {
     debugger;
     this.setState({
@@ -906,7 +959,7 @@ class TicketSystem extends Component {
       } else {
         actionStatusId = 100;
       }
-      var editoreData = this.state.editorTemplateDetails;
+      // var editoreData = this.state.editorTemplateDetails;
       // var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
       // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
       var mailData = [];
@@ -966,7 +1019,7 @@ class TicketSystem extends Component {
             self.handleTicketAssignFollowUp(TID);
             setTimeout(function() {
               self.props.history.push("myTicketlist");
-            }, 2000);
+            }, 1000);
           } else {
             NotificationManager.error(res.data.message, "", 2000);
           }
@@ -1665,6 +1718,21 @@ class TicketSystem extends Component {
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
                               {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">Placeholders</option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
                             </option>
                           ))}
                       </select>
@@ -2455,6 +2523,7 @@ class TicketSystem extends Component {
                           </button>
                         </div>
                         <div>
+                          <span onClick={this.handleviewPolicyModelOpen}>
                           <a href="#!" className="copyblue-kbtext">
                             VIEW POLICY
                           </a>
@@ -2463,7 +2532,39 @@ class TicketSystem extends Component {
                             alt="viewpolicy"
                             className="viewpolicy-kb"
                           />
+                          </span>
+                         
                         </div>
+                        <Modal
+            open={this.state.viewPolicyModel}
+            onClose={this.handleviewPolicyModelClose}
+            modalId="viewPolicyModel"
+            classNames={{
+              modal: "schedule-width"
+            }}
+            overlayId="logout-ovrly"
+          >
+            <div>
+            <label>
+                        <b>View Policy</b>
+                      </label>
+
+
+
+
+
+
+
+
+             
+
+
+
+
+             
+            </div>
+          </Modal>
+
                       </div>
                     </div>
                   </div>

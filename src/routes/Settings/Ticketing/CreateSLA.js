@@ -58,12 +58,12 @@ class CreateSLA extends Component {
       sortColumn: "",
       sortAllData: [],
       sortIssueType: [],
-      sortCreatedBy:[],
-      sortStatus:[],
-      issueColor:"",
-      createdColor:"",
-      stattusColor:"",
-      sortHeader:"",
+      sortCreatedBy: [],
+      sortStatus: [],
+      issueColor: "",
+      createdColor: "",
+      stattusColor: "",
+      sortHeader: "",
       issueTypeName: "",
       brandName: "",
       categoryName: "",
@@ -114,10 +114,10 @@ class CreateSLA extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -129,9 +129,9 @@ class CreateSLA extends Component {
     var itemsArray = [];
     var data = e.currentTarget.value;
     this.setState({
-      issueColor:"",
-      createdColor:"",
-      stattusColor:""
+      issueColor: "",
+      createdColor: "",
+      stattusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -139,23 +139,21 @@ class CreateSLA extends Component {
       this.state.sla = this.state.sortAllData;
       itemsArray = this.state.sla.filter(a => a.issueTpeName === data);
       this.setState({
-        issueColor:"sort-column"
+        issueColor: "sort-column"
       });
-    }else if (column === "createdBy") {
+    } else if (column === "createdBy") {
       this.state.sla = this.state.sortAllData;
       itemsArray = this.state.sla.filter(a => a.createdBy === data);
       this.setState({
-        createdColor:"sort-column"
+        createdColor: "sort-column"
       });
-    }else if (column === "isSLAActive") {
+    } else if (column === "isSLAActive") {
       this.state.sla = this.state.sortAllData;
       itemsArray = this.state.sla.filter(a => a.isSLAActive === data);
       this.setState({
-        stattusColor:"sort-column"
+        stattusColor: "sort-column"
       });
     }
-
-
 
     this.setState({
       sla: itemsArray
@@ -472,7 +470,6 @@ class CreateSLA extends Component {
       });
   }
 
- 
   handleUpdateSlaIssueType = e => {
     let updateSlaIssueType = e.currentTarget.value;
     this.setState({ updateIssueTypeId: updateSlaIssueType });
@@ -651,7 +648,7 @@ class CreateSLA extends Component {
           NotificationManager.success("SLA deleted successfully.", "", 2000);
           self.handleGetSLA();
         } else {
-          NotificationManager.error("SLA not deleted.", '', 1000);
+          NotificationManager.error("SLA not deleted.", "", 1000);
         }
       })
       .catch(data => {
@@ -704,24 +701,24 @@ class CreateSLA extends Component {
     debugger;
     var EditData = this.state.finalEditData;
     var valid = false;
-    if (EditData.length > 0) {
-      for (var i = 0; i < EditData.length; i++) {
-        if (
-          EditData[i].SlaBreach !== "0" &&
-          EditData[i].SlaBreach !== 0 &&
-          EditData[i].Rerspondtime !== "0" &&
-          EditData[i].Rerspondtime !== 0 &&
-          EditData[i].ResolveTime !== "0" &&
-          EditData[i].ResolveTime !== 0
-        ) {
-          valid = true;
-        } else {
-          valid = false;
-        }
-      }
-    }
+    // if (EditData.length > 0) {
+    //   for (var i = 0; i < EditData.length; i++) {
+    //     if (
+    //       EditData[i].SlaBreach !== "0" &&
+    //       EditData[i].SlaBreach !== 0 &&
+    //       EditData[i].Rerspondtime !== "0" &&
+    //       EditData[i].Rerspondtime !== 0 &&
+    //       EditData[i].ResolveTime !== "0" &&
+    //       EditData[i].ResolveTime !== 0
+    //     ) {
+    //       valid = true;
+    //     } else {
+    //       valid = false;
+    //     }
+    //   }
+    // }
     let self = this;
-    if (valid === true) {     
+    // if (valid === true) {
       var inputParamter = {};
       inputParamter.SLAId = this.state.SLAId;
       inputParamter.IsActive = this.state.isActive;
@@ -758,21 +755,21 @@ class CreateSLA extends Component {
           var statusCode = res.data.statusCode;
           if (message === "Success" && statusCode === 200) {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Updated Successfully", '', 1000);
+            NotificationManager.success("SLA Updated Successfully", "", 1000);
             self.handleGetSLA();
           } else {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Not Updated", '', 1000);
+            NotificationManager.success("SLA Not Updated", "", 1000);
           }
         })
         .catch(response => {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Not Updated", '', 1000);
+          NotificationManager.success("SLA Not Updated", "", 1000);
           console.log(response);
         });
-    } else {
-      self.setState({ slaTargetCompulsionEdit: "Required." });
-    }
+    // } else {
+    //   self.setState({ slaTargetCompulsionEdit: "Required." });
+    // }
   }
   render() {
     return (
@@ -786,7 +783,9 @@ class CreateSLA extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -808,95 +807,97 @@ class CreateSLA extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
-                </div>
-                {this.state.sortColumn === "issueTpeName"
-                  ? this.state.sortIssueType !== null &&
-                    this.state.sortIssueType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.issueTpeName}
-                          value={item.issueTpeName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "issueTpeName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.issueTpeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.issueTpeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "issueTpeName"
+                    ? this.state.sortIssueType !== null &&
+                      this.state.sortIssueType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.issueTpeName}
+                            value={item.issueTpeName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "issueTpeName"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.issueTpeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.issueTpeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
 
-{this.state.sortColumn === "createdBy"
-                  ? this.state.sortCreatedBy !== null &&
-                    this.state.sortCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortCreatedBy !== null &&
+                      this.state.sortCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
 
-{this.state.sortColumn === "isSLAActive"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.isSLAActive}
-                          value={item.isSLAActive}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "isSLAActive"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.isSLAActive}>
-                          <span className="table-btn table-blue-btn">
-                            {item.isSLAActive}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
+                  {this.state.sortColumn === "isSLAActive"
+                    ? this.state.sortStatus !== null &&
+                      this.state.sortStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.isSLAActive}
+                            value={item.isSLAActive}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "isSLAActive"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.isSLAActive}>
+                            <span className="table-btn table-blue-btn">
+                              {item.isSLAActive}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-               
               </div>
             </div>
           </Modal>
@@ -925,10 +926,12 @@ class CreateSLA extends Component {
                     columns={[
                       {
                         Header: (
-                          <span className={this.state.issueColor}
+                          <span
+                            className={this.state.issueColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "issueTpeName","IssueType"
+                              "issueTpeName",
+                              "IssueType"
                             )}
                           >
                             Issue Type
@@ -1065,10 +1068,11 @@ class CreateSLA extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.createdColor}
+                            className={this.state.createdColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "createdBy","Created By"
+                              "createdBy",
+                              "Created By"
                             )}
                           >
                             Created By
@@ -1128,11 +1132,12 @@ class CreateSLA extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.stattusColor}
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "isSLAActive","Status"
-                          )}
+                            className={this.state.stattusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "isSLAActive",
+                              "Status"
+                            )}
                           >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1260,7 +1265,7 @@ class CreateSLA extends Component {
                                   onClick={this.handleClearSearchSla}
                                 />
                               </div>
-                             
+
                               <div className="category-button">
                                 <ul>
                                   <li>
@@ -1335,7 +1340,9 @@ class CreateSLA extends Component {
                       <label className="slatargettext">SLA Targets</label>
                     </div>
                     <div className="slatargetRow-1">
-                      <label className="createhead-text-new  createhead-cus">Priority</label>
+                      <label className="createhead-text-new  createhead-cus">
+                        Priority
+                      </label>
                       <label className="createhead-text">
                         %SLA <br /> Breach
                       </label>
@@ -1575,7 +1582,9 @@ class CreateSLA extends Component {
           overlayId="logout-ovrly"
         >
           <div className="edtpadding">
-            <label className="Create-store-text" style={{paddingTop:"0"}}>EDIT SLA</label>
+            <label className="Create-store-text" style={{ paddingTop: "0" }}>
+              EDIT SLA
+            </label>
             <div className="row">
               <div className="col-md-6">
                 <label className="createhead-text-new">Brand Name: </label>
@@ -1592,7 +1601,9 @@ class CreateSLA extends Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Sub Category Name: </label>
+                <label className="createhead-text-new">
+                  Sub Category Name:{" "}
+                </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
                 </label>
@@ -1609,7 +1620,9 @@ class CreateSLA extends Component {
               <label className="slatargettext">SLA Targets</label>
             </div>
             <div className="slatargetRow-1">
-              <label className="createhead-text-new createhead-cus">Priority</label>
+              <label className="createhead-text-new createhead-cus">
+                Priority
+              </label>
               <label className="createhead-text">
                 %SLA <br /> Breach
               </label>

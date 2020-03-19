@@ -109,7 +109,8 @@ class Alerts extends Component {
       StatusModel: false,
       editcommunicationModeCompulsion: "",
       AssignToData: [],
-      isExitsType: ""
+      isExitsType: "",
+      placeholderData: []
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -122,12 +123,60 @@ class Alerts extends Component {
     this.handleUpdateAlert = this.handleUpdateAlert.bind(this);
     this.handleEditModal = this.handleEditModal.bind(this);
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
   }
 
   componentDidMount() {
     this.handleGetAlert();
     this.handleAlertData();
     this.handleGetAgentList();
+    this.handlePlaceholderList();
+  }
+
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  setPlaceholderValue(type, e) {
+    debugger;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+      );
+    let placeholderName = matchedArr[0].parameterName;
+    if (type == 'Customer') {
+      let ckData = this.state.selectedCKCustomer;
+      ckData += placeholderName;
+      this.setState({ selectedCKCustomer: ckData });
+    } else if (type == 'Internal') {
+      let ckData = this.state.selectedCKInternal;
+      ckData += placeholderName;
+      this.setState({ selectedCKInternal: ckData });
+    } else if (type == 'Store') {
+      let ckData = this.state.selectedCKStore;
+      ckData += placeholderName;
+      this.setState({ selectedCKStore: ckData });
+    }
   }
 
   sortStatusAtoZ() {
@@ -162,8 +211,9 @@ class Alerts extends Component {
 
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
-  StatusCloseModel() {
-    this.setState({ StatusModel: false });
+  StatusCloseModel=e=> {
+    this.setState({StatusModel:false});
+   // this.setState({ StatusModel: false });
   }
 
   setSortCheckStatus = (column, e) => {
@@ -1591,6 +1641,7 @@ class Alerts extends Component {
                   </button>
                   <Modal
                     size="lg"
+                    className="big-modal-placeholder"
                     show={this.state.AddAlertTabsPopup}
                     onHide={this.handleAddAlertTabsClose}
                   >
@@ -1781,6 +1832,23 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div>
+                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
+                                  <select
+                                    className="add-select-category"
+                                    value="0"
+                                    onChange={this.setPlaceholderValue.bind(
+                                      this, 'Customer'
+                                    )}
+                                  >
+                                    <option value="0">Placeholders</option>
+                                    {this.state.placeholderData !== null &&
+                                      this.state.placeholderData.map((item, i) => (
+                                        <option key={i} value={item.mailParameterID}>
+                                          {item.description}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -1858,6 +1926,23 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div>
+                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                  <select
+                                    className="add-select-category"
+                                    value="0"
+                                    onChange={this.setPlaceholderValue.bind(
+                                      this, 'Internal'
+                                    )}
+                                  >
+                                    <option value="0">Placeholders</option>
+                                    {this.state.placeholderData !== null &&
+                                      this.state.placeholderData.map((item, i) => (
+                                        <option key={i} value={item.mailParameterID}>
+                                          {item.description}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
 
                                 <CKEditor
                                   content={this.state.content}
@@ -1930,6 +2015,23 @@ class Alerts extends Component {
                                       this.state.AssignToData.map((item, i) => (
                                         <option key={i} value={item.userID}>
                                           {item.fullName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                  <select
+                                    className="add-select-category"
+                                    value="0"
+                                    onChange={this.setPlaceholderValue.bind(
+                                      this, 'Store'
+                                    )}
+                                  >
+                                    <option value="0">Placeholders</option>
+                                    {this.state.placeholderData !== null &&
+                                      this.state.placeholderData.map((item, i) => (
+                                        <option key={i} value={item.mailParameterID}>
+                                          {item.description}
                                         </option>
                                       ))}
                                   </select>

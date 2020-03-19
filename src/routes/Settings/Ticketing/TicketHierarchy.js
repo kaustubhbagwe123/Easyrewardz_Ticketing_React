@@ -148,7 +148,7 @@ class TicketHierarchy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: "",
+     
       isOpen: false,
       StatusModel: false,
       designation_name: "",
@@ -180,7 +180,10 @@ class TicketHierarchy extends Component {
       updateStatus: "",
       rowData: {},
       editSaveLoading: false,
-      addSaveLoading: false
+      addSaveLoading: false,
+      fileName:"",
+      fileN:[],
+      bulkuploadCompulsion:""
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -189,6 +192,7 @@ class TicketHierarchy extends Component {
     );
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.hanldeAddBulkUpload=this.hanldeAddBulkUpload.bind(this);
   }
   callBackEdit = (designationName, reportTo, status, rowData) => {
     debugger;
@@ -229,9 +233,18 @@ class TicketHierarchy extends Component {
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+   // function myFunction() {
+      // First sort the array
+      //itemsArray.designationName.sort();
+      // Then reverse it:
+      //fruits.reverse();
+     
+   // }
+
+    itemsArray.sort((a, b)=> 
+        a.designationName > b.designationName
+     
+    );
 
     this.setState({
       hierarchyData: itemsArray
@@ -241,9 +254,10 @@ class TicketHierarchy extends Component {
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
+    var itemsArray1 = [];
+    itemsArray1 = this.state.hierarchyData;
+    itemsArray=itemsArray1.sort((a, b) => {
+      return b.designationName > a.designationName;
     });
     this.setState({
       hierarchyData: itemsArray
@@ -339,6 +353,57 @@ class TicketHierarchy extends Component {
       .catch(data => {
         console.log(data);
       });
+  }
+
+  handleDeleteBulkupload=e=>{
+    debugger;
+    this.setState({
+      fileN:[],
+      fileName:""
+    });
+    NotificationManager.success("File deleted successfully.")
+  }
+
+  hanldeAddBulkUpload() {
+    debugger;
+    if(
+      this.state.fileN.length > 0 && this.state.fileN !==[]
+    ){
+    let self = this;
+
+    const formData = new FormData();
+
+   
+    formData.append("file", this.state.fileN[0]);
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+      headers: authHeader(),
+      data: formData
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success(
+            "File uploaded successfully."
+          );
+        } else {
+          NotificationManager.success(
+            "File not uploaded."
+          );
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    }else{
+      this.setState({
+        bulkuploadCompulsion:"Please select file."
+      });
+    }
   }
   handleGetHierarchyData() {
     let self = this;
@@ -608,11 +673,27 @@ class TicketHierarchy extends Component {
       EditTemp: data
     });
   };
-  fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+  fileUpload =(e ) => {
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    allFiles.push(selectedFiles[0]);
+    console.log(allFiles);
+    console.log(allFiles[0].name);
+    this.setState({
+       fileN: allFiles,
+       fileName:allFiles[0].name
+    });
   };
   fileDrop = e => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    allFiles.push(selectedFiles[0]);
+    this.setState({ 
+      fileN: allFiles,
+      fileName:allFiles[0].name
+     });
     e.preventDefault();
   };
   fileDragOver = e => {
@@ -1187,6 +1268,11 @@ class TicketHierarchy extends Component {
                     </div>
                     <span>Add File</span> or Drop File here
                   </label>
+                  {this.state.fileN.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.bulkuploadCompulsion}
+                        </p>
+                      )}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -1225,7 +1311,9 @@ class TicketHierarchy extends Component {
                                   >
                                     CANCEL
                                   </a>
-                                  <button className="butn">Delete</button>
+                                  <button className="butn" 
+                                  //onClick={this.handleDeleteBulkupload}
+                                  >Delete</button>
                                 </div>
                               </div>
                             </PopoverBody>
@@ -1263,7 +1351,7 @@ class TicketHierarchy extends Component {
                       </div>
                     </div>
                   )}
-                  <button className="butn">ADD</button>
+                  <button className="butn" onClick={this.hanldeAddBulkUpload.bind(this)}>ADD</button>
                 </div>
               </div>
             </div>

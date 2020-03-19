@@ -209,10 +209,11 @@ class MyTicket extends Component {
       oldAgentId: 0,
       AssignCommentCompulsory: "",
       AssignToData: [],
+      placeholderData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
-      freetextCommentCompulsory: "",
-      viewPolicyModel: false
+      freetextCommentCompulsory: ""
+     
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -239,13 +240,11 @@ class MyTicket extends Component {
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
     this.handleProgressBarDetails = this.handleProgressBarDetails.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
-    this.handleviewPolicyModelOpen = this.handleviewPolicyModelOpen.bind(this);
-    this.handleviewPolicyModelClose = this.handleviewPolicyModelClose.bind(
-      this
-    );
+  
   }
 
   componentDidUpdate() {
@@ -272,18 +271,12 @@ class MyTicket extends Component {
       this.handleGetMessageDetails(ticketId);
       this.handleProgressBarDetails(ticketId);
       this.handleGetAgentList();
+      this.handlePlaceholderList();
     } else {
       this.props.history.push("myTicketlist");
     }
   }
-  handleviewPolicyModelOpen = () => {
-    debugger;
-    this.setState({ viewPolicyModel: true });
-  };
-  handleviewPolicyModelClose = () => {
-    debugger;
-    this.setState({ viewPolicyModel: false });
-  };
+ 
 
   onAddCKEditorChange = evt => {
     ////debugger;
@@ -301,7 +294,6 @@ class MyTicket extends Component {
   };
 // handle Get Agent List for User dropdown
   handleGetAgentList() {
-    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -315,10 +307,35 @@ class MyTicket extends Component {
           self.setState({
             AssignToData: data
           });
-          self.checkAllAgentStart();
+          // self.checkAllAgentStart();
         } else {
           self.setState({
             AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
           });
         }
       })
@@ -658,10 +675,10 @@ class MyTicket extends Component {
       });
   }
   // onchange on User Drop down list
-  setAssignedToValue(check, e) {
+  setAssignedToValue(check,e) {
     debugger;
-    let followUpIds = this.state.followUpIds;
     if (check === "freeCmd") {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketFreeTextcomment;
@@ -672,6 +689,7 @@ class MyTicket extends Component {
       text += "@" + userName;
       this.setState({ ticketFreeTextcomment: text, followUpIds });
     } else if (check === "comment") {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.ticketcommentMSG;
@@ -682,6 +700,7 @@ class MyTicket extends Component {
       text += "@" + userName;
       this.setState({ ticketcommentMSG: text, followUpIds });
     } else {
+      let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
@@ -692,6 +711,16 @@ class MyTicket extends Component {
       ckData += "@" + userName;
       this.setState({ mailBodyData: ckData, followUpIds });
     }
+  }
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.mailBodyData;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ mailBodyData: ckData });
   }
   handleGetStoreDetails() {
     let self = this;
@@ -2081,6 +2110,7 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
+    debugger
     let self = this;
     axios({
       method: "post",
@@ -2091,7 +2121,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2617,16 +2647,9 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
-        <div>
-          <Modal
-            open={this.state.viewPolicyModel}
-            onClose={this.handleviewPolicyModelClose.bind(this)}
-          >
-            <div>
-              <label>View Policy</label>
-            </div>
-          </Modal>
-        </div>
+       
+         
+      
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -3837,9 +3860,11 @@ class MyTicket extends Component {
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
-                                                selected={moment(
-                                                  row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY")}
+                                                selected={
+                                                  // moment(
+                                                  new Date(row.original.storeVisitDate)
+                                                // ).format("MM/DD/YYYY")
+                                              }
                                                 placeholderText="MM/DD/YYYY"
                                                 showMonthDropdown
                                                 showYearDropdown
@@ -4959,13 +4984,28 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue.bind(this)}
+                        onChange={this.setAssignedToValue.bind(this,"rplyCmd")}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
                               {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">Placeholders</option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
                             </option>
                           ))}
                       </select>
@@ -5270,23 +5310,21 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                            <span>
-                              <a href="#!" className="copyblue-kbtext">
-                                VIEW POLICY
-                              </a>
-                              <img
-                                src={ViewBlue}
-                                alt="viewpolicy"
-                                className="viewpolicy-kb"
-                              />
-                            </span>
+                          <a href="#!" className="copyblue-kbtext">
+                            VIEW POLICY
+                          </a>
+                          <img
+                            src={ViewBlue}
+                            alt="viewpolicy"
+                            className="viewpolicy-kb"
+                          />
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
-
+               
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}
@@ -5488,7 +5526,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                debugger;
+                                // debugger;
                                 return (
                                   <div key={j}>
                                     <div>
