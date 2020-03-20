@@ -1346,7 +1346,7 @@ class CreateSLA extends Component {
                       <label className="createhead-text">
                         %SLA <br /> Breach
                       </label>
-                      <label className="createhead-text">Rerspond</label>
+                      <label className="createhead-text">Respond</label>
                       <label className="createhead-text">Resolve</label>
                     </div>
                     {this.state.finalData !== null &&
@@ -1626,7 +1626,7 @@ class CreateSLA extends Component {
               <label className="createhead-text">
                 %SLA <br /> Breach
               </label>
-              <label className="createhead-text">Rerspond</label>
+              <label className="createhead-text">Respond</label>
               <label className="createhead-text">Resolve</label>
             </div>
             {this.state.finalEditData !== null &&

@@ -95,7 +95,7 @@ class TicketSystem extends Component {
       customerStoreStatus: 0,
       selectTicketTemplateId: 0,
       selectedTicketActionType: "201",
-      selectedChannelOfPurchase: "",
+      selectedChannelOfPurchase: 0,
       selectedTemplateID: 0,
       priorityId: 0,
       escalationLevel: 0,
@@ -694,8 +694,8 @@ class TicketSystem extends Component {
     })
       .then(function(res) {
         debugger;
-        let ChannelOfPurchaseData = res.data.responseData;
-        self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+        let data = res.data.responseData;
+        self.setState({ ChannelOfPurchaseData: data });
       })
       .catch(data => {
         console.log(data);
@@ -1168,13 +1168,16 @@ class TicketSystem extends Component {
     }, 1);
   };
   setChannelOfPurchaseValue = e => {
-    let channelOfPurchaseValue = e.currentTarget.value;
-    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+    debugger
+    let value = e.currentTarget.value;
+    this.setState({ selectedChannelOfPurchase: value });
   };
 
   render() {
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
+    var PurchaseMode=this.state.selectedChannelOfPurchase;
+    
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -2511,6 +2514,7 @@ class TicketSystem extends Component {
                         AttachOrder={this.handleCustomerAttachamentStatus}
                         getParentOrderData={this.handleGetOrderId}
                         getItemOrderData={this.handleGetItemData}
+                        purchaseMode={this.state.selectedChannelOfPurchase}
                       />
                     </div>
                     <div

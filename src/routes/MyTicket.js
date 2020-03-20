@@ -3867,13 +3867,17 @@ class MyTicket extends Component {
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
                                                 selected={
-                                                  // moment(
                                                   new Date(
                                                     row.original.storeVisitDate
                                                   )
-                                                  // ).format("MM/DD/YYYY")
                                                 }
-                                                placeholderText="MM/DD/YYYY"
+                                                // placeholderText="MM/DD/YYYY"
+                                                placeholderText={
+                                                  row.original
+                                                    .storeVisitDate === null
+                                                    ? "MM/DD/YYYY"
+                                                    : null
+                                                }
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
@@ -5546,12 +5550,11 @@ class MyTicket extends Component {
                                           >
                                             {details.latestMessageDetails
                                               .isSystemGenerated === true ? (
-                                                <img
+                                              <img
                                                 src={BlackUserIcon}
                                                 alt="Avatar"
                                                 className="oval-7"
                                               />
-                                             
                                             ) : null}
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
