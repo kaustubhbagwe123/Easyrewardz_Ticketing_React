@@ -701,6 +701,7 @@ class Templates extends Component {
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
               });
+              self.selectNoSLA();
             } else {
               NotificationManager.error("Template Not Added.", "", 1500);
             }
