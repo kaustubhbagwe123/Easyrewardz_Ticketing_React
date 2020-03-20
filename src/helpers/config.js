@@ -1,5 +1,5 @@
 let config = {
-     apiUrl: 'https://localhost:44357/api',
+    apiUrl: 'https://localhost:44357/api',
     hierarchyTemplate:[
     ["Designation", "ReportTo","Status"],
     ["HOD", "Root","Active"],

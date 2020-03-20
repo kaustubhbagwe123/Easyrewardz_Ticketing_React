@@ -2698,7 +2698,6 @@ class MyTicketList extends Component {
         onClick: e => {
           //debugger;
           let Id = column.original["ticketID"];
-          // this.props.history.push("myticket");
           let self = this;
           self.setState({
             ticketDetailID: Id
@@ -6220,7 +6219,6 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "createdOn",
                                 Cell: row => {
-                                  debugger;
                                   return (
                                     <span className="one-line-outer">
                                       <label className="one-line">
