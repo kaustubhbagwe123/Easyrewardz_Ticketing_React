@@ -110,7 +110,12 @@ class Alerts extends Component {
       editcommunicationModeCompulsion: "",
       AssignToData: [],
       isExitsType: "",
-      placeholderData: []
+      placeholderData: [],
+      cAlertTypeId: 0,
+      sAlertTypeId: 0,
+      iAlertTypeId: 0,
+      sAlertTypeId: 0,
+      nAlertTypeId: 0
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -162,17 +167,17 @@ class Alerts extends Component {
     debugger;
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
-      );
+    );
     let placeholderName = matchedArr[0].parameterName;
-    if (type == 'Customer') {
+    if (type == "Customer") {
       let ckData = this.state.selectedCKCustomer;
       ckData += placeholderName;
       this.setState({ selectedCKCustomer: ckData });
-    } else if (type == 'Internal') {
+    } else if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
       ckData += placeholderName;
       this.setState({ selectedCKInternal: ckData });
-    } else if (type == 'Store') {
+    } else if (type == "Store") {
       let ckData = this.state.selectedCKStore;
       ckData += placeholderName;
       this.setState({ selectedCKStore: ckData });
@@ -211,10 +216,10 @@ class Alerts extends Component {
 
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
-  StatusCloseModel=e=> {
-    this.setState({StatusModel:false});
-   // this.setState({ StatusModel: false });
-  }
+  StatusCloseModel = e => {
+    this.setState({ StatusModel: false });
+    // this.setState({ StatusModel: false });
+  };
 
   setSortCheckStatus = (column, e) => {
     debugger;
@@ -290,7 +295,7 @@ class Alerts extends Component {
             console.log(response);
           });
       } else {
-        this.setState({isExitsType:"",[e.target.name]: e.target.value})
+        this.setState({ isExitsType: "", [e.target.name]: e.target.value });
       }
     } else {
       this.setState({
@@ -457,12 +462,18 @@ class Alerts extends Component {
           var smsCust = false;
           var notiInt = false;
           var alertEdit = {};
+          var cAlertTypeId = 0;
+          var sAlertTypeId = 0;
+          var iAlertTypeId = 0;
+          var sAlertTypeId = 0;
+          var nAlertTypeId = 0;
           alertEdit.alertIsActive = res.data.responseData[0].isAlertActive;
           alertEdit.selectedAlertType = res.data.responseData[0].alertID;
           alertEdit.AlertTypeName = res.data.responseData[0].alertTypeName;
 
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
+              cAlertTypeId = data[i].alertTypeID;
               if (data[i].isEmailCustomer) {
                 emailCust = data[i].isEmailCustomer;
                 selectedSubjectCustomer = data[i].subject;
@@ -472,24 +483,33 @@ class Alerts extends Component {
                 emailInt = data[i].isEmailInternal;
                 selectedSubjectInternal = data[i].subject;
                 selectedCKInternal = data[i].mailContent;
+                iAlertTypeId = data[i].alertTypeID;
               }
               if (data[i].isEmailStore) {
                 emailStore = data[i].isEmailStore;
                 selectedSubjectStore = data[i].subject;
                 selectedCKStore = data[i].mailContent;
+                sAlertTypeId = data[i].alertTypeID;
               }
               if (data[i].isSMSCustomer) {
                 smsCust = data[i].isSMSCustomer;
                 selectedSMSContent = data[i].smsContent;
+                sAlertTypeId = data[i].alertTypeID;
               }
               if (data[i].isNotificationInternal) {
                 notiInt = data[i].isNotificationInternal;
                 selectedNotifContent = data[i].notificationContent;
+                nAlertTypeId = data[i].alertTypeID;
               }
             }
           }
 
           self.setState({
+            cAlertTypeId,
+            sAlertTypeId,
+            iAlertTypeId,
+            sAlertTypeId,
+            nAlertTypeId,
             selectedSubjectCustomer,
             selectedCKCustomer,
             selectedSubjectInternal,
@@ -590,7 +610,7 @@ class Alerts extends Component {
       } else if (this.state.alertEdit.alertIsActive === "Inactive") {
         AlertisActive = false;
       }
-    
+
       if (this.state.notiInt == true) {
         if (this.state.selectedNotifContent == "") {
           this.setState({
@@ -623,8 +643,6 @@ class Alerts extends Component {
         } else {
           this.setState({ subjectCustomerCompulsion: "" });
         }
-
-   
       }
 
       if (this.state.emailInt == true) {
@@ -642,15 +660,13 @@ class Alerts extends Component {
         } else {
           this.setState({ subjectInternalCompulsion: "" });
         }
-
-        
       }
 
       if (this.state.emailStore == true) {
         if (this.state.selectedCKStore === "") {
           this.setState({ ckStoreCompulsion: "Please Enter Subject." });
-          
-        return false;
+
+          return false;
         } else {
           this.setState({ ckStoreCompulsion: "" });
         }
@@ -658,41 +674,45 @@ class Alerts extends Component {
           this.setState({
             subjectStoreCompulsion: "Please Enter Description."
           });
-          
-        return false;
+
+          return false;
         } else {
           this.setState({ subjectStoreCompulsion: "" });
         }
-
       }
       var CommunicationModeDetails = [];
 
       var emailCustomer = {
         Communication_Mode: 240,
         CommunicationFor: 250,
+        AlertTypeID: this.state.cAlertTypeId,
         Content: this.state.selectedCKCustomer,
         Subject: this.state.selectedSubjectCustomer
       };
       var emailInternal = {
         Communication_Mode: 240,
         CommunicationFor: 251,
+        AlertTypeID: this.state.iAlertTypeId,
         Content: this.state.selectedCKInternal,
         Subject: this.state.selectedSubjectInternal
       };
       var emailStore = {
         Communication_Mode: 240,
         CommunicationFor: 252,
+        AlertTypeID: this.state.sAlertTypeId,
         Content: this.state.selectedCKStore,
         Subject: this.state.selectedSubjectStore
       };
       var sms = {
         Communication_Mode: 241,
         CommunicationFor: 250,
+        AlertTypeID: this.state.sAlertTypeId,
         Content: this.state.selectedSMSContent
       };
       var notification = {
         Communication_Mode: 242,
         CommunicationFor: 251,
+        AlertTypeID: this.state.nAlertTypeId,
         Content: this.state.selectedNotifContent
       };
       if (this.state.emailCust) {
@@ -1837,16 +1857,22 @@ class Alerts extends Component {
                                     className="add-select-category"
                                     value="0"
                                     onChange={this.setPlaceholderValue.bind(
-                                      this, 'Customer'
+                                      this,
+                                      "Customer"
                                     )}
                                   >
                                     <option value="0">Placeholders</option>
                                     {this.state.placeholderData !== null &&
-                                      this.state.placeholderData.map((item, i) => (
-                                        <option key={i} value={item.mailParameterID}>
-                                          {item.description}
-                                        </option>
-                                      ))}
+                                      this.state.placeholderData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.mailParameterID}
+                                          >
+                                            {item.description}
+                                          </option>
+                                        )
+                                      )}
                                   </select>
                                 </div>
                                 <CKEditor
@@ -1931,16 +1957,22 @@ class Alerts extends Component {
                                     className="add-select-category"
                                     value="0"
                                     onChange={this.setPlaceholderValue.bind(
-                                      this, 'Internal'
+                                      this,
+                                      "Internal"
                                     )}
                                   >
                                     <option value="0">Placeholders</option>
                                     {this.state.placeholderData !== null &&
-                                      this.state.placeholderData.map((item, i) => (
-                                        <option key={i} value={item.mailParameterID}>
-                                          {item.description}
-                                        </option>
-                                      ))}
+                                      this.state.placeholderData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.mailParameterID}
+                                          >
+                                            {item.description}
+                                          </option>
+                                        )
+                                      )}
                                   </select>
                                 </div>
 
@@ -2024,16 +2056,22 @@ class Alerts extends Component {
                                     className="add-select-category"
                                     value="0"
                                     onChange={this.setPlaceholderValue.bind(
-                                      this, 'Store'
+                                      this,
+                                      "Store"
                                     )}
                                   >
                                     <option value="0">Placeholders</option>
                                     {this.state.placeholderData !== null &&
-                                      this.state.placeholderData.map((item, i) => (
-                                        <option key={i} value={item.mailParameterID}>
-                                          {item.description}
-                                        </option>
-                                      ))}
+                                      this.state.placeholderData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.mailParameterID}
+                                          >
+                                            {item.description}
+                                          </option>
+                                        )
+                                      )}
                                   </select>
                                 </div>
 

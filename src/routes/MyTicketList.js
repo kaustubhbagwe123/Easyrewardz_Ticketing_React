@@ -48,6 +48,7 @@ import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
 import { CSVLink } from "react-csv";
 import { withRouter } from "react-router";
+import matchSorter from "match-sorter";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -271,6 +272,12 @@ class MyTicketList extends Component {
       assignColor: "",
       creationColor: "",
       sortHeader: "",
+      filterTxtValue: "",
+      sortFilterTicketData: [],
+      sortFilterCategoryData: [],
+      sortFilterPriorityData: [],
+      sortFiltercreatedOnData: [],
+      sortFilterAssigneeData: []
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -555,6 +562,11 @@ class MyTicketList extends Component {
     this.state.sortPriorityData = [];
     this.state.sortcreatedOnData = [];
     this.state.sortAssigneeData = [];
+    this.state.sortFilterTicketData = [];
+    this.state.sortFilterCategoryData = [];
+    this.state.sortFilterPriorityData = [];
+    this.state.sortFiltercreatedOnData = [];
+    this.state.sortFilterAssigneeData = [];
     this.state.sortAllData = [];
     var ticketStatus = 0;
 
@@ -667,7 +679,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
+        debugger;
         let data = res.data.responseData;
         let CVData = res.data.responseData;
         let Status = res.data.message;
@@ -687,6 +699,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+            self.state.sortFilterTicketData.push({ ticketStatus: distinct[i] });
           }
 
           var unique = [];
@@ -699,6 +712,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCategoryData.push({ category: distinct[i] });
+            self.state.sortFilterCategoryData.push({ category: distinct[i] });
           }
 
           var unique = [];
@@ -711,6 +725,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortPriorityData.push({ priority: distinct[i] });
+            self.state.sortFilterPriorityData.push({ priority: distinct[i] });
           }
 
           var unique = [];
@@ -723,6 +738,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+            self.state.sortFiltercreatedOnData.push({ createdOn: distinct[i] });
           }
 
           var Assignunique = [];
@@ -735,6 +751,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+            self.state.sortFilterAssigneeData.push({ assignedTo: distinct[i] });
           }
         }
 
@@ -2072,6 +2089,9 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+              self.state.sortFilterTicketData.push({
+                ticketStatus: distinct[i]
+              });
             }
 
             var unique = [];
@@ -2084,6 +2104,7 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortCategoryData.push({ category: distinct[i] });
+              self.state.sortFilterCategoryData.push({ category: distinct[i] });
             }
 
             var unique = [];
@@ -2096,6 +2117,7 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortPriorityData.push({ priority: distinct[i] });
+              self.state.sortFilterPriorityData.push({ priority: distinct[i] });
             }
 
             var unique = [];
@@ -2108,6 +2130,9 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+              self.state.sortFiltercreatedOnData.push({
+                createdOn: distinct[i]
+              });
             }
 
             var unique = [];
@@ -2120,6 +2145,9 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+              self.state.sortFilterAssigneeData.push({
+                assignedTo: distinct[i]
+              });
             }
           }
         }
@@ -2464,7 +2492,7 @@ class MyTicketList extends Component {
   }
 
   setSortCheckStatus = (column, e) => {
-    //debugger;
+    debugger;
 
     var itemsArray = [];
     var data = e.currentTarget.value;
@@ -2537,11 +2565,12 @@ class MyTicketList extends Component {
         a => a.isReassigned === true && a.isEscalation === 0
       );
     }
+    this.state.SearchTicketData = itemsArray;
 
-    this.setState({
-      SearchTicketData: itemsArray
-    });
-    this.StatusCloseModel();
+    // this.setState({
+    //   SearchTicketData: itemsArray
+    // });
+    // this.StatusCloseModel();
   };
 
   sortStatusAtoZ() {
@@ -3208,7 +3237,81 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    // if (e.target.value !== "") {
+    if (this.state.sortColumnName === "status") {
+      var sortFilterTicketData = matchSorter(
+        this.state.sortTicketData,
+        e.target.value,
+        { keys: ["ticketStatus"] }
+      );
+      if (sortFilterTicketData.length > 0) {
+        this.setState({ sortFilterTicketData });
+      } else {
+        this.setState({ sortFilterTicketData: this.state.sortTicketData });
+      }
+    }
+    if (this.state.sortColumnName === "category") {
+      var sortFilterCategoryData = matchSorter(
+        this.state.sortCategoryData,
+        e.target.value,
+        { keys: ["category"] }
+      );
+      if (sortFilterCategoryData.length > 0) {
+        this.setState({ sortFilterCategoryData });
+      } else {
+        this.setState({
+          sortFilterCategoryData: this.state.sortCategoryData
+        });
+      }
+    }
+    if (this.state.sortColumnName === "priority") {
+      var sortFilterPriorityData = matchSorter(
+        this.state.sortPriorityData,
+        e.target.value,
+        { keys: ["priority"] }
+      );
+      if (sortFilterPriorityData.length > 0) {
+        this.setState({ sortFilterPriorityData });
+      } else {
+        this.setState({
+          sortFilterPriorityData: this.state.sortPriorityData
+        });
+      }
+    }
 
+    if (this.state.sortColumnName === "createdOn") {
+      var sortFiltercreatedOnData = matchSorter(
+        this.state.sortcreatedOnData,
+        e.target.value,
+        { keys: ["createdOn"] }
+      );
+      if (sortFiltercreatedOnData.length > 0) {
+        this.setState({ sortFiltercreatedOnData });
+      } else {
+        this.setState({
+          sortFiltercreatedOnData: this.state.sortcreatedOnData
+        });
+      }
+    }
+    if (this.state.sortColumnName === "assignedTo") {
+      var sortFilterAssigneeData = matchSorter(
+        this.state.sortAssigneeData,
+        e.target.value,
+        { keys: ["assignedTo"] }
+      );
+      if (sortFilterAssigneeData.length > 0) {
+        this.setState({ sortFilterAssigneeData });
+      } else {
+        this.setState({
+          sortFilterAssigneeData: this.state.sortAssigneeData
+        });
+      }
+    }
+    // }
+  }
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
     
@@ -3257,6 +3360,12 @@ class MyTicketList extends Component {
               </div>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
                   <div className="filter-checkbox">
                     <input
@@ -3271,8 +3380,8 @@ class MyTicketList extends Component {
                     </label>
                   </div>
                   {this.state.sortColumnName === "status"
-                    ? this.state.sortTicketData !== null &&
-                      this.state.sortTicketData.map((item, i) => (
+                    ? this.state.sortFilterTicketData !== null &&
+                      this.state.sortFilterTicketData.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -3294,8 +3403,8 @@ class MyTicketList extends Component {
                     : null}
 
                   {this.state.sortColumnName === "category"
-                    ? this.state.sortCategoryData !== null &&
-                      this.state.sortCategoryData.map((item, i) => (
+                    ? this.state.sortFilterCategoryData !== null &&
+                      this.state.sortFilterCategoryData.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -3317,8 +3426,8 @@ class MyTicketList extends Component {
                     : null}
 
                   {this.state.sortColumnName === "priority"
-                    ? this.state.sortPriorityData !== null &&
-                      this.state.sortPriorityData.map((item, i) => (
+                    ? this.state.sortFilterPriorityData !== null &&
+                      this.state.sortFilterPriorityData.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -3340,8 +3449,8 @@ class MyTicketList extends Component {
                     : null}
 
                   {this.state.sortColumnName === "createdOn"
-                    ? this.state.sortcreatedOnData !== null &&
-                      this.state.sortcreatedOnData.map((item, i) => (
+                    ? this.state.sortFiltercreatedOnData !== null &&
+                      this.state.sortFiltercreatedOnData.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -3363,8 +3472,8 @@ class MyTicketList extends Component {
                     : null}
 
                   {this.state.sortColumnName === "assignedTo"
-                    ? this.state.sortAssigneeData !== null &&
-                      this.state.sortAssigneeData.map((item, i) => (
+                    ? this.state.sortFilterAssigneeData !== null &&
+                      this.state.sortFilterAssigneeData.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -6111,7 +6220,7 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "createdOn",
                                 Cell: row => {
-                                // debugger
+                                  debugger;
                                   return (
                                     <span className="one-line-outer">
                                       <label className="one-line">
@@ -6149,23 +6258,31 @@ class MyTicketList extends Component {
                                               </li>
                                               <li>
                                                 <p>
-                                                 
                                                   Response time remaining by
                                                 </p>
-                                                <p>{row.original.responseTimeRemainingBy}</p>
+                                                <p>
+                                                  {
+                                                    row.original
+                                                      .responseTimeRemainingBy
+                                                  }
+                                                </p>
                                               </li>
-                                              
+
                                               <li>
                                                 <p>Response overdue by</p>
                                                 <p>
-                                                  {row.original.responseOverdueBy}
+                                                  {
+                                                    row.original
+                                                      .responseOverdueBy
+                                                  }
                                                 </p>
                                               </li>
                                               <li>
                                                 <p>Resolution overdue by</p>
                                                 <p>
                                                   {
-                                                    row.original.resolutionOverdueBy
+                                                    row.original
+                                                      .resolutionOverdueBy
                                                   }
                                                 </p>
                                               </li>

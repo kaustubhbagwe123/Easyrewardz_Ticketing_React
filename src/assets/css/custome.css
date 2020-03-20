@@ -3347,6 +3347,9 @@ table tr th:last-child {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.my-tic-ck-height iframe {
+  height: calc(100% - 50px) !important;
+}
 /* my ticket list ends */
 
 /* ticket system starts */
@@ -3618,6 +3621,43 @@ table tr th:last-child {
 .datepicker-overflow .react-datepicker__year-read-view span {
   display: inline-block;
 }
+.ck-expand {
+  width: 18px;
+  position: absolute;
+  top: 92px;
+  right: 40px;
+}
+.ck-exp-top {
+  top: 6px;
+}
+.ck-exp-width {
+  width: 100% !important;
+  max-width: 90%;
+}
+.ck-exp-width .placeholder-dropdown-tktSys {
+  top: 45px;
+    right: -375px;
+    left: inherit;
+}
+.ck-exp-width .ck-det-cntr .cke_top {
+  height: 70px !important;
+}
+.ck-exp-width .ck-expand {
+  top: 25px;
+  right: 30px;
+}
+.ck-exp-width .cke_bottom {
+  display: none;
+}
+.ck-exp-width .ck-det-cntr .cke_inner {
+  min-height: auto;
+}
+.ck-exp-width .ck-det-cntr .cke_contents {
+  height: 300px !important;
+}
+.ck-exp-width iframe {
+  height: calc(100% - 60px) !important;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
@@ -3734,10 +3774,12 @@ table tr th:last-child {
 }
 .placeholder-dropdown {
   right: 410px;
+  width: 180px;
 }
 .placeholder-dropdown-tktSys {
   top: 87px;
-  right: 150px;
+  left: 25px;
+  width: 180px;
 }
 .placeholder-dropdown {
   right: 410px;
@@ -6637,13 +6679,15 @@ table thead tr {
   height: 18px;
   margin: -2px 3px;
 }
-.ck-det-cntr iframe {
+/* .ck-det-cntr iframe {
   padding-top: 15px;
-}
-.ck-det-cntr #cke_1_top {
+} */
+.ck-det-cntr .cke_top {
   height: 120px !important;
 }
-
+.ck-det-cntr .cke_contents {
+  height: auto !important;
+}
 .ck-det-cntr .cke_inner {
   min-height: 380px;
   height: auto;

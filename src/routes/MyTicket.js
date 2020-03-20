@@ -5020,7 +5020,7 @@ class MyTicket extends Component {
                     </div>
                     <Card>
                       <CardBody>
-                        <div className="">
+                        <div className="my-tic-ck-height">
                           <CKEditor
                             data={this.state.mailBodyData}
                             onChange={this.onAddCKEditorChange}

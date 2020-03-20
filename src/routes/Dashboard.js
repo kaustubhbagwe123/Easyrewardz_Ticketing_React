@@ -320,7 +320,8 @@ class Dashboard extends Component {
       moduleID: 0,
       ticketGenerationSourceFlag: false,
       ticketToBillBarFlag: false,
-      openByPriorityFlag: false
+      openByPriorityFlag: false,
+      // filterTxtValue:""
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -837,7 +838,7 @@ class Dashboard extends Component {
     this.setState({
       SearchTicketData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   sortStatusAtoZ() {
@@ -3685,6 +3686,11 @@ class Dashboard extends Component {
       });
   }
 
+  // filteTextChange(e)
+  // {
+  //   this.setState({ filterTxtValue: e.target.value });
+  // }
+
   render() {
     const { SearchAssignData, SearchTicketData } = this.state;
     let now = new Date();
@@ -3757,7 +3763,9 @@ class Dashboard extends Component {
               </div>
               <div className="filter-type ">
                 <p>FILTER BY TYPE</p>
+                
                 <div className="FTypeScroll">
+                {/* <input type="text" value={this.state.filterTxtValue} onChange={this.filteTextChange.bind(this)}/> */}
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
