@@ -113,7 +113,10 @@ class Templates extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Template/GetMailParameter",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        AlertID: 8
+      }
     })
       .then(function(res) {
         debugger;
@@ -701,6 +704,7 @@ class Templates extends Component {
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
               });
+              self.selectNoSLA();
             } else {
               NotificationManager.error("Template Not Added.", "", 1500);
             }
