@@ -48,6 +48,7 @@ import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
 import { CSVLink } from "react-csv";
 import { withRouter } from "react-router";
+import matchSorter from "match-sorter";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -270,8 +271,13 @@ class MyTicketList extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      sortHeader:""
-
+      sortHeader: "",
+      filterTxtValue: "",
+      sortFilterTicketData: [],
+      sortFilterCategoryData: [],
+      sortFilterPriorityData: [],
+      sortFiltercreatedOnData: [],
+      sortFilterAssigneeData: []
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -329,7 +335,7 @@ class MyTicketList extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    //debugger;
     if (this.props.location.state && this.props.location.state.isType) {
       this.newNotifications(this.props.location.state.isType);
       this.setState({
@@ -357,7 +363,7 @@ class MyTicketList extends Component {
   }
 
   componentDidUpdate() {
-    debugger;
+    //debugger;
     // console.log(this.state.notiType);
     if (this.props.location.state) {
       if (this.state.notiType !== this.props.location.state.isType) {
@@ -386,14 +392,14 @@ class MyTicketList extends Component {
   //   this.handleSearchTicket("Open");
   // }
   handleGetModulesNames() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModules",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       // let status = res.data.message;
       let data = res.data.responseData;
       // let moduleID = data[0].moduleID;
@@ -409,7 +415,7 @@ class MyTicketList extends Component {
     });
   }
   handleMyTicketsearchOption(id) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -420,7 +426,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data1 = res.data.responseData;
         if (status === "Success") {
@@ -436,7 +442,7 @@ class MyTicketList extends Component {
   }
 
   setMyTicketSearch(data1) {
-    debugger;
+    //debugger;
     var data = [];
     data = data1;
     if (data.length > 0) {
@@ -515,7 +521,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         let Status = res.data.message;
         if (Status === "Success") {
@@ -550,12 +556,17 @@ class MyTicketList extends Component {
   }
 
   handleSearchTicket(TabId) {
-    debugger;
+    //debugger;
     this.state.sortTicketData = [];
     this.state.sortCategoryData = [];
     this.state.sortPriorityData = [];
     this.state.sortcreatedOnData = [];
     this.state.sortAssigneeData = [];
+    this.state.sortFilterTicketData = [];
+    this.state.sortFilterCategoryData = [];
+    this.state.sortFilterPriorityData = [];
+    this.state.sortFiltercreatedOnData = [];
+    this.state.sortFilterAssigneeData = [];
     this.state.sortAllData = [];
     var ticketStatus = 0;
 
@@ -657,7 +668,7 @@ class MyTicketList extends Component {
       selectedDepartment: 0,
       selectedFunction: 0
     });
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -670,7 +681,7 @@ class MyTicketList extends Component {
       .then(function(res) {
         debugger;
         let data = res.data.responseData;
-        let CSVData = data;
+        let CVData = res.data.responseData;
         let Status = res.data.message;
 
         if (data !== null) {
@@ -688,6 +699,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+            self.state.sortFilterTicketData.push({ ticketStatus: distinct[i] });
           }
 
           var unique = [];
@@ -700,6 +712,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCategoryData.push({ category: distinct[i] });
+            self.state.sortFilterCategoryData.push({ category: distinct[i] });
           }
 
           var unique = [];
@@ -712,6 +725,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortPriorityData.push({ priority: distinct[i] });
+            self.state.sortFilterPriorityData.push({ priority: distinct[i] });
           }
 
           var unique = [];
@@ -724,6 +738,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+            self.state.sortFiltercreatedOnData.push({ createdOn: distinct[i] });
           }
 
           var Assignunique = [];
@@ -736,6 +751,7 @@ class MyTicketList extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+            self.state.sortFilterAssigneeData.push({ assignedTo: distinct[i] });
           }
         }
 
@@ -745,14 +761,14 @@ class MyTicketList extends Component {
             loading: false,
             cSelectedRow: {}
           });
-          for (let i = 0; i < CSVData.length; i++) {
-            delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
+          for (let i = 0; i < CVData.length; i++) {
+            delete CVData[i].totalpages;
+            // delete CVData[i].responseTimeRemainingBy;
+            // delete CVData[i].responseOverdueBy;
+            // delete CVData[i].resolutionOverdueBy;
             // delete CSVData[i].ticketCommentCount;
           }
-          self.setState({ CSVDownload: CSVData });
+          self.setState({ CSVDownload: CVData });
         } else {
           self.setState({ SearchTicketData: [], loading: false });
         }
@@ -762,7 +778,7 @@ class MyTicketList extends Component {
       });
   }
   handleClearFollowUpData() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "get",
@@ -770,7 +786,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -788,7 +804,7 @@ class MyTicketList extends Component {
       });
   }
   handleSearchClearFollowUp() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -799,7 +815,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -817,7 +833,7 @@ class MyTicketList extends Component {
       });
   }
   handleSchedulePopup() {
-    debugger;
+    //debugger;
     // if (this.state.selectedTeamMember.length > 0 && ) {
 
     // }
@@ -911,7 +927,7 @@ class MyTicketList extends Component {
   }
 
   handleSchedulePopupSuccess() {
-    debugger;
+    //debugger;
 
     let self = this;
     axios({
@@ -947,11 +963,11 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.", '', 1000);
+          NotificationManager.success("Scheduled successfully.", "", 1000);
           self.setState({
             scheduleRequired: ""
           });
@@ -963,13 +979,13 @@ class MyTicketList extends Component {
   }
 
   handleAssignRemark(e) {
-    debugger;
+    //debugger;
     this.setState({
       agentRemark: e.currentTarget.value
     });
   }
   handleDailyDay(e) {
-    debugger;
+    //debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
@@ -1010,7 +1026,7 @@ class MyTicketList extends Component {
     });
   }
   handleWeeklyDays = async e => {
-    debugger;
+    //debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -1111,13 +1127,13 @@ class MyTicketList extends Component {
     });
   };
   handleScheduleTime(e) {
-    debugger;
+    //debugger;
     this.setState({
       selectedScheduleTime: e
     });
   }
   handleAssignTickets() {
-    debugger;
+    //debugger;
     if (this.state.agentId !== 0) {
       let self = this;
       var ticketIdsComma = this.state.ticketIds;
@@ -1134,11 +1150,15 @@ class MyTicketList extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          //debugger;
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success("Tickets assigned successfully.", '', 1000);
+            NotificationManager.success(
+              "Tickets assigned successfully.",
+              "",
+              1000
+            );
             self.handleSearchTicket();
           }
         })
@@ -1153,7 +1173,7 @@ class MyTicketList extends Component {
   }
 
   clearSearch() {
-    debugger;
+    //debugger;
     if (this.state.byDateFlag === 1) {
       this.setState(
         {
@@ -1258,7 +1278,7 @@ class MyTicketList extends Component {
   }
 
   handleAdvSearchFlag(e) {
-    debugger;
+    //debugger;
     let currentActive = e.currentTarget.innerText;
     if (currentActive === "By Date") {
       this.setState({
@@ -1308,7 +1328,7 @@ class MyTicketList extends Component {
     }
   }
   handleGetDraftDetails() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1316,7 +1336,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let details = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1330,7 +1350,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetDepartmentList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1338,7 +1358,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1352,7 +1372,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetFunctionList() {
-    debugger;
+    //debugger;
 
     let self = this;
     self.setState({ FunctionData: [], selectedFunction: 0 });
@@ -1366,7 +1386,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -1381,7 +1401,7 @@ class MyTicketList extends Component {
   };
 
   handleGetDesignationList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1389,7 +1409,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1403,7 +1423,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "get",
@@ -1411,7 +1431,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         let stastus = res.data.message;
         if (stastus === "Success") {
@@ -1432,7 +1452,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let ChannelOfPurchaseData = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
       })
@@ -1441,7 +1461,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetTicketSourceList() {
-    debugger;
+    //debugger;
 
     let self = this;
     axios({
@@ -1450,7 +1470,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1468,7 +1488,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetSlaStatusList() {
-    debugger;
+    //debugger;
 
     let self = this;
     axios({
@@ -1477,7 +1497,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         self.setState({
           SlaStatusData: data
@@ -1488,7 +1508,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetCategoryList() {
-    debugger;
+    //debugger;
 
     let self = this;
     axios({
@@ -1497,7 +1517,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data;
 
         if (data !== null) {
@@ -1511,7 +1531,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetClaimSubCategoryList() {
-    debugger;
+    //debugger;
     let self = this;
     self.setState({
       ClaimSubCategoryData: [],
@@ -1529,7 +1549,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         self.setState({
           ClaimSubCategoryData: data
@@ -1540,7 +1560,7 @@ class MyTicketList extends Component {
       });
   }
   handleGetSubCategoryList(param) {
-    debugger;
+    //debugger;
     let self = this;
     // self.setState({
     //   SubCategoryData: [],
@@ -1596,7 +1616,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         var data = res.data.responseData;
         // if (self.state.byCategoryFlag === 4) {
         //   self.setState({
@@ -1641,7 +1661,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let ClaimIssueTypeData = res.data.responseData;
         self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
       })
@@ -1695,7 +1715,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         // if (self.state.byCategoryFlag === 4) {
         //   var IssueTypeData = res.data.responseData;
         //   self.setState({
@@ -1729,7 +1749,7 @@ class MyTicketList extends Component {
       });
   }
   handleAssignSearchData() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1743,7 +1763,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let SearchAssignData = res.data.responseData;
         self.setState({
           SearchAssignData: SearchAssignData,
@@ -1758,7 +1778,7 @@ class MyTicketList extends Component {
       });
   }
   handleAssignClearData() {
-    debugger;
+    //debugger;
     this.setState({
       assignFirstName: "",
       assignLastName: "",
@@ -1768,7 +1788,7 @@ class MyTicketList extends Component {
   }
 
   SaveSearchData() {
-    debugger;
+    //debugger;
     let self = this;
     if (this.state.SearchName.length > 0) {
       axios({
@@ -1781,10 +1801,14 @@ class MyTicketList extends Component {
         }
       })
         .then(function(res) {
-          debugger;
+          //debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Save Search parameter successfully.", '', 1000);
+            NotificationManager.success(
+              "Save Search parameter successfully.",
+              "",
+              1000
+            );
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: ""
@@ -1801,7 +1825,7 @@ class MyTicketList extends Component {
     }
   }
   handleGetSaveSearchList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1809,7 +1833,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let data = res.data.responseData;
         self.setState({ SearchListData: data });
       })
@@ -1818,7 +1842,7 @@ class MyTicketList extends Component {
       });
   }
   hadleSearchDeleteData(searchDeletId) {
-    debugger;
+    //debugger;
     let self = this;
 
     axios({
@@ -1830,11 +1854,13 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully.", '', 1000
+            "Saved search data deleted successfully.",
+            "",
+            1000
           );
           self.handleGetSaveSearchList();
         }
@@ -1844,7 +1870,7 @@ class MyTicketList extends Component {
       });
   }
   ViewSearchData(clrSrch) {
-    debugger;
+    //debugger;
     this.state.sortTicketData = [];
     this.state.sortCategoryData = [];
     this.state.sortPriorityData = [];
@@ -2040,10 +2066,11 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        let CSVData = data;
+        let CVData = res.data.responseData;
+      
         let count = 0;
         if (data !== null) {
           if (res.data.responseData != null) {
@@ -2062,6 +2089,9 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+              self.state.sortFilterTicketData.push({
+                ticketStatus: distinct[i]
+              });
             }
 
             var unique = [];
@@ -2074,6 +2104,7 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortCategoryData.push({ category: distinct[i] });
+              self.state.sortFilterCategoryData.push({ category: distinct[i] });
             }
 
             var unique = [];
@@ -2086,6 +2117,7 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortPriorityData.push({ priority: distinct[i] });
+              self.state.sortFilterPriorityData.push({ priority: distinct[i] });
             }
 
             var unique = [];
@@ -2098,6 +2130,9 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+              self.state.sortFiltercreatedOnData.push({
+                createdOn: distinct[i]
+              });
             }
 
             var unique = [];
@@ -2110,23 +2145,29 @@ class MyTicketList extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+              self.state.sortFilterAssigneeData.push({
+                assignedTo: distinct[i]
+              });
             }
           }
         }
 
         if (status === "Success") {
+          self.setState({
+            SearchTicketData: data,
+          });
+         
+          
           if (data !== null) {
-            for (let i = 0; i < CSVData.length; i++) {
-              delete CSVData[i].totalpages;
-              delete CSVData[i].responseTimeRemainingBy;
-              delete CSVData[i].responseOverdueBy;
-              delete CSVData[i].resolutionOverdueBy;
+            for (let i = 0; i < CVData.length; i++) {
+              delete CVData[i].totalpages;
+              delete CVData[i].responseTimeRemainingBy;
+              delete CVData[i].responseOverdueBy;
+              delete CVData[i].resolutionOverdueBy;
               // delete CSVData[i].ticketCommentCount;
             }
-            self.setState({ CSVDownload: CSVData });
-            self.setState({
-              SearchTicketData: data
-            });
+            self.setState({ CSVDownload: CVData });
+           
           }
           if (clrSrch === 1) {
             self.setState({
@@ -2190,11 +2231,11 @@ class MyTicketList extends Component {
   };
 
   setChannelOfPurchaseValue = e => {
-    debugger;
+    //debugger;
     this.setState({ selectedChannelOfPurchase: e });
   };
   setTeamMember = e => {
-    debugger;
+    //debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, s => s.fullName)
@@ -2203,7 +2244,7 @@ class MyTicketList extends Component {
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
   };
   setNameOfDayForWeek = e => {
-    debugger;
+    //debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
         .call(e, s => s.days)
@@ -2215,7 +2256,7 @@ class MyTicketList extends Component {
     });
   };
   setNameOfMonthForYear = e => {
-    debugger;
+    //debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
         .call(e, s => s.month)
@@ -2227,7 +2268,7 @@ class MyTicketList extends Component {
     });
   };
   setNameOfMonthForDailyYear = e => {
-    debugger;
+    //debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
         .call(e, s => s.month)
@@ -2239,7 +2280,7 @@ class MyTicketList extends Component {
     });
   };
   setNameOfDayForYear = e => {
-    debugger;
+    //debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
         .call(e, s => s.days)
@@ -2262,7 +2303,7 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
   handleClaimStatus = e => {
-    debugger;
+    //debugger;
     let claimStatusValue = e.currentTarget.value;
     this.setState({ selectedClaimStatus: claimStatusValue });
   };
@@ -2323,7 +2364,7 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaStatus: slaStatusValue });
   };
   setCategoryValue = e => {
-    debugger;
+    //debugger;
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -2393,19 +2434,23 @@ class MyTicketList extends Component {
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
-  StatusOpenModel(data,header) {
-    this.setState({ StatusModel: true, sortColumnName: data,sortHeader:header });
+  StatusOpenModel(data, header) {
+    this.setState({
+      StatusModel: true,
+      sortColumnName: data,
+      sortHeader: header
+    });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
   toggleSearch() {
-    debugger;
+    //debugger;
     this.handleGetSaveSearchList();
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
   handleByDateCreate(date) {
-    debugger;
+    //debugger;
     this.setState({ ByDateCreatDate: date });
   }
   handleChangeSelectDate(date) {
@@ -2467,23 +2512,18 @@ class MyTicketList extends Component {
       );
       this.setState({
         statusColor: "sort-column"
-       
       });
     } else if (column === "category") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
       this.setState({
-       
         categoryColor: ""
-      
       });
     } else if (column === "priority") {
       this.state.SearchTicketData = this.state.sortAllData;
       itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
       this.setState({
-       
         priorityColor: "sort-column"
-      
       });
     } else if (column === "assignedTo") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -2491,9 +2531,7 @@ class MyTicketList extends Component {
         a => a.assignedTo === data
       );
       this.setState({
-       
         assignColor: "sort-column"
-      
       });
     } else if (column === "createdOn") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -2501,9 +2539,7 @@ class MyTicketList extends Component {
         a => a.createdOn === data
       );
       this.setState({
-       
         creationColor: "sort-column"
-      
       });
     } else if (column === "colorred") {
       this.state.SearchTicketData = this.state.sortAllData;
@@ -2529,15 +2565,16 @@ class MyTicketList extends Component {
         a => a.isReassigned === true && a.isEscalation === 0
       );
     }
+    this.state.SearchTicketData = itemsArray;
 
-    this.setState({
-      SearchTicketData: itemsArray
-    });
-    this.StatusCloseModel();
+    // this.setState({
+    //   SearchTicketData: itemsArray
+    // });
+    // this.StatusCloseModel();
   };
 
   sortStatusAtoZ() {
-    debugger;
+    //debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
 
@@ -2550,7 +2587,7 @@ class MyTicketList extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
+    //debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
     itemsArray.sort((a, b) => {
@@ -2563,7 +2600,7 @@ class MyTicketList extends Component {
   }
 
   handleGetAssignTo() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -2571,7 +2608,7 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2592,7 +2629,7 @@ class MyTicketList extends Component {
   }
 
   handelCheckBoxCheckedChange = async ticketID => {
-    debugger;
+    //debugger;
     var checkboxes = document.getElementsByName("ListCheckbox");
     var strIds = "";
     for (var i in checkboxes) {
@@ -2616,7 +2653,7 @@ class MyTicketList extends Component {
   };
 
   checkAllCheckbox = async event => {
-    debugger;
+    //debugger;
     var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -2659,7 +2696,7 @@ class MyTicketList extends Component {
     if ((rowInfo, column)) {
       return {
         onClick: e => {
-          debugger;
+          //debugger;
           let Id = column.original["ticketID"];
           // this.props.history.push("myticket");
           let self = this;
@@ -2688,7 +2725,7 @@ class MyTicketList extends Component {
     return {};
   };
   handleScheduleDateChange = e => {
-    debugger;
+    //debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
       this.setState({
@@ -2813,7 +2850,7 @@ class MyTicketList extends Component {
   };
 
   handleApplySearch(paramsID) {
-    debugger;
+    //debugger;
     let self = this;
     this.setState({ loading: true });
     self.onCloseModal();
@@ -2827,7 +2864,7 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData.ticketList;
         let count = 0;
@@ -2897,7 +2934,7 @@ class MyTicketList extends Component {
               selectedTicketStatusByDate: 0
             });
           } else {
-            debugger;
+            //debugger;
             if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
               let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
               let createdDateArray = createdDate.split("-");
@@ -3200,10 +3237,84 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    // if (e.target.value !== "") {
+    if (this.state.sortColumnName === "status") {
+      var sortFilterTicketData = matchSorter(
+        this.state.sortTicketData,
+        e.target.value,
+        { keys: ["ticketStatus"] }
+      );
+      if (sortFilterTicketData.length > 0) {
+        this.setState({ sortFilterTicketData });
+      } else {
+        this.setState({ sortFilterTicketData: this.state.sortTicketData });
+      }
+    }
+    if (this.state.sortColumnName === "category") {
+      var sortFilterCategoryData = matchSorter(
+        this.state.sortCategoryData,
+        e.target.value,
+        { keys: ["category"] }
+      );
+      if (sortFilterCategoryData.length > 0) {
+        this.setState({ sortFilterCategoryData });
+      } else {
+        this.setState({
+          sortFilterCategoryData: this.state.sortCategoryData
+        });
+      }
+    }
+    if (this.state.sortColumnName === "priority") {
+      var sortFilterPriorityData = matchSorter(
+        this.state.sortPriorityData,
+        e.target.value,
+        { keys: ["priority"] }
+      );
+      if (sortFilterPriorityData.length > 0) {
+        this.setState({ sortFilterPriorityData });
+      } else {
+        this.setState({
+          sortFilterPriorityData: this.state.sortPriorityData
+        });
+      }
+    }
 
+    if (this.state.sortColumnName === "createdOn") {
+      var sortFiltercreatedOnData = matchSorter(
+        this.state.sortcreatedOnData,
+        e.target.value,
+        { keys: ["createdOn"] }
+      );
+      if (sortFiltercreatedOnData.length > 0) {
+        this.setState({ sortFiltercreatedOnData });
+      } else {
+        this.setState({
+          sortFiltercreatedOnData: this.state.sortcreatedOnData
+        });
+      }
+    }
+    if (this.state.sortColumnName === "assignedTo") {
+      var sortFilterAssigneeData = matchSorter(
+        this.state.sortAssigneeData,
+        e.target.value,
+        { keys: ["assignedTo"] }
+      );
+      if (sortFilterAssigneeData.length > 0) {
+        this.setState({ sortFilterAssigneeData });
+      } else {
+        this.setState({
+          sortFilterAssigneeData: this.state.sortAssigneeData
+        });
+      }
+    }
+    // }
+  }
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-
+    
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -3225,7 +3336,9 @@ class MyTicketList extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -3247,135 +3360,140 @@ class MyTicketList extends Component {
               </div>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumnName === "status"
+                    ? this.state.sortFilterTicketData !== null &&
+                      this.state.sortFilterTicketData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.ticketStatus}
+                            value={item.ticketStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.ticketStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.ticketStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "category"
+                    ? this.state.sortFilterCategoryData !== null &&
+                      this.state.sortFilterCategoryData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.category}
+                            value={item.category}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "category"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.category}>
+                            <span className="table-btn table-blue-btn">
+                              {item.category}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "priority"
+                    ? this.state.sortFilterPriorityData !== null &&
+                      this.state.sortFilterPriorityData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.priority}
+                            value={item.priority}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "priority"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.priority}>
+                            <span className="table-btn table-blue-btn">
+                              {item.priority}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "createdOn"
+                    ? this.state.sortFiltercreatedOnData !== null &&
+                      this.state.sortFiltercreatedOnData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdOn}
+                            value={item.createdOn}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdOn"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdOn}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdOn}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "assignedTo"
+                    ? this.state.sortFilterAssigneeData !== null &&
+                      this.state.sortFilterAssigneeData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.assignedTo}
+                            value={item.assignedTo}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "assignedTo"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.assignedTo}>
+                            <span className="table-btn table-blue-btn">
+                              {item.assignedTo}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumnName === "status"
-                  ? this.state.sortTicketData !== null &&
-                    this.state.sortTicketData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.ticketStatus}
-                          value={item.ticketStatus}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.ticketStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.ticketStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "category"
-                  ? this.state.sortCategoryData !== null &&
-                    this.state.sortCategoryData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.category}
-                          value={item.category}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "category"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.category}>
-                          <span className="table-btn table-blue-btn">
-                            {item.category}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "priority"
-                  ? this.state.sortPriorityData !== null &&
-                    this.state.sortPriorityData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.priority}
-                          value={item.priority}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "priority"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.priority}>
-                          <span className="table-btn table-blue-btn">
-                            {item.priority}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "createdOn"
-                  ? this.state.sortcreatedOnData !== null &&
-                    this.state.sortcreatedOnData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdOn}
-                          value={item.createdOn}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdOn"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdOn}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdOn}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "assignedTo"
-                  ? this.state.sortAssigneeData !== null &&
-                    this.state.sortAssigneeData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.assignedTo}
-                          value={item.assignedTo}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "assignedTo"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.assignedTo}>
-                          <span className="table-btn table-blue-btn">
-                            {item.assignedTo}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
               </div>
 
               <div className="filter-type filter-color">
@@ -3678,7 +3796,7 @@ class MyTicketList extends Component {
                   ) : null}
                 </div>
               ) : null}
-             
+
               <button
                 className="Add-ticket-button"
                 type="button"
@@ -4883,15 +5001,16 @@ class MyTicketList extends Component {
                                     >
                                       CLEAR SEARCH
                                     </p>
-                                    &nbsp;
-                              &nbsp;
-                              &nbsp;
-                              <p
-                                className="blue-clr fs-14"
-                                onClick={this.setSortCheckStatus.bind(this, "all")}
-                              >
-                                CLEAR FILTER
-                              </p>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <p
+                                      className="blue-clr fs-14"
+                                      onClick={this.setSortCheckStatus.bind(
+                                        this,
+                                        "all"
+                                      )}
+                                    >
+                                      CLEAR FILTER
+                                    </p>
                                   </div>
                                   <div className="col-auto mob-mar-btm">
                                     <CSVLink
@@ -5570,7 +5689,7 @@ class MyTicketList extends Component {
                                               : -1;
                                             return {
                                               onClick: e => {
-                                                debugger;
+                                                //debugger;
                                                 this.selectedRow = index;
                                                 var agentId =
                                                   column.original["user_ID"];
@@ -5795,10 +5914,11 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <span
-                                  className={this.state.statusColor}
+                                    className={this.state.statusColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "status","Status"
+                                      "status",
+                                      "Status"
                                     )}
                                   >
                                     Status{" "}
@@ -6002,10 +6122,11 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <span
-                                  className={this.state.categoryColor}
+                                    className={this.state.categoryColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "category","Category"
+                                      "category",
+                                      "Category"
                                     )}
                                   >
                                     Category{" "}
@@ -6052,10 +6173,11 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <span
-                                  className={this.state.priorityColor}
+                                    className={this.state.priorityColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "priority","Priority"
+                                      "priority",
+                                      "Priority"
                                     )}
                                   >
                                     Priority{" "}
@@ -6069,10 +6191,11 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <span
-                                  className={this.state.assignColor}
+                                    className={this.state.assignColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "assignedTo","Assign To"
+                                      "assignedTo",
+                                      "Assign To"
                                     )}
                                   >
                                     Assignee{" "}
@@ -6084,10 +6207,11 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <span
-                                  className={this.state.creationColor}
+                                    className={this.state.creationColor}
                                     onClick={this.StatusOpenModel.bind(
                                       this,
-                                      "createdOn","Creation On"
+                                      "createdOn",
+                                      "Creation On"
                                     )}
                                   >
                                     Creation On{" "}
@@ -6095,75 +6219,87 @@ class MyTicketList extends Component {
                                   </span>
                                 ),
                                 accessor: "createdOn",
-                                Cell: row => (
-                                  <span className="one-line-outer">
-                                    <label className="one-line">
-                                      {row.original.createdOn}
-                                    </label>
+                                Cell: row => {
+                                  debugger;
+                                  return (
+                                    <span className="one-line-outer">
+                                      <label className="one-line">
+                                        {row.original.createdOn}
+                                      </label>
+                                      <Popover
+                                        content={
+                                          <div className="insertpop1">
+                                            <ul className="dash-creation-popup">
+                                              <li className="title">
+                                                Creation details
+                                              </li>
+                                              <li>
+                                                <p>
+                                                  {row.original.createdBy}{" "}
+                                                  Created
+                                                </p>
+                                                <p>{row.original.createdago}</p>
+                                              </li>
+                                              <li>
+                                                <p>
+                                                  Assigned to{" "}
+                                                  {row.original.assignedTo}
+                                                </p>
+                                                <p>
+                                                  {row.original.assignedago}
+                                                </p>
+                                              </li>
+                                              <li>
+                                                <p>
+                                                  {row.original.updatedBy}
+                                                  updated
+                                                </p>
+                                                <p>{row.original.updatedago}</p>
+                                              </li>
+                                              <li>
+                                                <p>
+                                                  Response time remaining by
+                                                </p>
+                                                <p>
+                                                  {
+                                                    row.original
+                                                      .responseTimeRemainingBy
+                                                  }
+                                                </p>
+                                              </li>
 
-                                    <Popover
-                                      content={
-                                        <div className="insertpop1">
-                                          <ul className="dash-creation-popup">
-                                            <li className="title">
-                                              Creation details
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {row.original.createdBy} Created
-                                              </p>
-                                              <p>{row.original.createdago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                Assigned to{" "}
-                                                {row.original.assignedTo}
-                                              </p>
-                                              <p>{row.original.assignedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {row.original.updatedBy} updated
-                                              </p>
-                                              <p>{row.original.updatedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>Response time remaining by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .responseTimeRemainingBy
-                                                }
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Response overdue by</p>
-                                              <p>
-                                                {row.original.responseOverdueBy}
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Resolution overdue by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .resolutionOverdueBy
-                                                }
-                                              </p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="left"
-                                    >
-                                      <img
-                                        className="info-icon info-iconcus"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                )
+                                              <li>
+                                                <p>Response overdue by</p>
+                                                <p>
+                                                  {
+                                                    row.original
+                                                      .responseOverdueBy
+                                                  }
+                                                </p>
+                                              </li>
+                                              <li>
+                                                <p>Resolution overdue by</p>
+                                                <p>
+                                                  {
+                                                    row.original
+                                                      .resolutionOverdueBy
+                                                  }
+                                                </p>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        }
+                                        placement="left"
+                                      >
+                                        <img
+                                          className="info-icon info-iconcus"
+                                          src={InfoIcon}
+                                          alt="info-icon"
+                                        />
+                                      </Popover>
+                                    </span>
+                                  );
+                                }
                               }
                             ]}
                             resizable={false}
@@ -6178,116 +6314,6 @@ class MyTicketList extends Component {
                               }
                             ]}
                           />
-                          {/* <div className="position-relative">
-                                    <Popover
-                                      content={
-                                        <div className="insertpop1">
-                                          <ul className="dash-creation-popup">
-                                            <li className="title">
-                                              Creation details
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {row.original.createdBy} Created
-                                              </p>
-                                              <p>{row.original.createdago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                Assigned to{" "}
-                                                {row.original.assignedTo}
-                                              </p>
-                                              <p>{row.original.assignedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {row.original.updatedBy} updated
-                                              </p>
-                                              <p>{row.original.updatedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>Response time remaining by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .responseTimeRemainingBy
-                                                }
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Response overdue by</p>
-                                              <p>
-                                                {row.original.responseOverdueBy}
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Resolution overdue by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .resolutionOverdueBy
-                                                }
-                                              </p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="left"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                )
-                              }
-                            ]}
-                            // resizable={false}
-                            defaultPageSize={10}
-                            showPagination={true}
-                            getTrProps={this.HandleRowClickPage}
-                            minRows={2}
-                          />
-                          {/* <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div> */}
                         </div>
                         <div
                           className="float-search"

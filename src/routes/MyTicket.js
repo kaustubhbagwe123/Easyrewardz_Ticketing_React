@@ -209,10 +209,11 @@ class MyTicket extends Component {
       oldAgentId: 0,
       AssignCommentCompulsory: "",
       AssignToData: [],
+      placeholderData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
       freetextCommentCompulsory: "",
-      viewPolicyModel: false
+      role_Name: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -239,11 +240,8 @@ class MyTicket extends Component {
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
     this.handleProgressBarDetails = this.handleProgressBarDetails.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
-      this
-    );
-    this.handleviewPolicyModelOpen = this.handleviewPolicyModelOpen.bind(this);
-    this.handleviewPolicyModelClose = this.handleviewPolicyModelClose.bind(
       this
     );
   }
@@ -272,18 +270,11 @@ class MyTicket extends Component {
       this.handleGetMessageDetails(ticketId);
       this.handleProgressBarDetails(ticketId);
       this.handleGetAgentList();
+      this.handlePlaceholderList();
     } else {
       this.props.history.push("myTicketlist");
     }
   }
-  handleviewPolicyModelOpen = () => {
-    debugger;
-    this.setState({ viewPolicyModel: true });
-  };
-  handleviewPolicyModelClose = () => {
-    debugger;
-    this.setState({ viewPolicyModel: false });
-  };
 
   onAddCKEditorChange = evt => {
     ////debugger;
@@ -299,9 +290,8 @@ class MyTicket extends Component {
       replymailBodyData: newContent
     });
   };
-// handle Get Agent List for User dropdown
+  // handle Get Agent List for User dropdown
   handleGetAgentList() {
-    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -315,10 +305,35 @@ class MyTicket extends Component {
           self.setState({
             AssignToData: data
           });
-          self.checkAllAgentStart();
+          // self.checkAllAgentStart();
         } else {
           self.setState({
             AssignToData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
           });
         }
       })
@@ -384,6 +399,7 @@ class MyTicket extends Component {
           var productData = data.products;
           var MailDetails = data.ticketingMailerQue;
           var attachementDetails = data.attachment;
+          var rolename_ = data.roleName;
           var selectetedParameters = {
             ticketStatusID: ticketStatus,
             priorityID: ticketPriority,
@@ -418,6 +434,7 @@ class MyTicket extends Component {
             mailFiled: MailDetails,
             fileDummy: attachementDetails,
             oldAgentId: AgentId,
+            role_Name: rolename_,
             loading: false
           });
 
@@ -524,7 +541,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -658,7 +675,7 @@ class MyTicket extends Component {
       });
   }
   // onchange on User Drop down list
-  setAssignedToValue(check,e) {
+  setAssignedToValue(check, e) {
     debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
@@ -694,6 +711,16 @@ class MyTicket extends Component {
       ckData += "@" + userName;
       this.setState({ mailBodyData: ckData, followUpIds });
     }
+  }
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.mailBodyData;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ mailBodyData: ckData });
   }
   handleGetStoreDetails() {
     let self = this;
@@ -2083,7 +2110,7 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
-    debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2620,16 +2647,6 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
-        <div>
-          <Modal
-            open={this.state.viewPolicyModel}
-            onClose={this.handleviewPolicyModelClose.bind(this)}
-          >
-            <div>
-              <label>View Policy</label>
-            </div>
-          </Modal>
-        </div>
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -3285,12 +3302,21 @@ class MyTicket extends Component {
                         </Progress>
                       </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
-                        {/* 2 day */}
                         {ticketDetailsData.durationRemaining}
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6" > */}
+                  <div
+                    className={
+                      this.state.role_Name === "Supervisor"
+                        ? "col-md-6"
+                        : "col-md-6 disabled-link" &&
+                          this.state.role_Name === "Admin"
+                        ? "col-md-6"
+                        : "col-md-6 disabled-link"
+                    }
+                  >
                     <div className="mid-sec mid-secnew">
                       <div className="row mob-pad">
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
@@ -3840,9 +3866,13 @@ class MyTicket extends Component {
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
-                                                selected={moment(
-                                                  row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY")}
+                                                selected={
+                                                  // moment(
+                                                  new Date(
+                                                    row.original.storeVisitDate
+                                                  )
+                                                  // ).format("MM/DD/YYYY")
+                                                }
                                                 placeholderText="MM/DD/YYYY"
                                                 showMonthDropdown
                                                 showYearDropdown
@@ -4962,7 +4992,7 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue.bind(this,"rplyCmd")}
+                        onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
@@ -4973,9 +5003,24 @@ class MyTicket extends Component {
                           ))}
                       </select>
                     </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">Placeholders</option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                     <Card>
                       <CardBody>
-                        <div className="">
+                        <div className="my-tic-ck-height">
                           <CKEditor
                             data={this.state.mailBodyData}
                             onChange={this.onAddCKEditorChange}
@@ -5273,16 +5318,14 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                            <span>
-                              <a href="#!" className="copyblue-kbtext">
-                                VIEW POLICY
-                              </a>
-                              <img
-                                src={ViewBlue}
-                                alt="viewpolicy"
-                                className="viewpolicy-kb"
-                              />
-                            </span>
+                            <a href="#!" className="copyblue-kbtext">
+                              VIEW POLICY
+                            </a>
+                            <img
+                              src={ViewBlue}
+                              alt="viewpolicy"
+                              className="viewpolicy-kb"
+                            />
                           </div>
                         </div>
                       </div>
@@ -5491,7 +5534,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                debugger;
+                                // debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -5501,6 +5544,15 @@ class MyTicket extends Component {
                                             className="d-flex"
                                             style={{ marginTop: "0" }}
                                           >
+                                            {details.latestMessageDetails
+                                              .isSystemGenerated === true ? (
+                                                <img
+                                                src={BlackUserIcon}
+                                                alt="Avatar"
+                                                className="oval-7"
+                                              />
+                                             
+                                            ) : null}
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
                                               <img

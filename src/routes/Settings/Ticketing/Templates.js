@@ -76,7 +76,8 @@ class Templates extends Component {
       issueColor: "",
       SearchText: "",
       indiSla: "",
-      AssignToData: []
+      AssignToData: [],
+      placeholderData: []
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -89,11 +90,13 @@ class Templates extends Component {
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleSlaButton = this.handleSlaButton.bind(this);
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
   }
 
   componentDidMount() {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
+    this.handlePlaceholderList();
     
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
@@ -105,13 +108,50 @@ class Templates extends Component {
     this.state.rowData = rowData;
   };
 
+  handlePlaceholderList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetMailParameter",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            placeholderData: data
+          });
+        } else {
+          self.setState({
+            placeholderData: []
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  setPlaceholderValue(e) {
+    debugger;
+    let ckData = this.state.editorContent;
+    let matchedArr = this.state.placeholderData.filter(
+      x => x.mailParameterID == e.currentTarget.value
+    );
+    let placeholderName = matchedArr[0].parameterName;
+    ckData += placeholderName;
+    this.setState({ editorContent: ckData });
+  }
+
   handleUpdateTemplate() {
     debugger;
     let self = this;
     var activeStatus = false;
     var issuetype = "";
 
-    if (self.state.templateEdit.template_Status === "true") {
+    if (self.state.templateEdit.template_Status === "Active") {
       activeStatus = true;
     } else {
       activeStatus = false;
@@ -278,6 +318,7 @@ class Templates extends Component {
   setTemplateEditData(editdata) {
     debugger;
     var templateEdit = {};
+    templateEdit=editdata;
     templateEdit.template_ID = editdata.templateID;
     templateEdit.TemplateName = editdata.templateName;
     templateEdit.issue_Type = editdata.issueType;
@@ -296,11 +337,11 @@ class Templates extends Component {
       iSelect.push(idata[0]);
     }
 
-    if (editdata.template_Status === "Active") {
-      templateEdit.template_Status = "true";
-    } else {
-      templateEdit.template_Status = "false";
-    }
+    // if (editdata.template_Status === "Active") {
+    //   templateEdit.template_Status = "true";
+    // } else {
+    //   templateEdit.template_Status = "false";
+    // }
 
     this.setState({
       TemplateSubject,
@@ -612,11 +653,11 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
-    if (
-      this.state.editorContent.length > 0 &&
-      this.state.editorContent.length <= 499
-    ) {
-      if (this.state.editorContent.length > 0) {
+    // if (
+    //   this.state.editorContent.length > 0 &&
+    //   this.state.editorContent.length <= 499
+    // ) {
+      // if (this.state.editorContent.length > 0) {
         let self = this;
         this.setState({ ConfigTabsModal: false });
         var TemplateIsActive;
@@ -653,7 +694,9 @@ class Templates extends Component {
                 editorContent: "",
                 TemplateName: "",
                 indiSla: "",
-                SearchText: ""
+                SearchText: "",
+                templatenamecopulsion:"",
+                issurtupeCompulsory:""
                 // selectedSlaIssueType: [],
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
@@ -665,20 +708,20 @@ class Templates extends Component {
           .catch(data => {
             console.log(data);
           });
-      } else {
-        NotificationManager.error("Please Enter Descriptions.", "", 1500);
-        // this.setState({
-        //   // templatesubjectCompulsion: "Please Enter Subject",
-        //   // templatebodyCompulsion: "Please Enter Descriptions"
-        // });
-      }
-    } else {
-      NotificationManager.error(
-        "Only 500 characters Allow In Descriptions.",
-        "",
-        2000
-      );
-    }
+      // } else {
+      //   NotificationManager.error("Please Enter Descriptions.", "", 1500);
+      //   // this.setState({
+      //   //   // templatesubjectCompulsion: "Please Enter Subject",
+      //   //   // templatebodyCompulsion: "Please Enter Descriptions"
+      //   // });
+      // }
+    // } else {
+    //   NotificationManager.error(
+    //     "Only 500 characters Allow In Descriptions.",
+    //     "",
+    //     2000
+    //   );
+    // }
   }
 
   handleGetTemplate() {
@@ -743,6 +786,7 @@ class Templates extends Component {
             self.state.sortStatus.push({ templateStatus: distinct[i] });
           }
         }
+        debugger;
         if (template !== null && template !== undefined) {
           self.setState({ template });
         }
@@ -1397,6 +1441,7 @@ class Templates extends Component {
                         size="lg"
                         show={this.state.ConfigTabsModal}
                         onHide={this.handleConfigureTabsClose.bind(this)}
+                        className="big-modal-placeholder"
                       >
                         <Modal.Header>
                           <div className="row config-tab">
@@ -1447,6 +1492,23 @@ class Templates extends Component {
                                 this.state.AssignToData.map((item, i) => (
                                   <option key={i} value={item.userID}>
                                     {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="tic-det-ck-user template-user myticlist-expand-sect placeholder-alert">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setPlaceholderValue.bind(
+                                this
+                              )}
+                            >
+                              <option value="0">Placeholders</option>
+                              {this.state.placeholderData !== null &&
+                                this.state.placeholderData.map((item, i) => (
+                                  <option key={i} value={item.mailParameterID}>
+                                    {item.description}
                                   </option>
                                 ))}
                             </select>
