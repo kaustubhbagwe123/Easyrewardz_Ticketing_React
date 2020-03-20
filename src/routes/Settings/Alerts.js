@@ -115,7 +115,8 @@ class Alerts extends Component {
       sAlertTypeId: 0,
       iAlertTypeId: 0,
       sAlertTypeId: 0,
-      nAlertTypeId: 0
+      nAlertTypeId: 0,
+      placeholderShown: false
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -135,15 +136,17 @@ class Alerts extends Component {
     this.handleGetAlert();
     this.handleAlertData();
     this.handleGetAgentList();
-    this.handlePlaceholderList();
   }
 
-  handlePlaceholderList() {
+  handlePlaceholderList(alertId) {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Template/GetMailParameter",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        AlertID: alertId
+      }
     })
       .then(function(res) {
         debugger;
@@ -151,11 +154,13 @@ class Alerts extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            placeholderData: data
+            placeholderData: data,
+            placeholderShown: true
           });
         } else {
           self.setState({
-            placeholderData: []
+            placeholderData: [],
+            placeholderShown: false
           });
         }
       })
@@ -267,13 +272,14 @@ class Alerts extends Component {
     this.state.rowData = rowData;
   };
   setDataOnChangeAlert = e => {
-    debugger;
+    // debugger;
     if (e.target.name == "selectedAlertType") {
       if (e.target.value !== "0") {
         this.setState({
           [e.target.name]: e.target.value,
           selectedAlertTypeName: e.target.selectedOptions[0].innerText
         });
+        this.handlePlaceholderList(e.target.value);
         let self = this;
         axios({
           method: "post",
@@ -434,6 +440,7 @@ class Alerts extends Component {
     } else {
       alertId = 0;
     }
+    this.handlePlaceholderList(alertId);
     debugger;
     let self = this;
     axios({
@@ -1066,6 +1073,7 @@ class Alerts extends Component {
       } else {
         var alertName = e.target.selectedOptions[0].innerText;
         data[name] = value;
+        this.handlePlaceholderList(value);
         data["AlertTypeName"] = alertName;
         this.setState({ editalertTypeCompulsion: "" });
         this.setState({ alertEdit: data });
@@ -1137,7 +1145,7 @@ class Alerts extends Component {
   }
 
   ///handle on change
-  setAssignedToValue(e, type) {
+  setAssignedToValue(type, e) {
     debugger;
     if (type === "Customer") {
       let ckData = this.state.selectedCKCustomer;
@@ -1852,7 +1860,7 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
+                                {this.state.placeholderShown && <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -1874,7 +1882,7 @@ class Alerts extends Component {
                                         )
                                       )}
                                   </select>
-                                </div>
+                                </div>}
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -1952,7 +1960,7 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                {this.state.placeholderShown && <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -1974,7 +1982,7 @@ class Alerts extends Component {
                                         )
                                       )}
                                   </select>
-                                </div>
+                                </div>}
 
                                 <CKEditor
                                   content={this.state.content}
@@ -2051,7 +2059,7 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                {this.state.placeholderShown && <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2073,7 +2081,7 @@ class Alerts extends Component {
                                         )
                                       )}
                                   </select>
-                                </div>
+                                </div>}
 
                                 <CKEditor
                                   content={this.state.content}
