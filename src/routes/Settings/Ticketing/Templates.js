@@ -786,6 +786,7 @@ class Templates extends Component {
             self.state.sortStatus.push({ templateStatus: distinct[i] });
           }
         }
+        debugger;
         if (template !== null && template !== undefined) {
           self.setState({ template });
         }
