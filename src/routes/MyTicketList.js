@@ -270,7 +270,7 @@ class MyTicketList extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      sortHeader: ""
+      sortHeader: "",
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -669,7 +669,7 @@ class MyTicketList extends Component {
       .then(function(res) {
         //debugger;
         let data = res.data.responseData;
-        let CSVData = data;
+        let CVData = res.data.responseData;
         let Status = res.data.message;
 
         if (data !== null) {
@@ -744,14 +744,14 @@ class MyTicketList extends Component {
             loading: false,
             cSelectedRow: {}
           });
-          for (let i = 0; i < CSVData.length; i++) {
-            delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
+          for (let i = 0; i < CVData.length; i++) {
+            delete CVData[i].totalpages;
+            // delete CVData[i].responseTimeRemainingBy;
+            // delete CVData[i].responseOverdueBy;
+            // delete CVData[i].resolutionOverdueBy;
             // delete CSVData[i].ticketCommentCount;
           }
-          self.setState({ CSVDownload: CSVData });
+          self.setState({ CSVDownload: CVData });
         } else {
           self.setState({ SearchTicketData: [], loading: false });
         }
@@ -2052,7 +2052,8 @@ class MyTicketList extends Component {
         //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        let CSVData = data;
+        let CVData = res.data.responseData;
+      
         let count = 0;
         if (data !== null) {
           if (res.data.responseData != null) {
@@ -2124,18 +2125,21 @@ class MyTicketList extends Component {
         }
 
         if (status === "Success") {
+          self.setState({
+            SearchTicketData: data,
+          });
+         
+          
           if (data !== null) {
-            for (let i = 0; i < CSVData.length; i++) {
-              delete CSVData[i].totalpages;
-              delete CSVData[i].responseTimeRemainingBy;
-              delete CSVData[i].responseOverdueBy;
-              delete CSVData[i].resolutionOverdueBy;
+            for (let i = 0; i < CVData.length; i++) {
+              delete CVData[i].totalpages;
+              delete CVData[i].responseTimeRemainingBy;
+              delete CVData[i].responseOverdueBy;
+              delete CVData[i].resolutionOverdueBy;
               // delete CSVData[i].ticketCommentCount;
             }
-            self.setState({ CSVDownload: CSVData });
-            self.setState({
-              SearchTicketData: data
-            });
+            self.setState({ CSVDownload: CVData });
+           
           }
           if (clrSrch === 1) {
             self.setState({
@@ -3207,7 +3211,7 @@ class MyTicketList extends Component {
 
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-
+    
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -6107,7 +6111,7 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "createdOn",
                                 Cell: row => {
-                                debugger
+                                // debugger
                                   return (
                                     <span className="one-line-outer">
                                       <label className="one-line">

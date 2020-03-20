@@ -1222,6 +1222,13 @@ table tr th:last-child {
   height: 30px;
   padding: 4px;
 }
+.oval-7 {
+  background-color: #e63939;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+}
 .headphone1 {
   width: 25px;
   height: 28px;
@@ -6001,6 +6008,7 @@ progress::-webkit-progress-bar {
   text-align: left;
   cursor: pointer;
 }
+
 /* ---------------------------------------------- */
 /* Css Store_CRM Roles Shlok */
 /**  =====================

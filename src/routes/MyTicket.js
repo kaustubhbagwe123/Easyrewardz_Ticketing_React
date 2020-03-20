@@ -212,8 +212,8 @@ class MyTicket extends Component {
       placeholderData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
-      freetextCommentCompulsory: ""
-     
+      freetextCommentCompulsory: "",
+      role_Name: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -244,7 +244,6 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
-  
   }
 
   componentDidUpdate() {
@@ -276,7 +275,6 @@ class MyTicket extends Component {
       this.props.history.push("myTicketlist");
     }
   }
- 
 
   onAddCKEditorChange = evt => {
     ////debugger;
@@ -292,7 +290,7 @@ class MyTicket extends Component {
       replymailBodyData: newContent
     });
   };
-// handle Get Agent List for User dropdown
+  // handle Get Agent List for User dropdown
   handleGetAgentList() {
     let self = this;
     axios({
@@ -401,6 +399,7 @@ class MyTicket extends Component {
           var productData = data.products;
           var MailDetails = data.ticketingMailerQue;
           var attachementDetails = data.attachment;
+          var rolename_ = data.roleName;
           var selectetedParameters = {
             ticketStatusID: ticketStatus,
             priorityID: ticketPriority,
@@ -435,6 +434,7 @@ class MyTicket extends Component {
             mailFiled: MailDetails,
             fileDummy: attachementDetails,
             oldAgentId: AgentId,
+            role_Name: rolename_,
             loading: false
           });
 
@@ -541,7 +541,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -675,7 +675,7 @@ class MyTicket extends Component {
       });
   }
   // onchange on User Drop down list
-  setAssignedToValue(check,e) {
+  setAssignedToValue(check, e) {
     debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
@@ -2110,7 +2110,7 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
-    debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2647,9 +2647,6 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
-       
-         
-      
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -3305,12 +3302,21 @@ class MyTicket extends Component {
                         </Progress>
                       </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
-                        {/* 2 day */}
                         {ticketDetailsData.durationRemaining}
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6" > */}
+                  <div
+                    className={
+                      this.state.role_Name === "Supervisor"
+                        ? "col-md-6"
+                        : "col-md-6 disabled-link" &&
+                          this.state.role_Name === "Admin"
+                        ? "col-md-6"
+                        : "col-md-6 disabled-link"
+                    }
+                  >
                     <div className="mid-sec mid-secnew">
                       <div className="row mob-pad">
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
@@ -3862,9 +3868,11 @@ class MyTicket extends Component {
                                               <DatePicker
                                                 selected={
                                                   // moment(
-                                                  new Date(row.original.storeVisitDate)
-                                                // ).format("MM/DD/YYYY")
-                                              }
+                                                  new Date(
+                                                    row.original.storeVisitDate
+                                                  )
+                                                  // ).format("MM/DD/YYYY")
+                                                }
                                                 placeholderText="MM/DD/YYYY"
                                                 showMonthDropdown
                                                 showYearDropdown
@@ -4984,7 +4992,7 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue.bind(this,"rplyCmd")}
+                        onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
@@ -5310,21 +5318,21 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                          <a href="#!" className="copyblue-kbtext">
-                            VIEW POLICY
-                          </a>
-                          <img
-                            src={ViewBlue}
-                            alt="viewpolicy"
-                            className="viewpolicy-kb"
-                          />
+                            <a href="#!" className="copyblue-kbtext">
+                              VIEW POLICY
+                            </a>
+                            <img
+                              src={ViewBlue}
+                              alt="viewpolicy"
+                              className="viewpolicy-kb"
+                            />
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
-               
+
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}
@@ -5536,6 +5544,15 @@ class MyTicket extends Component {
                                             className="d-flex"
                                             style={{ marginTop: "0" }}
                                           >
+                                            {details.latestMessageDetails
+                                              .isSystemGenerated === true ? (
+                                                <img
+                                                src={BlackUserIcon}
+                                                alt="Avatar"
+                                                className="oval-7"
+                                              />
+                                             
+                                            ) : null}
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
                                               <img
