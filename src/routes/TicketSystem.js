@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ArrowLeftCircleBlue from "./../assets/Images/arrow-circle-left.png";
+import ArrowImg from "./../assets/Images/arrow.png";
 import RedHeadPhoneIcon from "./../assets/Images/headphone.png";
+import MinusImg from "./../assets/Images/minus.png";
 import CopyIcon from "./../assets/Images/past.png";
 import CustomreIcon from "./../assets/Images/customer.png";
 import AvatarBlackIcon from "./../assets/Images/avatar.png";
@@ -68,6 +70,7 @@ class TicketSystem extends Component {
       ChannelOfPurchaseData: [],
       KbLink: false,
       Plus: false,
+      CkOpen: false,
       TabIconColor: "nav-link active",
       fileText: 0,
       altEmailID: "",
@@ -242,6 +245,12 @@ class TicketSystem extends Component {
   }
   handleThumbModalClose() {
     this.setState({ Plus: false });
+  }
+  handleExpandedCkClose() {
+    this.setState({ CkOpen: false });
+  }
+  handleExpandedCkOpen() {
+    this.setState({ CkOpen: true });
   }
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
@@ -1649,6 +1658,259 @@ class TicketSystem extends Component {
                       </div>
                     </div>
                   </Modal>
+
+                  <Modal
+                    open={this.state.CkOpen}
+                    onClose={this.handleExpandedCkClose.bind(this)}
+                    modalId="thumb-modal-popup"
+                    overlayId="logout-ovrlykb"
+                    classNames={{
+                      modal: "ck-exp-width"
+                    }}
+                  >
+                    <div className="ck-det-cntr">
+                      <CKEditor
+                        data={this.state.editorTemplateDetails}
+                        onChange={this.onAddCKEditorChange}
+                        config={{
+                          toolbar: [
+                            {
+                              name: "basicstyles",
+                              items: ["Bold", "Italic", "Strike"]
+                            },
+                            {
+                              name: "styles",
+                              items: ["Styles", "Format"]
+                            },
+                            {
+                              name: "paragraph",
+                              items: ["NumberedList", "BulletedList"]
+                            },
+                            {
+                              name: "links",
+                              items: ["Link", "Unlink"]
+                            },
+                            {
+                              name: "insert",
+                              items: ["Image", "Table"]
+                            },
+                            {
+                              name: "editing",
+                              items: ["Scayt"]
+                            }
+                          ]
+                        }}
+                      />
+                      <img src={MinusImg} alt="Arrow" onClick={this.handleExpandedCkClose.bind(this)} className="ck-expand" />
+                      <div
+                        className="row colladrowa"
+                        style={{ bottom: "15px" }}
+                      >
+                        <div className="col-md-12 colladrow">
+                          <ul className="ticsys">
+                            <li className="diwamargin">
+                              <label>
+                                To: {this.state.customerData.customerEmailId}
+                              </label>
+                            </li>
+                            <li>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-open-1"
+                                  name="filter-type"
+                                  style={{ display: "none" }}
+                                  checked={this.state.InformStore}
+                                  onChange={() =>
+                                    this.showInformStoreFuncation()
+                                  }
+                                  disabled={
+                                    this.state.selectedStoreIDs.length === 0
+                                  }
+                                />
+                                <label
+                                  htmlFor="fil-open-1"
+                                  style={{ paddingLeft: "25px" }}
+                                >
+                                  <span>Inform Store</span>
+                                </label>
+                              </div>
+                            </li>
+                            <li>
+                              <span>
+                                <input
+                                  id="file-upload"
+                                  className="file-upload1 d-none"
+                                  type="file"
+                                  name="file"
+                                  onChange={this.handleFileUpload.bind(this)}
+                                  multiple
+                                />
+                                <label
+                                  htmlFor="file-upload"
+                                  onDrop={this.fileDrop}
+                                  onDragOver={this.fileDragOver}
+                                  onDragEnter={this.fileDragEnter}
+                                >
+                                  <img
+                                    src={FileUpload}
+                                    alt="file-upload"
+                                    className="fileup"
+                                  />
+                                </label>
+                              </span>
+                              <label style={{ color: "#2561a8" }}>
+                                {this.state.fileText} files
+                              </label>
+                            </li>
+                            <li>
+                              <label className="diwamargin">
+                                <div className="input-group">
+                                  <span className="input-group-addon inputcc">
+                                    CC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userCC"
+                                    value={this.state.mailFiled.userCC}
+                                    autoComplete="off"
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userCC"
+                                    )}
+                                  />
+
+                                  <span className="input-group-addon inputcc-one">
+                                    {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
+                                  </span>
+                                </div>
+                              </label>
+                            </li>
+
+                            <li>
+                              <label className="diwamargin">
+                                <div className="input-group">
+                                  <span className="input-group-addon inputcc">
+                                    BCC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userBCC"
+                                    value={this.state.mailFiled.userBCC}
+                                    autoComplete="off"
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userBCC"
+                                    )}
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    {/* +{this.state.userBccCount} */}
+                                    {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
+                                  </span>
+                                </div>
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="row ck-exp-top" style={{ position: "absolute" }}>
+                    <div
+                      className="dropdown collapbtn1"
+                      style={{ display: "inherit" }}
+                    >
+                      <button
+                        className={
+                          this.state.CkEditorTemplateData.length > 0
+                            ? "dropdown-toggle my-tic-email1"
+                            : "dropdown-toggle my-tic-email1 disabled-link"
+                        }
+                        type="button"
+                        data-toggle="dropdown"
+                      >
+                        <FontAwesomeIcon icon={faCalculator} />
+                        {this.state.tempName === ""
+                          ? "Template"
+                          : this.state.tempName}
+                      </button>
+                      <ul className="dropdown-menu">
+                        {this.state.CkEditorTemplateData !== null &&
+                          this.state.CkEditorTemplateData.map((item, i) => (
+                            <li key={i} value={item.templateID}>
+                              <a
+                                onClick={this.handleCkEditorTemplateData.bind(
+                                  this,
+                                  item.templateID,
+                                  item.templateName
+                                )}
+                                href="#!"
+                              >
+                                {item.templateName}
+                              </a>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+
+                    {this.state.selectedBrand === "" ? (
+                      <label
+                        className="kblink1"
+                        title="Please select brand for KB Link"
+                      >
+                        Please select Brand
+                      </label>
+                    ) : (
+                      <a href="#!" className="kblink1">
+                        <img
+                          src={KnowledgeLogo}
+                          alt="KnowledgeLogo"
+                          className="knoim"
+                          onClick={this.HandleKbLinkModalOpen.bind(this)}
+                        />
+                        <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                          Kb Link
+                        </label>
+                      </a>
+                    )}
+                    <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setAssignedToValue.bind(this)}
+                      >
+                        <option value="0">Users</option>
+                        {this.state.AssignToData !== null &&
+                          this.state.AssignToData.map((item, i) => (
+                            <option key={i} value={item.userID}>
+                              {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">Placeholders</option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+                    </div>
+                  </Modal>
+
                   <div className="row" style={{ position: "absolute" }}>
                     <div
                       className="dropdown collapbtn1"
@@ -1743,7 +2005,6 @@ class TicketSystem extends Component {
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
-                        // style={{ height: "400px" }}
                         config={{
                           toolbar: [
                             {
@@ -1777,6 +2038,7 @@ class TicketSystem extends Component {
                           ]
                         }}
                       />
+                      <img src={ArrowImg} alt="Arrow" onClick={this.handleExpandedCkOpen.bind(this)} className="ck-expand" />
                       <div
                         className="row colladrowa"
                         style={{ bottom: "15px" }}
@@ -1795,6 +2057,7 @@ class TicketSystem extends Component {
                                   id="fil-open"
                                   name="filter-type"
                                   style={{ display: "none" }}
+                                  checked={this.state.InformStore}
                                   onChange={() =>
                                     this.showInformStoreFuncation()
                                   }
