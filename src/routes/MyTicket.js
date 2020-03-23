@@ -515,15 +515,11 @@ class MyTicket extends Component {
         if (status === true) {
           if (ticStaId === 103) {
             NotificationManager.success(
-              "The ticket has been resolved.",
-              "",
-              2000
+              "The ticket has been resolved."
             );
           } else if (ticStaId === 104) {
             NotificationManager.success(
-              "The ticket has been closed.",
-              "",
-              2000
+              "The ticket has been closed."
             );
           }
         }
@@ -800,10 +796,10 @@ class MyTicket extends Component {
         ////debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Ticket updated successfully.", "", 2000);
+          NotificationManager.success("Ticket updated successfully.");
           self.props.history.push("myticket");
         } else {
-          NotificationManager.error("Ticket not update", "", 2000);
+          NotificationManager.error("Ticket not update");
         }
       })
       .catch(data => {
@@ -1123,9 +1119,7 @@ class MyTicket extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           NotificationManager.success(
-            "Tickets assigned successfully.",
-            "",
-            1500
+            "Tickets assigned successfully."
           );
           self.HandlelabelModalClose();
           // self.handleReAssignCommentOpen();
@@ -1350,16 +1344,14 @@ class MyTicket extends Component {
             var id = self.state.ticket_Id;
             self.handleGetNotesTabDetails(id);
             NotificationManager.success(
-              "Comment added successfully.",
-              "",
-              2000
+              "Comment added successfully."
             );
             self.setState({
               NoteAddComment: "",
               notesCommentCompulsion: ""
             });
           } else {
-            NotificationManager.error("Comment not added.", "", 2000);
+            NotificationManager.error("Comment not added.");
           }
         })
         .catch(data => {
@@ -1481,11 +1473,11 @@ class MyTicket extends Component {
         let status = res.data.message;
         // let details = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Store attached successfully.", "", 2000);
+          NotificationManager.success("Store attached successfully.");
           self.HandleStoreModalClose();
           self.handleGetTicketDetails(self.state.ticket_Id);
         } else {
-          NotificationManager.error("Store not attached", "", 2000);
+          NotificationManager.error("Store not attached");
         }
       })
       .catch(data => {
@@ -1546,19 +1538,17 @@ class MyTicket extends Component {
           // let details = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success(
-              "Product attached successfully.",
-              "",
-              2000
+              "Product attached successfully."
             );
           } else {
-            NotificationManager.error("Product not attached", "", 2000);
+            NotificationManager.error("Product not attached");
           }
         })
         .catch(data => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please select atleast one order.", "", 2000);
+      NotificationManager.error("Please select atleast one order.");
     }
   }
   handleGetNotesTabDetails(ticket_Id) {
@@ -1667,7 +1657,7 @@ class MyTicket extends Component {
         ////debugger;
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
-          NotificationManager.error("No Record Found.", "", 2000);
+          NotificationManager.error("No Record Found.");
         }
         self.setState({ KbPopupData: KbPopupData });
       })
@@ -1848,7 +1838,7 @@ class MyTicket extends Component {
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
-              NotificationManager.success("Mail send successfully.", "", 1500);
+              NotificationManager.success("Mail send successfully.");
               self.setState({
                 mailFiled: {},
                 ReplyFileData: [],
@@ -1856,14 +1846,14 @@ class MyTicket extends Component {
                 replymailBodyData: ""
               });
             } else {
-              NotificationManager.error(status, "", 1500);
+              NotificationManager.error(status);
             }
           })
           .catch(data => {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Please Enter Body Section.", "", 2000);
+        NotificationManager.error("Please Enter Body Section.");
       }
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
@@ -1917,9 +1907,7 @@ class MyTicket extends Component {
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
                 NotificationManager.success(
-                  "Mail send successfully.",
-                  "",
-                  2000
+                  "Mail send successfully."
                 );
                 self.setState({
                   mailFiled: {},
@@ -1927,20 +1915,18 @@ class MyTicket extends Component {
                   mailBodyData: ""
                 });
               } else {
-                NotificationManager.error(status, "", 2000);
+                NotificationManager.error(status);
               }
             })
             .catch(data => {
               console.log(data);
             });
         } else {
-          NotificationManager.error("Please Enter Body Section.", "", 2000);
+          NotificationManager.error("Please Enter Body Section.");
         }
       } else {
         NotificationManager.error(
-          "Only 2000 Charater Allow In Body Section.",
-          "",
-          2000
+          "Only 2000 Charater Allow In Body Section."
         );
       }
     } else if (isSend === 3) {
@@ -1968,9 +1954,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
-                "Comment Added successfully.",
-                "",
-                2000
+                "Comment Added successfully."
               );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -1980,7 +1964,7 @@ class MyTicket extends Component {
                 tckcmtMSGCompulsory: ""
               });
             } else {
-              NotificationManager.error(status, "", 2000);
+              NotificationManager.error(status);
               self.setState({
                 ticketcommentMSG: ""
               });
@@ -2021,9 +2005,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               // NotificationManager.success(
-              //   "Comment Added successfully.",
-              //   "",
-              //   2000
+              //   "Comment Added successfully."
               // );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2034,7 +2016,7 @@ class MyTicket extends Component {
                 AssignCommentCompulsory: ""
               });
             } else {
-              NotificationManager.error(status, "", 2000);
+              NotificationManager.error(status);
               self.setState({
                 addReassignCmmt: ""
               });
@@ -2071,9 +2053,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
-                "Comment Added successfully.",
-                "",
-                2000
+                "Comment Added successfully."
               );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2083,7 +2063,7 @@ class MyTicket extends Component {
                 freetextCommentCompulsory: ""
               });
             } else {
-              NotificationManager.error(status, "", 2000);
+              NotificationManager.error(status);
             }
           })
           .catch(data => {
@@ -2532,7 +2512,7 @@ class MyTicket extends Component {
             addReassignCmmt: ""
           });
         } else {
-          NotificationManager.error(status, "", 2000);
+          NotificationManager.error(status);
           self.setState({
             addReassignCmmt: ""
           });
@@ -6553,7 +6533,7 @@ class MyTicket extends Component {
                 </ul>
               </div>
             </div>
-            <NotificationContainer />
+            {/* <NotificationContainer /> */}
           </div>
         )}
       </Fragment>

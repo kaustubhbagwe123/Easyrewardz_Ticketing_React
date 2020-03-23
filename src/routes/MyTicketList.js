@@ -820,9 +820,7 @@ class MyTicketList extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
-            "Clear Follow up notification successfully.",
-            "",
-            2000
+            "Clear Follow up notification successfully."
           );
           self.handleSearchTicketAllTabCount();
           self.handleSearchTicket(1003);
@@ -967,7 +965,7 @@ class MyTicketList extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.", "", 1000);
+          NotificationManager.success("Scheduled successfully.");
           self.setState({
             scheduleRequired: ""
           });
@@ -1155,9 +1153,7 @@ class MyTicketList extends Component {
           if (messageData === "Success") {
             self.handleAssignModalClose();
             NotificationManager.success(
-              "Tickets assigned successfully.",
-              "",
-              1000
+              "Tickets assigned successfully."
             );
             self.handleSearchTicket();
           }
@@ -1805,9 +1801,7 @@ class MyTicketList extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              "Save Search parameter successfully.",
-              "",
-              1000
+              "Save Search parameter successfully."
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -1858,9 +1852,7 @@ class MyTicketList extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully.",
-            "",
-            1000
+            "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -6337,7 +6329,7 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </Fragment>
     );
   }

@@ -598,10 +598,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.", "", 1000);
+          NotificationManager.success("Alert deleted successfully.");
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.", "", 1000);
+          NotificationManager.error("Alert not deleted.");
         }
       })
       .catch(data => {
@@ -768,9 +768,7 @@ class Alerts extends Component {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
-              "Alert updated successfully.",
-              "",
-              1000
+              "Alert updated successfully."
             );
             self.handleGetAlert();
             self.setState({
@@ -782,7 +780,7 @@ class Alerts extends Component {
               editSaveLoading: false,
               AddAlertTabsPopup: false
             });
-            NotificationManager.error("Alert not updated.", "", 1000);
+            NotificationManager.error("Alert not updated.");
           }
         })
         .catch(data => {
@@ -793,7 +791,7 @@ class Alerts extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.", "", 1000);
+      NotificationManager.error("Alert not updated.");
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name."
       });
@@ -1044,9 +1042,9 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.", "", 1000);
+          NotificationManager.success("Record Saved successfully.");
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.", "", 1000);
+          NotificationManager.error("Record Already Exists.");
         }
         self.handleAddAlertTabsClose();
       })
@@ -2403,7 +2401,7 @@ class Alerts extends Component {
             </div>
           </div>
         </Modal>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }
