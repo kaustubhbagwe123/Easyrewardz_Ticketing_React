@@ -422,9 +422,7 @@ class CategoryMaster extends Component {
         if (status === "Success") {
           self.handleGetCategoryGridData();
           NotificationManager.success(
-            "Category deleted successfully.",
-            "",
-            2000
+            "Category deleted successfully."
           );
         }
       })
@@ -456,7 +454,7 @@ class CategoryMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Category added successfully.", "", 2000);
+          NotificationManager.success("Category added successfully.");
           if (check == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["categoryID"] = data;
@@ -480,7 +478,7 @@ class CategoryMaster extends Component {
             self.handleGetCategoryList();
           }
         } else {
-          NotificationManager.error("Category not added.", "", 1000);
+          NotificationManager.error("Category not added.");
         }
       })
       .catch(data => {
@@ -535,12 +533,10 @@ class CategoryMaster extends Component {
             self.handleGetSubCategoryList();
           }
           NotificationManager.success(
-            "SubCategory added successfully.",
-            "",
-            2000
+            "SubCategory added successfully."
           );
         } else {
-          NotificationManager.error("SubCategory not added.", "", 1000);
+          NotificationManager.error("SubCategory not added.");
         }
       })
       .catch(data => {
@@ -575,9 +571,7 @@ class CategoryMaster extends Component {
 
         if (status === "Success") {
           NotificationManager.success(
-            "Issue Type added successfully.",
-            "",
-            2000
+            "Issue Type added successfully."
           );
           if (type == "edit") {
             var editCategory = self.state.editCategory;
@@ -591,7 +585,7 @@ class CategoryMaster extends Component {
             self.handleGetIssueTypeList();
           }
         } else {
-          NotificationManager.error("Issue Type not added.", "", 1000);
+          NotificationManager.error("Issue Type not added.");
         }
       })
       .catch(data => {
@@ -655,9 +649,7 @@ class CategoryMaster extends Component {
           if (status === "Success") {
             self.handleGetCategoryGridData();
             NotificationManager.success(
-              "Category added successfully.",
-              "",
-              2000
+              "Category added successfully."
             );
             self.setState({
               selectBrand: 0,
@@ -672,9 +664,9 @@ class CategoryMaster extends Component {
               statusCompulsion: ""
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.", "", 1000);
+            NotificationManager.error("Record Already Exists.");
           } else {
-            NotificationManager.error(status, "", 1000);
+            NotificationManager.error(status);
           }
         })
         .catch(data => {
@@ -735,9 +727,7 @@ class CategoryMaster extends Component {
           if (status === "Success") {
             self.handleGetCategoryGridData();
             NotificationManager.success(
-              "Category updated successfully.",
-              "",
-              2000
+              "Category updated successfully."
             );
             self.setState({
               selectBrand: 0,
@@ -755,9 +745,9 @@ class CategoryMaster extends Component {
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ editmodel: false, editSaveLoading: false });
-            NotificationManager.error("Record Already Exists.", "", 1000);
+            NotificationManager.error("Record Already Exists.");
           } else {
-            NotificationManager.error(status, "", 1000);
+            NotificationManager.error(status);
             self.setState({ editmodel: false, editSaveLoading: false });
           }
         })
@@ -996,7 +986,7 @@ class CategoryMaster extends Component {
     ));
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

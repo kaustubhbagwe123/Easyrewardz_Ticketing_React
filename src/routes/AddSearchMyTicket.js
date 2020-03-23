@@ -57,7 +57,7 @@ class AddSearchMyTicket extends Component {
     //debugger;
     setTimeout(() => {
       if (this.state.copied && this.state.copied) {
-        NotificationManager.success("Copied.", '', 1000);
+        NotificationManager.success("Copied.");
       }
     }, 100);
   }
@@ -150,7 +150,7 @@ class AddSearchMyTicket extends Component {
           if (validCheck === "Success") {
             self.handleAddCustomerSave();
           } else {
-            NotificationManager.error(res.data.responseData, '', 1000);
+            NotificationManager.error(res.data.responseData);
           }
           // let GetCustId = SearchData.customerID;
         })
@@ -195,9 +195,7 @@ class AddSearchMyTicket extends Component {
         if (responseMessage === "Success") {
           //debugger
           NotificationManager.success(
-            "New Customer added successfully.",
-            "",
-            1000
+            "New Customer added successfully."
           );
           setTimeout(function() {
             self.props.history.push({
@@ -231,7 +229,7 @@ class AddSearchMyTicket extends Component {
   render() {
     return (
       <Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="addSearch-header">
           <img
             src={ArrowCircleImg}
