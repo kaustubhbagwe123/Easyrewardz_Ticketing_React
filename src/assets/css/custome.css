@@ -3888,6 +3888,10 @@ table tr th:last-child {
   margin-right: 35px;
 }
 
+.notification-container {
+  text-align: left;
+}
+
 /* chetan css end */
 /******************************************************/
 
