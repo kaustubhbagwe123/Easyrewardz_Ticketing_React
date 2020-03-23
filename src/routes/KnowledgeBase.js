@@ -546,9 +546,9 @@ class KnowledgeBase extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.", '', 1000);
+          NotificationManager.error("Record in use.");
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.", '', 1000);
+          NotificationManager.success("Record deleted Successfully.");
           self.handleKBList();
         }
       })
@@ -582,7 +582,7 @@ class KnowledgeBase extends Component {
           let Msg = res.data.message;
 
           if (Msg === "Success") {
-            NotificationManager.success("Record Rejected successfully.", '', 1000);
+            NotificationManager.success("Record Rejected successfully.");
           }
 
           self.handleKBList();
@@ -622,7 +622,7 @@ class KnowledgeBase extends Component {
             let Msg = res.data.message;
 
             if (Msg === "Success") {
-              NotificationManager.success("Record Approved successfully.", '', 1000);
+              NotificationManager.success("Record Approved successfully.");
             }
             self.closeEditAproveModal1();
             self.handleKBList();
@@ -857,9 +857,9 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.", '', 1000);
+            NotificationManager.success("Record Updated successfully.");
           } else {
-            NotificationManager.error("Record Not Updated.", '', 1000);
+            NotificationManager.error("Record Not Updated.");
           }
           self.closeEditAproveModal();
           self.handleKBList();
@@ -911,7 +911,7 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Saved successfully.", '', 1000);
+            NotificationManager.success("Record Saved successfully.");
           }
           self.setState({
             selectedCategory: "",
@@ -944,7 +944,7 @@ class KnowledgeBase extends Component {
   render() {
     return (
       <Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

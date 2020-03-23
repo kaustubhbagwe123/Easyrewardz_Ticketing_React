@@ -293,9 +293,7 @@ class CreatePriority extends Component {
           self.handleGetPriorityList();
         } else {
           NotificationManager.error(
-            "Sorry we don't sort row of list",
-            "",
-            1000
+            "Sorry we don't sort row of list"
           );
         }
       })
@@ -420,9 +418,7 @@ class CreatePriority extends Component {
           if (status === "Success") {
             self.handleGetPriorityList();
             NotificationManager.success(
-              "Priority Added successfully.",
-              "",
-              2000
+              "Priority Added successfully."
             );
             self.setState({
               priority_name: "",
@@ -457,12 +453,10 @@ class CreatePriority extends Component {
         if (status === 1010) {
           self.handleGetPriorityList();
           NotificationManager.success(
-            "Priority delete successfully.",
-            "",
-            2000
+            "Priority delete successfully."
           );
         } else {
-          NotificationManager.error(res.data.message, "", 1000);
+          NotificationManager.error(res.data.message);
         }
       })
       .catch(data => {
@@ -498,9 +492,7 @@ class CreatePriority extends Component {
             self.setState({ editSaveLoading: false, editmodel: false });
             self.handleGetPriorityList();
             NotificationManager.success(
-              "Priority updated successfully.",
-              "",
-              2000
+              "Priority updated successfully."
             );
             self.setState({
               rowData: {},
@@ -514,7 +506,7 @@ class CreatePriority extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Priority not updated.", "", 1000);
+      NotificationManager.error("Priority not updated.");
       this.setState({
         editpriorityNameCompulsion: "Please enter priority name",
         editstatusCompulsion: "Please select status"
@@ -635,7 +627,7 @@ class CreatePriority extends Component {
   render() {
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
           show={this.state.StatusModel}

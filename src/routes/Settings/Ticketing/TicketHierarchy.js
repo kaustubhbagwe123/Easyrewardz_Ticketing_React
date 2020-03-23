@@ -522,9 +522,7 @@ class TicketHierarchy extends Component {
           if (status === "Success") {
             self.handleGetHierarchyData();
             NotificationManager.success(
-              "Hierarchy added successfully.",
-              "",
-              1000
+              "Hierarchy added successfully."
             );
             self.hanldeGetReportListDropDown();
             self.setState({
@@ -537,7 +535,7 @@ class TicketHierarchy extends Component {
               addSaveLoading: false
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.", "", 1000);
+            NotificationManager.error("Record Already Exists.");
             self.setState({ addSaveLoading: false });
           }
         })
@@ -571,13 +569,11 @@ class TicketHierarchy extends Component {
         if (status === "Success") {
           self.handleGetHierarchyData();
           NotificationManager.success(
-            "Designation deleted successfully.",
-            "",
-            1000
+            "Designation deleted successfully."
           );
           self.hanldeGetReportListDropDown();
         } else {
-          NotificationManager.error(res.data.message, "", 1000);
+          NotificationManager.error(res.data.message);
         }
       })
       .catch(data => {
@@ -617,15 +613,13 @@ class TicketHierarchy extends Component {
           if (status === "Success") {
             self.handleGetHierarchyData();
             NotificationManager.success(
-              "Hierarchy update successfully.",
-              "",
-              1000
+              "Hierarchy update successfully."
             );
             self.hanldeGetReportListDropDown();
             self.setState({ editSaveLoading: false });
           } else {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error("Hierarchy not update.", "", 1000);
+            NotificationManager.error("Hierarchy not update.");
           }
         })
         .catch(data => {
@@ -633,7 +627,7 @@ class TicketHierarchy extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Hierarchy not update.", "", 1000);
+      NotificationManager.error("Hierarchy not update.");
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -712,7 +706,7 @@ class TicketHierarchy extends Component {
 
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

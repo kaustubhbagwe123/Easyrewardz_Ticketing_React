@@ -384,9 +384,7 @@ class TicketCRMRole extends Component {
         if (status === "Success") {
           if (e === "add") {
             NotificationManager.success(
-              "CRM Role added successfully.",
-              "",
-              1000
+              "CRM Role added successfully."
             );
             self.setState({
               RoleName: "",
@@ -404,22 +402,20 @@ class TicketCRMRole extends Component {
               editRoleNameValidMsg: ""
             });
             NotificationManager.success(
-              "CRM Role updated successfully.",
-              "",
-              1000
+              "CRM Role updated successfully."
             );
             self.handleGetCRMRoles();
           }
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
-            NotificationManager.error("Record Already Exists ", "", 1000);
+            NotificationManager.error("Record Already Exists ");
           }
         } else {
           if (e === "add") {
-            NotificationManager.error("CRM Role not added.", "", 1000);
+            NotificationManager.error("CRM Role not added.");
           } else if (e === "update") {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error("CRM Role not updated.", "", 1000);
+            NotificationManager.error("CRM Role not updated.");
           }
         }
       })
@@ -447,9 +443,9 @@ class TicketCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.", "", 1000);
+          NotificationManager.error("Record in use.");
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.", "", 1000);
+          NotificationManager.success("Record deleted Successfully.");
           self.handleGetCRMRoles();
         }
       })
@@ -1204,7 +1200,7 @@ class TicketCRMRole extends Component {
             </div>
           </Modal>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }
