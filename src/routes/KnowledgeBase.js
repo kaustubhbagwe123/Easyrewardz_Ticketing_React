@@ -115,9 +115,9 @@ class KnowledgeBase extends Component {
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
     this.opneSearchModal = this.opneSearchModal.bind(this);
     this.closeSearchModal = this.closeSearchModal.bind(this);
-    this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(
-      this
-    );
+    // this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(
+    //   this
+    // );
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
@@ -938,7 +938,6 @@ class KnowledgeBase extends Component {
 
   HandelOnenCloseDetailsCollapse() {
     debugger;
-
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
@@ -1243,13 +1242,12 @@ class KnowledgeBase extends Component {
                             src={DownArrowIcon}
                             alt="down-arrow-icon"
                             className="down-icon-kb"
-                            onClick={this.HandelOnenCloseDetailsCollapse}
+                            onClick={() => this.HandelOnenCloseDetailsCollapse}
                             id={"i" + row.original.kbid}
                           />
 
                           <UncontrolledCollapse
-                            toggler={"i" + row.original.kbid}
-                            isOpen={this.state.detailscollapse}
+                            toggler={"#i" + row.original.kbid}
                           >
                             <Card>
                               <CardBody>
@@ -1498,12 +1496,11 @@ class KnowledgeBase extends Component {
                             src={DownArrowIcon}
                             alt="down-arrow-icon"
                             className="down-icon-kb"
-                            onClick={this.HandelOnenCloseDetailsCollapse}
+                            onClick={() => this.HandelOnenCloseDetailsCollapse}
                             id={"i" + row.original.kbid}
                           />
                           <UncontrolledCollapse
-                            toggler={"i" + row.original.kbid}
-                            isOpen={this.state.detailscollapse}
+                            toggler={"#i" + row.original.kbid}
                           >
                             <Card>
                               <CardBody>
