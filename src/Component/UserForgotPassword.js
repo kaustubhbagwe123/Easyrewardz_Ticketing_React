@@ -73,7 +73,7 @@ class UserForgotPassword extends Component {
         NotificationManager.success("Password Changed successfully.", '', 1500);
         setTimeout(function() {
           self.props.history.push("/SignIn");
-        }, 1250);
+        }, 1500);
       } else {
         NotificationManager.error("Password Not Changed.", '', 1500);
       }
