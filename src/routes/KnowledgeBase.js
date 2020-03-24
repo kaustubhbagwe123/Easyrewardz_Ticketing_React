@@ -118,6 +118,9 @@ class KnowledgeBase extends Component {
       sortFilterIssueType: [],
       sortFilterCategory: [],
       sortFilterSubCategory: [],
+      sortFilterSubCategoryNot: [],
+      sortFilterCategoryNot: [],
+      sortFilterIssueTypeNot: [],
       filterTxtValue: ""
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -147,8 +150,8 @@ class KnowledgeBase extends Component {
       sortColumnName: data,
       sortTable: table,
       sortHeader: header,
-      tempKBListData:[],
-      tempKBListnotApproveData:[]
+      tempKBListData: [],
+      tempKBListnotApproveData: []
     });
     //StatusModel: true,
     // if(data==="issueTypeName"){
@@ -215,11 +218,6 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "issueTypeName") {
-        // this.state.KBListnotApproveData = this.state.sortAllData;
-        // itemsArray = this.state.KBListnotApproveData.filter(
-        //   a => a.issueTypeName === data
-        // );
-
         var sItems = sFilterCheckbox.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
@@ -241,11 +239,6 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "categoryName") {
-        // this.state.KBListnotApproveData = this.state.sortAllData;
-        // itemsArray = this.state.KBListnotApproveData.filter(
-        //   a => a.categoryName === data
-        // );
-
         var sItems = sFilterCheckbox.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
@@ -267,11 +260,6 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "subCategoryName") {
-        // this.state.KBListnotApproveData = this.state.sortAllData;
-        // itemsArray = this.state.KBListnotApproveData.filter(
-        //   a => a.subCategoryName === data
-        // );
-
         var sItems = sFilterCheckbox.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
@@ -825,7 +813,9 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
-            self.state.sortFilterIssueType.push({ issueTypeName: distinct[i] });
+            self.state.sortFilterIssueTypeNot.push({
+              issueTypeName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -838,7 +828,9 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCategory.push({ categoryName: distinct[i] });
-            self.state.sortFilterCategory.push({ categoryName: distinct[i] });
+            self.state.sortFilterCategoryNot.push({
+              categoryName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -851,7 +843,7 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
-            self.state.sortFilterSubCategory.push({
+            self.state.sortFilterSubCategoryNot.push({
               subCategoryName: distinct[i]
             });
           }
@@ -1228,8 +1220,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "issueTypeName" &&
                 this.state.sortTable === "notapprove"
-                  ? this.state.sortFilterIssueType !== null &&
-                    this.state.sortFilterIssueType.map((item, i) => (
+                  ? this.state.sortFilterIssueTypeNot !== null &&
+                    this.state.sortFilterIssueTypeNot.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1252,8 +1244,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "categoryName" &&
                 this.state.sortTable === "notapprove"
-                  ? this.state.sortFilterCategory !== null &&
-                    this.state.sortFilterCategory.map((item, i) => (
+                  ? this.state.sortFilterCategoryNot !== null &&
+                    this.state.sortFilterCategoryNot.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1276,8 +1268,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "subCategoryName" &&
                 this.state.sortTable === "notapprove"
-                  ? this.state.sortFilterSubCategory !== null &&
-                    this.state.sortFilterSubCategory.map((item, i) => (
+                  ? this.state.sortFilterSubCategoryNot !== null &&
+                    this.state.sortFilterSubCategoryNot.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
