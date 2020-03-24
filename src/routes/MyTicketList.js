@@ -277,7 +277,14 @@ class MyTicketList extends Component {
       sortFilterCategoryData: [],
       sortFilterPriorityData: [],
       sortFiltercreatedOnData: [],
-      sortFilterAssigneeData: []
+      sortFilterAssigneeData: [],
+      sFilterCheckbox: "",
+      tempSearchTicketData: [],
+      sColorFilterCheckbox: "",
+      isRed: false,
+      isWhite: false,
+      isGreen: false,
+      isYellow: false
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -404,14 +411,16 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       // let moduleID = data[0].moduleID;
       // let selTab = data[0].moduleName;
-      let moduleIDMyticket = data[1].moduleID;
+      if (data) {
+        let moduleIDMyticket = data[1].moduleID;
+        self.handleMyTicketsearchOption(moduleIDMyticket);
+      }
 
       // if (status === "Success") {
       //   self.setState({ modulesNames: data, moduleID });
       // } else {
       //   self.setState({ modulesNames: [] });
       // }
-      self.handleMyTicketsearchOption(moduleIDMyticket);
     });
   }
   handleMyTicketsearchOption(id) {
@@ -2434,12 +2443,149 @@ class MyTicketList extends Component {
     });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    debugger;
+    var tempFinalSearchTicketData = [];
+    if (this.state.tempSearchTicketData.length > 0) {
+      var tempSearchTicketData = this.state.tempSearchTicketData;
+      var tempColor = [];
+      if (this.state.isRed) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isWhite) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a =>
+            a.isEscalation === 0 &&
+            a.isSLANearBreach === false &&
+            a.isReassigned === false
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isYellow) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isGreen) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (tempColor.length > 0) {
+        tempFinalSearchTicketData = tempColor;
+      } else {
+        tempFinalSearchTicketData =this.state.tempSearchTicketData;
+      }
+    } else {
+      var tempSearchTicketData = this.state.sortAllData;
+      var tempColor = [];
+      if (this.state.isRed) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isWhite) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a =>
+            a.isEscalation === 0 &&
+            a.isSLANearBreach === false &&
+            a.isReassigned === false
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isYellow) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isGreen) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (tempColor.length > 0) {
+        tempFinalSearchTicketData = tempColor;
+      } else {
+        tempFinalSearchTicketData = [];
+      }
+    }
+    this.setState({
+      StatusModel: false,
+      filterTxtValue: "",
+      sFilterCheckbox: "",
+      isRed: false,
+      isWhite: false,
+      isYellow: false,
+      isGreen: false,
+      SearchTicketData: tempFinalSearchTicketData
+    });
   }
   toggleSearch() {
-    //debugger;
+    debugger;
     this.handleGetSaveSearchList();
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
+    if (this.state.collapseSearch) {
+      var paramdata = "";
+      if (this.state.headerActiveId === 1001) {
+        paramdata = "Escalation";
+      } else if (this.state.headerActiveId === 101) {
+        paramdata = "New";
+      } else if (this.state.headerActiveId === 102) {
+        paramdata = "Open";
+      } else if (this.state.headerActiveId === 103) {
+        paramdata = "Resolved";
+      } else if (this.state.headerActiveId === 104) {
+        paramdata = "Closed";
+      } else if (this.state.headerActiveId === 105) {
+        paramdata = "ReOpen";
+      } else if (this.state.headerActiveId === 1004) {
+        paramdata = "Reassigned";
+      } else if (this.state.headerActiveId === 1002) {
+        paramdata = "All";
+      } else if (this.state.headerActiveId === 1003) {
+        paramdata = "FollowUp";
+      }
+      this.handleSearchTicket(paramdata);
+    }
   }
   handleByDateCreate(date) {
     //debugger;
@@ -2483,88 +2629,142 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, isColor, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    
+
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+    
+    var allData = this.state.sortAllData;
+    if (isColor === "value" && isColor !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    } 
+
+    var data = "";
     this.setState({
       statusColor: "",
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: ""
+      creationColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "status") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.ticketStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+
       this.setState({
         statusColor: "sort-column"
       });
     } else if (column === "category") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.category === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         categoryColor: ""
       });
     } else if (column === "priority") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.priority === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.assignedTo === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.assignedTo === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.createdOn === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdOn === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         creationColor: "sort-column"
       });
-    } else if (column === "colorred") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isEscalation === 1
-      );
-    } else if (column === "colororange") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isSLANearBreach === true
-      );
-    } else if (column === "colorwhite") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a =>
-          a.isEscalation === 0 &&
-          a.isSLANearBreach === false &&
-          a.isReassigned === false
-      );
-    } else if (column === "colorgreen") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isReassigned === true && a.isEscalation === 0
-      );
-    }
-    this.state.SearchTicketData = itemsArray;
+    } 
 
-    // this.setState({
-    //   SearchTicketData: itemsArray
-    // });
-    // this.StatusCloseModel();
+    debugger;
+ 
+
+    this.setState({
+      tempSearchTicketData: itemsArray
+    });
+    
   };
-
+//// handle change filtre by check box
+  setColorSortCheckStatus = e => {
+    const { name } = e.target;
+    this.setState({ [name]: e.target.checked });
+  };
   sortStatusAtoZ() {
     //debugger;
     var itemsArray = [];
@@ -3364,7 +3564,11 @@ class MyTicketList extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
-                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                      onChange={this.setSortCheckStatus.bind(
+                        this,
+                        "all",
+                        "value"
+                      )}
                     />
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
@@ -3381,7 +3585,8 @@ class MyTicketList extends Component {
                             value={item.ticketStatus}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "status"
+                              "status",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.ticketStatus}>
@@ -3404,7 +3609,8 @@ class MyTicketList extends Component {
                             value={item.category}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "category"
+                              "category",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.category}>
@@ -3427,7 +3633,8 @@ class MyTicketList extends Component {
                             value={item.priority}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "priority"
+                              "priority",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.priority}>
@@ -3450,7 +3657,8 @@ class MyTicketList extends Component {
                             value={item.createdOn}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "createdOn"
+                              "createdOn",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.createdOn}>
@@ -3473,7 +3681,8 @@ class MyTicketList extends Component {
                             value={item.assignedTo}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "assignedTo"
+                              "assignedTo",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.assignedTo}>
@@ -3494,9 +3703,10 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-red"
-                    name="filter-color"
-                    value="isEscalation"
-                    onChange={this.setSortCheckStatus.bind(this, "colorred")}
+                    name="isRed"
+                    // value="isEscalation"
+                    value={this.state.isRed}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-red">
                     <span className="fil-color-red fil-color-bg"></span>
@@ -3507,9 +3717,10 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-orange"
-                    name="filter-color"
-                    value="isSLANearBreach"
-                    onChange={this.setSortCheckStatus.bind(this, "colororange")}
+                    name="isYellow"
+                    // value="isSLANearBreach"
+                    value={this.state.isYellow}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-orange">
                     <span className="fil-color-orange fil-color-bg"></span>
@@ -3519,9 +3730,10 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-white"
-                    name="filter-color"
-                    value="white"
-                    onChange={this.setSortCheckStatus.bind(this, "colorwhite")}
+                    name="isWhite"
+                    // value="white"
+                    value={this.state.isWhite}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-white">
                     <span className="fil-color-white fil-color-bg"></span>
@@ -3531,9 +3743,9 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-green"
-                    name="filter-color"
-                    value="isReassigned"
-                    onChange={this.setSortCheckStatus.bind(this, "colorgreen")}
+                    name="isGreen"
+                    value={this.state.isGreen}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-green">
                     <span className="fil-color-green fil-color-bg"></span>

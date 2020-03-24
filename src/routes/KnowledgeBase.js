@@ -20,6 +20,8 @@ import {
 import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Up1Img from "./../assets/Images/up-1.png";
+import matchSorter from "match-sorter";
 // import { notification } from "antd";
 
 class KnowledgeBase extends Component {
@@ -102,12 +104,24 @@ class KnowledgeBase extends Component {
       columnTitle: "",
       sortTable: "",
       issueColor: "",
-      sortHeader:"",
+      sortHeader: "",
       categoryColor: "",
       subCategoryColor: "",
-      searchCategoryCompulsion:"",
-      searchSubCategoryCompulsion:"",
-      searchIssueCompulsion:""
+      searchCategoryCompulsion: "",
+      searchSubCategoryCompulsion: "",
+      searchIssueCompulsion: "",
+      collapseUp: false,
+      collapseId: "",
+      sFilterCheckbox: "",
+      tempKBListData: [],
+      tempKBListnotApproveData: [],
+      sortFilterIssueType: [],
+      sortFilterCategory: [],
+      sortFilterSubCategory: [],
+      sortFilterSubCategoryNot: [],
+      sortFilterCategoryNot: [],
+      sortFilterIssueTypeNot: [],
+      filterTxtValue: ""
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -128,14 +142,16 @@ class KnowledgeBase extends Component {
     this.handleRejectKB = this.handleRejectKB.bind(this);
     this.handleSeaechKB = this.handleSeaechKB.bind(this);
   }
-  StatusOpenModel(data, table,header) {
+  StatusOpenModel(data, table, header) {
     debugger;
 
     this.setState({
       StatusModel: true,
       sortColumnName: data,
       sortTable: table,
-      sortHeader:header
+      sortHeader: header,
+      tempKBListData: [],
+      tempKBListnotApproveData: []
     });
     //StatusModel: true,
     // if(data==="issueTypeName"){
@@ -145,7 +161,32 @@ class KnowledgeBase extends Component {
     // }
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    debugger;
+    if (this.state.sortTable === "approve") {
+      if (this.state.tempKBListData.length > 0) {
+        this.setState({
+          StatusModel: false,
+          KBListData: this.state.tempKBListData
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          KBListData: this.state.sortAllDataApprove
+        });
+      }
+    } else {
+      if (this.state.tempKBListnotApproveData.length > 0) {
+        this.setState({
+          StatusModel: false,
+          KBListnotApproveData: this.state.tempKBListnotApproveData
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          KBListnotApproveData: this.state.sortAllData
+        });
+      }
+    }
   }
 
   setSortCheckStatus = (column, e) => {
@@ -153,6 +194,21 @@ class KnowledgeBase extends Component {
     var itemsArray = [];
     var itemsArrayApprove = [];
     var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+    if (sFilterCheckbox.includes(e.currentTarget.value)) {
+      sFilterCheckbox = sFilterCheckbox.replace(
+        e.currentTarget.value + ",",
+        ""
+      );
+    } else {
+      sFilterCheckbox += e.currentTarget.value + ",";
+    }
+    this.setState({
+      sFilterCheckbox
+    });
+    var AllDataApprove = this.state.sortAllDataApprove;
+    var sortAllData = this.state.sortAllData;
+
     if (this.state.sortTable === "notapprove") {
       if (column === "all") {
         itemsArray = this.state.sortAllData;
@@ -162,91 +218,171 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "issueTypeName") {
-        this.state.KBListnotApproveData = this.state.sortAllData;
-        itemsArray = this.state.KBListnotApproveData.filter(
-          a => a.issueTypeName === data
-        );
+        var sItems = sFilterCheckbox.split(",");
+        if (sItems.length > 0) {
+          for (let i = 0; i < sItems.length; i++) {
+            if (sItems[i] !== "") {
+              var tempFilterData = sortAllData.filter(
+                a => a.issueTypeName === sItems[i]
+              );
+              if (tempFilterData.length > 0) {
+                for (let j = 0; j < tempFilterData.length; j++) {
+                  itemsArray.push(tempFilterData[j]);
+                }
+              }
+            }
+          }
+        }
         this.setState({
           issueColor: "sort-column",
           categoryColor: "",
           subCategoryColor: ""
         });
       } else if (column === "categoryName") {
-        this.state.KBListnotApproveData = this.state.sortAllData;
-        itemsArray = this.state.KBListnotApproveData.filter(
-          a => a.categoryName === data
-        );
+        var sItems = sFilterCheckbox.split(",");
+        if (sItems.length > 0) {
+          for (let i = 0; i < sItems.length; i++) {
+            if (sItems[i] !== "") {
+              var tempFilterData = sortAllData.filter(
+                a => a.categoryName === sItems[i]
+              );
+              if (tempFilterData.length > 0) {
+                for (let j = 0; j < tempFilterData.length; j++) {
+                  itemsArray.push(tempFilterData[j]);
+                }
+              }
+            }
+          }
+        }
         this.setState({
           issueColor: "",
           categoryColor: "sort-column",
           subCategoryColor: ""
         });
       } else if (column === "subCategoryName") {
-        this.state.KBListnotApproveData = this.state.sortAllData;
-        itemsArray = this.state.KBListnotApproveData.filter(
-          a => a.subCategoryName === data
-        );
+        var sItems = sFilterCheckbox.split(",");
+        if (sItems.length > 0) {
+          for (let i = 0; i < sItems.length; i++) {
+            if (sItems[i] !== "") {
+              var tempFilterData = sortAllData.filter(
+                a => a.subCategoryName === sItems[i]
+              );
+              if (tempFilterData.length > 0) {
+                for (let j = 0; j < tempFilterData.length; j++) {
+                  itemsArray.push(tempFilterData[j]);
+                }
+              }
+            }
+          }
+        }
         this.setState({
           issueColor: "",
           categoryColor: "",
           subCategoryColor: "sort-column"
         });
       }
+      this.setState({ tempKBListnotApproveData: itemsArray });
     } else if (this.state.sortTable === "approve") {
+      debugger;
       if (column === "all") {
-        itemsArrayApprove = this.state.sortAllDataApprove;
+        itemsArray = this.state.sortAllDataApprove;
         this.setState({
           issueColor: "",
           categoryColor: "",
           subCategoryColor: ""
         });
       } else if (column === "issueTypeName") {
-        this.state.KBListData = this.state.sortAllDataApprove;
-        itemsArrayApprove = this.state.KBListData.filter(
-          a => a.issueTypeName === data
-        );
+        // this.state.KBListData = this.state.sortAllDataApprove;
+        // itemsArrayApprove = this.state.KBListData.filter(
+        //   a => a.issueTypeName === data
+        // );
+
+        var sItems = sFilterCheckbox.split(",");
+        if (sItems.length > 0) {
+          for (let i = 0; i < sItems.length; i++) {
+            if (sItems[i] !== "") {
+              var tempFilterData = AllDataApprove.filter(
+                a => a.issueTypeName === sItems[i]
+              );
+              if (tempFilterData.length > 0) {
+                for (let j = 0; j < tempFilterData.length; j++) {
+                  itemsArray.push(tempFilterData[j]);
+                }
+              }
+            }
+          }
+        }
         this.setState({
           issueColor: "sort-column",
           categoryColor: "",
           subCategoryColor: ""
         });
       } else if (column === "categoryName") {
-        this.state.KBListData = this.state.sortAllDataApprove;
-        itemsArrayApprove = this.state.KBListData.filter(
-          a => a.categoryName === data
-        );
+        // this.state.KBListData = this.state.sortAllDataApprove;
+        // itemsArrayApprove = this.state.KBListData.filter(
+        //   a => a.categoryName === data
+        // );
+
+        var sItems = sFilterCheckbox.split(",");
+        if (sItems.length > 0) {
+          for (let i = 0; i < sItems.length; i++) {
+            if (sItems[i] !== "") {
+              var tempFilterData = AllDataApprove.filter(
+                a => a.categoryName === sItems[i]
+              );
+              if (tempFilterData.length > 0) {
+                for (let j = 0; j < tempFilterData.length; j++) {
+                  itemsArray.push(tempFilterData[j]);
+                }
+              }
+            }
+          }
+        }
         this.setState({
           issueColor: "",
           categoryColor: "sort-column",
           subCategoryColor: ""
         });
       } else if (column === "subCategoryName") {
-        this.state.KBListData = this.state.sortAllDataApprove;
-        itemsArrayApprove = this.state.KBListData.filter(
-          a => a.subCategoryName === data
-        );
+        // this.state.KBListData = this.state.sortAllDataApprove;
+        // itemsArrayApprove = this.state.KBListData.filter(
+        //   a => a.subCategoryName === data
+        // );
+        var sItems = sFilterCheckbox.split(",");
+        if (sItems.length > 0) {
+          for (let i = 0; i < sItems.length; i++) {
+            if (sItems[i] !== "") {
+              var tempFilterData = AllDataApprove.filter(
+                a => a.subCategoryName === sItems[i]
+              );
+              if (tempFilterData.length > 0) {
+                for (let j = 0; j < tempFilterData.length; j++) {
+                  itemsArray.push(tempFilterData[j]);
+                }
+              }
+            }
+          }
+        }
         this.setState({
           issueColor: "",
           categoryColor: "",
           subCategoryColor: "sort-column"
         });
       }
+      this.setState({
+        tempKBListData: itemsArray
+      });
     }
 
-    this.setState({
-      KBListnotApproveData: itemsArray,
-      KBListData: itemsArrayApprove
-    });
-
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   opneSearchModal() {
-    this.setState({ searchmodal: true,
-      selectedCategory:"",
-      selectedSubCategory:"",
-      selectedIssueType:""
-    
+    this.setState({
+      searchmodal: true,
+      selectedCategory: "",
+      selectedSubCategory: "",
+      selectedIssueType: ""
     });
   }
   closeSearchModal() {
@@ -282,9 +418,9 @@ class KnowledgeBase extends Component {
       subCategoryCompulsion: "",
       issueTypeCompulsion: "",
       subjectCompulsion: "",
-      selectedCategory:"",
-      selectedSubCategory:"",
-      selectedIssueType:""
+      selectedCategory: "",
+      selectedSubCategory: "",
+      selectedIssueType: ""
     });
   }
   closeAddNewKBModal() {
@@ -410,7 +546,9 @@ class KnowledgeBase extends Component {
       tabCount: 2,
       issueColor: "",
       categoryColor: "",
-      subCategoryColor: ""
+      subCategoryColor: "",
+      collapseId: "",
+      collapseUp: false
     });
   }
 
@@ -675,6 +813,9 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
+            self.state.sortFilterIssueTypeNot.push({
+              issueTypeName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -687,6 +828,9 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCategory.push({ categoryName: distinct[i] });
+            self.state.sortFilterCategoryNot.push({
+              categoryName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -699,6 +843,9 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
+            self.state.sortFilterSubCategoryNot.push({
+              subCategoryName: distinct[i]
+            });
           }
         }
 
@@ -716,6 +863,9 @@ class KnowledgeBase extends Component {
             self.state.sortIssueTypeApprove.push({
               issueTypeName: distinct[i]
             });
+            self.state.sortFilterIssueType.push({
+              issueTypeName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -728,6 +878,7 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCategoryApprove.push({ categoryName: distinct[i] });
+            self.state.sortFilterCategory.push({ categoryName: distinct[i] });
           }
 
           var unique = [];
@@ -740,6 +891,9 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSubCategoryApprove.push({
+              subCategoryName: distinct[i]
+            });
+            self.state.sortFilterSubCategory.push({
               subCategoryName: distinct[i]
             });
           }
@@ -762,65 +916,65 @@ class KnowledgeBase extends Component {
 
   handleSeaechKB() {
     debugger;
-    if(
+    if (
       this.state.selectedCategory > 0 &&
       this.state.selectedSubCategory > 0 &&
       this.state.selectedIssueType > 0
-    ){
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/KnowledgeBase/SearchKB",
-      headers: authHeader(),
-      params: {
-        Category_ID: this.state.selectedCategory,
-        SubCategory_ID: this.state.selectedSubCategory,
-        type_ID: this.state.selectedIssueType
-      }
-    })
-      .then(function(res) {
-        debugger;
-        var approve = res.data.responseData.approved;
-        var notapprove = res.data.responseData.notApproved;
-        var approveconut = res.data.responseData.approved.length;
-        var notapproveconut = res.data.responseData.notApproved.length;
-        self.setState({
-          // KBListData: approve,
-          // KBListnotApproveData: notapprove,
-          // countApprove: approveconut,
-          // countNotApprove: notapproveconut,
-          SubCategoryData: [],
-          IssueTypeData: [],
-          selectedCategory: "",
-          selectedSubCategory: "",
-          selectedIssueType: "",
-          searchCategoryCompulsion:"",
-        searchSubCategoryCompulsion:"",
-        searchIssueCompulsion:""
-        });
-        if (self.state.tabCount === 1) {
-          self.setState({
-            kbClearNew: true,
-            KBListnotApproveData: notapprove,
-            countNotApprove: notapproveconut
-          });
-        } else {
-          self.setState({
-            kbClearList: true,
-            KBListData: approve,
-            countApprove: approveconut
-          });
+    ) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/KnowledgeBase/SearchKB",
+        headers: authHeader(),
+        params: {
+          Category_ID: this.state.selectedCategory,
+          SubCategory_ID: this.state.selectedSubCategory,
+          type_ID: this.state.selectedIssueType
         }
-        self.closeSearchModal();
       })
-      .catch(data => {
-        console.log(data);
-      });
-    }else{
+        .then(function(res) {
+          debugger;
+          var approve = res.data.responseData.approved;
+          var notapprove = res.data.responseData.notApproved;
+          var approveconut = res.data.responseData.approved.length;
+          var notapproveconut = res.data.responseData.notApproved.length;
+          self.setState({
+            // KBListData: approve,
+            // KBListnotApproveData: notapprove,
+            // countApprove: approveconut,
+            // countNotApprove: notapproveconut,
+            SubCategoryData: [],
+            IssueTypeData: [],
+            selectedCategory: "",
+            selectedSubCategory: "",
+            selectedIssueType: "",
+            searchCategoryCompulsion: "",
+            searchSubCategoryCompulsion: "",
+            searchIssueCompulsion: ""
+          });
+          if (self.state.tabCount === 1) {
+            self.setState({
+              kbClearNew: true,
+              KBListnotApproveData: notapprove,
+              countNotApprove: notapproveconut
+            });
+          } else {
+            self.setState({
+              kbClearList: true,
+              KBListData: approve,
+              countApprove: approveconut
+            });
+          }
+          self.closeSearchModal();
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
       this.setState({
-        searchCategoryCompulsion:"Please select category.",
-        searchSubCategoryCompulsion:"Please select subcategory.",
-        searchIssueCompulsion:"Please select issuetype."
+        searchCategoryCompulsion: "Please select category.",
+        searchSubCategoryCompulsion: "Please select subcategory.",
+        searchIssueCompulsion: "Please select issuetype."
       });
     }
   }
@@ -940,6 +1094,65 @@ class KnowledgeBase extends Component {
     debugger;
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
+
+  handleUpOpen(id) {
+    debugger;
+
+    this.setState({ collapseUp: true, collapseId: id });
+  }
+  handleUpClose(id) {
+    debugger;
+
+    this.setState({ collapseUp: false, collapseId: id });
+  }
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    // if (e.target.value !== "") {
+    if (this.state.sortHeader === "IssueType") {
+      var sortFilterIssueType = matchSorter(
+        this.state.sortIssueTypeApprove,
+        e.target.value,
+        { keys: ["issueTypeName"] }
+      );
+      if (sortFilterIssueType.length > 0) {
+        this.setState({ sortFilterIssueType });
+      } else {
+        this.setState({
+          sortFilterIssueType: this.state.sortIssueTypeApprove
+        });
+      }
+    }
+    if (this.state.sortHeader === "Category") {
+      var sortFilterCategory = matchSorter(
+        this.state.sortCategoryApprove,
+        e.target.value,
+        { keys: ["category"] }
+      );
+      if (sortFilterCategory.length > 0) {
+        this.setState({ sortFilterCategory });
+      } else {
+        this.setState({
+          sortFilterCategory: this.state.sortCategoryApprove
+        });
+      }
+    }
+    if (this.state.sortHeader === "SubCategory") {
+      var sortFilterSubCategory = matchSorter(
+        this.state.sortSubCategoryApprove,
+        e.target.value,
+        { keys: ["priority"] }
+      );
+      if (sortFilterSubCategory.length > 0) {
+        this.setState({ sortFilterSubCategory });
+      } else {
+        this.setState({
+          sortFilterSubCategory: this.state.sortSubCategoryApprove
+        });
+      }
+    }
+  }
   render() {
     return (
       <Fragment>
@@ -953,7 +1166,9 @@ class KnowledgeBase extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -975,12 +1190,20 @@ class KnowledgeBase extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              {/* <a
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a> */}
               <div className="filter-type FTypeScroll">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
 
                 <div className="filter-checkbox">
                   <input
@@ -997,8 +1220,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "issueTypeName" &&
                 this.state.sortTable === "notapprove"
-                  ? this.state.sortIssueType !== null &&
-                    this.state.sortIssueType.map((item, i) => (
+                  ? this.state.sortFilterIssueTypeNot !== null &&
+                    this.state.sortFilterIssueTypeNot.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1021,8 +1244,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "categoryName" &&
                 this.state.sortTable === "notapprove"
-                  ? this.state.sortCategory !== null &&
-                    this.state.sortCategory.map((item, i) => (
+                  ? this.state.sortFilterCategoryNot !== null &&
+                    this.state.sortFilterCategoryNot.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1045,8 +1268,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "subCategoryName" &&
                 this.state.sortTable === "notapprove"
-                  ? this.state.sortSubCategory !== null &&
-                    this.state.sortSubCategory.map((item, i) => (
+                  ? this.state.sortFilterSubCategoryNot !== null &&
+                    this.state.sortFilterSubCategoryNot.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1069,8 +1292,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "issueTypeName" &&
                 this.state.sortTable === "approve"
-                  ? this.state.sortIssueTypeApprove !== null &&
-                    this.state.sortIssueTypeApprove.map((item, i) => (
+                  ? this.state.sortFilterIssueType !== null &&
+                    this.state.sortFilterIssueType.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1093,8 +1316,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "categoryName" &&
                 this.state.sortTable === "approve"
-                  ? this.state.sortCategoryApprove !== null &&
-                    this.state.sortCategoryApprove.map((item, i) => (
+                  ? this.state.sortFilterCategory !== null &&
+                    this.state.sortFilterCategory.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1117,8 +1340,8 @@ class KnowledgeBase extends Component {
 
                 {this.state.sortColumnName === "subCategoryName" &&
                 this.state.sortTable === "approve"
-                  ? this.state.sortSubCategoryApprove !== null &&
-                    this.state.sortSubCategoryApprove.map((item, i) => (
+                  ? this.state.sortFilterSubCategory !== null &&
+                    this.state.sortFilterSubCategory.map((item, i) => (
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1225,7 +1448,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                        Subject <FontAwesomeIcon icon={faCaretDown} />
+                          Subject <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -1267,7 +1490,8 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "issueTypeName",
-                          "notapprove","IssueType"
+                          "notapprove",
+                          "IssueType"
                         )}
                       >
                         <label className={this.state.issueColor}>
@@ -1296,7 +1520,8 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "categoryName",
-                          "notapprove","Category"
+                          "notapprove",
+                          "Category"
                         )}
                       >
                         <label className={this.state.categoryColor}>
@@ -1321,7 +1546,8 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "subCategoryName",
-                          "notapprove","SubCategory"
+                          "notapprove",
+                          "SubCategory"
                         )}
                       >
                         <label className={this.state.subCategoryColor}>
@@ -1480,7 +1706,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                        Subject <FontAwesomeIcon icon={faCaretDown} />
+                          Subject <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -1520,7 +1746,8 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "issueTypeName",
-                          "approve","IssueType"
+                          "approve",
+                          "IssueType"
                         )}
                       >
                         <label className={this.state.issueColor}>
@@ -1549,7 +1776,8 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "categoryName",
-                          "approve","Category"
+                          "approve",
+                          "Category"
                         )}
                       >
                         <label className={this.state.categoryColor}>
@@ -1574,7 +1802,8 @@ class KnowledgeBase extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "subCategoryName",
-                          "approve","SubCategory"
+                          "approve",
+                          "SubCategory"
                         )}
                       >
                         <label className={this.state.subCategoryColor}>
@@ -1716,10 +1945,10 @@ class KnowledgeBase extends Component {
                   ))}
               </select>
               {this.state.selectedCategory.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.searchCategoryCompulsion}
-                    </p>
-                  )}
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.searchCategoryCompulsion}
+                </p>
+              )}
             </div>
             <br />
             <div className="row">
@@ -1737,10 +1966,10 @@ class KnowledgeBase extends Component {
                   ))}
               </select>
               {this.state.selectedSubCategory.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.searchSubCategoryCompulsion}
-                    </p>
-                  )}
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.searchSubCategoryCompulsion}
+                </p>
+              )}
             </div>
             <br />
             <div className="row">
@@ -1758,10 +1987,10 @@ class KnowledgeBase extends Component {
                   ))}
               </select>
               {this.state.selectedIssueType.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.searchIssueCompulsion}
-                    </p>
-                  )}
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.searchIssueCompulsion}
+                </p>
+              )}
             </div>
             <br />
           </div>
@@ -1902,12 +2131,10 @@ class KnowledgeBase extends Component {
                         {
                           name: "tools",
                           items: ["Maximize"]
-                    
                         },
                         {
                           name: "editing",
                           items: ["Scayt"]
-                         
                         }
                       ]
                     }}

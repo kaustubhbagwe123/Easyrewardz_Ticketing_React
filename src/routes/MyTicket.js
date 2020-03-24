@@ -797,7 +797,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Ticket updated successfully.");
-          self.props.history.push("myticket");
+          self.props.history.push("myTicketlist");
         } else {
           NotificationManager.error("Ticket not update");
         }
@@ -1882,7 +1882,8 @@ class MyTicket extends Component {
             IsInformToStore: this.state.ReplyInformStore,
             TicketSource: this.state.ticketSourceId, // Send ticket source id
             IsSent: 0,
-            IsCustomerComment: 1,
+            IsCustomerComment: 0,
+            // IsCustomerComment: 1,
             IsResponseToCustomer: 1,
             MailID: 0,
             StoreID: store_Id.substring(",", store_Id.length - 1)
@@ -1904,6 +1905,8 @@ class MyTicket extends Component {
               if (status === "Success") {
                 self.handleGetMessageDetails(self.state.ticket_Id);
                 self.handleGetCountOfTabs(self.state.ticket_Id);
+                self.handleGetTicketDetails(self.state.ticket_Id);
+                self.handleProgressBarDetails(self.state.ticket_Id);
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
                 NotificationManager.success(

@@ -60,6 +60,7 @@ import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
 import { CSVLink } from "react-csv";
 import DatePickerComponenet from "./Settings/Ticketing/DatePickerComponent";
+import matchSorter from "match-sorter";
 // import { DatePicker } from "antd";
 // const { RangePicker } = DatePicker;
 
@@ -316,12 +317,24 @@ class Dashboard extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      sortHeader:"",
+      sortHeader: "",
       moduleID: 0,
       ticketGenerationSourceFlag: false,
       ticketToBillBarFlag: false,
       openByPriorityFlag: false,
-      // filterTxtValue:""
+      filterTxtValue: "",
+      sortFilterTicketData: [],
+      sortFilterCategoryData: [],
+      sortFilterPriorityData: [],
+      sortFiltercreatedOnData: [],
+      sortFilterAssigneeData: [],
+      sFilterCheckbox: "",
+      tempSearchTicketData: [],
+      sColorFilterCheckbox: "",
+      isRed: false,
+      isWhite: false,
+      isGreen: false,
+      isYellow: false
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -760,83 +773,132 @@ class Dashboard extends Component {
     });
   };
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, isColor, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (isColor === "value" && isColor !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
+    var data = "";
     this.setState({
       statusColor: "",
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: ""
+      creationColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "status") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.ticketStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+
       this.setState({
         statusColor: "sort-column"
       });
     } else if (column === "category") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.category === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        categoryColor: "sort-column"
+        categoryColor: ""
       });
     } else if (column === "priority") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.priority === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.assignedTo === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.assignedTo === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.createdOn === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdOn === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         creationColor: "sort-column"
       });
-    } else if (column === "colorred") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isEscalation === 1
-      );
-    } else if (column === "colororange") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isSLANearBreach === true
-      );
-    } else if (column === "colorwhite") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a =>
-          a.isEscalation === 0 &&
-          a.isSLANearBreach === false &&
-          a.isReassigned === false
-      );
-    } else if (column === "colorgreen") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isReassigned === true && a.isEscalation === 0
-      );
     }
 
+    debugger;
+
     this.setState({
-      SearchTicketData: itemsArray
+      tempSearchTicketData: itemsArray
     });
     // this.StatusCloseModel();
   };
@@ -878,16 +940,18 @@ class Dashboard extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      let moduleID = data[0].moduleID;
-      let selTab = data[0].moduleName;
-      let moduleIDMyticket = data[1].moduleID;
+      if (data) {
+        let moduleID = data[0].moduleID;
+        let selTab = data[0].moduleName;
+        let moduleIDMyticket = data[1].moduleID;
+        self.handleAdvanceSearchOption(moduleID);
+      }
 
       // if (status === "Success") {
       //   self.setState({ modulesNames: data, moduleID });
       // } else {
       //   self.setState({ modulesNames: [] });
       // }
-      self.handleAdvanceSearchOption(moduleID);
     });
   }
   handleAdvanceSearchOption(id) {
@@ -1516,16 +1580,16 @@ class Dashboard extends Component {
   };
   applyCallback = async (startDate, endDate) => {
     debugger;
-    var startArr = endDate[0].split('-');
+    var startArr = endDate[0].split("-");
     var dummyStart = startArr[0];
     startArr[0] = startArr[1];
     startArr[1] = dummyStart;
-    var start = startArr.join('-');
-    var endArr = endDate[1].split('-');
+    var start = startArr.join("-");
+    var endArr = endDate[1].split("-");
     var dummyEnd = endArr[0];
     endArr[0] = endArr[1];
     endArr[1] = dummyEnd;
-    var end = endArr.join('-');
+    var end = endArr.join("-");
     await this.setState({
       start,
       end,
@@ -1807,13 +1871,131 @@ class Dashboard extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumnName: data,sortHeader:header });
+    this.setState({
+      StatusModel: true,
+      sortColumnName: data,
+      sortHeader: header
+    });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    debugger;
+    var tempFinalSearchTicketData = [];
+    if (this.state.tempSearchTicketData.length > 0) {
+      var tempSearchTicketData = this.state.tempSearchTicketData;
+      var tempColor = [];
+      if (this.state.isRed) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isWhite) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a =>
+            a.isEscalation === 0 &&
+            a.isSLANearBreach === false &&
+            a.isReassigned === false
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isYellow) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isGreen) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (tempColor.length > 0) {
+        tempFinalSearchTicketData = tempColor;
+      } else {
+        tempFinalSearchTicketData = this.state.tempSearchTicketData;
+      }
+    } else {
+      var tempSearchTicketData = this.state.sortAllData;
+      var tempColor = [];
+      if (this.state.isRed) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isWhite) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a =>
+            a.isEscalation === 0 &&
+            a.isSLANearBreach === false &&
+            a.isReassigned === false
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isYellow) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isGreen) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (tempColor.length > 0) {
+        tempFinalSearchTicketData = tempColor;
+      } else {
+        tempFinalSearchTicketData = [];
+      }
+    }
+    this.setState({
+      StatusModel: false,
+      filterTxtValue: "",
+      sFilterCheckbox: "",
+      isRed: false,
+      isWhite: false,
+      isYellow: false,
+      isGreen: false,
+      SearchTicketData: tempFinalSearchTicketData
+    });
   }
   HandleChangeRedict() {
     this.props.history.push("/admin/chatdashboard");
@@ -3022,6 +3204,9 @@ class Dashboard extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+              self.state.sortFilterTicketData.push({
+                ticketStatus: distinct[i]
+              });
             }
 
             var unique = [];
@@ -3034,6 +3219,7 @@ class Dashboard extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortCategoryData.push({ category: distinct[i] });
+              self.state.sortFilterCategoryData.push({ category: distinct[i] });
             }
 
             var unique = [];
@@ -3046,6 +3232,7 @@ class Dashboard extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortPriorityData.push({ priority: distinct[i] });
+              self.state.sortFilterPriorityData.push({ priority: distinct[i] });
             }
 
             var unique = [];
@@ -3058,6 +3245,9 @@ class Dashboard extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+              self.state.sortFiltercreatedOnData.push({
+                createdOn: distinct[i]
+              });
             }
 
             var unique = [];
@@ -3070,6 +3260,9 @@ class Dashboard extends Component {
             }
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+              self.state.sortFilterAssigneeData.push({
+                assignedTo: distinct[i]
+              });
             }
           }
         }
@@ -3686,11 +3879,86 @@ class Dashboard extends Component {
       });
   }
 
-  // filteTextChange(e)
-  // {
-  //   this.setState({ filterTxtValue: e.target.value });
-  // }
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    // if (e.target.value !== "") {
+    if (this.state.sortColumnName === "status") {
+      var sortFilterTicketData = matchSorter(
+        this.state.sortTicketData,
+        e.target.value,
+        { keys: ["ticketStatus"] }
+      );
+      if (sortFilterTicketData.length > 0) {
+        this.setState({ sortFilterTicketData });
+      } else {
+        this.setState({ sortFilterTicketData: this.state.sortTicketData });
+      }
+    }
+    if (this.state.sortColumnName === "category") {
+      var sortFilterCategoryData = matchSorter(
+        this.state.sortCategoryData,
+        e.target.value,
+        { keys: ["category"] }
+      );
+      if (sortFilterCategoryData.length > 0) {
+        this.setState({ sortFilterCategoryData });
+      } else {
+        this.setState({
+          sortFilterCategoryData: this.state.sortCategoryData
+        });
+      }
+    }
+    if (this.state.sortColumnName === "priority") {
+      var sortFilterPriorityData = matchSorter(
+        this.state.sortPriorityData,
+        e.target.value,
+        { keys: ["priority"] }
+      );
+      if (sortFilterPriorityData.length > 0) {
+        this.setState({ sortFilterPriorityData });
+      } else {
+        this.setState({
+          sortFilterPriorityData: this.state.sortPriorityData
+        });
+      }
+    }
 
+    if (this.state.sortColumnName === "createdOn") {
+      var sortFiltercreatedOnData = matchSorter(
+        this.state.sortcreatedOnData,
+        e.target.value,
+        { keys: ["createdOn"] }
+      );
+      if (sortFiltercreatedOnData.length > 0) {
+        this.setState({ sortFiltercreatedOnData });
+      } else {
+        this.setState({
+          sortFiltercreatedOnData: this.state.sortcreatedOnData
+        });
+      }
+    }
+    if (this.state.sortColumnName === "assignedTo") {
+      var sortFilterAssigneeData = matchSorter(
+        this.state.sortAssigneeData,
+        e.target.value,
+        { keys: ["assignedTo"] }
+      );
+      if (sortFilterAssigneeData.length > 0) {
+        this.setState({ sortFilterAssigneeData });
+      } else {
+        this.setState({
+          sortFilterAssigneeData: this.state.sortAssigneeData
+        });
+      }
+    }
+    // }
+  }
+  //// handle change filtre by check box
+  setColorSortCheckStatus = e => {
+    const { name } = e.target;
+    this.setState({ [name]: e.target.checked });
+  };
   render() {
     const { SearchAssignData, SearchTicketData } = this.state;
     let now = new Date();
@@ -3739,7 +4007,9 @@ class Dashboard extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -3763,137 +4033,146 @@ class Dashboard extends Component {
               </div>
               <div className="filter-type ">
                 <p>FILTER BY TYPE</p>
-                
+
                 <div className="FTypeScroll">
-                {/* <input type="text" value={this.state.filterTxtValue} onChange={this.filteTextChange.bind(this)}/> */}
-                <div className="filter-checkbox">
                   <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
+                    type="text"
+                    style={{ display: "block" }}
+                    value={this.state.filterTxtValue}
+                    onChange={this.filteTextChange.bind(this)}
                   />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumnName === "status"
+                    ? this.state.sortFilterTicketData !== null &&
+                      this.state.sortFilterTicketData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.ticketStatus}
+                            value={item.ticketStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.ticketStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.ticketStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "category"
+                    ? this.state.sortFilterCategoryData !== null &&
+                      this.state.sortFilterCategoryData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.category}
+                            value={item.category}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "category",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.category}>
+                            <span className="table-btn table-blue-btn">
+                              {item.category}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "priority"
+                    ? this.state.sortFilterPriorityData !== null &&
+                      this.state.sortFilterPriorityData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.priority}
+                            value={item.priority}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "priority",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.priority}>
+                            <span className="table-btn table-blue-btn">
+                              {item.priority}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "createdOn"
+                    ? this.state.sortFiltercreatedOnData !== null &&
+                      this.state.sortFiltercreatedOnData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdOn}
+                            value={item.createdOn}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdOn",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdOn}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdOn}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumnName === "assignedTo"
+                    ? this.state.sortFilterAssigneeData !== null &&
+                      this.state.sortFilterAssigneeData.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.assignedTo}
+                            value={item.assignedTo}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "assignedTo",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.assignedTo}>
+                            <span className="table-btn table-blue-btn">
+                              {item.assignedTo}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumnName === "status"
-                  ? this.state.sortTicketData !== null &&
-                    this.state.sortTicketData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.ticketStatus}
-                          value={item.ticketStatus}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.ticketStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.ticketStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "category"
-                  ? this.state.sortCategoryData !== null &&
-                    this.state.sortCategoryData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.category}
-                          value={item.category}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "category"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.category}>
-                          <span className="table-btn table-blue-btn">
-                            {item.category}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "priority"
-                  ? this.state.sortPriorityData !== null &&
-                    this.state.sortPriorityData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.priority}
-                          value={item.priority}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "priority"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.priority}>
-                          <span className="table-btn table-blue-btn">
-                            {item.priority}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "createdOn"
-                  ? this.state.sortcreatedOnData !== null &&
-                    this.state.sortcreatedOnData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdOn}
-                          value={item.createdOn}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdOn"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdOn}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdOn}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumnName === "assignedTo"
-                  ? this.state.sortAssigneeData !== null &&
-                    this.state.sortAssigneeData.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.assignedTo}
-                          value={item.assignedTo}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "assignedTo"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.assignedTo}>
-                          <span className="table-btn table-blue-btn">
-                            {item.assignedTo}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
               </div>
 
               <div className="filter-type filter-color">
@@ -3904,7 +4183,7 @@ class Dashboard extends Component {
                     id="fil-red"
                     name="filter-color"
                     value="isEscalation"
-                    onChange={this.setSortCheckStatus.bind(this, "colorred")}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-red">
                     <span className="fil-color-red fil-color-bg"></span>
@@ -3916,7 +4195,7 @@ class Dashboard extends Component {
                     id="fil-orange"
                     name="filter-color"
                     value="isSLANearBreach"
-                    onChange={this.setSortCheckStatus.bind(this, "colororange")}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-orange">
                     <span className="fil-color-orange fil-color-bg"></span>
@@ -3928,7 +4207,7 @@ class Dashboard extends Component {
                     id="fil-white"
                     name="filter-color"
                     value="white"
-                    onChange={this.setSortCheckStatus.bind(this, "colorwhite")}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-white">
                     <span className="fil-color-white fil-color-bg"></span>
@@ -3940,7 +4219,7 @@ class Dashboard extends Component {
                     id="fil-green"
                     name="filter-color"
                     value="isReassigned"
-                    onChange={this.setSortCheckStatus.bind(this, "colorgreen")}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-green">
                     <span className="fil-color-green fil-color-bg"></span>
@@ -4241,7 +4520,9 @@ class Dashboard extends Component {
                                 </>
                               ) : null}
                             </div>
-                              {this.state.openByPriorityFlag && <p>No Data Available</p>}
+                            {this.state.openByPriorityFlag && (
+                              <p>No Data Available</p>
+                            )}
                           </div>
                         </div>
                         <div className="col-lg-6 col-md-8">
@@ -4308,7 +4589,9 @@ class Dashboard extends Component {
                                     ) : null}
                                   </div>
                                 </div>
-                                {this.state.ticketToBillBarFlag && <p>No Data Available</p>}
+                                {this.state.ticketToBillBarFlag && (
+                                  <p>No Data Available</p>
+                                )}
                               </div>
                               <div
                                 className="tab-pane fade"
@@ -4342,7 +4625,9 @@ class Dashboard extends Component {
                                     ) : null}
                                   </div>
                                 </div>
-                                {this.state.ticketGenerationSourceFlag && <p>No Data Available</p>}
+                                {this.state.ticketGenerationSourceFlag && (
+                                  <p>No Data Available</p>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -5700,16 +5985,16 @@ class Dashboard extends Component {
                               >
                                 CLEAR SEARCH
                               </p>
-                              &nbsp;
-                              &nbsp;
-                              &nbsp;
+                              &nbsp; &nbsp; &nbsp;
                               <p
                                 className="blue-clr fs-14"
-                                onClick={this.setSortCheckStatus.bind(this, "all")}
+                                onClick={this.setSortCheckStatus.bind(
+                                  this,
+                                  "all"
+                                )}
                               >
                                 CLEAR FILTER
                               </p>
-                          
                             </div>
                             <div className="col-auto mob-mar-btm">
                               <CSVLink
@@ -6459,7 +6744,11 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span
-                            onClick={this.StatusOpenModel.bind(this, "status","Status")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "status",
+                              "Status"
+                            )}
                             className={this.state.statusColor}
                           >
                             Status <FontAwesomeIcon icon={faCaretDown} />
@@ -6632,7 +6921,8 @@ class Dashboard extends Component {
                             className={this.state.categoryColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "category","Category"
+                              "category",
+                              "Category"
                             )}
                           >
                             Category <FontAwesomeIcon icon={faCaretDown} />
@@ -6681,7 +6971,8 @@ class Dashboard extends Component {
                             className={this.state.priorityColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "priority","Priority"
+                              "priority",
+                              "Priority"
                             )}
                           >
                             Priority <FontAwesomeIcon icon={faCaretDown} />
@@ -6696,7 +6987,8 @@ class Dashboard extends Component {
                             className={this.state.assignColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "assignedTo","Assign To"
+                              "assignedTo",
+                              "Assign To"
                             )}
                           >
                             Assignee <FontAwesomeIcon icon={faCaretDown} />
@@ -6710,7 +7002,8 @@ class Dashboard extends Component {
                             className={this.state.creationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "createdOn"," Creation On"
+                              "createdOn",
+                              " Creation On"
                             )}
                           >
                             Creation On <FontAwesomeIcon icon={faCaretDown} />
