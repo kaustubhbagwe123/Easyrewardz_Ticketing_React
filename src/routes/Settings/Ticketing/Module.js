@@ -158,9 +158,9 @@ class Module extends Component {
 
       let Msg = res.data.message;
       if (Msg === "Success") {
-        NotificationManager.success("Record Updated successfully.", '', 1000);
+        NotificationManager.success("Record Updated successfully.");
       } else {
-        NotificationManager.error("Record Not Updated", '', 1000);
+        NotificationManager.error("Record Not Updated");
       }
       self.setState({
         activeID: [],
@@ -260,7 +260,7 @@ class Module extends Component {
   render() {
     return (
       <Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings

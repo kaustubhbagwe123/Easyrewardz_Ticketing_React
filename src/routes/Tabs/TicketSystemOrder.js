@@ -99,6 +99,16 @@ class TicketSystemOrder extends Component {
     this.handleGetTicketSourceList();
     this.handleGetChannelOfPurchaseList();
   }
+  componentDidUpdate() {
+    debugger;
+    var modeId = this.props.purchaseMode;
+    var value = parseInt(modeId);
+    if (value !== this.state.selectedTicketSource) {
+      this.setState({
+        selectedTicketSource: value
+      });
+    } 
+  }
 
   handleRequireSize(e, rowData) {
     debugger;
@@ -176,8 +186,9 @@ class TicketSystemOrder extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   setTicketSourceValue = e => {
-    let ticketSourceValue = e.currentTarget.value;
-    this.setState({ selectedTicketSource: ticketSourceValue });
+    debugger;
+    let value = e.currentTarget.value;
+    this.setState({ selectedTicketSource: value });
   };
 
   handleCheckOrder = e => {
@@ -399,9 +410,7 @@ class TicketSystemOrder extends Component {
           if (status === "Success") {
             let data = res.data.responseData;
             NotificationManager.success(
-              "New Order added successfully.",
-              "",
-              2000
+              "New Order added successfully."
             );
             self.handleOrderSearchData(data);
             self.handleChangeSaveManualTbl();
@@ -422,7 +431,7 @@ class TicketSystemOrder extends Component {
               saveLoader: false
             });
           } else {
-            NotificationManager.error("Order not added.", "", 2000);
+            NotificationManager.error("Order not added.");
             self.setState({
               saveLoader: false
             });
@@ -432,7 +441,7 @@ class TicketSystemOrder extends Component {
           console.log(data);
         });
       // } else {
-      //   NotificationManager.error("Order not added.", "", 2000);
+      //   NotificationManager.error("Order not added.");
       //   self.setState({
       //     validPurchaseStoreName: "Store name not exist",
       //     saveLoader: false
@@ -1328,11 +1337,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.billId}
                     onChange={this.handleManuallyOnchange}
                   />
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "BillId",
                     this.state.billId,
                     "required"
-                  )} */}
+                  )}
                 </div>
               </div>
 
@@ -1348,11 +1357,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "ProductBarCode",
                     this.state.productBarCode,
                     "required"
-                  )} */}
+                  )}
                 </div>
                 <div className="col-md-6">
                   {/* <select
@@ -1381,11 +1390,11 @@ class TicketSystemOrder extends Component {
                         </option>
                       ))}
                   </select>
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "ChannelOfPurchaseData",
                     this.state.ChannelOfPurchaseData,
                     "required"
-                  )} */}
+                  )}
                 </div>
               </div>
 
@@ -1410,11 +1419,11 @@ class TicketSystemOrder extends Component {
                         </option>
                       ))}
                   </select>
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "ModeOfPayment",
                     this.state.modeOfPayment,
                     "required"
-                  )} */}
+                  )}
                 </div>
                 <div className="col-md-6 dapic">
                   <DatePicker
@@ -1440,11 +1449,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "mrp",
                     this.state.orderMRP,
                     "required"
-                  )} */}
+                  )}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -1456,11 +1465,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "PricePaid",
                     this.state.pricePaid,
                     "required"
-                  )} */}
+                  )}
                 </div>
               </div>
 
@@ -1475,11 +1484,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "Discount",
                     this.state.discount,
                     "required"
-                  )} */}
+                  )}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -1488,11 +1497,16 @@ class TicketSystemOrder extends Component {
                     placeholder="Size"
                     name="size"
                     value={this.state.size}
-                    // onChange={this.handleNumberOnchange}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    // onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                     maxLength={10}
                   />
+                  {this.validator.message(
+                    "size",
+                    this.state.size,
+                    "required"
+                  )}
                 </div>
               </div>
 
@@ -1504,15 +1518,15 @@ class TicketSystemOrder extends Component {
                     placeholder="Required Size"
                     name="requiredSize"
                     value={this.state.requiredSize}
-                    // onChange={this.handleNumberOnchange}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    // onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "RequiredSize",
                     this.state.requiredSize,
                     "required"
-                  )} */}
+                  )}
                 </div>
                 <div className="col-md-6">
                   {/* <input
@@ -1556,16 +1570,16 @@ class TicketSystemOrder extends Component {
                     value={this.state.purchaseFrmStorName["store"]}
                   />
 
-                  {/* {this.validator.message(
+                  {this.validator.message(
                     "PurchaseFrmStorAddress",
                     this.state.purchaseFrmStorName["store"],
                     "required"
-                  )} */}
-                  {/* {this.state.purchaseFrmStorID === 0 && (
+                  )}
+                  {this.state.purchaseFrmStorID === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.validPurchaseStoreName}
                     </p>
-                  )} */}
+                  )}
                 </div>
               </div>
 
@@ -1893,7 +1907,7 @@ class TicketSystemOrder extends Component {
             </div>
           ) : null}
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </div>
     );
   }

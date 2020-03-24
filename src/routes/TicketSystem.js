@@ -95,7 +95,7 @@ class TicketSystem extends Component {
       customerStoreStatus: 0,
       selectTicketTemplateId: 0,
       selectedTicketActionType: "201",
-      selectedChannelOfPurchase: "",
+      selectedChannelOfPurchase: 0,
       selectedTemplateID: 0,
       priorityId: 0,
       escalationLevel: 0,
@@ -216,7 +216,7 @@ class TicketSystem extends Component {
         this.state.copiedNumber &&
         this.state.customerData.customerPhoneNumber
       ) {
-        NotificationManager.success("Copied.", "", 1000);
+        NotificationManager.success("Copied.");
       }
     }, 100);
   }
@@ -277,7 +277,10 @@ class TicketSystem extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Template/GetMailParameter",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        AlertID: 8
+      }
     })
       .then(function(res) {
         debugger;
@@ -441,9 +444,7 @@ class TicketSystem extends Component {
           let Message = res.data.message;
           if (Message === "Success") {
             NotificationManager.success(
-              "Record updated Successfull.",
-              "",
-              2000
+              "Record updated Successfull."
             );
 
             self.componentDidMount();
@@ -550,7 +551,7 @@ class TicketSystem extends Component {
           debugger;
           let KbPopupData = res.data.responseData;
           if (KbPopupData.length === 0 || KbPopupData === null) {
-            NotificationManager.error("No Record Found.", "", 2000);
+            NotificationManager.error("No Record Found.");
           }
           self.setState({ KbPopupData: KbPopupData });
         })
@@ -694,8 +695,8 @@ class TicketSystem extends Component {
     })
       .then(function(res) {
         debugger;
-        let ChannelOfPurchaseData = res.data.responseData;
-        self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+        let data = res.data.responseData;
+        self.setState({ ChannelOfPurchaseData: data });
       })
       .catch(data => {
         console.log(data);
@@ -1024,13 +1025,13 @@ class TicketSystem extends Component {
           let TID = res.data.responseData;
           self.setState({ loading: false });
           if (Msg) {
-            NotificationManager.success(res.data.message, "", 2000);
+            NotificationManager.success(res.data.message);
             self.handleTicketAssignFollowUp(TID);
             setTimeout(function() {
               self.props.history.push("myTicketlist");
             }, 1000);
           } else {
-            NotificationManager.error(res.data.message, "", 2000);
+            NotificationManager.error(res.data.message);
           }
         })
         .catch(data => {
@@ -1168,13 +1169,16 @@ class TicketSystem extends Component {
     }, 1);
   };
   setChannelOfPurchaseValue = e => {
-    let channelOfPurchaseValue = e.currentTarget.value;
-    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+    debugger
+    let value = e.currentTarget.value;
+    this.setState({ selectedChannelOfPurchase: value });
   };
 
   render() {
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
+    var PurchaseMode=this.state.selectedChannelOfPurchase;
+    
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -2511,6 +2515,7 @@ class TicketSystem extends Component {
                         AttachOrder={this.handleCustomerAttachamentStatus}
                         getParentOrderData={this.handleGetOrderId}
                         getItemOrderData={this.handleGetItemData}
+                        purchaseMode={this.state.selectedChannelOfPurchase}
                       />
                     </div>
                     <div
@@ -2832,7 +2837,7 @@ class TicketSystem extends Component {
                     </div>
                   </div>
                 </Modal>
-                <NotificationContainer />
+                {/* <NotificationContainer /> */}
               </div>
             </div>
           )}

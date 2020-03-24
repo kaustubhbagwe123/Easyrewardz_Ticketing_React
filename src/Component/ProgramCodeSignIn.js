@@ -65,7 +65,7 @@ class ProgramCodeSignIn extends Component {
           });
         }
         else{
-          NotificationManager.error("Please enter valid program code.", '', 1250);
+          NotificationManager.error("Please enter valid program code.", '', 1500);
         }
       });
       // this.props.history.push("SignIn");

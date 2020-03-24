@@ -478,7 +478,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
-        NotificationManager.success("Store deleted successfully.", "", 1000);
+        NotificationManager.success("Store deleted successfully.");
       }
     });
   }
@@ -540,7 +540,7 @@ class StoreMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
-          NotificationManager.success("Store added successfully.", "", 1000);
+          NotificationManager.success("Store added successfully.");
           self.setState({
             store_code: "",
             store_name: "",
@@ -571,7 +571,7 @@ class StoreMaster extends Component {
             cityData: []
           });
         } else {
-          NotificationManager.error("Store Not added.", "", 1000);
+          NotificationManager.error("Store Not added.");
         }
       });
     } else {
@@ -654,9 +654,7 @@ class StoreMaster extends Component {
           if (status === "Success") {
             self.handleGetStoreMasterData();
             NotificationManager.success(
-              "Store updated successfully.",
-              "",
-              1000
+              "Store updated successfully."
             );
 
             self.setState({
@@ -985,7 +983,7 @@ class StoreMaster extends Component {
     const { storeData } = this.state;
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

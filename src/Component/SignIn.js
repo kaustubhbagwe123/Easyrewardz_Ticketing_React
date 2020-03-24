@@ -165,7 +165,7 @@ class SingIn extends Component {
             //   self.props.history.push("/admin/dashboard");
             // }, 400);
           } else {
-            NotificationManager.error("Username or password is invalid.", '', 1250);
+            NotificationManager.error("Username or password is invalid.", '', 1500);
             self.setState({
               loading: false
             });

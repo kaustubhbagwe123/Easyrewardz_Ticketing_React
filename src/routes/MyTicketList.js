@@ -690,7 +690,7 @@ class MyTicketList extends Component {
       .then(function(res) {
         debugger;
         let data = res.data.responseData;
-        let CSVData = data;
+        let CVData = res.data.responseData;
         let Status = res.data.message;
 
         if (data !== null) {
@@ -770,14 +770,14 @@ class MyTicketList extends Component {
             loading: false,
             cSelectedRow: {}
           });
-          for (let i = 0; i < CSVData.length; i++) {
-            delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
+          for (let i = 0; i < CVData.length; i++) {
+            delete CVData[i].totalpages;
+            // delete CVData[i].responseTimeRemainingBy;
+            // delete CVData[i].responseOverdueBy;
+            // delete CVData[i].resolutionOverdueBy;
             // delete CSVData[i].ticketCommentCount;
           }
-          self.setState({ CSVDownload: CSVData });
+          self.setState({ CSVDownload: CVData });
         } else {
           self.setState({ SearchTicketData: [], loading: false });
         }
@@ -829,9 +829,7 @@ class MyTicketList extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
-            "Clear Follow up notification successfully.",
-            "",
-            2000
+            "Clear Follow up notification successfully."
           );
           self.handleSearchTicketAllTabCount();
           self.handleSearchTicket(1003);
@@ -976,7 +974,7 @@ class MyTicketList extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.", "", 1000);
+          NotificationManager.success("Scheduled successfully.");
           self.setState({
             scheduleRequired: ""
           });
@@ -1164,9 +1162,7 @@ class MyTicketList extends Component {
           if (messageData === "Success") {
             self.handleAssignModalClose();
             NotificationManager.success(
-              "Tickets assigned successfully.",
-              "",
-              1000
+              "Tickets assigned successfully."
             );
             self.handleSearchTicket();
           }
@@ -1814,9 +1810,7 @@ class MyTicketList extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              "Save Search parameter successfully.",
-              "",
-              1000
+              "Save Search parameter successfully."
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -1867,9 +1861,7 @@ class MyTicketList extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully.",
-            "",
-            1000
+            "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -2078,7 +2070,8 @@ class MyTicketList extends Component {
         //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        let CSVData = data;
+        let CVData = res.data.responseData;
+      
         let count = 0;
         if (data !== null) {
           if (res.data.responseData != null) {
@@ -2161,18 +2154,21 @@ class MyTicketList extends Component {
         }
 
         if (status === "Success") {
+          self.setState({
+            SearchTicketData: data,
+          });
+         
+          
           if (data !== null) {
-            for (let i = 0; i < CSVData.length; i++) {
-              delete CSVData[i].totalpages;
-              delete CSVData[i].responseTimeRemainingBy;
-              delete CSVData[i].responseOverdueBy;
-              delete CSVData[i].resolutionOverdueBy;
+            for (let i = 0; i < CVData.length; i++) {
+              delete CVData[i].totalpages;
+              delete CVData[i].responseTimeRemainingBy;
+              delete CVData[i].responseOverdueBy;
+              delete CVData[i].resolutionOverdueBy;
               // delete CSVData[i].ticketCommentCount;
             }
-            self.setState({ CSVDownload: CSVData });
-            self.setState({
-              SearchTicketData: data
-            });
+            self.setState({ CSVDownload: CVData });
+           
           }
           if (clrSrch === 1) {
             self.setState({
@@ -2894,7 +2890,6 @@ class MyTicketList extends Component {
         onClick: e => {
           //debugger;
           let Id = column.original["ticketID"];
-          // this.props.history.push("myticket");
           let self = this;
           self.setState({
             ticketDetailID: Id
@@ -3510,7 +3505,7 @@ class MyTicketList extends Component {
   }
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-
+    
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -6546,7 +6541,7 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </Fragment>
     );
   }

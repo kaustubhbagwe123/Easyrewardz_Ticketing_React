@@ -126,9 +126,9 @@ class KnowledgeBase extends Component {
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
     this.opneSearchModal = this.opneSearchModal.bind(this);
     this.closeSearchModal = this.closeSearchModal.bind(this);
-    this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(
-      this
-    );
+    // this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(
+    //   this
+    // );
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
@@ -696,9 +696,9 @@ class KnowledgeBase extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.", "", 1000);
+          NotificationManager.error("Record in use.");
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.", "", 1000);
+          NotificationManager.success("Record deleted Successfully.");
           self.handleKBList();
         }
       })
@@ -732,11 +732,7 @@ class KnowledgeBase extends Component {
           let Msg = res.data.message;
 
           if (Msg === "Success") {
-            NotificationManager.success(
-              "Record Rejected successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Record Rejected successfully.");
           }
 
           self.handleKBList();
@@ -776,11 +772,7 @@ class KnowledgeBase extends Component {
             let Msg = res.data.message;
 
             if (Msg === "Success") {
-              NotificationManager.success(
-                "Record Approved successfully.",
-                "",
-                1000
-              );
+              NotificationManager.success("Record Approved successfully.");
             }
             self.closeEditAproveModal1();
             self.handleKBList();
@@ -1027,13 +1019,9 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success(
-              "Record Updated successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Record Updated successfully.");
           } else {
-            NotificationManager.error("Record Not Updated.", "", 1000);
+            NotificationManager.error("Record Not Updated.");
           }
           self.closeEditAproveModal();
           self.handleKBList();
@@ -1085,7 +1073,7 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Saved successfully.", "", 1000);
+            NotificationManager.success("Record Saved successfully.");
           }
           self.setState({
             selectedCategory: "",
@@ -1112,7 +1100,6 @@ class KnowledgeBase extends Component {
 
   HandelOnenCloseDetailsCollapse() {
     debugger;
-
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
 
@@ -1177,7 +1164,7 @@ class KnowledgeBase extends Component {
   render() {
     return (
       <Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -1482,35 +1469,16 @@ class KnowledgeBase extends Component {
                             {row.original.subject}
                           </label>
 
-                          {this.state.collapseUp &&
-                          "i" + row.original.kbid === this.state.collapseId ? (
-                            <img
-                              // src={DownArrowIcon}
-                              src={Up1Img}
-                              alt="down-arrow-icon"
-                              className="down-icon-kb"
-                              onClick={this.handleUpClose.bind(
-                                this,
-                                "i" + row.original.kbid
-                              )}
-                              id={"i" + row.original.kbid}
-                            />
-                          ) : (
-                            <img
-                              src={DownArrowIcon}
-                              // src={Up1Img}
-                              alt="down-arrow-icon"
-                              className="down-icon-kb"
-                              onClick={this.handleUpOpen.bind(
-                                this,
-                                "i" + row.original.kbid
-                              )}
-                              id={"i" + row.original.kbid}
-                            />
-                          )}
+                          <img
+                            src={DownArrowIcon}
+                            alt="down-arrow-icon"
+                            className="down-icon-kb"
+                            onClick={() => this.HandelOnenCloseDetailsCollapse}
+                            id={"i" + row.original.kbid}
+                          />
+
                           <UncontrolledCollapse
-                            toggler={"i" + row.original.kbid}
-                            // isOpen={this.state.detailscollapse}
+                            toggler={"#i" + row.original.kbid}
                           >
                             <Card>
                               <CardBody>
@@ -1758,33 +1726,15 @@ class KnowledgeBase extends Component {
                           <label className="table-details-data">
                             {row.original.subject}
                           </label>
-                          {this.state.collapseUp &&
-                          "i" + row.original.kbid === this.state.collapseId ? (
-                            <img
-                              src={Up1Img}
-                              alt="down-arrow-icon"
-                              className="down-icon-kb"
-                              onClick={this.handleUpClose.bind(
-                                this,
-                                "i" + row.original.kbid
-                              )}
-                              id={"i" + row.original.kbid}
-                            />
-                          ) : (
-                            <img
-                              src={DownArrowIcon}
-                              alt="down-arrow-icon"
-                              className="down-icon-kb"
-                              onClick={this.handleUpOpen.bind(
-                                this,
-                                "i" + row.original.kbid
-                              )}
-                              id={"i" + row.original.kbid}
-                            />
-                          )}
+                          <img
+                            src={DownArrowIcon}
+                            alt="down-arrow-icon"
+                            className="down-icon-kb"
+                            onClick={() => this.HandelOnenCloseDetailsCollapse}
+                            id={"i" + row.original.kbid}
+                          />
                           <UncontrolledCollapse
-                            toggler={"i" + row.original.kbid}
-                            // isOpen={this.state.detailscollapse}
+                            toggler={"#i" + row.original.kbid}
                           >
                             <Card>
                               <CardBody>

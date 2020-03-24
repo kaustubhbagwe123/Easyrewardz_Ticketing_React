@@ -647,9 +647,9 @@ class Dashboard extends Component {
           });
           for (let i = 0; i < CSVData.length; i++) {
             delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
+            // delete CSVData[i].responseTimeRemainingBy;
+            // delete CSVData[i].responseOverdueBy;
+            // delete CSVData[i].resolutionOverdueBy;
             // delete CSVData[i].ticketCommentCount;
           }
           self.setState({ CSVDownload: CSVData });
@@ -2462,7 +2462,7 @@ class Dashboard extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.", "", 1000);
+          NotificationManager.success("Scheduled successfully.");
           self.setState({
             scheduleRequired: "",
             selectedTeamMemberCommaSeperated: ""
@@ -2563,11 +2563,7 @@ class Dashboard extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success(
-              "Tickets assigned successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Tickets assigned successfully.");
             // self.handleSearchTicketEscalation();
             self.ViewSearchData();
           }
@@ -3293,9 +3289,9 @@ class Dashboard extends Component {
 
           for (let i = 0; i < CSVData.length; i++) {
             delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
+            // delete CSVData[i].responseTimeRemainingBy;
+            // delete CSVData[i].responseOverdueBy;
+            // delete CSVData[i].resolutionOverdueBy;
             // delete CSVData[i].ticketCommentCount;
           }
           self.setState({ CSVDownload: CSVData });
@@ -3329,11 +3325,7 @@ class Dashboard extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success(
-              "Save Search parameter successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Save Search parameter successfully.");
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: ""
@@ -3495,9 +3487,7 @@ class Dashboard extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully.",
-            "",
-            1000
+            "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -4007,7 +3997,7 @@ class Dashboard extends Component {
     let disabled = false;
     return (
       <Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

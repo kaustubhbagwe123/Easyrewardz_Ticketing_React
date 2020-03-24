@@ -1222,6 +1222,13 @@ table tr th:last-child {
   height: 30px;
   padding: 4px;
 }
+.oval-7 {
+  background-color: #e63939;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+}
 .headphone1 {
   width: 25px;
   height: 28px;
@@ -1815,14 +1822,20 @@ a:hover {
 input[type="radio"] {
   display: none;
 }
-input:focus {
+/* input:focus {
+  outline: none;
+} */
+/* input[type="text"]:focus {
+  border: 1px solid #1890ff;
+} */
+button:focus {
   outline: none;
 }
-button:focus,
+/* button:focus,
 select:focus,
 textarea:focus {
   outline: none;
-}
+} */
 select {
   appearance: none;
   -webkit-appearance: none;
@@ -3615,10 +3628,10 @@ table tr th:last-child {
   display: inline-block;
 }
 .ck-expand {
-  width: 18px;
+  width: 15px;
   position: absolute;
-  top: 92px;
-  right: 40px;
+  top: 15px;
+  right: 25px;
 }
 .ck-exp-top {
   top: 6px;
@@ -3873,6 +3886,10 @@ table tr th:last-child {
 .alert-proper {
   margin-top: 0 !important;
   margin-right: 35px;
+}
+
+.notification-container {
+  text-align: left;
 }
 
 /* chetan css end */
@@ -6043,6 +6060,7 @@ progress::-webkit-progress-bar {
   text-align: left;
   cursor: pointer;
 }
+
 /* ---------------------------------------------- */
 /* Css Store_CRM Roles Shlok */
 /**  =====================
@@ -6469,7 +6487,7 @@ table thead tr {
   margin-bottom: -10px;
 }
 .label-color-alert {
-  color: #807e7e;
+  color: #807e7e;    padding-top: 5px;
 }
 .butn-2 {
   background-color: #2561a8;
@@ -10608,7 +10626,20 @@ table tr th:last-child {
 }
 
 /* Responsive starts */
-
+@media only screen and (max-width: 1300px) {
+  
+.my-tic-email1 {
+  width: 130px;background-size: 10px;
+}
+.kblink1 {
+  font-size: 12px;
+}
+.tic-createTic {
+  right: -135px;
+  top: 45px;
+  width: 130px;
+}
+}
 @media only screen and (max-width: 1200px) {
   .colladrow label {
     font-size: 12px !important;
@@ -10616,6 +10647,17 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 50%;
     min-width: 50%;
+}
+.my-tic-email1 {
+  width: 130px;background-size: 10px;
+}
+.kblink1 {
+  font-size: 12px;
+}
+.tic-createTic {
+  right: -135px;
+  top: 45px;
+  width: 130px;
 }
 }
 @media only screen and (max-width: 1024px) {
@@ -10715,6 +10757,17 @@ table tr th:last-child {
   .ChatElementReact .ReactTable .rt-tbody .rt-td {
     padding: 10px 5px !important;
   }
+  .my-tic-email1 {
+    width: 130px;background-size: 10px;
+  }
+  .kblink1 {
+    font-size: 12px;
+  }
+  .tic-createTic {
+    right: -135px;
+    top: 45px;
+    width: 130px;
+}
 }
 @media only screen and (max-width: 992px) {
   /* dashboard starts */
@@ -11350,9 +11403,11 @@ table tr th:last-child {
 }
   /* dashboard ends */
 }
-
+#customer-tab {
+  position: relative;
+}
 .alertckuser {
-  top:39% !important
+  top:132px !important
 }
 .alertckuserinter{
   right: 75px;

@@ -113,7 +113,10 @@ class Templates extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Template/GetMailParameter",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        AlertID: 8
+      }
     })
       .then(function(res) {
         debugger;
@@ -182,15 +185,13 @@ class Templates extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
-            "Template update successfully.",
-            "",
-            1000
+            "Template update successfully."
           );
           self.handleGetTemplate();
           self.setState({ editSaveLoading: false, ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
         } else {
           self.setState({ editSaveLoading: false, ConfigTabsModal: false });
-          NotificationManager.error("Template not update.", "", 1000);
+          NotificationManager.error("Template not update.");
         }
       })
       .catch(data => {
@@ -637,13 +638,11 @@ class Templates extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
-            "Template deleted successfully.",
-            "",
-            1000
+            "Template deleted successfully."
           );
           self.handleGetTemplate();
         } else {
-          NotificationManager.error("Template not deleted.", "", 1000);
+          NotificationManager.error("Template not deleted.");
         }
       })
       .catch(data => {
@@ -684,9 +683,7 @@ class Templates extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
-                "Template added successfully.",
-                "",
-                1000
+                "Template added successfully."
               );
               self.handleGetTemplate();
               self.setState({
@@ -701,15 +698,16 @@ class Templates extends Component {
                 // templatesubjectCompulsion: "",
                 // templatebodyCompulsion: ""
               });
+              self.selectNoSLA();
             } else {
-              NotificationManager.error("Template Not Added.", "", 1500);
+              NotificationManager.error("Template Not Added.");
             }
           })
           .catch(data => {
             console.log(data);
           });
       // } else {
-      //   NotificationManager.error("Please Enter Descriptions.", "", 1500);
+      //   NotificationManager.error("Please Enter Descriptions.");
       //   // this.setState({
       //   //   // templatesubjectCompulsion: "Please Enter Subject",
       //   //   // templatebodyCompulsion: "Please Enter Descriptions"
@@ -717,9 +715,7 @@ class Templates extends Component {
       // }
     // } else {
     //   NotificationManager.error(
-    //     "Only 500 characters Allow In Descriptions.",
-    //     "",
-    //     2000
+    //     "Only 500 characters Allow In Descriptions."
     //   );
     // }
   }
@@ -786,6 +782,7 @@ class Templates extends Component {
             self.state.sortStatus.push({ templateStatus: distinct[i] });
           }
         }
+        debugger;
         if (template !== null && template !== undefined) {
           self.setState({ template });
         }
@@ -1637,7 +1634,7 @@ class Templates extends Component {
             </Modal>
           </div>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }

@@ -240,7 +240,7 @@ class UserProfile extends Component {
           let msg = res.data.message;
           let data = res.data.responseData;
           if (msg === "Success") {
-            NotificationManager.success("Profile updated successfully.", '', 1000);
+            NotificationManager.success("Profile updated successfully.");
             transferData.sendProfilePic(data.profilePath);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
@@ -274,7 +274,7 @@ class UserProfile extends Component {
   render() {
     return (
       <Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="container-fluid">
           {this.state.loading && <div className="loader-icon-cntr-ovrlay">
             <div className="loader-icon"></div>

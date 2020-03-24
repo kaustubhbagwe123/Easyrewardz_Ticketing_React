@@ -603,7 +603,7 @@ class CreateSLA extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("SLA added successfully.", "", 2000);
+            NotificationManager.success("SLA added successfully.");
             self.setState({
               // selectedSlaIssueType: 0,
               SlaIsActive: "true",
@@ -616,7 +616,7 @@ class CreateSLA extends Component {
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error("SLA not added.", "", 2000);
+            NotificationManager.error("SLA not added.");
           }
         })
         .catch(data => {
@@ -645,10 +645,10 @@ class CreateSLA extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
-          NotificationManager.success("SLA deleted successfully.", "", 2000);
+          NotificationManager.success("SLA deleted successfully.");
           self.handleGetSLA();
         } else {
-          NotificationManager.error("SLA not deleted.", "", 1000);
+          NotificationManager.error("SLA not deleted.");
         }
       })
       .catch(data => {
@@ -755,16 +755,16 @@ class CreateSLA extends Component {
           var statusCode = res.data.statusCode;
           if (message === "Success" && statusCode === 200) {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Updated Successfully", "", 1000);
+            NotificationManager.success("SLA Updated Successfully");
             self.handleGetSLA();
           } else {
             self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Not Updated", "", 1000);
+            NotificationManager.success("SLA Not Updated");
           }
         })
         .catch(response => {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Not Updated", "", 1000);
+          NotificationManager.success("SLA Not Updated");
           console.log(response);
         });
     // } else {
@@ -1346,7 +1346,7 @@ class CreateSLA extends Component {
                       <label className="createhead-text">
                         %SLA <br /> Breach
                       </label>
-                      <label className="createhead-text">Rerspond</label>
+                      <label className="createhead-text">Respond</label>
                       <label className="createhead-text">Resolve</label>
                     </div>
                     {this.state.finalData !== null &&
@@ -1569,7 +1569,7 @@ class CreateSLA extends Component {
           </div>
         </div>
 
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div
           id="overlaySla"
           className={this.state.slaOvrlayShow ? "show" : ""}
@@ -1626,7 +1626,7 @@ class CreateSLA extends Component {
               <label className="createhead-text">
                 %SLA <br /> Breach
               </label>
-              <label className="createhead-text">Rerspond</label>
+              <label className="createhead-text">Respond</label>
               <label className="createhead-text">Resolve</label>
             </div>
             {this.state.finalEditData !== null &&

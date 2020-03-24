@@ -212,8 +212,8 @@ class MyTicket extends Component {
       placeholderData: [],
       followUpIds: "",
       ticketFreeTextcomment: "",
-      freetextCommentCompulsory: ""
-     
+      freetextCommentCompulsory: "",
+      role_Name: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -244,7 +244,6 @@ class MyTicket extends Component {
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
-  
   }
 
   componentDidUpdate() {
@@ -276,7 +275,6 @@ class MyTicket extends Component {
       this.props.history.push("myTicketlist");
     }
   }
- 
 
   onAddCKEditorChange = evt => {
     ////debugger;
@@ -292,7 +290,7 @@ class MyTicket extends Component {
       replymailBodyData: newContent
     });
   };
-// handle Get Agent List for User dropdown
+  // handle Get Agent List for User dropdown
   handleGetAgentList() {
     let self = this;
     axios({
@@ -323,7 +321,10 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Template/GetMailParameter",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        AlertID: 8
+      }
     })
       .then(function(res) {
         debugger;
@@ -401,6 +402,7 @@ class MyTicket extends Component {
           var productData = data.products;
           var MailDetails = data.ticketingMailerQue;
           var attachementDetails = data.attachment;
+          var rolename_ = data.roleName;
           var selectetedParameters = {
             ticketStatusID: ticketStatus,
             priorityID: ticketPriority,
@@ -435,6 +437,7 @@ class MyTicket extends Component {
             mailFiled: MailDetails,
             fileDummy: attachementDetails,
             oldAgentId: AgentId,
+            role_Name: rolename_,
             loading: false
           });
 
@@ -512,15 +515,11 @@ class MyTicket extends Component {
         if (status === true) {
           if (ticStaId === 103) {
             NotificationManager.success(
-              "The ticket has been resolved.",
-              "",
-              2000
+              "The ticket has been resolved."
             );
           } else if (ticStaId === 104) {
             NotificationManager.success(
-              "The ticket has been closed.",
-              "",
-              2000
+              "The ticket has been closed."
             );
           }
         }
@@ -541,7 +540,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -675,7 +674,7 @@ class MyTicket extends Component {
       });
   }
   // onchange on User Drop down list
-  setAssignedToValue(check,e) {
+  setAssignedToValue(check, e) {
     debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
@@ -797,10 +796,10 @@ class MyTicket extends Component {
         ////debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Ticket updated successfully.", "", 2000);
+          NotificationManager.success("Ticket updated successfully.");
           self.props.history.push("myticket");
         } else {
-          NotificationManager.error("Ticket not update", "", 2000);
+          NotificationManager.error("Ticket not update");
         }
       })
       .catch(data => {
@@ -1120,9 +1119,7 @@ class MyTicket extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           NotificationManager.success(
-            "Tickets assigned successfully.",
-            "",
-            1500
+            "Tickets assigned successfully."
           );
           self.HandlelabelModalClose();
           // self.handleReAssignCommentOpen();
@@ -1347,16 +1344,14 @@ class MyTicket extends Component {
             var id = self.state.ticket_Id;
             self.handleGetNotesTabDetails(id);
             NotificationManager.success(
-              "Comment added successfully.",
-              "",
-              2000
+              "Comment added successfully."
             );
             self.setState({
               NoteAddComment: "",
               notesCommentCompulsion: ""
             });
           } else {
-            NotificationManager.error("Comment not added.", "", 2000);
+            NotificationManager.error("Comment not added.");
           }
         })
         .catch(data => {
@@ -1478,11 +1473,11 @@ class MyTicket extends Component {
         let status = res.data.message;
         // let details = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Store attached successfully.", "", 2000);
+          NotificationManager.success("Store attached successfully.");
           self.HandleStoreModalClose();
           self.handleGetTicketDetails(self.state.ticket_Id);
         } else {
-          NotificationManager.error("Store not attached", "", 2000);
+          NotificationManager.error("Store not attached");
         }
       })
       .catch(data => {
@@ -1543,19 +1538,17 @@ class MyTicket extends Component {
           // let details = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success(
-              "Product attached successfully.",
-              "",
-              2000
+              "Product attached successfully."
             );
           } else {
-            NotificationManager.error("Product not attached", "", 2000);
+            NotificationManager.error("Product not attached");
           }
         })
         .catch(data => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please select atleast one order.", "", 2000);
+      NotificationManager.error("Please select atleast one order.");
     }
   }
   handleGetNotesTabDetails(ticket_Id) {
@@ -1664,7 +1657,7 @@ class MyTicket extends Component {
         ////debugger;
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
-          NotificationManager.error("No Record Found.", "", 2000);
+          NotificationManager.error("No Record Found.");
         }
         self.setState({ KbPopupData: KbPopupData });
       })
@@ -1845,7 +1838,7 @@ class MyTicket extends Component {
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
-              NotificationManager.success("Mail send successfully.", "", 1500);
+              NotificationManager.success("Mail send successfully.");
               self.setState({
                 mailFiled: {},
                 ReplyFileData: [],
@@ -1853,14 +1846,14 @@ class MyTicket extends Component {
                 replymailBodyData: ""
               });
             } else {
-              NotificationManager.error(status, "", 1500);
+              NotificationManager.error(status);
             }
           })
           .catch(data => {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Please Enter Body Section.", "", 2000);
+        NotificationManager.error("Please Enter Body Section.");
       }
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
@@ -1914,9 +1907,7 @@ class MyTicket extends Component {
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
                 NotificationManager.success(
-                  "Mail send successfully.",
-                  "",
-                  2000
+                  "Mail send successfully."
                 );
                 self.setState({
                   mailFiled: {},
@@ -1924,20 +1915,18 @@ class MyTicket extends Component {
                   mailBodyData: ""
                 });
               } else {
-                NotificationManager.error(status, "", 2000);
+                NotificationManager.error(status);
               }
             })
             .catch(data => {
               console.log(data);
             });
         } else {
-          NotificationManager.error("Please Enter Body Section.", "", 2000);
+          NotificationManager.error("Please Enter Body Section.");
         }
       } else {
         NotificationManager.error(
-          "Only 2000 Charater Allow In Body Section.",
-          "",
-          2000
+          "Only 2000 Charater Allow In Body Section."
         );
       }
     } else if (isSend === 3) {
@@ -1965,9 +1954,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
-                "Comment Added successfully.",
-                "",
-                2000
+                "Comment Added successfully."
               );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -1977,7 +1964,7 @@ class MyTicket extends Component {
                 tckcmtMSGCompulsory: ""
               });
             } else {
-              NotificationManager.error(status, "", 2000);
+              NotificationManager.error(status);
               self.setState({
                 ticketcommentMSG: ""
               });
@@ -2018,9 +2005,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               // NotificationManager.success(
-              //   "Comment Added successfully.",
-              //   "",
-              //   2000
+              //   "Comment Added successfully."
               // );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2031,7 +2016,7 @@ class MyTicket extends Component {
                 AssignCommentCompulsory: ""
               });
             } else {
-              NotificationManager.error(status, "", 2000);
+              NotificationManager.error(status);
               self.setState({
                 addReassignCmmt: ""
               });
@@ -2068,9 +2053,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
-                "Comment Added successfully.",
-                "",
-                2000
+                "Comment Added successfully."
               );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2080,7 +2063,7 @@ class MyTicket extends Component {
                 freetextCommentCompulsory: ""
               });
             } else {
-              NotificationManager.error(status, "", 2000);
+              NotificationManager.error(status);
             }
           })
           .catch(data => {
@@ -2110,7 +2093,7 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
-    debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2529,7 +2512,7 @@ class MyTicket extends Component {
             addReassignCmmt: ""
           });
         } else {
-          NotificationManager.error(status, "", 2000);
+          NotificationManager.error(status);
           self.setState({
             addReassignCmmt: ""
           });
@@ -2647,9 +2630,6 @@ class MyTicket extends Component {
 
     return (
       <Fragment>
-       
-         
-      
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -3305,7 +3285,6 @@ class MyTicket extends Component {
                         </Progress>
                       </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
-                        {/* 2 day */}
                         {ticketDetailsData.durationRemaining}
                       </p>
                     </div>
@@ -3334,196 +3313,202 @@ class MyTicket extends Component {
                             </select>
                           </div>
                         </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
-                            <label className="label-4">Priority</label>
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={this.state.selectetedParameters.priorityID}
-                              onChange={this.handleDropDownChange}
-                              name="priorityID"
-                            >
-                              <option>Priority</option>
-                              {this.state.TicketPriorityData !== null &&
-                                this.state.TicketPriorityData.map((item, i) => (
-                                  <option key={i} value={item.priorityID}>
-                                    {item.priortyName}
-                                  </option>
-                                ))}
-                            </select>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                            <div className="form-group">
+                              <label className="label-4">Priority</label>
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={
+                                  this.state.selectetedParameters.priorityID
+                                }
+                                onChange={this.handleDropDownChange}
+                                name="priorityID"
+                              >
+                                <option>Priority</option>
+                                {this.state.TicketPriorityData !== null &&
+                                  this.state.TicketPriorityData.map(
+                                    (item, i) => (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    )
+                                  )}
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
-                            <label className="label-4">Brand</label>
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={this.state.selectetedParameters.brandID}
-                              onChange={this.handleDropDownChange}
-                              name="brandID"
-                            >
-                              <option className="select-category-placeholder">
-                                Select Brand
-                              </option>
-                              {this.state.BrandData !== null &&
-                                this.state.BrandData.map((item, i) => (
-                                  <option
-                                    key={i}
-                                    value={item.brandID}
-                                    className="select-category-placeholder"
-                                  >
-                                    {item.brandName}
-                                  </option>
-                                ))}
-                            </select>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                            <div className="form-group">
+                              <label className="label-4">Brand</label>
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={this.state.selectetedParameters.brandID}
+                                onChange={this.handleDropDownChange}
+                                name="brandID"
+                              >
+                                <option className="select-category-placeholder">
+                                  Select Brand
+                                </option>
+                                {this.state.BrandData !== null &&
+                                  this.state.BrandData.map((item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.brandID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.brandName}
+                                    </option>
+                                  ))}
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                          <div className="form-group">
-                            <label className="label-4">Category</label>
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={this.state.selectetedParameters.categoryID}
-                              onChange={this.handleDropDownChange}
-                              name="categoryID"
-                            >
-                              <option className="select-category-placeholder">
-                                Select Category
-                              </option>
-                              {this.state.CategoryData !== null &&
-                                this.state.CategoryData.map((item, i) => (
-                                  <option
-                                    key={i}
-                                    value={item.categoryID}
-                                    className="select-category-placeholder"
-                                  >
-                                    {item.categoryName}
-                                  </option>
-                                ))}
-                            </select>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <div className="form-group">
+                              <label className="label-4">Category</label>
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={
+                                  this.state.selectetedParameters.categoryID
+                                }
+                                onChange={this.handleDropDownChange}
+                                name="categoryID"
+                              >
+                                <option className="select-category-placeholder">
+                                  Select Category
+                                </option>
+                                {this.state.CategoryData !== null &&
+                                  this.state.CategoryData.map((item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.categoryID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.categoryName}
+                                    </option>
+                                  ))}
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
-                            <label className="label-4">Sub Category</label>
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={
-                                this.state.selectetedParameters.subCategoryID
-                              }
-                              onChange={this.handleDropDownChange}
-                              name="subCategoryID"
-                            >
-                              <option className="select-category-placeholder">
-                                Select Sub Category
-                              </option>
-                              {this.state.SubCategoryData !== null &&
-                                this.state.SubCategoryData.map((item, i) => (
-                                  <option
-                                    key={i}
-                                    value={item.subCategoryID}
-                                    className="select-category-placeholder"
-                                  >
-                                    {item.subCategoryName}
-                                  </option>
-                                ))}
-                            </select>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                            <div className="form-group">
+                              <label className="label-4">Sub Category</label>
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={
+                                  this.state.selectetedParameters.subCategoryID
+                                }
+                                onChange={this.handleDropDownChange}
+                                name="subCategoryID"
+                              >
+                                <option className="select-category-placeholder">
+                                  Select Sub Category
+                                </option>
+                                {this.state.SubCategoryData !== null &&
+                                  this.state.SubCategoryData.map((item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.subCategoryID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.subCategoryName}
+                                    </option>
+                                  ))}
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
-                            <label className="label-4">Issue Type</label>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                            <div className="form-group">
+                              <label className="label-4">Issue Type</label>
 
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={
-                                this.state.selectetedParameters.issueTypeID
-                              }
-                              onChange={this.handleDropDownChange}
-                              name="issueTypeID"
-                            >
-                              <option className="select-sub-category-placeholder">
-                                Select Issue Type
-                              </option>
-                              {this.state.IssueTypeData !== null &&
-                                this.state.IssueTypeData.map((item, i) => (
-                                  <option
-                                    key={i}
-                                    value={item.issueTypeID}
-                                    className="select-category-placeholder"
-                                  >
-                                    {item.issueTypeName}
-                                  </option>
-                                ))}
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
-                            <label className="label-4">
-                              Channel Of Purchase
-                            </label>
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={
-                                this.state.selectetedParameters
-                                  .channelOfPurchaseID
-                              }
-                              onChange={this.handleDropDownChange}
-                              name="channelOfPurchaseID"
-                              // value={this.state.selectedChannelOfPurchase}
-                              // onChange={this.setChannelOfPurchaseValue}
-                            >
-                              <option className="select-category-placeholder">
-                                Select Channel Of Purchase
-                              </option>
-                              {this.state.ChannelOfPurchaseData !== null &&
-                                this.state.ChannelOfPurchaseData.map(
-                                  (item, i) => (
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={
+                                  this.state.selectetedParameters.issueTypeID
+                                }
+                                onChange={this.handleDropDownChange}
+                                name="issueTypeID"
+                              >
+                                <option className="select-sub-category-placeholder">
+                                  Select Issue Type
+                                </option>
+                                {this.state.IssueTypeData !== null &&
+                                  this.state.IssueTypeData.map((item, i) => (
                                     <option
                                       key={i}
-                                      value={item.channelOfPurchaseID}
+                                      value={item.issueTypeID}
                                       className="select-category-placeholder"
                                     >
-                                      {item.nameOfChannel}
+                                      {item.issueTypeName}
                                     </option>
-                                  )
-                                )}
-                            </select>
+                                  ))}
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
-                            <label className="label-4">
-                              Ticket Action Type
-                            </label>
-                            <select
-                              className="rectangle-9 select-category-placeholder"
-                              value={
-                                this.state.selectetedParameters
-                                  .ticketActionTypeID
-                              }
-                              onChange={this.handleDropDownChange}
-                              name="ticketActionTypeID"
-                            >
-                              <option className="select-category-placeholder">
-                                Select Ticket Action Type
-                              </option>
-                              {this.state.TicketActionTypeData !== null &&
-                                this.state.TicketActionTypeData.map(
-                                  (item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.ticketActionTypeID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.ticketActionTypeName}
-                                    </option>
-                                  )
-                                )}
-                            </select>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                            <div className="form-group">
+                              <label className="label-4">
+                                Channel Of Purchase
+                              </label>
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={
+                                  this.state.selectetedParameters
+                                    .channelOfPurchaseID
+                                }
+                                onChange={this.handleDropDownChange}
+                                name="channelOfPurchaseID"
+                                // value={this.state.selectedChannelOfPurchase}
+                                // onChange={this.setChannelOfPurchaseValue}
+                              >
+                                <option className="select-category-placeholder">
+                                  Select Channel Of Purchase
+                                </option>
+                                {this.state.ChannelOfPurchaseData !== null &&
+                                  this.state.ChannelOfPurchaseData.map(
+                                    (item, i) => (
+                                      <option
+                                        key={i}
+                                        value={item.channelOfPurchaseID}
+                                        className="select-category-placeholder"
+                                      >
+                                        {item.nameOfChannel}
+                                      </option>
+                                    )
+                                  )}
+                              </select>
+                            </div>
                           </div>
-                        </div>
+                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                            <div className="form-group">
+                              <label className="label-4">
+                                Ticket Action Type
+                              </label>
+                              <select
+                                className="rectangle-9 select-category-placeholder"
+                                value={
+                                  this.state.selectetedParameters
+                                    .ticketActionTypeID
+                                }
+                                onChange={this.handleDropDownChange}
+                                name="ticketActionTypeID"
+                              >
+                                <option className="select-category-placeholder">
+                                  Select Ticket Action Type
+                                </option>
+                                {this.state.TicketActionTypeData !== null &&
+                                  this.state.TicketActionTypeData.map(
+                                    (item, i) => (
+                                      <option
+                                        key={i}
+                                        value={item.ticketActionTypeID}
+                                        className="select-category-placeholder"
+                                      >
+                                        {item.ticketActionTypeName}
+                                      </option>
+                                    )
+                                  )}
+                              </select>
+                            </div>
+                          </div>
                       </div>
                     </div>
                   </div>
@@ -3861,11 +3846,18 @@ class MyTicket extends Component {
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
                                                 selected={
-                                                  // moment(
-                                                  new Date(row.original.storeVisitDate)
-                                                // ).format("MM/DD/YYYY")
-                                              }
+                                                  row.original.storeVisitDate !== null ?
+                                                  new Date(
+                                                    row.original.storeVisitDate
+                                                  ) : new Date()
+                                                }
                                                 placeholderText="MM/DD/YYYY"
+                                                // placeholderText={
+                                                //   row.original
+                                                //     .storeVisitDate === null
+                                                //     ? "MM/DD/YYYY"
+                                                //     : null
+                                                // }
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
@@ -3873,9 +3865,9 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={moment(
+                                                value={row.original.storeVisitDate !== null ? moment(
                                                   row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY")}
+                                                ).format("MM/DD/YYYY") : ''}
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -4984,7 +4976,7 @@ class MyTicket extends Component {
                       <select
                         className="add-select-category"
                         value="0"
-                        onChange={this.setAssignedToValue.bind(this,"rplyCmd")}
+                        onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
                       >
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
@@ -5310,21 +5302,21 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                          <a href="#!" className="copyblue-kbtext">
-                            VIEW POLICY
-                          </a>
-                          <img
-                            src={ViewBlue}
-                            alt="viewpolicy"
-                            className="viewpolicy-kb"
-                          />
+                            <a href="#!" className="copyblue-kbtext">
+                              VIEW POLICY
+                            </a>
+                            <img
+                              src={ViewBlue}
+                              alt="viewpolicy"
+                              className="viewpolicy-kb"
+                            />
                           </div>
                         </div>
                       </div>
                     </div>
                   </Modal>
                 </div>
-               
+
                 <Modal
                   open={this.state.hasAttachmentModal}
                   onClose={this.handleHasAttachmetModalClose.bind(this)}
@@ -5536,6 +5528,14 @@ class MyTicket extends Component {
                                             className="d-flex"
                                             style={{ marginTop: "0" }}
                                           >
+                                            {details.latestMessageDetails
+                                              .isSystemGenerated === true ? (
+                                              <img
+                                                src={BlackUserIcon}
+                                                alt="Avatar"
+                                                className="oval-7"
+                                              />
+                                            ) : null}
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
                                               <img
@@ -6533,7 +6533,7 @@ class MyTicket extends Component {
                 </ul>
               </div>
             </div>
-            <NotificationContainer />
+            {/* <NotificationContainer /> */}
           </div>
         )}
       </Fragment>
