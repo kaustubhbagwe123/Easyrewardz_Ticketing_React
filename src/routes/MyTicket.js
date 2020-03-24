@@ -1882,7 +1882,8 @@ class MyTicket extends Component {
             IsInformToStore: this.state.ReplyInformStore,
             TicketSource: this.state.ticketSourceId, // Send ticket source id
             IsSent: 0,
-            IsCustomerComment: 1,
+            IsCustomerComment: 0,
+            // IsCustomerComment: 1,
             IsResponseToCustomer: 1,
             MailID: 0,
             StoreID: store_Id.substring(",", store_Id.length - 1)
