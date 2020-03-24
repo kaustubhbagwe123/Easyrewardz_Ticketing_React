@@ -3783,9 +3783,9 @@ table tr th:last-child {
   width: 180px;
 }
 .placeholder-dropdown-tktSys {
-  top: 87px;
-  left: 25px;
-  width: 180px;
+  top: 45px;
+  right: -245px;
+  width: 128px;
 }
 .placeholder-dropdown {
   right: 410px;
@@ -3801,8 +3801,9 @@ table tr th:last-child {
   top: 15px;
 }
 .tic-createTic{
-  right: -179px;
+  right: -100px;
   top: 45px;
+  width: 100px;
 }
 .template-user{
   right: 80px;
@@ -6592,7 +6593,7 @@ table thead tr {
 .seacrh-img-addsearch {
   width: 4%;
   display: inline-block;
-  background: rgb(232, 240, 254);
+  background:rgb(236, 242, 244);
   height: 43px;
   padding-top: 11px;
   padding-bottom: 11px;
@@ -9756,7 +9757,7 @@ table tr th:last-child {
   border-left-color: #ccc;
 }
 .diwamargin {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 .ticketsystemeditor .cke_bottom {
   display: none !important;
@@ -11418,3 +11419,28 @@ table tr th:last-child {
 }
 
 /* Responsive ends */
+
+
+#DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-input {
+  width: 40%;
+  height: 99%;
+  text-align: left;
+  float: left;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+}
+#DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-separator {
+  display: inline-block;
+  min-width: 10px;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+  text-align: left;
+  float: left;
+  vertical-align: top;
+  pointer-events: none;
+}
+#DateTimeRangeContainerNoMobileMode .ant-calendar-picker-clear {
+  top: 45%;
+}

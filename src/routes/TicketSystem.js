@@ -1768,7 +1768,7 @@ class TicketSystem extends Component {
                               </label>
                             </li>
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     CC:
@@ -1795,7 +1795,7 @@ class TicketSystem extends Component {
                             </li>
 
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     BCC:
@@ -2105,7 +2105,7 @@ class TicketSystem extends Component {
                               </label>
                             </li>
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     CC:
@@ -2132,7 +2132,7 @@ class TicketSystem extends Component {
                             </li>
 
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     BCC:

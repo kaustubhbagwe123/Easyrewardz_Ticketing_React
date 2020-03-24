@@ -4053,12 +4053,13 @@ class Dashboard extends Component {
             </div>
           </div>
           <div>
-            <div className="d-flex">
-              <span>Date Range : </span>
+            <div className="row">
+            <div class="col-md-6 col-6"><span style={{float:"right"}}>Date Range : </span></div>
+            <div class="col-md-6 col-6 p-0">
               <div className="DashTimeRange">
-                <Row className="show-grid" style={{ textAlign: "center" }}>
+                <div className="show-grid">
                   {/* <Col xs={3} /> */}
-                  <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
+                  <div id="DateTimeRangeContainerNoMobileMode">
                     {/* <DateTimeRangeContainer
                       ranges={ranges}
                       start={this.state.start}
@@ -4090,10 +4091,11 @@ class Dashboard extends Component {
                       ]}
                     /> */}
                     <DatePickerComponenet applyCallback={this.applyCallback} />
-                  </Col>
+                  </div>
                   {/* <Col xs={3} md={4} /> */}
-                </Row>
+                </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -4255,7 +4257,7 @@ class Dashboard extends Component {
                                   aria-selected="true"
                                   onClick={this.handlechangebtntab.bind(this)}
                                 >
-                                  Tickets to bill graph
+                                  Tickets To Bill Graph
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -4268,7 +4270,7 @@ class Dashboard extends Component {
                                   aria-selected="false"
                                   onClick={this.handlechangebtntab.bind(this)}
                                 >
-                                  Tickets generation source tab
+                                  Tickets Generation Source Tab
                                 </a>
                               </li>
                             </ul>
