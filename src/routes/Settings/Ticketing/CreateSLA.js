@@ -1741,9 +1741,9 @@ class CreateSLA extends Component {
                 </select>
               </div>
             </div>
-            <div class="text-center">
+            <div className="text-center">
               <a
-                class="pop-over-cancle"
+                className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
                 CANCEL

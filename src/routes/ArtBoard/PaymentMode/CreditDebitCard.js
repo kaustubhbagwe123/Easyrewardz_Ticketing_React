@@ -8,7 +8,7 @@ class CreditDebitCard extends Component {
   render() {
     const { change } = this.props;
     return (
-    <div class="custom-artboard">
+    <div className="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Enter Card Details</label>
           <div className="">

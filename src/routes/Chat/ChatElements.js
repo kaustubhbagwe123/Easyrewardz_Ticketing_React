@@ -478,7 +478,7 @@ class ChatElements extends Component {
                     </div>
                     <div className="pop-over-div" style={{ width: "170px" }}>
                       <label className="edit-label-1">Element Icon</label>
-                      <div class="custom-file txt-edit-popover">
+                      <div className="custom-file txt-edit-popover">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">Element_Icon.png</label>
                       </div>
@@ -598,7 +598,7 @@ class ChatElements extends Component {
                     </div>
                     <div className="" style={{ marginBottom: "15px" }}>
                       <label className="reports-to">Element Icon</label>
-                      <div class="custom-file">
+                      <div className="custom-file">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">
                           Element_Icon.png

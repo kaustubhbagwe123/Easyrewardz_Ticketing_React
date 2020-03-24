@@ -263,24 +263,27 @@ class AddSearchMyTicket extends Component {
                       <span className="span-color">*</span>
                     </label>
                   </label>
-
-                  <input
-                    type="text"
-                    className="search-customerAddSrch"
-                    placeholder="Search Customer"
-                    name="SrchEmailPhone"
-                    value={this.state.SrchEmailPhone}
-                    onChange={this.addCustomerData}
-                    maxLength="100"
-                    autoComplete="off"
-                  />
-                  <div className="seacrh-img-addsearch">
+                  <div className="input-group" style={{background:"none"}}>
+                    <input
+                      type="text"
+                      className="search-customerAddSrch"
+                      placeholder="Search Customer"
+                      name="SrchEmailPhone"
+                      value={this.state.SrchEmailPhone}
+                      onChange={this.addCustomerData}
+                      maxLength="100"
+                      autoComplete="off"
+                    />
+                    <span className="input-group-addon seacrh-img-addsearch">
                     <img
                       src={SearchBlueImg}
                       alt="SearchBlueImg"
                       className="srch-imge"
                       onClick={this.handleSearchCustomer}
                     />
+                    </span>
+                  </div>
+                  <div>
                   </div>
                 </div>
               </form>

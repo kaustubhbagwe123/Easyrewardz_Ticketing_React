@@ -276,7 +276,7 @@ class ChatThemes extends Component {
                     </div>
                     <div className="pop-over-div" style={{ width: "170px" }}>
                       <label className="edit-label-1">Theme Icon</label>
-                      <div class="custom-file txt-edit-popover">
+                      <div className="custom-file txt-edit-popover">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">Theme.png</label>
                       </div>
@@ -395,7 +395,7 @@ class ChatThemes extends Component {
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Theme Style <span className="chat-file-upl">(CSS File Only)</span></label>
-                      <div class="custom-file">
+                      <div className="custom-file">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">
                           bata_branding.css

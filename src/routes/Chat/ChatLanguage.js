@@ -445,7 +445,7 @@ class ChatLanguage extends Component {
                     </div>
                     <div className="pop-over-div" style={{ width: "170px" }}>
                       <label className="edit-label-1">Language Icon</label>
-                      <div class="custom-file txt-edit-popover">
+                      <div className="custom-file txt-edit-popover">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">Language.png</label>
                       </div>

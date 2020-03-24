@@ -4,7 +4,7 @@ import congratulationimg from "../../assets/Images/congratulation-final.jpg";
 class Congratulation extends Component {
   render() {
     return (
-      <div class="custom-artboard">
+      <div className="custom-artboard">
         <div className="congratulation-box">
           <img
             src={congratulationimg}

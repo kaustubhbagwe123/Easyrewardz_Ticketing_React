@@ -4333,8 +4333,8 @@ class Dashboard extends Component {
           </div>
           <div>
             <div className="row">
-            <div class="col-md-6 col-6"><span style={{float:"right"}}>Date Range : </span></div>
-            <div class="col-md-6 col-6 p-0">
+            <div className="col-md-6 col-6"><span style={{float:"right"}}>Date Range : </span></div>
+            <div className="col-md-6 col-6 p-0">
               <div className="DashTimeRange">
                 <div className="show-grid">
                   {/* <Col xs={3} /> */}
