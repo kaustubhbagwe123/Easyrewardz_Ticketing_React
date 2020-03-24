@@ -797,7 +797,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Ticket updated successfully.");
-          self.props.history.push("myticket");
+          self.props.history.push("myTicketlist");
         } else {
           NotificationManager.error("Ticket not update");
         }
@@ -1904,6 +1904,8 @@ class MyTicket extends Component {
               if (status === "Success") {
                 self.handleGetMessageDetails(self.state.ticket_Id);
                 self.handleGetCountOfTabs(self.state.ticket_Id);
+                self.handleGetTicketDetails(self.state.ticket_Id);
+                self.handleProgressBarDetails(self.state.ticket_Id);
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
                 NotificationManager.success(
