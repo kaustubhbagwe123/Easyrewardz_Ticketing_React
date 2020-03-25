@@ -26,6 +26,7 @@ import {
 import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
+import matchSorter from "match-sorter";
 
 class Templates extends Component {
   constructor(props) {
@@ -77,7 +78,14 @@ class Templates extends Component {
       SearchText: "",
       indiSla: "",
       AssignToData: [],
-      placeholderData: []
+      placeholderData: [],
+      temptemplate: [],
+      sFilterCheckbox: "",
+      filterTxtValue: "",
+      sortFilterIssueType: [],
+      sortFilterName: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: []
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -97,7 +105,6 @@ class Templates extends Component {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
     this.handlePlaceholderList();
-    
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
     debugger;
@@ -184,18 +191,26 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(
-            "Template update successfully."
-          );
+          NotificationManager.success("Template update successfully.");
           self.handleGetTemplate();
-          self.setState({ editSaveLoading: false, ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
+          self.setState({
+            editSaveLoading: false,
+            ConfigTabsModal: false,
+            editorContent: "",
+            TemplateSubject: ""
+          });
         } else {
           self.setState({ editSaveLoading: false, ConfigTabsModal: false });
           NotificationManager.error("Template not update.");
         }
       })
       .catch(data => {
-        self.setState({ editSaveLoading: false, ConfigTabsModal: false ,TemplateSubject:"",editorContent:""});
+        self.setState({
+          editSaveLoading: false,
+          ConfigTabsModal: false,
+          TemplateSubject: "",
+          editorContent: ""
+        });
         console.log(data);
       });
   }
@@ -258,7 +273,21 @@ class Templates extends Component {
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.temptemplate.length > 0) {
+      this.setState({
+        StatusModel: false,
+        template: this.state.temptemplate,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        template: this.state.sortAllData,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    }
   }
   setAssignedToValue(e) {
     debugger;
@@ -271,12 +300,26 @@ class Templates extends Component {
     ckData += "@" + userName;
     this.setState({ editorContent: ckData });
   }
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
+      sFilterCheckbox,
       issueColor: "",
       nameColor: "",
       createdColor: "",
@@ -285,41 +328,91 @@ class Templates extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "issueTypeName") {
-      this.state.template = this.state.sortAllData;
-      itemsArray = this.state.template.filter(a => a.issueTypeName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.issueTypeName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         issueColor: "sort-column"
       });
     } else if (column === "templateName") {
-      this.state.template = this.state.sortAllData;
-      itemsArray = this.state.template.filter(a => a.templateName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.templateName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         nameColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      this.state.template = this.state.sortAllData;
-      itemsArray = this.state.template.filter(a => a.createdBy === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         createdColor: "sort-column"
       });
     } else if (column === "templateStatus") {
-      this.state.template = this.state.sortAllData;
-      itemsArray = this.state.template.filter(a => a.templateStatus === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.templateStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         statusColor: "sort-column"
       });
     }
 
     this.setState({
-      template: itemsArray
+      temptemplate: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   setTemplateEditData(editdata) {
     debugger;
     var templateEdit = {};
-    templateEdit=editdata;
+    templateEdit = editdata;
     templateEdit.template_ID = editdata.templateID;
     templateEdit.TemplateName = editdata.templateName;
     templateEdit.issue_Type = editdata.issueType;
@@ -637,9 +730,7 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(
-            "Template deleted successfully."
-          );
+          NotificationManager.success("Template deleted successfully.");
           self.handleGetTemplate();
         } else {
           NotificationManager.error("Template not deleted.");
@@ -656,63 +747,61 @@ class Templates extends Component {
     //   this.state.editorContent.length > 0 &&
     //   this.state.editorContent.length <= 499
     // ) {
-      // if (this.state.editorContent.length > 0) {
-        let self = this;
-        this.setState({ ConfigTabsModal: false });
-        var TemplateIsActive;
-        if (this.state.TemplateIsActive === "true") {
-          TemplateIsActive = true;
-        } else if (this.state.TemplateIsActive === "false") {
-          TemplateIsActive = false;
-        }
+    // if (this.state.editorContent.length > 0) {
+    let self = this;
+    this.setState({ ConfigTabsModal: false });
+    var TemplateIsActive;
+    if (this.state.TemplateIsActive === "true") {
+      TemplateIsActive = true;
+    } else if (this.state.TemplateIsActive === "false") {
+      TemplateIsActive = false;
+    }
 
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Template/CreateTemplate",
-          headers: authHeader(),
-          params: {
-            TemplateName: this.state.TemplateName,
-            TemplateSubject: this.state.TemplateSubject,
-            TemplateBody: this.state.editorContent,
-            issueTypes: this.state.indiSla,
-            isTemplateActive: TemplateIsActive
-          }
-        })
-          .then(function(res) {
-            debugger;
-            let status = res.data.message;
-            if (status === "Success") {
-              NotificationManager.success(
-                "Template added successfully."
-              );
-              self.handleGetTemplate();
-              self.setState({
-                TemplateSubject: "",
-                editorContent: "",
-                TemplateName: "",
-                indiSla: "",
-                SearchText: "",
-                templatenamecopulsion:"",
-                issurtupeCompulsory:""
-                // selectedSlaIssueType: [],
-                // templatesubjectCompulsion: "",
-                // templatebodyCompulsion: ""
-              });
-              self.selectNoSLA();
-            } else {
-              NotificationManager.error("Template Not Added.");
-            }
-          })
-          .catch(data => {
-            console.log(data);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/CreateTemplate",
+      headers: authHeader(),
+      params: {
+        TemplateName: this.state.TemplateName,
+        TemplateSubject: this.state.TemplateSubject,
+        TemplateBody: this.state.editorContent,
+        issueTypes: this.state.indiSla,
+        isTemplateActive: TemplateIsActive
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Template added successfully.");
+          self.handleGetTemplate();
+          self.setState({
+            TemplateSubject: "",
+            editorContent: "",
+            TemplateName: "",
+            indiSla: "",
+            SearchText: "",
+            templatenamecopulsion: "",
+            issurtupeCompulsory: ""
+            // selectedSlaIssueType: [],
+            // templatesubjectCompulsion: "",
+            // templatebodyCompulsion: ""
           });
-      // } else {
-      //   NotificationManager.error("Please Enter Descriptions.");
-      //   // this.setState({
-      //   //   // templatesubjectCompulsion: "Please Enter Subject",
-      //   //   // templatebodyCompulsion: "Please Enter Descriptions"
-      //   // });
-      // }
+          self.selectNoSLA();
+        } else {
+          NotificationManager.error("Template Not Added.");
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    // } else {
+    //   NotificationManager.error("Please Enter Descriptions.");
+    //   // this.setState({
+    //   //   // templatesubjectCompulsion: "Please Enter Subject",
+    //   //   // templatebodyCompulsion: "Please Enter Descriptions"
+    //   // });
+    // }
     // } else {
     //   NotificationManager.error(
     //     "Only 500 characters Allow In Descriptions."
@@ -744,6 +833,7 @@ class Templates extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
+            self.state.sortFilterIssueType.push({ issueTypeName: distinct[i] });
           }
 
           var unique = [];
@@ -756,6 +846,7 @@ class Templates extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortName.push({ templateName: distinct[i] });
+            self.state.sortFilterName.push({ templateName: distinct[i] });
           }
 
           var unique = [];
@@ -768,6 +859,7 @@ class Templates extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
           }
 
           var unique = [];
@@ -780,6 +872,7 @@ class Templates extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ templateStatus: distinct[i] });
+            self.state.sortFilterStatus.push({ templateStatus: distinct[i] });
           }
         }
         debugger;
@@ -810,7 +903,11 @@ class Templates extends Component {
   }
   handleConfigureTabsClose() {
     debugger;
-    this.setState({ ConfigTabsModal: false,editorContent:"",TemplateSubject:"" });
+    this.setState({
+      ConfigTabsModal: false,
+      editorContent: "",
+      TemplateSubject: ""
+    });
   }
 
   toggleEditModal() {
@@ -825,6 +922,66 @@ class Templates extends Component {
   handleEditSave = e => {
     this.setState({ ConfigTabsModal: true, editmodel: false });
   };
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    if (this.state.sortColumn === "issueTypeName") {
+      var sortFilterIssueType = matchSorter(
+        this.state.sortIssueType,
+        e.target.value,
+        {
+          keys: ["issueTypeName"]
+        }
+      );
+      if (sortFilterIssueType.length > 0) {
+        this.setState({ sortFilterIssueType });
+      } else {
+        this.setState({
+          sortFilterIssueType: this.state.sortIssueType
+        });
+      }
+    }
+    if (this.state.sortColumn === "templateName") {
+      var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
+        keys: ["templateName"]
+      });
+      if (sortFilterName.length > 0) {
+        this.setState({ sortFilterName });
+      } else {
+        this.setState({
+          sortFilterName: this.state.sortName
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "templateStatus") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["templateStatus"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -872,6 +1029,12 @@ class Templates extends Component {
               </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
                   <div className="filter-checkbox">
                     <input
@@ -886,8 +1049,8 @@ class Templates extends Component {
                     </label>
                   </div>
                   {this.state.sortColumn === "issueTypeName"
-                    ? this.state.sortIssueType !== null &&
-                      this.state.sortIssueType.map((item, i) => (
+                    ? this.state.sortFilterIssueType !== null &&
+                      this.state.sortFilterIssueType.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -896,7 +1059,8 @@ class Templates extends Component {
                             value={item.issueTypeName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "issueTypeName"
+                              "issueTypeName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.issueTypeName}>
@@ -909,8 +1073,8 @@ class Templates extends Component {
                     : null}
 
                   {this.state.sortColumn === "templateName"
-                    ? this.state.sortName !== null &&
-                      this.state.sortName.map((item, i) => (
+                    ? this.state.sortFilterName !== null &&
+                      this.state.sortFilterName.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -919,7 +1083,8 @@ class Templates extends Component {
                             value={item.templateName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "templateName"
+                              "templateName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.templateName}>
@@ -932,8 +1097,8 @@ class Templates extends Component {
                     : null}
 
                   {this.state.sortColumn === "createdBy"
-                    ? this.state.sortCreatedBy !== null &&
-                      this.state.sortCreatedBy.map((item, i) => (
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -942,7 +1107,8 @@ class Templates extends Component {
                             value={item.createdBy}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "createdBy"
+                              "createdBy",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.createdBy}>
@@ -955,8 +1121,8 @@ class Templates extends Component {
                     : null}
 
                   {this.state.sortColumn === "templateStatus"
-                    ? this.state.sortStatus !== null &&
-                      this.state.sortStatus.map((item, i) => (
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -965,7 +1131,8 @@ class Templates extends Component {
                             value={item.templateStatus}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "templateStatus"
+                              "templateStatus",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.templateStatus}>
@@ -1496,9 +1663,7 @@ class Templates extends Component {
                             <select
                               className="add-select-category"
                               value="0"
-                              onChange={this.setPlaceholderValue.bind(
-                                this
-                              )}
+                              onChange={this.setPlaceholderValue.bind(this)}
                             >
                               <option value="0">Placeholders</option>
                               {this.state.placeholderData !== null &&
