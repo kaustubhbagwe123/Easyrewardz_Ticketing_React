@@ -153,12 +153,7 @@ class KnowledgeBase extends Component {
       tempKBListData: [],
       tempKBListnotApproveData: []
     });
-    //StatusModel: true,
-    // if(data==="issueTypeName"){
-    //   this.setState({
-    //     columnTitle:"IssueType"
-    //   });
-    // }
+     
   }
   StatusCloseModel() {
     debugger;

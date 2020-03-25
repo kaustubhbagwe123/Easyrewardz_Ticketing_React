@@ -10,10 +10,10 @@ import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Twitter from "./../assets/Images/twitter.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-// import CallImg from "./../assets/Images/call.png";
+
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
-// import Demo from "../store/Hashtag.js";
+
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import moment from "moment";
@@ -28,8 +28,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
-// import Schedule from "./../assets/Images/schedule.png";
-// import Assign from "./../assets/Images/assign.png";
+
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -71,7 +70,7 @@ class MyTicketList extends Component {
       ChannelOfPurchaseData: [],
       SlaStatusData: [],
       CategoryData: [],
-      // CategoryDataAll: [],
+
       SubCategoryData: [],
       ClaimSubCategoryData: [],
       SubCategoryAllData: [],
@@ -342,17 +341,13 @@ class MyTicketList extends Component {
   }
 
   componentDidMount() {
-    //debugger;
     if (this.props.location.state && this.props.location.state.isType) {
       this.newNotifications(this.props.location.state.isType);
       this.setState({
         notiType: this.props.location.state.isType
       });
     }
-    // if (this.props.location.state && this.props.location.state.isHeaderOpen) {
-    //   this.openNotifications();
-    // }
-    // this.ViewSearchData();
+
     this.handleSearchTicketAllTabCount();
     if (!this.props.location.state) {
       this.handleSearchTicket();
@@ -370,8 +365,6 @@ class MyTicketList extends Component {
   }
 
   componentDidUpdate() {
-    //debugger;
-    // console.log(this.state.notiType);
     if (this.props.location.state) {
       if (this.state.notiType !== this.props.location.state.isType) {
         this.newNotifications(this.props.location.state.isType);
@@ -390,41 +383,27 @@ class MyTicketList extends Component {
       this.handleSearchTicket(type);
     }, 100);
   }
-  // openNotifications() {
-  //   let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
-  //   for (let i = 0; i < upperTabs.length; i++) {
-  //     upperTabs[i].classList.remove("active");
-  //   }
-  //   document.getElementsByName("Open")[0].classList.add("active");
-  //   this.handleSearchTicket("Open");
-  // }
+  ////handle get module name
   handleGetModulesNames() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModules",
       headers: authHeader()
-    }).then(function(res) {
-      //debugger;
-      // let status = res.data.message;
-      let data = res.data.responseData;
-      // let moduleID = data[0].moduleID;
-      // let selTab = data[0].moduleName;
-      if (data) {
-        let moduleIDMyticket = data[1].moduleID;
-        self.handleMyTicketsearchOption(moduleIDMyticket);
-      }
-
-      // if (status === "Success") {
-      //   self.setState({ modulesNames: data, moduleID });
-      // } else {
-      //   self.setState({ modulesNames: [] });
-      // }
-    });
+    })
+      .then(function(res) {
+        let data = res.data.responseData;
+        if (data) {
+          let moduleIDMyticket = data[1].moduleID;
+          self.handleMyTicketsearchOption(moduleIDMyticket);
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
   }
+  /////handle get module item by id
   handleMyTicketsearchOption(id) {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -435,7 +414,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data1 = res.data.responseData;
         if (status === "Success") {
@@ -451,7 +429,6 @@ class MyTicketList extends Component {
   }
 
   setMyTicketSearch(data1) {
-    //debugger;
     var data = [];
     data = data1;
     if (data.length > 0) {
@@ -521,7 +498,7 @@ class MyTicketList extends Component {
       }
     }
   }
-
+  ////handle get ticket status count
   handleSearchTicketAllTabCount() {
     let self = this;
     axios({
@@ -530,7 +507,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let Status = res.data.message;
         if (Status === "Success") {
@@ -565,7 +541,6 @@ class MyTicketList extends Component {
   }
 
   handleSearchTicket(TabId) {
-    //debugger;
     this.state.sortTicketData = [];
     this.state.sortCategoryData = [];
     this.state.sortPriorityData = [];
@@ -625,7 +600,7 @@ class MyTicketList extends Component {
         headerActiveId: 1003
       });
     }
-    // var data = ticketStatus;
+
     this.setState({
       loading: true,
       resultCount: 0,
@@ -677,7 +652,7 @@ class MyTicketList extends Component {
       selectedDepartment: 0,
       selectedFunction: 0
     });
-    //debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -688,7 +663,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         let CVData = res.data.responseData;
         let Status = res.data.message;
@@ -772,10 +746,6 @@ class MyTicketList extends Component {
           });
           for (let i = 0; i < CVData.length; i++) {
             delete CVData[i].totalpages;
-            // delete CVData[i].responseTimeRemainingBy;
-            // delete CVData[i].responseOverdueBy;
-            // delete CVData[i].resolutionOverdueBy;
-            // delete CSVData[i].ticketCommentCount;
           }
           self.setState({ CSVDownload: CVData });
         } else {
@@ -786,8 +756,9 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
+
+  ////handle clear follow up data
   handleClearFollowUpData() {
-    //debugger;
     let self = this;
     axios({
       method: "get",
@@ -795,7 +766,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -812,8 +782,8 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
+  ////handle search clear follow up data
   handleSearchClearFollowUp() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -824,7 +794,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -840,10 +809,6 @@ class MyTicketList extends Component {
       });
   }
   handleSchedulePopup() {
-    //debugger;
-    // if (this.state.selectedTeamMember.length > 0 && ) {
-
-    // }
     if (
       this.state.selectScheduleDate === 0 ||
       this.state.selectScheduleDate === "100"
@@ -932,10 +897,8 @@ class MyTicketList extends Component {
       }
     }
   }
-
+  ////handle Schedule Popup Success
   handleSchedulePopupSuccess() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -970,7 +933,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
@@ -986,13 +948,11 @@ class MyTicketList extends Component {
   }
 
   handleAssignRemark(e) {
-    //debugger;
     this.setState({
       agentRemark: e.currentTarget.value
     });
   }
   handleDailyDay(e) {
-    //debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
@@ -1033,7 +993,6 @@ class MyTicketList extends Component {
     });
   }
   handleWeeklyDays = async e => {
-    //debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -1134,13 +1093,11 @@ class MyTicketList extends Component {
     });
   };
   handleScheduleTime(e) {
-    //debugger;
     this.setState({
       selectedScheduleTime: e
     });
   }
   handleAssignTickets() {
-    //debugger;
     if (this.state.agentId !== 0) {
       let self = this;
       var ticketIdsComma = this.state.ticketIds;
@@ -1161,9 +1118,7 @@ class MyTicketList extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success(
-              "Tickets assigned successfully."
-            );
+            NotificationManager.success("Tickets assigned successfully.");
             self.handleSearchTicket();
           }
         })
@@ -1178,7 +1133,6 @@ class MyTicketList extends Component {
   }
 
   clearSearch() {
-    //debugger;
     if (this.state.byDateFlag === 1) {
       this.setState(
         {
@@ -1231,7 +1185,6 @@ class MyTicketList extends Component {
         },
         () => {
           this.ViewSearchData(1);
-          // this.handleGetSubCategoryList();
         }
       );
     } else if (this.state.allFlag === 5) {
@@ -1275,15 +1228,12 @@ class MyTicketList extends Component {
         },
         () => {
           this.ViewSearchData(1);
-          // this.handleGetSubCategoryList();
-          // this.handleGetClaimSubCategoryList();
         }
       );
     }
   }
 
   handleAdvSearchFlag(e) {
-    //debugger;
     let currentActive = e.currentTarget.innerText;
     if (currentActive === "By Date") {
       this.setState({
@@ -1333,7 +1283,6 @@ class MyTicketList extends Component {
     }
   }
   handleGetDraftDetails() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1341,7 +1290,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let details = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1355,7 +1303,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetDepartmentList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1363,7 +1310,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1377,8 +1323,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetFunctionList() {
-    //debugger;
-
     let self = this;
     self.setState({ FunctionData: [], selectedFunction: 0 });
 
@@ -1391,7 +1335,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -1406,7 +1349,6 @@ class MyTicketList extends Component {
   };
 
   handleGetDesignationList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1414,7 +1356,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1428,7 +1369,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    //debugger;
     let self = this;
     axios({
       method: "get",
@@ -1436,7 +1376,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let stastus = res.data.message;
         if (stastus === "Success") {
@@ -1457,7 +1396,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let ChannelOfPurchaseData = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
       })
@@ -1466,8 +1404,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetTicketSourceList() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1475,7 +1411,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1493,8 +1428,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetSlaStatusList() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1502,7 +1435,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         self.setState({
           SlaStatusData: data
@@ -1513,8 +1445,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetCategoryList() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1522,7 +1452,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data;
 
         if (data !== null) {
@@ -1536,7 +1465,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetClaimSubCategoryList() {
-    //debugger;
     let self = this;
     self.setState({
       ClaimSubCategoryData: [],
@@ -1809,9 +1737,7 @@ class MyTicketList extends Component {
           //debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success(
-              "Save Search parameter successfully."
-            );
+            NotificationManager.success("Save Search parameter successfully.");
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: ""
@@ -2071,7 +1997,7 @@ class MyTicketList extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         let CVData = res.data.responseData;
-      
+
         let count = 0;
         if (data !== null) {
           if (res.data.responseData != null) {
@@ -2155,10 +2081,9 @@ class MyTicketList extends Component {
 
         if (status === "Success") {
           self.setState({
-            SearchTicketData: data,
+            SearchTicketData: data
           });
-         
-          
+
           if (data !== null) {
             for (let i = 0; i < CVData.length; i++) {
               delete CVData[i].totalpages;
@@ -2168,7 +2093,6 @@ class MyTicketList extends Component {
               // delete CSVData[i].ticketCommentCount;
             }
             self.setState({ CSVDownload: CVData });
-           
           }
           if (clrSrch === 1) {
             self.setState({
@@ -2494,7 +2418,7 @@ class MyTicketList extends Component {
       if (tempColor.length > 0) {
         tempFinalSearchTicketData = tempColor;
       } else {
-        tempFinalSearchTicketData =this.state.tempSearchTicketData;
+        tempFinalSearchTicketData = this.state.tempSearchTicketData;
       }
     } else {
       var tempSearchTicketData = this.state.sortAllData;
@@ -2545,7 +2469,7 @@ class MyTicketList extends Component {
       if (tempColor.length > 0) {
         tempFinalSearchTicketData = tempColor;
       } else {
-        tempFinalSearchTicketData = [];
+        tempFinalSearchTicketData = this.state.sortAllData;
       }
     }
     this.setState({
@@ -2633,10 +2557,9 @@ class MyTicketList extends Component {
     debugger;
 
     var itemsArray = [];
-    
 
     var sFilterCheckbox = this.state.sFilterCheckbox;
-    
+
     var allData = this.state.sortAllData;
     if (isColor === "value" && isColor !== "All") {
       if (sFilterCheckbox.includes(e.currentTarget.value)) {
@@ -2647,7 +2570,7 @@ class MyTicketList extends Component {
       } else {
         sFilterCheckbox += e.currentTarget.value + ",";
       }
-    } 
+    }
 
     var data = "";
     this.setState({
@@ -2750,17 +2673,15 @@ class MyTicketList extends Component {
       this.setState({
         creationColor: "sort-column"
       });
-    } 
+    }
 
     debugger;
- 
 
     this.setState({
       tempSearchTicketData: itemsArray
     });
-    
   };
-//// handle change filtre by check box
+  //// handle change filtre by check box
   setColorSortCheckStatus = e => {
     const { name } = e.target;
     this.setState({ [name]: e.target.checked });
@@ -3505,7 +3426,7 @@ class MyTicketList extends Component {
   }
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-    
+
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
