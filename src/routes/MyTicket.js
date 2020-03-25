@@ -528,6 +528,8 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
+
+  ////Handle Get all messages
   handleGetMessageDetails(ticketId) {
     ////debugger;
     let self = this;
@@ -621,6 +623,8 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
+
+  ////hanlde get order details
   handleGetProductData() {
     ////debugger;
     let self = this;
@@ -1251,12 +1255,7 @@ class MyTicket extends Component {
   HandleComment1CollapseOpen() {
     this.setState(state => ({ Comment1Collapse: !state.Comment1Collapse }));
   }
-  // handleCommentsDrawerOpen() {
-  //   this.setState({ CommentsDrawer: true });
-  // }
-  // handleCommentsDrawerClose() {
-  //   this.setState({ CommentsDrawer: false });
-  // }
+ 
   handleBillImgModalOpen() {
     this.handleGetOrderDetails();
     this.setState({ BillInvoiceModal: true });
@@ -3292,7 +3291,17 @@ class MyTicket extends Component {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6" > */}
+                  <div
+                    className={
+                      this.state.role_Name === "Supervisor"
+                        ? "col-md-6"
+                        : "col-md-6 disabled-link" &&
+                          this.state.role_Name === "Admin"
+                        ? "col-md-6"
+                        : "col-md-6 disabled-link"
+                    }
+                  >
                     <div className="mid-sec mid-secnew">
                       <div className="row mob-pad">
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
@@ -3316,202 +3325,197 @@ class MyTicket extends Component {
                             </select>
                           </div>
                         </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            <div className="form-group">
-                              <label className="label-4">Priority</label>
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={
-                                  this.state.selectetedParameters.priorityID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="priorityID"
-                              >
-                                <option>Priority</option>
-                                {this.state.TicketPriorityData !== null &&
-                                  this.state.TicketPriorityData.map(
-                                    (item, i) => (
-                                      <option key={i} value={item.priorityID}>
-                                        {item.priortyName}
-                                      </option>
-                                    )
-                                  )}
-                              </select>
-                            </div>
+                        
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Priority</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.selectetedParameters.priorityID}
+                              onChange={this.handleDropDownChange}
+                              name="priorityID"
+                            >
+                              <option>Priority</option>
+                              {this.state.TicketPriorityData !== null &&
+                                this.state.TicketPriorityData.map((item, i) => (
+                                  <option key={i} value={item.priorityID}>
+                                    {item.priortyName}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            <div className="form-group">
-                              <label className="label-4">Brand</label>
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={this.state.selectetedParameters.brandID}
-                                onChange={this.handleDropDownChange}
-                                name="brandID"
-                              >
-                                <option className="select-category-placeholder">
-                                  Select Brand
-                                </option>
-                                {this.state.BrandData !== null &&
-                                  this.state.BrandData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.brandID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.brandName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Brand</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.selectetedParameters.brandID}
+                              onChange={this.handleDropDownChange}
+                              name="brandID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Brand
+                              </option>
+                              {this.state.BrandData !== null &&
+                                this.state.BrandData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.brandID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.brandName}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <div className="form-group">
-                              <label className="label-4">Category</label>
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={
-                                  this.state.selectetedParameters.categoryID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="categoryID"
-                              >
-                                <option className="select-category-placeholder">
-                                  Select Category
-                                </option>
-                                {this.state.CategoryData !== null &&
-                                  this.state.CategoryData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.categoryID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.categoryName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div className="form-group">
+                            <label className="label-4">Category</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.selectetedParameters.categoryID}
+                              onChange={this.handleDropDownChange}
+                              name="categoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Category
+                              </option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.categoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            <div className="form-group">
-                              <label className="label-4">Sub Category</label>
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={
-                                  this.state.selectetedParameters.subCategoryID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="subCategoryID"
-                              >
-                                <option className="select-category-placeholder">
-                                  Select Sub Category
-                                </option>
-                                {this.state.SubCategoryData !== null &&
-                                  this.state.SubCategoryData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.subCategoryID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.subCategoryName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Sub Category</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters.subCategoryID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="subCategoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Sub Category
+                              </option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.subCategoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            <div className="form-group">
-                              <label className="label-4">Issue Type</label>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Issue Type</label>
 
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={
-                                  this.state.selectetedParameters.issueTypeID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="issueTypeID"
-                              >
-                                <option className="select-sub-category-placeholder">
-                                  Select Issue Type
-                                </option>
-                                {this.state.IssueTypeData !== null &&
-                                  this.state.IssueTypeData.map((item, i) => (
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters.issueTypeID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="issueTypeID"
+                            >
+                              <option className="select-sub-category-placeholder">
+                                Select Issue Type
+                              </option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.issueTypeID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">
+                              Channel Of Purchase
+                            </label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters
+                                  .channelOfPurchaseID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="channelOfPurchaseID"
+                              // value={this.state.selectedChannelOfPurchase}
+                              // onChange={this.setChannelOfPurchaseValue}
+                            >
+                              <option className="select-category-placeholder">
+                                Select Channel Of Purchase
+                              </option>
+                              {this.state.ChannelOfPurchaseData !== null &&
+                                this.state.ChannelOfPurchaseData.map(
+                                  (item, i) => (
                                     <option
                                       key={i}
-                                      value={item.issueTypeID}
+                                      value={item.channelOfPurchaseID}
                                       className="select-category-placeholder"
                                     >
-                                      {item.issueTypeName}
+                                      {item.nameOfChannel}
                                     </option>
-                                  ))}
-                              </select>
-                            </div>
+                                  )
+                                )}
+                            </select>
                           </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            <div className="form-group">
-                              <label className="label-4">
-                                Channel Of Purchase
-                              </label>
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={
-                                  this.state.selectetedParameters
-                                    .channelOfPurchaseID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="channelOfPurchaseID"
-                                // value={this.state.selectedChannelOfPurchase}
-                                // onChange={this.setChannelOfPurchaseValue}
-                              >
-                                <option className="select-category-placeholder">
-                                  Select Channel Of Purchase
-                                </option>
-                                {this.state.ChannelOfPurchaseData !== null &&
-                                  this.state.ChannelOfPurchaseData.map(
-                                    (item, i) => (
-                                      <option
-                                        key={i}
-                                        value={item.channelOfPurchaseID}
-                                        className="select-category-placeholder"
-                                      >
-                                        {item.nameOfChannel}
-                                      </option>
-                                    )
-                                  )}
-                              </select>
-                            </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">
+                              Ticket Action Type
+                            </label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters
+                                  .ticketActionTypeID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="ticketActionTypeID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Ticket Action Type
+                              </option>
+                              {this.state.TicketActionTypeData !== null &&
+                                this.state.TicketActionTypeData.map(
+                                  (item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.ticketActionTypeID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.ticketActionTypeName}
+                                    </option>
+                                  )
+                                )}
+                            </select>
                           </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            <div className="form-group">
-                              <label className="label-4">
-                                Ticket Action Type
-                              </label>
-                              <select
-                                className="rectangle-9 select-category-placeholder"
-                                value={
-                                  this.state.selectetedParameters
-                                    .ticketActionTypeID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="ticketActionTypeID"
-                              >
-                                <option className="select-category-placeholder">
-                                  Select Ticket Action Type
-                                </option>
-                                {this.state.TicketActionTypeData !== null &&
-                                  this.state.TicketActionTypeData.map(
-                                    (item, i) => (
-                                      <option
-                                        key={i}
-                                        value={item.ticketActionTypeID}
-                                        className="select-category-placeholder"
-                                      >
-                                        {item.ticketActionTypeName}
-                                      </option>
-                                    )
-                                  )}
-                              </select>
-                            </div>
-                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3692,11 +3696,9 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: row => {
-                                          // ////debugger;
                                           return (
                                             <div
                                               className="filter-checkbox"
-                                              // style={{ marginLeft: "15px" }}
                                             >
                                               <input
                                                 type="checkbox"
@@ -3849,18 +3851,17 @@ class MyTicket extends Component {
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
                                                 selected={
-                                                  row.original.storeVisitDate !== null ?
                                                   new Date(
                                                     row.original.storeVisitDate
-                                                  ) : new Date()
+                                                  )
                                                 }
-                                                placeholderText="MM/DD/YYYY"
-                                                // placeholderText={
-                                                //   row.original
-                                                //     .storeVisitDate === null
-                                                //     ? "MM/DD/YYYY"
-                                                //     : null
-                                                // }
+                                                // placeholderText="MM/DD/YYYY"
+                                                placeholderText={
+                                                  row.original
+                                                    .storeVisitDate === null
+                                                    ? "MM/DD/YYYY"
+                                                    : null
+                                                }
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
@@ -3868,9 +3869,9 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={row.original.storeVisitDate !== null ? moment(
+                                                value={moment(
                                                   row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY") : ''}
+                                                ).format("MM/DD/YYYY")}
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -5083,7 +5084,6 @@ class MyTicket extends Component {
                               <label className="">
                                 <div
                                   className="input-group"
-                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     BCC:
@@ -5571,7 +5571,6 @@ class MyTicket extends Component {
                                                     marginLeft: "7px"
                                                   }}
                                                 >
-                                                  {" "}
                                                   Reassign to &nbsp;
                                                   <span className="solved-by-naman-r">
                                                     {
@@ -6412,7 +6411,6 @@ class MyTicket extends Component {
                   <div className="col-md-6">
                     <label className="profilemodal-text">Mobile</label>
                     <label className="profilemodal-textval">
-                      {" "}
                       {ticketDetailsData.customerPhoneNumber}
                     </label>
                   </div>

@@ -10,7 +10,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
-import Demo from "../../store/Hashtag";
+// import Demo from "../../store/Hashtag";
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -28,7 +28,8 @@ class TicketSystemTask extends Component {
       selectedDepartment: "",
       selectedFunction: "",
       selectedAssignTo: "",
-      selectedPriority: ""
+      selectedPriority: "",
+      showTaskData: true,
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -38,6 +39,7 @@ class TicketSystemTask extends Component {
       this
     );
     this.validator = new SimpleReactValidator();
+    this.handleGetTaskGridData = this.handleGetTaskGridData.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,45 @@ class TicketSystemTask extends Component {
     this.handleGetTicketPriorityList();
   }
 
+  componentDidUpdate() {
+    debugger
+    if (this.state.showTaskData === true) {
+    if (this.props.checkTask === true) {
+        if (this.props.ticket_IDS) {
+          this.handleGetTaskGridData(this.props.ticket_IDS);
+        }
+      }
+    }
+  }
+
+  ////handle Get Task Grid Data
+  handleGetTaskGridData(Id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/gettasklist",
+      headers: authHeader(),
+      params: {
+        TicketId: Id
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+         
+          if (status === "Success") {
+            self.setState({ taskData: data, showTaskData: false });
+          } else {
+            self.setState({ taskData: [] });
+          }
+        
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
   checkTaskTitDesc(filed, e) {
     var taskfield = this.state.taskfield;
     taskfield[filed] = e.target.value;
@@ -63,17 +104,19 @@ class TicketSystemTask extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ DepartmentData: data });
-      } else {
-        self.setState({ DepartmentData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ DepartmentData: data });
+        } else {
+          self.setState({ DepartmentData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetFunctionList() {
@@ -87,12 +130,14 @@ class TicketSystemTask extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function(res) {
-      debugger;
-      let FunctionData = res.data.responseData;
-      self.setState({ FunctionData: FunctionData });
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let FunctionData = res.data.responseData;
+        self.setState({ FunctionData: FunctionData });
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetAssignToList() {
@@ -106,17 +151,19 @@ class TicketSystemTask extends Component {
       params: {
         Function_ID: this.state.selectedFunction
       }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ AssignToData: data });
-      } else {
-        self.setState({ AssignToData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ AssignToData: data });
+        } else {
+          self.setState({ AssignToData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
   handleGetTicketPriorityList() {
@@ -126,17 +173,19 @@ class TicketSystemTask extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ TicketPriorityData: data });
-      } else {
-        self.setState({ TicketPriorityData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ TicketPriorityData: data });
+        } else {
+          self.setState({ TicketPriorityData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
       });
   }
 
@@ -189,7 +238,7 @@ class TicketSystemTask extends Component {
         var taskData = [];
         taskData = this.state.taskData;
 
-        this.state.taskfield["ID"] = taskData.length + 1;
+        this.state.taskfield["ticketingTaskID"] = taskData.length + 1;
         //  var taskId= this.state.taskfield["ID"];
         taskData.push(this.state.taskfield);
         {
@@ -199,7 +248,7 @@ class TicketSystemTask extends Component {
           taskData,
           //  taskId : taskData.length + 1,
           taskfield: {
-            ID: 0,
+            ticketingTaskID: 0,
             taskTitle: "",
             taskDescription: "",
             Department: "",
@@ -212,7 +261,6 @@ class TicketSystemTask extends Component {
           selectedAssignTo: "",
           selectedPriority: ""
         });
-
         NotificationManager.success("Task created successfully.");
         this.validator.hideMessages();
       }
@@ -229,7 +277,10 @@ class TicketSystemTask extends Component {
   };
   hide(e, id) {
     debugger;
-    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+    document.getElementById(
+      id
+    ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+      "none";
   }
   render() {
     const { taskData } = this.state;
@@ -447,7 +498,6 @@ class TicketSystemTask extends Component {
                       data-target="#collapseTwo"
                       aria-expanded="false"
                       aria-controls="collapseTwo"
-                      
                     >
                       {this.state.taskData.length} Task Created
                     </label>
@@ -461,11 +511,11 @@ class TicketSystemTask extends Component {
                 >
                   <div className="card-body systemtaskreact">
                     <ReactTable
-                      data={taskData} 
+                      data={taskData}
                       columns={[
                         {
                           Header: <span>ID</span>,
-                          accessor: "ID"
+                          accessor: "ticketingTaskID"
                         },
                         {
                           Header: <span>Task Title</span>,
@@ -473,65 +523,71 @@ class TicketSystemTask extends Component {
                         },
                         {
                           Header: <span>Assign To</span>,
-                          accessor: "AssignTo"
+                          accessor: "assignName"
                         },
                         {
-                          
                           Header: <span>Actions</span>,
                           accessor: "actionReport",
                           Cell: row => {
                             // debugger
-                            var ids=row.original["ID"];
-                            return(
-                            <div>
-                              <Popover
-                                content={
-                                  <div className="d-flex general-popover popover-body">
-                                    <div>
-                                      <p className="font-weight-bold blak-clr">
-                                        Delete file?
-                                      </p>
-                                      <p className="mt-1 fs-12">
-                                        Are you sure you want to delete this
-                                        file?
-                                      </p>
-                                      <div className="del-can">
-                                      <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
-                                        <button
-                                          className="butn"
-                                          type="button"
-                                          onClick={() => {
-                                            this.handleTaskDelete(
-                                              row.original.ID
-                                            );
-                                          }}
-                                        >
-                                          Delete
-                                        </button>
+                            var ids = row.original["ticketingTaskID"];
+                            return (
+                              <div>
+                                <Popover
+                                  content={
+                                    <div className="d-flex general-popover popover-body">
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a
+                                            className="canblue"
+                                            onClick={() =>
+                                              this.hide(this, "samdel" + ids)
+                                            }
+                                          >
+                                            CANCEL
+                                          </a>
+                                          <button
+                                            className="butn"
+                                            type="button"
+                                            onClick={() => {
+                                              this.handleTaskDelete(
+                                                row.original.ticketingTaskID
+                                              );
+                                            }}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                }
-                                placement="bottom"
-                                trigger="click"
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  alt="del-icon"
-                                  className="downloadaction"
-                                />
-                              </Popover>
-                            </div>
-                            )
-                        }
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    alt="del-icon"
+                                    className="downloadaction"
+                                  />
+                                </Popover>
+                              </div>
+                            );
+                          }
                         }
                       ]}
                       // resizable={false}
                       defaultPageSize={5}
-                      showPagination={false} 
+                      showPagination={false}
                       defaultSorted={[
                         {
-                          id: "ID",
+                          id: "ticketingTaskID",
                           desc: true
                         }
                       ]}

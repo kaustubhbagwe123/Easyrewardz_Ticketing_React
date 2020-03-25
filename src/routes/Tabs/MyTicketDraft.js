@@ -12,33 +12,37 @@ class MyTicketDraft extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ticketDetailID: 0
+      ticketDetailID: 0,
+      customerId:0
     };
   }
+  ////handle Row click
+  hanldeRowClick = (rowInfo, column) => {
+    // debugger;
+    if ((rowInfo, column)) {
+      return {
+        onClick: e => {
+          var Id = column.original["ticketId"];
+          var CustId = column.original["customerID"];
+          var self = this;
+          self.setState({
+            ticketDetailID: Id,
+            customerId:CustId
+          });
+          setTimeout(function() {
+            self.props.history.push({
+              pathname: "ticketsystem",
+              state: self.state
+            });
+          }, 1000);
+        }
+      };
+    }
+    return {};
+  };
 
-  // hanldeRowClick = (rowInfo, column) => {
-  //   debugger;
-  //   if ((rowInfo, column)) {
-  //     return {
-  //       onClick: e => {
-  //         let Id = column.original["ticketID"];
-  //         let self = this;
-  //         self.setState({
-  //           ticketDetailID: Id
-  //         });
-  //         setTimeout(function() {
-  //           self.props.history.push({
-  //             pathname: "ticketsystem",
-  //             ticketDetailID: Id
-  //           });
-  //         }, 100);
-  //       },
-  //     };
-  //   }
-  // };
   render() {
     var dataDraft = this.props.draftData;
-
     return (
       <Fragment>
         <div className="container-fluid mt-3">
@@ -120,9 +124,8 @@ class MyTicketDraft extends Component {
                   )
                 }
               ]}
-              // resizable={false}
               defaultPageSize={5}
-              // getTrProps={this.hanldeRowClick}
+              getTrProps={this.hanldeRowClick}
               showPagination={true}
               minRows={2}
             />
