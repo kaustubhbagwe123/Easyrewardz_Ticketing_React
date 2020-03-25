@@ -1877,7 +1877,7 @@ class TicketSystem extends Component {
                           onClick={this.HandleKbLinkModalOpen.bind(this)}
                         />
                         <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
-                          Kb Link
+                          KB
                         </label>
                       </a>
                     )}
@@ -1969,7 +1969,7 @@ class TicketSystem extends Component {
                           onClick={this.HandleKbLinkModalOpen.bind(this)}
                         />
                         <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
-                          Kb Link
+                          KB
                         </label>
                       </a>
                     )}
@@ -2211,7 +2211,8 @@ class TicketSystem extends Component {
                           style={{ paddingLeft: "25px" }}
                         >
                           <span className="add-note">
-                            Instant Escalation to High level
+                            {/* Instant Escalation to High level */}
+                            Auto Escalate
                           </span>
                         </label>
                       </div>

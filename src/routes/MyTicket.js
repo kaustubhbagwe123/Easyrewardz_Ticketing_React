@@ -3004,7 +3004,7 @@ class MyTicket extends Component {
                                 </div>
                               </div>
                               <div className="row">
-                                <div className="col-md-6 namepad">
+                                <div className="col-md-12 namepad">
                                   <label className="fullna">Email ID</label>
                                   <label className="namedi">
                                     {ticketDetailsData.customerEmailId}
@@ -4943,7 +4943,7 @@ class MyTicket extends Component {
                         alt="KnowledgeLogo"
                         className="knoim"
                       />
-                      Kb Link
+                      KB
                     </a>
                     <div
                       className="dropdown collapbtn"
@@ -5474,7 +5474,7 @@ class MyTicket extends Component {
                     id="Message-tab"
                     role="tabpanel"
                     aria-labelledby="Message-tab"
-                    style={{ marginTop: "10px" }}
+                    style={{ margin: "10px 0 30px" }}
                   >
                     <div className="row message-header">
                       <div className="col-12 col-xs-12 col-sm-3">
@@ -6007,7 +6007,7 @@ class MyTicket extends Component {
                                   alt="KnowledgeLogo"
                                   className="knoim"
                                 />
-                                Kb Link
+                                KB
                               </a>
                               <div
                                 className="dropdown collapbtn"
