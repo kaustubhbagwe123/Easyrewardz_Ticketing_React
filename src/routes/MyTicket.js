@@ -3851,17 +3851,18 @@ class MyTicket extends Component {
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
                                                 selected={
+                                                  row.original.storeVisitDate !== null ?
                                                   new Date(
                                                     row.original.storeVisitDate
-                                                  )
+                                                  ) : new Date()
                                                 }
-                                                // placeholderText="MM/DD/YYYY"
-                                                placeholderText={
-                                                  row.original
-                                                    .storeVisitDate === null
-                                                    ? "MM/DD/YYYY"
-                                                    : null
-                                                }
+                                                placeholderText="MM/DD/YYYY"
+                                                // placeholderText={
+                                                //   row.original
+                                                //     .storeVisitDate === null
+                                                //     ? "MM/DD/YYYY"
+                                                //     : null
+                                                // }
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
@@ -3869,9 +3870,9 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={moment(
+                                                value={row.original.storeVisitDate !== null ? moment(
                                                   row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY")}
+                                                ).format("MM/DD/YYYY") : ''}
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
