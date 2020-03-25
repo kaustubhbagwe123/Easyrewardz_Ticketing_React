@@ -399,7 +399,7 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Module/GetModules",
       headers: authHeader()
     }).then(function(res) {
-      //debugger;
+      debugger;
       // let status = res.data.message;
       let data = res.data.responseData;
       // let moduleID = data[0].moduleID;
@@ -2070,7 +2070,7 @@ class MyTicketList extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         let CVData = res.data.responseData;
-      
+
         let count = 0;
         if (data !== null) {
           if (res.data.responseData != null) {
@@ -2154,10 +2154,9 @@ class MyTicketList extends Component {
 
         if (status === "Success") {
           self.setState({
-            SearchTicketData: data,
+            SearchTicketData: data
           });
-         
-          
+
           if (data !== null) {
             for (let i = 0; i < CVData.length; i++) {
               delete CVData[i].totalpages;
@@ -2167,7 +2166,6 @@ class MyTicketList extends Component {
               // delete CSVData[i].ticketCommentCount;
             }
             self.setState({ CSVDownload: CVData });
-           
           }
           if (clrSrch === 1) {
             self.setState({
@@ -2693,6 +2691,7 @@ class MyTicketList extends Component {
     });
   }
   HandleRowClickPage = (rowInfo, column) => {
+    debugger;
     if ((rowInfo, column)) {
       return {
         onClick: e => {
@@ -2707,7 +2706,7 @@ class MyTicketList extends Component {
               pathname: "myticket",
               ticketDetailID: Id
             });
-          }, 100);
+          }, 1000);
         },
         style: {
           background:
@@ -2723,6 +2722,7 @@ class MyTicketList extends Component {
     }
     return {};
   };
+  
   handleScheduleDateChange = e => {
     //debugger;
     let SelectData = e.currentTarget.value;
@@ -3311,9 +3311,10 @@ class MyTicketList extends Component {
     }
     // }
   }
+
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-    
+
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -6332,7 +6333,8 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
               >
-                <MyTicketDraft draftData={DraftDetails} />
+                <MyTicketDraft draftData={DraftDetails} history={this.props.history} />
+                
               </div>
             </div>
           </div>
