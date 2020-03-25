@@ -314,7 +314,7 @@ class MyTicketTask extends Component {
           //debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Task created successfully.", "", 1500);
+            NotificationManager.success("Task created successfully.");
             self.handleAddTaskModalCls();
             self.handleGetTaskTableGrid(ticketId);
             self.setState({
@@ -330,7 +330,7 @@ class MyTicketTask extends Component {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }
           } else {
-            NotificationManager.error("Task not created.", "", 1500);
+            NotificationManager.error("Task not created.");
             // {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }
@@ -371,13 +371,13 @@ class MyTicketTask extends Component {
       //debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("Comment added successfully.", "", 2000);
+        NotificationManager.success("Comment added successfully.");
         self.setState({
           taskAddComment: ""
         });
         self.handleGetTaskCommentsdetails(self.state.ticketTask_Id);
       } else {
-        NotificationManager.error("Comment not added.", "", 2000);
+        NotificationManager.error("Comment not added.");
       }
     }).catch(data => {
       console.log(data);
@@ -778,7 +778,7 @@ class MyTicketTask extends Component {
               </div>
             </div>
           </Drawer>
-          <NotificationContainer />
+          {/* <NotificationContainer /> */}
         </div>
       </div>
     );

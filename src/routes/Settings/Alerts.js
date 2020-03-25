@@ -292,7 +292,15 @@ class Alerts extends Component {
             var msg = res.data.message;
             var status = res.data.status;
             if (msg === "Success" && status == true) {
-              self.setState({ isExitsType: data });
+              if(data!=="Not Exist")
+              {
+                self.setState({ isExitsType: data });
+              }
+              else
+              {
+                self.setState({ isExitsType: "" });
+              }
+              
             } else {
               self.setState({ isExitsType: "" });
             }
@@ -472,7 +480,7 @@ class Alerts extends Component {
           var cAlertTypeId = 0;
           var sAlertTypeId = 0;
           var iAlertTypeId = 0;
-          var sAlertTypeId = 0;
+          var smAlertTypeId = 0;
           var nAlertTypeId = 0;
           alertEdit.alertIsActive = res.data.responseData[0].isAlertActive;
           alertEdit.selectedAlertType = res.data.responseData[0].alertID;
@@ -480,11 +488,12 @@ class Alerts extends Component {
 
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-              cAlertTypeId = data[i].alertTypeID;
+              
               if (data[i].isEmailCustomer) {
                 emailCust = data[i].isEmailCustomer;
                 selectedSubjectCustomer = data[i].subject;
                 selectedCKCustomer = data[i].mailContent;
+                cAlertTypeId = data[i].alertTypeID;
               }
               if (data[i].isEmailInternal) {
                 emailInt = data[i].isEmailInternal;
@@ -501,7 +510,7 @@ class Alerts extends Component {
               if (data[i].isSMSCustomer) {
                 smsCust = data[i].isSMSCustomer;
                 selectedSMSContent = data[i].smsContent;
-                sAlertTypeId = data[i].alertTypeID;
+                smAlertTypeId = data[i].alertTypeID;
               }
               if (data[i].isNotificationInternal) {
                 notiInt = data[i].isNotificationInternal;
@@ -515,7 +524,7 @@ class Alerts extends Component {
             cAlertTypeId,
             sAlertTypeId,
             iAlertTypeId,
-            sAlertTypeId,
+            smAlertTypeId,
             nAlertTypeId,
             selectedSubjectCustomer,
             selectedCKCustomer,
@@ -598,10 +607,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.", "", 1000);
+          NotificationManager.success("Alert deleted successfully.");
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.", "", 1000);
+          NotificationManager.error("Alert not deleted.");
         }
       })
       .catch(data => {
@@ -768,9 +777,7 @@ class Alerts extends Component {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
-              "Alert updated successfully.",
-              "",
-              1000
+              "Alert updated successfully."
             );
             self.handleGetAlert();
             self.setState({
@@ -782,7 +789,7 @@ class Alerts extends Component {
               editSaveLoading: false,
               AddAlertTabsPopup: false
             });
-            NotificationManager.error("Alert not updated.", "", 1000);
+            NotificationManager.error("Alert not updated.");
           }
         })
         .catch(data => {
@@ -793,7 +800,7 @@ class Alerts extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.", "", 1000);
+      NotificationManager.error("Alert not updated.");
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name."
       });
@@ -1044,9 +1051,9 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.", "", 1000);
+          NotificationManager.success("Record Saved successfully.");
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.", "", 1000);
+          NotificationManager.error("Record Already Exists.");
         }
         self.handleAddAlertTabsClose();
       })
@@ -2403,7 +2410,7 @@ class Alerts extends Component {
             </div>
           </div>
         </Modal>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }

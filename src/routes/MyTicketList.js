@@ -10,10 +10,10 @@ import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Twitter from "./../assets/Images/twitter.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-// import CallImg from "./../assets/Images/call.png";
+
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
-// import Demo from "../store/Hashtag.js";
+
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import moment from "moment";
@@ -28,8 +28,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
-// import Schedule from "./../assets/Images/schedule.png";
-// import Assign from "./../assets/Images/assign.png";
+
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -71,7 +70,7 @@ class MyTicketList extends Component {
       ChannelOfPurchaseData: [],
       SlaStatusData: [],
       CategoryData: [],
-      // CategoryDataAll: [],
+
       SubCategoryData: [],
       ClaimSubCategoryData: [],
       SubCategoryAllData: [],
@@ -277,7 +276,14 @@ class MyTicketList extends Component {
       sortFilterCategoryData: [],
       sortFilterPriorityData: [],
       sortFiltercreatedOnData: [],
-      sortFilterAssigneeData: []
+      sortFilterAssigneeData: [],
+      sFilterCheckbox: "",
+      tempSearchTicketData: [],
+      sColorFilterCheckbox: "",
+      isRed: false,
+      isWhite: false,
+      isGreen: false,
+      isYellow: false
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -335,17 +341,13 @@ class MyTicketList extends Component {
   }
 
   componentDidMount() {
-    //debugger;
     if (this.props.location.state && this.props.location.state.isType) {
       this.newNotifications(this.props.location.state.isType);
       this.setState({
         notiType: this.props.location.state.isType
       });
     }
-    // if (this.props.location.state && this.props.location.state.isHeaderOpen) {
-    //   this.openNotifications();
-    // }
-    // this.ViewSearchData();
+
     this.handleSearchTicketAllTabCount();
     if (!this.props.location.state) {
       this.handleSearchTicket();
@@ -363,8 +365,6 @@ class MyTicketList extends Component {
   }
 
   componentDidUpdate() {
-    //debugger;
-    // console.log(this.state.notiType);
     if (this.props.location.state) {
       if (this.state.notiType !== this.props.location.state.isType) {
         this.newNotifications(this.props.location.state.isType);
@@ -383,39 +383,27 @@ class MyTicketList extends Component {
       this.handleSearchTicket(type);
     }, 100);
   }
-  // openNotifications() {
-  //   let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
-  //   for (let i = 0; i < upperTabs.length; i++) {
-  //     upperTabs[i].classList.remove("active");
-  //   }
-  //   document.getElementsByName("Open")[0].classList.add("active");
-  //   this.handleSearchTicket("Open");
-  // }
+  ////handle get module name
   handleGetModulesNames() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModules",
       headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      // let status = res.data.message;
-      let data = res.data.responseData;
-      // let moduleID = data[0].moduleID;
-      // let selTab = data[0].moduleName;
-      let moduleIDMyticket = data[1].moduleID;
-
-      // if (status === "Success") {
-      //   self.setState({ modulesNames: data, moduleID });
-      // } else {
-      //   self.setState({ modulesNames: [] });
-      // }
-      self.handleMyTicketsearchOption(moduleIDMyticket);
-    });
+    })
+      .then(function(res) {
+        let data = res.data.responseData;
+        if (data) {
+          let moduleIDMyticket = data[1].moduleID;
+          self.handleMyTicketsearchOption(moduleIDMyticket);
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
   }
+  /////handle get module item by id
   handleMyTicketsearchOption(id) {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -426,7 +414,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data1 = res.data.responseData;
         if (status === "Success") {
@@ -442,7 +429,6 @@ class MyTicketList extends Component {
   }
 
   setMyTicketSearch(data1) {
-    //debugger;
     var data = [];
     data = data1;
     if (data.length > 0) {
@@ -512,7 +498,7 @@ class MyTicketList extends Component {
       }
     }
   }
-
+  ////handle get ticket status count
   handleSearchTicketAllTabCount() {
     let self = this;
     axios({
@@ -521,7 +507,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let Status = res.data.message;
         if (Status === "Success") {
@@ -556,7 +541,6 @@ class MyTicketList extends Component {
   }
 
   handleSearchTicket(TabId) {
-    //debugger;
     this.state.sortTicketData = [];
     this.state.sortCategoryData = [];
     this.state.sortPriorityData = [];
@@ -616,7 +600,7 @@ class MyTicketList extends Component {
         headerActiveId: 1003
       });
     }
-    // var data = ticketStatus;
+
     this.setState({
       loading: true,
       resultCount: 0,
@@ -668,7 +652,7 @@ class MyTicketList extends Component {
       selectedDepartment: 0,
       selectedFunction: 0
     });
-    //debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -679,7 +663,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         let CVData = res.data.responseData;
         let Status = res.data.message;
@@ -763,10 +746,6 @@ class MyTicketList extends Component {
           });
           for (let i = 0; i < CVData.length; i++) {
             delete CVData[i].totalpages;
-            // delete CVData[i].responseTimeRemainingBy;
-            // delete CVData[i].responseOverdueBy;
-            // delete CVData[i].resolutionOverdueBy;
-            // delete CSVData[i].ticketCommentCount;
           }
           self.setState({ CSVDownload: CVData });
         } else {
@@ -777,8 +756,9 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
+
+  ////handle clear follow up data
   handleClearFollowUpData() {
-    //debugger;
     let self = this;
     axios({
       method: "get",
@@ -786,7 +766,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -803,8 +782,8 @@ class MyTicketList extends Component {
         console.log(data);
       });
   }
+  ////handle search clear follow up data
   handleSearchClearFollowUp() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -815,14 +794,11 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
-            "Clear Follow up notification successfully.",
-            "",
-            2000
+            "Clear Follow up notification successfully."
           );
           self.handleSearchTicketAllTabCount();
           self.handleSearchTicket(1003);
@@ -833,10 +809,6 @@ class MyTicketList extends Component {
       });
   }
   handleSchedulePopup() {
-    //debugger;
-    // if (this.state.selectedTeamMember.length > 0 && ) {
-
-    // }
     if (
       this.state.selectScheduleDate === 0 ||
       this.state.selectScheduleDate === "100"
@@ -925,10 +897,8 @@ class MyTicketList extends Component {
       }
     }
   }
-
+  ////handle Schedule Popup Success
   handleSchedulePopupSuccess() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -963,11 +933,10 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.", "", 1000);
+          NotificationManager.success("Scheduled successfully.");
           self.setState({
             scheduleRequired: ""
           });
@@ -979,13 +948,11 @@ class MyTicketList extends Component {
   }
 
   handleAssignRemark(e) {
-    //debugger;
     this.setState({
       agentRemark: e.currentTarget.value
     });
   }
   handleDailyDay(e) {
-    //debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
@@ -1026,7 +993,6 @@ class MyTicketList extends Component {
     });
   }
   handleWeeklyDays = async e => {
-    //debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -1127,13 +1093,11 @@ class MyTicketList extends Component {
     });
   };
   handleScheduleTime(e) {
-    //debugger;
     this.setState({
       selectedScheduleTime: e
     });
   }
   handleAssignTickets() {
-    //debugger;
     if (this.state.agentId !== 0) {
       let self = this;
       var ticketIdsComma = this.state.ticketIds;
@@ -1154,11 +1118,7 @@ class MyTicketList extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success(
-              "Tickets assigned successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Tickets assigned successfully.");
             self.handleSearchTicket();
           }
         })
@@ -1173,7 +1133,6 @@ class MyTicketList extends Component {
   }
 
   clearSearch() {
-    //debugger;
     if (this.state.byDateFlag === 1) {
       this.setState(
         {
@@ -1226,7 +1185,6 @@ class MyTicketList extends Component {
         },
         () => {
           this.ViewSearchData(1);
-          // this.handleGetSubCategoryList();
         }
       );
     } else if (this.state.allFlag === 5) {
@@ -1270,15 +1228,12 @@ class MyTicketList extends Component {
         },
         () => {
           this.ViewSearchData(1);
-          // this.handleGetSubCategoryList();
-          // this.handleGetClaimSubCategoryList();
         }
       );
     }
   }
 
   handleAdvSearchFlag(e) {
-    //debugger;
     let currentActive = e.currentTarget.innerText;
     if (currentActive === "By Date") {
       this.setState({
@@ -1328,7 +1283,6 @@ class MyTicketList extends Component {
     }
   }
   handleGetDraftDetails() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1336,7 +1290,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let details = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1350,7 +1303,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetDepartmentList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1358,7 +1310,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1372,8 +1323,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetFunctionList() {
-    //debugger;
-
     let self = this;
     self.setState({ FunctionData: [], selectedFunction: 0 });
 
@@ -1386,7 +1335,6 @@ class MyTicketList extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -1401,7 +1349,6 @@ class MyTicketList extends Component {
   };
 
   handleGetDesignationList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1409,7 +1356,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1423,7 +1369,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    //debugger;
     let self = this;
     axios({
       method: "get",
@@ -1431,7 +1376,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let stastus = res.data.message;
         if (stastus === "Success") {
@@ -1452,7 +1396,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let ChannelOfPurchaseData = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
       })
@@ -1461,8 +1404,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetTicketSourceList() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1470,7 +1411,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -1488,8 +1428,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetSlaStatusList() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1497,7 +1435,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         self.setState({
           SlaStatusData: data
@@ -1508,8 +1445,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetCategoryList() {
-    //debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1517,7 +1452,6 @@ class MyTicketList extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
         let data = res.data;
 
         if (data !== null) {
@@ -1531,7 +1465,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetClaimSubCategoryList() {
-    //debugger;
     let self = this;
     self.setState({
       ClaimSubCategoryData: [],
@@ -1804,11 +1737,7 @@ class MyTicketList extends Component {
           //debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success(
-              "Save Search parameter successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Save Search parameter successfully.");
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: ""
@@ -1858,9 +1787,7 @@ class MyTicketList extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully.",
-            "",
-            1000
+            "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -2440,12 +2367,149 @@ class MyTicketList extends Component {
     });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    debugger;
+    var tempFinalSearchTicketData = [];
+    if (this.state.tempSearchTicketData.length > 0) {
+      var tempSearchTicketData = this.state.tempSearchTicketData;
+      var tempColor = [];
+      if (this.state.isRed) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isWhite) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a =>
+            a.isEscalation === 0 &&
+            a.isSLANearBreach === false &&
+            a.isReassigned === false
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isYellow) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isGreen) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (tempColor.length > 0) {
+        tempFinalSearchTicketData = tempColor;
+      } else {
+        tempFinalSearchTicketData = this.state.tempSearchTicketData;
+      }
+    } else {
+      var tempSearchTicketData = this.state.sortAllData;
+      var tempColor = [];
+      if (this.state.isRed) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isWhite) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a =>
+            a.isEscalation === 0 &&
+            a.isSLANearBreach === false &&
+            a.isReassigned === false
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isYellow) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (this.state.isGreen) {
+        var tempFilterData = tempSearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+        if (tempFilterData.length > 0) {
+          for (let i = 0; i < tempFilterData.length; i++) {
+            tempColor.push(tempFilterData[i]);
+          }
+        }
+      }
+      if (tempColor.length > 0) {
+        tempFinalSearchTicketData = tempColor;
+      } else {
+        tempFinalSearchTicketData = this.state.sortAllData;
+      }
+    }
+    this.setState({
+      StatusModel: false,
+      filterTxtValue: "",
+      sFilterCheckbox: "",
+      isRed: false,
+      isWhite: false,
+      isYellow: false,
+      isGreen: false,
+      SearchTicketData: tempFinalSearchTicketData
+    });
   }
   toggleSearch() {
-    //debugger;
+    debugger;
     this.handleGetSaveSearchList();
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
+    if (this.state.collapseSearch) {
+      var paramdata = "";
+      if (this.state.headerActiveId === 1001) {
+        paramdata = "Escalation";
+      } else if (this.state.headerActiveId === 101) {
+        paramdata = "New";
+      } else if (this.state.headerActiveId === 102) {
+        paramdata = "Open";
+      } else if (this.state.headerActiveId === 103) {
+        paramdata = "Resolved";
+      } else if (this.state.headerActiveId === 104) {
+        paramdata = "Closed";
+      } else if (this.state.headerActiveId === 105) {
+        paramdata = "ReOpen";
+      } else if (this.state.headerActiveId === 1004) {
+        paramdata = "Reassigned";
+      } else if (this.state.headerActiveId === 1002) {
+        paramdata = "All";
+      } else if (this.state.headerActiveId === 1003) {
+        paramdata = "FollowUp";
+      }
+      this.handleSearchTicket(paramdata);
+    }
   }
   handleByDateCreate(date) {
     //debugger;
@@ -2489,88 +2553,139 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, isColor, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (isColor === "value" && isColor !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
+    var data = "";
     this.setState({
       statusColor: "",
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: ""
+      creationColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "status") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.ticketStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+
       this.setState({
         statusColor: "sort-column"
       });
     } else if (column === "category") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(a => a.category === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.category === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         categoryColor: ""
       });
     } else if (column === "priority") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(a => a.priority === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.priority === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.assignedTo === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.assignedTo === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.createdOn === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdOn === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         creationColor: "sort-column"
       });
-    } else if (column === "colorred") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isEscalation === 1
-      );
-    } else if (column === "colororange") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isSLANearBreach === true
-      );
-    } else if (column === "colorwhite") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a =>
-          a.isEscalation === 0 &&
-          a.isSLANearBreach === false &&
-          a.isReassigned === false
-      );
-    } else if (column === "colorgreen") {
-      this.state.SearchTicketData = this.state.sortAllData;
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.isReassigned === true && a.isEscalation === 0
-      );
     }
-    this.state.SearchTicketData = itemsArray;
 
-    // this.setState({
-    //   SearchTicketData: itemsArray
-    // });
-    // this.StatusCloseModel();
+    debugger;
+
+    this.setState({
+      tempSearchTicketData: itemsArray
+    });
   };
-
+  //// handle change filtre by check box
+  setColorSortCheckStatus = e => {
+    const { name } = e.target;
+    this.setState({ [name]: e.target.checked });
+  };
   sortStatusAtoZ() {
     //debugger;
     var itemsArray = [];
@@ -3373,7 +3488,11 @@ class MyTicketList extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
-                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                      onChange={this.setSortCheckStatus.bind(
+                        this,
+                        "all",
+                        "value"
+                      )}
                     />
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
@@ -3390,7 +3509,8 @@ class MyTicketList extends Component {
                             value={item.ticketStatus}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "status"
+                              "status",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.ticketStatus}>
@@ -3413,7 +3533,8 @@ class MyTicketList extends Component {
                             value={item.category}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "category"
+                              "category",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.category}>
@@ -3436,7 +3557,8 @@ class MyTicketList extends Component {
                             value={item.priority}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "priority"
+                              "priority",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.priority}>
@@ -3459,7 +3581,8 @@ class MyTicketList extends Component {
                             value={item.createdOn}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "createdOn"
+                              "createdOn",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.createdOn}>
@@ -3482,7 +3605,8 @@ class MyTicketList extends Component {
                             value={item.assignedTo}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "assignedTo"
+                              "assignedTo",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.assignedTo}>
@@ -3503,9 +3627,10 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-red"
-                    name="filter-color"
-                    value="isEscalation"
-                    onChange={this.setSortCheckStatus.bind(this, "colorred")}
+                    name="isRed"
+                    // value="isEscalation"
+                    value={this.state.isRed}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-red">
                     <span className="fil-color-red fil-color-bg"></span>
@@ -3516,9 +3641,10 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-orange"
-                    name="filter-color"
-                    value="isSLANearBreach"
-                    onChange={this.setSortCheckStatus.bind(this, "colororange")}
+                    name="isYellow"
+                    // value="isSLANearBreach"
+                    value={this.state.isYellow}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-orange">
                     <span className="fil-color-orange fil-color-bg"></span>
@@ -3528,9 +3654,10 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-white"
-                    name="filter-color"
-                    value="white"
-                    onChange={this.setSortCheckStatus.bind(this, "colorwhite")}
+                    name="isWhite"
+                    // value="white"
+                    value={this.state.isWhite}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-white">
                     <span className="fil-color-white fil-color-bg"></span>
@@ -3540,9 +3667,9 @@ class MyTicketList extends Component {
                   <input
                     type="checkbox"
                     id="fil-green"
-                    name="filter-color"
-                    value="isReassigned"
-                    onChange={this.setSortCheckStatus.bind(this, "colorgreen")}
+                    name="isGreen"
+                    value={this.state.isGreen}
+                    onChange={this.setColorSortCheckStatus.bind(this)}
                   />
                   <label htmlFor="fil-green">
                     <span className="fil-color-green fil-color-bg"></span>
@@ -6339,7 +6466,7 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </Fragment>
     );
   }

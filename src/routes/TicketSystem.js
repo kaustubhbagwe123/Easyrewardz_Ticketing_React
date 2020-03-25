@@ -236,7 +236,7 @@ class TicketSystem extends Component {
         this.state.copiedNumber &&
         this.state.customerData.customerPhoneNumber
       ) {
-        NotificationManager.success("Copied.", "", 1000);
+        NotificationManager.success("Copied.");
       }
     }, 100);
   }
@@ -460,9 +460,7 @@ class TicketSystem extends Component {
           let Message = res.data.message;
           if (Message === "Success") {
             NotificationManager.success(
-              "Record updated Successfull.",
-              "",
-              2000
+              "Record updated Successfull."
             );
 
             self.componentDidMount();
@@ -569,7 +567,7 @@ class TicketSystem extends Component {
           ////debugger;
           let KbPopupData = res.data.responseData;
           if (KbPopupData.length === 0 || KbPopupData === null) {
-            NotificationManager.error("No Record Found.", "", 2000);
+            NotificationManager.error("No Record Found.");
           }
           self.setState({ KbPopupData: KbPopupData });
         })
@@ -2004,7 +2002,7 @@ class TicketSystem extends Component {
                               </label>
                             </li>
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     CC:
@@ -2031,7 +2029,7 @@ class TicketSystem extends Component {
                             </li>
 
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     BCC:
@@ -2350,7 +2348,7 @@ class TicketSystem extends Component {
                               </label>
                             </li>
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     CC:
@@ -2377,7 +2375,7 @@ class TicketSystem extends Component {
                             </li>
 
                             <li>
-                              <label className="diwamargin">
+                              <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     BCC:
@@ -3086,7 +3084,7 @@ class TicketSystem extends Component {
                     </div>
                   </div>
                 </Modal>
-                <NotificationContainer />
+                {/* <NotificationContainer /> */}
               </div>
             </div>
           )}

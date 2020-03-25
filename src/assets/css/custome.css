@@ -3783,9 +3783,9 @@ table tr th:last-child {
   width: 180px;
 }
 .placeholder-dropdown-tktSys {
-  top: 87px;
-  left: 25px;
-  width: 180px;
+  top: 45px;
+  right: -245px;
+  width: 128px;
 }
 .placeholder-dropdown {
   right: 410px;
@@ -3801,8 +3801,9 @@ table tr th:last-child {
   top: 15px;
 }
 .tic-createTic{
-  right: -179px;
+  right: -100px;
   top: 45px;
+  width: 100px;
 }
 .template-user{
   right: 80px;
@@ -3886,6 +3887,10 @@ table tr th:last-child {
 .alert-proper {
   margin-top: 0 !important;
   margin-right: 35px;
+}
+
+.notification-container {
+  text-align: left;
 }
 
 /* chetan css end */
@@ -4767,7 +4772,8 @@ progress::-webkit-progress-bar {
 #Notification-popup {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-  left: 15%;
+  left: 25%;
+  top: -20px;
 }
 #Status-popup {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
@@ -6571,6 +6577,7 @@ table thead tr {
 .label1-AddSearch {
   font-size: 16px;
   font-weight: 700;
+  margin-bottom: 10px;
 }
 .label2-AddSearch {
   font-size: 16px;
@@ -6581,23 +6588,8 @@ table thead tr {
   border-radius: 4px;
   width: 90%;
   height: 43px;
-  margin-top: 10px;
   padding: 10px;
   border: none;
-}
-.seacrh-img-addsearch {
-  width: 4%;
-  display: inline-block;
-  background: rgb(232, 240, 254);
-  height: 43px;
-  padding-top: 11px;
-  padding-bottom: 11px;
-  border-radius: 4px;
-  margin-left: -5px;
-}
-.srch-imge {
-  margin-top: -5px;
-  cursor: pointer;
 }
 .notFound-addSrch {
   width: 35px;
@@ -9752,7 +9744,7 @@ table tr th:last-child {
   border-left-color: #ccc;
 }
 .diwamargin {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 .ticketsystemeditor .cke_bottom {
   display: none !important;
@@ -11414,3 +11406,41 @@ table tr th:last-child {
 }
 
 /* Responsive ends */
+
+
+#DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-input {
+  width: 40%;
+  height: 99%;
+  text-align: left;
+  float: left;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+}
+#DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-separator {
+  display: inline-block;
+  min-width: 10px;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+  text-align: left;
+  float: left;
+  vertical-align: top;
+  pointer-events: none;
+}
+#DateTimeRangeContainerNoMobileMode .ant-calendar-picker-clear {
+  top: 45%;
+}
+.seacrh-img-addsearch {
+  width: 4%;
+  display: inline-block;
+  height: 43px;
+  padding: 13px 0 0 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #ecf2f4 !important;
+}
+.srch-imge {
+  margin-top: -5px;
+  cursor: pointer;
+}

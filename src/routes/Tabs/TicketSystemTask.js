@@ -261,8 +261,7 @@ class TicketSystemTask extends Component {
           selectedAssignTo: "",
           selectedPriority: ""
         });
-
-        NotificationManager.success("Task created successfully.", "", 1000);
+        NotificationManager.success("Task created successfully.");
         this.validator.hideMessages();
       }
     } else {
@@ -599,7 +598,7 @@ class TicketSystemTask extends Component {
             </div>
           </div>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </Fragment>
     );
   }

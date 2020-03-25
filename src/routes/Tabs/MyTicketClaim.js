@@ -105,9 +105,9 @@ class MyTicketClaim extends Component {
       debugger;
       let status = res.data.status;
       if (status === true) {
-        NotificationManager.success("Comment added successfully.", '', 1000);
+        NotificationManager.success("Comment added successfully.");
       } else {
-        NotificationManager.error("Comment not added.", '', 1000);
+        NotificationManager.error("Comment not added.");
       }
     }).catch(data => {
       console.log(data);
@@ -625,7 +625,7 @@ class MyTicketClaim extends Component {
             </div>
           </Drawer>
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </Fragment>
     );
   }

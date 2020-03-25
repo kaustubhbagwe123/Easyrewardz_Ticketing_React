@@ -30,8 +30,8 @@ class CreatePlan extends Component {
                       <div className="col-md-12">
                         <label className="PlanName">Plan Price(Monthly)</label>
                         <div className="input-group">
-                            <span class="input-group-addon">₹</span>	
-                            <input type="text" class="form-control" placeholder="11999" />
+                            <span className="input-group-addon">₹</span>	
+                            <input type="text" className="form-control" placeholder="11999" />
                         </div>
                         {/* <span>₹</span>
                         <input
@@ -46,8 +46,8 @@ class CreatePlan extends Component {
                       <div className="col-md-12">
                         <label className="PlanName">Plan Price(Yearly)</label>
                         <div className="input-group">
-                            <span class="input-group-addon">₹</span>	
-                            <input type="text" class="form-control" placeholder="9999" />
+                            <span className="input-group-addon">₹</span>	
+                            <input type="text" className="form-control" placeholder="9999" />
                         </div>
                         {/* <span>₹</span>
                         <input

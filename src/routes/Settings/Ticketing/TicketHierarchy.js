@@ -26,6 +26,7 @@ import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import { CSVLink } from "react-csv";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import matchSorter from "match-sorter";
 
 const MyButton = props => {
   const { children } = props;
@@ -148,7 +149,6 @@ class TicketHierarchy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
       isOpen: false,
       StatusModel: false,
       designation_name: "",
@@ -167,23 +167,29 @@ class TicketHierarchy extends Component {
       sortAllData: [],
       sortDesignation: [],
       sortReportTo: [],
-      sortCreatedBy:[],
-      sortStatus:[],
+      sortCreatedBy: [],
+      sortStatus: [],
       sortColumn: "",
-      sortHeader:"",
+      sortHeader: "",
       designationColor: "",
       reportToColor: "",
-      createdColor:"",
-      statusColor:"",
+      createdColor: "",
+      statusColor: "",
       updateDesignation: "",
       updateReprtTo: "",
       updateStatus: "",
       rowData: {},
       editSaveLoading: false,
       addSaveLoading: false,
-      fileName:"",
-      fileN:[],
-      bulkuploadCompulsion:""
+      fileName: "",
+      fileN: [],
+      bulkuploadCompulsion: "",
+      sortFilterDesignation: [],
+      sortFilterReportTo: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: [],
+      sFilterCheckbox: "",
+      filterTxtValue: ""
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -192,7 +198,7 @@ class TicketHierarchy extends Component {
     );
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
-    this.hanldeAddBulkUpload=this.hanldeAddBulkUpload.bind(this);
+    this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   callBackEdit = (designationName, reportTo, status, rowData) => {
     debugger;
@@ -233,18 +239,15 @@ class TicketHierarchy extends Component {
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
 
-   // function myFunction() {
-      // First sort the array
-      //itemsArray.designationName.sort();
-      // Then reverse it:
-      //fruits.reverse();
-     
-   // }
+    // function myFunction() {
+    // First sort the array
+    //itemsArray.designationName.sort();
+    // Then reverse it:
+    //fruits.reverse();
 
-    itemsArray.sort((a, b)=> 
-        a.designationName > b.designationName
-     
-    );
+    // }
+
+    itemsArray.sort((a, b) => a.designationName > b.designationName);
 
     this.setState({
       hierarchyData: itemsArray
@@ -256,7 +259,7 @@ class TicketHierarchy extends Component {
     var itemsArray = [];
     var itemsArray1 = [];
     itemsArray1 = this.state.hierarchyData;
-    itemsArray=itemsArray1.sort((a, b) => {
+    itemsArray = itemsArray1.sort((a, b) => {
       return b.designationName > a.designationName;
     });
     this.setState({
@@ -265,69 +268,133 @@ class TicketHierarchy extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.temphierarchyData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        hierarchyData: this.state.temphierarchyData,
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        hierarchyData: this.state.sortAllData,
+        filterTxtValue: ""
+      });
+    }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
       designationColor: "",
       reportToColor: "",
       createdColor: "",
       statusColor: "",
-     
-        
-    
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-     
     } else if (column === "designationName") {
-      this.state.hierarchyData = this.state.sortAllData;
-      itemsArray = this.state.hierarchyData.filter(
-        a => a.designationName === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.designationName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         designationColor: "sort-column",
         [e.target.name]: true
-       
       });
     } else if (column === "reportTo") {
-      this.state.hierarchyData = this.state.sortAllData;
-      itemsArray = this.state.hierarchyData.filter(a => a.reportTo === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.reportTo === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-       
         reportToColor: "sort-column"
       });
-    }else if (column === "createdbyperson") {
-      this.state.hierarchyData = this.state.sortAllData;
-      itemsArray = this.state.hierarchyData.filter(a => a.createdbyperson === data);
+    } else if (column === "createdbyperson") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.createdbyperson === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-       
         createdColor: "sort-column"
       });
-    }else if (column === "status") {
-      this.state.hierarchyData = this.state.sortAllData;
-      itemsArray = this.state.hierarchyData.filter(a => a.status === data);
+    } else if (column === "status") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.status === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-       
         statusColor: "sort-column"
       });
     }
 
     this.setState({
-      hierarchyData: itemsArray
+      temphierarchyData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
   hanldeGetReportListDropDown() {
     let self = this;
@@ -355,53 +422,46 @@ class TicketHierarchy extends Component {
       });
   }
 
-  handleDeleteBulkupload=e=>{
+  handleDeleteBulkupload = e => {
     debugger;
     this.setState({
-      fileN:[],
-      fileName:""
+      fileN: [],
+      fileName: ""
     });
-    NotificationManager.success("File deleted successfully.")
-  }
+    NotificationManager.success("File deleted successfully.");
+  };
 
   hanldeAddBulkUpload() {
     debugger;
-    if(
-      this.state.fileN.length > 0 && this.state.fileN !==[]
-    ){
-    let self = this;
+    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+      let self = this;
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-   
-    formData.append("file", this.state.fileN[0]);
+      formData.append("file", this.state.fileN[0]);
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
-      headers: authHeader(),
-      data: formData
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success(
-            "File uploaded successfully."
-          );
-        } else {
-          NotificationManager.success(
-            "File not uploaded."
-          );
-        }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+        headers: authHeader(),
+        data: formData
       })
-      .catch(data => {
-        console.log(data);
-      });
-    }else{
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+          } else {
+            NotificationManager.success("File not uploaded.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
       this.setState({
-        bulkuploadCompulsion:"Please select file."
+        bulkuploadCompulsion: "Please select file."
       });
     }
   }
@@ -429,6 +489,9 @@ class TicketHierarchy extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({ designationName: distinct[i] });
+            self.state.sortFilterDesignation.push({
+              designationName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -441,8 +504,8 @@ class TicketHierarchy extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortReportTo.push({ reportTo: distinct[i] });
+            self.state.sortFilterReportTo.push({ reportTo: distinct[i] });
           }
-
 
           var unique = [];
           var distinct = [];
@@ -454,8 +517,10 @@ class TicketHierarchy extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedBy.push({ createdbyperson: distinct[i] });
+            self.state.sortFilterCreatedBy.push({
+              createdbyperson: distinct[i]
+            });
           }
-
 
           var unique = [];
           var distinct = [];
@@ -467,9 +532,8 @@ class TicketHierarchy extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ status: distinct[i] });
+            self.state.sortFilterStatus.push({ status: distinct[i] });
           }
-
-
         }
 
         if (status === "Success") {
@@ -521,11 +585,7 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success(
-              "Hierarchy added successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Hierarchy added successfully.");
             self.hanldeGetReportListDropDown();
             self.setState({
               designation_name: "",
@@ -537,7 +597,7 @@ class TicketHierarchy extends Component {
               addSaveLoading: false
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.", "", 1000);
+            NotificationManager.error("Record Already Exists.");
             self.setState({ addSaveLoading: false });
           }
         })
@@ -570,14 +630,10 @@ class TicketHierarchy extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetHierarchyData();
-          NotificationManager.success(
-            "Designation deleted successfully.",
-            "",
-            1000
-          );
+          NotificationManager.success("Designation deleted successfully.");
           self.hanldeGetReportListDropDown();
         } else {
-          NotificationManager.error(res.data.message, "", 1000);
+          NotificationManager.error(res.data.message);
         }
       })
       .catch(data => {
@@ -616,16 +672,12 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success(
-              "Hierarchy update successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Hierarchy update successfully.");
             self.hanldeGetReportListDropDown();
             self.setState({ editSaveLoading: false });
           } else {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error("Hierarchy not update.", "", 1000);
+            NotificationManager.error("Hierarchy not update.");
           }
         })
         .catch(data => {
@@ -633,7 +685,7 @@ class TicketHierarchy extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Hierarchy not update.", "", 1000);
+      NotificationManager.error("Hierarchy not update.");
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -673,7 +725,7 @@ class TicketHierarchy extends Component {
       EditTemp: data
     });
   };
-  fileUpload =(e ) => {
+  fileUpload = e => {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
@@ -681,8 +733,8 @@ class TicketHierarchy extends Component {
     console.log(allFiles);
     console.log(allFiles[0].name);
     this.setState({
-       fileN: allFiles,
-       fileName:allFiles[0].name
+      fileN: allFiles,
+      fileName: allFiles[0].name
     });
   };
   fileDrop = e => {
@@ -690,10 +742,10 @@ class TicketHierarchy extends Component {
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
-    this.setState({ 
+    this.setState({
       fileN: allFiles,
-      fileName:allFiles[0].name
-     });
+      fileName: allFiles[0].name
+    });
     e.preventDefault();
   };
   fileDragOver = e => {
@@ -707,12 +759,78 @@ class TicketHierarchy extends Component {
       [e.target.name]: e.target.value
     });
   };
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "designationName") {
+      var sortFilterDesignation = matchSorter(
+        this.state.sortDesignation,
+        e.target.value,
+        { keys: ["designationName"] }
+      );
+      if (sortFilterDesignation.length > 0) {
+        this.setState({ sortFilterDesignation });
+      } else {
+        this.setState({
+          sortFilterDesignation: this.state.sortDesignation
+        });
+      }
+    }
+    if (this.state.sortColumn === "reportTo") {
+      var sortFilterReportTo = matchSorter(
+        this.state.sortReportTo,
+        e.target.value,
+        { keys: ["reportTo"] }
+      );
+      if (sortFilterReportTo.length > 0) {
+        this.setState({ sortFilterReportTo });
+      } else {
+        this.setState({
+          sortFilterReportTo: this.state.sortReportTo
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdbyperson") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        {
+          keys: ["createdbyperson"]
+        }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "status") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        {
+          keys: ["status"]
+        }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortCreatedBy
+        });
+      }
+    }
+  }
+
   render() {
     const { hierarchyData } = this.state;
 
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -722,9 +840,10 @@ class TicketHierarchy extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn text-center">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
-                 
                   <a
                     href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -745,119 +864,130 @@ class TicketHierarchy extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type ">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "designationName"
+                    ? this.state.sortFilterDesignation !== null &&
+                      this.state.sortFilterDesignation.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.designationName}
+                            id={"fil-open" + item.designationName}
+                            value={item.designationName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "designationName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.designationName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.designationName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "reportTo"
+                    ? this.state.sortFilterReportTo !== null &&
+                      this.state.sortFilterReportTo.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.reportTo}
+                            value={item.reportTo}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportTo",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportTo}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportTo}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdbyperson"
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdbyperson}
+                            value={item.createdbyperson}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdbyperson",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdbyperson}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdbyperson}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "status"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "designationName"
-                  ? this.state.sortDesignation !== null &&
-                    this.state.sortDesignation.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.designationName}
-                          id={"fil-open" + item.designationName}
-                          value={item.designationName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "designationName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.designationName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.designationName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "reportTo"
-                  ? this.state.sortReportTo !== null &&
-                    this.state.sortReportTo.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.reportTo}
-                          value={item.reportTo}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportTo"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportTo}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportTo}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "createdbyperson"
-                  ? this.state.sortCreatedBy !== null &&
-                    this.state.sortCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdbyperson}
-                          value={item.createdbyperson}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdbyperson"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdbyperson}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdbyperson}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-
-{this.state.sortColumn === "status"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.status}
-                          value={item.status}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.status}>
-                          <span className="table-btn table-blue-btn">
-                            {item.status}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
               </div>
             </div>
           </Modal>
@@ -886,11 +1016,11 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.designationColor}
-                           
+                            className={this.state.designationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "designationName","Designation"
+                              "designationName",
+                              "Designation"
                             )}
                           >
                             Designation
@@ -902,11 +1032,11 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.reportToColor}
-                            
+                            className={this.state.reportToColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "reportTo","Report To"
+                              "reportTo",
+                              "Report To"
                             )}
                           >
                             Report To
@@ -918,11 +1048,12 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.createdColor}
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "createdbyperson","Created By"
-                          )}
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdbyperson",
+                              "Created By"
+                            )}
                           >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -980,11 +1111,12 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span
-                          className={this.state.statusColor}
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "status","Status"
-                          )}
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "status",
+                              "Status"
+                            )}
                           >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1269,10 +1401,10 @@ class TicketHierarchy extends Component {
                     <span>Add File</span> or Drop File here
                   </label>
                   {this.state.fileN.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.bulkuploadCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.bulkuploadCompulsion}
+                    </p>
+                  )}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -1311,9 +1443,12 @@ class TicketHierarchy extends Component {
                                   >
                                     CANCEL
                                   </a>
-                                  <button className="butn" 
-                                  //onClick={this.handleDeleteBulkupload}
-                                  >Delete</button>
+                                  <button
+                                    className="butn"
+                                    //onClick={this.handleDeleteBulkupload}
+                                  >
+                                    Delete
+                                  </button>
                                 </div>
                               </div>
                             </PopoverBody>
@@ -1351,7 +1486,12 @@ class TicketHierarchy extends Component {
                       </div>
                     </div>
                   )}
-                  <button className="butn" onClick={this.hanldeAddBulkUpload.bind(this)}>ADD</button>
+                  <button
+                    className="butn"
+                    onClick={this.hanldeAddBulkUpload.bind(this)}
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             </div>

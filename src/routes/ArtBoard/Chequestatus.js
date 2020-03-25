@@ -5,7 +5,7 @@ import congratulation from "../../assets/Images/cong-img.jpg";
 class Chequestatus extends Component {
   render() {
     return (
-      <div class="custom-artboard congrats-steps" style={{ padding: "50px 0" }}>
+      <div className="custom-artboard congrats-steps" style={{ padding: "50px 0" }}>
         <div className="congrats-box" style={{ margin: "0 16% 0" }}>
           <div className="row">
             <div className="col-12 col-sm-6">

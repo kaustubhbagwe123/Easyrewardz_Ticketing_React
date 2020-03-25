@@ -53,7 +53,7 @@ class Signup extends Component {
   }
   render() {
     return (
-      <div class="custom-artboard signupsteps">
+      <div className="custom-artboard signupsteps">
         <div
           className={
             this.state.onStep4 === true

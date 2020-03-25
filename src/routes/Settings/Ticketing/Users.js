@@ -26,7 +26,7 @@ import Select from "react-select";
 import { CSVLink } from "react-csv";
 // import { string } from "prop-types";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
-
+import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
 
 class Users extends Component {
@@ -134,11 +134,17 @@ class Users extends Component {
       mobileColor: "",
       emailColor: "",
       designationColor: "",
-      sortHeader:"",
+      sortHeader: "",
       emailFlag: true,
       editEmailFlag: true,
       phoneFlag: true,
-      EditPhoneFlag: true
+      EditPhoneFlag: true,
+      sortFilterDesignation: [],
+      sortFilterUsername: [],
+      sortFilterMobile: [],
+      sortFilterEmail: [],
+      filterTxtValue: "",
+      sFilterCheckbox: ""
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -202,56 +208,131 @@ class Users extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.tempuserData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        userData: this.state.tempuserData,
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        userData: this.state.sortAllData,
+        filterTxtValue: ""
+      });
+    }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
       userColor: "",
       mobileColor: "",
       emailColor: "",
-      designationColor: ""
+      designationColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "designation") {
-      this.state.userData = this.state.sortAllData;
-      itemsArray = this.state.userData.filter(a => a.designation === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.designation === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         designationColor: "sort-column"
       });
     } else if (column === "userName") {
-      this.state.userData = this.state.sortAllData;
-      itemsArray = this.state.userData.filter(a => a.userName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.userName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         userColor: "sort-column"
       });
     } else if (column === "mobileNumber") {
-      this.state.userData = this.state.sortAllData;
-      itemsArray = this.state.userData.filter(a => a.mobileNumber === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.mobileNumber === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         mobileColor: "sort-column"
       });
     } else if (column === "emailID") {
-      this.state.userData = this.state.sortAllData;
-      itemsArray = this.state.userData.filter(a => a.emailID === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.emailID === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         emailColor: "sort-column"
       });
     }
     this.setState({
-      userData: itemsArray
+      tempuserData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   opneEditModal = () => {
@@ -1026,7 +1107,7 @@ class Users extends Component {
       url: config.apiUrl + "/Ticketing/getagentlist",
       headers: authHeader(),
       params: {
-        TicketID:0 // Don't change this value (Set on API side)
+        TicketID: 0 // Don't change this value (Set on API side)
       }
     })
       .then(function(res) {
@@ -1095,6 +1176,7 @@ class Users extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({ designation: distinct[i] });
+            self.state.sortFilterDesignation.push({ designation: distinct[i] });
           }
 
           var unique = [];
@@ -1107,6 +1189,7 @@ class Users extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortUsername.push({ userName: distinct[i] });
+            self.state.sortFilterUsername.push({ userName: distinct[i] });
           }
 
           var unique = [];
@@ -1122,6 +1205,7 @@ class Users extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortMobile.push({ mobileNumber: distinct[i] });
+            self.state.sortFilterMobile.push({ mobileNumber: distinct[i] });
           }
 
           var unique = [];
@@ -1134,6 +1218,7 @@ class Users extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortEmail.push({ emailID: distinct[i] });
+            self.state.sortFilterEmail.push({ emailID: distinct[i] });
           }
         }
       })
@@ -1264,14 +1349,14 @@ class Users extends Component {
           let id = res.data.responseData;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Save successfully.", '', 1000);
+            NotificationManager.success("Record Save successfully.");
             self.setState({
               getID: id,
               personalReadOnly: true
             });
             self.handleGetUserList();
           } else {
-            NotificationManager.error("Record Not Saved .", '', 1000);
+            NotificationManager.error("Record Not Saved .");
           }
         })
         .catch(data => {
@@ -1318,9 +1403,9 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.", '', 1000);
+            NotificationManager.success("Record Updated successfully.");
           } else {
-            NotificationManager.error("Record Not Updated.", '', 1000);
+            NotificationManager.error("Record Not Updated.");
           }
           self.setState({
             getID: id,
@@ -1366,20 +1451,20 @@ class Users extends Component {
           let Msg = res.data.message;
           if (self.state.buttonProfileToggle === true) {
             if (Msg === "Success") {
-              NotificationManager.success("Record Updated successfully.", '', 1000);
+              NotificationManager.success("Record Updated successfully.");
             } else {
-              NotificationManager.error("Please Add Personal Details.", '', 1000);
+              NotificationManager.error("Please Add Personal Details.");
             }
           } else {
             if (Msg === "Success") {
-              NotificationManager.success("Record Saved successfully.", '', 1000);
+              NotificationManager.success("Record Saved successfully.");
               self.setState({
                 getID: id,
                 profileReadOnly: true
               });
               self.handleGetUserList();
             } else {
-              NotificationManager.error("Please Add Personal Details.", '', 1000);
+              NotificationManager.error("Please Add Personal Details.");
             }
           }
         })
@@ -1509,10 +1594,10 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("User Created successfully.", '', 1000);
+            NotificationManager.success("User Created successfully.");
             self.handleSendMail(self.state.getID);
           } else {
-            NotificationManager.error("User Not Created .", '', 1000);
+            NotificationManager.error("User Not Created .");
           }
           self.setState({
             selectUserName: "",
@@ -1583,9 +1668,9 @@ class Users extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.", '', 1000);
+          NotificationManager.error("Record in use.");
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.", '', 1000);
+          NotificationManager.success("Record deleted Successfully.");
           self.handleGetUserList();
         }
       })
@@ -1609,7 +1694,7 @@ class Users extends Component {
         debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
-          NotificationManager.success("Please Check Email.", '', 1000);
+          NotificationManager.success("Please Check Email.");
         }
       })
       .catch(data => {
@@ -1771,8 +1856,8 @@ class Users extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.", '', 1000);
-            if(self.state.GetUserData.isActive===false){
+            NotificationManager.success("Record Updated successfully.");
+            if (self.state.GetUserData.isActive === false) {
               self.handleSendMail(self.state.userEditData.userId);
             }
             self.setState({
@@ -1781,9 +1866,7 @@ class Users extends Component {
               multisubcategoryIDs: finalSubCategoryId
             });
           } else {
-            NotificationManager.error(
-              "Record not Updated.", '', 1000
-            );
+            NotificationManager.error("Record not Updated.");
           }
           self.closeEditModal();
           self.handleGetUserList();
@@ -1835,7 +1918,7 @@ class Users extends Component {
   };
   // Onchange tab Personal to Mapped tab
   handleChangeProfileTab = () => {
-    debugger
+    debugger;
     if (
       this.state.userEditData.designation_ID > 0 &&
       this.state.userEditData.reporteeDesignation_ID > 0 &&
@@ -1867,12 +1950,70 @@ class Users extends Component {
     e.preventDefault();
   };
 
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "designation") {
+      var sortFilterDesignation = matchSorter(
+        this.state.sortDesignation,
+        e.target.value,
+        { keys: ["designation"] }
+      );
+      if (sortFilterDesignation.length > 0) {
+        this.setState({ sortFilterDesignation });
+      } else {
+        this.setState({ sortFilterDesignation: this.state.sortDesignation });
+      }
+    }
+    if (this.state.sortColumn === "userName") {
+      var sortFilterUsername = matchSorter(
+        this.state.sortUsername,
+        e.target.value,
+        { keys: ["userName"] }
+      );
+      if (sortFilterUsername.length > 0) {
+        this.setState({ sortFilterUsername });
+      } else {
+        this.setState({
+          sortFilterUsername: this.state.sortUsername
+        });
+      }
+    }
+    if (this.state.sortColumn === "mobileNumber") {
+      var sortFilterMobile = matchSorter(
+        this.state.sortMobile,
+        e.target.value,
+        { keys: ["mobileNumber"] }
+      );
+      if (sortFilterMobile.length > 0) {
+        this.setState({ sortFilterMobile });
+      } else {
+        this.setState({
+          sortFilterMobile: this.state.sortMobile
+        });
+      }
+    }
+    if (this.state.sortColumn === "emailID") {
+      var sortFilterEmail = matchSorter(this.state.sortEmail, e.target.value, {
+        keys: ["emailID"]
+      });
+      if (sortFilterEmail.length > 0) {
+        this.setState({ sortFilterEmail });
+      } else {
+        this.setState({
+          sortFilterEmail: this.state.sortEmail
+        });
+      }
+    }
+  }
+
   render() {
     const { userData } = this.state;
 
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -1880,9 +2021,11 @@ class Users extends Component {
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
-            <div className="status-drop-down" style={{width:"280px"}}>
+            <div className="status-drop-down" style={{ width: "280px" }}>
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -1904,118 +2047,130 @@ class Users extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "designation"
+                    ? this.state.sortFilterDesignation !== null &&
+                      this.state.sortFilterDesignation.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.designation}
+                            value={item.designation}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "designation",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.designation}>
+                            <span className="table-btn table-blue-btn">
+                              {item.designation}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "userName"
+                    ? this.state.sortFilterUsername !== null &&
+                      this.state.sortFilterUsername.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.userName}
+                            value={item.userName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "userName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.userName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.userName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "mobileNumber"
+                    ? this.state.sortFilterMobile !== null &&
+                      this.state.sortFilterMobile.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.mobileNumber}
+                            value={item.mobileNumber}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "mobileNumber",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.mobileNumber}>
+                            <span className="table-btn table-blue-btn">
+                              {item.mobileNumber}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "emailID"
+                    ? this.state.sortFilterEmail !== null &&
+                      this.state.sortFilterEmail.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.emailID}
+                            value={item.emailID}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "emailID",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.emailID}>
+                            <span className="table-btn table-blue-btn">
+                              {item.emailID}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "designation"
-                  ? this.state.sortDesignation !== null &&
-                    this.state.sortDesignation.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.designation}
-                          value={item.designation}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "designation"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.designation}>
-                          <span className="table-btn table-blue-btn">
-                            {item.designation}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "userName"
-                  ? this.state.sortUsername !== null &&
-                    this.state.sortUsername.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.userName}
-                          value={item.userName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "userName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.userName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.userName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "mobileNumber"
-                  ? this.state.sortMobile !== null &&
-                    this.state.sortMobile.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.mobileNumber}
-                          value={item.mobileNumber}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "mobileNumber"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.mobileNumber}>
-                          <span className="table-btn table-blue-btn">
-                            {item.mobileNumber}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "emailID"
-                  ? this.state.sortEmail !== null &&
-                    this.state.sortEmail.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.emailID}
-                          value={item.emailID}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "emailID"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.emailID}>
-                          <span className="table-btn table-blue-btn">
-                            {item.emailID}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-               
               </div>
             </div>
           </Modal>
@@ -2522,7 +2677,8 @@ class Users extends Component {
                             className={this.state.userColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "userName","User Name"
+                              "userName",
+                              "User Name"
                             )}
                           >
                             User Name
@@ -2538,7 +2694,8 @@ class Users extends Component {
                             className={this.state.mobileColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "mobileNumber","Mobile Number"
+                              "mobileNumber",
+                              "Mobile Number"
                             )}
                           >
                             Mobile No.
@@ -2552,7 +2709,11 @@ class Users extends Component {
                         Header: (
                           <span
                             className={this.state.emailColor}
-                            onClick={this.StatusOpenModel.bind(this, "emailID","EmailID")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "emailID",
+                              "EmailID"
+                            )}
                           >
                             Email ID
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -2567,7 +2728,8 @@ class Users extends Component {
                             className={this.state.designationColor}
                             onClick={this.StatusOpenModel.bind(
                               this,
-                              "designation","Designation"
+                              "designation",
+                              "Designation"
                             )}
                           >
                             Designation

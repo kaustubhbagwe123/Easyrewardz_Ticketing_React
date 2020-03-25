@@ -452,7 +452,7 @@ class Brands extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetBrandList();
-            NotificationManager.success("Brand Added successfully.", "", 1000);
+            NotificationManager.success("Brand Added successfully.");
             self.setState({
               brand_Code: "",
               brand_name: "",
@@ -464,7 +464,7 @@ class Brands extends Component {
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ addSaveLoading: false });
-            NotificationManager.error(status, "", 1000);
+            NotificationManager.error(status);
           }
         })
         .catch(data => {
@@ -494,9 +494,9 @@ class Brands extends Component {
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetBrandList();
-          NotificationManager.success("Brand delete successfully.", "", 1000);
+          NotificationManager.success("Brand delete successfully.");
         } else {
-          NotificationManager.error(res.data.message, "", 1000);
+          NotificationManager.error(res.data.message);
         }
       })
       .catch(data => {
@@ -535,9 +535,7 @@ class Brands extends Component {
           if (status === "Success") {
             self.handleGetBrandList();
             NotificationManager.success(
-              "Brand updated successfully.",
-              "",
-              1000
+              "Brand updated successfully."
             );
           }
         })
@@ -545,7 +543,7 @@ class Brands extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Brand not updated .", "", 1000);
+      NotificationManager.error("Brand not updated .");
       this.setState({
         editbrandcodeCompulsion: "Please enter brand code.",
         editbrandnameCompulsion: "Please enter brand name.",
@@ -569,7 +567,7 @@ class Brands extends Component {
     const { brandData } = this.state;
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

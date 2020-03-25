@@ -5,7 +5,7 @@ class OffilinePurchase extends Component {
   render() {
     const {change}=this.props;
     return (
-    <div class="custom-artboard">
+    <div className="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Enter Purchase Order Details</label>
           <div className="payment-mode">

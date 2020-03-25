@@ -13,7 +13,7 @@ class OffileneChequeMode extends Component {
   render() {
     const { change } = this.props;
     return (
-    <div class="custom-artboard">
+    <div className="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Enter Cheque Details</label>
           <div className="payment-mode">

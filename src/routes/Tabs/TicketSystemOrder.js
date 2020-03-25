@@ -476,9 +476,7 @@ class TicketSystemOrder extends Component {
           if (status === "Success") {
             let data = res.data.responseData;
             NotificationManager.success(
-              "New Order added successfully.",
-              "",
-              2000
+              "New Order added successfully."
             );
             self.handleOrderSearchData(data);
             self.handleChangeSaveManualTbl();
@@ -499,7 +497,7 @@ class TicketSystemOrder extends Component {
               saveLoader: false
             });
           } else {
-            NotificationManager.error("Order not added.", "", 2000);
+            NotificationManager.error("Order not added.");
             self.setState({
               saveLoader: false
             });
@@ -509,7 +507,7 @@ class TicketSystemOrder extends Component {
           console.log(data);
         });
       // } else {
-      //   NotificationManager.error("Order not added.", "", 2000);
+      //   NotificationManager.error("Order not added.");
       //   self.setState({
       //     validPurchaseStoreName: "Store name not exist",
       //     saveLoader: false
@@ -1971,7 +1969,7 @@ class TicketSystemOrder extends Component {
             </div>
           ) : null}
         </div>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
       </div>
     );
   }

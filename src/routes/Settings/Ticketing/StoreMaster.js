@@ -28,14 +28,12 @@ import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-
-// import StoreEditContent from "./../../CommanComponent/StoreEditContent";
-
+import matchSorter from "match-sorter";
+ 
 class StoreMaster extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
       selectState: 0,
       selectCity: 0,
       selectedBrand: [],
@@ -81,7 +79,7 @@ class StoreMaster extends Component {
       sortCity: [],
       sortState: [],
       sortPincode: [],
-      sortBrandName:[],
+      sortBrandName: [],
       sortColumn: "",
       editmodel: false,
       modalSelectedBrand: [],
@@ -109,11 +107,20 @@ class StoreMaster extends Component {
       cityColor: "",
       stateColor: "",
       pincodeColor: "",
-      brandnameColor:"",
-      sortHeader:"",
-      bulkuploadCompulsion:"",
+      brandnameColor: "",
+      sortHeader: "",
+      bulkuploadCompulsion: "",
       fileName: "",
-      fileN:[]
+      fileN: [],
+      sortFilterStoreName: [],
+      sortFilterStoreCode: [],
+      sortFilterCity: [],
+      sortFilterState: [],
+      sortFilterPincode: [],
+      sortFilterBrandName: [],
+      filterTxtValue: "",
+      sFilterCheckbox: "",
+      tempstoreData: []
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -125,7 +132,7 @@ class StoreMaster extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
-    this.hanldeAddBulkUpload=this.hanldeAddBulkUpload.bind(this);
+    this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -137,42 +144,35 @@ class StoreMaster extends Component {
   }
   hanldeAddBulkUpload() {
     debugger;
-    if(
-      this.state.fileN.length > 0 && this.state.fileN !==[]
-    ){
-    let self = this;
+    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+      let self = this;
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-   
-    formData.append("file", this.state.fileN[0]);
+      formData.append("file", this.state.fileN[0]);
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Store/BulkUploadStore",
-      headers: authHeader(),
-      data: formData
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success(
-            "File uploaded successfully."
-          );
-        } else {
-          NotificationManager.success(
-            "File not uploaded."
-          );
-        }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Store/BulkUploadStore",
+        headers: authHeader(),
+        data: formData
       })
-      .catch(data => {
-        console.log(data);
-      });
-    }else{
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+          } else {
+            NotificationManager.success("File not uploaded.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
       this.setState({
-        bulkuploadCompulsion:"Please select file."
+        bulkuploadCompulsion: "Please select file."
       });
     }
   }
@@ -201,16 +201,42 @@ class StoreMaster extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
-    this.setState({ StatusModel: true, sortColumn: data,sortHeader:header});
+  StatusOpenModel(data, header) {
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.tempstoreData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        storeData: this.state.tempstoreData,
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        storeData: this.state.sortAllData,
+        filterTxtValue: ""
+      });
+    }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column,type, e) => {
     var itemsArray = [];
-    var data = e.currentTarget.value;
+
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
       storeNameColor: "",
       storeCodecolor: "",
@@ -222,48 +248,117 @@ class StoreMaster extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "storeName") {
-      this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.storeName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.storeName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         storeNameColor: "sort-column"
       });
     } else if (column === "storeCode") {
-      this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.storeCode === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.storeCode === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         storeCodecolor: "sort-column"
       });
     } else if (column === "cityName") {
-      this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.cityName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.cityName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         cityColor: "sort-column"
       });
     } else if (column === "stateName") {
-      this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.stateName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.stateName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         stateColor: "sort-column"
       });
     } else if (column === "strPinCode") {
-      this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.strPinCode === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.strPinCode === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         pincodeColor: "sort-column"
       });
-    }else if (column === "brandNames") {
-      this.state.storeData = this.state.sortAllData;
-      itemsArray = this.state.storeData.filter(a => a.brandNames === data);
+    } else if (column === "brandNames") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.brandNames === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         brandnameColor: "sort-column"
       });
     }
 
-
     this.setState({
-      storeData: itemsArray
+      tempstoreData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   handleGetStoreMasterData() {
@@ -291,6 +386,7 @@ class StoreMaster extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortStoreName.push({ storeName: distinct[i] });
+          self.state.sortFilterStoreName.push({ storeName: distinct[i] });
         }
 
         var unique = [];
@@ -303,6 +399,7 @@ class StoreMaster extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortStoreCode.push({ storeCode: distinct[i] });
+          self.state.sortFilterStoreCode.push({ storeCode: distinct[i] });
         }
 
         var unique = [];
@@ -315,6 +412,7 @@ class StoreMaster extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortCity.push({ cityName: distinct[i] });
+          self.state.sortFilterCity.push({ cityName: distinct[i] });
         }
 
         var unique = [];
@@ -327,6 +425,7 @@ class StoreMaster extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortState.push({ stateName: distinct[i] });
+          self.state.sortFilterState.push({ stateName: distinct[i] });
         }
 
         var unique = [];
@@ -339,6 +438,7 @@ class StoreMaster extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortPincode.push({ strPinCode: distinct[i] });
+          self.state.sortFilterPincode.push({ strPinCode: distinct[i] });
         }
 
         var unique = [];
@@ -351,6 +451,7 @@ class StoreMaster extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortBrandName.push({ brandNames: distinct[i] });
+          self.state.sortFilterBrandName.push({ brandNames: distinct[i] });
         }
       }
 
@@ -478,7 +579,7 @@ class StoreMaster extends Component {
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
-        NotificationManager.success("Store deleted successfully.", "", 1000);
+        NotificationManager.success("Store deleted successfully.");
       }
     });
   }
@@ -540,7 +641,7 @@ class StoreMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
-          NotificationManager.success("Store added successfully.", "", 1000);
+          NotificationManager.success("Store added successfully.");
           self.setState({
             store_code: "",
             store_name: "",
@@ -571,7 +672,7 @@ class StoreMaster extends Component {
             cityData: []
           });
         } else {
-          NotificationManager.error("Store Not added.", "", 1000);
+          NotificationManager.error("Store Not added.");
         }
       });
     } else {
@@ -653,11 +754,7 @@ class StoreMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetStoreMasterData();
-            NotificationManager.success(
-              "Store updated successfully.",
-              "",
-              1000
-            );
+            NotificationManager.success("Store updated successfully.");
 
             self.setState({
               editSaveLoading: false,
@@ -684,7 +781,7 @@ class StoreMaster extends Component {
               editZoneValidation: "",
               editStoreTypeValidation: "",
               editContactEmailValidation: "",
-              editContactPhoneValidation: "",
+              editContactPhoneValidation: ""
               // editStatusValidation: ""
             });
           }
@@ -705,7 +802,7 @@ class StoreMaster extends Component {
         editZoneValidation: "Please Select Zone.",
         editStoreTypeValidation: "Please Select Store Type.",
         editContactEmailValidation: "Please Enter EmailID.",
-        editContactPhoneValidation: "Please Enter Phone Number.",
+        editContactPhoneValidation: "Please Enter Phone Number."
         // editStatusValidation: "Please Select Status."
       });
     }
@@ -718,8 +815,8 @@ class StoreMaster extends Component {
     console.log(allFiles);
     console.log(allFiles[0].name);
     this.setState({
-       fileN: allFiles,
-       fileName:allFiles[0].name
+      fileN: allFiles,
+      fileName: allFiles[0].name
     });
     //this.setState({ fileName: e.target.files[0].name });
   };
@@ -728,11 +825,11 @@ class StoreMaster extends Component {
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
-    this.setState({ 
+    this.setState({
       fileN: allFiles,
-      fileName:allFiles[0].name
-     });
-   // this.setState({ fileName: e.dataTransfer.files[0].name });
+      fileName: allFiles[0].name
+    });
+    // this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
   fileDragOver = e => {
@@ -981,11 +1078,111 @@ class StoreMaster extends Component {
     this.setState({ modalSelectedBrand: e });
   };
 
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "storeName") {
+      var sortFilterStoreName = matchSorter(
+        this.state.sortStoreName,
+        e.target.value,
+        { keys: ["storeName"] }
+      );
+      if (sortFilterStoreName.length > 0) {
+        this.setState({ sortFilterStoreName });
+      } else {
+        this.setState({
+          sortFilterStoreName: this.state.sortStoreName
+        });
+      }
+    }
+    if (this.state.sortColumn === "storeCode") {
+      var sortFilterStoreCode = matchSorter(
+        this.state.sortStoreCode,
+        e.target.value,
+        { keys: ["storeCode"] }
+      );
+      if (sortFilterStoreCode.length > 0) {
+        this.setState({ sortFilterStoreCode });
+      } else {
+        this.setState({
+          sortFilterStoreCode: this.state.sortStoreCode
+        });
+      }
+    }
+    if (this.state.sortColumn === "cityName") {
+      var sortFilterCity = matchSorter(
+        this.state.sortCity,
+        e.target.value,
+        {
+          keys: ["cityName"]
+        }
+      );
+      if (sortFilterCity.length > 0) {
+        this.setState({ sortFilterCity });
+      } else {
+        this.setState({
+          sortFilterCity: this.state.sortCity
+        });
+      }
+    }
+    if (this.state.sortColumn === "stateName") {
+      var sortFilterState = matchSorter(
+        this.state.sortState,
+        e.target.value,
+        {
+          keys: ["stateName"]
+        }
+      );
+      if (sortFilterState.length > 0) {
+        this.setState({ sortFilterState });
+      } else {
+        this.setState({
+          sortFilterState: this.state.sortState
+        });
+      }
+    }
+    if (this.state.sortColumn === "strPinCode") {
+      var sortFilterPincode = matchSorter(
+        this.state.sortPincode,
+        e.target.value,
+        {
+          keys: ["strPinCode"]
+        }
+      );
+      if (sortFilterPincode.length > 0) {
+        this.setState({ sortFilterPincode });
+      } else {
+        this.setState({
+          sortFilterPincode: this.state.sortPincode
+        });
+      }
+    }
+    if (this.state.sortColumn === "brandNames") {
+      var sortFilterBrandName = matchSorter(
+        this.state.sortBrandName,
+        e.target.value,
+        {
+          keys: ["brandNames"]
+        }
+      );
+      if (sortFilterBrandName.length > 0) {
+        this.setState({ sortFilterBrandName });
+      } else {
+        this.setState({
+          sortFilterBrandName: this.state.sortBrandName
+        });
+      }
+    }
+
+
+  }
+
   render() {
     const { storeData } = this.state;
     return (
       <React.Fragment>
-        <NotificationContainer />
+        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -995,7 +1192,9 @@ class StoreMaster extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
                   <a
                     href="#!"
@@ -1017,165 +1216,172 @@ class StoreMaster extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "storeName"
+                    ? this.state.sortFilterStoreName !== null &&
+                      this.state.sortFilterStoreName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.storeName}
+                            value={item.storeName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "storeName","value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.storeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.storeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "storeCode"
+                    ? this.state.sortFilterStoreCode !== null &&
+                      this.state.sortFilterStoreCode.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.storeCode}
+                            value={item.storeCode}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "storeCode","value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.storeCode}>
+                            <span className="table-btn table-blue-btn">
+                              {item.storeCode}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "cityName"
+                    ? this.state.sortFilterCity !== null &&
+                      this.state.sortFilterCity.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.cityName}
+                            value={item.cityName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "cityName","value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.cityName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.cityName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "stateName"
+                    ? this.state.sortFilterState !== null &&
+                      this.state.sortFilterState.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.stateName}
+                            value={item.stateName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "stateName","value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.stateName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.stateName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "strPinCode"
+                    ? this.state.sortFilterPincode !== null &&
+                      this.state.sortFilterPincode.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.strPinCode}
+                            value={item.strPinCode}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "strPinCode","value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.strPinCode}>
+                            <span className="table-btn table-blue-btn">
+                              {item.strPinCode}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "brandNames"
+                    ? this.state.sortFilterBrandName !== null &&
+                      this.state.sortFilterBrandName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandNames}
+                            value={item.brandNames}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandNames","value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandNames}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandNames}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "storeName"
-                  ? this.state.sortStoreName !== null &&
-                    this.state.sortStoreName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.storeName}
-                          value={item.storeName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "storeName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.storeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.storeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "storeCode"
-                  ? this.state.sortStoreCode !== null &&
-                    this.state.sortStoreCode.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.storeCode}
-                          value={item.storeCode}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "storeCode"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.storeCode}>
-                          <span className="table-btn table-blue-btn">
-                            {item.storeCode}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "cityName"
-                  ? this.state.sortCity !== null &&
-                    this.state.sortCity.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.cityName}
-                          value={item.cityName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "cityName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.cityName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.cityName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "stateName"
-                  ? this.state.sortState !== null &&
-                    this.state.sortState.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.stateName}
-                          value={item.stateName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "stateName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.stateName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.stateName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "strPinCode"
-                  ? this.state.sortPincode !== null &&
-                    this.state.sortPincode.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.strPinCode}
-                          value={item.strPinCode}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "strPinCode"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.strPinCode}>
-                          <span className="table-btn table-blue-btn">
-                            {item.strPinCode}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                  
-                {this.state.sortColumn === "brandNames"
-                  ? this.state.sortBrandName !== null &&
-                    this.state.sortBrandName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.brandNames}
-                          value={item.brandNames}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "brandNames"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.brandNames}>
-                          <span className="table-btn table-blue-btn">
-                            {item.brandNames}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-                
               </div>
             </div>
           </Modal>
@@ -1210,7 +1416,8 @@ class StoreMaster extends Component {
                               className={this.state.storeNameColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "storeName","Store Name"
+                                "storeName",
+                                "Store Name"
                               )}
                             >
                               Store Name
@@ -1225,7 +1432,8 @@ class StoreMaster extends Component {
                               className={this.state.storeCodecolor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "storeCode","Store Code"
+                                "storeCode",
+                                "Store Code"
                               )}
                             >
                               Store Code
@@ -1237,11 +1445,12 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={this.state.brandnameColor}
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "brandNames","Brand Names"
-                            )}
+                              className={this.state.brandnameColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "brandNames",
+                                "Brand Names"
+                              )}
                             >
                               Brand Name
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -1290,7 +1499,8 @@ class StoreMaster extends Component {
                               className={this.state.cityColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "cityName","City"
+                                "cityName",
+                                "City"
                               )}
                             >
                               City
@@ -1305,7 +1515,8 @@ class StoreMaster extends Component {
                               className={this.state.stateColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "stateName","State"
+                                "stateName",
+                                "State"
                               )}
                             >
                               State
@@ -1317,8 +1528,12 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={this.state.pincodeColor}
-                            onClick={this.StatusOpenModel.bind(this,"strPinCode","Pin Code")}
+                              className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "strPinCode",
+                                "Pin Code"
+                              )}
                             >
                               Pincode
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -1838,7 +2053,10 @@ class StoreMaster extends Component {
                       </div>
                     </div>
                   )}
-                  <button className="butn" onClick={this.hanldeAddBulkUpload.bind(this)}>
+                  <button
+                    className="butn"
+                    onClick={this.hanldeAddBulkUpload.bind(this)}
+                  >
                     ADD
                   </button>
                 </div>
