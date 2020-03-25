@@ -1471,7 +1471,7 @@ class TicketSystemOrder extends Component {
                     value={this.state.modeOfPayment}
                     onChange={this.setModePaymentValue}
                   >
-                    <option className="select-sub-category-placeholder">
+                    <option value="" className="select-sub-category-placeholder">
                       Mode Of Payment
                     </option>
                     {this.state.modeData !== null &&
