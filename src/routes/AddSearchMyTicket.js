@@ -310,7 +310,7 @@ class AddSearchMyTicket extends Component {
                   <div style={{ width: "90%", textAlign: "center" }}>
                     <button
                       type="button"
-                      className="btn btn-addCustomer"
+                      className="btn-addCustomer"
                       onClick={this.handleAddCustomerOpen}
                     >
                       Add Customer

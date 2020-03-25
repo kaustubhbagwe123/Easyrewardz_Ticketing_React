@@ -832,6 +832,7 @@ class TicketSystem extends Component {
     this.setState({ ticketSuggestion });
   };
   onAddCKEditorChange = evt => {
+    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       editorTemplateDetails: newContent
