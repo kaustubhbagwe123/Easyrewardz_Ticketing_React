@@ -48,7 +48,7 @@ class TicketSystemTask extends Component {
   }
 
   componentDidUpdate() {
-    debugger
+    // debugger
     if (this.state.showTaskData === true) {
     if (this.props.checkTask === true) {
         if (this.props.ticket_IDS) {

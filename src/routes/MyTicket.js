@@ -1556,7 +1556,7 @@ class MyTicket extends Component {
     // this.setState({ loading: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/getNotesByTicketId",
+      url: config.apiUrl + "/Ticketing/getNotesByTicketId", 
       headers: authHeader(),
       params: {
         TicketId: ticket_Id

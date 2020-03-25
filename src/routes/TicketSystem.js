@@ -156,10 +156,6 @@ class TicketSystem extends Component {
       showOrderDetails: false,
       showStoreData: false,
       showTaskData: false,
-      // isCustomer: true,
-      // isOrder: false,
-      // isStore: false,
-      // isTask: false,
       fileDummy: []
     };
     this.validator = new SimpleReactValidator();
@@ -196,7 +192,7 @@ class TicketSystem extends Component {
       this
     );
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
-    // this.hanldeCheckTabs = this.hanldeCheckTabs.bind(this);
+    this.handleGetTaskNoteDetails = this.handleGetTaskNoteDetails.bind(this);
   }
 
   componentDidMount() {
@@ -215,6 +211,7 @@ class TicketSystem extends Component {
       this.handleGetCustomerData(custId);
       if (ticketid_) {
         this.handleGetTicketDetails(ticketid_);
+        this.handleGetTaskNoteDetails(ticketid_)
       }
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
@@ -599,8 +596,8 @@ class TicketSystem extends Component {
         console.log(data);
       });
   }
-  handleGetCategoryList() {
-    //debugger;
+  handleGetCategoryList(brandId = 0) {
+    debugger;
     let self = this;
     // self.setState({
     //   CategoryData: [],
@@ -610,16 +607,17 @@ class TicketSystem extends Component {
     //   IssueTypeData: [],
     //   selectedIssueType: ""
     // });
+    var brand_Id=parseInt(brandId)
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
       params: {
-        BrandID: this.state.selectedBrand
+        BrandID: brand_Id
       }
     })
       .then(function(res) {
-        ////debugger;
+        debugger;
         let data = res.data;
         self.setState({ CategoryData: data });
       })
@@ -934,10 +932,10 @@ class TicketSystem extends Component {
     if (
       this.state.titleSuggValue.length > 0 &&
       this.state.ticketDetails.length > 0 &&
-      this.state.selectedBrand.length > 0 &&
-      this.state.selectedCategory.length > 0 &&
-      this.state.selectedSubCategory.length > 0 &&
-      this.state.selectedIssueType.length > 0 &&
+      this.state.selectedBrand > 0 &&
+      this.state.selectedCategory > 0 &&
+      this.state.selectedSubCategory > 0 &&
+      this.state.selectedIssueType > 0 &&
       this.state.selectedChannelOfPurchase.length > 0
     ) {
       this.setState({ loading: true });
@@ -1161,7 +1159,7 @@ class TicketSystem extends Component {
     this.props.history.push("myTicketList");
   }
   setBrandValue = e => {
-    //debugger;
+    debugger;
     let value = e.currentTarget.value;
     this.setState({
       selectedBrand: value,
@@ -1171,7 +1169,7 @@ class TicketSystem extends Component {
       selectedSubCategory: "",
       IssueTypeData: []
     });
-    this.handleGetCategoryList();
+    this.handleGetCategoryList(value);
   };
   setIssueTypeValue = e => {
     let issueTypeValue = e.currentTarget.value;
@@ -1377,32 +1375,31 @@ class TicketSystem extends Component {
       fileText: this.state.file.length
     });
   }
-  /// handle check Tabs data
-  // hanldeCheckTabs(tabs) {
-  //   if (tabs === "order") {
-  //     this.setState({
-  //       isOrder: true,
-  //       isStore: false,
-  //       isTask: false,
-  //       isCustomer: false
-  //     });
-  //   }else if (tabs === "store") {
-  //     this.setState({
-  //       isOrder: false,
-  //       isStore: true,
-  //       isTask: false,
-  //       isCustomer: false
-  //     });
-  //   }else if(tabs === "task") {
-  //     this.setState({
-  //       isOrder: false,
-  //       isStore: false,
-  //       isTask: true,
-  //       isCustomer: false
-  //     });
-  //   }
-  // }
 
+//// hanlde Get Task details 
+handleGetTaskNoteDetails(Id){
+  let self = this;
+  axios({
+    method: "post",
+    url: config.apiUrl + "/Ticketing/getNotesByTicketId", 
+    headers: authHeader(),
+    params: {
+      TicketId: Id
+    }
+  })
+    .then(function(res) {
+      debugger
+      let status = res.data.message;
+      if (status === "Success") {
+        let data = res.data.responseData[0].note;
+        document.getElementById("add-Notes").checked=true;
+        self.setState({ ticketNote: data,showAddNote:true });
+      } 
+    })
+    .catch(data => {
+      console.log(data);
+    });
+}
   render() {
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
@@ -2423,13 +2420,13 @@ class TicketSystem extends Component {
                       >
                         <input
                           type="checkbox"
-                          id="fil-add"
+                          id="add-Notes"
                           name="filter-type"
                           style={{ display: "none" }}
                           onChange={() => this.showAddNoteFuncation()}
                         />
                         <label
-                          htmlFor="fil-add"
+                          htmlFor="add-Notes"
                           style={{ paddingLeft: "25px" }}
                         >
                           <span className="add-note">Add Note</span>
