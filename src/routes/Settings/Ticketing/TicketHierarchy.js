@@ -435,7 +435,6 @@ class TicketHierarchy extends Component {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
