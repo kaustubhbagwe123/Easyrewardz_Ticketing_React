@@ -832,6 +832,7 @@ class TicketSystem extends Component {
     this.setState({ ticketSuggestion });
   };
   onAddCKEditorChange = evt => {
+    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       editorTemplateDetails: newContent
@@ -2112,7 +2113,7 @@ handleGetTaskNoteDetails(Id){
                           <label
                             onClick={this.HandleKbLinkModalOpen.bind(this)}
                           >
-                            Kb Link
+                            KB
                           </label>
                         </a>
 
@@ -2204,7 +2205,7 @@ handleGetTaskNoteDetails(Id){
                           onClick={this.HandleKbLinkModalOpen.bind(this)}
                         />
                         <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
-                          Kb Link
+                          KB
                         </label>
                       </a>
                     )}
@@ -2451,7 +2452,8 @@ handleGetTaskNoteDetails(Id){
                           style={{ paddingLeft: "25px" }}
                         >
                           <span className="add-note">
-                            Instant Escalation to High level
+                            {/* Instant Escalation to High level */}
+                            Auto Escalate
                           </span>
                         </label>
                       </div>

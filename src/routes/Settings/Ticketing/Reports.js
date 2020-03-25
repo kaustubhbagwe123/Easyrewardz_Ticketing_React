@@ -30,7 +30,7 @@ import { Checkbox } from "antd";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
 import SimpleReactValidator from "simple-react-validator";
 import Sorting from "./../../../assets/Images/sorting.png";
-
+import matchSorter from "match-sorter";
 // const clshide= {
 //  display:"hide"
 // };
@@ -52,14 +52,14 @@ class Reports extends Component {
       SelectedTicketMultiStatus: "",
       TicketClosedFrom: "",
       TicketClosedTo: "",
-      DefaultEmailID:"",
+      DefaultEmailID: "",
       TicketCreatedEndDate: "",
       TicketCreatedSource: "",
       SelectedSourceIds: "",
       SelectedDefaultTeamMember: "",
       OpenDefaultModal: false,
       OpenDefaultMailModal: false,
-      FileURL:"",
+      FileURL: "",
       CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
@@ -220,18 +220,25 @@ class Reports extends Component {
       FunctionCompulsion: "",
       FunctionData: [],
       loadingDownload: false,
-      sortAllData:[],
-      sortName:[],
-      sortSchedule:[],
-      sortCreatedBy:[],
-      sortStatus:[],
-      sortColumn:"",
-      sortHeader:"",
-      StatusModel:false,
-      nameColor:"",
-      scheduleColor:"",
-      createdColor:"",
-      statusColor:""
+      sortAllData: [],
+      sortName: [],
+      sortSchedule: [],
+      sortCreatedBy: [],
+      sortStatus: [],
+      sortColumn: "",
+      sortHeader: "",
+      StatusModel: false,
+      nameColor: "",
+      scheduleColor: "",
+      createdColor: "",
+      statusColor: "",
+      tempReportData: [],
+      sFilterCheckbox: "",
+      filterTxtValue: "",
+      sortFilterName: [],
+      sortFilterSchedule: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: []
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -267,7 +274,6 @@ class Reports extends Component {
     this.handleGetDepartmentList();
   }
 
-
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
@@ -295,70 +301,137 @@ class Reports extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
-  StatusCloseModel=e=> {
-    this.setState({ StatusModel: false });
-  }
+  StatusCloseModel = e => {
+    if (this.state.tempReportData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        ReportData: this.state.tempReportData,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        ReportData: this.state.sortAllData,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    }
+  };
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
-     nameColor:"",
-     scheduleColor:"",
-     createdColor:"",
-     statusColor:""
-    
+      sFilterCheckbox,
+      nameColor: "",
+      scheduleColor: "",
+      createdColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-     
     } else if (column === "reportName") {
-      this.state.ReportData = this.state.sortAllData;
-      itemsArray = this.state.ReportData.filter(
-        a => a.reportName === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.reportName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        nameColor:"sort-column"
-       
+        nameColor: "sort-column"
       });
     } else if (column === "scheduleStatus") {
-      this.state.ReportData = this.state.sortAllData;
-      itemsArray = this.state.ReportData.filter(a => a.scheduleStatus === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.scheduleStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        scheduleColor:"sort-column"
-        
+        scheduleColor: "sort-column"
       });
-    }else if (column === "createdBy") {
-      this.state.ReportData = this.state.sortAllData;
-      itemsArray = this.state.ReportData.filter(a => a.createdBy === data);
+    } else if (column === "createdBy") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        createdColor:"sort-column"
-       
+        createdColor: "sort-column"
       });
-    }else if (column === "reportStatus") {
-      this.state.ReportData = this.state.sortAllData;
-      itemsArray = this.state.ReportData.filter(a => a.reportStatus === data);
+    } else if (column === "reportStatus") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.reportStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        statusColor:"sort-column"
-       
+        statusColor: "sort-column"
       });
     }
 
     this.setState({
-      ReportData: itemsArray
+      tempReportData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
-
-
-
 
   hide(e, id) {
     debugger;
@@ -1483,8 +1556,8 @@ class Reports extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortName.push({ reportName: distinct[i] });
+            self.state.sortFilterName.push({ reportName: distinct[i] });
           }
-
 
           var unique = [];
           var distinct = [];
@@ -1496,6 +1569,7 @@ class Reports extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSchedule.push({ scheduleStatus: distinct[i] });
+            self.state.sortFilterSchedule.push({ scheduleStatus: distinct[i] });
           }
 
           var unique = [];
@@ -1508,6 +1582,7 @@ class Reports extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
           }
 
           var unique = [];
@@ -1520,9 +1595,8 @@ class Reports extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ reportStatus: distinct[i] });
+            self.state.sortFilterStatus.push({ reportStatus: distinct[i] });
           }
-
-
         }
       })
       .catch(data => {
@@ -1600,35 +1674,35 @@ class Reports extends Component {
   };
   sentMail = () => {
     debugger;
-    let self=this;
+    let self = this;
     if (this.validator.allValid()) {
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Report/SendReportMail",
-      headers: authHeader(),
-      data: {
-        EmailID:this.state.DefaultEmailID,
-        FilePath:this.state.FileURL
-      }
-    })
-      .then(function(res) {
-        debugger;
-        NotificationManager.success("Email has been sent");
-        self.setState({
-          loadingDownload: false
-        });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/SendReportMail",
+        headers: authHeader(),
+        data: {
+          EmailID: this.state.DefaultEmailID,
+          FilePath: this.state.FileURL
+        }
       })
-      .catch(data => {
-        self.setState({
-          loadingDownload: false
+        .then(function(res) {
+          debugger;
+          NotificationManager.success("Email has been sent");
+          self.setState({
+            loadingDownload: false
+          });
+        })
+        .catch(data => {
+          self.setState({
+            loadingDownload: false
+          });
+          console.log(data);
         });
-        console.log(data);
-      });
     } else {
       this.validator.showMessages();
       this.forceUpdate();
     }
-  }
+  };
 
   downloadDefaultReport = () => {
     debugger;
@@ -1667,18 +1741,14 @@ class Reports extends Component {
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
-          else
-          {
-            window.open(resultArr[0]);         
-          }
-          
         })
         .catch(data => {
           self.setState({
@@ -1711,20 +1781,17 @@ class Reports extends Component {
       })
         .then(function(res) {
           debugger;
-         // window.open(res.data.responseData);
+          // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
-          }
-          else
-          {
-            window.open(resultArr[0]);         
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
         })
         .catch(data => {
@@ -1780,16 +1847,13 @@ class Reports extends Component {
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
-          }
-          else
-          {
-            window.open(resultArr[0]);         
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
         })
         .catch(data => {
@@ -1845,20 +1909,17 @@ class Reports extends Component {
       })
         .then(function(res) {
           debugger;
-         // window.open(res.data.responseData);
+          // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
-          }
-          else
-          {
-            window.open(resultArr[0]);         
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
         })
         .catch(data => {
@@ -1889,20 +1950,17 @@ class Reports extends Component {
       })
         .then(function(res) {
           debugger;
-        //  window.open(res.data.responseData);
+          //  window.open(res.data.responseData);
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
-          }
-          else
-          {
-            window.open(resultArr[0]);         
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
         })
         .catch(data => {
@@ -1933,20 +1991,17 @@ class Reports extends Component {
       })
         .then(function(res) {
           debugger;
-        //  window.open(res.data.responseData);
+          //  window.open(res.data.responseData);
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
-          }
-          else
-          {
-            window.open(resultArr[0]);         
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
         })
         .catch(data => {
@@ -1977,20 +2032,17 @@ class Reports extends Component {
       })
         .then(function(res) {
           debugger;
-         // window.open(res.data.responseData);
+          // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false
           });
-          var resultArr=res.data.responseData.split('@');
-          if(resultArr.length>1)
-          { 
-             self.setState({FileURL:resultArr[0]});           
-             self.setState({OpenDefaultMailModal:true});
-             self.setState({OpenDefaultModal:false});
-          }
-          else
-          {
-            window.open(resultArr[0]);         
+          var resultArr = res.data.responseData.split("@");
+          if (resultArr.length > 1) {
+            self.setState({ FileURL: resultArr[0] });
+            self.setState({ OpenDefaultMailModal: true });
+            self.setState({ OpenDefaultModal: false });
+          } else {
+            window.open(resultArr[0]);
           }
         })
         .catch(data => {
@@ -2009,8 +2061,8 @@ class Reports extends Component {
     //delete link;
   };
 
-  setDefaultEmail =e=> {
-   this.setState({DefaultEmailID:e.target.value});
+  setDefaultEmail = e => {
+    this.setState({ DefaultEmailID: e.target.value });
     //delete link;
   };
   handleDeleteReport(id) {
@@ -2258,16 +2310,16 @@ class Reports extends Component {
     var SearchParams = {};
 
     var month, day, year, hours, minutes, seconds;
-        var date = new Date(this.state.selectedScheduleTime),
-            month = ("0" + (date.getMonth() + 1)).slice(-2),
-            day = ("0" + date.getDate()).slice(-2);
-        hours = ("0" + date.getHours()).slice(-2);
-        minutes = ("0" + date.getMinutes()).slice(-2);
-        seconds = ("0" + date.getSeconds()).slice(-2);
+    var date = new Date(this.state.selectedScheduleTime),
+      month = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    hours = ("0" + date.getHours()).slice(-2);
+    minutes = ("0" + date.getMinutes()).slice(-2);
+    seconds = ("0" + date.getSeconds()).slice(-2);
 
-        var mySQLDate = [date.getFullYear(), month, day].join("-");
-        var mySQLTime = [hours, minutes, seconds].join(":");
-        this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
+    var mySQLDate = [date.getFullYear(), month, day].join("-");
+    var mySQLTime = [hours, minutes, seconds].join(":");
+    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
 
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (this.state.selectedReportName == "") {
@@ -2366,6 +2418,64 @@ class Reports extends Component {
       NotificationManager.error("Please add report for create scheduler.");
     }
   }
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    if (this.state.sortColumn === "reportName") {
+      var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
+        keys: ["reportName"]
+      });
+      if (sortFilterName.length > 0) {
+        this.setState({ sortFilterName });
+      } else {
+        this.setState({
+          sortFilterName: this.state.sortName
+        });
+      }
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      var sortFilterSchedule = matchSorter(
+        this.state.sortSchedule,
+        e.target.value,
+        { keys: ["scheduleStatus"] }
+      );
+      if (sortFilterSchedule.length > 0) {
+        this.setState({ sortFilterSchedule });
+      } else {
+        this.setState({
+          sortFilterSchedule: this.state.sortSchedule
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["reportStatus"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
 
   render() {
     const datareport = this.state.ReportData;
@@ -2374,7 +2484,6 @@ class Reports extends Component {
         {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
-         
             onClose={this.StatusCloseModel}
             open={this.state.StatusModel}
             modalId="Status-popup"
@@ -2382,9 +2491,10 @@ class Reports extends Component {
           >
             <div className="status-drop-down">
               <div className="sort-sctn text-center">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
-                 
                   <a
                     href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -2405,120 +2515,131 @@ class Reports extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "reportName"
+                    ? this.state.sortFilterName !== null &&
+                      this.state.sortFilterName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportName}
+                            id={"fil-open" + item.reportName}
+                            value={item.reportName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "scheduleStatus"
+                    ? this.state.sortFilterSchedule !== null &&
+                      this.state.sortFilterSchedule.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.scheduleStatus}
+                            id={"fil-open" + item.scheduleStatus}
+                            value={item.scheduleStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "scheduleStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.scheduleStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.scheduleStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "reportStatus"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportStatus}
+                            id={"fil-open" + item.reportStatus}
+                            value={item.reportStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "reportName"
-                  ? this.state.sortName !== null &&
-                    this.state.sortName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.reportName}
-                          id={"fil-open" + item.reportName}
-                          value={item.reportName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "scheduleStatus"
-                  ? this.state.sortSchedule !== null &&
-                    this.state.sortSchedule.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.scheduleStatus}
-                          id={"fil-open" + item.scheduleStatus}
-                          value={item.scheduleStatus}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "scheduleStatus"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.scheduleStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.scheduleStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "createdBy"
-                  ? this.state.sortCreatedBy !== null &&
-                    this.state.sortCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdBy}
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "reportStatus"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.reportStatus}
-                          id={"fil-open" + item.reportStatus}
-                          value={item.reportStatus}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportStatus"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-
-                </div>
-               
               </div>
             </div>
           </Modal>
@@ -3368,10 +3489,10 @@ class Reports extends Component {
                       name="email_"
                       maxLength={100}
                       value={this.state.DefaultEmailID}
-                     onChange={this.setDefaultEmail.bind(this)}
+                      onChange={this.setDefaultEmail.bind(this)}
                     />
                   </div>
-                    {this.validator.message(
+                  {this.validator.message(
                     "Email Id",
                     this.state.DefaultEmailID,
                     "required|email"
@@ -4078,11 +4199,11 @@ class Reports extends Component {
                     {
                       Header: (
                         <span
-                        className={this.state.nameColor}
-                           
+                          className={this.state.nameColor}
                           onClick={this.StatusOpenModel.bind(
                             this,
-                            "reportName","Report Name"
+                            "reportName",
+                            "Report Name"
                           )}
                         >
                           Name
@@ -4094,11 +4215,11 @@ class Reports extends Component {
                     {
                       Header: (
                         <span
-                        className={this.state.scheduleColor}
-                           
+                          className={this.state.scheduleColor}
                           onClick={this.StatusOpenModel.bind(
                             this,
-                            "scheduleStatus","Schedule Status"
+                            "scheduleStatus",
+                            "Schedule Status"
                           )}
                         >
                           Schedule Status
@@ -4110,11 +4231,11 @@ class Reports extends Component {
                     {
                       Header: (
                         <span
-                        className={this.state.createdColor}
-                           
+                          className={this.state.createdColor}
                           onClick={this.StatusOpenModel.bind(
                             this,
-                            "createdBy","Created By"
+                            "createdBy",
+                            "Created By"
                           )}
                         >
                           Created by
@@ -4171,11 +4292,11 @@ class Reports extends Component {
                     {
                       Header: (
                         <span
-                        className={this.state.statusColor}
-                           
+                          className={this.state.statusColor}
                           onClick={this.StatusOpenModel.bind(
                             this,
-                            "reportStatus","Status"
+                            "reportStatus",
+                            "Status"
                           )}
                         >
                           Status

@@ -1828,9 +1828,9 @@ input[type="radio"] {
 /* input[type="text"]:focus {
   border: 1px solid #1890ff;
 } */
-button:focus {
+/* button:focus {
   outline: none;
-}
+} */
 /* button:focus,
 select:focus,
 textarea:focus {
@@ -2596,8 +2596,9 @@ table tr th:last-child {
 }
 .mail-id {
   color: #6e6e6e;
-  font-size: 13px;
-  margin-top: -3px;
+  font-size: 12px;
+  margin-top: 0px;
+  word-break: break-all;
 }
 .user-img {
   width: 60px;
@@ -3335,7 +3336,7 @@ table tr th:last-child {
 }
 .schedule-width {
   /* max-width: 283px; */
-  max-width: 360px;
+  max-width: 500px;
   width: 100%;
 }
 .last-to {
@@ -7173,7 +7174,8 @@ table tr th:last-child {
 }
 
 .namepad {
-  padding: 0 0 0 35px;
+  padding:0;
+  /* padding: 0 0 0 35px; */
   margin-bottom: 20px;
   display: grid;
 }
@@ -7192,6 +7194,7 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 20px;
   text-align: left;
+  word-break: break-all;
 }
 .xyz {
   background-color: #edf2f4;
@@ -8222,7 +8225,7 @@ table tr th:last-child {
 .systemeditbutton-text {
   color: #2561a8;
   font-family: Lato;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   /* line-height: 12px;
   width: 23.07px;
@@ -9319,9 +9322,9 @@ table tr th:last-child {
 }
 /* MyTicket KbLink Css Start Kalpesh */
 .knoim {
-  width: 17px;
-  height: 17px;
-  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 .knoim1 {
   width: 17px;
