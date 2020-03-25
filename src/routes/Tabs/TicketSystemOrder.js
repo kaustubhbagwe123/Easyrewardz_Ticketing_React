@@ -1435,6 +1435,11 @@ class TicketSystemOrder extends Component {
                     className="addmanuallytext1"
                     // className="form-control"
                   />
+                  {this.validator.message(
+                    "Date",
+                    this.state.OrderCreatDate,
+                    "required"
+                  )}
                 </div>
               </div>
 
@@ -1497,8 +1502,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Size"
                     name="size"
                     value={this.state.size}
-                    onChange={this.handleNumberOnchange}
-                    // onChange={this.handleManuallyOnchange}
+                    // onChange={this.handleNumberOnchange}
+                    onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                     maxLength={10}
                   />
@@ -1518,8 +1523,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Required Size"
                     name="requiredSize"
                     value={this.state.requiredSize}
-                    onChange={this.handleNumberOnchange}
-                    // onChange={this.handleManuallyOnchange}
+                    // onChange={this.handleNumberOnchange}
+                    onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
                   {this.validator.message(
