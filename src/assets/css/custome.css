@@ -1828,9 +1828,9 @@ input[type="radio"] {
 /* input[type="text"]:focus {
   border: 1px solid #1890ff;
 } */
-button:focus {
+/* button:focus {
   outline: none;
-}
+} */
 /* button:focus,
 select:focus,
 textarea:focus {

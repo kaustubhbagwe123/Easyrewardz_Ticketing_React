@@ -2806,6 +2806,7 @@ class MyTicketList extends Component {
     });
   }
   HandleRowClickPage = (rowInfo, column) => {
+    debugger;
     if ((rowInfo, column)) {
       return {
         onClick: e => {
@@ -2820,7 +2821,7 @@ class MyTicketList extends Component {
               pathname: "myticket",
               ticketDetailID: Id
             });
-          }, 100);
+          }, 1000);
         },
         style: {
           background:
@@ -2836,6 +2837,7 @@ class MyTicketList extends Component {
     }
     return {};
   };
+  
   handleScheduleDateChange = e => {
     //debugger;
     let SelectData = e.currentTarget.value;
@@ -3424,6 +3426,7 @@ class MyTicketList extends Component {
     }
     // }
   }
+
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
 
@@ -6457,7 +6460,8 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
               >
-                <MyTicketDraft draftData={DraftDetails} />
+                <MyTicketDraft draftData={DraftDetails} history={this.props.history} />
+                
               </div>
             </div>
           </div>

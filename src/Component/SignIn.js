@@ -135,10 +135,7 @@ class SingIn extends Component {
       // );
 
       let X_Authorized_Programcode = this.state.programCode;
-
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
-
-
         axios({
           method: "post",
           url: config.apiUrl + "/Account/authenticateUser",
