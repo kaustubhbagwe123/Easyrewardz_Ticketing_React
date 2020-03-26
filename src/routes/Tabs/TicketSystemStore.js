@@ -469,7 +469,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="storedetail-tab"
                 >
-                  <div className="reactstoreselect">
+                  <div className="reactstoreselect ">
                     <Table
                       className="custom-antd-table"
                       columns={[
@@ -817,7 +817,7 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="selectedSubstore-tab"
                   >
-                    <div className="reactstoreselect ordermainrow">
+                    <div className="reactstoreselect ordermainrow custom-antd-table">
                       <Table
                         className="custom-antd-table date-picker-arrows"
                         columns={[
