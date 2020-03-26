@@ -147,11 +147,18 @@ class Templates extends Component {
   setPlaceholderValue(e) {
     debugger;
     let ckData = this.state.editorContent;
+    let ckDataArr = ckData.split('\n\n');
+    let ckDataArrLast = ckDataArr.pop();
+    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ckData += placeholderName;
+    ck += placeholderName;
+    let ckFinal = ckTags[0] + ck + ckTags[1];
+    ckDataArr.push(ckFinal);
+    ckData = ckDataArr.join(' ');
     this.setState({ editorContent: ckData });
   }
 
@@ -1644,7 +1651,7 @@ class Templates extends Component {
                           )} */}
                         </div>
                         <Modal.Body>
-                          <div className="tic-det-ck-user template-user myticlist-expand-sect">
+                          {/* <div className="tic-det-ck-user template-user myticlist-expand-sect">
                             <select
                               className="add-select-category"
                               value="0"
@@ -1658,7 +1665,7 @@ class Templates extends Component {
                                   </option>
                                 ))}
                             </select>
-                          </div>
+                          </div> */}
                           <div className="tic-det-ck-user template-user myticlist-expand-sect placeholder-alert">
                             <select
                               className="add-select-category"

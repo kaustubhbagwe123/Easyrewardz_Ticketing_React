@@ -183,16 +183,55 @@ class Alerts extends Component {
     let placeholderName = matchedArr[0].parameterName;
     if (type == "Customer") {
       let ckData = this.state.selectedCKCustomer;
-      ckData += placeholderName;
-      this.setState({ selectedCKCustomer: ckData });
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      ck += placeholderName;
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ selectedCKCustomer: ckData });
+      } else {
+        this.setState({ selectedCKCustomer: ck });
+      }
     } else if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
-      ckData += placeholderName;
-      this.setState({ selectedCKInternal: ckData });
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      ck += placeholderName;
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ selectedCKInternal: ckData });
+      } else {
+        this.setState({ selectedCKInternal: ck });
+      }
     } else if (type == "Store") {
       let ckData = this.state.selectedCKStore;
-      ckData += placeholderName;
-      this.setState({ selectedCKStore: ckData });
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      ck += placeholderName;
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ selectedCKStore: ckData });
+      } else {
+        this.setState({ selectedCKStore: ck });
+      }
     }
   }
 
@@ -1970,7 +2009,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -1987,7 +2026,7 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
+                                </div> */}
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
                                     <select
@@ -2072,7 +2111,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2089,7 +2128,7 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
+                                </div> */}
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select
@@ -2173,7 +2212,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2190,7 +2229,7 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
+                                </div> */}
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select

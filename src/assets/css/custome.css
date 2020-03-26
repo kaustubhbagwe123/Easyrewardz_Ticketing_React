@@ -3773,6 +3773,11 @@ table tr th:last-child {
   background: #fff !important;
   top: 5px;
 }
+.tic-det-ck-user-rply {
+  right: 10px;
+  top: 42px;
+  width: 120px;
+}
 .tic-det-ck-user select {
   background-color: #ecf2f4 !important;
   height: auto;
