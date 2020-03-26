@@ -27,6 +27,9 @@ import ActiveStatus from "../../activeStatus";
 import { CSVLink } from "react-csv";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+// const CancelToken = axios.CancelToken;
+// const source = CancelToken.source();
 
 const MyButton = props => {
   const { children } = props;
@@ -189,7 +192,11 @@ class TicketHierarchy extends Component {
       sortFilterCreatedBy: [],
       sortFilterStatus: [],
       sFilterCheckbox: "",
-      filterTxtValue: ""
+      filterTxtValue: "",
+      isFileUploadFail: false,
+      progressValue: 0,
+      fileSize: "",
+      showProgress: false
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -431,6 +438,9 @@ class TicketHierarchy extends Component {
     NotificationManager.success("File deleted successfully.");
   };
 
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
   hanldeAddBulkUpload() {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
@@ -439,11 +449,17 @@ class TicketHierarchy extends Component {
 
       formData.append("file", this.state.fileN[0]);
 
+      this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
         headers: authHeader(),
-        data: formData
+        data: formData,
+        // cancelToken: source.token,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        }
       })
         .then(function(res) {
           debugger;
@@ -451,11 +467,18 @@ class TicketHierarchy extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
+            self.setState({fileName:"",fileSize:"",fileN:[]})
+            self.handleGetHierarchyData();
           } else {
             NotificationManager.success("File not uploaded.");
           }
         })
         .catch(data => {
+          debugger;
+          if(data.message)
+          {
+            this.setState({ showProgress: false,isFileUploadFail:true });
+          }
           console.log(data);
         });
     } else {
@@ -728,13 +751,16 @@ class TicketHierarchy extends Component {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
-    allFiles.push(selectedFiles[0]);
-    console.log(allFiles);
-    console.log(allFiles[0].name);
-    this.setState({
-      fileN: allFiles,
-      fileName: allFiles[0].name
-    });
+    if (selectedFiles) {
+      allFiles.push(selectedFiles[0]);
+
+      var fileSize = formatSizeUnits(selectedFiles[0].size);
+      this.setState({
+        fileSize,
+        fileN: allFiles,
+        fileName: allFiles[0].name
+      });
+    }
   };
   fileDrop = e => {
     debugger;
@@ -1235,44 +1261,7 @@ class TicketHierarchy extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
+                  
                 </div>
               </div>
 
@@ -1444,7 +1433,7 @@ class TicketHierarchy extends Component {
                                   </a>
                                   <button
                                     className="butn"
-                                    //onClick={this.handleDeleteBulkupload}
+                                    onClick={this.handleDeleteBulkupload}
                                   >
                                     Delete
                                   </button>
@@ -1454,35 +1443,48 @@ class TicketHierarchy extends Component {
                           </UncontrolledPopover>
                         </div>
                         <div>
-                          <span className="file-size">122.6kb</span>
+                          <span className="file-size">
+                            {this.state.fileSize}
+                          </span>
                         </div>
                       </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <a className="file-retry" href={Demo.BLANK_LINK}>
-                            Retry
-                          </a>
+                      {this.state.fileN.length.length > 0 &&
+                      this.state.isFileUploadFail ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name">{this.state.fileName}</p>
+                            <a className="file-retry" href={Demo.BLANK_LINK}>
+                              Retry
+                            </a>
+                          </div>
+                          <div>
+                            <span className="file-failed">Failed</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="file-failed">Failed</span>
-                        </div>
-                      </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name pr-0">
-                            {this.state.fileName}
-                          </p>
-                        </div>
-                        <div>
-                          <div className="d-flex align-items-center mt-2">
-                            <ProgressBar className="file-progress" now={60} />
-                            <div className="cancel-upload">
-                              <img src={UploadCancel} alt="upload cancel" />
+                      ) : null}
+                      {this.state.showProgress ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name pr-0">
+                              {this.state.fileName}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="d-flex align-items-center mt-2">
+                              <ProgressBar
+                                className="file-progress"
+                                now={this.state.progressValue}
+                              />
+                              {/* {this.state.progressValue !== 100 ? ( */}
+                                <div className="cancel-upload">
+                                  {/* <img src={UploadCancel} alt="upload cancel" onClick={source.cancel('Operation canceled by the user.')} /> */}
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
+                              {/* ) : null} */}
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : null}
                     </div>
                   )}
                   <button

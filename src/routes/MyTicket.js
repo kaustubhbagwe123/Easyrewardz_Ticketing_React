@@ -698,17 +698,6 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       text += "@" + userName;
       this.setState({ ticketcommentMSG: text, followUpIds });
-    } else if (check === "rply") {
-      let followUpIds = this.state.followUpIds;
-      let assign = e.currentTarget.value;
-      followUpIds += assign + ",";
-      let text = this.state.replymailBodyData;
-      let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
-      );
-      let userName = matchedArr[0].fullName;
-      text += "@" + userName;
-      this.setState({ replymailBodyData: text, followUpIds });
     } else {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -3305,7 +3294,15 @@ class MyTicket extends Component {
                     <div className="mid-sec mid-secnew">
                       <div className="row mob-pad">
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                          <div className="form-group">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor" ||
+                              this.state.role_Name === "Admin" ||
+                              this.state.role_Name === "Agent"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Status</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -6069,21 +6066,6 @@ class MyTicket extends Component {
                                 </li>
                               </ul>
                             </div> */}
-                            <div className="tic-det-ck-user tic-det-ck-user-rply myticlist-expand-sect">
-                              <select
-                                className="add-select-category"
-                                value="0"
-                                onChange={this.setAssignedToValue.bind(this, "rply")}
-                              >
-                                <option value="0">Users</option>
-                                {this.state.AssignToData !== null &&
-                                  this.state.AssignToData.map((item, i) => (
-                                    <option key={i} value={item.userID}>
-                                      {item.fullName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
                             <div className="my-ticket-temp">
                               <a
                                 href="#!"
