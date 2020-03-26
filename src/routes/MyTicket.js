@@ -715,10 +715,16 @@ class MyTicket extends Component {
       );
       let userName = matchedArr[0].fullName;
       ck += "@" + userName;
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
-      text = ckDataArr.join(" ");
-      this.setState({ replymailBodyData: text, followUpIds });
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        text = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ replymailBodyData: text, followUpIds });
+      } else {
+        this.setState({ replymailBodyData: ck, followUpIds });
+      }
     } else {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -733,10 +739,16 @@ class MyTicket extends Component {
       );
       let userName = matchedArr[0].fullName;
       ck += "@" + userName;
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
-      ckData = ckDataArr.join(" ");
-      this.setState({ mailBodyData: ckData, followUpIds });
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ mailBodyData: ckData, followUpIds });
+      } else {
+        this.setState({ mailBodyData: ck, followUpIds });
+      }
     }
   }
   setPlaceholderValue(e) {
@@ -750,10 +762,16 @@ class MyTicket extends Component {
     );
     let placeholderName = matchedArr[0].parameterName;
     ck += placeholderName;
-    let ckFinal = ckTags[0] + ck + ckTags[1];
-    ckDataArr.push(ckFinal);
-    ckData = ckDataArr.join(" ");
-    this.setState({ mailBodyData: ckData });
+    if (ckTags !== null) {
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      ckData = ckDataArr.join(' ');
+    }
+    if (ckTags !== null) {
+      this.setState({ mailBodyData: ckData });
+    } else {
+      this.setState({ mailBodyData: ck });
+    }
   }
   handleGetStoreDetails() {
     let self = this;
@@ -6163,6 +6181,21 @@ class MyTicket extends Component {
                                 </li>
                               </ul>
                             </div> */}
+                            <div className="tic-det-ck-user tic-det-ck-user-rply myticlist-expand-sect">
+                              <select
+                                className="add-select-category"
+                                value="0"
+                                onChange={this.setAssignedToValue.bind(this, "rply")}
+                              >
+                                <option value="0">Users</option>
+                                {this.state.AssignToData !== null &&
+                                  this.state.AssignToData.map((item, i) => (
+                                    <option key={i} value={item.userID}>
+                                      {item.fullName}
+                                    </option>
+                                  ))}
+                              </select>
+                            </div>
                             <div className="my-ticket-temp">
                               <a
                                 href="#!"

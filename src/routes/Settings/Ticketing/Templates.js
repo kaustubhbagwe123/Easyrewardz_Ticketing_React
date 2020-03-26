@@ -156,10 +156,16 @@ class Templates extends Component {
     );
     let placeholderName = matchedArr[0].parameterName;
     ck += placeholderName;
-    let ckFinal = ckTags[0] + ck + ckTags[1];
-    ckDataArr.push(ckFinal);
-    ckData = ckDataArr.join(' ');
-    this.setState({ editorContent: ckData });
+    if (ckTags !== null) {
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      ckData = ckDataArr.join(' ');
+    }
+    if (ckTags !== null) {
+      this.setState({ editorContent: ckData });
+    } else {
+      this.setState({ editorContent: ck });
+    }
   }
 
   handleUpdateTemplate() {
