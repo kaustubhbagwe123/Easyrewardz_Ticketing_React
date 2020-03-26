@@ -5452,10 +5452,9 @@ progress::-webkit-progress-bar {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 0;
   margin-top: 4.5%;
-  margin-left: 27%;
   display: inline-block;
   height: auto;
-  width: 609px;
+  width: 600px;
 }
 #addkb-modal-ovrly {
   padding: 0px 0px 0 0;
@@ -5656,7 +5655,7 @@ progress::-webkit-progress-bar {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 10;
-  margin-right: 360px;
+  /* margin-right: 360px; */
   margin-top: 0;
   margin-bottom: 0;
   display: inline-block;
@@ -10773,6 +10772,23 @@ table tr th:last-child {
     top: 45px;
     width: 130px;
 }
+.setting-tabs .nav-tabs .nav-item {
+  margin-right: 25px;
+}
+.Add-ticket-button {
+  width: 130px;
+}
+.seacrh-img-addsearch {
+  width: 8%;
+}
+.placeholder-dropdown-tktSys {
+  top: 83px;
+  left: 20px;
+  width: 128px;
+}
+.CCdi1 {
+  width: 95px;
+}
 }
 @media only screen and (max-width: 992px) {
   /* dashboard starts */
@@ -11460,4 +11476,16 @@ table tr th:last-child {
 .srch-imge {
   margin-top: -5px;
   cursor: pointer;
+}
+.csv-button img {
+  margin-right: 5px;
+}
+.myticlist-expand-sect img  {
+  margin-right: 5px;
+}
+.dis-btn {
+  margin: 0;
+}
+.DashTimeRange {
+  padding: 0 15px 0 0;
 }
