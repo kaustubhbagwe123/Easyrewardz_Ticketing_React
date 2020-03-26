@@ -147,11 +147,18 @@ class Templates extends Component {
   setPlaceholderValue(e) {
     debugger;
     let ckData = this.state.editorContent;
+    let ckDataArr = ckData.split('\n\n');
+    let ckDataArrLast = ckDataArr.pop();
+    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ckData += placeholderName;
+    ck += placeholderName;
+    let ckFinal = ckTags[0] + ck + ckTags[1];
+    ckDataArr.push(ckFinal);
+    ckData = ckDataArr.join(' ');
     this.setState({ editorContent: ckData });
   }
 
