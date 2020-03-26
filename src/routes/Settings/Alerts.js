@@ -1970,7 +1970,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -1987,7 +1987,7 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
+                                </div> */}
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
                                     <select
@@ -2072,7 +2072,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2089,7 +2089,7 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
+                                </div> */}
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select
@@ -2173,7 +2173,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2190,7 +2190,7 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
+                                </div> */}
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select

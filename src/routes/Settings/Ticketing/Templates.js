@@ -1644,7 +1644,7 @@ class Templates extends Component {
                           )} */}
                         </div>
                         <Modal.Body>
-                          <div className="tic-det-ck-user template-user myticlist-expand-sect">
+                          {/* <div className="tic-det-ck-user template-user myticlist-expand-sect">
                             <select
                               className="add-select-category"
                               value="0"
@@ -1658,7 +1658,7 @@ class Templates extends Component {
                                   </option>
                                 ))}
                             </select>
-                          </div>
+                          </div> */}
                           <div className="tic-det-ck-user template-user myticlist-expand-sect placeholder-alert">
                             <select
                               className="add-select-category"
