@@ -141,6 +141,7 @@ class TicketSystemOrder extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
+          self.props.ShowOderdData = false;
           const newSelected = Object.assign({}, self.state.CheckOrderID);
           var OrderSubItem = [];
           var selectedRow = [];
@@ -475,9 +476,7 @@ class TicketSystemOrder extends Component {
 
           if (status === "Success") {
             let data = res.data.responseData;
-            NotificationManager.success(
-              "New Order added successfully."
-            );
+            NotificationManager.success("New Order added successfully.");
             self.handleOrderSearchData(data);
             self.handleChangeSaveManualTbl();
             self.setState({
@@ -1471,7 +1470,10 @@ class TicketSystemOrder extends Component {
                     value={this.state.modeOfPayment}
                     onChange={this.setModePaymentValue}
                   >
-                    <option value="" className="select-sub-category-placeholder">
+                    <option
+                      value=""
+                      className="select-sub-category-placeholder"
+                    >
                       Mode Of Payment
                     </option>
                     {this.state.modeData !== null &&

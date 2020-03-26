@@ -243,7 +243,8 @@ class StoreMaster extends Component {
       cityColor: "",
       stateColor: "",
       pincodeColor: "",
-      brandnameColor: ""
+      brandnameColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;

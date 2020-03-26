@@ -33,7 +33,7 @@ class TicketSystemStore extends Component {
       byVisitDate: "",
       byValideStoreData: "",
       modifiedDate: "",
-      CustStoreStatusDrop: "0",
+      CustStoreStatusDrop: "0"
       // showStoreDetails:true
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
@@ -47,8 +47,8 @@ class TicketSystemStore extends Component {
   }
 
   componentDidUpdate() {
-    var storeDat=this.props.showStore_Date;
-    if(storeDat === true){
+    var storeDat = this.props.showStore_Date;
+    if (storeDat === true) {
       if (this.state.showStoreDetails === true) {
         var ticket_Id = this.props.ticket_IDS;
         if (ticket_Id) {
@@ -57,7 +57,6 @@ class TicketSystemStore extends Component {
         }
       }
     }
-    
   }
 
   ////handle Get Store Details
@@ -76,8 +75,8 @@ class TicketSystemStore extends Component {
         //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-
         if (status === "Success") {
+          self.props.showStore_Date = false;
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
@@ -95,7 +94,7 @@ class TicketSystemStore extends Component {
             selectedStoreData: selectedRow,
             selectedStore: data,
             AddSelectDetail: true,
-            message: "Success",
+            message: "Success"
             // showStoreDetails:false
           });
         } else {
@@ -463,7 +462,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="storedetail-tab"
                 >
-                  <div className="reactstoreselect">
+                  <div className="reactstoreselect ">
                     <Table
                       className="custom-antd-table"
                       columns={[
@@ -811,7 +810,7 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="selectedSubstore-tab"
                   >
-                    <div className="reactstoreselect ordermainrow">
+                    <div className="reactstoreselect ordermainrow custom-antd-table">
                       <Table
                         className="custom-antd-table date-picker-arrows"
                         columns={[

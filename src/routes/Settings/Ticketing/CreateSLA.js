@@ -28,6 +28,7 @@ import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import matchSorter from "match-sorter";
 
 class CreateSLA extends Component {
   constructor(props) {
@@ -70,7 +71,13 @@ class CreateSLA extends Component {
       subCategoryName: "",
       SLAId: 0,
       editmodel: false,
-      editSaveLoading: false
+      editSaveLoading: false,
+      tempsla: [],
+      sortFilterIssueType: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: [],
+      filterTxtValue: "",
+      sFilterCheckbox: ""
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -120,43 +127,107 @@ class CreateSLA extends Component {
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.tempsla.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        sla: this.state.tempsla,
+        sFilterCheckbox: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        sla: this.state.sortAllData,
+        sFilterCheckbox: ""
+      });
+    }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
     this.setState({
       issueColor: "",
       createdColor: "",
-      stattusColor: ""
+      stattusColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "issueTpeName") {
-      this.state.sla = this.state.sortAllData;
-      itemsArray = this.state.sla.filter(a => a.issueTpeName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.issueTpeName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         issueColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      this.state.sla = this.state.sortAllData;
-      itemsArray = this.state.sla.filter(a => a.createdBy === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         createdColor: "sort-column"
       });
     } else if (column === "isSLAActive") {
-      this.state.sla = this.state.sortAllData;
-      itemsArray = this.state.sla.filter(a => a.isSLAActive === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.isSLAActive === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         stattusColor: "sort-column"
       });
     }
 
     this.setState({
-      sla: itemsArray
+      tempsla: itemsArray
     });
     this.StatusCloseModel();
   };
@@ -395,6 +466,8 @@ class CreateSLA extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTpeName: distinct[i] });
+            self.state.sortFilterIssueType		
+            .push({ issueTpeName: distinct[i] });
           }
 
           var unique = [];
@@ -407,6 +480,7 @@ class CreateSLA extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
           }
 
           var unique = [];
@@ -419,6 +493,7 @@ class CreateSLA extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ isSLAActive: distinct[i] });
+            self.state.sortFilterStatus.push({ isSLAActive: distinct[i] });
           }
         }
 
@@ -682,7 +757,6 @@ class CreateSLA extends Component {
     this.handleGetSLAIssueType();
   };
   handleSlaButton() {
-  
     let slaShowOriginal = this.state.slaShow;
     let slaShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
@@ -719,58 +793,107 @@ class CreateSLA extends Component {
     // }
     let self = this;
     // if (valid === true) {
-      var inputParamter = {};
-      inputParamter.SLAId = this.state.SLAId;
-      inputParamter.IsActive = this.state.isActive;
-      inputParamter.BrandName = this.state.brandName;
-      inputParamter.CategoryName = this.state.categoryName;
-      inputParamter.SubCategoryName = this.state.subCategoryName;
-      inputParamter.IssueTypeName = this.state.issueTypeName;
-      var SLATargetTempData = [];
-      for (let i = 0; i < this.state.finalEditData.length > 0; i++) {
-        var obj = {};
-        obj.priorityID = this.state.finalEditData[i].priorityID;
-        obj.priorityName = this.state.finalEditData[i].priortyName;
-        obj.slaBridgeInPercantage = this.state.finalEditData[i].SlaBreach;
-        obj.slaResponseValue = this.state.finalEditData[i].Rerspondtime;
-        obj.slaResponseType = this.state.finalEditData[i].RerspondType;
-        obj.slaResolveValue = this.state.finalEditData[i].ResolveTime;
-        obj.slaResolveType = this.state.finalEditData[i].ResolveType;
-        obj.isActive = this.state.finalEditData[i].isActive;
-        obj.slaTargetID = this.state.finalEditData[i].slaTargetID;
-        SLATargetTempData.push(obj);
-      }
-      inputParamter.sLATargetDetails = SLATargetTempData;
-      this.setState({ editSaveLoading: true });
+    var inputParamter = {};
+    inputParamter.SLAId = this.state.SLAId;
+    inputParamter.IsActive = this.state.isActive;
+    inputParamter.BrandName = this.state.brandName;
+    inputParamter.CategoryName = this.state.categoryName;
+    inputParamter.SubCategoryName = this.state.subCategoryName;
+    inputParamter.IssueTypeName = this.state.issueTypeName;
+    var SLATargetTempData = [];
+    for (let i = 0; i < this.state.finalEditData.length > 0; i++) {
+      var obj = {};
+      obj.priorityID = this.state.finalEditData[i].priorityID;
+      obj.priorityName = this.state.finalEditData[i].priortyName;
+      obj.slaBridgeInPercantage = this.state.finalEditData[i].SlaBreach;
+      obj.slaResponseValue = this.state.finalEditData[i].Rerspondtime;
+      obj.slaResponseType = this.state.finalEditData[i].RerspondType;
+      obj.slaResolveValue = this.state.finalEditData[i].ResolveTime;
+      obj.slaResolveType = this.state.finalEditData[i].ResolveType;
+      obj.isActive = this.state.finalEditData[i].isActive;
+      obj.slaTargetID = this.state.finalEditData[i].slaTargetID;
+      SLATargetTempData.push(obj);
+    }
+    inputParamter.sLATargetDetails = SLATargetTempData;
+    this.setState({ editSaveLoading: true });
 
-      axios({
-        method: "post",
-        url: config.apiUrl + "/SLA/UpdareSLADetails",
-        headers: authHeader(),
-        data: inputParamter
-      })
-        .then(function(res) {
-          debugger;
-          var message = res.data.message;
-          var statusCode = res.data.statusCode;
-          if (message === "Success" && statusCode === 200) {
-            self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Updated Successfully");
-            self.handleGetSLA();
-          } else {
-            self.setState({ editSaveLoading: false, editmodel: false });
-            NotificationManager.success("SLA Not Updated");
-          }
-        })
-        .catch(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/UpdareSLADetails",
+      headers: authHeader(),
+      data: inputParamter
+    })
+      .then(function(res) {
+        debugger;
+        var message = res.data.message;
+        var statusCode = res.data.statusCode;
+        if (message === "Success" && statusCode === 200) {
+          self.setState({ editSaveLoading: false, editmodel: false });
+          NotificationManager.success("SLA Updated Successfully");
+          self.handleGetSLA();
+        } else {
           self.setState({ editSaveLoading: false, editmodel: false });
           NotificationManager.success("SLA Not Updated");
-          console.log(response);
-        });
+        }
+      })
+      .catch(response => {
+        self.setState({ editSaveLoading: false, editmodel: false });
+        NotificationManager.success("SLA Not Updated");
+        console.log(response);
+      });
     // } else {
     //   self.setState({ slaTargetCompulsionEdit: "Required." });
     // }
   }
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "issueTpeName") {
+      var sortFilterIssueType = matchSorter(
+        this.state.sortIssueType,
+        e.target.value,
+        { keys: ["issueTpeName"] }
+      );
+      if (sortFilterIssueType.length > 0) {
+        this.setState({ sortFilterIssueType });
+      } else {
+        this.setState({
+          sortFilterIssueType: this.state.sortIssueType
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["isSLAActive"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -816,6 +939,12 @@ class CreateSLA extends Component {
               </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
                   <div className="filter-checkbox">
                     <input
@@ -830,8 +959,8 @@ class CreateSLA extends Component {
                     </label>
                   </div>
                   {this.state.sortColumn === "issueTpeName"
-                    ? this.state.sortIssueType !== null &&
-                      this.state.sortIssueType.map((item, i) => (
+                    ? this.state.sortFilterIssueType !== null &&
+                      this.state.sortFilterIssueType.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -840,7 +969,8 @@ class CreateSLA extends Component {
                             value={item.issueTpeName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "issueTpeName"
+                              "issueTpeName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.issueTpeName}>
@@ -853,8 +983,8 @@ class CreateSLA extends Component {
                     : null}
 
                   {this.state.sortColumn === "createdBy"
-                    ? this.state.sortCreatedBy !== null &&
-                      this.state.sortCreatedBy.map((item, i) => (
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -863,7 +993,8 @@ class CreateSLA extends Component {
                             value={item.createdBy}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "createdBy"
+                              "createdBy",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.createdBy}>
@@ -876,8 +1007,8 @@ class CreateSLA extends Component {
                     : null}
 
                   {this.state.sortColumn === "isSLAActive"
-                    ? this.state.sortStatus !== null &&
-                      this.state.sortStatus.map((item, i) => (
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -886,7 +1017,8 @@ class CreateSLA extends Component {
                             value={item.isSLAActive}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "isSLAActive"
+                              "isSLAActive",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.isSLAActive}>

@@ -29,7 +29,7 @@ class TicketSystemTask extends Component {
       selectedFunction: "",
       selectedAssignTo: "",
       selectedPriority: "",
-      showTaskData: true,
+      showTaskData: true
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -48,9 +48,9 @@ class TicketSystemTask extends Component {
   }
 
   componentDidUpdate() {
-    // debugger
+    debugger;
     if (this.state.showTaskData === true) {
-    if (this.props.checkTask === true) {
+      if (this.props.checkTask === true) {
         if (this.props.ticket_IDS) {
           this.handleGetTaskGridData(this.props.ticket_IDS);
         }
@@ -60,7 +60,7 @@ class TicketSystemTask extends Component {
 
   ////handle Get Task Grid Data
   handleGetTaskGridData(Id) {
-    debugger;
+    
     let self = this;
     axios({
       method: "post",
@@ -74,13 +74,16 @@ class TicketSystemTask extends Component {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-         
-          if (status === "Success") {
-            self.setState({ taskData: data, showTaskData: false });
-          } else {
-            self.setState({ taskData: [] });
-          }
-        
+
+        console.log(data,"-------------task data");
+        console.log(status,"-------------task status");
+
+        if (status === "Success") {
+          self.setState({ taskData: data, showTaskData: false });
+          self.props.checkTask = false;
+        } else {
+          self.setState({ taskData: [] });
+        }
       })
       .catch(data => {
         console.log(data);
