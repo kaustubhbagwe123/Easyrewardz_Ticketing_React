@@ -764,8 +764,7 @@ class TicketSystem extends Component {
       });
   }
   setAssignedToValue(e) {
-     
-
+    debugger;
     let assign = e.currentTarget.value;
     let followUpIds = this.state.followUpIds;
     followUpIds += assign + ",";
