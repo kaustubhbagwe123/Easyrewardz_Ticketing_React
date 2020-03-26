@@ -97,7 +97,7 @@ class TicketSystemOrder extends Component {
   }
 
   componentDidMount() {
-    //debugger;
+    //
 
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
@@ -126,7 +126,6 @@ class TicketSystemOrder extends Component {
 
   ////hanlde Get Order Data
   handleGetOrderData(ticketIDS) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -137,7 +136,6 @@ class TicketSystemOrder extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -169,6 +167,7 @@ class TicketSystemOrder extends Component {
             showOrderData: false
           });
         } else {
+          self.props.parentCallBackFuncation("order");
           self.setState({
             orderDetailsData: []
           });
@@ -179,7 +178,7 @@ class TicketSystemOrder extends Component {
       });
   }
   handleRequireSize(e, rowData) {
-    //debugger;
+    //
 
     var id = rowData.orderItemID;
     var value = document.getElementById("requireSizeTxt" + id).value;
@@ -201,7 +200,7 @@ class TicketSystemOrder extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
+        //
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
@@ -211,7 +210,7 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderTableOpen() {
-    //debugger;
+    //
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
@@ -254,13 +253,13 @@ class TicketSystemOrder extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   setTicketSourceValue = e => {
-    //debugger;
+    //
     let value = e.currentTarget.value;
     this.setState({ selectedTicketSource: value });
   };
 
   handleCheckOrder = e => {
-    //debugger;
+    //
     this.setState({
       custAttachOrder: this.state.custAttachOrder === 1 ? 0 : 1,
       orderDetailsData: [],
@@ -282,7 +281,7 @@ class TicketSystemOrder extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        //debugger;
+        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -300,7 +299,7 @@ class TicketSystemOrder extends Component {
       });
   }
   handleGetManuallyTableData() {
-    //debugger;
+    //
     let self = this;
     axios({
       method: "post",
@@ -308,7 +307,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/getPaymentMode"
     })
       .then(function(res) {
-        //debugger;
+        //
         let finalData = res.data.data;
         self.setState({ finalData: finalData });
       })
@@ -318,7 +317,7 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderSearchData(OrdData, e) {
-    //debugger;
+    //
     e.preventDefault();
     let self = this;
     var CustID = this.props.custDetails;
@@ -335,7 +334,7 @@ class TicketSystemOrder extends Component {
             }
           })
             .then(function(res) {
-              //debugger;
+              //
               let Msg = res.data.message;
               let mainData = res.data.responseData;
 
@@ -376,7 +375,7 @@ class TicketSystemOrder extends Component {
             }
           })
             .then(function(res) {
-              //debugger;
+              //
               let Msg = res.data.message;
               let mainData = res.data.responseData;
 
@@ -415,7 +414,7 @@ class TicketSystemOrder extends Component {
         }
       })
         .then(function(res) {
-          //debugger;
+          //
           let Msg = res.data.message;
           let mainData = res.data.responseData;
 
@@ -442,7 +441,7 @@ class TicketSystemOrder extends Component {
     }
   }
   hadleAddManuallyOrderData() {
-    //debugger;
+    //
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -472,7 +471,7 @@ class TicketSystemOrder extends Component {
         }
       })
         .then(function(res) {
-          //debugger;
+          //
           let status = res.data.message;
 
           if (status === "Success") {
@@ -519,7 +518,7 @@ class TicketSystemOrder extends Component {
     }
   }
   handlePurchaseStoreName(field, e) {
-    //debugger;
+    //
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
@@ -534,7 +533,7 @@ class TicketSystemOrder extends Component {
         }
       })
         .then(function(res) {
-          //debugger;
+          //
           let status = res.data.message;
           var data = res.data.responseData;
           if (status === "Success") {
@@ -557,7 +556,7 @@ class TicketSystemOrder extends Component {
     }
   }
   HandleSelectdata(e, field, value, id) {
-    //debugger;
+    //
     let SearchData = this.state.SearchData;
     SearchData[field] = value;
 
@@ -587,7 +586,7 @@ class TicketSystemOrder extends Component {
       });
   }
   onFilteredChange(filtered) {
-    //debugger;
+    //
     if (filtered.length > 1 && this.state.filterAll.length) {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
@@ -599,7 +598,7 @@ class TicketSystemOrder extends Component {
   }
 
   filterAll(e) {
-    //debugger;
+    //
     const { value } = e.target;
     const filterAll = value;
     const filtered = [{ id: "all", value: filterAll }];
@@ -619,7 +618,7 @@ class TicketSystemOrder extends Component {
     });
   }
   handleNumberOnchange = e => {
-    //debugger;
+    //
     var values = e.target.value;
     var names = e.target.name;
 
@@ -676,7 +675,7 @@ class TicketSystemOrder extends Component {
   };
 
   handleChangeOrderItem = e => {
-    //debugger;
+    //
     var values = e.target.checked;
     if (values) {
       var x = document.getElementById("ordertable");
@@ -695,7 +694,7 @@ class TicketSystemOrder extends Component {
     });
   };
   handleChangeModalOrderItem = e => {
-    //debugger;
+    //
     var values = e.target.checked;
     if (values) {
       var x = document.getElementById("Modalordertable");
@@ -717,7 +716,7 @@ class TicketSystemOrder extends Component {
   // -------------------------------Check box selected all code start-------------------------------
 
   onCheckMasterAllChange(orderMasterID, rowData) {
-    //debugger;
+    //
     const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
     newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
     this.setState({
@@ -813,7 +812,7 @@ class TicketSystemOrder extends Component {
   }
 
   checkIndividualItem(orderItemID, rowData) {
-    //debugger;
+    //
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
     this.setState({
@@ -1075,7 +1074,7 @@ class TicketSystemOrder extends Component {
                     title: "",
                     dataIndex: "orderMasterID",
                     render: (row, data) => {
-                      // //debugger;
+                      // //
                       return (
                         <div className="filter-checkbox">
                           <input
@@ -1148,7 +1147,7 @@ class TicketSystemOrder extends Component {
                     title: "",
                     dataIndex: "orderMasterID",
                     render: (row, data) => {
-                      // //debugger;
+                      // //
                       return (
                         <div className="filter-checkbox">
                           <input
@@ -1216,7 +1215,7 @@ class TicketSystemOrder extends Component {
                           title: "",
                           dataIndex: "orderMasterID",
                           render: (row, item) => {
-                            // //debugger;
+                            // //
                             return (
                               <div className="filter-checkbox">
                                 <input
@@ -1755,7 +1754,7 @@ class TicketSystemOrder extends Component {
                       title: "",
                       dataIndex: "orderMasterID",
                       render: (row, data) => {
-                        // //debugger;
+                        // //
                         return (
                           <div className="filter-checkbox">
                             <input
@@ -1829,7 +1828,7 @@ class TicketSystemOrder extends Component {
                       title: "",
                       dataIndex: "orderMasterID",
                       render: (row, data) => {
-                        // //debugger;
+                        // //
                         return (
                           <div className="filter-checkbox">
                             <input
@@ -1897,7 +1896,7 @@ class TicketSystemOrder extends Component {
                             title: "",
                             dataIndex: "orderMasterID",
                             render: (row, item) => {
-                              //debugger;
+                              //
                               return (
                                 <div className="filter-checkbox">
                                   <input

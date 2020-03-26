@@ -29,7 +29,7 @@ class TicketSystemTask extends Component {
       selectedFunction: "",
       selectedAssignTo: "",
       selectedPriority: "",
-      showTaskData: true
+      
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -48,14 +48,13 @@ class TicketSystemTask extends Component {
   }
 
   componentDidUpdate() {
-    debugger;
-    if (this.state.showTaskData === true) {
+    
       if (this.props.checkTask === true) {
         if (this.props.ticket_IDS) {
           this.handleGetTaskGridData(this.props.ticket_IDS);
         }
       }
-    }
+    
   }
 
   ////handle Get Task Grid Data
@@ -70,16 +69,17 @@ class TicketSystemTask extends Component {
       }
     })
       .then(function(res) {
-        debugger;
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
 
         if (status === "Success") {
-          self.setState({ taskData: data, showTaskData: false });
+          self.setState({ taskData: data});
           // self.props.checkTask = false;
           self.props.parentCallBackFuncation("task");
         } else {
           self.setState({ taskData: [] });
+          self.props.parentCallBackFuncation("task");
         }
       })
       .catch(data => {
@@ -98,7 +98,6 @@ class TicketSystemTask extends Component {
   }
 
   handleGetDepartmentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -106,7 +105,6 @@ class TicketSystemTask extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -120,8 +118,6 @@ class TicketSystemTask extends Component {
       });
   }
   handleGetFunctionList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -132,7 +128,6 @@ class TicketSystemTask extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -141,8 +136,6 @@ class TicketSystemTask extends Component {
       });
   }
   handleGetAssignToList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -153,7 +146,6 @@ class TicketSystemTask extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -167,7 +159,6 @@ class TicketSystemTask extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -175,7 +166,6 @@ class TicketSystemTask extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -231,8 +221,6 @@ class TicketSystemTask extends Component {
   };
 
   handleCreateTask() {
-    debugger;
-
     if (this.validator.allValid()) {
       if (this.state.taskfield) {
         var taskData = [];
@@ -270,13 +258,11 @@ class TicketSystemTask extends Component {
     }
   }
   handleTaskDelete = i => {
-    debugger;
     let taskData = [...this.state.taskData];
     taskData.splice(i - 1, 1);
     this.setState({ taskData });
   };
   hide(e, id) {
-    debugger;
     document.getElementById(
       id
     ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =

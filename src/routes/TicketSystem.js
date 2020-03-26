@@ -196,7 +196,7 @@ class TicketSystem extends Component {
   }
 
   componentDidMount() {
-    //debugger;
+     
     var customerDetails = this.props.location.state;
 
     var ticket_Id = this.props.location.state;
@@ -227,7 +227,7 @@ class TicketSystem extends Component {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }
   handleCopyToaster() {
-    ////debugger;
+     
     setTimeout(() => {
       if (
         this.state.copiedNumber &&
@@ -275,10 +275,9 @@ class TicketSystem extends Component {
     });
   };
 
-  setPlaceholderValue(e) {  
-    debugger;
+  setPlaceholderValue(e) {
     let ckData = this.state.editorTemplateDetails;
-    let ckDataArr = ckData.split('\n\n');
+    let ckDataArr = ckData.split("\n\n");
     let ckDataArrLast = ckDataArr.pop();
     let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -289,7 +288,7 @@ class TicketSystem extends Component {
     ck += placeholderName;
     let ckFinal = ckTags[0] + ck + ckTags[1];
     ckDataArr.push(ckFinal);
-    ckData = ckDataArr.join(' ');
+    ckData = ckDataArr.join(" ");
     this.setState({ editorTemplateDetails: ckData });
   }
 
@@ -304,7 +303,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -323,13 +322,13 @@ class TicketSystem extends Component {
   }
 
   handleCustomerAttachamentStatus(custAttachOrder) {
-    ////debugger;
+     
     this.setState({
       customerAttachOrder: custAttachOrder
     });
   }
   handleGetOrderId = (selectParentData, selectChildData) => {
-    ////debugger;
+     
     this.setState({
       selectedOrderData: selectParentData,
       SelectedItemData: selectChildData
@@ -337,7 +336,7 @@ class TicketSystem extends Component {
     });
   };
   handleGetItemData = selectChildData => {
-    ////debugger;
+     
     this.setState({
       SelectedItemData: selectChildData
     });
@@ -348,7 +347,7 @@ class TicketSystem extends Component {
     });
   };
   handleCustomerStoreStatus(WantVisit, AlreadyCustomerVisit) {
-    ////debugger;
+     
     this.setState({
       custVisit: WantVisit,
       AlreadycustVisit: AlreadyCustomerVisit
@@ -375,15 +374,7 @@ class TicketSystem extends Component {
     this.setState({ CustData });
   };
   handleChange = date => {
-    ////debugger;
-    // let CustData = this.state.CustData;
-    // let editDOB = date;
-    // CustData.dateOfBirth = date;
-
-    // this.setState({
-    //   CustData,
-    //   editDOB
-    // });
+     
     this.setState({
       editDOB: date
     });
@@ -422,7 +413,7 @@ class TicketSystem extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
   handleMailOnChange(filed, e) {
-    ////debugger;
+     
     var mailFiled = this.state.mailFiled;
     mailFiled[filed] = e.target.value;
 
@@ -437,7 +428,7 @@ class TicketSystem extends Component {
     }
   }
   handleUpdateCustomer() {
-    ////debugger;
+     
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
@@ -460,7 +451,7 @@ class TicketSystem extends Component {
         }
       })
         .then(function(res) {
-          ////debugger;
+           
           let Message = res.data.message;
           if (Message === "Success") {
             NotificationManager.success("Record updated Successfull.");
@@ -479,7 +470,7 @@ class TicketSystem extends Component {
     }
   }
   handleGetTicketTitleList() {
-    ////debugger;
+     
     let self = this;
     axios({
       method: "post",
@@ -490,7 +481,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+         
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -514,7 +505,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+         
         let data = res.data.responseData;
         self.setState({ CkEditorTemplateData: data });
       })
@@ -523,7 +514,7 @@ class TicketSystem extends Component {
       });
   }
   handleCkEditorTemplateData(tempId, tempName) {
-    ////debugger;
+     
     let self = this;
     axios({
       method: "post",
@@ -534,7 +525,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+         
         let data = res.data.responseData.templateBody;
         let bodyData = res.data.responseData.templateBody;
         self.setState({
@@ -566,7 +557,7 @@ class TicketSystem extends Component {
         }
       })
         .then(function(res) {
-          ////debugger;
+           
           let KbPopupData = res.data.responseData;
           if (KbPopupData.length === 0 || KbPopupData === null) {
             NotificationManager.error("No Record Found.");
@@ -585,7 +576,7 @@ class TicketSystem extends Component {
     }
   }
   handleGetBrandList() {
-    ////debugger;
+     
     let self = this;
     axios({
       method: "post",
@@ -593,7 +584,7 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        ////debugger;
+         
         let data = res.data.responseData;
         self.setState({ BrandData: data });
       })
@@ -602,16 +593,8 @@ class TicketSystem extends Component {
       });
   }
   handleGetCategoryList(brandId = 0) {
-    debugger;
     let self = this;
-    // self.setState({
-    //   CategoryData: [],
-    //   selectedCategory: "",
-    //   SubCategoryData: [],
-    //   selectedSubCategory: "",
-    //   IssueTypeData: [],
-    //   selectedIssueType: ""
-    // });
+     
     var brand_Id = parseInt(brandId);
     axios({
       method: "post",
@@ -622,7 +605,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let data = res.data;
         self.setState({ CategoryData: data });
       })
@@ -631,14 +613,9 @@ class TicketSystem extends Component {
       });
   }
   handleGetSubCategoryList() {
-    //debugger;
+     
     let self = this;
-    // self.setState({
-    //   SubCategoryData: [],
-    //   selectedSubCategory: "",
-    //   IssueTypeData: [],
-    //   selectedIssueType: ""
-    // });
+     
     let cateId = this.state.KbLink
       ? this.state.selectedCategoryKB
       : this.state.selectedCategory;
@@ -651,7 +628,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+         
         let data = res.data.responseData;
         self.setState({ SubCategoryData: data });
       })
@@ -660,9 +637,9 @@ class TicketSystem extends Component {
       });
   }
   handleGetIssueTypeList() {
-    ////debugger;
+     
     let self = this;
-    // self.setState({ IssueTypeData: [], selectedIssueType: "" });
+     
     let subCateId = this.state.KbLink
       ? this.state.selectedSubCategoryKB
       : this.state.selectedSubCategory;
@@ -675,7 +652,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+         
         let data = res.data.responseData;
         self.setState({ IssueTypeData: data });
       })
@@ -684,7 +661,7 @@ class TicketSystem extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    ////debugger;
+     
     let self = this;
     axios({
       method: "get",
@@ -692,7 +669,7 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        ////debugger;
+         
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -713,7 +690,7 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        ////debugger;
+         
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
@@ -723,7 +700,7 @@ class TicketSystem extends Component {
   }
 
   handleGetAgentList() {
-    ////debugger;
+     
     let self = this;
     axios({
       method: "post",
@@ -731,7 +708,7 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        ////debugger;
+         
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -761,7 +738,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
+         
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
         var CustData = res.data.responseData;
@@ -777,7 +754,7 @@ class TicketSystem extends Component {
           self.handleEditCustomerClose();
         }
         if (mode === "Edit") {
-          // var editDOB = moment(customerData.dateOfBirth).format("DD/MM/YYYY");
+      
           self.handleEditCustomerOpen();
           self.setState({ customerData: customerData, CustData });
         }
@@ -787,7 +764,7 @@ class TicketSystem extends Component {
       });
   }
   setAssignedToValue(e) {
-    ////debugger;
+     
 
     let assign = e.currentTarget.value;
     let followUpIds = this.state.followUpIds;
@@ -801,12 +778,12 @@ class TicketSystem extends Component {
     this.setState({ editorTemplateDetails: ckData, followUpIds });
   }
   handleTicketAssignFollowUp(ticketID_) {
-    ////debugger;
+     
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
     );
-    // let self = this;
+     
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/ticketassigforfollowup",
@@ -817,8 +794,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        // let status = res.data.message;
-        // let data = res.data.responseData;
+        
       })
       .catch(data => {
         console.log(data);
@@ -829,7 +805,7 @@ class TicketSystem extends Component {
   }
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      // this.setState({ toggleTitle: false });
+       
       this.setState({ TicketTitleData: [] });
     }
   }
@@ -837,7 +813,6 @@ class TicketSystem extends Component {
     this.setState({ ticketSuggestion });
   };
   onAddCKEditorChange = evt => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       editorTemplateDetails: newContent
@@ -845,7 +820,7 @@ class TicketSystem extends Component {
   };
 
   handleAppendTicketSuggestion = e => {
-    ////debugger;
+    ////
     this.setState({ toggleTitle: true });
     var startPoint = document.getElementById("titleSuggestion").selectionStart;
     var textLength = document.getElementById("titleSuggestion").value.length;
@@ -870,7 +845,7 @@ class TicketSystem extends Component {
     this.searchInput.focus();
   };
   handleTicSugg = e => {
-    ////debugger;
+    ////
     let ticSugg = e.currentTarget.value;
     this.setState({ titleSuggValue: ticSugg });
     setTimeout(() => {
@@ -884,7 +859,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   handleFileUpload(e) {
-    ////debugger;
+    ////
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -905,7 +880,7 @@ class TicketSystem extends Component {
       }
     }
     for (let i = 0; i < e.target.files.length; i++) {
-      ////debugger;
+      ////
       var objFile = new Object();
       var name = e.target.files[i].name;
       var value = e.target.value;
@@ -924,7 +899,7 @@ class TicketSystem extends Component {
     this.setState({ fileText: this.state.file.length, FileData: allFiles });
   }
   handleRemoveImage(i) {
-    ////debugger;
+    ////
     let file = this.state.file;
     file.splice(i, 1);
     var fileText = file.length;
@@ -934,7 +909,6 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
-    debugger;
     if (
       this.state.titleSuggValue.length > 0 &&
       this.state.ticketDetails.length > 0 &&
@@ -995,9 +969,7 @@ class TicketSystem extends Component {
       } else {
         actionStatusId = 100;
       }
-      // var editoreData = this.state.editorTemplateDetails;
-      // var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
-      // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
+       
       var mailData = [];
       mailData = this.state.mailData;
       this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
@@ -1008,6 +980,7 @@ class TicketSystem extends Component {
       mailData.push(this.state.mailFiled);
 
       const formData = new FormData();
+      debugger;
       var paramData = {
         TicketTitle: this.state.titleSuggValue,
         Ticketdescription: this.state.ticketDetails,
@@ -1077,7 +1050,7 @@ class TicketSystem extends Component {
           data: DRAFTFromData
         })
           .then(function(res) {
-            ////debugger;
+            ////
             let Msg = res.data.status;
             let TID = res.data.responseData;
             self.setState({ loading: false });
@@ -1102,7 +1075,7 @@ class TicketSystem extends Component {
           data: formData
         })
           .then(function(res) {
-            ////debugger;
+            ////
             let Msg = res.data.status;
             let TID = res.data.responseData;
             self.setState({ loading: false });
@@ -1135,7 +1108,7 @@ class TicketSystem extends Component {
     // Don't remove this function
   }
   // handleSendMailData() {
-  //   ////debugger;
+  //   ////
   //   var subject = "Demo Mail";
   //   axios({
   //     method: "post",
@@ -1151,7 +1124,7 @@ class TicketSystem extends Component {
   //       storeID: ""
   //     }
   //   }).then(function(res) {
-  //     ////debugger;
+  //     ////
   //     let status = res.data.status;
   //     if (status === true) {
   //       NotificationManager.success(res.data.responseData);
@@ -1165,7 +1138,6 @@ class TicketSystem extends Component {
     this.props.history.push("myTicketList");
   }
   setBrandValue = e => {
-    debugger;
     let value = e.currentTarget.value;
     this.setState({
       selectedBrand: value,
@@ -1192,12 +1164,11 @@ class TicketSystem extends Component {
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
   setTicketPriorityValue = e => {
-    debugger;
     let value = e.target.value;
     this.setState({ selectedTicketPriority: value });
   };
   setTicketActionTypeValue = e => {
-    ////debugger;
+    ////
     let value = e.currentTarget.value;
     this.setState({ selectedTicketActionType: value });
   };
@@ -1238,7 +1209,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValue = e => {
-    ////debugger;
+    ////
     let value = e.currentTarget.value;
     this.setState({ selectedSubCategory: value, IssueTypeData: [] });
 
@@ -1251,7 +1222,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValueKB = e => {
-    ////debugger;
+    ////
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryKB: subCategoryValue });
 
@@ -1264,7 +1235,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setChannelOfPurchaseValue = e => {
-    ////debugger;
+    ////
     let value = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: value });
   };
@@ -1282,7 +1253,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1327,12 +1297,12 @@ class TicketSystem extends Component {
           }
 
           ////Check Task data
-          debugger;
-          if (TaskData > 0) {
+
+          // if (TaskData > 0) {
             self.setState({
               showTaskData: true
             });
-          }
+          // }
           self.setState({
             titleSuggValue: Ticket_title,
             ticketDetails: Ticket_details,
@@ -1364,9 +1334,7 @@ class TicketSystem extends Component {
 
   ////Get File uploaded data
   handleOnLoadFiles() {
-    debugger;
     for (let i = 0; i < this.state.fileDummy.length; i++) {
-      debugger;
       var objFile = new Object();
       var name = this.state.fileDummy[i].attachmentName;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -1394,7 +1362,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData[0].note;
@@ -1501,20 +1468,7 @@ class TicketSystem extends Component {
                   <div className="row m-b-10">
                     <div className="col-md-12">
                       <label className="category">Ticket Title</label>
-                      {/* <div className="ticket-title-select">
-                      <Select
-                        // className="rate-dropdown"
-                        getOptionLabel={option => option.ticketTitle}
-                        getOptionValue={option => option.ticketTitle}
-                        options={this.state.TicketTitleData}
-                        placeholder="Suggestion"
-                        value={this.state.ticketSuggestion}
-                        onChange={this.handleTicketSuggestion}
-                        // menuIsOpen={true}
-                        // name="ticketSuggestion"
-                        // showNewOptionAtTop={false}
-                      />
-                    </div> */}
+                      
                       <div
                         className="custom-ticket-title"
                         onClick={() => this.toggleTitleSuggestion()}
@@ -2779,6 +2733,7 @@ class TicketSystem extends Component {
                         purchaseMode={this.state.selectedChannelOfPurchase}
                         ticket_IDS={this.state.ticketDetailID}
                         ShowOderdData={this.state.showOrderDetails}
+                        parentCallBackFuncation={this.parentCallBackFuncation}
                       />
                     </div>
                     {/* ) : null} */}
@@ -2812,6 +2767,7 @@ class TicketSystem extends Component {
                         taskMasterData={this.handleTaskMasterChange}
                         ticket_IDS={this.state.ticketDetailID}
                         checkTask={this.state.showTaskData}
+                        parentCallBackFuncation={this.parentCallBackFuncation}
                       />
                     </div>
                     {/* ) : null} */}
