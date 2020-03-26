@@ -6377,6 +6377,15 @@ table thead tr {
   border-color: #f1f0f0;
   resize: none;
 }
+.notification-placeholder {
+  position: static;
+
+}
+.noti-plchldr-cntr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
 /* Alert page css End */
 /* Next pop-up in Alert Page start css */
 #Alert-next-popup {

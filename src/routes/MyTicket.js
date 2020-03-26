@@ -362,9 +362,13 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
-        // let status = res.data.message;
-        // let data = res.data.responseData;
+        debugger;
+        let status = res.data.status;
+        if (status) {
+          self.setState({
+            followUpIds: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -1863,6 +1867,7 @@ class MyTicket extends Component {
             ////debugger;
             let status = res.data.message;
             if (status === "Success") {
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
@@ -1981,6 +1986,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Comment Added successfully.");
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleCommentCollapseOpen();
@@ -2078,6 +2084,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Comment Added successfully.");
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleFreeTextCommentOpen();
