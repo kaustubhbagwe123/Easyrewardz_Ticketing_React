@@ -275,14 +275,21 @@ class TicketSystem extends Component {
     });
   };
 
-  setPlaceholderValue(e) {
-    ////debugger;
+  setPlaceholderValue(e) {  
+    debugger;
     let ckData = this.state.editorTemplateDetails;
+    let ckDataArr = ckData.split('\n\n');
+    let ckDataArrLast = ckDataArr.pop();
+    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ckData += placeholderName;
+    ck += placeholderName;
+    let ckFinal = ckTags[0] + ck + ckTags[1];
+    ckDataArr.push(ckFinal);
+    ckData = ckDataArr.join(' ');
     this.setState({ editorTemplateDetails: ckData });
   }
 
