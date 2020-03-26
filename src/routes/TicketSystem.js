@@ -793,11 +793,18 @@ class TicketSystem extends Component {
     let followUpIds = this.state.followUpIds;
     followUpIds += assign + ",";
     let ckData = this.state.editorTemplateDetails;
+    let ckDataArr = ckData.split('\n\n');
+    let ckDataArrLast = ckDataArr.pop();
+    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.AssignToData.filter(
       x => x.userID == e.currentTarget.value
     );
     let userName = matchedArr[0].fullName;
-    ckData += "@" + userName;
+    ck += "@" + userName;
+    let ckFinal = ckTags[0] + ck + ckTags[1];
+    ckDataArr.push(ckFinal);
+    ckData = ckDataArr.join(' ');
     this.setState({ editorTemplateDetails: ckData, followUpIds });
   }
   handleTicketAssignFollowUp(ticketID_) {
