@@ -141,7 +141,8 @@ class TicketSystemOrder extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
-          self.props.ShowOderdData = false;
+          // self.props.ShowOderdData = false;
+          self.props.parentCallBackFuncation("order");
           const newSelected = Object.assign({}, self.state.CheckOrderID);
           var OrderSubItem = [];
           var selectedRow = [];

@@ -211,7 +211,7 @@ class TicketSystem extends Component {
       this.handleGetCustomerData(custId);
       if (ticketid_) {
         this.handleGetTicketDetails(ticketid_);
-        this.handleGetTaskNoteDetails(ticketid_)
+        this.handleGetTaskNoteDetails(ticketid_);
       }
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
@@ -456,9 +456,7 @@ class TicketSystem extends Component {
           ////debugger;
           let Message = res.data.message;
           if (Message === "Success") {
-            NotificationManager.success(
-              "Record updated Successfull."
-            );
+            NotificationManager.success("Record updated Successfull.");
 
             self.componentDidMount();
 
@@ -607,7 +605,7 @@ class TicketSystem extends Component {
     //   IssueTypeData: [],
     //   selectedIssueType: ""
     // });
-    var brand_Id=parseInt(brandId)
+    var brand_Id = parseInt(brandId);
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
@@ -1266,7 +1264,6 @@ class TicketSystem extends Component {
 
   ////Hanlde Get ticket Details
   handleGetTicketDetails(Id) {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -1323,6 +1320,7 @@ class TicketSystem extends Component {
           }
 
           ////Check Task data
+          debugger;
           if (TaskData > 0) {
             self.setState({
               showTaskData: true
@@ -1377,30 +1375,42 @@ class TicketSystem extends Component {
     });
   }
 
-//// hanlde Get Task details 
-handleGetTaskNoteDetails(Id){
-  let self = this;
-  axios({
-    method: "post",
-    url: config.apiUrl + "/Ticketing/getNotesByTicketId", 
-    headers: authHeader(),
-    params: {
-      TicketId: Id
-    }
-  })
-    .then(function(res) {
-      debugger
-      let status = res.data.message;
-      if (status === "Success") {
-        let data = res.data.responseData[0].note;
-        document.getElementById("add-Notes").checked=true;
-        self.setState({ ticketNote: data,showAddNote:true });
-      } 
+  //// hanlde Get Task details
+  handleGetTaskNoteDetails(Id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getNotesByTicketId",
+      headers: authHeader(),
+      params: {
+        TicketId: Id
+      }
     })
-    .catch(data => {
-      console.log(data);
-    });
-}
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          let data = res.data.responseData[0].note;
+          document.getElementById("add-Notes").checked = true;
+          self.setState({ ticketNote: data, showAddNote: true });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  parentCallBackFuncation = type => {
+    if (type === "store") {
+      this.setState({ showStoreData: false });
+    }
+    if (type === "order") {
+      this.setState({ showOrderDetails: false });
+    }
+    if (type === "task") {
+      this.setState({ showTaskData: false });
+    }
+  };
+
   render() {
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
@@ -2481,113 +2491,110 @@ handleGetTaskNoteDetails(Id){
                 <div className="" style={{ height: "100%" }}>
                   <div className="tab-content tabpaddingsystem">
                     {/* {this.state.isCustomer ? ( */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="customer-tab"
-                        role="tabpanel"
-                        aria-labelledby="customer-tab"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="ticketSycard">
-                          <div className="ticketSycard1">
+                    <div
+                      className="tab-pane fade show active"
+                      id="customer-tab"
+                      role="tabpanel"
+                      aria-labelledby="customer-tab"
+                      style={{ height: "100%" }}
+                    >
+                      <div className="ticketSycard">
+                        <div className="ticketSycard1">
+                          <div
+                            className="paddingsystem"
+                            style={{ borderBottom: "1px solid #EDEDED" }}
+                          >
+                            <div className="row">
+                              <div className="col-md-4">
+                                <label className="category2">
+                                  Customer Name
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category2">
+                                  Phone Number
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category2">Email Id</label>
+                              </div>
+                            </div>
+
                             <div
-                              className="paddingsystem"
-                              style={{ borderBottom: "1px solid #EDEDED" }}
+                              className="row"
+                              style={{ marginBottom: "20px" }}
                             >
-                              <div className="row">
-                                <div className="col-md-4">
-                                  <label className="category2">
-                                    Customer Name
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category2">
-                                    Phone Number
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category2">Email Id</label>
-                                </div>
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.customerName}
+                                </label>
                               </div>
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.customerPhoneNumber}
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.customerEmailId}
+                                </label>
+                              </div>
+                            </div>
 
-                              <div
-                                className="row"
-                                style={{ marginBottom: "20px" }}
+                            <div className="row">
+                              <div className="col-md-4">
+                                <label className="category2">Gender</label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category2">
+                                  Alternate Number
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category2">
+                                  Alternate Email Id
+                                </label>
+                              </div>
+                            </div>
+
+                            <div
+                              className="row"
+                              style={{ marginBottom: "20px" }}
+                            >
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.genderID === 1
+                                    ? "Male"
+                                    : "Female"}
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.altNumber}
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.altEmailID}
+                                </label>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <button
+                                className="systemeditbutton systemeditbutton-text"
+                                onClick={this.handleGetCustomerData.bind(
+                                  this,
+                                  CustomerId,
+                                  "Edit"
+                                )}
                               >
-                                <div className="col-md-4">
-                                  <label className="category1">
-                                    {this.state.customerData.customerName}
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category1">
-                                    {
-                                      this.state.customerData
-                                        .customerPhoneNumber
-                                    }
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category1">
-                                    {this.state.customerData.customerEmailId}
-                                  </label>
-                                </div>
-                              </div>
-
-                              <div className="row">
-                                <div className="col-md-4">
-                                  <label className="category2">Gender</label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category2">
-                                    Alternate Number
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category2">
-                                    Alternate Email Id
-                                  </label>
-                                </div>
-                              </div>
-
-                              <div
-                                className="row"
-                                style={{ marginBottom: "20px" }}
-                              >
-                                <div className="col-md-4">
-                                  <label className="category1">
-                                    {this.state.customerData.genderID === 1
-                                      ? "Male"
-                                      : "Female"}
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category1">
-                                    {this.state.customerData.altNumber}
-                                  </label>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="category1">
-                                    {this.state.customerData.altEmailID}
-                                  </label>
-                                </div>
-                              </div>
-                              <div className="row">
-                                <button
-                                  className="systemeditbutton systemeditbutton-text"
-                                  onClick={this.handleGetCustomerData.bind(
-                                    this,
-                                    CustomerId,
-                                    "Edit"
-                                  )}
-                                >
-                                  EDIT
-                                </button>
-                              </div>
+                                EDIT
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
+                    </div>
                     {/* ) : null} */}
                     <Modal
                       onClose={this.handleEditCustomerClose.bind(this)}
@@ -2749,56 +2756,57 @@ handleGetTaskNoteDetails(Id){
                       </div>
                     </Modal>
                     {/* {this.state.isOrder ? ( */}
-                      <div
-                        className="tab-pane fade"
-                        id="order-tab"
-                        role="tabpanel"
-                        aria-labelledby="order-tab"
-                        style={{ height: "100%" }}
-                        // onChange={this.hanleRedirectpage.bind(this)}
-                      >
-                        <TicketSystemOrder
-                          custDetails={CustomerId}
-                          AttachOrder={this.handleCustomerAttachamentStatus}
-                          getParentOrderData={this.handleGetOrderId}
-                          getItemOrderData={this.handleGetItemData}
-                          purchaseMode={this.state.selectedChannelOfPurchase}
-                          ticket_IDS={this.state.ticketDetailID}
-                          ShowOderdData={this.state.showOrderDetails}
-                        />
-                      </div>
+                    <div
+                      className="tab-pane fade"
+                      id="order-tab"
+                      role="tabpanel"
+                      aria-labelledby="order-tab"
+                      style={{ height: "100%" }}
+                      // onChange={this.hanleRedirectpage.bind(this)}
+                    >
+                      <TicketSystemOrder
+                        custDetails={CustomerId}
+                        AttachOrder={this.handleCustomerAttachamentStatus}
+                        getParentOrderData={this.handleGetOrderId}
+                        getItemOrderData={this.handleGetItemData}
+                        purchaseMode={this.state.selectedChannelOfPurchase}
+                        ticket_IDS={this.state.ticketDetailID}
+                        ShowOderdData={this.state.showOrderDetails}
+                      />
+                    </div>
                     {/* ) : null} */}
                     {/* {this.state.isStore ? ( */}
-                      <div
-                        className="tab-pane fade"
-                        id="store-tab"
-                        role="tabpanel"
-                        aria-labelledby="store-tab"
-                        style={{ height: "100%" }}
-                      >
-                        <TicketSystemStore
-                          CustStoreStatus={this.handleCustomerStoreStatus}
-                          getStoreID={this.handleGetStoreId}
-                          ticket_IDS={this.state.ticketDetailID}
-                          showStore_Date={this.state.showStoreData}
-                        />
-                      </div>
+                    <div
+                      className="tab-pane fade"
+                      id="store-tab"
+                      role="tabpanel"
+                      aria-labelledby="store-tab"
+                      style={{ height: "100%" }}
+                    >
+                      <TicketSystemStore
+                        CustStoreStatus={this.handleCustomerStoreStatus}
+                        getStoreID={this.handleGetStoreId}
+                        ticket_IDS={this.state.ticketDetailID}
+                        showStore_Date={this.state.showStoreData}
+                        parentCallBackFuncation={this.parentCallBackFuncation}
+                      />
+                    </div>
                     {/* ) : null} */}
 
                     {/* {this.state.isTask ? ( */}
-                      <div
-                        className="tab-pane fade"
-                        id="task-tab"
-                        role="tabpanel"
-                        aria-labelledby="task-tab"
-                        style={{ height: "100%" }}
-                      >
-                        <TicketSystemTask
-                          taskMasterData={this.handleTaskMasterChange}
-                          ticket_IDS={this.state.ticketDetailID}
-                          checkTask={this.state.showTaskData}
-                        />
-                      </div>
+                    <div
+                      className="tab-pane fade"
+                      id="task-tab"
+                      role="tabpanel"
+                      aria-labelledby="task-tab"
+                      style={{ height: "100%" }}
+                    >
+                      <TicketSystemTask
+                        taskMasterData={this.handleTaskMasterChange}
+                        ticket_IDS={this.state.ticketDetailID}
+                        checkTask={this.state.showTaskData}
+                      />
+                    </div>
                     {/* ) : null} */}
                   </div>
                 </div>

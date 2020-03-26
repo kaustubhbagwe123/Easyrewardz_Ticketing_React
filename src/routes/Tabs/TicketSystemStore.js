@@ -34,7 +34,6 @@ class TicketSystemStore extends Component {
       byValideStoreData: "",
       modifiedDate: "",
       CustStoreStatusDrop: "0"
-      // showStoreDetails:true
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
@@ -47,22 +46,22 @@ class TicketSystemStore extends Component {
   }
 
   componentDidUpdate() {
+    debugger;
     var storeDat = this.props.showStore_Date;
     if (storeDat === true) {
-      if (this.state.showStoreDetails === true) {
-        var ticket_Id = this.props.ticket_IDS;
-        if (ticket_Id) {
-          // alert('Store Data')
-          this.handleGetStoreData(ticket_Id);
-        }
+      var ticket_Id = this.props.ticket_IDS;
+      if (ticket_Id) {
+        // alert('Store Data')
+        this.handleGetStoreData(ticket_Id);
       }
     }
   }
 
   ////handle Get Store Details
   handleGetStoreData(ID) {
-    debugger;
+    // debugger;
     let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/Store/getSelectedStores",
@@ -72,11 +71,13 @@ class TicketSystemStore extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
+        debugger;
+
+        // ==============================
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.props.showStore_Date = false;
+          self.props.parentCallBackFuncation("store");
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
@@ -90,13 +91,15 @@ class TicketSystemStore extends Component {
               });
             }
           }
+          
+
           self.setState({
             selectedStoreData: selectedRow,
             selectedStore: data,
             AddSelectDetail: true,
             message: "Success"
-            // showStoreDetails:false
           });
+          
         } else {
           self.setState({
             selectedStore: []
@@ -278,6 +281,10 @@ class TicketSystemStore extends Component {
 
   render() {
     const { SearchData, selectedStoreData } = this.state;
+    console.log(
+      this.state.selectedStoreData,
+      "--------------------selectedStoreData"
+    );
     return (
       <Fragment>
         <div className="ticketSycard">

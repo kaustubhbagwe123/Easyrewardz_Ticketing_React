@@ -60,7 +60,6 @@ class TicketSystemTask extends Component {
 
   ////handle Get Task Grid Data
   handleGetTaskGridData(Id) {
-    
     let self = this;
     axios({
       method: "post",
@@ -75,12 +74,10 @@ class TicketSystemTask extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
 
-        console.log(data,"-------------task data");
-        console.log(status,"-------------task status");
-
         if (status === "Success") {
           self.setState({ taskData: data, showTaskData: false });
-          self.props.checkTask = false;
+          // self.props.checkTask = false;
+          self.props.parentCallBackFuncation("task");
         } else {
           self.setState({ taskData: [] });
         }
