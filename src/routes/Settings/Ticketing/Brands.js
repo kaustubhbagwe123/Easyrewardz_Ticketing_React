@@ -19,45 +19,7 @@ import ActiveStatus from "../../activeStatus";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-//import useForm from "./useForm";
-
-// const stateSchema = {
-//   brandCode: { value: '', error: '' },
-//   brandName: { value: '', error: '' },
-//   status: { value: '', error: '' },
-// };
-
-// const validationStateSchema = {
-//   brandCode: {
-//     required: true,
-//     validator: {
-//       regEx: /^[a-zA-Z]+$/,
-//       error: 'Invalid first name format.',
-//     },
-//   },
-//   brandName: {
-//     required: true,
-//     validator: {
-//       regEx: /^[a-zA-Z]+$/,
-//       error: 'Invalid last name format.',
-//     },
-//   },
-//   status: {
-//     required: true,
-//     validator: {
-//       regEx: /^(,?\w{3,})+$/,
-//       error: 'Invalid tag format.',
-//     },
-//   },
-// };
-// function onSubmitForm(state) {
-//   alert(JSON.stringify(state, null, 2));
-// }
-// const { state, handleOnChange, handleOnSubmit, disable } = useForm(
-//   stateSchema,
-//   validationStateSchema,
-//   onSubmitForm
-// );
+import matchSorter from "match-sorter";
 
 const MyButton = props => {
   const { children } = props;
@@ -98,7 +60,6 @@ const Content = props => {
             {props.editbrandcodeCompulsion}
           </p>
         )}
-        {/* {state.brandCode.error && <p style={{ color: "red", marginBottom: "0px" }}>{state.brandCode.error}</p>} */}
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">Brand Name</label>
@@ -146,17 +107,11 @@ const Content = props => {
         </a>
         <button
           className="pop-over-button"
-          //type="button"
-          // onClick={this.handleUpdateData.bind(
-          //   this
-
-          // )}
           onClick={e => {
             props.handleUpdateData(e, brandID);
           }}
         >
           SAVE
-          {/* <label className="pop-over-btnsave-text" onClick={(e) => { props.handleUpdateData(e, brandID) }}>SAVE</label> */}
         </button>
       </div>
     </div>
@@ -198,24 +153,27 @@ class Brands extends Component {
       brandnameColor: "",
       addedColor: "",
       statusColor: "",
-      sortHeader: ""
+      sortHeader: "",
+      sortFilterBrandCode: [],
+      sortFilterBrandName: [],
+      sortFilterAddedBy: [],
+      sortFilterStatus: [],
+      tempbrandData: [],
+      filterTxtValue: "",
+      sFilterCheckbox: ""
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   hide(e, id) {
-    debugger;
-    // document.getElementById(id).style.display="none";
     document.getElementById(
       id
     ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
       "none";
   }
   show(e, id) {
-    debugger;
     if (document.getElementById(id))
-      // document.getElementById(id).style.display="block";
       document.getElementById(
         id
       ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -266,54 +224,126 @@ class Brands extends Component {
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.tempbrandData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        brandData: this.state.tempbrandData,
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        brandData: this.state.sortAllData,
+        filterTxtValue: ""
+      });
+    }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
       brandcodeColor: "",
       brandnameColor: "",
       brandcodeColor: "",
       brandnameColor: "",
       addedColor: "",
-      statusColor: ""
+      statusColor: "",
+      sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "brandCode") {
-      this.state.brandData = this.state.sortAllData;
-      itemsArray = this.state.brandData.filter(a => a.brandCode === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.brandCode === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         brandcodeColor: "sort-column"
       });
     } else if (column === "brandName") {
-      this.state.brandData = this.state.sortAllData;
-      itemsArray = this.state.brandData.filter(a => a.brandName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         brandnameColor: "sort-column"
       });
     } else if (column === "created_By") {
-      this.state.brandData = this.state.sortAllData;
-      itemsArray = this.state.brandData.filter(a => a.created_By === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.created_By === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         addedColor: "sort-column"
       });
     } else if (column === "status") {
-      this.state.brandData = this.state.sortAllData;
-      itemsArray = this.state.brandData.filter(a => a.status === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.status === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         statusColor: "sort-column"
       });
     }
 
     this.setState({
-      brandData: itemsArray
+      tempbrandData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
   handleBrandOnchange = e => {
     this.setState({
@@ -375,6 +405,7 @@ class Brands extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortBrandCode.push({ brandCode: distinct[i] });
+            self.state.sortFilterBrandCode.push({ brandCode: distinct[i] });
           }
 
           var unique = [];
@@ -385,12 +416,10 @@ class Brands extends Component {
               unique[data[i].brandName] = 1;
             }
           }
-          for (let i = 0; i < distinct.length; i++) {
-            self.state.sortBrandName.push({ brandName: distinct[i] });
-          }
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortBrandName.push({ brandName: distinct[i] });
+          self.state.sortFilterBrandName.push({ brandName: distinct[i] });
         }
 
         var unique = [];
@@ -403,6 +432,7 @@ class Brands extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortAddedBy.push({ created_By: distinct[i] });
+          self.state.sortFilterAddedBy.push({ created_By: distinct[i] });
         }
 
         var unique = [];
@@ -415,6 +445,7 @@ class Brands extends Component {
         }
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortStatus.push({ status: distinct[i] });
+          self.state.sortFilterStatus.push({ status: distinct[i] });
         }
       })
       .catch(data => {
@@ -534,9 +565,7 @@ class Brands extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetBrandList();
-            NotificationManager.success(
-              "Brand updated successfully."
-            );
+            NotificationManager.success("Brand updated successfully.");
           }
         })
         .catch(data => {
@@ -561,6 +590,72 @@ class Brands extends Component {
     this.setState({
       brandEditData
     });
+  }
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "brandCode") {
+      var sortFilterBrandCode = matchSorter(
+        this.state.sortBrandCode,
+        e.target.value,
+        { keys: ["brandCode"] }
+      );
+      if (sortFilterBrandCode.length > 0) {
+        this.setState({ sortFilterBrandCode });
+      } else {
+        this.setState({
+          sortFilterBrandCode: this.state.sortBrandCode
+        });
+      }
+    }
+    if (this.state.sortColumn === "brandName") {
+      var sortFilterBrandName = matchSorter(
+        this.state.sortBrandName,
+        e.target.value,
+        { keys: ["brandName"] }
+      );
+      if (sortFilterBrandName.length > 0) {
+        this.setState({ sortFilterBrandName });
+      } else {
+        this.setState({
+          sortFilterBrandName: this.state.sortBrandName
+        });
+      }
+    }
+    if (this.state.sortColumn === "created_By") {
+      var sortFilterAddedBy = matchSorter(
+        this.state.sortAddedBy,
+        e.target.value,
+        {
+          keys: ["created_By"]
+        }
+      );
+      if (sortFilterAddedBy.length > 0) {
+        this.setState({ sortFilterAddedBy });
+      } else {
+        this.setState({
+          sortFilterAddedBy: this.state.sortAddedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "status") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        {
+          keys: ["status"]
+        }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
   }
 
   render() {
@@ -610,112 +705,121 @@ class Brands extends Component {
               </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "brandCode"
+                    ? this.state.sortFilterBrandCode !== null &&
+                      this.state.sortFilterBrandCode.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandCode}
+                            value={item.brandCode}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandCode",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandCode}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandCode}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "brandName"
+                    ? this.state.sortFilterBrandName !== null &&
+                      this.state.sortFilterBrandName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandName}
+                            value={item.brandName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "created_By"
+                    ? this.state.sortFilterAddedBy !== null &&
+                      this.state.sortFilterAddedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.created_By}
+                            value={item.created_By}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "created_By",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.created_By}>
+                            <span className="table-btn table-blue-btn">
+                              {item.created_By}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "status"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "brandCode"
-                  ? this.state.sortBrandCode !== null &&
-                    this.state.sortBrandCode.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.brandCode}
-                          value={item.brandCode}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "brandCode"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.brandCode}>
-                          <span className="table-btn table-blue-btn">
-                            {item.brandCode}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "brandName"
-                  ? this.state.sortBrandName !== null &&
-                    this.state.sortBrandName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.brandName}
-                          value={item.brandName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "brandName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.brandName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.brandName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "created_By"
-                  ? this.state.sortAddedBy !== null &&
-                    this.state.sortAddedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.created_By}
-                          value={item.created_By}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "created_By"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.created_By}>
-                          <span className="table-btn table-blue-btn">
-                            {item.created_By}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-                {this.state.sortColumn === "status"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.status}
-                          value={item.status}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.status}>
-                          <span className="table-btn table-blue-btn">
-                            {item.status}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-               
               </div>
             </div>
           </Modal>

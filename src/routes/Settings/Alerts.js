@@ -32,6 +32,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import matchSorter from "match-sorter";
 
 class Alerts extends Component {
   constructor(props) {
@@ -116,7 +117,13 @@ class Alerts extends Component {
       iAlertTypeId: 0,
       sAlertTypeId: 0,
       nAlertTypeId: 0,
-      placeholderShown: false
+      placeholderShown: false,
+      tempalert: [],
+      filterTxtValue: "",
+      sFilterCheckbox: "",
+      sortFilterAlertType: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: []
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -176,16 +183,59 @@ class Alerts extends Component {
     let placeholderName = matchedArr[0].parameterName;
     if (type == "Customer") {
       let ckData = this.state.selectedCKCustomer;
-      ckData += placeholderName;
-      this.setState({ selectedCKCustomer: ckData });
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      ck += placeholderName;
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ selectedCKCustomer: ckData });
+      } else {
+        this.setState({ selectedCKCustomer: ck });
+      }
     } else if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
-      ckData += placeholderName;
-      this.setState({ selectedCKInternal: ckData });
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      ck += placeholderName;
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ selectedCKInternal: ckData });
+      } else {
+        this.setState({ selectedCKInternal: ck });
+      }
     } else if (type == "Store") {
       let ckData = this.state.selectedCKStore;
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      ck += placeholderName;
+      if (ckTags !== null) {
+        let ckFinal = ckTags[0] + ck + ckTags[1];
+        ckDataArr.push(ckFinal);
+        ckData = ckDataArr.join(' ');
+      }
+      if (ckTags !== null) {
+        this.setState({ selectedCKStore: ckData });
+      } else {
+        this.setState({ selectedCKStore: ck });
+      }
+    } else if (type == "Notification") {
+      let ckData = this.state.selectedNotifContent;
       ckData += placeholderName;
-      this.setState({ selectedCKStore: ckData });
+      this.setState({ selectedNotifContent: ckData });
     }
   }
 
@@ -222,16 +272,43 @@ class Alerts extends Component {
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel = e => {
-    this.setState({ StatusModel: false });
-    // this.setState({ StatusModel: false });
+    if (this.state.tempalert.length > 0) {
+      this.setState({
+        StatusModel: false,
+        alert: this.state.tempalert,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        alert: this.state.sortAllData,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    }
   };
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
+      sFilterCheckbox,
       alertColor: "",
       createdColor: "",
       statusColor: ""
@@ -239,29 +316,66 @@ class Alerts extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "alertTypeName") {
-      this.state.alert = this.state.sortAllData;
-      itemsArray = this.state.alert.filter(a => a.alertTypeName === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.alertTypeName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         alertColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      this.state.alert = this.state.sortAllData;
-      itemsArray = this.state.alert.filter(a => a.createdBy === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         createdColor: "sort-column"
       });
     } else if (column === "isAlertActive") {
-      this.state.alert = this.state.sortAllData;
-      itemsArray = this.state.alert.filter(a => a.isAlertActive === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.isAlertActive === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
         statusColor: "sort-column"
       });
     }
 
     this.setState({
-      alert: itemsArray
+      tempalert: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
@@ -292,15 +406,11 @@ class Alerts extends Component {
             var msg = res.data.message;
             var status = res.data.status;
             if (msg === "Success" && status == true) {
-              if(data!=="Not Exist")
-              {
+              if (data !== "Not Exist") {
                 self.setState({ isExitsType: data });
-              }
-              else
-              {
+              } else {
                 self.setState({ isExitsType: "" });
               }
-              
             } else {
               self.setState({ isExitsType: "" });
             }
@@ -488,7 +598,6 @@ class Alerts extends Component {
 
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-              
               if (data[i].isEmailCustomer) {
                 emailCust = data[i].isEmailCustomer;
                 selectedSubjectCustomer = data[i].subject;
@@ -561,6 +670,7 @@ class Alerts extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortAlertType.push({ alertTypeName: distinct[i] });
+            self.state.sortFilterAlertType.push({ alertTypeName: distinct[i] });
           }
 
           var unique = [];
@@ -573,6 +683,7 @@ class Alerts extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
           }
 
           var unique = [];
@@ -585,6 +696,7 @@ class Alerts extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortStatus.push({ isAlertActive: distinct[i] });
+            self.state.sortFilterStatus.push({ isAlertActive: distinct[i] });
           }
         }
       })
@@ -776,9 +888,7 @@ class Alerts extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(
-              "Alert updated successfully."
-            );
+            NotificationManager.success("Alert updated successfully.");
             self.handleGetAlert();
             self.setState({
               AddAlertTabsPopup: false,
@@ -1182,6 +1292,53 @@ class Alerts extends Component {
       this.setState({ selectedCKStore: ckData });
     }
   }
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "alertTypeName") {
+      var sortFilterAlertType = matchSorter(
+        this.state.sortAlertType,
+        e.target.value,
+        { keys: ["alertTypeName"] }
+      );
+      if (sortFilterAlertType.length > 0) {
+        this.setState({ sortFilterAlertType });
+      } else {
+        this.setState({
+          sortFilterAlertType: this.state.sortAlertType
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["isAlertActive"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -1189,8 +1346,6 @@ class Alerts extends Component {
           <Modal
             show={this.state.StatusModel}
             onHide={this.StatusCloseModel}
-            // onClose={this.StatusCloseModel}
-            // open={this.state.StatusModel}
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
@@ -1229,6 +1384,13 @@ class Alerts extends Component {
               </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+
                 <div className="FTypeScroll">
                   <div className="filter-checkbox">
                     <input
@@ -1243,8 +1405,8 @@ class Alerts extends Component {
                     </label>
                   </div>
                   {this.state.sortColumn === "alertTypeName"
-                    ? this.state.sortAlertType !== null &&
-                      this.state.sortAlertType.map((item, i) => (
+                    ? this.state.sortFilterAlertType !== null &&
+                      this.state.sortFilterAlertType.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -1253,7 +1415,8 @@ class Alerts extends Component {
                             value={item.alertTypeName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "alertTypeName"
+                              "alertTypeName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.alertTypeName}>
@@ -1266,8 +1429,8 @@ class Alerts extends Component {
                     : null}
 
                   {this.state.sortColumn === "createdBy"
-                    ? this.state.sortCreatedBy !== null &&
-                      this.state.sortCreatedBy.map((item, i) => (
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -1276,7 +1439,8 @@ class Alerts extends Component {
                             value={item.createdBy}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "createdBy"
+                              "createdBy",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.createdBy}>
@@ -1289,8 +1453,8 @@ class Alerts extends Component {
                     : null}
 
                   {this.state.sortColumn === "isAlertActive"
-                    ? this.state.sortStatus !== null &&
-                      this.state.sortStatus.map((item, i) => (
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
@@ -1849,7 +2013,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -1866,30 +2030,32 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
-                                {this.state.placeholderShown && <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setPlaceholderValue.bind(
-                                      this,
-                                      "Customer"
-                                    )}
-                                  >
-                                    <option value="0">Placeholders</option>
-                                    {this.state.placeholderData !== null &&
-                                      this.state.placeholderData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.mailParameterID}
-                                          >
-                                            {item.description}
-                                          </option>
-                                        )
+                                </div> */}
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Customer"
                                       )}
-                                  </select>
-                                </div>}
+                                    >
+                                      <option value="0">Placeholders</option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -1949,7 +2115,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -1966,30 +2132,32 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
-                                {this.state.placeholderShown && <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setPlaceholderValue.bind(
-                                      this,
-                                      "Internal"
-                                    )}
-                                  >
-                                    <option value="0">Placeholders</option>
-                                    {this.state.placeholderData !== null &&
-                                      this.state.placeholderData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.mailParameterID}
-                                          >
-                                            {item.description}
-                                          </option>
-                                        )
+                                </div> */}
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Internal"
                                       )}
-                                  </select>
-                                </div>}
+                                    >
+                                      <option value="0">Placeholders</option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
 
                                 <CKEditor
                                   content={this.state.content}
@@ -2048,7 +2216,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2065,30 +2233,32 @@ class Alerts extends Component {
                                         </option>
                                       ))}
                                   </select>
-                                </div>
-                                {this.state.placeholderShown && <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setPlaceholderValue.bind(
-                                      this,
-                                      "Store"
-                                    )}
-                                  >
-                                    <option value="0">Placeholders</option>
-                                    {this.state.placeholderData !== null &&
-                                      this.state.placeholderData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.mailParameterID}
-                                          >
-                                            {item.description}
-                                          </option>
-                                        )
+                                </div> */}
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Store"
                                       )}
-                                  </select>
-                                </div>}
+                                    >
+                                      <option value="0">Placeholders</option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
 
                                 <CKEditor
                                   content={this.state.content}
@@ -2162,9 +2332,34 @@ class Alerts extends Component {
                             2 && "show active"}`}
                         >
                           <div className="sms-mainLabel alert-p1">
-                            <label className="alert-main-popuplbl">
-                              Compose your Notification
-                            </label>
+                            <div className="noti-plchldr-cntr">
+                              <label className="alert-main-popuplbl">
+                                Compose your Notification
+                              </label>
+                              <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
+                              <select
+                                className="add-select-category"
+                                value="0"
+                                onChange={this.setPlaceholderValue.bind(
+                                  this,
+                                  "Notification"
+                                )}
+                              >
+                                <option value="0">Placeholders</option>
+                                {this.state.placeholderData !== null &&
+                                  this.state.placeholderData.map(
+                                    (item, i) => (
+                                      <option
+                                        key={i}
+                                        value={item.mailParameterID}
+                                      >
+                                        {item.description}
+                                      </option>
+                                    )
+                                  )}
+                              </select>
+                            </div>
+                            </div>
                             <textarea
                               rows="10"
                               className="text-areaModel"

@@ -33,8 +33,7 @@ class TicketSystemStore extends Component {
       byVisitDate: "",
       byValideStoreData: "",
       modifiedDate: "",
-      CustStoreStatusDrop: "0",
-      // showStoreDetails:true
+      CustStoreStatusDrop: "0"
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
@@ -47,23 +46,22 @@ class TicketSystemStore extends Component {
   }
 
   componentDidUpdate() {
-    var storeDat=this.props.showStore_Date;
-    if(storeDat === true){
-      if (this.state.showStoreDetails === true) {
-        var ticket_Id = this.props.ticket_IDS;
-        if (ticket_Id) {
-          // alert('Store Data')
-          this.handleGetStoreData(ticket_Id);
-        }
+    
+    var storeDat = this.props.showStore_Date;
+    if (storeDat === true) {
+      var ticket_Id = this.props.ticket_IDS;
+      if (ticket_Id) {
+        // alert('Store Data')
+        this.handleGetStoreData(ticket_Id);
       }
     }
-    
   }
 
   ////handle Get Store Details
   handleGetStoreData(ID) {
-    debugger;
+    // 
     let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/Store/getSelectedStores",
@@ -73,11 +71,13 @@ class TicketSystemStore extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
+        
+
+        
         let status = res.data.message;
         let data = res.data.responseData;
-
         if (status === "Success") {
+          self.props.parentCallBackFuncation("store");
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
@@ -91,14 +91,17 @@ class TicketSystemStore extends Component {
               });
             }
           }
+          
+
           self.setState({
             selectedStoreData: selectedRow,
             selectedStore: data,
             AddSelectDetail: true,
-            message: "Success",
-            // showStoreDetails:false
+            message: "Success"
           });
+          
         } else {
+          self.props.parentCallBackFuncation("store");
           self.setState({
             selectedStore: []
           });
@@ -115,7 +118,7 @@ class TicketSystemStore extends Component {
     this.setState({ OrderStoreTable: false });
   }
   handleByvisitDate(e, rowData) {
-    //debugger;
+    //
     var id = e.storeID;
     var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
     this.state.selectedStoreData["VisitedDate"] = rowData;
@@ -125,7 +128,7 @@ class TicketSystemStore extends Component {
     this.setState({ selectedStoreData });
   }
   handleStoreStatus = e => {
-    //debugger;
+    //
     this.setState({
       SwitchBtnStatus: e.target.checked,
       SearchData: [],
@@ -139,7 +142,7 @@ class TicketSystemStore extends Component {
     }
   };
   handleSearchStoreDetails(e) {
-    //debugger;
+    //
     e.preventDefault();
     if (this.state.SwitchBtnStatus === false) {
       let self = this;
@@ -153,7 +156,7 @@ class TicketSystemStore extends Component {
           }
         })
           .then(function(res) {
-            //debugger;
+            //
             let data = res.data.responseData;
             let Msg = res.data.message;
             if (Msg === "Success") {
@@ -177,7 +180,7 @@ class TicketSystemStore extends Component {
     }
   }
   hanldeStatusChange(e) {
-    //debugger;
+    //
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
@@ -204,7 +207,7 @@ class TicketSystemStore extends Component {
   };
 
   handleCheckStoreID = (storeMasterID, rowData) => {
-    //debugger;
+    //
 
     const newSelected = Object.assign({}, this.state.CheckStoreID);
     newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
@@ -251,7 +254,7 @@ class TicketSystemStore extends Component {
     }
   };
   onFilteredChange(filtered) {
-    //debugger;
+    //
     if (filtered.length > 1 && this.state.filterAll.length) {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
@@ -263,7 +266,7 @@ class TicketSystemStore extends Component {
   }
 
   filterAll(e) {
-    //debugger;
+    //
     const { value } = e.target;
     const filterAll = value;
     const filtered = [{ id: "all", value: filterAll }];
@@ -271,7 +274,7 @@ class TicketSystemStore extends Component {
     this.setState({ filterAll, filtered });
   }
   handleCustomerStoreStatus = e => {
-    //debugger;
+    //
     this.setState({
       CustStoreStatusDrop: e.target.value
     });
@@ -279,6 +282,10 @@ class TicketSystemStore extends Component {
 
   render() {
     const { SearchData, selectedStoreData } = this.state;
+    console.log(
+      this.state.selectedStoreData,
+      "--------------------selectedStoreData"
+    );
     return (
       <Fragment>
         <div className="ticketSycard">
@@ -463,7 +470,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="storedetail-tab"
                 >
-                  <div className="reactstoreselect">
+                  <div className="reactstoreselect ">
                     <Table
                       className="custom-antd-table"
                       columns={[
@@ -811,7 +818,7 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="selectedSubstore-tab"
                   >
-                    <div className="reactstoreselect ordermainrow">
+                    <div className="reactstoreselect ordermainrow custom-antd-table">
                       <Table
                         className="custom-antd-table date-picker-arrows"
                         columns={[
@@ -819,7 +826,7 @@ class TicketSystemStore extends Component {
                             // title: "",
                             // dataIndex: "",
                             render: (row, data) => {
-                              // //debugger;
+                              // //
                               return (
                                 <div className="filter-checkbox">
                                   <input

@@ -362,9 +362,13 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
-        // let status = res.data.message;
-        // let data = res.data.responseData;
+        debugger;
+        let status = res.data.status;
+        if (status) {
+          self.setState({
+            followUpIds: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -514,13 +518,9 @@ class MyTicket extends Component {
         let status = res.data.status;
         if (status === true) {
           if (ticStaId === 103) {
-            NotificationManager.success(
-              "The ticket has been resolved."
-            );
+            NotificationManager.success("The ticket has been resolved.");
           } else if (ticStaId === 104) {
-            NotificationManager.success(
-              "The ticket has been closed."
-            );
+            NotificationManager.success("The ticket has been closed.");
           }
         }
       })
@@ -702,27 +702,59 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       text += "@" + userName;
       this.setState({ ticketcommentMSG: text, followUpIds });
+    } else if (check === "rply") {
+      let followUpIds = this.state.followUpIds;
+      let assign = e.currentTarget.value;
+      followUpIds += assign + ",";
+      let text = this.state.replymailBodyData;
+      let ckDataArr = text.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      ck += "@" + userName;
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      text = ckDataArr.join(' ');
+      this.setState({ replymailBodyData: text, followUpIds });
     } else {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      ckData += "@" + userName;
+      ck += "@" + userName;
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      ckData = ckDataArr.join(' ');
       this.setState({ mailBodyData: ckData, followUpIds });
     }
   }
   setPlaceholderValue(e) {
     debugger;
     let ckData = this.state.mailBodyData;
+    let ckDataArr = ckData.split('\n\n');
+    let ckDataArrLast = ckDataArr.pop();
+    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ckData += placeholderName;
+    ck += placeholderName;
+    let ckFinal = ckTags[0] + ck + ckTags[1];
+    ckDataArr.push(ckFinal);
+    ckData = ckDataArr.join(' ');
     this.setState({ mailBodyData: ckData });
   }
   handleGetStoreDetails() {
@@ -777,38 +809,45 @@ class MyTicket extends Component {
       });
   }
   handleUpdateTicketDetails() {
-    ////debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/Updateticketstatus",
-      headers: authHeader(),
-      data: {
-        TicketID: this.state.ticket_Id,
-        StatusID: this.state.selectetedParameters.ticketStatusID,
-        BrandID: this.state.selectetedParameters.brandID,
-        CategoryID: this.state.selectetedParameters.categoryID,
-        SubCategoryID: this.state.selectetedParameters.subCategoryID,
-        IssueTypeID: this.state.selectetedParameters.issueTypeID,
-        PriortyID: this.state.selectetedParameters.priorityID,
-        ChannelOfPurchaseID: this.state.selectetedParameters
-          .channelOfPurchaseID,
-        TicketActionID: this.state.selectetedParameters.ticketActionTypeID
-      }
-    })
-      .then(function(res) {
-        ////debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Ticket updated successfully.");
-          self.props.history.push("myTicketlist");
-        } else {
-          NotificationManager.error("Ticket not update");
+    debugger;
+    if (
+      this.state.role_Name === "Supervisor" ||
+      this.state.role_Name === "Admin"
+    ) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/Updateticketstatus",
+        headers: authHeader(),
+        data: {
+          TicketID: this.state.ticket_Id,
+          StatusID: this.state.selectetedParameters.ticketStatusID,
+          BrandID: this.state.selectetedParameters.brandID,
+          CategoryID: this.state.selectetedParameters.categoryID,
+          SubCategoryID: this.state.selectetedParameters.subCategoryID,
+          IssueTypeID: this.state.selectetedParameters.issueTypeID,
+          PriortyID: this.state.selectetedParameters.priorityID,
+          ChannelOfPurchaseID: this.state.selectetedParameters
+            .channelOfPurchaseID,
+          TicketActionID: this.state.selectetedParameters.ticketActionTypeID
         }
       })
-      .catch(data => {
-        console.log(data);
-      });
+        .then(function(res) {
+          ////debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Ticket updated successfully.");
+            self.props.history.push("myTicketlist");
+          } else {
+            NotificationManager.error("Ticket not update");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Unauthorized Access!");
+    }
   }
   handleRequireSize(e, rowData) {
     ////debugger;
@@ -1122,9 +1161,7 @@ class MyTicket extends Component {
         ////debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
-          NotificationManager.success(
-            "Tickets assigned successfully."
-          );
+          NotificationManager.success("Tickets assigned successfully.");
           self.HandlelabelModalClose();
           // self.handleReAssignCommentOpen();
           setTimeout(function() {
@@ -1255,7 +1292,7 @@ class MyTicket extends Component {
   HandleComment1CollapseOpen() {
     this.setState(state => ({ Comment1Collapse: !state.Comment1Collapse }));
   }
- 
+
   handleBillImgModalOpen() {
     this.handleGetOrderDetails();
     this.setState({ BillInvoiceModal: true });
@@ -1342,9 +1379,7 @@ class MyTicket extends Component {
           if (status === true) {
             var id = self.state.ticket_Id;
             self.handleGetNotesTabDetails(id);
-            NotificationManager.success(
-              "Comment added successfully."
-            );
+            NotificationManager.success("Comment added successfully.");
             self.setState({
               NoteAddComment: "",
               notesCommentCompulsion: ""
@@ -1536,9 +1571,7 @@ class MyTicket extends Component {
           let status = res.data.message;
           // let details = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(
-              "Product attached successfully."
-            );
+            NotificationManager.success("Product attached successfully.");
           } else {
             NotificationManager.error("Product not attached");
           }
@@ -1556,7 +1589,7 @@ class MyTicket extends Component {
     // this.setState({ loading: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/getNotesByTicketId", 
+      url: config.apiUrl + "/Ticketing/getNotesByTicketId",
       headers: authHeader(),
       params: {
         TicketId: ticket_Id
@@ -1834,6 +1867,7 @@ class MyTicket extends Component {
             ////debugger;
             let status = res.data.message;
             if (status === "Success") {
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
@@ -1908,9 +1942,7 @@ class MyTicket extends Component {
                 self.handleProgressBarDetails(self.state.ticket_Id);
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
-                NotificationManager.success(
-                  "Mail send successfully."
-                );
+                NotificationManager.success("Mail send successfully.");
                 self.setState({
                   mailFiled: {},
                   // mailSubject: "",
@@ -1927,9 +1959,7 @@ class MyTicket extends Component {
           NotificationManager.error("Please Enter Body Section.");
         }
       } else {
-        NotificationManager.error(
-          "Only 2000 Charater Allow In Body Section."
-        );
+        NotificationManager.error("Only 2000 Charater Allow In Body Section.");
       }
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
@@ -1955,9 +1985,8 @@ class MyTicket extends Component {
             ////debugger;
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success(
-                "Comment Added successfully."
-              );
+              NotificationManager.success("Comment Added successfully.");
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleCommentCollapseOpen();
@@ -2054,9 +2083,8 @@ class MyTicket extends Component {
             ////debugger;
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success(
-                "Comment Added successfully."
-              );
+              NotificationManager.success("Comment Added successfully.");
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleFreeTextCommentOpen();
@@ -3291,8 +3319,8 @@ class MyTicket extends Component {
                       </p>
                     </div>
                   </div>
-                  {/* <div className="col-md-6" > */}
-                  <div
+                  <div className="col-md-6">
+                    {/* <div
                     className={
                       this.state.role_Name === "Supervisor"
                         ? "col-md-6"
@@ -3301,11 +3329,19 @@ class MyTicket extends Component {
                         ? "col-md-6"
                         : "col-md-6 disabled-link"
                     }
-                  >
+                  > */}
                     <div className="mid-sec mid-secnew">
                       <div className="row mob-pad">
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                          <div className="form-group">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor" ||
+                              this.state.role_Name === "Admin" ||
+                              this.state.role_Name === "Agent"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Status</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3325,9 +3361,19 @@ class MyTicket extends Component {
                             </select>
                           </div>
                         </div>
-                        
+
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Priority</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3346,7 +3392,17 @@ class MyTicket extends Component {
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Brand</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3371,7 +3427,17 @@ class MyTicket extends Component {
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Category</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3396,7 +3462,17 @@ class MyTicket extends Component {
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Sub Category</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3423,7 +3499,17 @@ class MyTicket extends Component {
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">Issue Type</label>
 
                             <select
@@ -3451,7 +3537,17 @@ class MyTicket extends Component {
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">
                               Channel Of Purchase
                             </label>
@@ -3463,7 +3559,6 @@ class MyTicket extends Component {
                               }
                               onChange={this.handleDropDownChange}
                               name="channelOfPurchaseID"
-                              // value={this.state.selectedChannelOfPurchase}
                               // onChange={this.setChannelOfPurchaseValue}
                             >
                               <option className="select-category-placeholder">
@@ -3485,7 +3580,17 @@ class MyTicket extends Component {
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          <div className="form-group">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
                             <label className="label-4">
                               Ticket Action Type
                             </label>
@@ -3697,9 +3802,7 @@ class MyTicket extends Component {
                                         accessor: "purpose",
                                         Cell: row => {
                                           return (
-                                            <div
-                                              className="filter-checkbox"
-                                            >
+                                            <div className="filter-checkbox">
                                               <input
                                                 type="checkbox"
                                                 id={"i" + row.original.storeID}
@@ -3851,10 +3954,12 @@ class MyTicket extends Component {
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
                                                 selected={
-                                                  row.original.storeVisitDate !== null ?
-                                                  new Date(
-                                                    row.original.storeVisitDate
-                                                  ) : new Date()
+                                                  row.original
+                                                    .storeVisitDate !== null
+                                                    ? new Date(
+                                                        row.original.storeVisitDate
+                                                      )
+                                                    : new Date()
                                                 }
                                                 placeholderText="MM/DD/YYYY"
                                                 // placeholderText={
@@ -3870,9 +3975,15 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={row.original.storeVisitDate !== null ? moment(
-                                                  row.original.storeVisitDate
-                                                ).format("MM/DD/YYYY") : ''}
+                                                value={
+                                                  row.original
+                                                    .storeVisitDate !== null
+                                                    ? moment(
+                                                        row.original
+                                                          .storeVisitDate
+                                                      ).format("MM/DD/YYYY")
+                                                    : ""
+                                                }
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -5083,9 +5194,7 @@ class MyTicket extends Component {
                             </li>
                             <li>
                               <label className="">
-                                <div
-                                  className="input-group"
-                                >
+                                <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     BCC:
                                   </span>

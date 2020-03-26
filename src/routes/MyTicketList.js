@@ -2806,7 +2806,6 @@ class MyTicketList extends Component {
     });
   }
   HandleRowClickPage = (rowInfo, column) => {
-    debugger;
     if ((rowInfo, column)) {
       return {
         onClick: e => {

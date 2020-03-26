@@ -200,7 +200,7 @@ class Header extends Component {
     this.setState({ modalIsOpen: false });
   };
   handleViewTicketModalOpen(data) {
-    debugger;
+    
     var Ticket_Ids = data.ticketIDs;
     var Ids = Ticket_Ids.split(",");
 
@@ -216,7 +216,7 @@ class Header extends Component {
   };
 
   onViewTicket = notiIds => {
-    debugger;
+    
     this.setState({ modalIsOpen: false });
     if (notiIds !== "") {
       let self = this;
@@ -228,7 +228,7 @@ class Header extends Component {
           TicketID: notiIds
         }
       }).then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetNotificationList();
@@ -240,14 +240,14 @@ class Header extends Component {
   };
 
   handleGetUserProfileData() {
-    debugger;
+    
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       var status = res.data.message;
       if (status === "Success") {
         var id = res.data.responseData[0].userId;
@@ -274,7 +274,7 @@ class Header extends Component {
   }
 
   handleCRMRole(id) {
-    debugger;
+    
     let self = this;
     axios({
       method: "post",
@@ -282,7 +282,7 @@ class Header extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-        debugger;
+        
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -295,7 +295,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    debugger;
+    
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -373,7 +373,7 @@ class Header extends Component {
       url: config.apiUrl + "/Account/Logout",
       headers: authHeader()
     }).then(function(res) {
-      //debugger;
+      //
       var status = res.data.status;
       // var Msg=res.data.message
       if (status === true) {
@@ -387,14 +387,14 @@ class Header extends Component {
   }
 
   handleLoggedInUserDetails = () => {
-    //debugger;
+    //
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       var data = res.data.responseData;
       var status = res.data.message;
       if (status === "Success") {
@@ -434,7 +434,7 @@ class Header extends Component {
   };
 
   actives = e => {
-    debugger;
+    
     const contDummy = [...this.state.cont];
     contDummy.forEach(i => {
       i.activeClass = "single-menu";
@@ -444,27 +444,27 @@ class Header extends Component {
   };
 
   handleGetNotificationList() {
-    //debugger;
+    //
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
      
       if (status === "Success") {
         let data = res.data.responseData.ticketNotification;
         let count = res.data.responseData.notiCount;
-        debugger;
+        
 
         self.setState({
           notifiMessages: data,
           notiCount: count
         });
       } else {
-        debugger;
+        
         self.setState({
           notifiMessages: [],
           notiCount: 0
@@ -476,7 +476,7 @@ class Header extends Component {
   }
 
   handleShowTicket(Ids) {
-    debugger;
+    
     this.closeModal();
     this.onViewTicket(Ids);
   }

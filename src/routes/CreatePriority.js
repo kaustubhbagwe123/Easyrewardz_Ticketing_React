@@ -24,6 +24,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import matchSorter from "match-sorter";
 
 let dragingIndex = -1;
 
@@ -143,18 +144,25 @@ class CreatePriority extends Component {
       rowData: {},
       editmodel: false,
       editSaveLoading: false,
-      sortAllData:[],
-      sortName:[],
-      sortCreatedDate:[],
-      sortCreatedBy:[],
-      sortStatus:[],
-      sortColumn:"",
-      sortHeader:"",
-      StatusModel:false,
-      nameColor:"",
-      createdDateColor:"",
-      createdByColor:"",
-      statusColor:""
+      sortAllData: [],
+      sortName: [],
+      sortCreatedDate: [],
+      sortCreatedBy: [],
+      sortStatus: [],
+      sortColumn: "",
+      sortHeader: "",
+      StatusModel: false,
+      nameColor: "",
+      createdDateColor: "",
+      createdByColor: "",
+      statusColor: "",
+      temppriorityData: [],
+      sFilterCheckbox: "",
+      filterTxtValue: "",
+      sortFilterName: [],
+      sortFilterCreatedBy: [],
+      sortFilterCreatedDate: [],
+      sortFilterStatus: []
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -167,7 +175,6 @@ class CreatePriority extends Component {
   componentDidMount() {
     this.handleGetPriorityList();
   }
-
 
   sortStatusAtoZ() {
     debugger;
@@ -196,68 +203,140 @@ class CreatePriority extends Component {
     this.StatusCloseModel();
   }
 
-  StatusOpenModel(data,header) {
+  StatusOpenModel(data, header) {
     debugger;
-
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader:header });
+    this.setState({
+      StatusModel: true,
+      sortColumn: data,
+      sortHeader: header
+    });
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    if (this.state.temppriorityData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        priorityData: this.state.temppriorityData,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    } else {
+      this.setState({
+        StatusModel: false,
+        priorityData: this.state.sortAllData,
+        sFilterCheckbox: "",
+        filterTxtValue: ""
+      });
+    }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var data = e.currentTarget.value;
+    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+    if (type === "value" && type !== "All") {
+      if (sFilterCheckbox.includes(e.currentTarget.value)) {
+        sFilterCheckbox = sFilterCheckbox.replace(
+          e.currentTarget.value + ",",
+          ""
+        );
+      } else {
+        sFilterCheckbox += e.currentTarget.value + ",";
+      }
+    }
+
     this.setState({
-     nameColor:"",
-     createdDateColor:"",
-     createdByColor:"",
-     statusColor:""
-    
+      sFilterCheckbox,
+      nameColor: "",
+      createdDateColor: "",
+      createdByColor: "",
+      statusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-     
     } else if (column === "priortyName") {
-      this.state.priorityData = this.state.sortAllData;
-      itemsArray = this.state.priorityData.filter(
-        a => a.priortyName === data
-      );
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.priortyName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        nameColor:"sort-column"
-       
+        nameColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      this.state.priorityData = this.state.sortAllData;
-      itemsArray = this.state.priorityData.filter(a => a.createdBy === data);
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        createdByColor:"sort-column"
-        
+        createdByColor: "sort-column"
       });
-    }else if (column === "createdDate") {
-      this.state.priorityData = this.state.sortAllData;
-      itemsArray = this.state.priorityData.filter(a => a.createdDate === data);
+    } else if (column === "createdDate") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.createdDate === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        createdDateColor:"sort-column"
-       
+        createdDateColor: "sort-column"
       });
-    }else if (column === "priortyStatus") {
-      this.state.priorityData = this.state.sortAllData;
-      itemsArray = this.state.priorityData.filter(a => a.priortyStatus === data);
+    } else if (column === "priortyStatus") {
+      var sItems = sFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.priortyStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
       this.setState({
-        statusColor:"sort-column"
-       
+        statusColor: "sort-column"
       });
     }
 
     this.setState({
-      priorityData: itemsArray
+      temppriorityData: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
-
 
   ////move row info
   moveRow = (dragIndex, hoverIndex) => {
@@ -292,9 +371,7 @@ class CreatePriority extends Component {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
-          NotificationManager.error(
-            "Sorry we don't sort row of list"
-          );
+          NotificationManager.error("Sorry we don't sort row of list");
         }
       })
       .catch(data => {
@@ -332,7 +409,6 @@ class CreatePriority extends Component {
           });
         }
 
-
         if (data !== null) {
           self.state.sortAllData = data;
           var unique = [];
@@ -345,8 +421,8 @@ class CreatePriority extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortName.push({ priortyName: distinct[i] });
+            self.state.sortFilterName.push({ priortyName: distinct[i] });
           }
-
 
           var unique = [];
           var distinct = [];
@@ -358,6 +434,7 @@ class CreatePriority extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedDate.push({ createdDate: distinct[i] });
+            self.state.sortFilterCreatedDate.push({ createdDate: distinct[i] });
           }
 
           var unique = [];
@@ -369,7 +446,7 @@ class CreatePriority extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
           }
 
           var unique = [];
@@ -381,10 +458,8 @@ class CreatePriority extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ priortyStatus: distinct[i] });
+            self.state.sortFilterStatus.push({ priortyStatus: distinct[i] });
           }
-
-
         }
       })
       .catch(data => {
@@ -417,14 +492,12 @@ class CreatePriority extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetPriorityList();
-            NotificationManager.success(
-              "Priority Added successfully."
-            );
+            NotificationManager.success("Priority Added successfully.");
             self.setState({
               priority_name: "",
               selectedActiveStatus: 0,
-              priorityNameCompulsion:"",
-              statusCompulsion:""
+              priorityNameCompulsion: "",
+              statusCompulsion: ""
             });
           }
         })
@@ -452,9 +525,7 @@ class CreatePriority extends Component {
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetPriorityList();
-          NotificationManager.success(
-            "Priority delete successfully."
-          );
+          NotificationManager.success("Priority delete successfully.");
         } else {
           NotificationManager.error(res.data.message);
         }
@@ -491,9 +562,7 @@ class CreatePriority extends Component {
           if (status === "Success") {
             self.setState({ editSaveLoading: false, editmodel: false });
             self.handleGetPriorityList();
-            NotificationManager.success(
-              "Priority updated successfully."
-            );
+            NotificationManager.success("Priority updated successfully.");
             self.setState({
               rowData: {},
               priority_name: "",
@@ -623,6 +692,66 @@ class CreatePriority extends Component {
     rowData[name] = value;
     this.setState({ rowData });
   }
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    if (this.state.sortColumn === "priortyName") {
+      var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
+        keys: ["priortyName"]
+      });
+      if (sortFilterName.length > 0) {
+        this.setState({ sortFilterName });
+      } else {
+        this.setState({
+          sortFilterName: this.state.sortName
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        {
+          keys: ["createdBy"]
+        }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdDate") {
+      var sortFilterCreatedDate = matchSorter(
+        this.state.sortCreatedDate,
+        e.target.value,
+        { keys: ["createdDate"] }
+      );
+      if (sortFilterCreatedDate.length > 0) {
+        this.setState({ sortFilterCreatedDate });
+      } else {
+        this.setState({
+          sortFilterCreatedDate: this.state.sortCreatedDate
+        });
+      }
+    }
+    if (this.state.sortColumn === "priortyStatus") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["priortyStatus"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
 
   render() {
     return (
@@ -630,18 +759,17 @@ class CreatePriority extends Component {
         {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
-          show={this.state.StatusModel}
-          onHide={this.StatusCloseModel}
-           // onClose={this.StatusCloseModel}
-           // open={this.state.StatusModel}
+            show={this.state.StatusModel}
+            onHide={this.StatusCloseModel.bind(this)}
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
             <div className="status-drop-down">
               <div className="sort-sctn text-center">
-              <label style={{color:"#0066cc",fontWeight:"bold"}}>{this.state.sortHeader}</label>
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
                 <div className="d-flex">
-                 
                   <a
                     href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
@@ -662,120 +790,130 @@ class CreatePriority extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              <a href=""
-               style={{margin:"0 25px",textDecoration:"underline"}} 
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
-                >clear search</a>
+              >
+                clear search
+              </a>
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
                 <div className="FTypeScroll">
-                <div className="filter-checkbox">
-                  <input
-                    type="checkbox"
-                    name="filter-type"
-                    id={"fil-open"}
-                    value="all"
-                    onChange={this.setSortCheckStatus.bind(this, "all")}
-                  />
-                  <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
-                  </label>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "priortyName"
+                    ? this.state.sortFilterName !== null &&
+                      this.state.sortFilterName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.priortyName}
+                            id={"fil-open" + item.priortyName}
+                            value={item.priortyName}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "priortyName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.priortyName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.priortyName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdDate"
+                    ? this.state.sortFilterCreatedDate !== null &&
+                      this.state.sortFilterCreatedDate.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdDate}
+                            id={"fil-open" + item.createdDate}
+                            value={item.createdDate}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdDate",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdDate}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdDate}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "priortyStatus"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.priortyStatus}
+                            id={"fil-open" + item.priortyStatus}
+                            value={item.priortyStatus}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "priortyStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.priortyStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.priortyStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                 </div>
-                {this.state.sortColumn === "priortyName"
-                  ? this.state.sortName !== null &&
-                    this.state.sortName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.priortyName}
-                          id={"fil-open" + item.priortyName}
-                          value={item.priortyName}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "priortyName"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.priortyName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.priortyName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "createdBy"
-                  ? this.state.sortCreatedBy !== null &&
-                    this.state.sortCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdBy}
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "createdDate"
-                  ? this.state.sortCreatedDate !== null &&
-                    this.state.sortCreatedDate.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdDate}
-                          id={"fil-open" + item.createdDate}
-                          value={item.createdDate}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdDate"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdDate}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdDate}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-
-{this.state.sortColumn === "priortyStatus"
-                  ? this.state.sortStatus !== null &&
-                    this.state.sortStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.priortyStatus}
-                          id={"fil-open" + item.priortyStatus}
-                          value={item.priortyStatus}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "priortyStatus"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.priortyStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.priortyStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
-                  : null}
-                </div>
-              
-
-
               </div>
             </div>
           </Modal>
@@ -848,26 +986,19 @@ class CreatePriority extends Component {
                           sorter: (a, b) =>
                             a.priortyName.length - b.priortyName.length,
                           sortDirections: ["descend", "ascend"],
-                          
-                          onHeaderCell: (column) => {
+
+                          onHeaderCell: column => {
                             return {
-                            onClick: () => {
-                            this.StatusOpenModel.bind(
-                            this,
-                            "priortyName","Priorty Name"
-                          )
-                            }
+                              onClick: () => {
+                                debugger;
+                                this.setState({
+                                  StatusModel: true,
+                                  sortColumn: "priortyName",
+                                  sortHeader: "Priorty Name"
+                                });
+                              }
                             };
-                            }
-
-                          // className:this.state.nameColor,
-                           
-                          // onClick:this.StatusOpenModel.bind(
-                          //   this,
-                          //   "priortyName","Priorty Name"
-                          // )
-
-
+                          }
                         },
                         {
                           title: "Created By",
@@ -879,6 +1010,20 @@ class CreatePriority extends Component {
                           sorter: (a, b) =>
                             a.createdByName.length - b.createdByName.length,
                           sortDirections: ["descend", "ascend"],
+
+                          onHeaderCell: column => {
+                            return {
+                              onClick: () => {
+                                debugger;
+                                this.setState({
+                                  StatusModel: true,
+                                  sortColumn: "createdBy",
+                                  sortHeader: "Created By Name"
+                                });
+                              }
+                            };
+                          },
+
                           render: (text, record) => {
                             //
                             return (
@@ -925,6 +1070,19 @@ class CreatePriority extends Component {
                           }
                         },
                         {
+                          onHeaderCell: column => {
+                            return {
+                              onClick: () => {
+                                debugger;
+                                this.setState({
+                                  StatusModel: true,
+                                  sortColumn: "createdDate",
+                                  sortHeader: "Created Date"
+                                });
+                              }
+                            };
+                          },
+
                           title: "Created Date",
                           dataIndex: "createdDateFormated",
                           key: "createdDateFormated",
@@ -938,6 +1096,19 @@ class CreatePriority extends Component {
                           sortDirections: ["descend", "ascend"]
                         },
                         {
+                          onHeaderCell: column => {
+                            return {
+                              onClick: () => {
+                                debugger;
+                                this.setState({
+                                  StatusModel: true,
+                                  sortColumn: "priortyStatus",
+                                  sortHeader: "Status"
+                                });
+                              }
+                            };
+                          },
+
                           title: "Status",
                           dataIndex: "priortyStatus",
                           key: "priortyStatus",
