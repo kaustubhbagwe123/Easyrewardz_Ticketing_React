@@ -362,9 +362,13 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////debugger;
-        // let status = res.data.message;
-        // let data = res.data.responseData;
+        debugger;
+        let status = res.data.status;
+        if (status) {
+          self.setState({
+            followUpIds: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -698,27 +702,59 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       text += "@" + userName;
       this.setState({ ticketcommentMSG: text, followUpIds });
+    } else if (check === "rply") {
+      let followUpIds = this.state.followUpIds;
+      let assign = e.currentTarget.value;
+      followUpIds += assign + ",";
+      let text = this.state.replymailBodyData;
+      let ckDataArr = text.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      let matchedArr = this.state.AssignToData.filter(
+        x => x.userID == e.currentTarget.value
+      );
+      let userName = matchedArr[0].fullName;
+      ck += "@" + userName;
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      text = ckDataArr.join(' ');
+      this.setState({ replymailBodyData: text, followUpIds });
     } else {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
+      let ckDataArr = ckData.split('\n\n');
+      let ckDataArrLast = ckDataArr.pop();
+      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      ckData += "@" + userName;
+      ck += "@" + userName;
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      ckData = ckDataArr.join(' ');
       this.setState({ mailBodyData: ckData, followUpIds });
     }
   }
   setPlaceholderValue(e) {
     debugger;
     let ckData = this.state.mailBodyData;
+    let ckDataArr = ckData.split('\n\n');
+    let ckDataArrLast = ckDataArr.pop();
+    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ckData += placeholderName;
+    ck += placeholderName;
+    let ckFinal = ckTags[0] + ck + ckTags[1];
+    ckDataArr.push(ckFinal);
+    ckData = ckDataArr.join(' ');
     this.setState({ mailBodyData: ckData });
   }
   handleGetStoreDetails() {
@@ -1831,6 +1867,7 @@ class MyTicket extends Component {
             ////debugger;
             let status = res.data.message;
             if (status === "Success") {
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
@@ -1949,6 +1986,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Comment Added successfully.");
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleCommentCollapseOpen();
@@ -2046,6 +2084,7 @@ class MyTicket extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Comment Added successfully.");
+              self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleFreeTextCommentOpen();

@@ -232,6 +232,10 @@ class Alerts extends Component {
       } else {
         this.setState({ selectedCKStore: ck });
       }
+    } else if (type == "Notification") {
+      let ckData = this.state.selectedNotifContent;
+      ckData += placeholderName;
+      this.setState({ selectedNotifContent: ckData });
     }
   }
 
@@ -2328,9 +2332,34 @@ class Alerts extends Component {
                             2 && "show active"}`}
                         >
                           <div className="sms-mainLabel alert-p1">
-                            <label className="alert-main-popuplbl">
-                              Compose your Notification
-                            </label>
+                            <div className="noti-plchldr-cntr">
+                              <label className="alert-main-popuplbl">
+                                Compose your Notification
+                              </label>
+                              <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
+                              <select
+                                className="add-select-category"
+                                value="0"
+                                onChange={this.setPlaceholderValue.bind(
+                                  this,
+                                  "Notification"
+                                )}
+                              >
+                                <option value="0">Placeholders</option>
+                                {this.state.placeholderData !== null &&
+                                  this.state.placeholderData.map(
+                                    (item, i) => (
+                                      <option
+                                        key={i}
+                                        value={item.mailParameterID}
+                                      >
+                                        {item.description}
+                                      </option>
+                                    )
+                                  )}
+                              </select>
+                            </div>
+                            </div>
                             <textarea
                               rows="10"
                               className="text-areaModel"
