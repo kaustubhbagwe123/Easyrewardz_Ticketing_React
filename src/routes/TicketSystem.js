@@ -286,10 +286,16 @@ class TicketSystem extends Component {
     );
     let placeholderName = matchedArr[0].parameterName;
     ck += placeholderName;
-    let ckFinal = ckTags[0] + ck + ckTags[1];
-    ckDataArr.push(ckFinal);
-    ckData = ckDataArr.join(" ");
-    this.setState({ editorTemplateDetails: ckData });
+    if (ckTags !== null) {
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      ckData = ckDataArr.join(" ");
+    }
+    if (ckTags !== null) {
+      this.setState({ editorTemplateDetails: ckData });
+    } else {
+      this.setState({ editorTemplateDetails: ck });
+    }
   }
 
   handlePlaceholderList() {
@@ -778,17 +784,26 @@ class TicketSystem extends Component {
     );
     let userName = matchedArr[0].fullName;
     ck += "@" + userName;
-    let ckFinal = ckTags[0] + ck + ckTags[1];
-    ckDataArr.push(ckFinal);
-    ckData = ckDataArr.join(' ');
-    this.setState({ editorTemplateDetails: ckData, followUpIds });
+    if (ckTags !== null) {
+      let ckFinal = ckTags[0] + ck + ckTags[1];
+      ckDataArr.push(ckFinal);
+      ckData = ckDataArr.join(' ');
+    }
+    if (ckTags !== null) {
+      this.setState({ editorTemplateDetails: ckData, followUpIds });
+    } else {
+      this.setState({ editorTemplateDetails: ck, followUpIds });
+    }
   }
   handleTicketAssignFollowUp(ticketID_) {
+    debugger;
      
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
     );
+
+    let self = this;
      
     axios({
       method: "post",
@@ -800,7 +815,13 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        
+        debugger;
+        let status = res.data.status;
+        if (status) {
+          self.setState({
+            followUpIds: ""
+          });
+        }
       })
       .catch(data => {
         console.log(data);
