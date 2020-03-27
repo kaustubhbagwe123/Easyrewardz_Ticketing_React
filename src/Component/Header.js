@@ -215,8 +215,8 @@ class Header extends Component {
     });
   };
 
-  onViewTicket = notiIds => {
-    
+  onViewTicket = (notiIds, isFollowUp) => {
+    debugger;
     this.setState({ modalIsOpen: false });
     if (notiIds !== "") {
       let self = this;
@@ -225,10 +225,11 @@ class Header extends Component {
         url: config.apiUrl + "/Notification/ReadNotification",
         headers: authHeader(),
         params: {
-          TicketID: notiIds
+          TicketID: notiIds,
+          IsFollowUp: isFollowUp
         }
       }).then(function(res) {
-        
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetNotificationList();
@@ -444,14 +445,14 @@ class Header extends Component {
   };
 
   handleGetNotificationList() {
-    //
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
     }).then(function(res) {
-      
+      debugger;
       let status = res.data.message;
      
       if (status === "Success") {
@@ -475,10 +476,10 @@ class Header extends Component {
     });
   }
 
-  handleShowTicket(Ids) {
+  handleShowTicket(Ids, isFollowUp) {
     
     this.closeModal();
-    this.onViewTicket(Ids);
+    this.onViewTicket(Ids, isFollowUp);
   }
 
   render() {
@@ -1076,7 +1077,7 @@ class Header extends Component {
                                     pathname: "myticket",
                                     ticketDetailID: data
                                   }}
-                                  onClick={this.handleShowTicket.bind(this, data)}
+                                  onClick={this.handleShowTicket.bind(this, data, item.isFollowUp)}
                                 >
                                   {data}
                                 </Link>
