@@ -215,7 +215,8 @@ class MyTicket extends Component {
       freetextCommentCompulsory: "",
       role_Name: "",
       logInEmail: "",
-      userEmailID: ""
+      userEmailID: "",
+      statusValidate: false
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -825,10 +826,7 @@ class MyTicket extends Component {
       });
   }
   handleUpdateTicketDetails() {
-    if (
-      this.state.role_Name === "Supervisor" ||
-      this.state.role_Name === "Admin"
-    ) {
+    if (this.state.statusValidate) {
       let self = this;
       axios({
         method: "post",
@@ -2592,15 +2590,15 @@ class MyTicket extends Component {
       this.state.role_Name === "Admin" ||
       this.state.role_Name === "Agent"
     ) {
-      debugger;
       statusValidate = true;
+      this.state.statusValidate = true;
     } else {
       if (this.state.logInEmail === this.state.userEmailID) {
-        debugger;
         statusValidate = true;
+        this.state.statusValidate = true;
       } else {
-        debugger;
         statusValidate = false;
+        this.state.statusValidate = false;
       }
     }
 
