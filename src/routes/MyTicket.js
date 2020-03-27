@@ -442,7 +442,7 @@ class MyTicket extends Component {
             mailFiled: MailDetails,
             fileDummy: attachementDetails,
             oldAgentId: AgentId,
-            role_Name: rolename_,
+            // role_Name: rolename_,
             loading: false
           });
 
@@ -718,7 +718,7 @@ class MyTicket extends Component {
       if (ckTags !== null) {
         let ckFinal = ckTags[0] + ck + ckTags[1];
         ckDataArr.push(ckFinal);
-        text = ckDataArr.join(' ');
+        text = ckDataArr.join(" ");
       }
       if (ckTags !== null) {
         this.setState({ replymailBodyData: text, followUpIds });
@@ -742,7 +742,7 @@ class MyTicket extends Component {
       if (ckTags !== null) {
         let ckFinal = ckTags[0] + ck + ckTags[1];
         ckDataArr.push(ckFinal);
-        ckData = ckDataArr.join(' ');
+        ckData = ckDataArr.join(" ");
       }
       if (ckTags !== null) {
         this.setState({ mailBodyData: ckData, followUpIds });
@@ -765,7 +765,7 @@ class MyTicket extends Component {
     if (ckTags !== null) {
       let ckFinal = ckTags[0] + ck + ckTags[1];
       ckDataArr.push(ckFinal);
-      ckData = ckDataArr.join(' ');
+      ckData = ckDataArr.join(" ");
     }
     if (ckTags !== null) {
       this.setState({ mailBodyData: ckData });
@@ -2566,7 +2566,7 @@ class MyTicket extends Component {
 
         var data = res.data.responseData;
         if (status) {
-          self.setState({ logInEmail: data });
+          self.setState({ logInEmail: data.emailID, role_Name: data.roleName });
         }
       })
       .catch(response => {
@@ -2603,7 +2603,6 @@ class MyTicket extends Component {
         statusValidate = false;
       }
     }
-    
 
     const HidecollapsUp = this.state.collapseUp ? (
       <img
@@ -6185,7 +6184,10 @@ class MyTicket extends Component {
                               <select
                                 className="add-select-category"
                                 value="0"
-                                onChange={this.setAssignedToValue.bind(this, "rply")}
+                                onChange={this.setAssignedToValue.bind(
+                                  this,
+                                  "rply"
+                                )}
                               >
                                 <option value="0">Users</option>
                                 {this.state.AssignToData !== null &&
