@@ -28,6 +28,7 @@ import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -94,7 +95,13 @@ class CategoryMaster extends Component {
       sortFilterCategory: [],
       sortFilterSubCategory: [],
       sortFilterIssueType: [],
-      sortFilterStatus: []
+      sortFilterStatus: [],
+      isFileUploadFail: false,
+      progressValue: 0,
+      fileSize: "",
+      showProgress: false,
+      bulkuploadCompulsion: "",
+      fileN: []
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -107,6 +114,7 @@ class CategoryMaster extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
 
   componentDidMount() {
@@ -141,11 +149,9 @@ class CategoryMaster extends Component {
   }
 
   StatusOpenModel(data, header) {
-    
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
-    
     if (this.state.tempcategoryGridData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -857,7 +863,20 @@ class CategoryMaster extends Component {
     this.setState({ catmulti: true });
   }
   fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    if (selectedFiles) {
+      allFiles.push(selectedFiles[0]);
+
+      var fileSize = formatSizeUnits(selectedFiles[0].size);
+      this.setState({
+        fileSize,
+        fileN: allFiles,
+        fileName: allFiles[0].name,
+        bulkuploadCompulsion: ""
+      });
+    }
   };
   handleCategoryChange = value => {
     debugger;
@@ -1137,7 +1156,66 @@ class CategoryMaster extends Component {
       }
     }
   }
+  handleDeleteBulkupload = e => {
+    debugger;
+    this.setState({
+      fileN: [],
+      fileName: ""
+    });
+    NotificationManager.success("File deleted successfully.");
+  };
+  hanldeAddBulkUpload() {
+    debugger;
+    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+      let self = this;
 
+      const formData = new FormData();
+
+      formData.append("file", this.state.fileN[0]);
+      this.setState({ showProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Category/BulkUploadUser",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetCategoryGridData();
+          } else {
+            self.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              progressValue: 0
+            });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(data => {
+          debugger;
+          if (data.message) {
+            this.setState({ showProgress: false, isFileUploadFail: true });
+          }
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        bulkuploadCompulsion: "Please select file."
+      });
+    }
+  }
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
   render() {
     const { categoryGridData } = this.state;
     const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
@@ -1839,6 +1917,11 @@ class CategoryMaster extends Component {
                       </div>
                       <span>Add File</span> or Drop File here
                     </label>
+                    {this.state.fileN.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.bulkuploadCompulsion}
+                      </p>
+                    )}
                     {this.state.fileName && (
                       <div className="file-info">
                         <div className="file-cntr">
@@ -1866,45 +1949,65 @@ class CategoryMaster extends Component {
                                   </p>
                                   <div className="del-can">
                                     <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleDeleteBulkupload}
+                                    >
+                                      Delete
+                                    </button>
                                   </div>
                                 </div>
                               </PopoverBody>
                             </UncontrolledPopover>
                           </div>
                           <div>
-                            <span className="file-size">122.6kb</span>
+                            <span className="file-size">
+                              {this.state.fileSize}
+                            </span>
                           </div>
                         </div>
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" href={Demo.BLANK_LINK}>
-                              Retry
-                            </a>
+                        {this.state.fileN.length > 0 &&
+                        this.state.isFileUploadFail ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)} >
+                                Retry
+                              </a>
+                            </div>
+                            <div>
+                              <span className="file-failed">Failed</span>
+                            </div>
                           </div>
-                          <div>
-                            <span className="file-failed">Failed</span>
-                          </div>
-                        </div>
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name pr-0">
-                              {this.state.fileName}
-                            </p>
-                          </div>
-                          <div>
-                            <div className="d-flex align-items-center mt-2">
-                              <ProgressBar className="file-progress" now={60} />
-                              <div className="cancel-upload">
-                                <img src={UploadCancel} alt="upload cancel" />
+                        ) : null}
+                        {this.state.showProgress ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name pr-0">
+                                {this.state.fileName}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="d-flex align-items-center mt-2">
+                                <ProgressBar
+                                  className="file-progress"
+                                  now={this.state.progressValue}
+                                />
+                                <div className="cancel-upload">
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        ) : null}
                       </div>
                     )}
-                    <button className="butn">ADD</button>
+                    <button
+                      className="butn"
+                      onClick={this.hanldeAddBulkUpload.bind(this)}
+                    >
+                      ADD
+                    </button>
                     <br />
                   </div>
                 </div>

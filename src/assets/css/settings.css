@@ -743,7 +743,7 @@
   color: #9b9b9b;
 }
 .file-retry {
-  color: #2561a8;
+  color: #2561a8 !important;
   font-weight: 700;
 }
 .file-failed {

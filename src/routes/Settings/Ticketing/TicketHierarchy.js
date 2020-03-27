@@ -470,7 +470,12 @@ class TicketHierarchy extends Component {
             self.setState({fileName:"",fileSize:"",fileN:[]})
             self.handleGetHierarchyData();
           } else {
-            NotificationManager.success("File not uploaded.");
+            self.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              progressValue: 0
+            });
+            NotificationManager.error("File not uploaded.");
           }
         })
         .catch(data => {
@@ -758,7 +763,8 @@ class TicketHierarchy extends Component {
       this.setState({
         fileSize,
         fileN: allFiles,
-        fileName: allFiles[0].name
+        fileName: allFiles[0].name,
+        bulkuploadCompulsion:""
       });
     }
   };
@@ -1448,12 +1454,12 @@ class TicketHierarchy extends Component {
                           </span>
                         </div>
                       </div>
-                      {this.state.fileN.length.length > 0 &&
+                      {this.state.fileN.length> 0 &&
                       this.state.isFileUploadFail ? (
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" href={Demo.BLANK_LINK}>
+                            <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)}>
                               Retry
                             </a>
                           </div>

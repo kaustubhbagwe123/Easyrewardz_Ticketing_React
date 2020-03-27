@@ -21,7 +21,7 @@ import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import CancelImg from "./../../assets/Images/Circle-cancel.png";
 import { Checkbox } from "antd";
-
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import CKEditor from "ckeditor4-react";
 import Modal from "react-bootstrap/Modal";
 import { authHeader } from "./../../helpers/authHeader";
@@ -33,6 +33,7 @@ import {
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
+import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
   constructor(props) {
@@ -123,7 +124,13 @@ class Alerts extends Component {
       sFilterCheckbox: "",
       sortFilterAlertType: [],
       sortFilterCreatedBy: [],
-      sortFilterStatus: []
+      sortFilterStatus: [],
+      isFileUploadFail: false,
+      progressValue: 0,
+      fileSize: "",
+      showProgress: false,
+      bulkuploadCompulsion: "",
+      fileN: []
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -183,7 +190,7 @@ class Alerts extends Component {
     let placeholderName = matchedArr[0].parameterName;
     if (type == "Customer") {
       let ckData = this.state.selectedCKCustomer;
-      let ckDataArr = ckData.split('\n\n');
+      let ckDataArr = ckData.split("\n\n");
       let ckDataArrLast = ckDataArr.pop();
       let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -191,7 +198,7 @@ class Alerts extends Component {
       if (ckTags !== null) {
         let ckFinal = ckTags[0] + ck + ckTags[1];
         ckDataArr.push(ckFinal);
-        ckData = ckDataArr.join(' ');
+        ckData = ckDataArr.join(" ");
       }
       if (ckTags !== null) {
         this.setState({ selectedCKCustomer: ckData });
@@ -200,7 +207,7 @@ class Alerts extends Component {
       }
     } else if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
-      let ckDataArr = ckData.split('\n\n');
+      let ckDataArr = ckData.split("\n\n");
       let ckDataArrLast = ckDataArr.pop();
       let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -208,7 +215,7 @@ class Alerts extends Component {
       if (ckTags !== null) {
         let ckFinal = ckTags[0] + ck + ckTags[1];
         ckDataArr.push(ckFinal);
-        ckData = ckDataArr.join(' ');
+        ckData = ckDataArr.join(" ");
       }
       if (ckTags !== null) {
         this.setState({ selectedCKInternal: ckData });
@@ -217,7 +224,7 @@ class Alerts extends Component {
       }
     } else if (type == "Store") {
       let ckData = this.state.selectedCKStore;
-      let ckDataArr = ckData.split('\n\n');
+      let ckDataArr = ckData.split("\n\n");
       let ckDataArrLast = ckDataArr.pop();
       let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -225,7 +232,7 @@ class Alerts extends Component {
       if (ckTags !== null) {
         let ckFinal = ckTags[0] + ck + ckTags[1];
         ckDataArr.push(ckFinal);
-        ckData = ckDataArr.join(' ');
+        ckData = ckDataArr.join(" ");
       }
       if (ckTags !== null) {
         this.setState({ selectedCKStore: ckData });
@@ -1339,6 +1346,66 @@ class Alerts extends Component {
       }
     }
   }
+  hanldeAddBulkUpload() {
+    debugger;
+    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+      let self = this;
+
+      const formData = new FormData();
+
+      formData.append("file", this.state.fileN[0]);
+      this.setState({ showProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Alert/BulkUploadUser",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleAlertData();
+          } else {
+            self.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              progressValue: 0
+            });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(data => {
+          debugger;
+          if (data.message) {
+            this.setState({ showProgress: false, isFileUploadFail: true });
+          }
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        bulkuploadCompulsion: "Please select file."
+      });
+    }
+  }
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+  handleDeleteBulkupload = e => {
+    debugger;
+    this.setState({
+      fileN: [],
+      fileName: ""
+    });
+    NotificationManager.success("File deleted successfully.");
+  };
   render() {
     return (
       <React.Fragment>
@@ -2337,28 +2404,28 @@ class Alerts extends Component {
                                 Compose your Notification
                               </label>
                               <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
-                              <select
-                                className="add-select-category"
-                                value="0"
-                                onChange={this.setPlaceholderValue.bind(
-                                  this,
-                                  "Notification"
-                                )}
-                              >
-                                <option value="0">Placeholders</option>
-                                {this.state.placeholderData !== null &&
-                                  this.state.placeholderData.map(
-                                    (item, i) => (
-                                      <option
-                                        key={i}
-                                        value={item.mailParameterID}
-                                      >
-                                        {item.description}
-                                      </option>
-                                    )
+                                <select
+                                  className="add-select-category"
+                                  value="0"
+                                  onChange={this.setPlaceholderValue.bind(
+                                    this,
+                                    "Notification"
                                   )}
-                              </select>
-                            </div>
+                                >
+                                  <option value="0">Placeholders</option>
+                                  {this.state.placeholderData !== null &&
+                                    this.state.placeholderData.map(
+                                      (item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.mailParameterID}
+                                        >
+                                          {item.description}
+                                        </option>
+                                      )
+                                    )}
+                                </select>
+                              </div>
                             </div>
                             <textarea
                               rows="10"
@@ -2422,19 +2489,24 @@ class Alerts extends Component {
                     id="file-upload"
                     className="file-upload d-none"
                     type="file"
-                    onChange={this.fileUpload}
+                    // onChange={this.fileUpload}
                   />
                   <label
                     htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
+                    // onDrop={this.fileDrop}
+                    // onDragOver={this.fileDragOver}
+                    // onDragEnter={this.fileDragEnter}
                   >
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
                     </div>
                     <span>Add File</span> or Drop File here
                   </label>
+                  {this.state.fileN.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.bulkuploadCompulsion}
+                    </p>
+                  )}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -2443,40 +2515,93 @@ class Alerts extends Component {
                           <div className="del-file" id="del-file-1">
                             <img src={DelBlack} alt="delete-black" />
                           </div>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="del-file-1"
+                            className="general-popover delete-popover"
+                          >
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={DelBigIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button
+                                    className="butn"
+                                    onClick={this.handleDeleteBulkupload}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                         <div>
-                          <span className="file-size">122.6kb</span>
+                          <span className="file-size">
+                            {this.state.fileSize}
+                          </span>
                         </div>
                       </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <a className="file-retry" href={Demo.BLANK_LINK}>
-                            Retry
-                          </a>
+                      {this.state.fileN.length > 0 &&
+                      this.state.isFileUploadFail ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name">{this.state.fileName}</p>
+                            <a
+                              className="file-retry"
+                              // onClick={this.hanldeAddBulkUpload.bind(this)}
+                            >
+                              Retry
+                            </a>
+                          </div>
+                          <div>
+                            <span className="file-failed">Failed</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="file-failed">Failed</span>
-                        </div>
-                      </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name pr-0">
-                            {this.state.fileName}
-                          </p>
-                        </div>
-                        <div>
-                          <div className="d-flex align-items-center mt-2">
-                            <ProgressBar className="file-progress" now={60} />
-                            <div className="cancel-upload">
-                              <img src={UploadCancel} alt="upload cancel" />
+                      ) : null}
+                      {this.state.showProgress ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name pr-0">
+                              {this.state.fileName}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="d-flex align-items-center mt-2">
+                              <ProgressBar
+                                className="file-progress"
+                                now={this.state.progressValue}
+                              />
+                              <div className="cancel-upload">
+                                <img src={UploadCancel} alt="upload cancel" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : null}
                     </div>
                   )}
-                  <button className="butn">ADD</button>
+                  {/* <button
+                    className="butn"
+                    onClick={this.hanldeAddBulkUpload.bind(this)}
+                  >
+                    ADD
+                  </button> */}
+                  <button
+                    className="butn"
+                  
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             </div>

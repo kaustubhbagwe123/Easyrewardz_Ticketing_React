@@ -29,7 +29,8 @@ import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
- 
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+
 class StoreMaster extends Component {
   constructor(props) {
     super(props);
@@ -120,7 +121,11 @@ class StoreMaster extends Component {
       sortFilterBrandName: [],
       filterTxtValue: "",
       sFilterCheckbox: "",
-      tempstoreData: []
+      tempstoreData: [],
+      isFileUploadFail: false,
+      progressValue: 0,
+      fileSize: "",
+      showProgress: false
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -150,12 +155,16 @@ class StoreMaster extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-
+      this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Store/BulkUploadStore",
         headers: authHeader(),
-        data: formData
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        }
       })
         .then(function(res) {
           debugger;
@@ -163,11 +172,22 @@ class StoreMaster extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetStoreMasterData();
           } else {
-            NotificationManager.success("File not uploaded.");
+            self.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              progressValue: 0
+            });
+            NotificationManager.error("File not uploaded.");
           }
         })
         .catch(data => {
+          debugger;
+          if (data.message) {
+            this.setState({ showProgress: false, isFileUploadFail: true });
+          }
           console.log(data);
         });
     } else {
@@ -220,7 +240,7 @@ class StoreMaster extends Component {
     }
   }
 
-  setSortCheckStatus = (column,type, e) => {
+  setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
 
     var sFilterCheckbox = this.state.sFilterCheckbox;
@@ -812,14 +832,17 @@ class StoreMaster extends Component {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
-    allFiles.push(selectedFiles[0]);
-    console.log(allFiles);
-    console.log(allFiles[0].name);
-    this.setState({
-      fileN: allFiles,
-      fileName: allFiles[0].name
-    });
-    //this.setState({ fileName: e.target.files[0].name });
+    if (selectedFiles) {
+      allFiles.push(selectedFiles[0]);
+
+      var fileSize = formatSizeUnits(selectedFiles[0].size);
+      this.setState({
+        fileSize,
+        fileN: allFiles,
+        fileName: allFiles[0].name,
+        bulkuploadCompulsion: ""
+      });
+    }
   };
   fileDrop = e => {
     debugger;
@@ -1112,13 +1135,9 @@ class StoreMaster extends Component {
       }
     }
     if (this.state.sortColumn === "cityName") {
-      var sortFilterCity = matchSorter(
-        this.state.sortCity,
-        e.target.value,
-        {
-          keys: ["cityName"]
-        }
-      );
+      var sortFilterCity = matchSorter(this.state.sortCity, e.target.value, {
+        keys: ["cityName"]
+      });
       if (sortFilterCity.length > 0) {
         this.setState({ sortFilterCity });
       } else {
@@ -1128,13 +1147,9 @@ class StoreMaster extends Component {
       }
     }
     if (this.state.sortColumn === "stateName") {
-      var sortFilterState = matchSorter(
-        this.state.sortState,
-        e.target.value,
-        {
-          keys: ["stateName"]
-        }
-      );
+      var sortFilterState = matchSorter(this.state.sortState, e.target.value, {
+        keys: ["stateName"]
+      });
       if (sortFilterState.length > 0) {
         this.setState({ sortFilterState });
       } else {
@@ -1175,9 +1190,18 @@ class StoreMaster extends Component {
         });
       }
     }
-
-
   }
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+  handleDeleteBulkupload = e => {
+    debugger;
+    this.setState({
+      fileN: [],
+      fileName: ""
+    });
+    NotificationManager.success("File deleted successfully.");
+  };
 
   render() {
     const { storeData } = this.state;
@@ -1256,7 +1280,8 @@ class StoreMaster extends Component {
                             value={item.storeName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "storeName","value"
+                              "storeName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.storeName}>
@@ -1279,7 +1304,8 @@ class StoreMaster extends Component {
                             value={item.storeCode}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "storeCode","value"
+                              "storeCode",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.storeCode}>
@@ -1302,7 +1328,8 @@ class StoreMaster extends Component {
                             value={item.cityName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "cityName","value"
+                              "cityName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.cityName}>
@@ -1325,7 +1352,8 @@ class StoreMaster extends Component {
                             value={item.stateName}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "stateName","value"
+                              "stateName",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.stateName}>
@@ -1348,7 +1376,8 @@ class StoreMaster extends Component {
                             value={item.strPinCode}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "strPinCode","value"
+                              "strPinCode",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.strPinCode}>
@@ -1371,7 +1400,8 @@ class StoreMaster extends Component {
                             value={item.brandNames}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "brandNames","value"
+                              "brandNames",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.brandNames}>
@@ -1989,6 +2019,11 @@ class StoreMaster extends Component {
                     </div>
                     <span>Add File</span> or Drop File here
                   </label>
+                  {this.state.fileN.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.bulkuploadCompulsion}
+                    </p>
+                  )}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -2016,42 +2051,57 @@ class StoreMaster extends Component {
                                 </p>
                                 <div className="del-can">
                                   <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                  <button className="butn">Delete</button>
+                                  <button
+                                    className="butn"
+                                    onClick={this.handleDeleteBulkupload}
+                                  >
+                                    Delete
+                                  </button>
                                 </div>
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
                         <div>
-                          <span className="file-size">122.6kb</span>
+                          <span className="file-size">
+                            {this.state.fileSize}
+                          </span>
                         </div>
                       </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <a className="file-retry" href={Demo.BLANK_LINK}>
-                            Retry
-                          </a>
+                      {this.state.fileN.length > 0 &&
+                      this.state.isFileUploadFail ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name">{this.state.fileName}</p>
+                            <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)}>
+                              Retry
+                            </a>
+                          </div>
+                          <div>
+                            <span className="file-failed">Failed</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="file-failed">Failed</span>
-                        </div>
-                      </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name pr-0">
-                            {this.state.fileName}
-                          </p>
-                        </div>
-                        <div>
-                          <div className="d-flex align-items-center mt-2">
-                            <ProgressBar className="file-progress" now={60} />
-                            <div className="cancel-upload">
-                              <img src={UploadCancel} alt="upload cancel" />
+                      ) : null}
+                      {this.state.showProgress ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name pr-0">
+                              {this.state.fileName}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="d-flex align-items-center mt-2">
+                              <ProgressBar
+                                className="file-progress"
+                                now={this.state.progressValue}
+                              />
+                              <div className="cancel-upload">
+                                <img src={UploadCancel} alt="upload cancel" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : null}
                     </div>
                   )}
                   <button
