@@ -658,8 +658,15 @@ class Users extends Component {
     });
 
     setTimeout(() => {
-      if (this.state.userEditData.reporteeDesignation_ID) {
+      if (parseInt(this.state.userEditData.reporteeDesignation_ID)) {
         this.handleGetReportTOList(data2);
+      } else {
+        let userEditData = this.state.userEditData;
+        userEditData.reportee_ID = 0;
+        this.setState({
+          ReportToData: [],
+          userEditData
+        });
       }
     }, 1);
   }
@@ -689,8 +696,17 @@ class Users extends Component {
       EditTemp: data
     });
     setTimeout(() => {
-      if (this.state.userEditData.designation_ID) {
+      if (parseInt(this.state.userEditData.designation_ID)) {
         this.handleGetReporteedesignationList(data1);
+      } else {
+        let userEditData = this.state.userEditData;
+        userEditData.reporteeDesignation_ID = 0;
+        userEditData.reportee_ID = 0;
+        this.setState({
+          ReporteeDesignData: [],
+          ReportToData: [],
+          userEditData
+        });
       }
     }, 1);
   };
@@ -2398,7 +2414,7 @@ class Users extends Component {
                       value={this.state.userEditData.designation_ID}
                       onChange={this.handleEditDesination.bind(this, "edit")}
                     >
-                      <option>Select Designation</option>
+                      <option value="0">Select Designation</option>
                       {this.state.DesignationData !== null &&
                         this.state.DesignationData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -2406,7 +2422,7 @@ class Users extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.userEditData.designation_ID === 0 && (
+                    {this.state.userEditData.designation_ID == 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.edituserdesignCompulsion}
                       </p>
@@ -2423,7 +2439,7 @@ class Users extends Component {
                         "edit"
                       )}
                     >
-                      <option>Select Reportee Designation</option>
+                      <option value="0">Select Reportee Designation</option>
                       {this.state.ReporteeDesignData !== null &&
                         this.state.ReporteeDesignData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -2431,7 +2447,7 @@ class Users extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.userEditData.reporteeDesignation_ID === 0 && (
+                    {this.state.userEditData.reporteeDesignation_ID == 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editreporteeDesignCompulsion}
                       </p>
@@ -2445,7 +2461,7 @@ class Users extends Component {
                       value={this.state.userEditData.reportee_ID}
                       onChange={this.handleOnChangeEditData}
                     >
-                      <option>Select Report To</option>
+                      <option value="0">Select Report To</option>
                       {this.state.ReportToData !== null &&
                         this.state.ReportToData.map((item, i) => (
                           <option key={i} value={item.user_ID}>
@@ -2453,7 +2469,7 @@ class Users extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.userEditData.reportee_ID === 0 && (
+                    {this.state.userEditData.reportee_ID == 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editreportToCompulsion}
                       </p>
