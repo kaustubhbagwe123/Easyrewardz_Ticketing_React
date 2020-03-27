@@ -68,8 +68,8 @@ class Header extends Component {
       ticketDetailID: 0,
       workTimeHours: "0H 0M",
       selectedUserProfilePicture: "",
-      notificationAccess: "yes",
-      settingAccess: "yes",
+      notificationAccess: "none",
+      settingAccess: "none",
       cont: [
         // {
         //   data: "Dashboards",
@@ -295,7 +295,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    
+    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -346,17 +346,17 @@ class Header extends Component {
           accessdata.push(knowledgebase);
         } else if (
           data[i].moduleName === "Settings" &&
-          data[i].modulestatus === false
+          data[i].modulestatus === true
         ) {
           this.setState({
-            settingAccess: "none"
+            settingAccess: "block"
           });
         } else if (
           data[i].moduleName === "Notification" &&
-          data[i].modulestatus === false
+          data[i].modulestatus === true
         ) {
           this.setState({
-            notificationAccess: "none"
+            notificationAccess: "block"
           });
         }
       }
@@ -1047,6 +1047,11 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           <div className="notifi-container">
+          {this.state.notiCount === 0 && (
+            <p className="m-0 p-2">
+              There are no notifications.
+            </p>
+          )}
             {this.state.notifiMessages.map((item, i) => {
               return (
                   <div className="row rowpadding" key={i}>

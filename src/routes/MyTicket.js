@@ -350,6 +350,7 @@ class MyTicket extends Component {
   }
 
   handleTicketAssignFollowUp() {
+    debugger;
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
@@ -365,6 +366,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
+        debugger;
         let status = res.data.status;
         if (status) {
           self.setState({
@@ -680,6 +682,7 @@ class MyTicket extends Component {
   }
   // onchange on User Drop down list
   setAssignedToValue(check, e) {
+    debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
