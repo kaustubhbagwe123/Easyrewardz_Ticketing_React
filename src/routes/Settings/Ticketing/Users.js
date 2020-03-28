@@ -152,7 +152,11 @@ class Users extends Component {
       fileSize: "",
       showProgress: false,
       bulkuploadCompulsion: "",
-      fileN: []
+      fileN: [],
+      sdesignationFilterCheckbox: "",
+      suserNameFilterCheckbox: "",
+      smobileNumberFilterCheckbox: "",
+      semailIDFilterCheckbox: ""
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -219,16 +223,159 @@ class Users extends Component {
 
   StatusOpenModel(data, header) {
     debugger;
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterDesignation.length === 0 ||
+      this.state.sortFilterUsername.length === 0 ||
+      this.state.sortFilterMobile.length === 0 ||
+      this.state.sortFilterEmail.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "designation") {
+      if (
+        this.state.suserNameFilterCheckbox !== "" ||
+        this.state.smobileNumberFilterCheckbox !== "" ||
+        this.state.semailIDFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          suserNameFilterCheckbox: "",
+          smobileNumberFilterCheckbox: "",
+          semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "userName") {
+      if (
+        this.state.sdesignationFilterCheckbox !== "" ||
+        this.state.smobileNumberFilterCheckbox !== "" ||
+        this.state.semailIDFilterCheckbox !== ""
+      ) {
+        this.setState({
+          // sdesignationFilterCheckbox: "",
+          // smobileNumberFilterCheckbox: "",
+          // semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sdesignationFilterCheckbox: "",
+          smobileNumberFilterCheckbox: "",
+          semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "mobileNumber") {
+      if (
+        this.state.sdesignationFilterCheckbox !== "" ||
+        this.state.suserNameFilterCheckbox !== "" ||
+        this.state.semailIDFilterCheckbox !== ""
+      ) {
+        this.setState({
+          // sdesignationFilterCheckbox: "",
+          // suserNameFilterCheckbox: "",
+          // semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sdesignationFilterCheckbox: "",
+          suserNameFilterCheckbox: "",
+          semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "emailID") {
+      if (
+        this.state.sdesignationFilterCheckbox !== "" ||
+        this.state.suserNameFilterCheckbox !== "" ||
+        this.state.smobileNumberFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sdesignationFilterCheckbox: "",
+          suserNameFilterCheckbox: "",
+          smobileNumberFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     debugger;
+
     if (this.state.tempuserData.length > 0) {
       this.setState({
         StatusModel: false,
         userData: this.state.tempuserData,
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "designation") {
+        if (this.state.sdesignationFilterCheckbox === "") {
+        } else {
+          this.setState({
+            suserNameFilterCheckbox: "",
+            smobileNumberFilterCheckbox: "",
+            semailIDFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "userName") {
+        if (this.state.suserNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationFilterCheckbox: "",
+            smobileNumberFilterCheckbox: "",
+            semailIDFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "mobileNumber") {
+        if (this.state.smobileNumberFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationFilterCheckbox: "",
+            suserNameFilterCheckbox: "",
+            semailIDFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "emailID") {
+        if (this.state.semailIDFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationFilterCheckbox: "",
+            suserNameFilterCheckbox: "",
+            smobileNumberFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -243,31 +390,143 @@ class Users extends Component {
 
     var itemsArray = [];
 
-    var sFilterCheckbox = this.state.sFilterCheckbox;
-
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var suserNameFilterCheckbox = this.state.suserNameFilterCheckbox;
+    var sdesignationFilterCheckbox = this.state.sdesignationFilterCheckbox;
+    var smobileNumberFilterCheckbox = this.state.smobileNumberFilterCheckbox;
+    var semailIDFilterCheckbox = this.state.semailIDFilterCheckbox;
+    if (column === "userName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        suserNameFilterCheckbox = suserNameFilterCheckbox.replace("all", "");
+        suserNameFilterCheckbox = suserNameFilterCheckbox.replace("all,", "");
+        if (suserNameFilterCheckbox.includes(e.currentTarget.value)) {
+          suserNameFilterCheckbox = suserNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          suserNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (suserNameFilterCheckbox.includes("all")) {
+          suserNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "userName") {
+            for (let i = 0; i < this.state.sortUsername.length; i++) {
+              suserNameFilterCheckbox +=
+                this.state.sortUsername[i].userName + ",";
+            }
+            suserNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "designation" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sdesignationFilterCheckbox = sdesignationFilterCheckbox.replace(
+          "all",
           ""
         );
+        sdesignationFilterCheckbox = sdesignationFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sdesignationFilterCheckbox.includes(e.currentTarget.value)) {
+          sdesignationFilterCheckbox = sdesignationFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sdesignationFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sdesignationFilterCheckbox.includes("all")) {
+          sdesignationFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "designation") {
+            for (let i = 0; i < this.state.sortUsername.length; i++) {
+              sdesignationFilterCheckbox +=
+                this.state.sortUsername[i].userName + ",";
+            }
+            sdesignationFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "mobileNumber" || column === "all") {
+      smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+        "all",
+        ""
+      );
+      smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+        "all,",
+        ""
+      );
+      if (type === "value" && type !== "All") {
+        if (smobileNumberFilterCheckbox.includes(e.currentTarget.value)) {
+          smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          smobileNumberFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (smobileNumberFilterCheckbox.includes("all")) {
+          smobileNumberFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "mobileNumber") {
+            for (let i = 0; i < this.state.sortMobile.length; i++) {
+              smobileNumberFilterCheckbox +=
+                this.state.sortMobile[i].mobileNumber + ",";
+            }
+            smobileNumberFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "emailID" || column === "all") {
+      semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all", "");
+      semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all,", "");
+      if (type === "value" && type !== "All") {
+        if (semailIDFilterCheckbox.includes(e.currentTarget.value)) {
+          semailIDFilterCheckbox = semailIDFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          semailIDFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (semailIDFilterCheckbox.includes("all")) {
+          semailIDFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "emailID") {
+            for (let i = 0; i < this.state.sortEmail.length; i++) {
+              semailIDFilterCheckbox += this.state.sortEmail[i].emailID + ",";
+            }
+            semailIDFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+    var allData = this.state.sortAllData;
+
     this.setState({
+      sdesignationFilterCheckbox,
+      suserNameFilterCheckbox,
+      smobileNumberFilterCheckbox,
+      semailIDFilterCheckbox,
       userColor: "",
       mobileColor: "",
       emailColor: "",
-      designationColor: "",
-      sFilterCheckbox
+      designationColor: ""
+      // sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "designation") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sdesignationFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -286,7 +545,7 @@ class Users extends Component {
         designationColor: "sort-column"
       });
     } else if (column === "userName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = suserNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -303,7 +562,7 @@ class Users extends Component {
         userColor: "sort-column"
       });
     } else if (column === "mobileNumber") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = smobileNumberFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -322,7 +581,7 @@ class Users extends Component {
         mobileColor: "sort-column"
       });
     } else if (column === "emailID") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = semailIDFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1200,9 +1459,16 @@ class Users extends Component {
               unique[userdata[i].designation] = 1;
             }
           }
+          // self.state.sortDesignation.push({ designation: "all" });
+          // self.state.sortFilterDesignation.push({ designation: "all" });
+
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortDesignation.push({ designation: distinct[i] });
-            self.state.sortFilterDesignation.push({ designation: distinct[i] });
+            self.state.sortDesignation.push({
+              designation: distinct[i]
+            });
+            self.state.sortFilterDesignation.push({
+              designation: distinct[i]
+            });
           }
 
           var unique = [];
@@ -1213,9 +1479,16 @@ class Users extends Component {
               unique[userdata[i].userName] = 1;
             }
           }
+
+          // self.state.sortUsername.push({ userName: "all" });
+          // self.state.sortFilterUsername.push({ userName: "all" });
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortUsername.push({ userName: distinct[i] });
-            self.state.sortFilterUsername.push({ userName: distinct[i] });
+            self.state.sortUsername.push({
+              userName: distinct[i]
+            });
+            self.state.sortFilterUsername.push({
+              userName: distinct[i]
+            });
           }
 
           var unique = [];
@@ -1229,9 +1502,15 @@ class Users extends Component {
               unique[userdata[i].mobileNumber] = 1;
             }
           }
+          // self.state.sortMobile.push({ mobileNumber: "all" });
+          //   self.state.sortFilterMobile.push({ mobileNumber: "all" });
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortMobile.push({ mobileNumber: distinct[i] });
-            self.state.sortFilterMobile.push({ mobileNumber: distinct[i] });
+            self.state.sortMobile.push({
+              mobileNumber: distinct[i]
+            });
+            self.state.sortFilterMobile.push({
+              mobileNumber: distinct[i]
+            });
           }
 
           var unique = [];
@@ -1242,9 +1521,15 @@ class Users extends Component {
               unique[userdata[i].emailID] = 1;
             }
           }
+          // self.state.sortEmail.push({ emailID: "all" });
+          //   self.state.sortFilterEmail.push({ emailID: "all" });
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortEmail.push({ emailID: distinct[i] });
-            self.state.sortFilterEmail.push({ emailID: distinct[i] });
+            self.state.sortEmail.push({
+              emailID: distinct[i]
+            });
+            self.state.sortFilterEmail.push({
+              emailID: distinct[i]
+            });
           }
         }
       })
@@ -2168,6 +2453,14 @@ class Users extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sdesignationFilterCheckbox.includes("all") ||
+                        this.state.suserNameFilterCheckbox.includes("all") ||
+                        this.state.smobileNumberFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.semailIDFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -2183,6 +2476,9 @@ class Users extends Component {
                             name="filter-type"
                             id={"fil-open" + item.designation}
                             value={item.designation}
+                            checked={this.state.sdesignationFilterCheckbox.includes(
+                              item.designation
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "designation",
@@ -2207,6 +2503,9 @@ class Users extends Component {
                             name="filter-type"
                             id={"fil-open" + item.userName}
                             value={item.userName}
+                            checked={this.state.suserNameFilterCheckbox.includes(
+                              item.userName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "userName",
@@ -2231,6 +2530,9 @@ class Users extends Component {
                             name="filter-type"
                             id={"fil-open" + item.mobileNumber}
                             value={item.mobileNumber}
+                            checked={this.state.smobileNumberFilterCheckbox.includes(
+                              item.mobileNumber
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "mobileNumber",
@@ -2255,6 +2557,9 @@ class Users extends Component {
                             name="filter-type"
                             id={"fil-open" + item.emailID}
                             value={item.emailID}
+                            checked={this.state.semailIDFilterCheckbox.includes(
+                              item.emailID
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "emailID",
@@ -3756,7 +4061,10 @@ class Users extends Component {
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)}>
+                            <a
+                              className="file-retry"
+                              onClick={this.hanldeAddBulkUpload.bind(this)}
+                            >
                               Retry
                             </a>
                           </div>

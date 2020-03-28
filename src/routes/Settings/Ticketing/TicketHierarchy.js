@@ -196,7 +196,11 @@ class TicketHierarchy extends Component {
       isFileUploadFail: false,
       progressValue: 0,
       fileSize: "",
-      showProgress: false
+      showProgress: false,
+      sdesignationNameFilterCheckbox: "",
+      sreportToFilterCheckbox: "",
+      screatedbypersonFilterCheckbox: "",
+      sstatusFilterCheckbox: ""
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -278,15 +282,159 @@ class TicketHierarchy extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterDesignation.length === 0 ||
+      this.state.sortFilterReportTo.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "designationName") {
+      if (
+        this.state.sreportToFilterCheckbox !== "" ||
+        this.state.screatedbypersonFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sreportToFilterCheckbox: "",
+          screatedbypersonFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "reportTo") {
+      if (
+        this.state.sstatusFilterCheckbox !== "" ||
+        this.state.screatedbypersonFilterCheckbox !== "" ||
+        this.state.sdesignationNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          // sdesignationFilterCheckbox: "",
+          // smobileNumberFilterCheckbox: "",
+          // semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sdesignationNameFilterCheckbox: "",
+          screatedbypersonFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdbyperson") {
+      if (
+        this.state.sstatusFilterCheckbox !== "" ||
+        this.state.sdesignationNameFilterCheckbox !== "" ||
+        this.state.sdesignationNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          // sdesignationFilterCheckbox: "",
+          // suserNameFilterCheckbox: "",
+          // semailIDFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sdesignationNameFilterCheckbox: "",
+          sdesignationNameFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "status") {
+      if (
+        this.state.sdesignationNameFilterCheckbox !== "" ||
+        this.state.sreportToFilterCheckbox !== "" ||
+        this.state.screatedbypersonFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sdesignationNameFilterCheckbox: "",
+          sreportToFilterCheckbox: "",
+          screatedbypersonFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     if (this.state.temphierarchyData.length > 0) {
       this.setState({
         StatusModel: false,
-        hierarchyData: this.state.temphierarchyData,
+        userData: this.state.tempuserData,
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "designationName") {
+        if (this.state.sdesignationNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportToFilterCheckbox	:"",	
+            screatedbypersonFilterCheckbox		:"",	
+            sstatusFilterCheckbox		:"",	
+            
+          });
+        }
+      }
+      if (this.state.sortColumn === "reportTo") {
+        if (this.state.sreportToFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationNameFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdbyperson") {
+        if (this.state.screatedbypersonFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationNameFilterCheckbox: "",
+            sreportToFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "status") {
+        if (this.state.sstatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationNameFilterCheckbox: "",
+            sreportToFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -300,31 +448,146 @@ class TicketHierarchy extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var sdesignationNameFilterCheckbox = this.state
+      .sdesignationNameFilterCheckbox;
+    var sreportToFilterCheckbox = this.state.sreportToFilterCheckbox;
+    var screatedbypersonFilterCheckbox = this.state
+      .screatedbypersonFilterCheckbox;
+    var sstatusFilterCheckbox = this.state.sstatusFilterCheckbox;
+
+    if (column === "designationName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
+          "all",
           ""
         );
+        sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sdesignationNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sdesignationNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sdesignationNameFilterCheckbox.includes("all")) {
+          sdesignationNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "designationName") {
+            for (let i = 0; i < this.state.sortDesignation.length; i++) {
+              sdesignationNameFilterCheckbox +=
+                this.state.sortDesignation[i].designationName + ",";
+            }
+            sdesignationNameFilterCheckbox += "all";
+          }
+        }
       }
     }
+    if (column === "reportTo" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportToFilterCheckbox = sreportToFilterCheckbox.replace("all", "");
+        sreportToFilterCheckbox = sreportToFilterCheckbox.replace("all,", "");
+        if (sreportToFilterCheckbox.includes(e.currentTarget.value)) {
+          sreportToFilterCheckbox = sreportToFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sreportToFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportToFilterCheckbox.includes("all")) {
+          sreportToFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportTo") {
+            for (let i = 0; i < this.state.sortReportTo.length; i++) {
+              sreportToFilterCheckbox +=
+                this.state.sortReportTo[i].reportTo + ",";
+            }
+            sreportToFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdbyperson" || column === "all") {
+      screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+        "all",
+        ""
+      );
+      screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+        "all,",
+        ""
+      );
+      if (type === "value" && type !== "All") {
+        if (screatedbypersonFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedbypersonFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedbypersonFilterCheckbox.includes("all")) {
+          screatedbypersonFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdbyperson") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedbypersonFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdbyperson + ",";
+            }
+            screatedbypersonFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "status" || column === "all") {
+      sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
+      sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
+      if (type === "value" && type !== "All") {
+        if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstatusFilterCheckbox.includes("all")) {
+          sstatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "status") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sstatusFilterCheckbox += this.state.sortStatus[i].status + ",";
+            }
+            sstatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
 
     this.setState({
       designationColor: "",
       reportToColor: "",
       createdColor: "",
       statusColor: "",
-      sFilterCheckbox
+      sdesignationNameFilterCheckbox,
+      sreportToFilterCheckbox,
+      screatedbypersonFilterCheckbox,
+      sstatusFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "designationName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sdesignationNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -344,7 +607,7 @@ class TicketHierarchy extends Component {
         [e.target.name]: true
       });
     } else if (column === "reportTo") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sreportToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -361,7 +624,7 @@ class TicketHierarchy extends Component {
         reportToColor: "sort-column"
       });
     } else if (column === "createdbyperson") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedbypersonFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -380,7 +643,7 @@ class TicketHierarchy extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "status") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sstatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -467,7 +730,7 @@ class TicketHierarchy extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
-            self.setState({fileName:"",fileSize:"",fileN:[]})
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetHierarchyData();
           } else {
             self.setState({
@@ -480,9 +743,8 @@ class TicketHierarchy extends Component {
         })
         .catch(data => {
           debugger;
-          if(data.message)
-          {
-            this.setState({ showProgress: false,isFileUploadFail:true });
+          if (data.message) {
+            this.setState({ showProgress: false, isFileUploadFail: true });
           }
           console.log(data);
         });
@@ -764,7 +1026,7 @@ class TicketHierarchy extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion:""
+        bulkuploadCompulsion: ""
       });
     }
   };
@@ -917,6 +1179,16 @@ class TicketHierarchy extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sdesignationNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sreportToFilterCheckbox.includes("all") ||
+                        this.state.screatedbypersonFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sstatusFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -932,6 +1204,9 @@ class TicketHierarchy extends Component {
                             name={item.designationName}
                             id={"fil-open" + item.designationName}
                             value={item.designationName}
+                            checked={this.state.sdesignationNameFilterCheckbox.includes(
+                              item.designationName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "designationName",
@@ -956,6 +1231,9 @@ class TicketHierarchy extends Component {
                             name="filter-type"
                             id={"fil-open" + item.reportTo}
                             value={item.reportTo}
+                            checked={this.state.sreportToFilterCheckbox.includes(
+                              item.reportTo
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reportTo",
@@ -980,6 +1258,9 @@ class TicketHierarchy extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdbyperson}
                             value={item.createdbyperson}
+                            checked={this.state.screatedbypersonFilterCheckbox.includes(
+                              item.createdbyperson
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdbyperson",
@@ -1004,6 +1285,9 @@ class TicketHierarchy extends Component {
                             name="filter-type"
                             id={"fil-open" + item.status}
                             value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "status",
@@ -1267,7 +1551,6 @@ class TicketHierarchy extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                  
                 </div>
               </div>
 
@@ -1454,12 +1737,15 @@ class TicketHierarchy extends Component {
                           </span>
                         </div>
                       </div>
-                      {this.state.fileN.length> 0 &&
+                      {this.state.fileN.length > 0 &&
                       this.state.isFileUploadFail ? (
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)}>
+                            <a
+                              className="file-retry"
+                              onClick={this.hanldeAddBulkUpload.bind(this)}
+                            >
                               Retry
                             </a>
                           </div>
@@ -1482,10 +1768,10 @@ class TicketHierarchy extends Component {
                                 now={this.state.progressValue}
                               />
                               {/* {this.state.progressValue !== 100 ? ( */}
-                                <div className="cancel-upload">
-                                  {/* <img src={UploadCancel} alt="upload cancel" onClick={source.cancel('Operation canceled by the user.')} /> */}
-                                  <img src={UploadCancel} alt="upload cancel" />
-                                </div>
+                              <div className="cancel-upload">
+                                {/* <img src={UploadCancel} alt="upload cancel" onClick={source.cancel('Operation canceled by the user.')} /> */}
+                                <img src={UploadCancel} alt="upload cancel" />
+                              </div>
                               {/* ) : null} */}
                             </div>
                           </div>

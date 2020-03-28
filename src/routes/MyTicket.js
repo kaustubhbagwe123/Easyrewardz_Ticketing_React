@@ -2627,8 +2627,8 @@ class MyTicket extends Component {
       CategoryID: this.state.selectetedParameters.categoryID,
       SubCategoryID: this.state.selectetedParameters.subCategoryID,
       Subject: this.state.ticketDetailsData.ticketTitle,
-      Description: this.state.messageDetails[0]["msgDetails"][0]
-        .latestMessageDetails.ticketMailBody,
+      Description: ReactHtmlParser(this.state.messageDetails[0]["msgDetails"][0]
+        .latestMessageDetails.ticketMailBody),
       IsActive: 1,
       IssueTypeID: this.state.selectetedParameters.issueTypeID
     };
