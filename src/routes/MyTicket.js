@@ -6843,11 +6843,11 @@ class MyTicket extends Component {
                   </div>
                 </div>
                 <div className="Commentlabel">
-                  <label className="Commentlabel1">
-                    Add this tikcet in Knowledge Base ?
-                  </label>
+                  <p className="Commentlabel1 mb-4 text-center">
+                    Add this ticket in Knowledge Base ?
+                  </p>
                 </div>
-                <div className="SendCommentBtn" style={{ float: "left" }}>
+                <div className="SendCommentBtn mb-0" style={{ float: "left" }}>
                   <button
                     className="SendCommentBtn1"
                     onClick={this.handleYesNoClick.bind(this, false)}
@@ -6855,7 +6855,7 @@ class MyTicket extends Component {
                     No
                   </button>
                 </div>
-                <div className="SendCommentBtn">
+                <div className="SendCommentBtn mb-0">
                   <button
                     className="SendCommentBtn1"
                     onClick={this.handleYesNoClick.bind(this, true)}

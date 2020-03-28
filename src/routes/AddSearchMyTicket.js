@@ -165,7 +165,13 @@ class AddSearchMyTicket extends Component {
 
   handleAddCustomerSave() {
     debugger;
-    let self = this;
+    let self = this, dob;
+
+    if (this.state.dob === "") {
+      dob = "";
+    } else {
+      dob = moment(this.state.dob).format("L");
+    }
 
     axios({
       method: "post",
@@ -178,7 +184,7 @@ class AddSearchMyTicket extends Component {
         GenderID: this.state.genderID,
         AltNumber: this.state.altNumber.trim(),
         AltEmailID: this.state.altEmailID.trim(),
-        DateOfBirth: moment(this.state.dob).format("L"),
+        DateOfBirth: dob,
         IsActive: 1,
         CreatedBy: this.state.createdBy,
         ModifyBy: 1,
@@ -186,7 +192,7 @@ class AddSearchMyTicket extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
+        debugger;
         let responseMessage = res.data.message;
         let custId = res.data.responseData;
         self.setState({

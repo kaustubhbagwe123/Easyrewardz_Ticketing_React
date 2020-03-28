@@ -156,7 +156,9 @@ class TicketSystem extends Component {
       showOrderDetails: false,
       showStoreData: false,
       showTaskData: false,
-      fileDummy: []
+      fileDummy: [],
+      ckCusrsorPosition: 0,
+      ckCusrsorData: ""
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -276,25 +278,53 @@ class TicketSystem extends Component {
   };
 
   setPlaceholderValue(e) {
+    debugger;
     let ckData = this.state.editorTemplateDetails;
     let ckDataArr = ckData.split("\n\n");
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element = ckDataArr[i].replace(/<[^>]+>/g, "");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData == ckDataArrNew[i]) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPosition, ckDataArrLast.length);
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ck += placeholderName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
+    // ck += placeholderName;
+    ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPosition + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags !== undefined) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== null) {
+    if (ckTags !== undefined) {
       this.setState({ editorTemplateDetails: ckData });
     } else {
-      this.setState({ editorTemplateDetails: ck });
+      this.setState({ editorTemplateDetails: ckDataArrLast });
     }
   }
 
@@ -840,11 +870,22 @@ class TicketSystem extends Component {
     this.setState({ ticketSuggestion });
   };
   onAddCKEditorChange = evt => {
+    debugger;
     var newContent = evt.editor.getData();
+    var cursorPosition = evt.editor.getSelection().getRanges()[0];
     this.setState({
       editorTemplateDetails: newContent
     });
   };
+  onCkBlur = evt => {
+    debugger;
+    var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    this.setState({
+      ckCusrsorPosition: ckCusrsorPosition.startOffset,
+      ckCusrsorData
+    });
+  }
 
   handleAppendTicketSuggestion = e => {
     ////
@@ -2243,6 +2284,7 @@ class TicketSystem extends Component {
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
+                        onBlur={this.onCkBlur}
                         config={{
                           toolbar: [
                             {
