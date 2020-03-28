@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-// import "../../node_modules/jquery/dist/jquery.js";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import SearchIcon from "./../assets/Images/search-icon.png";
@@ -21,36 +20,28 @@ import DelSearch from "./../assets/Images/del-search.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-import CallImg from "./../assets/Images/call.png";
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
 import { Collapse, CardBody, Card } from "reactstrap";
-// import Demo from "../store/Hashtag.js";
-// import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
 import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSourceBar";
 import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
-import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
-// import { FormControl } from "react-bootstrap";
 import { Checkbox } from "antd";
 import moment from "moment";
-import { Row, Col } from "react-bootstrap";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import Select from "react-select";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import SlaDue from "./SlaDue";
@@ -61,8 +52,6 @@ import TaskStatus from "./TaskStatus";
 import { CSVLink } from "react-csv";
 import DatePickerComponenet from "./Settings/Ticketing/DatePickerComponent";
 import matchSorter from "match-sorter";
-// import { DatePicker } from "antd";
-// const { RangePicker } = DatePicker;
 
 class Dashboard extends Component {
   constructor(props) {

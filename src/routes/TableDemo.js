@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-// import { Table } from 'react-bootstrap';
 
 class TableDemo extends Component {
   render() {

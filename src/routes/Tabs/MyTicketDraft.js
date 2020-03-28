@@ -4,8 +4,6 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
-// import axios from "axios";
-// import config from "./../../helpers/config";
 import moment from "moment";
 
 class MyTicketDraft extends Component {

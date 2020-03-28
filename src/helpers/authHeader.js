@@ -1,4 +1,3 @@
-// import { encryption } from "./encryption";
 
 export function authHeader(token = "token") {
   // debugger

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { PieChart } from "react-d3-components";
-// import { authHeader } from "./../../helpers/authHeader";
-// import axios from "axios";
-// import config from "./../../helpers/config";
 
 class OpenByPriorityPie extends Component {
 

@@ -6,11 +6,9 @@ import axios from "axios";
 import { Popover } from "antd";
 import config from "../../helpers/config";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
-// import Demo from "../../store/Hashtag";
 
 class TicketSystemTask extends Component {
   constructor(props) {

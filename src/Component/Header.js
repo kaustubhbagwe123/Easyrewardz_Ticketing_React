@@ -31,11 +31,6 @@ import config from "../helpers/config";
 import axios from "axios";
 import PencilImg from "./../assets/Images/pencil.png";
 import {transferData} from "./../helpers/transferData";
-// import Demo from "../store/Hashtag";
-// import {
-//   NotificationContainer,
-//   NotificationManager
-// } from "react-notifications";
 
 class Header extends Component {
   constructor(props) {

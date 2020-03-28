@@ -3,23 +3,17 @@ import ArrowImg from "./../../assets/Images/arrow.png";
 import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import NotFoundImg from "./../../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
-// import ReactTable from "react-table";
 import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
-// import moment from "moment";
 import config from "./../../helpers/config";
 import ReactAutocomplete from "react-autocomplete";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
-// import matchSorter from "match-sorter";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
-// import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class TicketSystemOrder extends Component {
   constructor(props) {

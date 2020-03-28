@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import '../assets/css/style.css'
 import logo from "../assets/Images/logo.jpg";
 import SimpleReactValidator from "simple-react-validator";
 import { encryption } from "../helpers/encryption";

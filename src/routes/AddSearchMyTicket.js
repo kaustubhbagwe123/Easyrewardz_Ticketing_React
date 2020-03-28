@@ -7,7 +7,6 @@ import NotFoundImg from "./../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
-// import ReactAutocomplete from "react-autocomplete";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
@@ -15,11 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import SimpleReactValidator from "simple-react-validator";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
-// import { authHeader } from "../helpers/authHeader";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class AddSearchMyTicket extends Component {

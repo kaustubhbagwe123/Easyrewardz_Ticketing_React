@@ -3,12 +3,10 @@ import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import ArrowImg from "./../../assets/Images/arrow.png";
 import NotFoundImg from "./../../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
-// import ReactTable from "react-table";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
-// import matchSorter from "match-sorter";
 import DatePicker from "react-datepicker";
 import { Table } from "antd";
 

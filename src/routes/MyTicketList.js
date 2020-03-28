@@ -40,7 +40,6 @@ import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
 import Select from "react-select";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";

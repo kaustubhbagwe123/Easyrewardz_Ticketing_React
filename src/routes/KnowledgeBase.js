@@ -12,17 +12,13 @@ import Sorting from "./../assets/Images/sorting.png";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
-// import { Popover } from "antd";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Up1Img from "./../assets/Images/up-1.png";
 import matchSorter from "match-sorter";
-// import { notification } from "antd";
 
 class KnowledgeBase extends Component {
   constructor(props) {

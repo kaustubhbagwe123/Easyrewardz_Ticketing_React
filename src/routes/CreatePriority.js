@@ -1,6 +1,4 @@
 import React, { Component, useState } from "react";
-//import React, { Component, } from "react";
-// import TableArr from "./../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../assets/Images/red-delete-icon.png";
 import Sorting from "./../assets/Images/sorting.png";
 import BlackDeleteIcon from "./../assets/Images/del-big.png";

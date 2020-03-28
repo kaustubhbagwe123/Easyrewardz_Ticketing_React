@@ -13,15 +13,10 @@ import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
 import commentImg from "./../assets/Images/page-icon.png";
-import MsgImg from "./../assets/Images/msg.png";
 import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
-import RightImg from "./../assets/Images/right.png";
-import TwitterImg from "./../assets/Images/twitter.png";
 import Up1Img from "./../assets/Images/up-1.png";
-import Loading1Img from "./../assets/Images/loading1.png";
-import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
@@ -32,7 +27,6 @@ import {
   Card,
   Progress
 } from "reactstrap";
-import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
@@ -43,13 +37,8 @@ import FileUpload from "./../assets/Images/file.png";
 import CKEditor from "ckeditor4-react";
 import ReactTable from "react-table";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
-// import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
-import Email1 from "./../assets/Images/SecuredLetter2.png";
-import Sms1 from "./../assets/Images/Sms.png";
-import Facebook1 from "./../assets/Images/facebook.png";
-import Call1 from "./../assets/Images/call.png";
 import Ticket from "./../assets/Images/TicketGrey.png";
 import MoreUp from "./../assets/Images/table-arr-up.png";
 import CancelImgGrey from "./../assets/Images/CancelGrey.png";
@@ -58,11 +47,9 @@ import axios from "axios";
 import { authHeader } from "../helpers/authHeader";
 import config from "./../helpers/config";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import TicketStatus from "./MyTicketStatus";
-// import Select from "react-select";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
@@ -73,14 +60,8 @@ import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
-import { Dropdown } from "semantic-ui-react";
 import { withRouter } from "react-router";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "react-html-parser";
-// import DatePicker from "react-date-picker";
+import ReactHtmlParser from "react-html-parser";
 
 class MyTicket extends Component {
   constructor(props) {
