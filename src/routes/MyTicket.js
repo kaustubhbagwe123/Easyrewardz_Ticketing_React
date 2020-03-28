@@ -216,7 +216,9 @@ class MyTicket extends Component {
       role_Name: "",
       logInEmail: "",
       userEmailID: "",
-      statusValidate: false
+      statusValidate: false,
+      KnowledgeBaseModal: false,
+      isaddKnowledge: false
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -248,6 +250,7 @@ class MyTicket extends Component {
       this
     );
     this.handleGetEmailAdd = this.handleGetEmailAdd.bind(this);
+    this.handleAddKnwoldgeBase = this.handleAddKnwoldgeBase.bind(this);
   }
 
   componentDidUpdate() {
@@ -546,6 +549,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -828,9 +832,12 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
+
   handleUpdateTicketDetails() {
+    debugger;
     if (this.state.statusValidate) {
       let self = this;
+      this.setState({ KnowledgeBaseModal: false });
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/Updateticketstatus",
@@ -853,7 +860,11 @@ class MyTicket extends Component {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Ticket updated successfully.");
-            self.props.history.push("myTicketlist");
+            if (self.state.isaddKnowledge) {
+              self.handleAddKnwoldgeBase();
+            } else {
+              self.props.history.push("myTicketlist");
+            }
           } else {
             NotificationManager.error("Ticket not update");
           }
@@ -2575,6 +2586,67 @@ class MyTicket extends Component {
       });
   }
 
+  hadnleOpenKnowledage() {
+    this.setState({ KnowledgeBaseModal: true });
+  }
+
+  hadnleCloseKnowledage() {
+    this.setState({ KnowledgeBaseModal: true });
+  }
+
+  handleSubmitTicket() {
+    debugger;
+    if (this.state.selectetedParameters.ticketStatusID === "103") {
+      this.hadnleOpenKnowledage();
+    } else {
+      this.handleUpdateTicketDetails();
+    }
+  }
+  handleYesNoClick(ischeck) {
+    debugger;
+    if (ischeck === true) {
+      this.setState({ isaddKnowledge: true });
+      
+      setTimeout(() => {
+        this.handleUpdateTicketDetails();  
+      }, 10);
+    } else {
+
+      this.setState({ isaddKnowledge: false });
+      setTimeout(() => {
+        this.handleUpdateTicketDetails();  
+      }, 10);
+    }
+  }
+
+  handleAddKnwoldgeBase() {
+    debugger;
+    let self = this;
+    var inputParam = {
+      KBCODE: "",
+      CategoryID: this.state.selectetedParameters.categoryID,
+      SubCategoryID: this.state.selectetedParameters.subCategoryID,
+      Subject: this.state.ticketDetailsData.ticketTitle,
+      Description: this.state.messageDetails[0]["msgDetails"][0]
+        .latestMessageDetails.ticketMailBody,
+      IsActive: 1,
+      IssueTypeID: this.state.selectetedParameters.issueTypeID
+    };
+    axios({
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/AddKB",
+      headers: authHeader(),
+      data: inputParam
+    })
+      .then(function(res) {
+        debugger;
+        self.props.history.push("myTicketlist");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
     const {
       open,
@@ -2800,7 +2872,7 @@ class MyTicket extends Component {
                       <button
                         type="button"
                         className="myticket-submit-solve-button"
-                        onClick={this.handleUpdateTicketDetails.bind(this)}
+                        onClick={this.handleSubmitTicket.bind(this)}
                       >
                         SUBMIT
                       </button>
@@ -6748,6 +6820,52 @@ class MyTicket extends Component {
                 </ul>
               </div>
             </div>
+            {/* -------------------Start knowledge base modal pop up----------------------- */}
+            <Modal
+              open={this.state.KnowledgeBaseModal}
+              onClose={this.hadnleCloseKnowledage.bind(this)}
+              closeIconId="sdsg"
+              modalId="Historical-popup"
+              overlayId="logout-ovrly"
+              classNames={{
+                modal: "myticket-knowpopup"
+              }}
+            >
+              <div className="commenttextborder">
+                <div className="comment-disp">
+                  <div>
+                    {/* <img
+                      src={CrossIcon}
+                      alt="Minus"
+                      className="pro-cross-icn m-0"
+                      
+                    /> */}
+                  </div>
+                </div>
+                <div className="Commentlabel">
+                  <label className="Commentlabel1">
+                    Add this tikcet in Knowledge Base ?
+                  </label>
+                </div>
+                <div className="SendCommentBtn" style={{ float: "left" }}>
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleYesNoClick.bind(this, false)}
+                  >
+                    No
+                  </button>
+                </div>
+                <div className="SendCommentBtn">
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleYesNoClick.bind(this, true)}
+                  >
+                    Yes
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* -------------------End knowledge base modal pop up----------------------- */}
             {/* <NotificationContainer /> */}
           </div>
         )}

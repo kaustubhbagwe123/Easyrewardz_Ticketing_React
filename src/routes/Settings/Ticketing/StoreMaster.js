@@ -222,9 +222,11 @@ class StoreMaster extends Component {
   }
 
   StatusOpenModel(data, header) {
+    debugger;
     this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
   }
   StatusCloseModel() {
+    debugger;
     if (this.state.tempstoreData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -242,7 +244,7 @@ class StoreMaster extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-
+debugger;
     var sFilterCheckbox = this.state.sFilterCheckbox;
 
     var allData = this.state.sortAllData;
@@ -418,6 +420,7 @@ class StoreMaster extends Component {
             unique[data[i].storeCode] = 1;
           }
         }
+        debugger;
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortStoreCode.push({ storeCode: distinct[i] });
           self.state.sortFilterStoreCode.push({ storeCode: distinct[i] });
@@ -2073,7 +2076,10 @@ class StoreMaster extends Component {
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)}>
+                            <a
+                              className="file-retry"
+                              onClick={this.hanldeAddBulkUpload.bind(this)}
+                            >
                               Retry
                             </a>
                           </div>

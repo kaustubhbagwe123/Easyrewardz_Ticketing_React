@@ -147,7 +147,7 @@ class Templates extends Component {
   setPlaceholderValue(e) {
     debugger;
     let ckData = this.state.editorContent;
-    let ckDataArr = ckData.split('\n\n');
+    let ckDataArr = ckData.split("\n\n");
     let ckDataArrLast = ckDataArr.pop();
     let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -159,7 +159,7 @@ class Templates extends Component {
     if (ckTags !== null) {
       let ckFinal = ckTags[0] + ck + ckTags[1];
       ckDataArr.push(ckFinal);
-      ckData = ckDataArr.join(' ');
+      ckData = ckDataArr.join(" ");
     }
     if (ckTags !== null) {
       this.setState({ editorContent: ckData });
@@ -210,10 +210,16 @@ class Templates extends Component {
             editSaveLoading: false,
             ConfigTabsModal: false,
             editorContent: "",
-            TemplateSubject: ""
+            TemplateSubject: "",
+            isEdit: false,
+            templateEdit: {}
           });
         } else {
-          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+          self.setState({
+            editSaveLoading: false,
+            ConfigTabsModal: false,
+            isEdit: false
+          });
           NotificationManager.error("Template not update.");
         }
       })
@@ -222,7 +228,9 @@ class Templates extends Component {
           editSaveLoading: false,
           ConfigTabsModal: false,
           TemplateSubject: "",
-          editorContent: ""
+          editorContent: "",
+
+          templateEdit: {}
         });
         console.log(data);
       });
@@ -762,14 +770,14 @@ class Templates extends Component {
     // ) {
     // if (this.state.editorContent.length > 0) {
     let self = this;
-    this.setState({ ConfigTabsModal: false });
+
     var TemplateIsActive;
     if (this.state.TemplateIsActive === "true") {
       TemplateIsActive = true;
     } else if (this.state.TemplateIsActive === "false") {
       TemplateIsActive = false;
     }
-
+    this.setState({ editSaveLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Template/CreateTemplate",
@@ -795,31 +803,29 @@ class Templates extends Component {
             indiSla: "",
             SearchText: "",
             templatenamecopulsion: "",
-            issurtupeCompulsory: ""
-            // selectedSlaIssueType: [],
-            // templatesubjectCompulsion: "",
-            // templatebodyCompulsion: ""
+            issurtupeCompulsory: "",
+            ConfigTabsModal: false,
+            editSaveLoading: false
           });
           self.selectNoSLA();
         } else {
           NotificationManager.error("Template Not Added.");
+          this.setState({
+            TemplateSubject: "",
+            editorContent: "",
+            TemplateName: "",
+            indiSla: "",
+            SearchText: "",
+            templatenamecopulsion: "",
+            issurtupeCompulsory: "",
+            ConfigTabsModal: false,
+            editSaveLoading: false
+          });
         }
       })
       .catch(data => {
         console.log(data);
       });
-    // } else {
-    //   NotificationManager.error("Please Enter Descriptions.");
-    //   // this.setState({
-    //   //   // templatesubjectCompulsion: "Please Enter Subject",
-    //   //   // templatebodyCompulsion: "Please Enter Descriptions"
-    //   // });
-    // }
-    // } else {
-    //   NotificationManager.error(
-    //     "Only 500 characters Allow In Descriptions."
-    //   );
-    // }
   }
 
   handleGetTemplate() {
@@ -844,6 +850,7 @@ class Templates extends Component {
               unique[template[i].issueTypeName] = 1;
             }
           }
+          debugger;
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
             self.state.sortFilterIssueType.push({ issueTypeName: distinct[i] });
@@ -924,7 +931,7 @@ class Templates extends Component {
   }
 
   toggleEditModal() {
-    this.setState({ editmodel: false });
+    this.setState({ editmodel: false, isEdit: false });
   }
   CustomNoDataComponent = () => {
     if (this.state.isLoading) {
@@ -1204,11 +1211,11 @@ class Templates extends Component {
                         Header: (
                           <span
                             className={this.state.issueColor}
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "issueTypeName",
-                              "IssueType"
-                            )}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "issueTypeName",
+                            //   "IssueType"
+                            // )}
                           >
                             Issue Type
                             <FontAwesomeIcon icon={faCaretDown} />

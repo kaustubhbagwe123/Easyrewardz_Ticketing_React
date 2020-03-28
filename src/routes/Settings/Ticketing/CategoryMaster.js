@@ -934,11 +934,13 @@ class CategoryMaster extends Component {
     let value = e.target.value;
     this.setState({ name: value });
   };
+  ////handle status change drop-down
   handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
 
+  ////handle table row edit button click to set value in modal
   hanldeEditCategory = async rowData => {
     debugger;
     var editCategory = {};
@@ -964,7 +966,7 @@ class CategoryMaster extends Component {
 
     this.setState({ editmodel: true, editCategory, brandCatmapId: Id });
   };
-
+////handle toggle edit modal pop
   toggleEditModal() {
     this.setState({
       editmodel: false,
@@ -973,7 +975,7 @@ class CategoryMaster extends Component {
       ListOfIssueData: []
     });
   }
-
+////handle modal pop brand change
   handleModalBrandChange = e => {
     debugger;
     let value = e.target.value;
@@ -1003,7 +1005,7 @@ class CategoryMaster extends Component {
       }
     }, 1);
   };
-
+////handle edit modal pop category change
   handleModalCategoryChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
@@ -1033,6 +1035,7 @@ class CategoryMaster extends Component {
       this.setState({ editshowList1: true });
     }
   };
+  ////handle edit modal pop sub category change
   handleModalSubCatOnChange = async value => {
     debugger;
     if (value !== NEW_ITEM) {
@@ -1077,6 +1080,7 @@ class CategoryMaster extends Component {
     this.setState({ editCategory });
   };
 
+  ////handle filter modal pop in filter text box change value
   filteTextChange(e) {
     debugger;
     this.setState({ filterTxtValue: e.target.value });
@@ -1156,6 +1160,8 @@ class CategoryMaster extends Component {
       }
     }
   }
+
+  ////handle delete selected file of bulk upload 
   handleDeleteBulkupload = e => {
     debugger;
     this.setState({
@@ -1164,6 +1170,8 @@ class CategoryMaster extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+
+  ////handle bulk upload 
   hanldeAddBulkUpload() {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
@@ -1175,7 +1183,7 @@ class CategoryMaster extends Component {
       this.setState({ showProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/Category/BulkUploadUser",
+        url: config.apiUrl + "/Category/BulkUploadCategory",
         headers: authHeader(),
         data: formData,
         onUploadProgress: (ev = ProgressEvent) => {
@@ -1213,6 +1221,8 @@ class CategoryMaster extends Component {
       });
     }
   }
+
+  ////set progress value of file upload
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }

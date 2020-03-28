@@ -11489,3 +11489,7 @@ table tr th:last-child {
 .DashTimeRange {
   padding: 0 15px 0 0;
 }
+.myticket-knowpopup {
+  margin-right: auto !important;
+  min-width: 30%;
+}

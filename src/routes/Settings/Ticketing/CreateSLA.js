@@ -236,7 +236,7 @@ class CreateSLA extends Component {
     this.setState({
       tempsla: itemsArray
     });
-    this.StatusCloseModel();
+    // this.StatusCloseModel();
   };
 
   selectIndividualSLA = async (issueId, event) => {
