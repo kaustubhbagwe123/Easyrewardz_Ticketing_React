@@ -21,7 +21,7 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 // import DropdownList from "react-widgets/lib/DropdownList";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { CSVLink } from "react-csv";
@@ -381,14 +381,14 @@ class CreateSLA extends Component {
         issueColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = screatedByFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
+      var sItems1 = screatedByFilterCheckbox.split(",");
+      if (sItems1.length > 0) {
+        for (let i = 0; i < sItems1.length; i++) {
+          if (sItems1[i] !== "") {
+            var tempFilterData1 = allData.filter(a => a.createdBy === sItems1[i]);
+            if (tempFilterData1.length > 0) {
+              for (let j = 0; j < tempFilterData1.length; j++) {
+                itemsArray.push(tempFilterData1[j]);
               }
             }
           }
@@ -398,16 +398,16 @@ class CreateSLA extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "isSLAActive") {
-      var sItems = sisSLAActiveFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              a => a.isSLAActive === sItems[i]
+      var sItems2 = sisSLAActiveFilterCheckbox.split(",");
+      if (sItems2.length > 0) {
+        for (let i = 0; i < sItems2.length; i++) {
+          if (sItems2[i] !== "") {
+            var tempFilterData2 = allData.filter(
+              a => a.isSLAActive === sItems2[i]
             );
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
+            if (tempFilterData2.length > 0) {
+              for (let j = 0; j < tempFilterData2.length; j++) {
+                itemsArray.push(tempFilterData2[j]);
               }
             }
           }
@@ -446,7 +446,7 @@ class CreateSLA extends Component {
       // var separator = ",";
       // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
-        if (values[i] == issueId) {
+        if (values[i] === issueId) {
           values.splice(i, 1);
           indiSla = values.join(separator);
         }
