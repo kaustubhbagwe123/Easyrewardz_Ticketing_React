@@ -133,7 +133,15 @@ class Alerts extends Component {
       fileN: [],
       salertTypeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      sisAlertActiveFilterCheckbox: ""
+      sisAlertActiveFilterCheckbox: "",
+      ckCusrsorPositionCustomer: 0,
+      ckCusrsorDataCustomer: "",
+      ckCusrsorPositionInternal: 0,
+      ckCusrsorDataInternal: "",
+      ckCusrsorPositionStore: 0,
+      ckCusrsorDataStore: "",
+      notiCount: 0,
+      notiCurPosi: 0
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -194,58 +202,153 @@ class Alerts extends Component {
     if (type == "Customer") {
       let ckData = this.state.selectedCKCustomer;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      ck += placeholderName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataCustomer.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionCustomer);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPositionCustomer, ckDataArrLast.length);
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      // ck += placeholderName;
+      ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPositionCustomer + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPositionCustomer: newCkCusrsorPosition,
+      ckCusrsorDataCustomer: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ selectedCKCustomer: ckData });
       } else {
-        this.setState({ selectedCKCustomer: ck });
+        this.setState({ selectedCKCustomer: ckDataArrLast });
       }
     } else if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      ck += placeholderName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataInternal.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionInternal);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPositionInternal, ckDataArrLast.length);
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      // ck += placeholderName;
+      ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPositionInternal + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPositionInternal: newCkCusrsorPosition,
+      ckCusrsorDataInternal: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ selectedCKInternal: ckData });
       } else {
-        this.setState({ selectedCKInternal: ck });
+        this.setState({ selectedCKInternal: ckDataArrLast });
       }
     } else if (type == "Store") {
       let ckData = this.state.selectedCKStore;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      ck += placeholderName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataStore.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionStore);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPositionStore, ckDataArrLast.length);
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      // ck += placeholderName;
+      ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPositionStore + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPositionStore: newCkCusrsorPosition,
+      ckCusrsorDataStore: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ selectedCKStore: ckData });
       } else {
-        this.setState({ selectedCKStore: ck });
+        this.setState({ selectedCKStore: ckDataArrLast });
       }
     } else if (type == "Notification") {
-      let ckData = this.state.selectedNotifContent;
-      ckData += placeholderName;
-      this.setState({ selectedNotifContent: ckData });
+      // let startPoint = document.getElementById("notifiPlaceholder").selectionStart;
+      // let textLength = document.getElementById("notifiPlaceholder").value.length;
+      let textBefore = this.state.selectedNotifContent.substring(0, this.state.notiCurPosi);
+      let textAfter = this.state.selectedNotifContent.substring(this.state.notiCurPosi, this.state.notiCount);
+      // let ckData = this.state.selectedNotifContent;
+      // ckData += placeholderName;
+      let ckData = textBefore + ' ' + placeholderName + textAfter;
+      let notiCurPosi = textBefore.length + placeholderName.length + 1;
+      let notiCount = textBefore.length + placeholderName.length + 1 + textAfter.length;
+      // document.getElementById("notifiPlaceholder").setSelectionRange(abc,abc);
+      this.setState({ selectedNotifContent: ckData, notiCurPosi, notiCount });
     }
   }
 
@@ -347,6 +450,42 @@ class Alerts extends Component {
         });
       }
     }
+  }
+  onCkBlurCustomer = evt => {
+    debugger;
+    var ckCusrsorPositionCustomer = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataCustomer = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorDataCustomer) {
+      ckCusrsorDataCustomer = "";
+    }
+    this.setState({
+      ckCusrsorPositionCustomer: ckCusrsorPositionCustomer.startOffset,
+      ckCusrsorDataCustomer
+    });
+  }
+  onCkBlurInternal = evt => {
+    debugger;
+    var ckCusrsorPositionInternal = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataInternal = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorDataInternal) {
+      ckCusrsorDataInternal = "";
+    }
+    this.setState({
+      ckCusrsorPositionInternal: ckCusrsorPositionInternal.startOffset,
+      ckCusrsorDataInternal
+    });
+  }
+  onCkBlurStore = evt => {
+    debugger;
+    var ckCusrsorPositionStore = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataStore = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorDataStore) {
+      ckCusrsorDataStore = "";
+    }
+    this.setState({
+      ckCusrsorPositionStore: ckCusrsorPositionStore.startOffset,
+      ckCusrsorDataStore
+    });
   }
   StatusCloseModel = e => {
     if (this.state.tempalert.length > 0) {
@@ -572,6 +711,12 @@ class Alerts extends Component {
     this.state.updateAlertisActive = isAlertActive;
     this.state.rowData = rowData;
   };
+  setNotiCurPosi = e => {
+    debugger;
+    this.setState({
+      notiCurPosi: e.target.selectionStart
+    });
+  }
   setDataOnChangeAlert = e => {
     // debugger;
     if (e.target.name == "selectedAlertType") {
@@ -611,6 +756,12 @@ class Alerts extends Component {
     } else {
       this.setState({
         [e.target.name]: e.target.value
+      });
+    }
+    if (e.target.name == "selectedNotifContent") {
+      this.setState({
+        notiCount: e.target.value.length,
+        notiCurPosi: e.target.value.length
       });
     }
   };
@@ -2324,6 +2475,7 @@ class Alerts extends Component {
                                   name="selectedCKCustomer"
                                   data={this.state.selectedCKCustomer}
                                   onChange={this.setCKEditorCustomer}
+                                  onBlur={this.onCkBlurCustomer}
                                   events={{
                                     items: this.fileUpload
                                   }}
@@ -2430,6 +2582,7 @@ class Alerts extends Component {
                                   name="selectedCKInternal"
                                   data={this.state.selectedCKInternal}
                                   onChange={this.setCKEditorInternal}
+                                  onBlur={this.onCkBlurInternal}
                                 />
                                 {this.state.selectedCKInternal.length === 0 && (
                                   <p
@@ -2532,6 +2685,7 @@ class Alerts extends Component {
                                   name="selectedCKStore"
                                   data={this.state.selectedCKStore}
                                   onChange={this.setCKEditorStore}
+                                  onBlur={this.onCkBlurStore}
                                 />
                                 {this.state.selectedCKStore.length === 0 && (
                                   <p
@@ -2629,6 +2783,8 @@ class Alerts extends Component {
                               name="selectedNotifContent"
                               value={this.state.selectedNotifContent}
                               onChange={this.setDataOnChangeAlert}
+                              onClick={this.setNotiCurPosi}
+                              id="notifiPlaceholder"
                             ></textarea>
                             {this.state.selectedNotifContent.length === 0 && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
