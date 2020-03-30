@@ -2778,15 +2778,16 @@ class MyTicket extends Component {
   handleAddKnwoldgeBase() {
     debugger;
     let self = this;
+    var tempDescription = this.state.messageDetails[0][
+      "msgDetails"
+    ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
+    var Description = tempDescription.replace(/&nbsp;/gi, " ");
     var inputParam = {
       KBCODE: "",
       CategoryID: this.state.selectetedParameters.categoryID,
       SubCategoryID: this.state.selectetedParameters.subCategoryID,
       Subject: this.state.ticketDetailsData.ticketTitle,
-      Description: ReactHtmlParser(
-        this.state.messageDetails[0]["msgDetails"][0].latestMessageDetails
-          .ticketMailBody
-      ),
+      Description: Description,
       IsActive: 1,
       IssueTypeID: this.state.selectetedParameters.issueTypeID
     };

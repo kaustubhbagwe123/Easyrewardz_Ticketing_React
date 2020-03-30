@@ -588,6 +588,8 @@ class Reports extends Component {
       }
     }
 
+    
+
     var allData = this.state.sortAllData;
 
     this.setState({
