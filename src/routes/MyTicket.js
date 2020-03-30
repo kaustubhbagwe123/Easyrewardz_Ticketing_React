@@ -426,7 +426,7 @@ class MyTicket extends Component {
           var productData = data.products;
           var MailDetails = data.ticketingMailerQue;
           var attachementDetails = data.attachment;
-          var rolename_ = data.roleName;
+          // var rolename_ = data.roleName;
           var userEmailID = data.userEmailID;
           var selectetedParameters = {
             ticketStatusID: ticketStatus,
@@ -765,7 +765,7 @@ class MyTicket extends Component {
       selectedArr;
     for (let i = 0; i < ckDataArrNew.length; i++) {
       if (loopFlag) {
-        if (this.state.ckCusrsorDataReply.trim() == ckDataArrNew[i].trim()) {
+        if (this.state.ckCusrsorDataReply.trim() === ckDataArrNew[i].trim()) {
           selectedVal = ckDataArrNew[i];
           selectedArr = i;
           ckTags = ckDataArr[i].match(/<[^>]+>/g);
@@ -825,7 +825,7 @@ class MyTicket extends Component {
       selectedArr;
     for (let i = 0; i < ckDataArrNew.length; i++) {
       if (loopFlag) {
-        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+        if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
           selectedVal = ckDataArrNew[i];
           selectedArr = i;
           ckTags = ckDataArr[i].match(/<[^>]+>/g);
@@ -884,7 +884,7 @@ class MyTicket extends Component {
       selectedArr;
     for (let i = 0; i < ckDataArrNew.length; i++) {
       if (loopFlag) {
-        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+        if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
           selectedVal = ckDataArrNew[i];
           selectedArr = i;
           ckTags = ckDataArr[i].match(/<[^>]+>/g);
@@ -1082,13 +1082,13 @@ class MyTicket extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    if (e.target.name == "ticketcommentMSG") {
+    if (e.target.name === "ticketcommentMSG") {
       this.setState({
         notiCountCmnt: e.target.value.length,
         notiCurPosiCmnt: e.target.value.length
       });
     }
-    if (e.target.name == "ticketFreeTextcomment") {
+    if (e.target.name === "ticketFreeTextcomment") {
       this.setState({
         notiCountFreeCmnt: e.target.value.length,
         notiCurPosiFreeCmnt: e.target.value.length
@@ -2009,7 +2009,7 @@ class MyTicket extends Component {
             selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
           }
         } else {
-          var selectedStore = "";
+           selectedStore = "";
         }
         const formData = new FormData();
         var paramMessageData = {
@@ -2077,7 +2077,7 @@ class MyTicket extends Component {
               store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
             }
           } else {
-            var store_Id = "";
+              store_Id = "";
           }
           const formData = new FormData();
           var paramData2 = {
@@ -2293,8 +2293,8 @@ class MyTicket extends Component {
       this.setState({ mailFiled, userCcCount: finalCount.length });
     } else {
       var BCcCount = mailFiled.userBCC;
-      var finalCount = BCcCount.split(",");
-      this.setState({ mailFiled, userBccCount: finalCount.length });
+      var finalBccCount = BCcCount.split(",");
+      this.setState({ mailFiled, userBccCount: finalBccCount.length });
     }
   }
   handleProgressBarDetails(id) {
@@ -2446,16 +2446,16 @@ class MyTicket extends Component {
       });
     } else {
       if (values) {
-        var x = document.getElementById("ordertable");
-        var x1 = document.getElementById("orderitemtable");
+        var ot = document.getElementById("ordertable");
+        var oi = document.getElementById("orderitemtable");
 
-        x.style.display = "block";
-        x1.style.display = "none";
+        ot.style.display = "block";
+        oi.style.display = "none";
       } else {
-        var i = document.getElementById("ordertable");
-        var j = document.getElementById("orderitemtable");
-        i.style.display = "none";
-        j.style.display = "block ";
+        var ot1 = document.getElementById("ordertable");
+        var oi2 = document.getElementById("orderitemtable");
+        ot1.style.display = "none";
+        oi2.style.display = "block ";
       }
       this.setState({
         OrdItmBtnStatus: e.target.checked
