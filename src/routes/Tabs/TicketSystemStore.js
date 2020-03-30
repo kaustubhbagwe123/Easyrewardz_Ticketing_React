@@ -280,10 +280,7 @@ class TicketSystemStore extends Component {
 
   render() {
     const { SearchData, selectedStoreData } = this.state;
-    console.log(
-      this.state.selectedStoreData,
-      "--------------------selectedStoreData"
-    );
+  
     return (
       <Fragment>
         <div className="ticketSycard">

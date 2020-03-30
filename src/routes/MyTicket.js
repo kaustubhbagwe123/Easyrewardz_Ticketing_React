@@ -46,9 +46,7 @@ import Order from "./../assets/Images/order.png";
 import axios from "axios";
 import { authHeader } from "../helpers/authHeader";
 import config from "./../helpers/config";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import TicketStatus from "./MyTicketStatus";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -364,7 +362,7 @@ class MyTicket extends Component {
   }
 
   handleGetTicketDetails(ID) {
-    debugger
+    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -376,7 +374,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -841,7 +839,6 @@ class MyTicket extends Component {
           ////
           let status = res.data.message;
           if (status === "Success") {
-            
             if (self.state.isaddKnowledge) {
               self.handleAddKnwoldgeBase();
             } else {
@@ -2589,15 +2586,14 @@ class MyTicket extends Component {
     debugger;
     if (ischeck === true) {
       this.setState({ isaddKnowledge: true });
-      
+
       setTimeout(() => {
-        this.handleUpdateTicketDetails();  
+        this.handleUpdateTicketDetails();
       }, 10);
     } else {
-
       this.setState({ isaddKnowledge: false });
       setTimeout(() => {
-        this.handleUpdateTicketDetails();  
+        this.handleUpdateTicketDetails();
       }, 10);
     }
   }
@@ -2610,8 +2606,10 @@ class MyTicket extends Component {
       CategoryID: this.state.selectetedParameters.categoryID,
       SubCategoryID: this.state.selectetedParameters.subCategoryID,
       Subject: this.state.ticketDetailsData.ticketTitle,
-      Description: ReactHtmlParser(this.state.messageDetails[0]["msgDetails"][0]
-        .latestMessageDetails.ticketMailBody),
+      Description: ReactHtmlParser(
+        this.state.messageDetails[0]["msgDetails"][0].latestMessageDetails
+          .ticketMailBody
+      ),
       IsActive: 1,
       IssueTypeID: this.state.selectetedParameters.issueTypeID
     };
@@ -2624,18 +2622,13 @@ class MyTicket extends Component {
       .then(function(res) {
         debugger;
         var status = res.data.status;
-        if(status)
-        {
+        if (status) {
           NotificationManager.success("Ticket updated successfully.");
           NotificationManager.success("Ticket Added in knowledgebase.");
-          self.props.history.push("myTicketlist");  
-        }
-        else
-        {
+          self.props.history.push("myTicketlist");
+        } else {
           NotificationManager.success("Ticket Added in knowledgebase.");
         }
-      
-      
       })
       .catch(error => {
         console.log(error);
@@ -5782,21 +5775,25 @@ class MyTicket extends Component {
                                                 alt="Avatar"
                                                 className="oval-7"
                                               />
-                                            ) : null}
-                                            {details.latestMessageDetails
-                                              .isCustomerComment === 1 ? (
-                                              <img
-                                                src={BlackUserIcon}
-                                                alt="Avatar"
-                                                className="oval-6"
-                                              />
                                             ) : (
-                                              <img
-                                                src={Headphone2Img}
-                                                alt="headphone"
-                                                className="oval-55"
-                                              />
+                                              <>
+                                                {details.latestMessageDetails
+                                                  .isCustomerComment === 1 ? (
+                                                  <img
+                                                    src={BlackUserIcon}
+                                                    alt="Avatar"
+                                                    className="oval-6"
+                                                  />
+                                                ) : (
+                                                  <img
+                                                    src={Headphone2Img}
+                                                    alt="headphone"
+                                                    className="oval-55"
+                                                  />
+                                                )}
+                                              </>
                                             )}
+
                                             <div>
                                               <label
                                                 className="solved-by-naman-r mt-0"
@@ -5862,16 +5859,23 @@ class MyTicket extends Component {
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                                           {details.latestMessageDetails
-                                            .isInternalComment === true ? (
-                                            <img
-                                              src={commentImg}
-                                              alt="comment"
-                                              className="commentImg"
-                                              style={{
-                                                display: "inline-block"
-                                              }}
-                                            />
-                                          ) : null}
+                                            .isSystemGenerated ===
+                                          true ? null : (
+                                            <>
+                                              {details.latestMessageDetails
+                                                .isInternalComment === true ? (
+                                                <img
+                                                  src={commentImg}
+                                                  alt="comment"
+                                                  className="commentImg"
+                                                  style={{
+                                                    display: "inline-block"
+                                                  }}
+                                                />
+                                              ) : null}
+                                            </>
+                                          )}
+
                                           {/* --------------Show Attchement Icone on condition--------------- */}
                                           {details.latestMessageDetails
                                             .hasAttachment === 1 ? (
