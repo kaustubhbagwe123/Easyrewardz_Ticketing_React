@@ -88,7 +88,9 @@ class Templates extends Component {
       sortFilterStatus: [],
       stemplateNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      stemplateStatusFilterCheckbox: ""
+      stemplateStatusFilterCheckbox: "",
+      ckCusrsorPosition: 0,
+      ckCusrsorData: ""
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -117,6 +119,19 @@ class Templates extends Component {
     this.state.updatedStatus = templateStatus;
     this.state.rowData = rowData;
   };
+
+  onCkBlur = evt => {
+    debugger;
+    var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorData) {
+      ckCusrsorData = "";
+    }
+    this.setState({
+      ckCusrsorPosition: ckCusrsorPosition.startOffset,
+      ckCusrsorData
+    });
+  }
 
   handlePlaceholderList() {
     let self = this;
@@ -151,23 +166,52 @@ class Templates extends Component {
     debugger;
     let ckData = this.state.editorContent;
     let ckDataArr = ckData.split("\n\n");
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPosition, ckDataArrLast.length);
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ck += placeholderName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
+    // ck += placeholderName;
+    ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPosition + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== null) {
+    if (ckTags) {
       this.setState({ editorContent: ckData });
     } else {
-      this.setState({ editorContent: ck });
+      this.setState({ editorContent: ckDataArrLast });
     }
   }
 
@@ -1881,7 +1925,7 @@ class Templates extends Component {
                             <CKEditor
                               content={this.state.editorContent}
                               events={{
-                                // "blur": this.onBlur,
+                                "blur": this.onCkBlur,
                                 // "afterPaste": this.afterPaste,
                                 change: this.onEditorChange,
                                 items: this.fileUpload
