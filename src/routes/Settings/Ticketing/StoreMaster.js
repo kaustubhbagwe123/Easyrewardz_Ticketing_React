@@ -316,7 +316,7 @@ class StoreMaster extends Component {
     }
     if (data === "stateName") {
       if (
-        this.state.sstateNameFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
         this.state.scityNameFilterCheckbox !== "" ||
         this.state.sstoreCodeFilterCheckbox !== "" ||
         this.state.sstrPinCodeFilterCheckbox !== ""
@@ -331,7 +331,7 @@ class StoreMaster extends Component {
           sstrPinCodeFilterCheckbox: "",
           sstoreCodeFilterCheckbox: "",
           scityNameFilterCheckbox: "",
-          sstateNameFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header
