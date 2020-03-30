@@ -788,7 +788,9 @@ table tr th:last-child {
 .smg-Img1 {
   width: 22px;
   height: 16px;
-  margin: 0 0 0 88px;
+  /* margin: 0 0 0 88px; */
+  margin-left: auto;
+  margin-right: 20px !important;
 }
 .up {
   width: 18px;
