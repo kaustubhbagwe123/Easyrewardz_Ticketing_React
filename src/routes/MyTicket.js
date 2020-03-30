@@ -673,7 +673,7 @@ class MyTicket extends Component {
       followUpIds += assign + ",";
       let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       text += "@" + userName;
@@ -684,7 +684,7 @@ class MyTicket extends Component {
       followUpIds += assign + ",";
       let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       text += "@" + userName;
@@ -699,7 +699,7 @@ class MyTicket extends Component {
       let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       ck += "@" + userName;
@@ -723,7 +723,7 @@ class MyTicket extends Component {
       let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       ck += "@" + userName;
@@ -746,7 +746,7 @@ class MyTicket extends Component {
     let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      x => x.mailParameterID == e.currentTarget.value
+      x => x.mailParameterID === e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     ck += placeholderName;
@@ -1815,13 +1815,13 @@ class MyTicket extends Component {
   }
   handleSendMailData(isSend) {
     let self = this;
-    var str = this.state.mailBodyData;
+    // var str = this.state.mailBodyData;
     // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
     // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
     if (isSend === 1) {
       if (this.state.replymailBodyData.length > 0) {
-        var str = this.state.replymailBodyData;
+        // var str = this.state.replymailBodyData;
         // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
         // var ReplyText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
@@ -1835,7 +1835,7 @@ class MyTicket extends Component {
           var selectedStore = "";
         }
         const formData = new FormData();
-        var paramData = {
+        var paramMessageData = {
           TicketID: this.state.ticket_Id,
           ToEmail: this.state.ticketDetailsData.customerEmailId,
           UserCC: this.state.mailFiled.userCC,
@@ -1851,7 +1851,7 @@ class MyTicket extends Component {
           MailID: this.state.mailId,
           StoreID: selectedStore.substring(",", selectedStore.length - 1)
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramMessageData));
         for (let j = 0; j < this.state.ReplyFileData.length; j++) {
           formData.append("Filedata", this.state.ReplyFileData[j]);
         }
@@ -1903,7 +1903,7 @@ class MyTicket extends Component {
             var store_Id = "";
           }
           const formData = new FormData();
-          var paramData = {
+          var paramData2 = {
             TicketID: this.state.ticket_Id,
             ToEmail: this.state.ticketDetailsData.customerEmailId,
             UserCC: this.state.mailFiled.userCC,
@@ -1919,7 +1919,7 @@ class MyTicket extends Component {
             MailID: 0,
             StoreID: store_Id.substring(",", store_Id.length - 1)
           };
-          formData.append("ticketingMailerQue", JSON.stringify(paramData));
+          formData.append("ticketingMailerQue", JSON.stringify(paramData2));
           for (let j = 0; j < this.state.FileData.length; j++) {
             formData.append("Filedata", this.state.FileData[j]);
           }
@@ -1963,7 +1963,7 @@ class MyTicket extends Component {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
       if (this.state.ticketcommentMSG.length > 0) {
         const formData = new FormData();
-        var paramData = {
+        var paramData3 = {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketcommentMSG.trim(),
           IsSent: 1,
@@ -1971,7 +1971,7 @@ class MyTicket extends Component {
           IsInternalComment: 1,
           MailID: this.state.mailId
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramData3));
 
         axios({
           method: "post",
@@ -2011,7 +2011,7 @@ class MyTicket extends Component {
       // ---------------API call for ReAssign To Ticket---------------------
       if (this.state.addReassignCmmt.length > 0) {
         const formData = new FormData();
-        var paramData = {
+        var paramData4 = {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.addReassignCmmt,
           IsSent: 1,
@@ -2021,7 +2021,7 @@ class MyTicket extends Component {
           OldAgentID: this.state.oldAgentId,
           NewAgentID: this.state.agentId
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramData4));
 
         axios({
           method: "post",
@@ -2062,14 +2062,14 @@ class MyTicket extends Component {
     } else {
       if (this.state.ticketFreeTextcomment.length > 0) {
         const formData = new FormData();
-        var paramData = {
+        var paramData5 = {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketFreeTextcomment.trim(),
           IsSent: 1,
           IsCustomerComment: 0,
           IsInternalComment: 1
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramData5));
 
         axios({
           method: "post",

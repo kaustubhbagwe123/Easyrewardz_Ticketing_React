@@ -28,12 +28,12 @@ import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
-import { formatSizeUnits } from "./../../helpers/CommanFuncation";
+// import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
   constructor(props) {
@@ -116,7 +116,6 @@ class Alerts extends Component {
       cAlertTypeId: 0,
       sAlertTypeId: 0,
       iAlertTypeId: 0,
-      sAlertTypeId: 0,
       nAlertTypeId: 0,
       placeholderShown: false,
       tempalert: [],

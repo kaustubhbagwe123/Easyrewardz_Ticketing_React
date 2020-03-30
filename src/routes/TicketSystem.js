@@ -724,7 +724,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -994,7 +994,7 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
-    debugger
+    debugger;
     if (
       this.state.titleSuggValue.length > 0 &&
       this.state.ticketDetails.length > 0 &&
@@ -1066,7 +1066,7 @@ class TicketSystem extends Component {
       mailData.push(this.state.mailFiled);
 
       const formData = new FormData();
-     
+
       var paramData = {
         TicketTitle: this.state.titleSuggValue,
         Ticketdescription: this.state.ticketDetails,
@@ -1136,7 +1136,7 @@ class TicketSystem extends Component {
           data: DRAFTFromData
         })
           .then(function(res) {
-            debugger
+            debugger;
             let Msg = res.data.status;
             let TID = res.data.responseData;
             self.setState({ loading: false });
@@ -1163,7 +1163,7 @@ class TicketSystem extends Component {
           data: formData
         })
           .then(function(res) {
-            debugger
+            debugger;
             let Msg = res.data.status;
             let TID = res.data.responseData;
             self.setState({ loading: false });
@@ -1762,7 +1762,14 @@ class TicketSystem extends Component {
                                 onChange={this.setTicketPriorityValue}
                                 // checked={this.}
                               />
-                              <label htmlFor={item.priortyName}>
+                              <label
+                                htmlFor={item.priortyName}
+                                className={
+                                  item.priortyName === "Auto"
+                                    ? "disabled-link"
+                                    : null
+                                }
+                              >
                                 {item.priortyName}
                               </label>
                             </div>
@@ -2189,7 +2196,7 @@ class TicketSystem extends Component {
                             {this.state.AssignToData !== null &&
                               this.state.AssignToData.map((item, i) => (
                                 <option key={i} value={item.user_ID}>
-                                {/* <option key={i} value={item.userID}> */}
+                                  {/* <option key={i} value={item.userID}> */}
                                   {/* {item.fullName} */}
                                   {item.agentName}
                                 </option>
@@ -2283,7 +2290,7 @@ class TicketSystem extends Component {
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.user_ID}>
-                            {/* <option key={i} value={item.userID}> */}
+                              {/* <option key={i} value={item.userID}> */}
                               {/* {item.fullName} */}
                               {item.agentName}
                             </option>

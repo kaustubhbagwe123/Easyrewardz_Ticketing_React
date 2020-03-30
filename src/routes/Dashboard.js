@@ -781,7 +781,7 @@ class Dashboard extends Component {
       }
     }
 
-    var data = "";
+    // var data = "";
     this.setState({
       statusColor: "",
       categoryColor: "",
@@ -2652,17 +2652,17 @@ class Dashboard extends Component {
     //   selectedIssueType: 0,
     //   selectedIssueTypeAll: 0
     // });
-    if (param == "categoryTab") {
+    if (param === "categoryTab") {
       self.setState({
         IssueTypeData: [],
         selectedIssueType: 0
       });
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       self.setState({
         IssueTypeAllData: [],
         selectedIssueTypeAll: 0
       });
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       self.setState({
         ClaimIssueTypeData: [],
         selectedClaimIssueType: 0
@@ -2673,11 +2673,11 @@ class Dashboard extends Component {
     //     ? this.state.selectedSubCategory
     //     : this.state.selectedSubCategoryAll;
     let subCateId;
-    if (param == "categoryTab") {
+    if (param === "categoryTab") {
       subCateId = this.state.selectedSubCategory;
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       subCateId = this.state.selectedSubCategoryAll;
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       subCateId = this.state.selectedClaimSubCategory;
     }
 
@@ -2702,17 +2702,17 @@ class Dashboard extends Component {
         //     IssueTypeAllData: IssueTypeAllData
         //   });
         // }
-        if (param == "categoryTab") {
+        if (param === "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
             IssueTypeData: IssueTypeData
           });
-        } else if (param == "allTab") {
+        } else if (param === "allTab") {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
             IssueTypeAllData: IssueTypeAllData
           });
-        } else if (param == "allClaimTab") {
+        } else if (param === "allClaimTab") {
           var ClaimIssueTypeData = res.data.responseData;
           self.setState({
             ClaimIssueTypeData: ClaimIssueTypeData
@@ -2814,11 +2814,11 @@ class Dashboard extends Component {
     //     ? this.state.selectedCategory
     //     : this.state.selectedCategoryAll;
     let cateId;
-    if (param == "categoryTab") {
+    if (param === "categoryTab") {
       cateId = this.state.selectedCategory;
-    } else if (param == "allTab") {
+    } else if (param === "allTab") {
       cateId = this.state.selectedCategoryAll;
-    } else if (param == "allClaimTab") {
+    } else if (param === "allClaimTab") {
       cateId = this.state.selectedClaimCategory;
     }
 
@@ -2843,17 +2843,17 @@ class Dashboard extends Component {
         //     SubCategoryAllData: SubCategoryAllData
         //   });
         // }
-        if (param == "categoryTab") {
+        if (param === "categoryTab") {
           var SubCategoryData = res.data.responseData;
           self.setState({
             SubCategoryData: SubCategoryData
           });
-        } else if (param == "allTab") {
+        } else if (param === "allTab") {
           var SubCategoryAllData = res.data.responseData;
           self.setState({
             SubCategoryAllData: SubCategoryAllData
           });
-        } else if (param == "allClaimTab") {
+        } else if (param === "allClaimTab") {
           var ClaimSubCategoryData = res.data.responseData;
           self.setState({
             ClaimSubCategoryData: ClaimSubCategoryData
@@ -3633,7 +3633,7 @@ class Dashboard extends Component {
                 j++
               ) {
                 if (
-                  element ==
+                  element ===
                   self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
                 ) {
                   purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
@@ -3649,7 +3649,7 @@ class Dashboard extends Component {
               const element = actionId[i];
               for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
                 if (
-                  element ==
+                  element ===
                   self.state.TicketActionTypeData[j].ticketActionTypeID
                 ) {
                   actionArr.push(self.state.TicketActionTypeData[j]);
@@ -3957,18 +3957,18 @@ class Dashboard extends Component {
     let end = moment(start)
       .add(1, "days")
       .subtract(1, "seconds");
-    let ranges = {
-      "Today Only": [moment(start), moment(end)],
-      "Yesterday Only": [
-        moment(start).subtract(1, "days"),
-        moment(end).subtract(1, "days")
-      ],
-      "3 Days": [moment(start).subtract(3, "days"), moment(end)]
-    };
-    let local = {
-      format: "DD-MM-YYYY",
-      sundayFirst: false
-    };
+    // let ranges = {
+    //   "Today Only": [moment(start), moment(end)],
+    //   "Yesterday Only": [
+    //     moment(start).subtract(1, "days"),
+    //     moment(end).subtract(1, "days")
+    //   ],
+    //   "3 Days": [moment(start).subtract(3, "days"), moment(end)]
+    // };
+    // let local = {
+    //   format: "DD-MM-YYYY",
+    //   sundayFirst: false
+    // };
 
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
@@ -3983,7 +3983,7 @@ class Dashboard extends Component {
     // let value = `${this.state.start.format(
     //   "DD-MM-YYYY"
     // )} - ${this.state.end.format("DD-MM-YYYY")}`;
-    let disabled = false;
+    // let disabled = false;
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
