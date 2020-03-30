@@ -84,7 +84,10 @@ class CreateSLA extends Component {
       fileSize: "",
       showProgress: false,
       bulkuploadCompulsion: "",
-      fileN: []
+      fileN: [],
+      sissueTpeNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisSLAActiveFilterCheckbox: ""
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -131,7 +134,75 @@ class CreateSLA extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+
+    if (
+      this.state.sortFilterIssueType.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "issueTpeName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sisSLAActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sisSLAActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sissueTpeNameFilterCheckbox !== "" ||
+        this.state.sisSLAActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sissueTpeNameFilterCheckbox: "",
+          sisSLAActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "isSLAActive") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sissueTpeNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sissueTpeNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     if (this.state.tempsla.length > 0) {
@@ -141,6 +212,33 @@ class CreateSLA extends Component {
         sla: this.state.tempsla,
         sFilterCheckbox: ""
       });
+      if (this.state.sortColumn === "issueTpeName") {
+        if (this.state.sissueTpeNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sisSLAActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sissueTpeNameFilterCheckbox: "",
+            sisSLAActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "isSLAActive") {
+        if (this.state.sisSLAActiveFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sissueTpeNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -155,29 +253,116 @@ class CreateSLA extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
+
+    var sissueTpeNameFilterCheckbox = this.state.sissueTpeNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sisSLAActiveFilterCheckbox = this.state.sisSLAActiveFilterCheckbox;
 
     var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+
+    if (column === "issueTpeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sissueTpeNameFilterCheckbox = sissueTpeNameFilterCheckbox.replace(
+          "all",
           ""
         );
+        sissueTpeNameFilterCheckbox = sissueTpeNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sissueTpeNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sissueTpeNameFilterCheckbox = sissueTpeNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sissueTpeNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sissueTpeNameFilterCheckbox.includes("all")) {
+          sissueTpeNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "issueTpeName") {
+            for (let i = 0; i < this.state.sortIssueType.length; i++) {
+              sissueTpeNameFilterCheckbox +=
+                this.state.sortIssueType[i].issueTpeName + ",";
+            }
+            sissueTpeNameFilterCheckbox += "all";
+          }
+        }
       }
     }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "isSLAActive" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sisSLAActiveFilterCheckbox = sisSLAActiveFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sisSLAActiveFilterCheckbox = sisSLAActiveFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sisSLAActiveFilterCheckbox.includes(e.currentTarget.value)) {
+          sisSLAActiveFilterCheckbox = sisSLAActiveFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sisSLAActiveFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sisSLAActiveFilterCheckbox.includes("all")) {
+          sisSLAActiveFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "isSLAActive") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sisSLAActiveFilterCheckbox +=
+                this.state.sortStatus[i].isSLAActive + ",";
+            }
+            sisSLAActiveFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
     this.setState({
+      sissueTpeNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      sisSLAActiveFilterCheckbox,
       issueColor: "",
       createdColor: "",
-      stattusColor: "",
-      sFilterCheckbox
+      stattusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "issueTpeName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sissueTpeNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -196,7 +381,7 @@ class CreateSLA extends Component {
         issueColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -213,7 +398,7 @@ class CreateSLA extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "isSLAActive") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sisSLAActiveFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1033,6 +1218,13 @@ class CreateSLA extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sissueTpeNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sisSLAActiveFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1048,6 +1240,9 @@ class CreateSLA extends Component {
                             name="filter-type"
                             id={"fil-open" + item.issueTpeName}
                             value={item.issueTpeName}
+                            checked={this.state.sissueTpeNameFilterCheckbox.includes(
+                              item.issueTpeName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "issueTpeName",
@@ -1072,6 +1267,9 @@ class CreateSLA extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1096,6 +1294,9 @@ class CreateSLA extends Component {
                             name="filter-type"
                             id={"fil-open" + item.isSLAActive}
                             value={item.isSLAActive}
+                            checked={this.state.sisSLAActiveFilterCheckbox.includes(
+                              item.isSLAActive
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isSLAActive",
@@ -1740,7 +1941,12 @@ class CreateSLA extends Component {
                                   </p>
                                   <div className="del-can">
                                     <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn"onClick={this.handleDeleteBulkupload}>Delete</button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleDeleteBulkupload}
+                                    >
+                                      Delete
+                                    </button>
                                   </div>
                                 </div>
                               </PopoverBody>

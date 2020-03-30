@@ -85,7 +85,10 @@ class Templates extends Component {
       sortFilterIssueType: [],
       sortFilterName: [],
       sortFilterCreatedBy: [],
-      sortFilterStatus: []
+      sortFilterStatus: [],
+      stemplateNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      stemplateStatusFilterCheckbox: ""
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -291,7 +294,74 @@ class Templates extends Component {
   }
 
   StatusOpenModel(data, header) {
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterName.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "templateName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.stemplateStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          stemplateStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.stemplateNameFilterCheckbox !== "" ||
+        this.state.stemplateStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          stemplateNameFilterCheckbox: "",
+          stemplateStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "templateStatus") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.stemplateNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          stemplateNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     if (this.state.temptemplate.length > 0) {
@@ -301,6 +371,33 @@ class Templates extends Component {
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "issueTypeName") {
+        if (this.state.stemplateNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            stemplateStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            stemplateNameFilterCheckbox: "",
+            stemplateStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "templateStatus") {
+        if (this.state.stemplateStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            stemplateNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -325,22 +422,110 @@ class Templates extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var stemplateNameFilterCheckbox = this.state.stemplateNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var stemplateStatusFilterCheckbox = this.state
+      .stemplateStatusFilterCheckbox;
+
+    if (column === "templateName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        stemplateNameFilterCheckbox = stemplateNameFilterCheckbox.replace(
+          "all",
           ""
         );
+        stemplateNameFilterCheckbox = stemplateNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (stemplateNameFilterCheckbox.includes(e.currentTarget.value)) {
+          stemplateNameFilterCheckbox = stemplateNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          stemplateNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (stemplateNameFilterCheckbox.includes("all")) {
+          stemplateNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "templateName") {
+            for (let i = 0; i < this.state.sortName.length; i++) {
+              stemplateNameFilterCheckbox +=
+                this.state.sortName[i].templateName + ",";
+            }
+            stemplateNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "templateStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        stemplateStatusFilterCheckbox = stemplateStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        stemplateStatusFilterCheckbox = stemplateStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (stemplateStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          stemplateStatusFilterCheckbox = stemplateStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          stemplateStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (stemplateStatusFilterCheckbox.includes("all")) {
+          stemplateStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "templateStatus") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              stemplateStatusFilterCheckbox +=
+                this.state.sortStatus[i].templateStatus + ",";
+            }
+            stemplateStatusFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      stemplateNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      stemplateStatusFilterCheckbox,
+
       issueColor: "",
       nameColor: "",
       createdColor: "",
@@ -348,27 +533,8 @@ class Templates extends Component {
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-    } else if (column === "issueTypeName") {
-      var sItems = sFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              a => a.issueTypeName === sItems[i]
-            );
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        issueColor: "sort-column"
-      });
     } else if (column === "templateName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = stemplateNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -387,7 +553,7 @@ class Templates extends Component {
         nameColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -404,7 +570,7 @@ class Templates extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "templateStatus") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = stemplateStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1062,6 +1228,13 @@ class Templates extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.stemplateNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.screatedByFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1101,6 +1274,10 @@ class Templates extends Component {
                             name="filter-type"
                             id={"fil-open" + item.templateName}
                             value={item.templateName}
+                            checked={this.state.stemplateNameFilterCheckbox.includes(
+                              item.templateName
+                            )}
+           
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "templateName",
@@ -1125,6 +1302,9 @@ class Templates extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1149,6 +1329,9 @@ class Templates extends Component {
                             name="filter-type"
                             id={"fil-open" + item.templateStatus}
                             value={item.templateStatus}
+                            checked={this.state.stemplateStatusFilterCheckbox.includes(
+                              item.templateStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "templateStatus",

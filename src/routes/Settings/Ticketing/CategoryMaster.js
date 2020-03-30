@@ -101,7 +101,12 @@ class CategoryMaster extends Component {
       fileSize: "",
       showProgress: false,
       bulkuploadCompulsion: "",
-      fileN: []
+      fileN: [],
+      sbrandNameFilterCheckbox: "",
+      scategoryNameFilterCheckbox: "",
+      ssubCategoryNameFilterCheckbox: "",
+      sissueTypeNameFilterCheckbox: "",
+      sstatusNameFilterCheckbox: ""
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -149,7 +154,136 @@ class CategoryMaster extends Component {
   }
 
   StatusOpenModel(data, header) {
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterBrandName.length === 0 ||
+      this.state.sortFilterCategory.length === 0 ||
+      this.state.sortFilterSubCategory.length === 0 ||
+      this.state.sortFilterIssueType.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "brandName") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.ssubCategoryNameFilterCheckbox !== "" ||
+        this.state.sissueTypeNameFilterCheckbox !== "" ||
+        this.state.sstatusNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          ssubCategoryNameFilterCheckbox: "",
+          sissueTypeNameFilterCheckbox: "",
+          sstatusNameFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "categoryName") {
+      if (
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.ssubCategoryNameFilterCheckbox !== "" ||
+        this.state.sissueTypeNameFilterCheckbox !== "" ||
+        this.state.sstatusNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sbrandNameFilterCheckbox: "",
+          ssubCategoryNameFilterCheckbox: "",
+          sissueTypeNameFilterCheckbox: "",
+          sstatusNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "subCategoryName") {
+      if (
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sissueTypeNameFilterCheckbox !== "" ||
+        this.state.sstatusNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sbrandNameFilterCheckbox: "",
+          scategoryNameFilterCheckbox: "",
+          sissueTypeNameFilterCheckbox: "",
+          sstatusNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "issueTypeName") {
+      if (
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.ssubCategoryNameFilterCheckbox !== "" ||
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sstatusNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sstatusNameFilterCheckbox: "",
+          scategoryNameFilterCheckbox: "",
+          ssubCategoryNameFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "statusName") {
+      if (
+        this.state.sissueTypeNameFilterCheckbox !== "" ||
+        this.state.ssubCategoryNameFilterCheckbox !== "" ||
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sbrandNameFilterCheckbox: "",
+          scategoryNameFilterCheckbox: "",
+          ssubCategoryNameFilterCheckbox: "",
+          sissueTypeNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     if (this.state.tempcategoryGridData.length > 0) {
@@ -159,6 +293,61 @@ class CategoryMaster extends Component {
         categoryGridData: this.state.tempcategoryGridData,
         sFilterCheckbox: ""
       });
+      if (this.state.sortColumn === "brandName") {
+        if (this.state.sbrandNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            ssubCategoryNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "categoryName") {
+        if (this.state.scategoryNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            ssubCategoryNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "subCategoryName") {
+        if (this.state.ssubCategoryNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            scategoryNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "issueTypeName") {
+        if (this.state.sissueTypeNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            scategoryNameFilterCheckbox: "",
+            ssubCategoryNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "statusName") {
+        if (this.state.sstatusNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            scategoryNameFilterCheckbox: "",
+            ssubCategoryNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -173,32 +362,185 @@ class CategoryMaster extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
-          ""
-        );
+    var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
+    var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
+    var ssubCategoryNameFilterCheckbox = this.state
+      .ssubCategoryNameFilterCheckbox;
+    var sissueTypeNameFilterCheckbox = this.state.sissueTypeNameFilterCheckbox;
+    var sstatusNameFilterCheckbox = this.state.sstatusNameFilterCheckbox;
+
+    if (column === "brandName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all", "");
+        sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
+        if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sbrandNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sbrandNameFilterCheckbox.includes("all")) {
+          sbrandNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "brandName") {
+            for (let i = 0; i < this.state.sortBrandName.length; i++) {
+              sbrandNameFilterCheckbox +=
+                this.state.sortBrandName[i].brandName + ",";
+            }
+            sbrandNameFilterCheckbox += "all";
+          }
+        }
       }
     }
-
+    if (column === "categoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (scategoryNameFilterCheckbox.includes(e.currentTarget.value)) {
+          scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scategoryNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryNameFilterCheckbox.includes("all")) {
+          scategoryNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "categoryName") {
+            for (let i = 0; i < this.state.sortCategory.length; i++) {
+              scategoryNameFilterCheckbox +=
+                this.state.sortCategory[i].categoryName + ",";
+            }
+            scategoryNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "subCategoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (ssubCategoryNameFilterCheckbox.includes(e.currentTarget.value)) {
+          ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          ssubCategoryNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (ssubCategoryNameFilterCheckbox.includes("all")) {
+          ssubCategoryNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "subCategoryName") {
+            for (let i = 0; i < this.state.sortSubCategory.length; i++) {
+              ssubCategoryNameFilterCheckbox +=
+                this.state.sortSubCategory[i].subCategoryName + ",";
+            }
+            ssubCategoryNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "issueTypeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sissueTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sissueTypeNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sissueTypeNameFilterCheckbox.includes("all")) {
+          sissueTypeNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "issueTypeName") {
+            for (let i = 0; i < this.state.sortIssueType.length; i++) {
+              sissueTypeNameFilterCheckbox +=
+                this.state.sortIssueType[i].issueTypeName + ",";
+            }
+            sissueTypeNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "statusName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstatusNameFilterCheckbox = sstatusNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sstatusNameFilterCheckbox = sstatusNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sstatusNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sstatusNameFilterCheckbox = sstatusNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstatusNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstatusNameFilterCheckbox.includes("all")) {
+          sstatusNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "statusName") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sstatusNameFilterCheckbox +=
+                this.state.sortStatus[i].statusName + ",";
+            }
+            sstatusNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    var allData = this.state.sortAllData;
     this.setState({
       brandColor: "",
       categoryColor: "",
       subCategoryColor: "",
       issueColor: "",
       statusColor: "",
-      sFilterCheckbox
+      sbrandNameFilterCheckbox: "",
+      scategoryNameFilterCheckbox: "",
+      ssubCategoryNameFilterCheckbox: "",
+      sissueTypeNameFilterCheckbox: "",
+      sstatusNameFilterCheckbox: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "brandName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sbrandNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -215,7 +557,7 @@ class CategoryMaster extends Component {
         brandColor: "sort-column"
       });
     } else if (column === "categoryName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = scategoryNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -234,7 +576,7 @@ class CategoryMaster extends Component {
         categoryColor: "sort-column"
       });
     } else if (column === "subCategoryName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = ssubCategoryNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -253,7 +595,7 @@ class CategoryMaster extends Component {
         subCategoryColor: "sort-column"
       });
     } else if (column === "issueTypeName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sissueTypeNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -272,7 +614,7 @@ class CategoryMaster extends Component {
         issueColor: "sort-column"
       });
     } else if (column === "statusName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sstatusNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -966,7 +1308,7 @@ class CategoryMaster extends Component {
 
     this.setState({ editmodel: true, editCategory, brandCatmapId: Id });
   };
-////handle toggle edit modal pop
+  ////handle toggle edit modal pop
   toggleEditModal() {
     this.setState({
       editmodel: false,
@@ -975,7 +1317,7 @@ class CategoryMaster extends Component {
       ListOfIssueData: []
     });
   }
-////handle modal pop brand change
+  ////handle modal pop brand change
   handleModalBrandChange = e => {
     debugger;
     let value = e.target.value;
@@ -1005,7 +1347,7 @@ class CategoryMaster extends Component {
       }
     }, 1);
   };
-////handle edit modal pop category change
+  ////handle edit modal pop category change
   handleModalCategoryChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
@@ -1161,7 +1503,7 @@ class CategoryMaster extends Component {
     }
   }
 
-  ////handle delete selected file of bulk upload 
+  ////handle delete selected file of bulk upload
   handleDeleteBulkupload = e => {
     debugger;
     this.setState({
@@ -1171,7 +1513,7 @@ class CategoryMaster extends Component {
     NotificationManager.success("File deleted successfully.");
   };
 
-  ////handle bulk upload 
+  ////handle bulk upload
   hanldeAddBulkUpload() {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
@@ -1301,6 +1643,19 @@ class CategoryMaster extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sbrandNameFilterCheckbox.includes("all") ||
+                        this.state.scategoryNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.ssubCategoryNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sissueTypeNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sstatusNameFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1316,6 +1671,9 @@ class CategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
+                            checked={this.state.sbrandNameFilterCheckbox.includes(
+                              item.brandName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -1340,6 +1698,9 @@ class CategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.categoryName}
                             value={item.categoryName}
+                            checked={this.state.scategoryNameFilterCheckbox.includes(
+                              item.categoryName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "categoryName",
@@ -1364,6 +1725,9 @@ class CategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.subCategoryName}
                             value={item.subCategoryName}
+                            checked={this.state.ssubCategoryNameFilterCheckbox.includes(
+                              item.subCategoryName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "subCategoryName",
@@ -1388,6 +1752,9 @@ class CategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.issueTypeName}
                             value={item.issueTypeName}
+                            checked={this.state.sissueTypeNameFilterCheckbox.includes(
+                              item.issueTypeName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "issueTypeName",
@@ -1412,6 +1779,9 @@ class CategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.statusName}
                             value={item.statusName}
+                            checked={this.state.sstatusNameFilterCheckbox.includes(
+                              item.statusName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "statusName",
@@ -1981,7 +2351,10 @@ class CategoryMaster extends Component {
                           <div className="file-cntr">
                             <div className="file-dtls">
                               <p className="file-name">{this.state.fileName}</p>
-                              <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)} >
+                              <a
+                                className="file-retry"
+                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              >
                                 Retry
                               </a>
                             </div>

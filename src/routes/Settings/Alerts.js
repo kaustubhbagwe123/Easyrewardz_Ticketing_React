@@ -130,7 +130,10 @@ class Alerts extends Component {
       fileSize: "",
       showProgress: false,
       bulkuploadCompulsion: "",
-      fileN: []
+      fileN: [],
+      salertTypeNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisAlertActiveFilterCheckbox: ""
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -276,21 +279,115 @@ class Alerts extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterAlertType.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "alertTypeName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sisAlertActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sisAlertActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.salertTypeNameFilterCheckbox !== "" ||
+        this.state.sisAlertActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          salertTypeNameFilterCheckbox: "",
+          sisAlertActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "isAlertActive") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.salertTypeNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          salertTypeNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel = e => {
     if (this.state.tempalert.length > 0) {
       this.setState({
         StatusModel: false,
         alert: this.state.tempalert,
-        sFilterCheckbox: "",
+        
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "alertTypeName") {
+        if (this.state.salertTypeNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sisAlertActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            salertTypeNameFilterCheckbox: "",
+            sisAlertActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "isAlertActive") {
+        if (this.state.sisAlertActiveFilterCheckbox === "") {
+        } else {
+          this.setState({
+            salertTypeNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
         alert: this.state.sortAllData,
-        sFilterCheckbox: "",
+        
         filterTxtValue: ""
       });
     }
@@ -300,22 +397,105 @@ class Alerts extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var salertTypeNameFilterCheckbox = this.state.salertTypeNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sisAlertActiveFilterCheckbox = this.state.sisAlertActiveFilterCheckbox;
+
+
+    if (column === "alertTypeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace("all", "");
+        salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace("all,", "");
+        if (salertTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
+          salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          salertTypeNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (salertTypeNameFilterCheckbox.includes("all")) {
+          salertTypeNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "alertTypeName") {
+            for (let i = 0; i < this.state.sortAlertType.length; i++) {
+              salertTypeNameFilterCheckbox +=
+                this.state.sortAlertType[i].alertTypeName + ",";
+            }
+            salertTypeNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "isAlertActive" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
+          "all",
           ""
         );
+        sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sisAlertActiveFilterCheckbox.includes(e.currentTarget.value)) {
+          sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sisAlertActiveFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sisAlertActiveFilterCheckbox.includes("all")) {
+          sisAlertActiveFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "isAlertActive") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sisAlertActiveFilterCheckbox +=
+                this.state.sortStatus[i].isAlertActive + ",";
+            }
+            sisAlertActiveFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+
+
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      salertTypeNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      sisAlertActiveFilterCheckbox,
       alertColor: "",
       createdColor: "",
       statusColor: ""
@@ -323,7 +503,7 @@ class Alerts extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "alertTypeName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = salertTypeNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -342,7 +522,7 @@ class Alerts extends Component {
         alertColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -359,7 +539,7 @@ class Alerts extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "isAlertActive") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sisAlertActiveFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1465,6 +1645,13 @@ class Alerts extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.salertTypeNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sisAlertActiveFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1480,6 +1667,9 @@ class Alerts extends Component {
                             name={item.alertTypeName}
                             id={"fil-open" + item.alertTypeName}
                             value={item.alertTypeName}
+                            checked={this.state.salertTypeNameFilterCheckbox.includes(
+                              item.alertTypeName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "alertTypeName",
@@ -1504,6 +1694,9 @@ class Alerts extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1528,6 +1721,9 @@ class Alerts extends Component {
                             name={item.isAlertActive}
                             id={"fil-open" + item.isAlertActive}
                             value={item.isAlertActive}
+                            checked={this.state.sisAlertActiveFilterCheckbox.includes(
+                              item.isAlertActive
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isAlertActive"
@@ -2596,12 +2792,7 @@ class Alerts extends Component {
                   >
                     ADD
                   </button> */}
-                  <button
-                    className="butn"
-                  
-                  >
-                    ADD
-                  </button>
+                  <button className="butn">ADD</button>
                 </div>
               </div>
             </div>

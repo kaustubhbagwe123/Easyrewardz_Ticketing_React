@@ -279,13 +279,15 @@ class TicketSystem extends Component {
     let ckDataArr = ckData.split("\n\n");
     let ckDataArrNew = [];
     for (let i = 0; i < ckDataArr.length; i++) {
-      const element = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
       ckDataArrNew.push(element);
     }
     let selectedVal = "", loopFlag = true, ckTags, selectedArr;
     for (let i = 0; i < ckDataArrNew.length; i++) {
       if (loopFlag) {
-        if (this.state.ckCusrsorData == ckDataArrNew[i]) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
           selectedVal = ckDataArrNew[i];
           selectedArr = i;
           ckTags = ckDataArr[i].match(/<[^>]+>/g);
@@ -310,14 +312,14 @@ class TicketSystem extends Component {
       ckCusrsorPosition: newCkCusrsorPosition,
       ckCusrsorData: ckDataArrLast
     });
-    if (ckTags !== undefined) {
+    if (ckTags) {
       // let ckFinal = ckTags[0] + ck + ckTags[1];
       let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
       // ckDataArr.push(ckFinal);
       ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== undefined) {
+    if (ckTags) {
       this.setState({ editorTemplateDetails: ckData });
     } else {
       this.setState({ editorTemplateDetails: ckDataArrLast });
@@ -802,23 +804,52 @@ class TicketSystem extends Component {
     followUpIds += assign + ",";
     let ckData = this.state.editorTemplateDetails;
     let ckDataArr = ckData.split('\n\n');
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPosition, ckDataArrLast.length);
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.AssignToData.filter(
       x => x.userID == e.currentTarget.value
     );
     let userName = matchedArr[0].fullName;
-    ck += "@" + userName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
+    // ck += "@" + userName;
+    ckDataArrLast = textBefore + ' @' + userName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPosition + userName.length + 2;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(' ');
     }
-    if (ckTags !== null) {
+    if (ckTags) {
       this.setState({ editorTemplateDetails: ckData, followUpIds });
     } else {
-      this.setState({ editorTemplateDetails: ck, followUpIds });
+      this.setState({ editorTemplateDetails: ckDataArrLast, followUpIds });
     }
   }
   handleTicketAssignFollowUp(ticketID_) {
@@ -877,6 +908,9 @@ class TicketSystem extends Component {
     debugger;
     var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorData) {
+      ckCusrsorData = "";
+    }
     this.setState({
       ckCusrsorPosition: ckCusrsorPosition.startOffset,
       ckCusrsorData
@@ -1938,6 +1972,7 @@ class TicketSystem extends Component {
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
+                        onBlur={this.onCkBlur}
                         config={{
                           toolbar: [
                             {
@@ -2224,14 +2259,14 @@ class TicketSystem extends Component {
                       </ul>
                     </div>
 
-                    {this.state.selectedBrand === "" ? (
+                    {/* {this.state.selectedBrand === "" ? (
                       <label
                         className="kblink1"
                         title="Please select brand for KB Link"
                       >
                         Please select Brand
                       </label>
-                    ) : (
+                    ) : ( */}
                       <a href="#!" className="kblink1">
                         <img
                           src={KnowledgeLogo}
@@ -2243,7 +2278,7 @@ class TicketSystem extends Component {
                           KB
                         </label>
                       </a>
-                    )}
+                    {/* )} */}
                     <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
                       <select
                         className="add-select-category"

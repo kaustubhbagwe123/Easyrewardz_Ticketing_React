@@ -7011,7 +7011,7 @@ class Dashboard extends Component {
                                   <ul className="dash-creation-popup">
                                     <li className="title">Creation details</li>
                                     <li>
-                                      <p>{row.original.createdBy} Created</p>
+                                      <p>Created by {row.original.createdBy}</p>
                                       <p>{row.original.createdago}</p>
                                     </li>
                                     <li>
@@ -7021,7 +7021,7 @@ class Dashboard extends Component {
                                       <p>{row.original.assignedago}</p>
                                     </li>
                                     <li>
-                                      <p>{row.original.updatedBy} updated</p>
+                                      <p>Updated by {row.original.updatedBy}</p>
                                       <p>{row.original.updatedago}</p>
                                     </li>
                                     <li>
