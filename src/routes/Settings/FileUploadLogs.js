@@ -32,7 +32,11 @@ class FileUploadLogs extends Component {
       sortHeader: "",
       sFilterCheckbox: "",
       filterTxtValue: "",
-      tempfileUploadLog: []
+      tempfileUploadLog: [],
+      sfileTypeFilterCheckbox: "",
+      sfileNameFilterCheckbox: "",
+      screatedDateFilterCheckbox: "",
+      sfileUploadStatusFilterCheckbox: ""
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -119,7 +123,105 @@ class FileUploadLogs extends Component {
   }
 
   StatusOpenModel(data, header) {
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterFileType.length === 0 ||
+      this.state.sortFilterFileName.length === 0 ||
+      this.state.sortFilterCreatedDate.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "fileType") {
+      if (
+        this.state.sfileNameFilterCheckbox !== "" ||
+        this.state.screatedDateFilterCheckbox !== "" ||
+        this.state.sfileUploadStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sfileNameFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          sfileUploadStatusFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "fileName") {
+      if (
+        this.state.sfileTypeFilterCheckbox !== "" ||
+        this.state.screatedDateFilterCheckbox !== "" ||
+        this.state.sfileUploadStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sfileTypeFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          sfileUploadStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdDate") {
+      if (
+        this.state.sfileTypeFilterCheckbox !== "" ||
+        this.state.sfileNameFilterCheckbox !== "" ||
+        this.state.sfileUploadStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sfileTypeFilterCheckbox: "",
+          sfileNameFilterCheckbox: "",
+          sfileUploadStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "fileUploadStatus") {
+      if (
+        this.state.sfileTypeFilterCheckbox !== "" ||
+        this.state.sfileNameFilterCheckbox !== "" ||
+        this.state.screatedDateFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sfileTypeFilterCheckbox: "",
+          sfileNameFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     debugger;
@@ -130,6 +232,46 @@ class FileUploadLogs extends Component {
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "fileType") {
+        if (this.state.sfileTypeFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sfileNameFilterCheckbox: "",
+            screatedDateFilterCheckbox: "",
+            sfileUploadStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "fileName") {
+        if (this.state.sfileNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sfileTypeFilterCheckbox: "",
+            screatedDateFilterCheckbox: "",
+            sfileUploadStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdDate") {
+        if (this.state.screatedDateFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sfileTypeFilterCheckbox: "",
+            sfileNameFilterCheckbox: "",
+            sfileUploadStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "fileUploadStatus") {
+        if (this.state.sfileUploadStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sfileTypeFilterCheckbox: "",
+            sfileNameFilterCheckbox: "",
+            screatedDateFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -235,22 +377,136 @@ class FileUploadLogs extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var sfileTypeFilterCheckbox = this.state.sfileTypeFilterCheckbox;
+    var sfileNameFilterCheckbox = this.state.sfileNameFilterCheckbox;
+    var screatedDateFilterCheckbox = this.state.screatedDateFilterCheckbox;
+    var sfileUploadStatusFilterCheckbox = this.state
+      .sfileUploadStatusFilterCheckbox;
+    if (column === "fileType" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sfileTypeFilterCheckbox = sfileTypeFilterCheckbox.replace("all", "");
+        sfileTypeFilterCheckbox = sfileTypeFilterCheckbox.replace("all,", "");
+        if (sfileTypeFilterCheckbox.includes(e.currentTarget.value)) {
+          sfileTypeFilterCheckbox = sfileTypeFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sfileTypeFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sfileTypeFilterCheckbox.includes("all")) {
+          sfileTypeFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "fileType") {
+            for (let i = 0; i < this.state.sortFileType.length; i++) {
+              sfileTypeFilterCheckbox +=
+                this.state.sortFileType[i].fileType + ",";
+            }
+            sfileTypeFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "fileName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sfileNameFilterCheckbox = sfileNameFilterCheckbox.replace("all", "");
+        sfileNameFilterCheckbox = sfileNameFilterCheckbox.replace("all,", "");
+        if (sfileNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sfileNameFilterCheckbox = sfileNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sfileNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sfileNameFilterCheckbox.includes("all")) {
+          sfileNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "fileName") {
+            for (let i = 0; i < this.state.sortFileName.length; i++) {
+              sfileNameFilterCheckbox +=
+                this.state.sortFileName[i].fileName + ",";
+            }
+            sfileNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdDate" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedDateFilterCheckbox = screatedDateFilterCheckbox.replace(
+          "all",
           ""
         );
+        screatedDateFilterCheckbox = screatedDateFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (screatedDateFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedDateFilterCheckbox = screatedDateFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedDateFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (screatedDateFilterCheckbox.includes("all")) {
+          screatedDateFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdDate") {
+            for (let i = 0; i < this.state.sortCreatedDate.length; i++) {
+              screatedDateFilterCheckbox +=
+                this.state.sortCreatedDate[i].createdDate + ",";
+            }
+            screatedDateFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "fileUploadStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sfileUploadStatusFilterCheckbox = sfileUploadStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sfileUploadStatusFilterCheckbox = sfileUploadStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sfileUploadStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sfileUploadStatusFilterCheckbox = sfileUploadStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sfileUploadStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sfileUploadStatusFilterCheckbox.includes("all")) {
+          sfileUploadStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "fileUploadStatus") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sfileUploadStatusFilterCheckbox +=
+                this.state.sortStatus[i].fileUploadStatus + ",";
+            }
+            sfileUploadStatusFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      sfileTypeFilterCheckbox,
+      sfileNameFilterCheckbox,
+      screatedDateFilterCheckbox,
+      sfileUploadStatusFilterCheckbox,
       issueColor: "",
       nameColor: "",
       createdColor: "",
@@ -259,7 +515,7 @@ class FileUploadLogs extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "fileType") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sfileTypeFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -276,7 +532,7 @@ class FileUploadLogs extends Component {
         issueColor: "sort-column"
       });
     } else if (column === "fileName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sfileNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -293,7 +549,7 @@ class FileUploadLogs extends Component {
         nameColor: "sort-column"
       });
     } else if (column === "createdDate") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedDateFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -310,7 +566,7 @@ class FileUploadLogs extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "fileUploadStatus") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sfileUploadStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -509,6 +765,14 @@ class FileUploadLogs extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sfileTypeFilterCheckbox.includes("all") ||
+                        this.state.sfileNameFilterCheckbox.includes("all") ||
+                        this.state.screatedDateFilterCheckbox.includes("all") ||
+                        this.state.sfileUploadStatusFilterCheckbox.includes(
+                          "all"
+                        )
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -524,6 +788,9 @@ class FileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.fileType}
                             value={item.fileType}
+                            checked={this.state.sfileTypeFilterCheckbox.includes(
+                              item.fileType
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileType",
@@ -548,6 +815,9 @@ class FileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.fileName}
                             value={item.fileName}
+                            checked={this.state.sfileNameFilterCheckbox.includes(
+                              item.fileName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileName",
@@ -572,6 +842,9 @@ class FileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdDate}
                             value={item.createdDate}
+                            checked={this.state.screatedDateFilterCheckbox.includes(
+                              item.createdDate
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -596,6 +869,9 @@ class FileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.fileUploadStatus}
                             value={item.fileUploadStatus}
+                            checked={this.state.sfileUploadStatusFilterCheckbox.includes(
+                              item.fileUploadStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileUploadStatus",

@@ -12,13 +12,12 @@ import Sorting from "./../assets/Images/sorting.png";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import matchSorter from "match-sorter";
+import ReactHtmlParser from "react-html-parser";
 
 class KnowledgeBase extends Component {
   constructor(props) {
@@ -117,7 +116,13 @@ class KnowledgeBase extends Component {
       sortFilterSubCategoryNot: [],
       sortFilterCategoryNot: [],
       sortFilterIssueTypeNot: [],
-      filterTxtValue: ""
+      filterTxtValue: "",
+      scategoryNameFilterCheckboxN: "",
+      ssubCategoryNameFilterCheckboxN: "",
+      sissueTypeNameFilterCheckboxN: "",
+      scategoryNameFilterCheckbox: "",
+      ssubCategoryNameFilterCheckbox: "",
+      sissueTypeNameFilterCheckbox: ""
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -141,15 +146,141 @@ class KnowledgeBase extends Component {
   StatusOpenModel(data, table, header) {
     debugger;
 
-    this.setState({
-      StatusModel: true,
-      sortColumnName: data,
-      sortTable: table,
-      sortHeader: header,
-      tempKBListData: [],
-      tempKBListnotApproveData: []
-    });
-     
+    if (table == "approve") {
+      if (data === "categoryName") {
+        if (
+          this.state.ssubCategoryNameFilterCheckbox !== "" ||
+          this.state.sissueTypeNameFilterCheckbox !== ""
+        ) {
+          this.setState({
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        } else {
+          this.setState({
+            ssubCategoryNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: "",
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        }
+      }
+      if (data === "subCategoryName") {
+        if (
+          this.state.scategoryNameFilterCheckbox !== "" ||
+          this.state.sissueTypeNameFilterCheckbox !== ""
+        ) {
+          this.setState({
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: "",
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        }
+      }
+      if (data === "issueTypeName") {
+        if (
+          this.state.scategoryNameFilterCheckbox !== "" ||
+          this.state.ssubCategoryNameFilterCheckbox !== ""
+        ) {
+          this.setState({
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        } else {
+          this.setState({
+            ssubCategoryNameFilterCheckbox: "",
+            scategoryNameFilterCheckbox: "",
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        }
+      }
+    } else {
+      if (data === "categoryName") {
+        if (
+          this.state.ssubCategoryNameFilterCheckboxN !== "" ||
+          this.state.sissueTypeNameFilterCheckboxN !== ""
+        ) {
+          this.setState({
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        } else {
+          this.setState({
+            ssubCategoryNameFilterCheckboxN: "",
+            sissueTypeNameFilterCheckboxN: "",
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        }
+      }
+      if (data === "subCategoryName") {
+        if (
+          this.state.scategoryNameFilterCheckboxN !== "" ||
+          this.state.sissueTypeNameFilterCheckboxN !== ""
+        ) {
+          this.setState({
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        } else {
+          this.setState({
+            scategoryNameFilterCheckboxN: "",
+            sissueTypeNameFilterCheckboxN: "",
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        }
+      }
+      if (data === "issueTypeName") {
+        if (
+          this.state.scategoryNameFilterCheckboxN !== "" ||
+          this.state.ssubCategoryNameFilterCheckboxN !== ""
+        ) {
+          this.setState({
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        } else {
+          this.setState({
+            scategoryNameFilterCheckboxN: "",
+            ssubCategoryNameFilterCheckboxN: "",
+            StatusModel: true,
+            sortColumnName: data,
+            sortTable: table,
+            sortHeader: header
+          });
+        }
+      }
+    }
   }
   StatusCloseModel() {
     debugger;
@@ -159,6 +290,33 @@ class KnowledgeBase extends Component {
           StatusModel: false,
           KBListData: this.state.tempKBListData
         });
+        if (this.state.sortColumnName === "subCategoryName") {
+          if (this.state.ssubCategoryNameFilterCheckbox === "") {
+          } else {
+            this.setState({
+              scategoryNameFilterCheckbox: "",
+              sissueTypeNameFilterCheckbox: ""
+            });
+          }
+        }
+        if (this.state.sortColumnName === "categoryName") {
+          if (this.state.scategoryNameFilterCheckbox === "") {
+          } else {
+            this.setState({
+              ssubCategoryNameFilterCheckbox: "",
+              sissueTypeNameFilterCheckbox: ""
+            });
+          }
+        }
+        if (this.state.sortColumnName === "issueTypeName") {
+          if (this.state.sissueTypeNameFilterCheckbox === "") {
+          } else {
+            this.setState({
+              ssubCategoryNameFilterCheckbox: "",
+              scategoryNameFilterCheckbox: ""
+            });
+          }
+        }
       } else {
         this.setState({
           StatusModel: false,
@@ -171,6 +329,34 @@ class KnowledgeBase extends Component {
           StatusModel: false,
           KBListnotApproveData: this.state.tempKBListnotApproveData
         });
+
+        if (this.state.sortColumnName === "categoryName") {
+          if (this.state.scategoryNameFilterCheckboxN === "") {
+          } else {
+            this.setState({
+              ssubCategoryNameFilterCheckboxN: "",
+              sissueTypeNameFilterCheckboxN: ""
+            });
+          }
+        }
+        if (this.state.sortColumnName === "subCategoryName") {
+          if (this.state.ssubCategoryNameFilterCheckboxN === "") {
+          } else {
+            this.setState({
+              scategoryNameFilterCheckboxN: "",
+              sissueTypeNameFilterCheckboxN: ""
+            });
+          }
+        }
+        if (this.state.sortColumnName === "issueTypeName") {
+          if (this.state.sissueTypeNameFilterCheckboxN === "") {
+          } else {
+            this.setState({
+              scategoryNameFilterCheckboxN: "",
+              ssubCategoryNameFilterCheckboxN: ""
+            });
+          }
+        }
       } else {
         this.setState({
           StatusModel: false,
@@ -180,22 +366,226 @@ class KnowledgeBase extends Component {
     }
   }
 
-  setSortCheckStatus = (column, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
     var itemsArray = [];
     var itemsArrayApprove = [];
-    var data = e.currentTarget.value;
-    var sFilterCheckbox = this.state.sFilterCheckbox;
-    if (sFilterCheckbox.includes(e.currentTarget.value)) {
-      sFilterCheckbox = sFilterCheckbox.replace(
-        e.currentTarget.value + ",",
-        ""
-      );
-    } else {
-      sFilterCheckbox += e.currentTarget.value + ",";
+
+    var scategoryNameFilterCheckboxN = this.state.scategoryNameFilterCheckboxN;
+    var ssubCategoryNameFilterCheckboxN = this.state
+      .ssubCategoryNameFilterCheckboxN;
+    var sissueTypeNameFilterCheckboxN = this.state
+      .sissueTypeNameFilterCheckboxN;
+    var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
+    var ssubCategoryNameFilterCheckbox = this.state
+      .ssubCategoryNameFilterCheckbox;
+    var sissueTypeNameFilterCheckbox = this.state.sissueTypeNameFilterCheckbox;
+
+    if (column === "categoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryNameFilterCheckboxN = scategoryNameFilterCheckboxN.replace(
+          "all",
+          ""
+        );
+        scategoryNameFilterCheckboxN = scategoryNameFilterCheckboxN.replace(
+          "all,",
+          ""
+        );
+        if (scategoryNameFilterCheckboxN.includes(e.currentTarget.value)) {
+          scategoryNameFilterCheckboxN = scategoryNameFilterCheckboxN.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scategoryNameFilterCheckboxN += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryNameFilterCheckboxN.includes("all")) {
+          scategoryNameFilterCheckboxN = "";
+        } else {
+          if (this.state.sortColumnName === "categoryName") {
+            for (let i = 0; i < this.state.sortFilterCategoryNot.length; i++) {
+              scategoryNameFilterCheckboxN +=
+                this.state.sortFilterCategoryNot[i].categoryName + ",";
+            }
+            scategoryNameFilterCheckboxN += "all";
+          }
+        }
+      }
     }
+    if (column === "subCategoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        ssubCategoryNameFilterCheckboxN = ssubCategoryNameFilterCheckboxN.replace(
+          "all",
+          ""
+        );
+        ssubCategoryNameFilterCheckboxN = ssubCategoryNameFilterCheckboxN.replace(
+          "all,",
+          ""
+        );
+        if (ssubCategoryNameFilterCheckboxN.includes(e.currentTarget.value)) {
+          ssubCategoryNameFilterCheckboxN = ssubCategoryNameFilterCheckboxN.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          ssubCategoryNameFilterCheckboxN += e.currentTarget.value + ",";
+        }
+      } else {
+        if (ssubCategoryNameFilterCheckboxN.includes("all")) {
+          ssubCategoryNameFilterCheckboxN = "";
+        } else {
+          if (this.state.sortColumnName === "subCategoryName") {
+            for (
+              let i = 0;
+              i < this.state.sortFilterSubCategoryNot.length;
+              i++
+            ) {
+              ssubCategoryNameFilterCheckboxN +=
+                this.state.sortFilterSubCategoryNot[i].subCategoryName + ",";
+            }
+            ssubCategoryNameFilterCheckboxN += "all";
+          }
+        }
+      }
+    }
+    if (column === "issueTypeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sissueTypeNameFilterCheckboxN = sissueTypeNameFilterCheckboxN.replace(
+          "all",
+          ""
+        );
+        sissueTypeNameFilterCheckboxN = sissueTypeNameFilterCheckboxN.replace(
+          "all,",
+          ""
+        );
+        if (sissueTypeNameFilterCheckboxN.includes(e.currentTarget.value)) {
+          sissueTypeNameFilterCheckboxN = sissueTypeNameFilterCheckboxN.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sissueTypeNameFilterCheckboxN += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sissueTypeNameFilterCheckboxN.includes("all")) {
+          sissueTypeNameFilterCheckboxN = "";
+        } else {
+          if (this.state.sortColumnName === "issueTypeName") {
+            for (let i = 0; i < this.state.sortFilterIssueTypeNot.length; i++) {
+              sissueTypeNameFilterCheckboxN +=
+                this.state.sortFilterIssueTypeNot[i].issueTypeName + ",";
+            }
+            sissueTypeNameFilterCheckboxN += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "categoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (scategoryNameFilterCheckbox.includes(e.currentTarget.value)) {
+          scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scategoryNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryNameFilterCheckbox.includes("all")) {
+          scategoryNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "categoryName") {
+            for (let i = 0; i < this.state.sortCategory.length; i++) {
+              scategoryNameFilterCheckbox +=
+                this.state.sortCategory[i].categoryName + ",";
+            }
+            scategoryNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "subCategoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (ssubCategoryNameFilterCheckbox.includes(e.currentTarget.value)) {
+          ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          ssubCategoryNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (ssubCategoryNameFilterCheckbox.includes("all")) {
+          ssubCategoryNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "subCategoryName") {
+            for (let i = 0; i < this.state.sortSubCategory.length; i++) {
+              ssubCategoryNameFilterCheckbox +=
+                this.state.sortSubCategory[i].subCategoryName + ",";
+            }
+            ssubCategoryNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "issueTypeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sissueTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sissueTypeNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sissueTypeNameFilterCheckbox.includes("all")) {
+          sissueTypeNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "issueTypeName") {
+            for (let i = 0; i < this.state.sortIssueType.length; i++) {
+              sissueTypeNameFilterCheckbox +=
+                this.state.sortIssueType[i].issueTypeName + ",";
+            }
+            sissueTypeNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
     this.setState({
-      sFilterCheckbox
+      scategoryNameFilterCheckboxN,
+      ssubCategoryNameFilterCheckboxN,
+      sissueTypeNameFilterCheckboxN,
+      scategoryNameFilterCheckbox,
+      ssubCategoryNameFilterCheckbox,
+      sissueTypeNameFilterCheckbox
     });
     var AllDataApprove = this.state.sortAllDataApprove;
     var sortAllData = this.state.sortAllData;
@@ -209,7 +599,7 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "issueTypeName") {
-        var sItems = sFilterCheckbox.split(",");
+        var sItems = sissueTypeNameFilterCheckboxN.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
@@ -230,7 +620,7 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "categoryName") {
-        var sItems = sFilterCheckbox.split(",");
+        var sItems = scategoryNameFilterCheckboxN.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
@@ -251,7 +641,7 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "subCategoryName") {
-        var sItems = sFilterCheckbox.split(",");
+        var sItems = ssubCategoryNameFilterCheckboxN.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
@@ -283,12 +673,7 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "issueTypeName") {
-        // this.state.KBListData = this.state.sortAllDataApprove;
-        // itemsArrayApprove = this.state.KBListData.filter(
-        //   a => a.issueTypeName === data
-        // );
-
-        var sItems = sFilterCheckbox.split(",");
+        var sItems = sissueTypeNameFilterCheckbox.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
@@ -309,12 +694,7 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "categoryName") {
-        // this.state.KBListData = this.state.sortAllDataApprove;
-        // itemsArrayApprove = this.state.KBListData.filter(
-        //   a => a.categoryName === data
-        // );
-
-        var sItems = sFilterCheckbox.split(",");
+        var sItems = scategoryNameFilterCheckbox.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
@@ -335,11 +715,7 @@ class KnowledgeBase extends Component {
           subCategoryColor: ""
         });
       } else if (column === "subCategoryName") {
-        // this.state.KBListData = this.state.sortAllDataApprove;
-        // itemsArrayApprove = this.state.KBListData.filter(
-        //   a => a.subCategoryName === data
-        // );
-        var sItems = sFilterCheckbox.split(",");
+        var sItems = ssubCategoryNameFilterCheckbox.split(",");
         if (sItems.length > 0) {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
@@ -1147,7 +1523,6 @@ class KnowledgeBase extends Component {
   render() {
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -1161,11 +1536,7 @@ class KnowledgeBase extends Component {
                   {this.state.sortHeader}
                 </label>
                 <div className="d-flex">
-                  <a
-                    href="#!"
-                    //onClick={this.sortStatusAtoZ.bind(this)}
-                    className="sorting-icon"
-                  >
+                  <a href="#!" className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY A TO Z</p>
@@ -1202,6 +1573,27 @@ class KnowledgeBase extends Component {
                     name="filter-type"
                     id={"fil-open"}
                     value="all"
+                    checked={
+                      this.state.sortTable !== "approve"
+                        ? this.state.scategoryNameFilterCheckboxN.includes(
+                            "all"
+                          ) ||
+                          this.state.ssubCategoryNameFilterCheckboxN.includes(
+                            "all"
+                          ) ||
+                          this.state.sissueTypeNameFilterCheckboxN.includes(
+                            "all"
+                          )
+                        : this.state.scategoryNameFilterCheckbox.includes(
+                            "all"
+                          ) ||
+                          this.state.ssubCategoryNameFilterCheckbox.includes(
+                            "all"
+                          ) ||
+                          this.state.sissueTypeNameFilterCheckbox.includes(
+                            "all"
+                          )
+                    }
                     onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
                   <label htmlFor={"fil-open"}>
@@ -1219,9 +1611,13 @@ class KnowledgeBase extends Component {
                           name="filter-type"
                           id={"fil-open" + item.issueTypeName}
                           value={item.issueTypeName}
+                          checked={this.state.sissueTypeNameFilterCheckboxN.includes(
+                            item.issueTypeName
+                          )}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "issueTypeName"
+                            "issueTypeName",
+                            "value"
                           )}
                         />
                         <label htmlFor={"fil-open" + item.issueTypeName}>
@@ -1243,9 +1639,13 @@ class KnowledgeBase extends Component {
                           name="filter-type"
                           id={"fil-open" + item.categoryName}
                           value={item.categoryName}
+                          checked={this.state.scategoryNameFilterCheckboxN.includes(
+                            item.categoryName
+                          )}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "categoryName"
+                            "categoryName",
+                            "value"
                           )}
                         />
                         <label htmlFor={"fil-open" + item.categoryName}>
@@ -1267,9 +1667,13 @@ class KnowledgeBase extends Component {
                           name="filter-type"
                           id={"fil-open" + item.subCategoryName}
                           value={item.subCategoryName}
+                          checked={this.state.ssubCategoryNameFilterCheckboxN.includes(
+                            item.subCategoryName
+                          )}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "subCategoryName"
+                            "subCategoryName",
+                            "value"
                           )}
                         />
                         <label htmlFor={"fil-open" + item.subCategoryName}>
@@ -1291,9 +1695,13 @@ class KnowledgeBase extends Component {
                           name="filter-type"
                           id={"fil-open" + item.issueTypeName}
                           value={item.issueTypeName}
+                          checked={this.state.sissueTypeNameFilterCheckbox.includes(
+                            item.issueTypeName
+                          )}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "issueTypeName"
+                            "issueTypeName",
+                            "value"
                           )}
                         />
                         <label htmlFor={"fil-open" + item.issueTypeName}>
@@ -1315,9 +1723,13 @@ class KnowledgeBase extends Component {
                           name="filter-type"
                           id={"fil-open" + item.categoryName}
                           value={item.categoryName}
+                          checked={this.state.scategoryNameFilterCheckbox.includes(
+                            item.categoryName
+                          )}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "categoryName"
+                            "categoryName",
+                            "value"
                           )}
                         />
                         <label htmlFor={"fil-open" + item.categoryName}>
@@ -1339,9 +1751,13 @@ class KnowledgeBase extends Component {
                           name="filter-type"
                           id={"fil-open" + item.subCategoryName}
                           value={item.subCategoryName}
+                          checked={this.state.ssubCategoryNameFilterCheckbox.includes(
+                            item.subCategoryName
+                          )}
                           onChange={this.setSortCheckStatus.bind(
                             this,
-                            "subCategoryName"
+                            "subCategoryName",
+                            "value"
                           )}
                         />
                         <label htmlFor={"fil-open" + item.subCategoryName}>
@@ -1466,7 +1882,7 @@ class KnowledgeBase extends Component {
                             <Card>
                               <CardBody>
                                 <span className="table-details-data-1">
-                                  {row.original.description}
+                                  {ReactHtmlParser(row.original.description)}
                                 </span>
                               </CardBody>
                             </Card>
@@ -1722,7 +2138,7 @@ class KnowledgeBase extends Component {
                             <Card>
                               <CardBody>
                                 <span className="table-details-data-1">
-                                  {row.original.description}
+                                  {ReactHtmlParser(row.original.description)}
                                 </span>
                               </CardBody>
                             </Card>

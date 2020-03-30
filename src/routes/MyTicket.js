@@ -46,9 +46,7 @@ import Order from "./../assets/Images/order.png";
 import axios from "axios";
 import { authHeader } from "../helpers/authHeader";
 import config from "./../helpers/config";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import TicketStatus from "./MyTicketStatus";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -840,7 +838,6 @@ class MyTicket extends Component {
           ////
           let status = res.data.message;
           if (status === "Success") {
-            
             if (self.state.isaddKnowledge) {
               self.handleAddKnwoldgeBase();
             } else {
@@ -2588,15 +2585,14 @@ class MyTicket extends Component {
     debugger;
     if (ischeck === true) {
       this.setState({ isaddKnowledge: true });
-      
+
       setTimeout(() => {
-        this.handleUpdateTicketDetails();  
+        this.handleUpdateTicketDetails();
       }, 10);
     } else {
-
       this.setState({ isaddKnowledge: false });
       setTimeout(() => {
-        this.handleUpdateTicketDetails();  
+        this.handleUpdateTicketDetails();
       }, 10);
     }
   }
@@ -2604,13 +2600,16 @@ class MyTicket extends Component {
   handleAddKnwoldgeBase() {
     debugger;
     let self = this;
+    var tempDescription = this.state.messageDetails[0][
+      "msgDetails"
+    ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
+    var Description = tempDescription.replace(/&nbsp;/gi, " ");
     var inputParam = {
       KBCODE: "",
       CategoryID: this.state.selectetedParameters.categoryID,
       SubCategoryID: this.state.selectetedParameters.subCategoryID,
       Subject: this.state.ticketDetailsData.ticketTitle,
-      Description: ReactHtmlParser(this.state.messageDetails[0]["msgDetails"][0]
-        .latestMessageDetails.ticketMailBody),
+      Description: Description,
       IsActive: 1,
       IssueTypeID: this.state.selectetedParameters.issueTypeID
     };
@@ -2623,18 +2622,13 @@ class MyTicket extends Component {
       .then(function(res) {
         debugger;
         var status = res.data.status;
-        if(status)
-        {
+        if (status) {
           NotificationManager.success("Ticket updated successfully.");
           NotificationManager.success("Ticket Added in knowledgebase.");
-          self.props.history.push("myTicketlist");  
-        }
-        else
-        {
+          self.props.history.push("myTicketlist");
+        } else {
           NotificationManager.success("Ticket Added in knowledgebase.");
         }
-      
-      
       })
       .catch(error => {
         console.log(error);
