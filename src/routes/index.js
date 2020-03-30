@@ -51,6 +51,8 @@ import QaUserMaster from "./QA/QaUserMaster";
 import QaAuditParameters from "./QA/QaAuditParameters";
 import HistoricalChat from "./Chat/HistoricalChat";
 import UserProfile from "./UserProfile";
+import BlockedEmail from "./Settings/Ticketing/BlockedEmail";
+import JunkWords from "./Settings/Ticketing/JunkWords";
 import {
   NotificationContainer
 } from "react-notifications";
@@ -167,6 +169,8 @@ export class App extends Component {
         <Route exact path={`${match.url}/qAAuditParameters`} component={QaAuditParameters} />
         <Route exact path={`${match.url}/historicalChat`} component={HistoricalChat} />
         <Route exact path={`${match.url}/userProfile`} component={UserProfile} />
+        <Route exact path={`${match.url}/blockedemail`} component={BlockedEmail} />
+        <Route exact path={`${match.url}/junkwords`} component={JunkWords} />
         
         <NotificationContainer />
       </Layout>
