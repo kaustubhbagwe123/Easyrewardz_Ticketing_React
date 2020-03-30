@@ -197,7 +197,15 @@ class MyTicket extends Component {
       userEmailID: "",
       statusValidate: false,
       KnowledgeBaseModal: false,
-      isaddKnowledge: false
+      isaddKnowledge: false,
+      ckCusrsorPosition: 0,
+      ckCusrsorData: "",
+      ckCusrsorPositionReply: 0,
+      ckCusrsorDataReply: "",
+      notiCountCmnt: 0,
+      notiCurPosiCmnt: 0,
+      notiCountFreeCmnt: 0,
+      notiCurPosiFreeCmnt: 0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -268,6 +276,32 @@ class MyTicket extends Component {
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
+    });
+  };
+  onCkBlur = evt => {
+    debugger;
+    var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
+      .wholeText;
+    if (!ckCusrsorData) {
+      ckCusrsorData = "";
+    }
+    this.setState({
+      ckCusrsorPosition: ckCusrsorPosition.startOffset,
+      ckCusrsorData
+    });
+  };
+  onCkBlurReply = evt => {
+    debugger;
+    var ckCusrsorPositionReply = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0].endContainer.$
+      .wholeText;
+    if (!ckCusrsorDataReply) {
+      ckCusrsorDataReply = "";
+    }
+    this.setState({
+      ckCusrsorPositionReply: ckCusrsorPositionReply.startOffset,
+      ckCusrsorDataReply
     });
   };
   onreplyCKEditorChange = evt => {
@@ -489,6 +523,19 @@ class MyTicket extends Component {
       });
   }
 
+  setNotiCurPosiCmnt = e => {
+    debugger;
+    this.setState({
+      notiCurPosiCmnt: e.target.selectionStart
+    });
+  }
+  setNotiCurPosiFreeCmnt = e => {
+    debugger;
+    this.setState({
+      notiCurPosiFreeCmnt: e.target.selectionStart
+    });
+  }
+
   handleUpdateTicketStatus(ticStaId) {
     ////
     // let self = this;
@@ -671,47 +718,93 @@ class MyTicket extends Component {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let text = this.state.ticketFreeTextcomment;
+      let textBefore = this.state.ticketFreeTextcomment.substring(0, this.state.notiCurPosiFreeCmnt);
+      let textAfter = this.state.ticketFreeTextcomment.substring(this.state.notiCurPosiFreeCmnt, this.state.notiCountFreeCmnt);
+      // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      text += "@" + userName;
-      this.setState({ ticketFreeTextcomment: text, followUpIds });
+      // text += "@" + userName;
+      let text = textBefore + ' @' + userName + textAfter;
+      let notiCurPosiFreeCmnt = textBefore.length + userName.length + 2;
+      let notiCountFreeCmnt = textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({ ticketFreeTextcomment: text, followUpIds, notiCurPosiFreeCmnt, notiCountFreeCmnt });
     } else if (check === "comment") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let text = this.state.ticketcommentMSG;
+      let textBefore = this.state.ticketcommentMSG.substring(0, this.state.notiCurPosiCmnt);
+      let textAfter = this.state.ticketcommentMSG.substring(this.state.notiCurPosiCmnt, this.state.notiCountCmnt);
+      // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      text += "@" + userName;
-      this.setState({ ticketcommentMSG: text, followUpIds });
+      // text += "@" + userName;
+      let text = textBefore + ' @' + userName + textAfter;
+      let notiCurPosiCmnt = textBefore.length + userName.length + 2;
+      let notiCountCmnt = textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({ ticketcommentMSG: text, followUpIds, notiCurPosiCmnt, notiCountCmnt });
     } else if (check === "rply") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.replymailBodyData;
       let ckDataArr = text.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataReply.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionReply);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPositionReply,
+      ckDataArrLast.length
+    );
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      ck += "@" + userName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      // ck += "@" + userName;
+      ckDataArrLast = textBefore + " @" + userName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPositionReply + userName.length + 2;
+    this.setState({
+      ckCusrsorPositionReply: newCkCusrsorPosition,
+      ckCusrsorDataReply: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         text = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ replymailBodyData: text, followUpIds });
       } else {
-        this.setState({ replymailBodyData: ck, followUpIds });
+        this.setState({ replymailBodyData: ckDataArrLast, followUpIds });
       }
     } else {
       let followUpIds = this.state.followUpIds;
@@ -719,46 +812,118 @@ class MyTicket extends Component {
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      ck += "@" + userName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      // ck += "@" + userName;
+      ckDataArrLast = textBefore + " @" + userName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + userName.length + 2;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ mailBodyData: ckData, followUpIds });
       } else {
-        this.setState({ mailBodyData: ck, followUpIds });
+        this.setState({ mailBodyData: ckDataArrLast, followUpIds });
       }
     }
   }
   setPlaceholderValue(e) {
     let ckData = this.state.mailBodyData;
     let ckDataArr = ckData.split("\n\n");
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ck += placeholderName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
+    // ck += placeholderName;
+    ckDataArrLast = textBefore + " " + placeholderName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== null) {
+    if (ckTags) {
       this.setState({ mailBodyData: ckData });
     } else {
-      this.setState({ mailBodyData: ck });
+      this.setState({ mailBodyData: ckDataArrLast });
     }
   }
   handleGetStoreDetails() {
@@ -917,6 +1082,18 @@ class MyTicket extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    if (e.target.name == "ticketcommentMSG") {
+      this.setState({
+        notiCountCmnt: e.target.value.length,
+        notiCurPosiCmnt: e.target.value.length
+      });
+    }
+    if (e.target.name == "ticketFreeTextcomment") {
+      this.setState({
+        notiCountFreeCmnt: e.target.value.length,
+        notiCurPosiFreeCmnt: e.target.value.length
+      });
+    }
   };
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
@@ -5250,6 +5427,7 @@ class MyTicket extends Component {
                           <CKEditor
                             data={this.state.mailBodyData}
                             onChange={this.onAddCKEditorChange}
+                            onBlur={this.onCkBlur}
                             config={{
                               toolbar: [
                                 {
@@ -6145,6 +6323,7 @@ class MyTicket extends Component {
                             maxLength={300}
                             value={this.state.ticketcommentMSG}
                             onChange={this.handleNoteOnChange}
+                            onClick={this.setNotiCurPosiCmnt}
                           ></textarea>
                         </div>
                         {this.state.ticketcommentMSG.length === 0 && (
@@ -6340,6 +6519,7 @@ class MyTicket extends Component {
                           id="ckeditor1"
                           data={this.state.replymailBodyData}
                           onChange={this.onreplyCKEditorChange}
+                          onBlur={this.onCkBlurReply}
                           config={{
                             toolbar: [
                               {
@@ -6554,6 +6734,7 @@ class MyTicket extends Component {
                             maxLength={300}
                             value={this.state.ticketFreeTextcomment}
                             onChange={this.handleNoteOnChange}
+                            onClick={this.setNotiCurPosiFreeCmnt}
                           ></textarea>
                         </div>
                         {this.state.ticketFreeTextcomment.length === 0 && (
