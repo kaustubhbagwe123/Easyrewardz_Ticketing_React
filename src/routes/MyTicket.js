@@ -364,6 +364,7 @@ class MyTicket extends Component {
   }
 
   handleGetTicketDetails(ID) {
+    debugger
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -375,6 +376,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -519,7 +521,6 @@ class MyTicket extends Component {
 
   ////Handle Get all messages
   handleGetMessageDetails(ticketId) {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -2658,21 +2659,21 @@ class MyTicket extends Component {
       }
     }
 
-    const HidecollapsUp = this.state.collapseUp ? (
-      <img
-        src={Up1Img}
-        alt="up"
-        className="up-1"
-        onClick={this.handleUpClose.bind(this)}
-      />
-    ) : (
-      <img
-        src={Down1Img}
-        alt="up"
-        className="up-1"
-        onClick={this.handleUpOpen.bind(this)}
-      />
-    );
+    // const HidecollapsUp = this.state.collapseUp ? (
+    //   <img
+    //     src={Up1Img}
+    //     alt="up"
+    //     className="up-1"
+    //     onClick={this.handleUpClose.bind(this)}
+    //   />
+    // ) : (
+    //   <img
+    //     src={Down1Img}
+    //     alt="up"
+    //     className="up-1"
+    //     onClick={this.handleUpOpen.bind(this)}
+    //   />
+    // );
 
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
       <div
