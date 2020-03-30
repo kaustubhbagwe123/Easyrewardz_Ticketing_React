@@ -862,7 +862,7 @@ class TicketCRMRole extends Component {
       this.setState({ showProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/CRMRole/BulkUploadUser",
+        url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
         headers: authHeader(),
         data: formData,
         onUploadProgress: (ev = ProgressEvent) => {

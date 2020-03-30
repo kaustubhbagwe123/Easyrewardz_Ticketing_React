@@ -105,13 +105,13 @@ class Header extends Component {
   componentDidMount() {
     this.subscription = transferData.getProfilePic().subscribe(pic => {
       if (pic.profilePic) {
-        if (pic.profilePic == '') {
+        if (pic.profilePic === '') {
           this.setState({ selectedUserProfilePicture: '' });
         }
         else if (pic.profilePic.length > 0) {
             this.setState({ selectedUserProfilePicture: pic.profilePic });
         }
-      } else if (pic.profilePic == '') {
+      } else if (pic.profilePic === '') {
         this.setState({ selectedUserProfilePicture: '' });
       }
   });
@@ -302,7 +302,7 @@ class Header extends Component {
       logoBlue: DashboardLogoBlue,
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
-      activeClass: page == "dashboard" ? "active single-menu" : "single-menu"
+      activeClass: page === "dashboard" ? "active single-menu" : "single-menu"
     };
     var myticket = {
       data: "My Tickets",
@@ -311,7 +311,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page == "myTicketlist" ? "active single-menu" : "single-menu"
+      activeClass: page === "myTicketlist" ? "active single-menu" : "single-menu"
     };
     var knowledgebase = {
       data: "Knowledge Base",
@@ -321,7 +321,7 @@ class Header extends Component {
       imgAlt: "knowledge icon",
       imgClass: "knowledgeNav",
       activeClass:
-        page == "knowledgebase" ? "active single-menu" : "single-menu"
+        page === "knowledgebase" ? "active single-menu" : "single-menu"
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
