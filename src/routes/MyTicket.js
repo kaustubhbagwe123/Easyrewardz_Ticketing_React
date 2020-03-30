@@ -840,10 +840,11 @@ class MyTicket extends Component {
           ////
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Ticket updated successfully.");
+            
             if (self.state.isaddKnowledge) {
               self.handleAddKnwoldgeBase();
             } else {
+              NotificationManager.success("Ticket updated successfully.");
               self.props.history.push("myTicketlist");
             }
           } else {
@@ -2621,7 +2622,19 @@ class MyTicket extends Component {
     })
       .then(function(res) {
         debugger;
-        self.props.history.push("myTicketlist");
+        var status = res.data.status;
+        if(status)
+        {
+          NotificationManager.success("Ticket updated successfully.");
+          NotificationManager.success("Ticket Added in knowledgebase.");
+          self.props.history.push("myTicketlist");  
+        }
+        else
+        {
+          NotificationManager.success("Ticket Added in knowledgebase.");
+        }
+      
+      
       })
       .catch(error => {
         console.log(error);

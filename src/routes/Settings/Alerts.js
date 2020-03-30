@@ -281,13 +281,13 @@ class Alerts extends Component {
 
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
-      this.state.sortFilterRoleName.length === 0 ||
-      this.state.sortFilterCreated.length === 0 ||
+      this.state.sortFilterAlertType.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
       this.state.sortFilterStatus.length === 0
     ) {
       return false;
     }
-    if (data === "roleName") {
+    if (data === "alertTypeName") {
       if (
         this.state.screatedByFilterCheckbox !== "" ||
         this.state.sisAlertActiveFilterCheckbox !== ""
@@ -353,7 +353,7 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.tempalert,
-        sFilterCheckbox: "",
+        
         filterTxtValue: ""
       });
       if (this.state.sortColumn === "alertTypeName") {
@@ -387,7 +387,7 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.sortAllData,
-        sFilterCheckbox: "",
+        
         filterTxtValue: ""
       });
     }
