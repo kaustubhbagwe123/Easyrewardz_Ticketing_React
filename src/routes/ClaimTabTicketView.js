@@ -8,7 +8,6 @@ import DownWhiteImg from "./../assets/Images/down-white.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
-// import Down1Img from "./../assets/Images/down-1.png";
 import ArrowImg from "./../assets/Images/arrow.png";
 import PlusImg from "./../assets/Images/plus.png";
 import CancelImg from "./../assets/Images/cancel.png";

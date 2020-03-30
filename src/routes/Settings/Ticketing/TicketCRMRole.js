@@ -87,7 +87,10 @@ class TicketCRMRole extends Component {
       fileSize: "",
       showProgress: false,
       bulkuploadCompulsion: "",
-      fileN: []
+      fileN: [],
+      sroleNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisRoleActiveFilterCheckbox: ""
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -134,31 +137,218 @@ class TicketCRMRole extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterRoleName.length === 0 ||
+      this.state.sortFilterCreated.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "roleName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sisRoleActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sisRoleActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sroleNameFilterCheckbox !== "" ||
+        this.state.sisRoleActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sroleNameFilterCheckbox: "",
+          sisRoleActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "isRoleActive") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sroleNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sroleNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel = e => {
-    this.setState({ StatusModel: false });
+    if (this.state.tempcrmRoles.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        crmRoles: this.state.tempcrmRoles
+      });
+      if (this.state.sortColumn === "roleName") {
+        if (this.state.sroleNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sisRoleActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sroleNameFilterCheckbox: "",
+            sisRoleActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "isRoleActive") {
+        if (this.state.sisRoleActiveFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sroleNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        crmRoles: this.state.sortAllData
+      });
+    }
   };
 
   setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
-          ""
-        );
+    var sroleNameFilterCheckbox = this.state.sroleNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sisRoleActiveFilterCheckbox = this.state.sisRoleActiveFilterCheckbox;
+
+    if (column === "roleName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all", "");
+        sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all,", "");
+        if (sroleNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sroleNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sroleNameFilterCheckbox.includes("all")) {
+          sroleNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "roleName") {
+            for (let i = 0; i < this.state.sortRoleName.length; i++) {
+              sroleNameFilterCheckbox +=
+                this.state.sortRoleName[i].roleName + ",";
+            }
+            sroleNameFilterCheckbox += "all";
+          }
+        }
       }
     }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreated.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreated[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "isRoleActive" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sisRoleActiveFilterCheckbox.includes(e.currentTarget.value)) {
+          sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sisRoleActiveFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sisRoleActiveFilterCheckbox.includes("all")) {
+          sisRoleActiveFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "isRoleActive") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sisRoleActiveFilterCheckbox +=
+                this.state.sortStatus[i].isRoleActive + ",";
+            }
+            sisRoleActiveFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      sroleNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      sisRoleActiveFilterCheckbox,
       roleColor: "",
       createdColor: "",
       statusColor: ""
@@ -166,7 +356,7 @@ class TicketCRMRole extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "roleName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sroleNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -183,7 +373,7 @@ class TicketCRMRole extends Component {
         roleColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -200,7 +390,7 @@ class TicketCRMRole extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "isRoleActive") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sisRoleActiveFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -672,7 +862,7 @@ class TicketCRMRole extends Component {
       this.setState({ showProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/CRMRole/BulkUploadUser",
+        url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
         headers: authHeader(),
         data: formData,
         onUploadProgress: (ev = ProgressEvent) => {
@@ -979,6 +1169,11 @@ class TicketCRMRole extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sroleNameFilterCheckbox.includes("all") ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sisRoleActiveFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -994,6 +1189,9 @@ class TicketCRMRole extends Component {
                             name={item.roleName}
                             id={"fil-open" + item.roleName}
                             value={item.roleName}
+                            checked={this.state.sroleNameFilterCheckbox.includes(
+                              item.roleName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "roleName",
@@ -1018,6 +1216,9 @@ class TicketCRMRole extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1042,6 +1243,9 @@ class TicketCRMRole extends Component {
                             name={item.isRoleActive}
                             id={"fil-open" + item.isRoleActive}
                             value={item.isRoleActive}
+                            checked={this.state.sisRoleActiveFilterCheckbox.includes(
+                              item.isRoleActive
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isRoleActive"

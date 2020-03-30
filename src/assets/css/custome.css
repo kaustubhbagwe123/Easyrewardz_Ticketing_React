@@ -788,7 +788,9 @@ table tr th:last-child {
 .smg-Img1 {
   width: 22px;
   height: 16px;
-  margin: 0 0 0 88px;
+  /* margin: 0 0 0 88px; */
+  margin-left: auto;
+  margin-right: 20px !important;
 }
 .up {
   width: 18px;
@@ -10629,6 +10631,30 @@ table tr th:last-child {
   background: #a5a3a3;
 }
 
+#BlockEmailModel {
+  position: relative;
+  padding: 0;
+  background: #ffffff;
+  background-clip: padding-box;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+  width: 670px;
+  border-radius: 10px;
+  }
+  
+  .btn-block {
+  float: right;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  }
+  
+  .block-cancelImg {
+  height: 20px;
+  float: right;
+  margin-top: -11px;
+  margin-right: -13px;
+  }
+
 /* Responsive starts */
 @media only screen and (max-width: 1300px) {
   
@@ -11512,4 +11538,9 @@ table tr th:last-child {
   float: right;
   margin-top: -11px;
   margin-right: -13px;
+}
+
+.myticket-knowpopup {
+  margin-right: auto !important;
+  min-width: 30%;
 }

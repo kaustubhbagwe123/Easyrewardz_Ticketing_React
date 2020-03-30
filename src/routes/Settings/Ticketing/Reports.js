@@ -238,7 +238,11 @@ class Reports extends Component {
       sortFilterName: [],
       sortFilterSchedule: [],
       sortFilterCreatedBy: [],
-      sortFilterStatus: []
+      sortFilterStatus: [],
+      sreportNameFilterCheckbox: "",
+      sscheduleStatusFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sreportStatusFilterCheckbox: ""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -304,7 +308,106 @@ class Reports extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterName.length === 0 ||
+      this.state.sortFilterSchedule.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "reportName") {
+      if (
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sscheduleStatusFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "scheduleStatus") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          sscheduleStatusFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "reportStatus") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          sscheduleStatusFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+
   }
   StatusCloseModel = e => {
     if (this.state.tempReportData.length > 0) {
@@ -314,6 +417,46 @@ class Reports extends Component {
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "reportName") {
+        if (this.state.sreportNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sscheduleStatusFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sreportStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "scheduleStatus") {
+        if (this.state.sscheduleStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sreportStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            sscheduleStatusFilterCheckbox: "",
+            sreportStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "reportStatus") {
+        if (this.state.sreportStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            sscheduleStatusFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -328,22 +471,132 @@ class Reports extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+
+    var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
+    var sscheduleStatusFilterCheckbox = this.state.sscheduleStatusFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sreportStatusFilterCheckbox = this.state.sreportStatusFilterCheckbox;
+
+    if (column === "reportName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace("all", "");
+        sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace("all,", "");
+        if (sreportNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sreportNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportNameFilterCheckbox.includes("all")) {
+          sreportNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportName") {
+            for (let i = 0; i < this.state.sortName.length; i++) {
+              sreportNameFilterCheckbox +=
+                this.state.sortName[i].reportName + ",";
+            }
+            sreportNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "scheduleStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace("all", "");
+        sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace("all,", "");
+        if (sscheduleStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sscheduleStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sscheduleStatusFilterCheckbox.includes("all")) {
+          sscheduleStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "scheduleStatus") {
+            for (let i = 0; i < this.state.sortSchedule.length; i++) {
+              sscheduleStatusFilterCheckbox +=
+                this.state.sortSchedule[i].scheduleStatus + ",";
+            }
+            sscheduleStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+          "all",
           ""
         );
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "reportStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace("all", "");
+        sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace("all,", "");
+        if (sreportStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sreportStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportStatusFilterCheckbox.includes("all")) {
+          sreportStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportStatus") {
+            for (let i = 0; i < this.state.sortState.length; i++) {
+              sreportStatusFilterCheckbox += this.state.sortState[i].reportStatus + ",";
+            }
+            sreportStatusFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+    
+
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      sreportNameFilterCheckbox,
+      sscheduleStatusFilterCheckbox,
+      screatedByFilterCheckbox,
+      sreportStatusFilterCheckbox,
       nameColor: "",
       scheduleColor: "",
       createdColor: "",
@@ -352,7 +605,7 @@ class Reports extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "reportName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sreportNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -371,7 +624,7 @@ class Reports extends Component {
         nameColor: "sort-column"
       });
     } else if (column === "scheduleStatus") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sscheduleStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -390,7 +643,7 @@ class Reports extends Component {
         scheduleColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -407,7 +660,7 @@ class Reports extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "reportStatus") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sreportStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2538,6 +2791,14 @@ class Reports extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sreportNameFilterCheckbox.includes("all") ||
+                        this.state.sscheduleStatusFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sreportStatusFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -2553,6 +2814,9 @@ class Reports extends Component {
                             name={item.reportName}
                             id={"fil-open" + item.reportName}
                             value={item.reportName}
+                            checked={this.state.sreportNameFilterCheckbox.includes(
+                              item.reportName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reportName",
@@ -2577,6 +2841,9 @@ class Reports extends Component {
                             name={item.scheduleStatus}
                             id={"fil-open" + item.scheduleStatus}
                             value={item.scheduleStatus}
+                            checked={this.state.sscheduleStatusFilterCheckbox.includes(
+                              item.scheduleStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "scheduleStatus",
@@ -2601,6 +2868,9 @@ class Reports extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -2625,6 +2895,9 @@ class Reports extends Component {
                             name={item.reportStatus}
                             id={"fil-open" + item.reportStatus}
                             value={item.reportStatus}
+                            checked={this.state.sreportStatusFilterCheckbox.includes(
+                              item.reportStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reportStatus",

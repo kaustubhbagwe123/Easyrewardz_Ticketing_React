@@ -85,7 +85,12 @@ class Templates extends Component {
       sortFilterIssueType: [],
       sortFilterName: [],
       sortFilterCreatedBy: [],
-      sortFilterStatus: []
+      sortFilterStatus: [],
+      stemplateNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      stemplateStatusFilterCheckbox: "",
+      ckCusrsorPosition: 0,
+      ckCusrsorData: ""
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -114,6 +119,19 @@ class Templates extends Component {
     this.state.updatedStatus = templateStatus;
     this.state.rowData = rowData;
   };
+
+  onCkBlur = evt => {
+    debugger;
+    var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorData) {
+      ckCusrsorData = "";
+    }
+    this.setState({
+      ckCusrsorPosition: ckCusrsorPosition.startOffset,
+      ckCusrsorData
+    });
+  }
 
   handlePlaceholderList() {
     let self = this;
@@ -147,24 +165,53 @@ class Templates extends Component {
   setPlaceholderValue(e) {
     debugger;
     let ckData = this.state.editorContent;
-    let ckDataArr = ckData.split('\n\n');
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArr = ckData.split("\n\n");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPosition, ckDataArrLast.length);
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ck += placeholderName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
-      ckData = ckDataArr.join(' ');
+    // ck += placeholderName;
+    ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPosition + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
+      ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== null) {
+    if (ckTags) {
       this.setState({ editorContent: ckData });
     } else {
-      this.setState({ editorContent: ck });
+      this.setState({ editorContent: ckDataArrLast });
     }
   }
 
@@ -210,10 +257,16 @@ class Templates extends Component {
             editSaveLoading: false,
             ConfigTabsModal: false,
             editorContent: "",
-            TemplateSubject: ""
+            TemplateSubject: "",
+            isEdit: false,
+            templateEdit: {}
           });
         } else {
-          self.setState({ editSaveLoading: false, ConfigTabsModal: false });
+          self.setState({
+            editSaveLoading: false,
+            ConfigTabsModal: false,
+            isEdit: false
+          });
           NotificationManager.error("Template not update.");
         }
       })
@@ -222,7 +275,9 @@ class Templates extends Component {
           editSaveLoading: false,
           ConfigTabsModal: false,
           TemplateSubject: "",
-          editorContent: ""
+          editorContent: "",
+
+          templateEdit: {}
         });
         console.log(data);
       });
@@ -283,7 +338,74 @@ class Templates extends Component {
   }
 
   StatusOpenModel(data, header) {
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterName.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "templateName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.stemplateStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          stemplateStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.stemplateNameFilterCheckbox !== "" ||
+        this.state.stemplateStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          stemplateNameFilterCheckbox: "",
+          stemplateStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "templateStatus") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.stemplateNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          stemplateNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     if (this.state.temptemplate.length > 0) {
@@ -293,6 +415,33 @@ class Templates extends Component {
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "issueTypeName") {
+        if (this.state.stemplateNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            stemplateStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            stemplateNameFilterCheckbox: "",
+            stemplateStatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "templateStatus") {
+        if (this.state.stemplateStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            stemplateNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -317,22 +466,110 @@ class Templates extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var stemplateNameFilterCheckbox = this.state.stemplateNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var stemplateStatusFilterCheckbox = this.state
+      .stemplateStatusFilterCheckbox;
+
+    if (column === "templateName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        stemplateNameFilterCheckbox = stemplateNameFilterCheckbox.replace(
+          "all",
           ""
         );
+        stemplateNameFilterCheckbox = stemplateNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (stemplateNameFilterCheckbox.includes(e.currentTarget.value)) {
+          stemplateNameFilterCheckbox = stemplateNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          stemplateNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (stemplateNameFilterCheckbox.includes("all")) {
+          stemplateNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "templateName") {
+            for (let i = 0; i < this.state.sortName.length; i++) {
+              stemplateNameFilterCheckbox +=
+                this.state.sortName[i].templateName + ",";
+            }
+            stemplateNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "templateStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        stemplateStatusFilterCheckbox = stemplateStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        stemplateStatusFilterCheckbox = stemplateStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (stemplateStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          stemplateStatusFilterCheckbox = stemplateStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          stemplateStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (stemplateStatusFilterCheckbox.includes("all")) {
+          stemplateStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "templateStatus") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              stemplateStatusFilterCheckbox +=
+                this.state.sortStatus[i].templateStatus + ",";
+            }
+            stemplateStatusFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      stemplateNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      stemplateStatusFilterCheckbox,
+
       issueColor: "",
       nameColor: "",
       createdColor: "",
@@ -340,27 +577,8 @@ class Templates extends Component {
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
-    } else if (column === "issueTypeName") {
-      var sItems = sFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              a => a.issueTypeName === sItems[i]
-            );
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        issueColor: "sort-column"
-      });
     } else if (column === "templateName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = stemplateNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -379,7 +597,7 @@ class Templates extends Component {
         nameColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -396,7 +614,7 @@ class Templates extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "templateStatus") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = stemplateStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -762,14 +980,14 @@ class Templates extends Component {
     // ) {
     // if (this.state.editorContent.length > 0) {
     let self = this;
-    this.setState({ ConfigTabsModal: false });
+
     var TemplateIsActive;
     if (this.state.TemplateIsActive === "true") {
       TemplateIsActive = true;
     } else if (this.state.TemplateIsActive === "false") {
       TemplateIsActive = false;
     }
-
+    this.setState({ editSaveLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Template/CreateTemplate",
@@ -795,31 +1013,29 @@ class Templates extends Component {
             indiSla: "",
             SearchText: "",
             templatenamecopulsion: "",
-            issurtupeCompulsory: ""
-            // selectedSlaIssueType: [],
-            // templatesubjectCompulsion: "",
-            // templatebodyCompulsion: ""
+            issurtupeCompulsory: "",
+            ConfigTabsModal: false,
+            editSaveLoading: false
           });
           self.selectNoSLA();
         } else {
           NotificationManager.error("Template Not Added.");
+          this.setState({
+            TemplateSubject: "",
+            editorContent: "",
+            TemplateName: "",
+            indiSla: "",
+            SearchText: "",
+            templatenamecopulsion: "",
+            issurtupeCompulsory: "",
+            ConfigTabsModal: false,
+            editSaveLoading: false
+          });
         }
       })
       .catch(data => {
         console.log(data);
       });
-    // } else {
-    //   NotificationManager.error("Please Enter Descriptions.");
-    //   // this.setState({
-    //   //   // templatesubjectCompulsion: "Please Enter Subject",
-    //   //   // templatebodyCompulsion: "Please Enter Descriptions"
-    //   // });
-    // }
-    // } else {
-    //   NotificationManager.error(
-    //     "Only 500 characters Allow In Descriptions."
-    //   );
-    // }
   }
 
   handleGetTemplate() {
@@ -844,6 +1060,7 @@ class Templates extends Component {
               unique[template[i].issueTypeName] = 1;
             }
           }
+          debugger;
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
             self.state.sortFilterIssueType.push({ issueTypeName: distinct[i] });
@@ -924,7 +1141,7 @@ class Templates extends Component {
   }
 
   toggleEditModal() {
-    this.setState({ editmodel: false });
+    this.setState({ editmodel: false, isEdit: false });
   }
   CustomNoDataComponent = () => {
     if (this.state.isLoading) {
@@ -1055,6 +1272,13 @@ class Templates extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.stemplateNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.screatedByFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1094,6 +1318,10 @@ class Templates extends Component {
                             name="filter-type"
                             id={"fil-open" + item.templateName}
                             value={item.templateName}
+                            checked={this.state.stemplateNameFilterCheckbox.includes(
+                              item.templateName
+                            )}
+           
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "templateName",
@@ -1118,6 +1346,9 @@ class Templates extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1142,6 +1373,9 @@ class Templates extends Component {
                             name="filter-type"
                             id={"fil-open" + item.templateStatus}
                             value={item.templateStatus}
+                            checked={this.state.stemplateStatusFilterCheckbox.includes(
+                              item.templateStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "templateStatus",
@@ -1204,11 +1438,11 @@ class Templates extends Component {
                         Header: (
                           <span
                             className={this.state.issueColor}
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "issueTypeName",
-                              "IssueType"
-                            )}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "issueTypeName",
+                            //   "IssueType"
+                            // )}
                           >
                             Issue Type
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1691,7 +1925,7 @@ class Templates extends Component {
                             <CKEditor
                               content={this.state.editorContent}
                               events={{
-                                // "blur": this.onBlur,
+                                "blur": this.onCkBlur,
                                 // "afterPaste": this.afterPaste,
                                 change: this.onEditorChange,
                                 items: this.fileUpload

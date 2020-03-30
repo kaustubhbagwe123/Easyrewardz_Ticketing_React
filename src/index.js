@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-// import App from './App';
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import 'react-app-polyfill/ie9';
@@ -25,7 +24,6 @@ import "react-datepicker/dist/react-datepicker.css";
  
 /////js
 import "./../node_modules/bootstrap/dist/js/bootstrap.min.js";
-// import "./assets/js/bootstrap.min.js";
 
 ///Component
 import SignIn from "./Component/SignIn";
@@ -39,7 +37,6 @@ import ArtBoardApp from './routes/ArtBoard/index';
 import TenantApp from "./routes/Tenant Controller";
 import ChangePassword from "./Component/ChangePassword";
 import UserForgotPassword from './Component/UserForgotPassword';
-// import MyTicket from './routes/MyTicket';
 
 ReactDOM.render(
   <Router>

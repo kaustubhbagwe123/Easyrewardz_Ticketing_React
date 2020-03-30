@@ -28,12 +28,12 @@ import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
-import { formatSizeUnits } from "./../../helpers/CommanFuncation";
+// import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
   constructor(props) {
@@ -116,7 +116,6 @@ class Alerts extends Component {
       cAlertTypeId: 0,
       sAlertTypeId: 0,
       iAlertTypeId: 0,
-      sAlertTypeId: 0,
       nAlertTypeId: 0,
       placeholderShown: false,
       tempalert: [],
@@ -130,7 +129,18 @@ class Alerts extends Component {
       fileSize: "",
       showProgress: false,
       bulkuploadCompulsion: "",
-      fileN: []
+      fileN: [],
+      salertTypeNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisAlertActiveFilterCheckbox: "",
+      ckCusrsorPositionCustomer: 0,
+      ckCusrsorDataCustomer: "",
+      ckCusrsorPositionInternal: 0,
+      ckCusrsorDataInternal: "",
+      ckCusrsorPositionStore: 0,
+      ckCusrsorDataStore: "",
+      notiCount: 0,
+      notiCurPosi: 0
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -191,58 +201,153 @@ class Alerts extends Component {
     if (type == "Customer") {
       let ckData = this.state.selectedCKCustomer;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      ck += placeholderName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataCustomer.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionCustomer);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPositionCustomer, ckDataArrLast.length);
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      // ck += placeholderName;
+      ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPositionCustomer + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPositionCustomer: newCkCusrsorPosition,
+      ckCusrsorDataCustomer: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ selectedCKCustomer: ckData });
       } else {
-        this.setState({ selectedCKCustomer: ck });
+        this.setState({ selectedCKCustomer: ckDataArrLast });
       }
     } else if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      ck += placeholderName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataInternal.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionInternal);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPositionInternal, ckDataArrLast.length);
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      // ck += placeholderName;
+      ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPositionInternal + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPositionInternal: newCkCusrsorPosition,
+      ckCusrsorDataInternal: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ selectedCKInternal: ckData });
       } else {
-        this.setState({ selectedCKInternal: ck });
+        this.setState({ selectedCKInternal: ckDataArrLast });
       }
     } else if (type == "Store") {
       let ckData = this.state.selectedCKStore;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      ck += placeholderName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataStore.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionStore);
+    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPositionStore, ckDataArrLast.length);
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      // ck += placeholderName;
+      ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
+    let newCkCusrsorPosition = this.state.ckCusrsorPositionStore + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPositionStore: newCkCusrsorPosition,
+      ckCusrsorDataStore: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ selectedCKStore: ckData });
       } else {
-        this.setState({ selectedCKStore: ck });
+        this.setState({ selectedCKStore: ckDataArrLast });
       }
     } else if (type == "Notification") {
-      let ckData = this.state.selectedNotifContent;
-      ckData += placeholderName;
-      this.setState({ selectedNotifContent: ckData });
+      // let startPoint = document.getElementById("notifiPlaceholder").selectionStart;
+      // let textLength = document.getElementById("notifiPlaceholder").value.length;
+      let textBefore = this.state.selectedNotifContent.substring(0, this.state.notiCurPosi);
+      let textAfter = this.state.selectedNotifContent.substring(this.state.notiCurPosi, this.state.notiCount);
+      // let ckData = this.state.selectedNotifContent;
+      // ckData += placeholderName;
+      let ckData = textBefore + ' ' + placeholderName + textAfter;
+      let notiCurPosi = textBefore.length + placeholderName.length + 1;
+      let notiCount = textBefore.length + placeholderName.length + 1 + textAfter.length;
+      // document.getElementById("notifiPlaceholder").setSelectionRange(abc,abc);
+      this.setState({ selectedNotifContent: ckData, notiCurPosi, notiCount });
     }
   }
 
@@ -276,21 +381,151 @@ class Alerts extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterAlertType.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "alertTypeName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sisAlertActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sisAlertActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.salertTypeNameFilterCheckbox !== "" ||
+        this.state.sisAlertActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          salertTypeNameFilterCheckbox: "",
+          sisAlertActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "isAlertActive") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.salertTypeNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          salertTypeNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+  }
+  onCkBlurCustomer = evt => {
+    debugger;
+    var ckCusrsorPositionCustomer = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataCustomer = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorDataCustomer) {
+      ckCusrsorDataCustomer = "";
+    }
+    this.setState({
+      ckCusrsorPositionCustomer: ckCusrsorPositionCustomer.startOffset,
+      ckCusrsorDataCustomer
+    });
+  }
+  onCkBlurInternal = evt => {
+    debugger;
+    var ckCusrsorPositionInternal = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataInternal = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorDataInternal) {
+      ckCusrsorDataInternal = "";
+    }
+    this.setState({
+      ckCusrsorPositionInternal: ckCusrsorPositionInternal.startOffset,
+      ckCusrsorDataInternal
+    });
+  }
+  onCkBlurStore = evt => {
+    debugger;
+    var ckCusrsorPositionStore = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataStore = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    if (!ckCusrsorDataStore) {
+      ckCusrsorDataStore = "";
+    }
+    this.setState({
+      ckCusrsorPositionStore: ckCusrsorPositionStore.startOffset,
+      ckCusrsorDataStore
+    });
   }
   StatusCloseModel = e => {
     if (this.state.tempalert.length > 0) {
       this.setState({
         StatusModel: false,
         alert: this.state.tempalert,
-        sFilterCheckbox: "",
+        
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "alertTypeName") {
+        if (this.state.salertTypeNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sisAlertActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            salertTypeNameFilterCheckbox: "",
+            sisAlertActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "isAlertActive") {
+        if (this.state.sisAlertActiveFilterCheckbox === "") {
+        } else {
+          this.setState({
+            salertTypeNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
         alert: this.state.sortAllData,
-        sFilterCheckbox: "",
+        
         filterTxtValue: ""
       });
     }
@@ -300,22 +535,105 @@ class Alerts extends Component {
     debugger;
 
     var itemsArray = [];
-    var sFilterCheckbox = this.state.sFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    var salertTypeNameFilterCheckbox = this.state.salertTypeNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sisAlertActiveFilterCheckbox = this.state.sisAlertActiveFilterCheckbox;
+
+
+    if (column === "alertTypeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace("all", "");
+        salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace("all,", "");
+        if (salertTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
+          salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          salertTypeNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (salertTypeNameFilterCheckbox.includes("all")) {
+          salertTypeNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "alertTypeName") {
+            for (let i = 0; i < this.state.sortAlertType.length; i++) {
+              salertTypeNameFilterCheckbox +=
+                this.state.sortAlertType[i].alertTypeName + ",";
+            }
+            salertTypeNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "isAlertActive" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
+          "all",
           ""
         );
+        sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sisAlertActiveFilterCheckbox.includes(e.currentTarget.value)) {
+          sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sisAlertActiveFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sisAlertActiveFilterCheckbox.includes("all")) {
+          sisAlertActiveFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "isAlertActive") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sisAlertActiveFilterCheckbox +=
+                this.state.sortStatus[i].isAlertActive + ",";
+            }
+            sisAlertActiveFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+
+
+    var allData = this.state.sortAllData;
+
     this.setState({
-      sFilterCheckbox,
+      salertTypeNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      sisAlertActiveFilterCheckbox,
       alertColor: "",
       createdColor: "",
       statusColor: ""
@@ -323,7 +641,7 @@ class Alerts extends Component {
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "alertTypeName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = salertTypeNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -342,7 +660,7 @@ class Alerts extends Component {
         alertColor: "sort-column"
       });
     } else if (column === "createdBy") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -359,7 +677,7 @@ class Alerts extends Component {
         createdColor: "sort-column"
       });
     } else if (column === "isAlertActive") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sisAlertActiveFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -392,6 +710,12 @@ class Alerts extends Component {
     this.state.updateAlertisActive = isAlertActive;
     this.state.rowData = rowData;
   };
+  setNotiCurPosi = e => {
+    debugger;
+    this.setState({
+      notiCurPosi: e.target.selectionStart
+    });
+  }
   setDataOnChangeAlert = e => {
     // debugger;
     if (e.target.name == "selectedAlertType") {
@@ -431,6 +755,12 @@ class Alerts extends Component {
     } else {
       this.setState({
         [e.target.name]: e.target.value
+      });
+    }
+    if (e.target.name == "selectedNotifContent") {
+      this.setState({
+        notiCount: e.target.value.length,
+        notiCurPosi: e.target.value.length
       });
     }
   };
@@ -1465,6 +1795,13 @@ class Alerts extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.salertTypeNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sisAlertActiveFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1480,6 +1817,9 @@ class Alerts extends Component {
                             name={item.alertTypeName}
                             id={"fil-open" + item.alertTypeName}
                             value={item.alertTypeName}
+                            checked={this.state.salertTypeNameFilterCheckbox.includes(
+                              item.alertTypeName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "alertTypeName",
@@ -1504,6 +1844,9 @@ class Alerts extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1528,6 +1871,9 @@ class Alerts extends Component {
                             name={item.isAlertActive}
                             id={"fil-open" + item.isAlertActive}
                             value={item.isAlertActive}
+                            checked={this.state.sisAlertActiveFilterCheckbox.includes(
+                              item.isAlertActive
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isAlertActive"
@@ -2128,6 +2474,7 @@ class Alerts extends Component {
                                   name="selectedCKCustomer"
                                   data={this.state.selectedCKCustomer}
                                   onChange={this.setCKEditorCustomer}
+                                  onBlur={this.onCkBlurCustomer}
                                   events={{
                                     items: this.fileUpload
                                   }}
@@ -2234,6 +2581,7 @@ class Alerts extends Component {
                                   name="selectedCKInternal"
                                   data={this.state.selectedCKInternal}
                                   onChange={this.setCKEditorInternal}
+                                  onBlur={this.onCkBlurInternal}
                                 />
                                 {this.state.selectedCKInternal.length === 0 && (
                                   <p
@@ -2336,6 +2684,7 @@ class Alerts extends Component {
                                   name="selectedCKStore"
                                   data={this.state.selectedCKStore}
                                   onChange={this.setCKEditorStore}
+                                  onBlur={this.onCkBlurStore}
                                 />
                                 {this.state.selectedCKStore.length === 0 && (
                                   <p
@@ -2433,6 +2782,8 @@ class Alerts extends Component {
                               name="selectedNotifContent"
                               value={this.state.selectedNotifContent}
                               onChange={this.setDataOnChangeAlert}
+                              onClick={this.setNotiCurPosi}
+                              id="notifiPlaceholder"
                             ></textarea>
                             {this.state.selectedNotifContent.length === 0 && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
@@ -2596,12 +2947,7 @@ class Alerts extends Component {
                   >
                     ADD
                   </button> */}
-                  <button
-                    className="butn"
-                  
-                  >
-                    ADD
-                  </button>
+                  <button className="butn">ADD</button>
                 </div>
               </div>
             </div>

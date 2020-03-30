@@ -13,15 +13,10 @@ import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
 import commentImg from "./../assets/Images/page-icon.png";
-import MsgImg from "./../assets/Images/msg.png";
 import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
-import RightImg from "./../assets/Images/right.png";
-import TwitterImg from "./../assets/Images/twitter.png";
 import Up1Img from "./../assets/Images/up-1.png";
-import Loading1Img from "./../assets/Images/loading1.png";
-import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
@@ -32,7 +27,6 @@ import {
   Card,
   Progress
 } from "reactstrap";
-import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
@@ -43,13 +37,8 @@ import FileUpload from "./../assets/Images/file.png";
 import CKEditor from "ckeditor4-react";
 import ReactTable from "react-table";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
-// import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
-import Email1 from "./../assets/Images/SecuredLetter2.png";
-import Sms1 from "./../assets/Images/Sms.png";
-import Facebook1 from "./../assets/Images/facebook.png";
-import Call1 from "./../assets/Images/call.png";
 import Ticket from "./../assets/Images/TicketGrey.png";
 import MoreUp from "./../assets/Images/table-arr-up.png";
 import CancelImgGrey from "./../assets/Images/CancelGrey.png";
@@ -57,12 +46,8 @@ import Order from "./../assets/Images/order.png";
 import axios from "axios";
 import { authHeader } from "../helpers/authHeader";
 import config from "./../helpers/config";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import TicketStatus from "./MyTicketStatus";
-// import Select from "react-select";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
@@ -73,14 +58,8 @@ import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
-import { Dropdown } from "semantic-ui-react";
 import { withRouter } from "react-router";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "react-html-parser";
-// import DatePicker from "react-date-picker";
+import ReactHtmlParser from "react-html-parser";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -216,7 +195,17 @@ class MyTicket extends Component {
       role_Name: "",
       logInEmail: "",
       userEmailID: "",
-      statusValidate: false
+      statusValidate: false,
+      KnowledgeBaseModal: false,
+      isaddKnowledge: false,
+      ckCusrsorPosition: 0,
+      ckCusrsorData: "",
+      ckCusrsorPositionReply: 0,
+      ckCusrsorDataReply: "",
+      notiCountCmnt: 0,
+      notiCurPosiCmnt: 0,
+      notiCountFreeCmnt: 0,
+      notiCurPosiFreeCmnt: 0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -248,6 +237,7 @@ class MyTicket extends Component {
       this
     );
     this.handleGetEmailAdd = this.handleGetEmailAdd.bind(this);
+    this.handleAddKnwoldgeBase = this.handleAddKnwoldgeBase.bind(this);
   }
 
   componentDidUpdate() {
@@ -286,6 +276,32 @@ class MyTicket extends Component {
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
+    });
+  };
+  onCkBlur = evt => {
+    debugger;
+    var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
+      .wholeText;
+    if (!ckCusrsorData) {
+      ckCusrsorData = "";
+    }
+    this.setState({
+      ckCusrsorPosition: ckCusrsorPosition.startOffset,
+      ckCusrsorData
+    });
+  };
+  onCkBlurReply = evt => {
+    debugger;
+    var ckCusrsorPositionReply = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0].endContainer.$
+      .wholeText;
+    if (!ckCusrsorDataReply) {
+      ckCusrsorDataReply = "";
+    }
+    this.setState({
+      ckCusrsorPositionReply: ckCusrsorPositionReply.startOffset,
+      ckCusrsorDataReply
     });
   };
   onreplyCKEditorChange = evt => {
@@ -380,6 +396,7 @@ class MyTicket extends Component {
   }
 
   handleGetTicketDetails(ID) {
+    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -391,6 +408,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -408,7 +426,7 @@ class MyTicket extends Component {
           var productData = data.products;
           var MailDetails = data.ticketingMailerQue;
           var attachementDetails = data.attachment;
-          var rolename_ = data.roleName;
+          // var rolename_ = data.roleName;
           var userEmailID = data.userEmailID;
           var selectetedParameters = {
             ticketStatusID: ticketStatus,
@@ -505,6 +523,19 @@ class MyTicket extends Component {
       });
   }
 
+  setNotiCurPosiCmnt = e => {
+    debugger;
+    this.setState({
+      notiCurPosiCmnt: e.target.selectionStart
+    });
+  }
+  setNotiCurPosiFreeCmnt = e => {
+    debugger;
+    this.setState({
+      notiCurPosiFreeCmnt: e.target.selectionStart
+    });
+  }
+
   handleUpdateTicketStatus(ticStaId) {
     ////
     // let self = this;
@@ -535,7 +566,6 @@ class MyTicket extends Component {
 
   ////Handle Get all messages
   handleGetMessageDetails(ticketId) {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -546,6 +576,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -687,47 +718,93 @@ class MyTicket extends Component {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let text = this.state.ticketFreeTextcomment;
+      let textBefore = this.state.ticketFreeTextcomment.substring(0, this.state.notiCurPosiFreeCmnt);
+      let textAfter = this.state.ticketFreeTextcomment.substring(this.state.notiCurPosiFreeCmnt, this.state.notiCountFreeCmnt);
+      // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      text += "@" + userName;
-      this.setState({ ticketFreeTextcomment: text, followUpIds });
+      // text += "@" + userName;
+      let text = textBefore + ' @' + userName + textAfter;
+      let notiCurPosiFreeCmnt = textBefore.length + userName.length + 2;
+      let notiCountFreeCmnt = textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({ ticketFreeTextcomment: text, followUpIds, notiCurPosiFreeCmnt, notiCountFreeCmnt });
     } else if (check === "comment") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let text = this.state.ticketcommentMSG;
+      let textBefore = this.state.ticketcommentMSG.substring(0, this.state.notiCurPosiCmnt);
+      let textAfter = this.state.ticketcommentMSG.substring(this.state.notiCurPosiCmnt, this.state.notiCountCmnt);
+      // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      text += "@" + userName;
-      this.setState({ ticketcommentMSG: text, followUpIds });
+      // text += "@" + userName;
+      let text = textBefore + ' @' + userName + textAfter;
+      let notiCurPosiCmnt = textBefore.length + userName.length + 2;
+      let notiCountCmnt = textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({ ticketcommentMSG: text, followUpIds, notiCurPosiCmnt, notiCountCmnt });
     } else if (check === "rply") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
       let text = this.state.replymailBodyData;
       let ckDataArr = text.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorDataReply.trim() === ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionReply);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPositionReply,
+      ckDataArrLast.length
+    );
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      ck += "@" + userName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      // ck += "@" + userName;
+      ckDataArrLast = textBefore + " @" + userName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPositionReply + userName.length + 2;
+    this.setState({
+      ckCusrsorPositionReply: newCkCusrsorPosition,
+      ckCusrsorDataReply: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         text = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ replymailBodyData: text, followUpIds });
       } else {
-        this.setState({ replymailBodyData: ck, followUpIds });
+        this.setState({ replymailBodyData: ckDataArrLast, followUpIds });
       }
     } else {
       let followUpIds = this.state.followUpIds;
@@ -735,46 +812,118 @@ class MyTicket extends Component {
       followUpIds += assign + ",";
       let ckData = this.state.mailBodyData;
       let ckDataArr = ckData.split("\n\n");
-      let ckDataArrLast = ckDataArr.pop();
-      let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+      let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
+      // let ckDataArrLast = ckDataArr.pop();
+      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
-      ck += "@" + userName;
-      if (ckTags !== null) {
-        let ckFinal = ckTags[0] + ck + ckTags[1];
-        ckDataArr.push(ckFinal);
+      // ck += "@" + userName;
+      ckDataArrLast = textBefore + " @" + userName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + userName.length + 2;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+      if (ckTags) {
+        // let ckFinal = ckTags[0] + ck + ckTags[1];
+        let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+        // ckDataArr.push(ckFinal);
+        ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
-      if (ckTags !== null) {
+      if (ckTags) {
         this.setState({ mailBodyData: ckData, followUpIds });
       } else {
-        this.setState({ mailBodyData: ck, followUpIds });
+        this.setState({ mailBodyData: ckDataArrLast, followUpIds });
       }
     }
   }
   setPlaceholderValue(e) {
     let ckData = this.state.mailBodyData;
     let ckDataArr = ckData.split("\n\n");
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      x => x.mailParameterID == e.currentTarget.value
+      x => x.mailParameterID === e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ck += placeholderName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
+    // ck += placeholderName;
+    ckDataArrLast = textBefore + " " + placeholderName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== null) {
+    if (ckTags) {
       this.setState({ mailBodyData: ckData });
     } else {
-      this.setState({ mailBodyData: ck });
+      this.setState({ mailBodyData: ckDataArrLast });
     }
   }
   handleGetStoreDetails() {
@@ -828,9 +977,12 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
+
   handleUpdateTicketDetails() {
+    debugger;
     if (this.state.statusValidate) {
       let self = this;
+      this.setState({ KnowledgeBaseModal: false });
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/Updateticketstatus",
@@ -852,8 +1004,12 @@ class MyTicket extends Component {
           ////
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Ticket updated successfully.");
-            self.props.history.push("myTicketlist");
+            if (self.state.isaddKnowledge) {
+              self.handleAddKnwoldgeBase();
+            } else {
+              NotificationManager.success("Ticket updated successfully.");
+              self.props.history.push("myTicketlist");
+            }
           } else {
             NotificationManager.error("Ticket not update");
           }
@@ -926,6 +1082,18 @@ class MyTicket extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    if (e.target.name === "ticketcommentMSG") {
+      this.setState({
+        notiCountCmnt: e.target.value.length,
+        notiCurPosiCmnt: e.target.value.length
+      });
+    }
+    if (e.target.name === "ticketFreeTextcomment") {
+      this.setState({
+        notiCountFreeCmnt: e.target.value.length,
+        notiCurPosiFreeCmnt: e.target.value.length
+      });
+    }
   };
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
@@ -1824,13 +1992,13 @@ class MyTicket extends Component {
   }
   handleSendMailData(isSend) {
     let self = this;
-    var str = this.state.mailBodyData;
+    // var str = this.state.mailBodyData;
     // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
     // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
     if (isSend === 1) {
       if (this.state.replymailBodyData.length > 0) {
-        var str = this.state.replymailBodyData;
+        // var str = this.state.replymailBodyData;
         // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
         // var ReplyText = stringBody.replace(/[&]nbsp[;]/g, " ");
 
@@ -1841,10 +2009,10 @@ class MyTicket extends Component {
             selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
           }
         } else {
-          var selectedStore = "";
+           selectedStore = "";
         }
         const formData = new FormData();
-        var paramData = {
+        var paramMessageData = {
           TicketID: this.state.ticket_Id,
           ToEmail: this.state.ticketDetailsData.customerEmailId,
           UserCC: this.state.mailFiled.userCC,
@@ -1860,7 +2028,7 @@ class MyTicket extends Component {
           MailID: this.state.mailId,
           StoreID: selectedStore.substring(",", selectedStore.length - 1)
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramMessageData));
         for (let j = 0; j < this.state.ReplyFileData.length; j++) {
           formData.append("Filedata", this.state.ReplyFileData[j]);
         }
@@ -1909,10 +2077,10 @@ class MyTicket extends Component {
               store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
             }
           } else {
-            var store_Id = "";
+              store_Id = "";
           }
           const formData = new FormData();
-          var paramData = {
+          var paramData2 = {
             TicketID: this.state.ticket_Id,
             ToEmail: this.state.ticketDetailsData.customerEmailId,
             UserCC: this.state.mailFiled.userCC,
@@ -1928,7 +2096,7 @@ class MyTicket extends Component {
             MailID: 0,
             StoreID: store_Id.substring(",", store_Id.length - 1)
           };
-          formData.append("ticketingMailerQue", JSON.stringify(paramData));
+          formData.append("ticketingMailerQue", JSON.stringify(paramData2));
           for (let j = 0; j < this.state.FileData.length; j++) {
             formData.append("Filedata", this.state.FileData[j]);
           }
@@ -1972,7 +2140,7 @@ class MyTicket extends Component {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
       if (this.state.ticketcommentMSG.length > 0) {
         const formData = new FormData();
-        var paramData = {
+        var paramData3 = {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketcommentMSG.trim(),
           IsSent: 1,
@@ -1980,7 +2148,7 @@ class MyTicket extends Component {
           IsInternalComment: 1,
           MailID: this.state.mailId
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramData3));
 
         axios({
           method: "post",
@@ -2020,7 +2188,7 @@ class MyTicket extends Component {
       // ---------------API call for ReAssign To Ticket---------------------
       if (this.state.addReassignCmmt.length > 0) {
         const formData = new FormData();
-        var paramData = {
+        var paramData4 = {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.addReassignCmmt,
           IsSent: 1,
@@ -2030,7 +2198,7 @@ class MyTicket extends Component {
           OldAgentID: this.state.oldAgentId,
           NewAgentID: this.state.agentId
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramData4));
 
         axios({
           method: "post",
@@ -2071,14 +2239,14 @@ class MyTicket extends Component {
     } else {
       if (this.state.ticketFreeTextcomment.length > 0) {
         const formData = new FormData();
-        var paramData = {
+        var paramData5 = {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketFreeTextcomment.trim(),
           IsSent: 1,
           IsCustomerComment: 0,
           IsInternalComment: 1
         };
-        formData.append("ticketingMailerQue", JSON.stringify(paramData));
+        formData.append("ticketingMailerQue", JSON.stringify(paramData5));
 
         axios({
           method: "post",
@@ -2125,8 +2293,8 @@ class MyTicket extends Component {
       this.setState({ mailFiled, userCcCount: finalCount.length });
     } else {
       var BCcCount = mailFiled.userBCC;
-      var finalCount = BCcCount.split(",");
-      this.setState({ mailFiled, userBccCount: finalCount.length });
+      var finalBccCount = BCcCount.split(",");
+      this.setState({ mailFiled, userBccCount: finalBccCount.length });
     }
   }
   handleProgressBarDetails(id) {
@@ -2278,16 +2446,16 @@ class MyTicket extends Component {
       });
     } else {
       if (values) {
-        var x = document.getElementById("ordertable");
-        var x1 = document.getElementById("orderitemtable");
+        var ot = document.getElementById("ordertable");
+        var oi = document.getElementById("orderitemtable");
 
-        x.style.display = "block";
-        x1.style.display = "none";
+        ot.style.display = "block";
+        oi.style.display = "none";
       } else {
-        var i = document.getElementById("ordertable");
-        var j = document.getElementById("orderitemtable");
-        i.style.display = "none";
-        j.style.display = "block ";
+        var ot1 = document.getElementById("ordertable");
+        var oi2 = document.getElementById("orderitemtable");
+        ot1.style.display = "none";
+        oi2.style.display = "block ";
       }
       this.setState({
         OrdItmBtnStatus: e.target.checked
@@ -2575,6 +2743,76 @@ class MyTicket extends Component {
       });
   }
 
+  hadnleOpenKnowledage() {
+    this.setState({ KnowledgeBaseModal: true });
+  }
+
+  hadnleCloseKnowledage() {
+    this.setState({ KnowledgeBaseModal: true });
+  }
+
+  handleSubmitTicket() {
+    debugger;
+    if (this.state.selectetedParameters.ticketStatusID === "103") {
+      this.hadnleOpenKnowledage();
+    } else {
+      this.handleUpdateTicketDetails();
+    }
+  }
+  handleYesNoClick(ischeck) {
+    debugger;
+    if (ischeck === true) {
+      this.setState({ isaddKnowledge: true });
+
+      setTimeout(() => {
+        this.handleUpdateTicketDetails();
+      }, 10);
+    } else {
+      this.setState({ isaddKnowledge: false });
+      setTimeout(() => {
+        this.handleUpdateTicketDetails();
+      }, 10);
+    }
+  }
+
+  handleAddKnwoldgeBase() {
+    debugger;
+    let self = this;
+    var tempDescription = this.state.messageDetails[0][
+      "msgDetails"
+    ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
+    var Description = tempDescription.replace(/&nbsp;/gi, " ");
+    var inputParam = {
+      KBCODE: "",
+      CategoryID: this.state.selectetedParameters.categoryID,
+      SubCategoryID: this.state.selectetedParameters.subCategoryID,
+      Subject: this.state.ticketDetailsData.ticketTitle,
+      Description: Description,
+      IsActive: 1,
+      IssueTypeID: this.state.selectetedParameters.issueTypeID
+    };
+    axios({
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/AddKB",
+      headers: authHeader(),
+      data: inputParam
+    })
+      .then(function(res) {
+        debugger;
+        var status = res.data.status;
+        if (status) {
+          NotificationManager.success("Ticket updated successfully.");
+          NotificationManager.success("Ticket Added in knowledgebase.");
+          self.props.history.push("myTicketlist");
+        } else {
+          NotificationManager.success("Ticket Added in knowledgebase.");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
     const {
       open,
@@ -2605,21 +2843,21 @@ class MyTicket extends Component {
       }
     }
 
-    const HidecollapsUp = this.state.collapseUp ? (
-      <img
-        src={Up1Img}
-        alt="up"
-        className="up-1"
-        onClick={this.handleUpClose.bind(this)}
-      />
-    ) : (
-      <img
-        src={Down1Img}
-        alt="up"
-        className="up-1"
-        onClick={this.handleUpOpen.bind(this)}
-      />
-    );
+    // const HidecollapsUp = this.state.collapseUp ? (
+    //   <img
+    //     src={Up1Img}
+    //     alt="up"
+    //     className="up-1"
+    //     onClick={this.handleUpClose.bind(this)}
+    //   />
+    // ) : (
+    //   <img
+    //     src={Down1Img}
+    //     alt="up"
+    //     className="up-1"
+    //     onClick={this.handleUpOpen.bind(this)}
+    //   />
+    // );
 
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
       <div
@@ -2800,7 +3038,7 @@ class MyTicket extends Component {
                       <button
                         type="button"
                         className="myticket-submit-solve-button"
-                        onClick={this.handleUpdateTicketDetails.bind(this)}
+                        onClick={this.handleSubmitTicket.bind(this)}
                       >
                         SUBMIT
                       </button>
@@ -5190,6 +5428,7 @@ class MyTicket extends Component {
                           <CKEditor
                             data={this.state.mailBodyData}
                             onChange={this.onAddCKEditorChange}
+                            onBlur={this.onCkBlur}
                             config={{
                               toolbar: [
                                 {
@@ -5715,21 +5954,25 @@ class MyTicket extends Component {
                                                 alt="Avatar"
                                                 className="oval-7"
                                               />
-                                            ) : null}
-                                            {details.latestMessageDetails
-                                              .isCustomerComment === 1 ? (
-                                              <img
-                                                src={BlackUserIcon}
-                                                alt="Avatar"
-                                                className="oval-6"
-                                              />
                                             ) : (
-                                              <img
-                                                src={Headphone2Img}
-                                                alt="headphone"
-                                                className="oval-55"
-                                              />
+                                              <>
+                                                {details.latestMessageDetails
+                                                  .isCustomerComment === 1 ? (
+                                                  <img
+                                                    src={BlackUserIcon}
+                                                    alt="Avatar"
+                                                    className="oval-6"
+                                                  />
+                                                ) : (
+                                                  <img
+                                                    src={Headphone2Img}
+                                                    alt="headphone"
+                                                    className="oval-55"
+                                                  />
+                                                )}
+                                              </>
                                             )}
+
                                             <div>
                                               <label
                                                 className="solved-by-naman-r mt-0"
@@ -5795,16 +6038,23 @@ class MyTicket extends Component {
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                                           {details.latestMessageDetails
-                                            .isInternalComment === true ? (
-                                            <img
-                                              src={commentImg}
-                                              alt="comment"
-                                              className="commentImg"
-                                              style={{
-                                                display: "inline-block"
-                                              }}
-                                            />
-                                          ) : null}
+                                            .isSystemGenerated ===
+                                          true ? null : (
+                                            <>
+                                              {details.latestMessageDetails
+                                                .isInternalComment === true ? (
+                                                <img
+                                                  src={commentImg}
+                                                  alt="comment"
+                                                  className="commentImg"
+                                                  style={{
+                                                    display: "inline-block"
+                                                  }}
+                                                />
+                                              ) : null}
+                                            </>
+                                          )}
+
                                           {/* --------------Show Attchement Icone on condition--------------- */}
                                           {details.latestMessageDetails
                                             .hasAttachment === 1 ? (
@@ -6074,6 +6324,7 @@ class MyTicket extends Component {
                             maxLength={300}
                             value={this.state.ticketcommentMSG}
                             onChange={this.handleNoteOnChange}
+                            onClick={this.setNotiCurPosiCmnt}
                           ></textarea>
                         </div>
                         {this.state.ticketcommentMSG.length === 0 && (
@@ -6269,6 +6520,7 @@ class MyTicket extends Component {
                           id="ckeditor1"
                           data={this.state.replymailBodyData}
                           onChange={this.onreplyCKEditorChange}
+                          onBlur={this.onCkBlurReply}
                           config={{
                             toolbar: [
                               {
@@ -6483,6 +6735,7 @@ class MyTicket extends Component {
                             maxLength={300}
                             value={this.state.ticketFreeTextcomment}
                             onChange={this.handleNoteOnChange}
+                            onClick={this.setNotiCurPosiFreeCmnt}
                           ></textarea>
                         </div>
                         {this.state.ticketFreeTextcomment.length === 0 && (
@@ -6748,6 +7001,52 @@ class MyTicket extends Component {
                 </ul>
               </div>
             </div>
+            {/* -------------------Start knowledge base modal pop up----------------------- */}
+            <Modal
+              open={this.state.KnowledgeBaseModal}
+              onClose={this.hadnleCloseKnowledage.bind(this)}
+              closeIconId="sdsg"
+              modalId="Historical-popup"
+              overlayId="logout-ovrly"
+              classNames={{
+                modal: "myticket-knowpopup"
+              }}
+            >
+              <div className="commenttextborder">
+                <div className="comment-disp">
+                  <div>
+                    {/* <img
+                      src={CrossIcon}
+                      alt="Minus"
+                      className="pro-cross-icn m-0"
+                      
+                    /> */}
+                  </div>
+                </div>
+                <div className="Commentlabel">
+                  <p className="Commentlabel1 mb-4 text-center">
+                    Add this ticket in Knowledge Base ?
+                  </p>
+                </div>
+                <div className="SendCommentBtn mb-0" style={{ float: "left" }}>
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleYesNoClick.bind(this, false)}
+                  >
+                    No
+                  </button>
+                </div>
+                <div className="SendCommentBtn mb-0">
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleYesNoClick.bind(this, true)}
+                  >
+                    Yes
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* -------------------End knowledge base modal pop up----------------------- */}
             {/* <NotificationContainer /> */}
           </div>
         )}

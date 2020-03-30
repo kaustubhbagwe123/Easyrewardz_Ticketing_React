@@ -17,7 +17,6 @@ import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
 import PlusImg from "./../assets/Images/plus.png";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
-// import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
@@ -30,18 +29,13 @@ import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
 import CancelImg from "./../assets/Images/cancel.png";
-// import { Collapse, CardBody, Card } from "reactstrap";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import axios from "axios";
-// import Select from "react-select";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
@@ -156,7 +150,9 @@ class TicketSystem extends Component {
       showOrderDetails: false,
       showStoreData: false,
       showTaskData: false,
-      fileDummy: []
+      fileDummy: [],
+      ckCusrsorPosition: 0,
+      ckCusrsorData: ""
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -196,7 +192,6 @@ class TicketSystem extends Component {
   }
 
   componentDidMount() {
-     
     var customerDetails = this.props.location.state;
 
     var ticket_Id = this.props.location.state;
@@ -227,7 +222,6 @@ class TicketSystem extends Component {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }
   handleCopyToaster() {
-     
     setTimeout(() => {
       if (
         this.state.copiedNumber &&
@@ -276,25 +270,62 @@ class TicketSystem extends Component {
   };
 
   setPlaceholderValue(e) {
+    debugger;
     let ckData = this.state.editorTemplateDetails;
     let ckDataArr = ckData.split("\n\n");
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
+    }
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       x => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    ck += placeholderName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
+    // ck += placeholderName;
+    ckDataArrLast = textBefore + " " + placeholderName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + placeholderName.length + 1;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
-    if (ckTags !== null) {
+    if (ckTags) {
       this.setState({ editorTemplateDetails: ckData });
     } else {
-      this.setState({ editorTemplateDetails: ck });
+      this.setState({ editorTemplateDetails: ckDataArrLast });
     }
   }
 
@@ -328,13 +359,11 @@ class TicketSystem extends Component {
   }
 
   handleCustomerAttachamentStatus(custAttachOrder) {
-     
     this.setState({
       customerAttachOrder: custAttachOrder
     });
   }
   handleGetOrderId = (selectParentData, selectChildData) => {
-     
     this.setState({
       selectedOrderData: selectParentData,
       SelectedItemData: selectChildData
@@ -342,7 +371,6 @@ class TicketSystem extends Component {
     });
   };
   handleGetItemData = selectChildData => {
-     
     this.setState({
       SelectedItemData: selectChildData
     });
@@ -353,7 +381,6 @@ class TicketSystem extends Component {
     });
   };
   handleCustomerStoreStatus(WantVisit, AlreadyCustomerVisit) {
-     
     this.setState({
       custVisit: WantVisit,
       AlreadycustVisit: AlreadyCustomerVisit
@@ -380,7 +407,6 @@ class TicketSystem extends Component {
     this.setState({ CustData });
   };
   handleChange = date => {
-     
     this.setState({
       editDOB: date
     });
@@ -419,7 +445,6 @@ class TicketSystem extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
   handleMailOnChange(filed, e) {
-     
     var mailFiled = this.state.mailFiled;
     mailFiled[filed] = e.target.value;
 
@@ -434,7 +459,6 @@ class TicketSystem extends Component {
     }
   }
   handleUpdateCustomer() {
-     
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
@@ -457,7 +481,6 @@ class TicketSystem extends Component {
         }
       })
         .then(function(res) {
-           
           let Message = res.data.message;
           if (Message === "Success") {
             NotificationManager.success("Record updated Successfull.");
@@ -476,7 +499,6 @@ class TicketSystem extends Component {
     }
   }
   handleGetTicketTitleList() {
-     
     let self = this;
     axios({
       method: "post",
@@ -487,7 +509,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-         
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -511,7 +532,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-         
         let data = res.data.responseData;
         self.setState({ CkEditorTemplateData: data });
       })
@@ -520,7 +540,6 @@ class TicketSystem extends Component {
       });
   }
   handleCkEditorTemplateData(tempId, tempName) {
-     
     let self = this;
     axios({
       method: "post",
@@ -531,7 +550,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-         
         let data = res.data.responseData.templateBody;
         let bodyData = res.data.responseData.templateBody;
         self.setState({
@@ -563,7 +581,6 @@ class TicketSystem extends Component {
         }
       })
         .then(function(res) {
-           
           let KbPopupData = res.data.responseData;
           if (KbPopupData.length === 0 || KbPopupData === null) {
             NotificationManager.error("No Record Found.");
@@ -582,7 +599,6 @@ class TicketSystem extends Component {
     }
   }
   handleGetBrandList() {
-     
     let self = this;
     axios({
       method: "post",
@@ -590,7 +606,6 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-         
         let data = res.data.responseData;
         self.setState({ BrandData: data });
       })
@@ -600,7 +615,7 @@ class TicketSystem extends Component {
   }
   handleGetCategoryList(brandId = 0) {
     let self = this;
-     
+
     var brand_Id = parseInt(brandId);
     axios({
       method: "post",
@@ -619,9 +634,8 @@ class TicketSystem extends Component {
       });
   }
   handleGetSubCategoryList() {
-     
     let self = this;
-     
+
     let cateId = this.state.KbLink
       ? this.state.selectedCategoryKB
       : this.state.selectedCategory;
@@ -634,7 +648,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-         
         let data = res.data.responseData;
         self.setState({ SubCategoryData: data });
       })
@@ -643,9 +656,8 @@ class TicketSystem extends Component {
       });
   }
   handleGetIssueTypeList() {
-     
     let self = this;
-     
+
     let subCateId = this.state.KbLink
       ? this.state.selectedSubCategoryKB
       : this.state.selectedSubCategory;
@@ -658,7 +670,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-         
         let data = res.data.responseData;
         self.setState({ IssueTypeData: data });
       })
@@ -667,7 +678,6 @@ class TicketSystem extends Component {
       });
   }
   handleGetTicketPriorityList() {
-     
     let self = this;
     axios({
       method: "get",
@@ -675,7 +685,6 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-         
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -696,7 +705,6 @@ class TicketSystem extends Component {
       headers: authHeader()
     })
       .then(function(res) {
-         
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
@@ -706,15 +714,17 @@ class TicketSystem extends Component {
   }
 
   handleGetAgentList() {
-     
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/User/GetUserList",
-      headers: authHeader()
+      url: config.apiUrl + "/Ticketing/getagentlist",
+      headers: authHeader(),
+      params: {
+        TicketID: 0 // Don't remove this Zexo
+      }
     })
       .then(function(res) {
-         
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -744,7 +754,6 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-         
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
         var CustData = res.data.responseData;
@@ -760,7 +769,6 @@ class TicketSystem extends Component {
           self.handleEditCustomerClose();
         }
         if (mode === "Edit") {
-      
           self.handleEditCustomerOpen();
           self.setState({ customerData: customerData, CustData });
         }
@@ -775,36 +783,72 @@ class TicketSystem extends Component {
     let followUpIds = this.state.followUpIds;
     followUpIds += assign + ",";
     let ckData = this.state.editorTemplateDetails;
-    let ckDataArr = ckData.split('\n\n');
-    let ckDataArrLast = ckDataArr.pop();
-    let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-    let matchedArr = this.state.AssignToData.filter(
-      x => x.userID == e.currentTarget.value
-    );
-    let userName = matchedArr[0].fullName;
-    ck += "@" + userName;
-    if (ckTags !== null) {
-      let ckFinal = ckTags[0] + ck + ckTags[1];
-      ckDataArr.push(ckFinal);
-      ckData = ckDataArr.join(' ');
+    let ckDataArr = ckData.split("\n\n");
+    let ckDataArrNew = [];
+    for (let i = 0; i < ckDataArr.length; i++) {
+      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+      const element2 = element1.replace(/&nbsp;/g, " ");
+      const element = element2.replace(/\n/g, " ");
+      ckDataArrNew.push(element);
     }
-    if (ckTags !== null) {
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
+    for (let i = 0; i < ckDataArrNew.length; i++) {
+      if (loopFlag) {
+        if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
+          selectedVal = ckDataArrNew[i];
+          selectedArr = i;
+          ckTags = ckDataArr[i].match(/<[^>]+>/g);
+          loopFlag = false;
+        }
+      }
+    }
+    let ckDataArrLast = selectedVal;
+    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
+    // let ckDataArrLast = ckDataArr.pop();
+    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
+    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
+    let matchedArr = this.state.AssignToData.filter(
+      x => x.user_ID == e.currentTarget.value
+    );
+    let userName = matchedArr[0].agentName;
+    // ck += "@" + userName;
+    ckDataArrLast = textBefore + " @" + userName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + userName.length + 2;
+    this.setState({
+      ckCusrsorPosition: newCkCusrsorPosition,
+      ckCusrsorData: ckDataArrLast
+    });
+    if (ckTags) {
+      // let ckFinal = ckTags[0] + ck + ckTags[1];
+      let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
+      // ckDataArr.push(ckFinal);
+      ckDataArr.splice(selectedArr, 1, ckFinal);
+      ckData = ckDataArr.join(" ");
+    }
+    if (ckTags) {
       this.setState({ editorTemplateDetails: ckData, followUpIds });
     } else {
-      this.setState({ editorTemplateDetails: ck, followUpIds });
+      this.setState({ editorTemplateDetails: ckDataArrLast, followUpIds });
     }
   }
   handleTicketAssignFollowUp(ticketID_) {
     debugger;
-     
+
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
     );
 
     let self = this;
-     
+
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/ticketassigforfollowup",
@@ -832,7 +876,6 @@ class TicketSystem extends Component {
   }
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-       
       this.setState({ TicketTitleData: [] });
     }
   }
@@ -840,9 +883,24 @@ class TicketSystem extends Component {
     this.setState({ ticketSuggestion });
   };
   onAddCKEditorChange = evt => {
+    debugger;
     var newContent = evt.editor.getData();
+    var cursorPosition = evt.editor.getSelection().getRanges()[0];
     this.setState({
       editorTemplateDetails: newContent
+    });
+  };
+  onCkBlur = evt => {
+    debugger;
+    var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
+      .wholeText;
+    if (!ckCusrsorData) {
+      ckCusrsorData = "";
+    }
+    this.setState({
+      ckCusrsorPosition: ckCusrsorPosition.startOffset,
+      ckCusrsorData
     });
   };
 
@@ -936,6 +994,7 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
+    debugger;
     if (
       this.state.titleSuggValue.length > 0 &&
       this.state.ticketDetails.length > 0 &&
@@ -996,7 +1055,7 @@ class TicketSystem extends Component {
       } else {
         actionStatusId = 100;
       }
-       
+
       var mailData = [];
       mailData = this.state.mailData;
       this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
@@ -1007,7 +1066,7 @@ class TicketSystem extends Component {
       mailData.push(this.state.mailFiled);
 
       const formData = new FormData();
-      debugger;
+
       var paramData = {
         TicketTitle: this.state.titleSuggValue,
         Ticketdescription: this.state.ticketDetails,
@@ -1077,13 +1136,15 @@ class TicketSystem extends Component {
           data: DRAFTFromData
         })
           .then(function(res) {
-            ////
+            debugger;
             let Msg = res.data.status;
             let TID = res.data.responseData;
             self.setState({ loading: false });
             if (Msg) {
               NotificationManager.success(res.data.message, "", 2000);
-              self.handleTicketAssignFollowUp(TID);
+              if (self.state.followUpIds !== "") {
+                self.handleTicketAssignFollowUp(TID);
+              }
               setTimeout(function() {
                 self.props.history.push("myTicketlist");
               }, 1000);
@@ -1102,13 +1163,15 @@ class TicketSystem extends Component {
           data: formData
         })
           .then(function(res) {
-            ////
+            debugger;
             let Msg = res.data.status;
             let TID = res.data.responseData;
             self.setState({ loading: false });
             if (Msg) {
               NotificationManager.success(res.data.message, "", 2000);
-              self.handleTicketAssignFollowUp(TID);
+              if (self.state.followUpIds !== "") {
+                self.handleTicketAssignFollowUp(TID);
+              }
               setTimeout(function() {
                 self.props.history.push("myTicketlist");
               }, 1000);
@@ -1326,9 +1389,9 @@ class TicketSystem extends Component {
           ////Check Task data
 
           // if (TaskData > 0) {
-            self.setState({
-              showTaskData: true
-            });
+          self.setState({
+            showTaskData: true
+          });
           // }
           self.setState({
             titleSuggValue: Ticket_title,
@@ -1495,7 +1558,7 @@ class TicketSystem extends Component {
                   <div className="row m-b-10">
                     <div className="col-md-12">
                       <label className="category">Ticket Title</label>
-                      
+
                       <div
                         className="custom-ticket-title"
                         onClick={() => this.toggleTitleSuggestion()}
@@ -1699,7 +1762,14 @@ class TicketSystem extends Component {
                                 onChange={this.setTicketPriorityValue}
                                 // checked={this.}
                               />
-                              <label htmlFor={item.priortyName}>
+                              <label
+                                htmlFor={item.priortyName}
+                                className={
+                                  item.priortyName === "Auto"
+                                    ? "disabled-link"
+                                    : null
+                                }
+                              >
                                 {item.priortyName}
                               </label>
                             </div>
@@ -1901,6 +1971,7 @@ class TicketSystem extends Component {
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
+                        onBlur={this.onCkBlur}
                         config={{
                           toolbar: [
                             {
@@ -2124,8 +2195,10 @@ class TicketSystem extends Component {
                             <option value="0">Users</option>
                             {this.state.AssignToData !== null &&
                               this.state.AssignToData.map((item, i) => (
-                                <option key={i} value={item.userID}>
-                                  {item.fullName}
+                                <option key={i} value={item.user_ID}>
+                                  {/* <option key={i} value={item.userID}> */}
+                                  {/* {item.fullName} */}
+                                  {item.agentName}
                                 </option>
                               ))}
                           </select>
@@ -2187,26 +2260,26 @@ class TicketSystem extends Component {
                       </ul>
                     </div>
 
-                    {this.state.selectedBrand === "" ? (
+                    {/* {this.state.selectedBrand === "" ? (
                       <label
                         className="kblink1"
                         title="Please select brand for KB Link"
                       >
                         Please select Brand
                       </label>
-                    ) : (
-                      <a href="#!" className="kblink1">
-                        <img
-                          src={KnowledgeLogo}
-                          alt="KnowledgeLogo"
-                          className="knoim"
-                          onClick={this.HandleKbLinkModalOpen.bind(this)}
-                        />
-                        <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
-                          KB
-                        </label>
-                      </a>
-                    )}
+                    ) : ( */}
+                    <a href="#!" className="kblink1">
+                      <img
+                        src={KnowledgeLogo}
+                        alt="KnowledgeLogo"
+                        className="knoim"
+                        onClick={this.HandleKbLinkModalOpen.bind(this)}
+                      />
+                      <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                        KB
+                      </label>
+                    </a>
+                    {/* )} */}
                     <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
                       <select
                         className="add-select-category"
@@ -2216,8 +2289,10 @@ class TicketSystem extends Component {
                         <option value="0">Users</option>
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
-                            <option key={i} value={item.userID}>
-                              {item.fullName}
+                            <option key={i} value={item.user_ID}>
+                              {/* <option key={i} value={item.userID}> */}
+                              {/* {item.fullName} */}
+                              {item.agentName}
                             </option>
                           ))}
                       </select>
@@ -2243,6 +2318,7 @@ class TicketSystem extends Component {
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
+                        onBlur={this.onCkBlur}
                         config={{
                           toolbar: [
                             {

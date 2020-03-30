@@ -2,14 +2,12 @@ import React, { Component, Fragment } from "react";
 import ProfileImg from "./../assets/Images/UserIcon.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../assets/Images/Circle-cancel.png";
-// import ProfileImg1 from "./../assets/Images/changeprofile.png";
 import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import { authHeader } from "./../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
 import {transferData} from "./../helpers/transferData";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { Link } from "react-router-dom";

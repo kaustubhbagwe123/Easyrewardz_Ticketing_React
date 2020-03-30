@@ -7,7 +7,6 @@ import NotFoundImg from "./../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
-// import ReactAutocomplete from "react-autocomplete";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
@@ -15,11 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import SimpleReactValidator from "simple-react-validator";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
-// import { authHeader } from "../helpers/authHeader";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class AddSearchMyTicket extends Component {
@@ -165,7 +162,13 @@ class AddSearchMyTicket extends Component {
 
   handleAddCustomerSave() {
     debugger;
-    let self = this;
+    let self = this, dob;
+
+    if (this.state.dob === "") {
+      dob = "";
+    } else {
+      dob = moment(this.state.dob).format("L");
+    }
 
     axios({
       method: "post",
@@ -178,7 +181,7 @@ class AddSearchMyTicket extends Component {
         GenderID: this.state.genderID,
         AltNumber: this.state.altNumber.trim(),
         AltEmailID: this.state.altEmailID.trim(),
-        DateOfBirth: moment(this.state.dob).format("L"),
+        DateOfBirth: dob,
         IsActive: 1,
         CreatedBy: this.state.createdBy,
         ModifyBy: 1,
@@ -186,7 +189,7 @@ class AddSearchMyTicket extends Component {
       }
     })
       .then(function(res) {
-        //debugger;
+        debugger;
         let responseMessage = res.data.message;
         let custId = res.data.responseData;
         self.setState({

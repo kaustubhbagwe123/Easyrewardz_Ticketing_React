@@ -125,7 +125,12 @@ class StoreMaster extends Component {
       isFileUploadFail: false,
       progressValue: 0,
       fileSize: "",
-      showProgress: false
+      showProgress: false,
+      sstoreNameFilterCheckbox: "",
+      sstoreCodeFilterCheckbox: "",
+      scityNameFilterCheckbox: "",
+      sstateNameFilterCheckbox: "",
+      sstrPinCodeFilterCheckbox: ""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -222,15 +227,205 @@ class StoreMaster extends Component {
   }
 
   StatusOpenModel(data, header) {
-    this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    debugger;
+
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+
+    if (
+      this.state.sortFilterStoreName.length === 0 ||
+      this.state.sortFilterStoreCode.length === 0 ||
+      this.state.sortFilterCity.length === 0 ||
+      this.state.sortFilterState.length === 0 ||
+      this.state.sortFilterPincode.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "storeName") {
+      if (
+        this.state.sstoreCodeFilterCheckbox !== "" ||
+        this.state.scityNameFilterCheckbox !== "" ||
+        this.state.sstateNameFilterCheckbox !== "" ||
+        this.state.sstrPinCodeFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sstoreCodeFilterCheckbox: "",
+          scityNameFilterCheckbox: "",
+          sstateNameFilterCheckbox: "",
+          sstrPinCodeFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "storeCode") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.scityNameFilterCheckbox !== "" ||
+        this.state.sstateNameFilterCheckbox !== "" ||
+        this.state.sstrPinCodeFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          scityNameFilterCheckbox: "",
+          sstateNameFilterCheckbox: "",
+          sstrPinCodeFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "cityName") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sstoreCodeFilterCheckbox !== "" ||
+        this.state.sstateNameFilterCheckbox !== "" ||
+        this.state.sstrPinCodeFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sstoreCodeFilterCheckbox: "",
+          sstateNameFilterCheckbox: "",
+          sstrPinCodeFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "stateName") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.scityNameFilterCheckbox !== "" ||
+        this.state.sstoreCodeFilterCheckbox !== "" ||
+        this.state.sstrPinCodeFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sstrPinCodeFilterCheckbox: "",
+          sstoreCodeFilterCheckbox: "",
+          scityNameFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "strPinCode") {
+      if (
+        this.state.sstateNameFilterCheckbox !== "" ||
+        this.state.scityNameFilterCheckbox !== "" ||
+        this.state.sstoreCodeFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sstoreCodeFilterCheckbox: "",
+          scityNameFilterCheckbox: "",
+          sstateNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
+    debugger;
     if (this.state.tempstoreData.length > 0) {
       this.setState({
         StatusModel: false,
         storeData: this.state.tempstoreData,
         filterTxtValue: ""
       });
+      if (this.state.sortColumn === "storeName") {
+        if (this.state.sstoreNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreCodeFilterCheckbox: "",
+            scityNameFilterCheckbox: "",
+            sstateNameFilterCheckbox: "",
+            sstrPinCodeFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "storeCode") {
+        if (this.state.sstoreCodeFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            scityNameFilterCheckbox: "",
+            sstateNameFilterCheckbox: "",
+            sstrPinCodeFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "cityName") {
+        if (this.state.scityNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sstoreCodeFilterCheckbox: "",
+            sstateNameFilterCheckbox: "",
+            sstrPinCodeFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "stateName") {
+        if (this.state.sstateNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sstoreCodeFilterCheckbox: "",
+            scityNameFilterCheckbox: "",
+            sstrPinCodeFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "strPinCode") {
+        if (this.state.sstrPinCodeFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sstoreCodeFilterCheckbox: "",
+            scityNameFilterCheckbox: "",
+            sstateNameFilterCheckbox: ""
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -242,20 +437,146 @@ class StoreMaster extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
+    debugger;
 
-    var sFilterCheckbox = this.state.sFilterCheckbox;
+    var sstoreNameFilterCheckbox = this.state.sstoreNameFilterCheckbox;
+    var sstoreCodeFilterCheckbox = this.state.sstoreCodeFilterCheckbox;
+    var scityNameFilterCheckbox = this.state.scityNameFilterCheckbox;
+    var sstateNameFilterCheckbox = this.state.sstateNameFilterCheckbox;
+    var sstrPinCodeFilterCheckbox = this.state.sstrPinCodeFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (type === "value" && type !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
-          ""
-        );
+    if (column === "storeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all", "");
+        sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all,", "");
+        if (sstoreNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstoreNameFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        if (sstoreNameFilterCheckbox.includes("all")) {
+          sstoreNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "storeName") {
+            for (let i = 0; i < this.state.sortStoreName.length; i++) {
+              sstoreNameFilterCheckbox +=
+                this.state.sortStoreName[i].storeName + ",";
+            }
+            sstoreNameFilterCheckbox += "all";
+          }
+        }
       }
     }
+    if (column === "storeCode" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstoreCodeFilterCheckbox = sstoreCodeFilterCheckbox.replace("all", "");
+        sstoreCodeFilterCheckbox = sstoreCodeFilterCheckbox.replace("all,", "");
+        if (sstoreCodeFilterCheckbox.includes(e.currentTarget.value)) {
+          sstoreCodeFilterCheckbox = sstoreCodeFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstoreCodeFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstoreCodeFilterCheckbox.includes("all")) {
+          sstoreCodeFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "storeCode") {
+            for (let i = 0; i < this.state.sortStoreCode.length; i++) {
+              sstoreCodeFilterCheckbox +=
+                this.state.sortStoreCode[i].storeCode + ",";
+            }
+            sstoreCodeFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "cityName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scityNameFilterCheckbox = scityNameFilterCheckbox.replace("all", "");
+        scityNameFilterCheckbox = scityNameFilterCheckbox.replace("all,", "");
+        if (scityNameFilterCheckbox.includes(e.currentTarget.value)) {
+          scityNameFilterCheckbox = scityNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scityNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scityNameFilterCheckbox.includes("all")) {
+          scityNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "cityName") {
+            for (let i = 0; i < this.state.sortCity.length; i++) {
+              scityNameFilterCheckbox += this.state.sortCity[i].cityName + ",";
+            }
+            scityNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "stateName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstateNameFilterCheckbox = sstateNameFilterCheckbox.replace("all", "");
+        sstateNameFilterCheckbox = sstateNameFilterCheckbox.replace("all,", "");
+        if (sstateNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sstateNameFilterCheckbox = sstateNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstateNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstateNameFilterCheckbox.includes("all")) {
+          sstateNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "stateName") {
+            for (let i = 0; i < this.state.sortState.length; i++) {
+              sstateNameFilterCheckbox +=
+                this.state.sortState[i].stateName + ",";
+            }
+            sstateNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "strPinCode" || column === "all") {
+      
+      if (type === "value" && type !== "All") {
+        sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace("all", "");
+      sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace("all,", "");
+        if (sstrPinCodeFilterCheckbox.includes(e.currentTarget.value)) {
+          sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstrPinCodeFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstrPinCodeFilterCheckbox.includes("all")) {
+          sstrPinCodeFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "strPinCode") {
+            for (let i = 0; i < this.state.sortPincode.length; i++) {
+              sstrPinCodeFilterCheckbox +=
+                this.state.sortPincode[i].strPinCode + ",";
+            }
+            sstrPinCodeFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
 
     this.setState({
       storeNameColor: "",
@@ -264,12 +585,16 @@ class StoreMaster extends Component {
       stateColor: "",
       pincodeColor: "",
       brandnameColor: "",
-      sFilterCheckbox
+      sstoreNameFilterCheckbox,
+      sstoreCodeFilterCheckbox,
+      scityNameFilterCheckbox,
+      sstateNameFilterCheckbox,
+      sstrPinCodeFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "storeName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sstoreNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -286,7 +611,8 @@ class StoreMaster extends Component {
         storeNameColor: "sort-column"
       });
     } else if (column === "storeCode") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sstoreCodeFilterCheckbox.split(",");
+
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -303,7 +629,7 @@ class StoreMaster extends Component {
         storeCodecolor: "sort-column"
       });
     } else if (column === "cityName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = scityNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -320,7 +646,7 @@ class StoreMaster extends Component {
         cityColor: "sort-column"
       });
     } else if (column === "stateName") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sstateNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -337,7 +663,7 @@ class StoreMaster extends Component {
         stateColor: "sort-column"
       });
     } else if (column === "strPinCode") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sstrPinCodeFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -355,26 +681,27 @@ class StoreMaster extends Component {
       this.setState({
         pincodeColor: "sort-column"
       });
-    } else if (column === "brandNames") {
-      var sItems = sFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              a => a.brandNames === sItems[i]
-            );
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        brandnameColor: "sort-column"
-      });
     }
+    // else if (column === "brandNames") {
+    //   var sItems = sFilterCheckbox.split(",");
+    //   if (sItems.length > 0) {
+    //     for (let i = 0; i < sItems.length; i++) {
+    //       if (sItems[i] !== "") {
+    //         var tempFilterData = allData.filter(
+    //           a => a.brandNames === sItems[i]
+    //         );
+    //         if (tempFilterData.length > 0) {
+    //           for (let j = 0; j < tempFilterData.length; j++) {
+    //             itemsArray.push(tempFilterData[j]);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    //   this.setState({
+    //     brandnameColor: "sort-column"
+    //   });
+    // }
 
     this.setState({
       tempstoreData: itemsArray
@@ -418,6 +745,7 @@ class StoreMaster extends Component {
             unique[data[i].storeCode] = 1;
           }
         }
+        debugger;
         for (let i = 0; i < distinct.length; i++) {
           self.state.sortStoreCode.push({ storeCode: distinct[i] });
           self.state.sortFilterStoreCode.push({ storeCode: distinct[i] });
@@ -1263,6 +1591,13 @@ class StoreMaster extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sstoreNameFilterCheckbox.includes("all") ||
+                        this.state.sstoreCodeFilterCheckbox.includes("all") ||
+                        this.state.scityNameFilterCheckbox.includes("all") ||
+                        this.state.sstateNameFilterCheckbox.includes("all") ||
+                        this.state.sstrPinCodeFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -1278,6 +1613,9 @@ class StoreMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.storeName}
                             value={item.storeName}
+                            checked={this.state.sstoreNameFilterCheckbox.includes(
+                              item.storeName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "storeName",
@@ -1302,6 +1640,9 @@ class StoreMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.storeCode}
                             value={item.storeCode}
+                            checked={this.state.sstoreCodeFilterCheckbox.includes(
+                              item.storeCode
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "storeCode",
@@ -1326,6 +1667,9 @@ class StoreMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.cityName}
                             value={item.cityName}
+                            checked={this.state.scityNameFilterCheckbox.includes(
+                              item.cityName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "cityName",
@@ -1350,6 +1694,9 @@ class StoreMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.stateName}
                             value={item.stateName}
+                            checked={this.state.sstateNameFilterCheckbox.includes(
+                              item.stateName
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "stateName",
@@ -1374,6 +1721,9 @@ class StoreMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.strPinCode}
                             value={item.strPinCode}
+                            checked={this.state.sstrPinCodeFilterCheckbox.includes(
+                              item.strPinCode
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "strPinCode",
@@ -1477,11 +1827,11 @@ class StoreMaster extends Component {
                           Header: (
                             <span
                               className={this.state.brandnameColor}
-                              onClick={this.StatusOpenModel.bind(
-                                this,
-                                "brandNames",
-                                "Brand Names"
-                              )}
+                              // onClick={this.StatusOpenModel.bind(
+                              //   this,
+                              //   "brandNames",
+                              //   "Brand Names"
+                              // )}
                             >
                               Brand Name
                               <FontAwesomeIcon icon={faCaretDown} />
@@ -2073,7 +2423,10 @@ class StoreMaster extends Component {
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" onClick={this.hanldeAddBulkUpload.bind(this)}>
+                            <a
+                              className="file-retry"
+                              onClick={this.hanldeAddBulkUpload.bind(this)}
+                            >
                               Retry
                             </a>
                           </div>

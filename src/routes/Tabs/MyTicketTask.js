@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import { Drawer } from "antd";
-// import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
 import CancelImg from "./../../assets/Images/cancel.png";
@@ -15,7 +14,6 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import ReactTable from "react-table";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";

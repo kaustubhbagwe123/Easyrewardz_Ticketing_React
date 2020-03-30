@@ -13,7 +13,6 @@ import ReactTable from "react-table";
 import StoreImg from "./../../assets/Images/store.png";
 import moment from "moment";
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 
