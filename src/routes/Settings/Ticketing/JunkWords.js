@@ -21,47 +21,35 @@ class JunkWords extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            AddBlockEmailPopup: false,
+            AddJunkWordsPopup: false,
             JunkWordsData: [],
             loading: false,
-            BlockEmailID:0,
+            JunkKeywordID:0,
             JunkWords: "",
             Reason: "",
-            errors: {},
-
+            errors: {}
         };
     }
 
     componentDidMount() {
-      this.handleBlockEmailList();                                        
+      this.handleJunkWordsList();                                        
     }
 
-    AddNewEmailID = () => {
-        debugger;
-        this.setState({ AddBlockEmailPopup: true, errors: {}, BlockEmailID: 0, EmailIDs: "", Reason:""  });
+    AddNewJunkWords = () => {
+        this.setState({ AddJunkWordsPopup: true, errors: {}, JunkKeywordID: 0, JunkWords: "", Reason:""  });
     };
 
-    handleAddEmailClose = () => {
-        this.setState({ AddBlockEmailPopup: false });
+    handleAddJunkClose = () => {
+        this.setState({ AddJunkWordsPopup: false });
     };
 
     handleValidation() {
       let errors = this.state.errors;
       let formIsValid = true;
-      var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      if (!this.state.EmailIDs) {
+      if (!this.state.JunkWords) {
         formIsValid = false;
-        errors["EmailIDs"] = "Please enter email id";
-      } else {
-        var emailIds = this.state.EmailIDs
-        var arr = emailIds.split(",");
-        arr.forEach(element => {
-          if(!re.test(element)){
-            formIsValid = false;
-            errors["EmailIDs"] = "Invalid email id";
-          }
-        });
-      }
+        errors["JunkWords"] = "Please enter junk words";
+      } 
       if (!this.state.Reason){
         formIsValid = false;
         errors["Reason"] = "Please enter reason";
@@ -70,12 +58,12 @@ class JunkWords extends Component {
       return formIsValid;
     }
 
-    handleBlockEmailList = () =>{
+    handleJunkWordsList = () =>{
         let self = this;
         this.setState({ loading: true });
         axios({
           method: "get",
-          url: config.apiUrl + "/BlockEmail/ListEmailBlock",
+          url: config.apiUrl + "/JunkWords/ListJunkWords",
           headers: authHeader()
         }).then(function(res) {
           debugger;
@@ -98,27 +86,31 @@ class JunkWords extends Component {
       this.setState({ [e.currentTarget.name]: e.currentTarget.value });
     }
 
-    handleSaveBlockEmail = () =>{
+    handleSaveJunkWords = () =>{
       if (this.handleValidation()) {
         let self = this;
-        this.setState({ loading: true });
         axios({
           method: "post",
-          url: config.apiUrl + "/BlockEmail/AddEmailBlock",
+          url: config.apiUrl + "/JunkWords/AddJunkWords",
           headers: authHeader(),
           data: {
-            EmailID: this.state.EmailIDs,
+            JunkKeyword: this.state.JunkWords,
             Reason: this.state.Reason
           }
         }).then(function(res) {
-          debugger;
           if(res.data.message === "Success")
           {
+            self.setState({ loading: true });
             NotificationManager.success(
               "Record saved successfully"
             );
-            self.handleBlockEmailList();
-            self.handleAddEmailClose();  
+            self.handleJunkWordsList();
+            self.handleAddJunkClose();  
+          }
+          else{
+            NotificationManager.error(
+              res.data.message
+            );
           }
         }).catch(data => {
           console.log(data);
@@ -126,37 +118,38 @@ class JunkWords extends Component {
       }
     }
 
-    handleEditBlockEmail(row) {
-      debugger;
-      this.state.BlockEmailID = row["blockEmailID"];
-      this.state.EmailIDs = row["emailID"];
+    handleEditJunkWords(row) {
+      this.state.JunkKeywordID = row["junkKeywordID"];
+      this.state.JunkWords = row["junkKeyword"];
       this.state.Reason = row["reason"];
-      this.setState({ AddBlockEmailPopup: true, errors: {} });
+      this.setState({ AddJunkWordsPopup: true, errors: {} });
     }
 
-    handleUpdateBlockEmail = () =>{
+    handleUpdateJunkWords = () =>{
       if(this.handleValidation()) {
         let self = this;
-        //this.setState({ loading: true });
         axios({
           method: "post",
-          url: config.apiUrl + "/BlockEmail/UpdateEmailBlock",
+          url: config.apiUrl + "/JunkWords/UpdateJunkWords",
           headers: authHeader(),
           data: {
-            BlockEmailID: 3,
-            EmailID: this.state.EmailIDs,
+            JunkKeywordID: this.state.JunkKeywordID,
+            JunkKeyword: this.state.JunkWords,
             Reason: this.state.Reason
           }
         }).then(function(res) {
-          debugger;
           if(res.data.message === "Success")
           {
             NotificationManager.success(
               "Record updated successfully"
             );
-            self.handleBlockEmailList();
-            self.handleAddEmailClose();
-            
+            self.handleAddJunkClose();
+            self.handleJunkWordsList();            
+          }
+          else{
+            NotificationManager.error(
+              res.data.message
+            );
           }
         }).catch(data => {
           console.log(data);
@@ -164,25 +157,24 @@ class JunkWords extends Component {
       }
     }
 
-    handleDeleteBlockEmail(blockEmailID){
+    handleDeleteJunkWords(junkKeywordID){
       let self = this;
       axios({
         method: "post",
-        url: config.apiUrl + "/BlockEmail/DeleteEmailBlock?blockEmailID="+blockEmailID,
+        url: config.apiUrl + "/JunkWords/DeleteJunkWords?junkKeywordID="+junkKeywordID,
         headers: authHeader()
-        // data: {
-        //   blockEmailID: blockEmailID
-        // }
       }).then(function(res) {
-        debugger;
         if(res.data.message === "Success")
         {
           NotificationManager.success(
             "Record deleted successfully"
           );
-          self.handleBlockEmailList();
-          self.handleAddEmailClose();
-          
+          self.handleJunkWordsList();      
+        }
+        else{
+          NotificationManager.error(
+            res.data.message
+          );
         }
       }).catch(data => {
         console.log(data);
@@ -190,7 +182,7 @@ class JunkWords extends Component {
     }
 
     render(){
-        const datablockemail = this.state.JunkWordsData;
+        const datajunkwords = this.state.JunkWordsData;
         return (
           <Fragment>
             <div className="container-fluid setting-title setting-breadcrumb">
@@ -210,15 +202,15 @@ class JunkWords extends Component {
                     <button
                         type="button"
                         className="addplusbtnReport"
-                        onClick={this.AddNewEmailID}
+                        onClick={this.AddNewJunkWords}
                     >
                         + Add New
                     </button>
                     </div>
                 </div>
                 <Modal
-                  onClose={this.handleAddEmailClose}
-                  open={this.state.AddBlockEmailPopup}
+                  onClose={this.handleAddJunkClose}
+                  open={this.state.AddJunkWordsPopup}
                   modalId="BlockEmailModel"
                   overlayId="logout-ovrly"
                 >
@@ -228,7 +220,7 @@ class JunkWords extends Component {
                       src={CancelImg}
                       alt="CancelImg"
                       className="block-cancelImg"
-                      onClick={this.handleAddEmailClose}
+                      onClick={this.handleAddJunkClose}
                     />
                   </div>
                   <div class="tab-content">
@@ -251,7 +243,7 @@ class JunkWords extends Component {
                       </div>
                       <div className="row row-margin1">
                         <div className="col-md-12">
-                        <textarea
+                          <textarea
                             className="txt-1"
                             placeholder="Reason"
                             name="Reason"
@@ -269,10 +261,8 @@ class JunkWords extends Component {
                         <button
                           type="button"
                           className="butn add-cust-butn"
-                          // onClick={this.handleUpdateBlockEmail}
-                          onClick={this.state.BlockEmailID === 0? this.handleSaveBlockEmail:this.handleUpdateBlockEmail}
-                          disabled={this.state.loading}
-                        >
+                          onClick={this.state.JunkKeywordID === 0? this.handleSaveJunkWords:this.handleUpdateJunkWords}
+                          disabled={this.state.loading}>
                             SAVE
                           {/* {this.state.loading ? (
                             <FontAwesomeIcon
@@ -299,34 +289,20 @@ class JunkWords extends Component {
                 <div className="loader-icon"></div>
               ) : (
                 <ReactTable
-                  data={datablockemail}
+                  data={datajunkwords}
                   columns={[
                     {
                       Header: (
-                        <span
-                          //className={this.state.nameColor}
-                          // onClick={this.StatusOpenModel.bind(
-                          //   this,
-                          //   "reportName",
-                          //   "Report Name"
-                          // )}
-                        >
+                        <span>
                           Junk Words
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                      accessor: "emailID"
+                      accessor: "junkKeyword"
                     },
                     {
                       Header: (
-                        <span
-                          //className={this.state.scheduleColor}
-                        //   onClick={this.StatusOpenModel.bind(
-                        //     this,
-                        //     "scheduleStatus",
-                        //     "Schedule Status"
-                        //   )}
-                        >
+                        <span>
                           Reason
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -335,35 +311,21 @@ class JunkWords extends Component {
                     },
                     {
                       Header: (
-                        <span
-                            //className={this.state.createdColor}
-                          //   onClick={this.StatusOpenModel.bind(
-                          //     this,
-                          //     "createdBy",
-                          //     "Created By"
-                          //   )}
-                        >
+                        <span>
                             Entered Date
                         <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                        accessor: "blockedDate",
+                        accessor: "enteredDate",
                       },
                     {
                       Header: (
-                        <span
-                          //className={this.state.createdColor}
-                        //   onClick={this.StatusOpenModel.bind(
-                        //     this,
-                        //     "createdBy",
-                        //     "Created By"
-                        //   )}
-                        >
+                        <span>
                           Entered By
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                      accessor: "blockedBy",
+                      accessor: "enteredBy",
                       Cell: row => {
                         var ids = row.original["Id"];
                         return (
@@ -376,22 +338,12 @@ class JunkWords extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Created By: {row.original.emailID}
-                                        </p>
-                                      </b>
-                                      <p className="sub-title">
-                                        Created Date: {row.original.BlockedDate}
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <b>
-                                        <p className="title">
-                                          Updated By: {row.original.EmailId}
+                                          Updated By: {row.original.modifiedBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
                                         Updated Date:{" "}
-                                        {row.original.BlockedDate}
+                                        {row.original.modifiedDate}
                                       </p>
                                     </div>
                                   </>
@@ -424,19 +376,19 @@ class JunkWords extends Component {
                                     </div>
                                     <div>
                                       <p className="font-weight-bold blak-clr">
-                                        Delete file?
+                                        Delete record?
                                       </p>
                                       <p className="mt-1 fs-12">
                                         Are you sure you want to delete this
-                                        file?
+                                        record?
                                       </p>
                                       <div className="del-can">
                                         <a>CANCEL</a>
                                         <button
                                           className="butn"
-                                          onClick={this.handleDeleteBlockEmail.bind(
+                                          onClick={this.handleDeleteJunkWords.bind(
                                             this,
-                                            row.original.blockEmailID
+                                            row.original.junkKeywordID
                                           )}
                                         >
                                           Delete
@@ -452,7 +404,6 @@ class JunkWords extends Component {
                                   src={RedDeleteIcon}
                                   alt="del-icon"
                                   className="del-btn"
-                                  // onClick={() => this.show(this, "samdel" + ids)}
                                 />
                               </Popover>
                           </div>
@@ -460,7 +411,7 @@ class JunkWords extends Component {
                             <button
                               className="react-tabel-button editre"
                               id="p-edit-pop-2"
-                              onClick={this.handleEditBlockEmail.bind(
+                              onClick={this.handleEditJunkWords.bind(
                                 this,
                                 row.original
                               )}

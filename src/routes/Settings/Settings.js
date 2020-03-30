@@ -300,6 +300,23 @@ class Settings extends Component {
                       </Link>
                     </div>
                   </div>
+                  <div className="col-md-3">
+                    <div className="setting-cntr">
+                      <Link to="junkwords" className="setting-box">
+                        <div className="setting-icons">
+                          <img src={fileUpload} alt="file-upload" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Junk Words</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div

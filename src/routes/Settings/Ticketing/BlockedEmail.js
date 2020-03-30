@@ -27,8 +27,7 @@ class BlockEmail extends Component {
             BlockEmailID:0,
             EmailIDs: "",
             Reason: "",
-            errors: {},
-
+            errors: {}
         };
     }
 
@@ -101,7 +100,6 @@ class BlockEmail extends Component {
     handleSaveBlockEmail = () =>{
       if (this.handleValidation()) {
         let self = this;
-        this.setState({ loading: true });
         axios({
           method: "post",
           url: config.apiUrl + "/BlockEmail/AddEmailBlock",
@@ -111,14 +109,19 @@ class BlockEmail extends Component {
             Reason: this.state.Reason
           }
         }).then(function(res) {
-          debugger;
           if(res.data.message === "Success")
           {
+            this.setState({ loading: true });
             NotificationManager.success(
               "Record saved successfully"
             );
-            self.handleBlockEmailList();
             self.handleAddEmailClose();  
+            self.handleBlockEmailList();
+          }
+          else{
+            NotificationManager.error(
+              res.data.message
+            );
           }
         }).catch(data => {
           console.log(data);
@@ -127,7 +130,6 @@ class BlockEmail extends Component {
     }
 
     handleEditBlockEmail(row) {
-      debugger;
       this.state.BlockEmailID = row["blockEmailID"];
       this.state.EmailIDs = row["emailID"];
       this.state.Reason = row["reason"];
@@ -137,26 +139,27 @@ class BlockEmail extends Component {
     handleUpdateBlockEmail = () =>{
       if(this.handleValidation()) {
         let self = this;
-        //this.setState({ loading: true });
         axios({
           method: "post",
           url: config.apiUrl + "/BlockEmail/UpdateEmailBlock",
           headers: authHeader(),
           data: {
-            BlockEmailID: 3,
+            BlockEmailID: this.state.BlockEmailID,
             EmailID: this.state.EmailIDs,
             Reason: this.state.Reason
           }
         }).then(function(res) {
-          debugger;
           if(res.data.message === "Success")
           {
             NotificationManager.success(
               "Record updated successfully"
             );
-            self.handleBlockEmailList();
-            self.handleAddEmailClose();
-            
+            self.handleAddEmailClose(); 
+            self.handleBlockEmailList();          
+          }else{
+            NotificationManager.error(
+              res.data.message
+            );
           }
         }).catch(data => {
           console.log(data);
@@ -170,9 +173,6 @@ class BlockEmail extends Component {
         method: "post",
         url: config.apiUrl + "/BlockEmail/DeleteEmailBlock?blockEmailID="+blockEmailID,
         headers: authHeader()
-        // data: {
-        //   blockEmailID: blockEmailID
-        // }
       }).then(function(res) {
         debugger;
         if(res.data.message === "Success")
@@ -180,9 +180,12 @@ class BlockEmail extends Component {
           NotificationManager.success(
             "Record deleted successfully"
           );
-          self.handleBlockEmailList();
-          self.handleAddEmailClose();
-          
+          self.handleBlockEmailList();       
+        }
+        else{
+          NotificationManager.error(
+            res.data.message
+          );
         }
       }).catch(data => {
         console.log(data);
@@ -264,12 +267,9 @@ class BlockEmail extends Component {
                         </div>
                       </div>
                       <div className="btn-block">
-                        
-                        {/* <Link onClick={this.handleAddCustomerSave}> */}
                         <button
                           type="button"
                           className="butn add-cust-butn"
-                          // onClick={this.handleUpdateBlockEmail}
                           onClick={this.state.BlockEmailID === 0? this.handleSaveBlockEmail:this.handleUpdateBlockEmail}
                           disabled={this.state.loading}
                         >
@@ -303,14 +303,7 @@ class BlockEmail extends Component {
                   columns={[
                     {
                       Header: (
-                        <span
-                          //className={this.state.nameColor}
-                          // onClick={this.StatusOpenModel.bind(
-                          //   this,
-                          //   "reportName",
-                          //   "Report Name"
-                          // )}
-                        >
+                        <span>
                           Email Id
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -319,14 +312,7 @@ class BlockEmail extends Component {
                     },
                     {
                       Header: (
-                        <span
-                          //className={this.state.scheduleColor}
-                        //   onClick={this.StatusOpenModel.bind(
-                        //     this,
-                        //     "scheduleStatus",
-                        //     "Schedule Status"
-                        //   )}
-                        >
+                        <span>
                           Reason
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -335,14 +321,7 @@ class BlockEmail extends Component {
                     },
                     {
                       Header: (
-                        <span
-                            //className={this.state.createdColor}
-                          //   onClick={this.StatusOpenModel.bind(
-                          //     this,
-                          //     "createdBy",
-                          //     "Created By"
-                          //   )}
-                        >
+                        <span>
                             Blocked Date
                         <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -351,14 +330,7 @@ class BlockEmail extends Component {
                       },
                     {
                       Header: (
-                        <span
-                          //className={this.state.createdColor}
-                        //   onClick={this.StatusOpenModel.bind(
-                        //     this,
-                        //     "createdBy",
-                        //     "Created By"
-                        //   )}
-                        >
+                        <span>
                           Blocked By
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
@@ -376,7 +348,7 @@ class BlockEmail extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.emailId}
+                                          Updated By: {row.original.modifiedBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
@@ -442,7 +414,6 @@ class BlockEmail extends Component {
                                   src={RedDeleteIcon}
                                   alt="del-icon"
                                   className="del-btn"
-                                  // onClick={() => this.show(this, "samdel" + ids)}
                                 />
                               </Popover>
                           </div>
