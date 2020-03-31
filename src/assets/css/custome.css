@@ -1839,7 +1839,7 @@ textarea:focus {
   outline: none;
 } */
 a:focus, a:hover:focus {
-  outline: 1.5px #7aacfe solid;
+  outline: 1.5px #e5efff solid;
 }
 select {
   appearance: none;
@@ -1850,7 +1850,7 @@ select {
 body {
   font-family: "Lato", sans-serif !important;
   background-color: #f5f8f9 !important;
-  color: #4a4a4a;
+  color: #4a4a4a !important;
 }
 .chat-left-height::-webkit-scrollbar,
 .chat-user-det::-webkit-scrollbar {
@@ -2297,6 +2297,11 @@ table tr th:last-child {
   background-color: #fff;
   padding: 4px 17px 6px;
   cursor: pointer;
+  color: #4a4a4a;
+  z-index: 1;
+}
+.float-search:hover {
+  color: #4a4a4a;
 }
 .search-icon {
   width: 15px;
