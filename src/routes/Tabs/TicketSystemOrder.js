@@ -8,12 +8,11 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../../helpers/config";
 import ReactAutocomplete from "react-autocomplete";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
+import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -98,7 +97,7 @@ class TicketSystemOrder extends Component {
     this.handleGetChannelOfPurchaseList();
   }
   componentDidUpdate() {
-    //debugger
+    debugger
     var OderData = this.state.ShowOderdData;
     if (OderData === true) {
       if (this.state.showOrderData === true) {
@@ -311,11 +310,12 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderSearchData(OrdData, e) {
-    //
-    e.preventDefault();
+    debugger;
     let self = this;
     var CustID = this.props.custDetails;
-    if (OrdData === 1) {
+    
+    if (OrdData === "1") {
+      e.preventDefault();
       if (this.state.custAttachOrder === 0) {
         if (this.state.orderNumber.length > 0) {
           axios({
@@ -328,7 +328,7 @@ class TicketSystemOrder extends Component {
             }
           })
             .then(function(res) {
-              //
+              debugger;
               let Msg = res.data.message;
               let mainData = res.data.responseData;
 
@@ -356,7 +356,7 @@ class TicketSystemOrder extends Component {
           });
         }
       }
-    } else if (OrdData === 2) {
+    } else if (OrdData === "2") {
       if (this.state.custAttachOrder === 0) {
         if (this.state.ModalorderNumber.length > 0) {
           axios({
@@ -408,8 +408,8 @@ class TicketSystemOrder extends Component {
         }
       })
         .then(function(res) {
-          //
-          let Msg = res.data.message;
+         debugger
+          // let Msg = res.data.message;
           let mainData = res.data.responseData;
 
           self.handleChangeToggle();
@@ -423,7 +423,7 @@ class TicketSystemOrder extends Component {
             }
           }
           self.setState({
-            message: Msg,
+            message: "Success",
             orderDetailsData: mainData,
             OrderSubItem,
             orderNumber: ""
@@ -435,7 +435,7 @@ class TicketSystemOrder extends Component {
     }
   }
   hadleAddManuallyOrderData() {
-    
+    debugger
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -465,7 +465,7 @@ class TicketSystemOrder extends Component {
         }
       })
         .then(function(res) {
-          //
+         debugger
           let status = res.data.message;
 
           if (status === "Success") {
@@ -1045,7 +1045,7 @@ class TicketSystemOrder extends Component {
                   src={SearchBlackImg}
                   alt="Search"
                   className="searchtextimgpopup"
-                  onClick={this.handleOrderSearchData.bind(this, 2)}
+                  onClick={this.handleOrderSearchData.bind(this, "2")}
                 />
                 {this.state.ModalorderNumber.length === 0 && (
                   <p
@@ -1297,7 +1297,7 @@ class TicketSystemOrder extends Component {
                 >
                   <form
                     name="form"
-                    onSubmit={this.handleOrderSearchData.bind(this, 1)}
+                    onSubmit={this.handleOrderSearchData.bind(this, "1")}
                   >
                     <div>
                       <input
@@ -1317,7 +1317,7 @@ class TicketSystemOrder extends Component {
                         src={SearchBlackImg}
                         alt="Search"
                         className="systemorder-imgsearch"
-                        onClick={this.handleOrderSearchData.bind(this, 1)}
+                        onClick={this.handleOrderSearchData.bind(this, "1")}
                         // disabled={this.state.custAttachOrder === 1 ? true : false}
                       />
                     </div>

@@ -5,9 +5,7 @@ import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
 import { Popover } from "antd";
 import config from "../../helpers/config";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
 
 class TicketSystemTask extends Component {
@@ -26,8 +24,7 @@ class TicketSystemTask extends Component {
       selectedDepartment: "",
       selectedFunction: "",
       selectedAssignTo: "",
-      selectedPriority: "",
-      
+      selectedPriority: ""
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -46,13 +43,11 @@ class TicketSystemTask extends Component {
   }
 
   componentDidUpdate() {
-    
-      if (this.props.checkTask === true) {
-        if (this.props.ticket_IDS) {
-          this.handleGetTaskGridData(this.props.ticket_IDS);
-        }
+    if (this.props.checkTask === true) {
+      if (this.props.ticket_IDS) {
+        this.handleGetTaskGridData(this.props.ticket_IDS);
       }
-    
+    }
   }
 
   ////handle Get Task Grid Data
@@ -67,12 +62,12 @@ class TicketSystemTask extends Component {
       }
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
         if (status === "Success") {
-          self.setState({ taskData: data});
+          self.setState({ taskData: data });
           // self.props.checkTask = false;
           self.props.parentCallBackFuncation("task");
         } else {
@@ -95,6 +90,7 @@ class TicketSystemTask extends Component {
     }
   }
 
+  ////handle get department list
   handleGetDepartmentList() {
     let self = this;
     axios({
