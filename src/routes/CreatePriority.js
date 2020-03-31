@@ -1436,7 +1436,7 @@ class CreatePriority extends Component {
                       ]}
                       loading={this.state.loading}
                       noDataContent="No Record Found"
-                      pagination={true}
+                      pagination={false}
                       dataSource={this.state.priorityData}
                       components={this.components}
                       onRow={(record, index) => ({

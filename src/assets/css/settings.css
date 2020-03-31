@@ -2427,6 +2427,24 @@
   /* font-size: 12px; */
   padding: 20px 25px;
 }
+.table-priority {
+  overflow: auto;
+  max-height: 444px;
+}
+.table-priority::-webkit-scrollbar {
+width: 7px;
+}
+.table-priority::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 10px;
+}
+.table-priority::-webkit-scrollbar-thumb {
+background: #cac8c8;
+border-radius: 10px;
+}
+.table-priority::-webkit-scrollbar-thumb:hover {
+background: #a5a3a3;
+}
 .claim-tableData table th {
   font-size: 12px;
   padding: 20px 18px;
