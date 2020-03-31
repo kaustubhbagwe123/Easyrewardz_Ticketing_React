@@ -96,7 +96,7 @@ class TicketSystemOrder extends Component {
     this.handleGetChannelOfPurchaseList();
   }
   componentDidUpdate() {
-    debugger
+    // debugger
     var OderData = this.props.ShowOderdData;
     if (OderData === true) {
         var ticketIDS = this.props.ticket_IDS;

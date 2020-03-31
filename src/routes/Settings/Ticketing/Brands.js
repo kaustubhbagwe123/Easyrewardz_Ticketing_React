@@ -12,7 +12,7 @@ import config from "../../../helpers/config";
 import axios from "axios";
 import { authHeader } from "../../../helpers/authHeader";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import ActiveStatus from "../../activeStatus";
@@ -1233,7 +1233,6 @@ class Brands extends Component {
                           accessor: "actiondept",
                           Cell: row => {
                             var brand_ID = row.original["brandID"];
-                            debugger;
                             return (
                               <>
                                 <span>

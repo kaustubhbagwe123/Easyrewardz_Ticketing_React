@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
-import ReactTable from "react-table";
 import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
+import DelBigIcon from "./../../assets/Images/del-big.png";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
-import { Popover } from "antd";
+import { Popover,Table } from "antd";
 import config from "../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
@@ -69,8 +69,6 @@ class TicketSystemTask extends Component {
 
         if (status === "Success") {
           self.setState({ taskData: data });
-          // self.props.checkTask = false;
-          
         } else {
           self.setState({ taskData: [] });
            
@@ -216,12 +214,14 @@ class TicketSystemTask extends Component {
   };
 
   handleCreateTask() {
+    debugger
     if (this.validator.allValid()) {
       if (this.state.taskfield) {
         var taskData = [];
         taskData = this.state.taskData;
 
-        this.state.taskfield["ticketingTaskID"] = taskData.length + 1;
+        this.state.taskfield["ID"] = taskData.length + 1;
+        this.state.taskfield["ticketingTaskID"] = 0;
         //  var taskId= this.state.taskfield["ID"];
         taskData.push(this.state.taskfield);
         {
@@ -232,6 +232,7 @@ class TicketSystemTask extends Component {
           //  taskId : taskData.length + 1,
           taskfield: {
             ticketingTaskID: 0,
+            ID: 0,
             taskTitle: "",
             taskDescription: "",
             Department: "",
@@ -491,88 +492,72 @@ class TicketSystemTask extends Component {
                   data-parent="#accordion"
                 >
                   <div className="card-body systemtaskreact">
-                    <ReactTable
-                      data={taskData}
-                      columns={[
+                    
+                    <Table columns={[
                         {
-                          Header: <span>ID</span>,
-                          accessor: "ticketingTaskID"
+                          title: 'ID', dataIndex: 'ID' 
                         },
                         {
-                          Header: <span>Task Title</span>,
-                          accessor: "taskTitle"
+                          title: 'Task Title', dataIndex: 'taskTitle' 
                         },
                         {
-                          Header: <span>Assign To</span>,
-                          accessor: "assignName"
+                          title: 'Assign To',
+                          dataIndex: "assignName" 
                         },
                         {
-                          Header: <span>Actions</span>,
-                          accessor: "actionReport",
-                          Cell: row => {
-                            // debugger
-                            var ids = row.original["ticketingTaskID"];
+                          titleL:'Actions',
+                          dataIndex: "",
+                          render: (row,data) => {
+                            debugger
+                            var ids = row.ID;
                             return (
-                              <div>
-                                <Popover
-                                  content={
-                                    <div className="d-flex general-popover popover-body">
-                                      <div>
-                                        <p className="font-weight-bold blak-clr">
-                                          Delete file?
-                                        </p>
-                                        <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
-                                        </p>
-                                        <div className="del-can">
-                                          <a
-                                            className="canblue"
-                                            onClick={() =>
-                                              this.hide(this, "samdel" + ids)
-                                            }
-                                          >
-                                            CANCEL
-                                          </a>
-                                          <button
-                                            className="butn"
-                                            type="button"
-                                            onClick={() => {
-                                              this.handleTaskDelete(
-                                                row.original.ticketingTaskID
-                                              );
-                                            }}
-                                          >
-                                            Delete
-                                          </button>
+                              <>
+                                 <Popover
+                                    content={
+                                      <div className="d-flex general-popover popover-body">
+                                        <div className="del-big-icon">
+                                          <img
+                                            src={DelBigIcon}
+                                            alt="del-icon"
+                                          />
+                                        </div>
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            Delete file?
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            Are you sure you want to delete this
+                                            file?
+                                          </p>
+                                          <div className="del-can">
+                                            <a href="#!">CANCEL</a>
+                                            <button
+                                              className="butn"
+                                              type="button"
+                                              onClick={this.handleTaskDelete.bind(this,ids)}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                  trigger="click"
-                                >
-                                  <img
-                                    src={DeleteIcon}
-                                    alt="del-icon"
-                                    className="downloadaction"
-                                  />
-                                </Popover>
-                              </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      src={DeleteIcon}
+                                      alt="del-icon"
+                                      className="del-btn"
+                                    />
+                                  </Popover>
+                              </>
                             );
                           }
                         }
                       ]}
-                      // resizable={false}
-                      defaultPageSize={5}
-                      showPagination={false}
-                      defaultSorted={[
-                        {
-                          id: "ticketingTaskID",
-                          desc: true
-                        }
-                      ]}
-                    />
+                       dataSource={taskData} 
+                       pagination={false}/>
                   </div>
                 </div>
               </div>

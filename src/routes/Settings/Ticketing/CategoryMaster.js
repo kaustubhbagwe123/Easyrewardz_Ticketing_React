@@ -1536,7 +1536,7 @@ class CategoryMaster extends Component {
         .then(function(res) {
           debugger;
           let status = res.data.message;
-          // let data = res.data.responseData;
+          let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
