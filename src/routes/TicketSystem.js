@@ -1349,12 +1349,14 @@ class TicketSystem extends Component {
           var Ticket_title = data.ticketTitle;
           var Ticket_details = data.ticketdescription;
           var brand_Id = data.brandID;
+          var selectedTicketPriority=data.priortyID
           var category_Id = parseInt(data.categoryID);
           var subCategory_Id = parseInt(data.subCategoryID);
           var issue_type = parseInt(data.issueTypeID);
           var purchase_Id = data.channelOfPurchaseID;
           var ticketAction_Id = data.ticketActionTypeID;
           var attachementDetails = data.attachment;
+          
           var checkALert = data.ticketingMailerQue.alertID;
           var CheckCustomerCmt = data.ticketingMailerQue.isCustomerComment;
           var storeCheck = data.stores;
@@ -1394,6 +1396,7 @@ class TicketSystem extends Component {
           });
           }
           self.setState({
+            selectedTicketPriority,
             titleSuggValue: Ticket_title,
             ticketDetails: Ticket_details,
             selectedBrand: brand_Id,
@@ -1760,7 +1763,7 @@ class TicketSystem extends Component {
                                 id={item.priortyName}
                                 value={item.priorityID}
                                 onChange={this.setTicketPriorityValue}
-                                // checked={this.}
+                                checked={item.priorityID===this.state.selectedTicketPriority}
                               />
                               <label
                                 htmlFor={item.priortyName}
