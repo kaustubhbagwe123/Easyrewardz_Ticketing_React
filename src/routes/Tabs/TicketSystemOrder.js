@@ -97,7 +97,7 @@ class TicketSystemOrder extends Component {
     this.handleGetChannelOfPurchaseList();
   }
   componentDidUpdate() {
-    debugger
+    // debugger
     var OderData = this.state.ShowOderdData;
     if (OderData === true) {
       if (this.state.showOrderData === true) {
