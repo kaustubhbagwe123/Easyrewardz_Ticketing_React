@@ -4304,6 +4304,13 @@ class MyTicketList extends Component {
                     className="table-cntr mt-3 mtictab table-responsive"
                     style={{ overflow: "initial" }}
                   >
+                    <a href="#!"
+                          className="float-search"
+                          onClick={this.toggleSearch}
+                        >
+                          <small>{TitleChange}</small>
+                          {ImgChange}
+                        </a>
                     <div>
                       <Collapse isOpen={this.state.collapseSearch}>
                         <Card>
@@ -6745,13 +6752,6 @@ class MyTicketList extends Component {
                               }
                             ]}
                           />
-                        </div>
-                        <div
-                          className="float-search"
-                          onClick={this.toggleSearch}
-                        >
-                          <small>{TitleChange}</small>
-                          {ImgChange}
                         </div>
                       </div>
                     )}

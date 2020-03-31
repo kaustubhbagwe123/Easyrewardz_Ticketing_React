@@ -1839,7 +1839,8 @@ textarea:focus {
   outline: none;
 } */
 a:focus, a:hover:focus {
-  outline: 1.5px #e5efff solid;
+  outline: 1.5px #7aacfe solid;
+  /* outline: 1.5px #e5efff solid; */
 }
 select {
   appearance: none;
