@@ -39,9 +39,7 @@ import TicketActionType from "./TicketActionType";
 import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
 import Select from "react-select";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
 import { CSVLink } from "react-csv";
@@ -282,7 +280,12 @@ class MyTicketList extends Component {
       isRed: false,
       isWhite: false,
       isGreen: false,
-      isYellow: false
+      isYellow: false,
+      sticketStatusFilterCheckbox: "",
+      scategoryFilterCheckbox: "",
+      spriorityFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      sassignedToFilterCheckbox: ""
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -552,7 +555,20 @@ class MyTicketList extends Component {
     this.state.sortFilterAssigneeData = [];
     this.state.sortAllData = [];
     var ticketStatus = 0;
-
+    this.setState({
+      sticketStatusFilterCheckbox: "",
+      scategoryFilterCheckbox: "",
+      spriorityFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      sassignedToFilterCheckbox: "",
+      sortColumnName: "",
+      sortHeader: "",
+      statusColor: "",
+      categoryColor: "",
+      priorityColor: "",
+      assignColor: "",
+      creationColor: ""
+    });
     if (TabId === "Escalation" || TabId === undefined) {
       ticketStatus = 1001;
       this.setState({
@@ -2359,11 +2375,137 @@ class MyTicketList extends Component {
   };
 
   StatusOpenModel(data, header) {
-    this.setState({
-      StatusModel: true,
-      sortColumnName: data,
-      sortHeader: header
-    });
+    debugger;
+    if (
+      this.state.sortFilterTicketData.length === 0 ||
+      this.state.sortFilterCategoryData.length === 0 ||
+      this.state.sortFilterPriorityData.length === 0 ||
+      this.state.sortFiltercreatedOnData.length === 0 ||
+      this.state.sortFilterAssigneeData.length === 0
+    ) {
+      return false;
+    }
+    if (data === "status") {
+      if (
+        this.state.scategoryFilterCheckbox !== "" ||
+        this.state.spriorityFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== "" ||
+        this.state.sassignedToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          scategoryFilterCheckbox: "",
+          spriorityFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+          sassignedToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "category") {
+      if (
+        this.state.sticketStatusFilterCheckbox !== "" ||
+        this.state.spriorityFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== "" ||
+        this.state.sassignedToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sticketStatusFilterCheckbox: "",
+          spriorityFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+          sassignedToFilterCheckbox: "",
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "priority") {
+      if (
+        this.state.sticketStatusFilterCheckbox !== "" ||
+        this.state.scategoryFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== "" ||
+        this.state.sassignedToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sticketStatusFilterCheckbox: "",
+          scategoryFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+          sassignedToFilterCheckbox: "",
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdOn") {
+      if (
+        this.state.sticketStatusFilterCheckbox !== "" ||
+        this.state.spriorityFilterCheckbox !== "" ||
+        this.state.scategoryFilterCheckbox !== "" ||
+        this.state.sassignedToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sassignedToFilterCheckbox: "",
+          scategoryFilterCheckbox: "",
+          spriorityFilterCheckbox: "",
+          sticketStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "assignedTo") {
+      if (
+        this.state.screatedOnFilterCheckbox !== "" ||
+        this.state.spriorityFilterCheckbox !== "" ||
+        this.state.scategoryFilterCheckbox !== "" ||
+        this.state.sticketStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sticketStatusFilterCheckbox: "",
+          scategoryFilterCheckbox: "",
+          spriorityFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+          StatusModel: true,
+          sortColumnName: data,
+          sortHeader: header
+        });
+      }
+    }
   }
   StatusCloseModel() {
     debugger;
@@ -2418,6 +2560,62 @@ class MyTicketList extends Component {
         tempFinalSearchTicketData = tempColor;
       } else {
         tempFinalSearchTicketData = this.state.tempSearchTicketData;
+      }
+
+      if (this.state.sortColumnName === "status") {
+        if (this.state.sticketStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "category") {
+        if (this.state.scategoryFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "priority") {
+        if (this.state.spriorityFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            scategoryFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "createdOn") {
+        if (this.state.screatedOnFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            scategoryFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "assignedTo") {
+        if (this.state.sassignedToFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            scategoryFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            screatedOnFilterCheckbox: ""
+          });
+        }
       }
     } else {
       var tempSearchTicketData = this.state.sortAllData;
@@ -2552,38 +2750,181 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
 
-  setSortCheckStatus = (column, isColor, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
 
-    var sFilterCheckbox = this.state.sFilterCheckbox;
+    var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
+    var scategoryFilterCheckbox = this.state.scategoryFilterCheckbox;
+    var spriorityFilterCheckbox = this.state.spriorityFilterCheckbox;
+    var screatedOnFilterCheckbox = this.state.screatedOnFilterCheckbox;
+    var sassignedToFilterCheckbox = this.state.sassignedToFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (isColor === "value" && isColor !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    if (column === "status" || column === "all") {
+      debugger;
+      if (type === "value" && type !== "All") {
+        sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
+          "all",
           ""
         );
+        sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sticketStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sticketStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        debugger;
+        if (sticketStatusFilterCheckbox.includes("all")) {
+          sticketStatusFilterCheckbox = "";
+        } else {
+          debugger;
+          if (this.state.sortColumnName === "status") {
+            for (let i = 0; i < this.state.sortTicketData.length; i++) {
+              sticketStatusFilterCheckbox +=
+                this.state.sortTicketData[i].ticketStatus + ",";
+            }
+            sticketStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "category" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryFilterCheckbox = scategoryFilterCheckbox.replace("all", "");
+        scategoryFilterCheckbox = scategoryFilterCheckbox.replace("all,", "");
+        if (scategoryFilterCheckbox.includes(e.currentTarget.value)) {
+          scategoryFilterCheckbox = scategoryFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scategoryFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryFilterCheckbox.includes("all")) {
+          scategoryFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "category") {
+            for (let i = 0; i < this.state.sortCategoryData.length; i++) {
+              scategoryFilterCheckbox +=
+                this.state.sortCategoryData[i].category + ",";
+            }
+            scategoryFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "priority" || column === "all") {
+      if (type === "value" && type !== "All") {
+        spriorityFilterCheckbox = spriorityFilterCheckbox.replace("all", "");
+        spriorityFilterCheckbox = spriorityFilterCheckbox.replace("all,", "");
+        if (spriorityFilterCheckbox.includes(e.currentTarget.value)) {
+          spriorityFilterCheckbox = spriorityFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          spriorityFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (spriorityFilterCheckbox.includes("all")) {
+          spriorityFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "priority") {
+            for (let i = 0; i < this.state.sortPriorityData.length; i++) {
+              spriorityFilterCheckbox +=
+                this.state.sortPriorityData[i].priority + ",";
+            }
+            spriorityFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdOn" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all", "");
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all,", "");
+        if (screatedOnFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedOnFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedOnFilterCheckbox.includes("all")) {
+          screatedOnFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "createdOn") {
+            for (let i = 0; i < this.state.sortcreatedOnData.length; i++) {
+              screatedOnFilterCheckbox +=
+                this.state.sortcreatedOnData[i].createdOn + ",";
+            }
+            screatedOnFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "assignedTo" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sassignedToFilterCheckbox = sassignedToFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sassignedToFilterCheckbox = sassignedToFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sassignedToFilterCheckbox.includes(e.currentTarget.value)) {
+          sassignedToFilterCheckbox = sassignedToFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sassignedToFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sassignedToFilterCheckbox.includes("all")) {
+          sassignedToFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "assignedTo") {
+            for (let i = 0; i < this.state.sortAssigneeData.length; i++) {
+              sassignedToFilterCheckbox +=
+                this.state.sortAssigneeData[i].assignedTo + ",";
+            }
+            sassignedToFilterCheckbox += "all";
+          }
+        }
       }
     }
 
-    var data = "";
+    var allData = this.state.sortAllData;
+
     this.setState({
+      sticketStatusFilterCheckbox,
+      scategoryFilterCheckbox,
+      spriorityFilterCheckbox,
+      screatedOnFilterCheckbox,
+      sassignedToFilterCheckbox,
       statusColor: "",
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: "",
-      sFilterCheckbox
+      creationColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "status") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sticketStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2603,7 +2944,7 @@ class MyTicketList extends Component {
         statusColor: "sort-column"
       });
     } else if (column === "category") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = scategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2620,7 +2961,7 @@ class MyTicketList extends Component {
         categoryColor: ""
       });
     } else if (column === "priority") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = spriorityFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2637,7 +2978,7 @@ class MyTicketList extends Component {
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedOnFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2656,7 +2997,7 @@ class MyTicketList extends Component {
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sassignedToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2835,7 +3176,7 @@ class MyTicketList extends Component {
     }
     return {};
   };
-  
+
   handleScheduleDateChange = e => {
     //debugger;
     let SelectData = e.currentTarget.value;
@@ -3486,11 +3827,16 @@ class MyTicketList extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
-                      onChange={this.setSortCheckStatus.bind(
-                        this,
-                        "all",
-                        "value"
-                      )}
+                      checked={
+                        this.state.sticketStatusFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.scategoryFilterCheckbox.includes("all") ||
+                        this.state.spriorityFilterCheckbox.includes("all") ||
+                        this.state.screatedOnFilterCheckbox.includes("all") ||
+                        this.state.sassignedToFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
@@ -3505,6 +3851,9 @@ class MyTicketList extends Component {
                             name="filter-type"
                             id={"fil-open" + item.ticketStatus}
                             value={item.ticketStatus}
+                            checked={this.state.sticketStatusFilterCheckbox.includes(
+                              item.ticketStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "status",
@@ -3529,6 +3878,9 @@ class MyTicketList extends Component {
                             name="filter-type"
                             id={"fil-open" + item.category}
                             value={item.category}
+                            checked={this.state.scategoryFilterCheckbox.includes(
+                              item.category
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "category",
@@ -3553,6 +3905,9 @@ class MyTicketList extends Component {
                             name="filter-type"
                             id={"fil-open" + item.priority}
                             value={item.priority}
+                            checked={this.state.spriorityFilterCheckbox.includes(
+                              item.priority
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priority",
@@ -3577,6 +3932,9 @@ class MyTicketList extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdOn}
                             value={item.createdOn}
+                            checked={this.state.screatedOnFilterCheckbox.includes(
+                              item.createdOn
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdOn",
@@ -3601,6 +3959,9 @@ class MyTicketList extends Component {
                             name="filter-type"
                             id={"fil-open" + item.assignedTo}
                             value={item.assignedTo}
+                            checked={this.state.sassignedToFilterCheckbox.includes(
+                              item.assignedTo
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "assignedTo",
@@ -5845,60 +6206,6 @@ class MyTicketList extends Component {
                                         >
                                           {this.state.agentSelection}
                                         </p>
-                                        {/* <div className="position-relative">
-                                            <div className="pagi">
-                                              <ul>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    &lt;
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    1
-                                                  </a>
-                                                </li>
-                                                <li className="active">
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    2
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    3
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    4
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    5
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    6
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a href={Demo.BLANK_LINK}>
-                                                    &gt;
-                                                  </a>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                            <div className="item-selection">
-                                              <select>
-                                                <option>30</option>
-                                                <option>50</option>
-                                                <option>100</option>
-                                              </select>
-                                              <p>Items per page</p>
-                                            </div>
-                                          </div> */}
                                         <textarea
                                           className="assign-modal-textArea"
                                           placeholder="Add Remarks"
@@ -6458,8 +6765,10 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
               >
-                <MyTicketDraft draftData={DraftDetails} history={this.props.history} />
-                
+                <MyTicketDraft
+                  draftData={DraftDetails}
+                  history={this.props.history}
+                />
               </div>
             </div>
           </div>

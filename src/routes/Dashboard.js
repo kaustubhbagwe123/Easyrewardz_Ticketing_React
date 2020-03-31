@@ -41,9 +41,7 @@ import Select from "react-select";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import SlaDue from "./SlaDue";
 import TicketStatus from "./TicketStatus";
 import TicketActionType from "./TicketActionType";
@@ -323,7 +321,12 @@ class Dashboard extends Component {
       isRed: false,
       isWhite: false,
       isGreen: false,
-      isYellow: false
+      isYellow: false,
+      sticketStatusFilterCheckbox: "",
+      scategoryFilterCheckbox: "",
+      spriorityFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      sassignedToFilterCheckbox: ""
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -762,38 +765,183 @@ class Dashboard extends Component {
     });
   };
 
-  setSortCheckStatus = (column, isColor, e) => {
+  setSortCheckStatus = (column, type, e) => {
     debugger;
 
     var itemsArray = [];
 
-    var sFilterCheckbox = this.state.sFilterCheckbox;
+    var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
+    var scategoryFilterCheckbox = this.state.scategoryFilterCheckbox;
+    var spriorityFilterCheckbox = this.state.spriorityFilterCheckbox;
+    var screatedOnFilterCheckbox = this.state.screatedOnFilterCheckbox;
+    var sassignedToFilterCheckbox = this.state.sassignedToFilterCheckbox;
 
-    var allData = this.state.sortAllData;
-    if (isColor === "value" && isColor !== "All") {
-      if (sFilterCheckbox.includes(e.currentTarget.value)) {
-        sFilterCheckbox = sFilterCheckbox.replace(
-          e.currentTarget.value + ",",
+    if (column === "status" || column === "all") {
+      debugger;
+      if (type === "value" && type !== "All") {
+        sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
+          "all",
           ""
         );
+        sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sticketStatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sticketStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
       } else {
-        sFilterCheckbox += e.currentTarget.value + ",";
+        debugger;
+        if (sticketStatusFilterCheckbox.includes("all")) {
+          sticketStatusFilterCheckbox = "";
+        } else {
+          debugger;
+          if (this.state.sortColumnName === "status") {
+            for (let i = 0; i < this.state.sortTicketData.length; i++) {
+              sticketStatusFilterCheckbox +=
+                this.state.sortTicketData[i].ticketStatus + ",";
+            }
+            sticketStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "category" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryFilterCheckbox = scategoryFilterCheckbox.replace("all", "");
+        scategoryFilterCheckbox = scategoryFilterCheckbox.replace("all,", "");
+        if (scategoryFilterCheckbox.includes(e.currentTarget.value)) {
+          scategoryFilterCheckbox = scategoryFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scategoryFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryFilterCheckbox.includes("all")) {
+          scategoryFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "category") {
+            for (let i = 0; i < this.state.sortCategoryData.length; i++) {
+              scategoryFilterCheckbox +=
+                this.state.sortCategoryData[i].category + ",";
+            }
+            scategoryFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "priority" || column === "all") {
+      if (type === "value" && type !== "All") {
+        spriorityFilterCheckbox = spriorityFilterCheckbox.replace("all", "");
+        spriorityFilterCheckbox = spriorityFilterCheckbox.replace("all,", "");
+        if (spriorityFilterCheckbox.includes(e.currentTarget.value)) {
+          spriorityFilterCheckbox = spriorityFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          spriorityFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (spriorityFilterCheckbox.includes("all")) {
+          spriorityFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "priority") {
+            for (let i = 0; i < this.state.sortPriorityData.length; i++) {
+              spriorityFilterCheckbox +=
+                this.state.sortPriorityData[i].priority + ",";
+            }
+            spriorityFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdOn" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all", "");
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all,", "");
+        if (screatedOnFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedOnFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedOnFilterCheckbox.includes("all")) {
+          screatedOnFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "createdOn") {
+            for (let i = 0; i < this.state.sortcreatedOnData.length; i++) {
+              screatedOnFilterCheckbox +=
+                this.state.sortcreatedOnData[i].createdOn + ",";
+            }
+            screatedOnFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "assignedTo" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sassignedToFilterCheckbox = sassignedToFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sassignedToFilterCheckbox = sassignedToFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sassignedToFilterCheckbox.includes(e.currentTarget.value)) {
+          sassignedToFilterCheckbox = sassignedToFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sassignedToFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sassignedToFilterCheckbox.includes("all")) {
+          sassignedToFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumnName === "assignedTo") {
+            for (let i = 0; i < this.state.sortAssigneeData.length; i++) {
+              sassignedToFilterCheckbox +=
+                this.state.sortAssigneeData[i].assignedTo + ",";
+            }
+            sassignedToFilterCheckbox += "all";
+          }
+        }
       }
     }
 
+    var allData = this.state.sortAllData;
+
     // var data = "";
     this.setState({
+      sticketStatusFilterCheckbox,
+      scategoryFilterCheckbox,
+      spriorityFilterCheckbox,
+      screatedOnFilterCheckbox,
+      sassignedToFilterCheckbox,
       statusColor: "",
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      sFilterCheckbox
+      
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
     } else if (column === "status") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sticketStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -813,7 +961,7 @@ class Dashboard extends Component {
         statusColor: "sort-column"
       });
     } else if (column === "category") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = scategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -830,7 +978,7 @@ class Dashboard extends Component {
         categoryColor: ""
       });
     } else if (column === "priority") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = spriorityFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -847,7 +995,7 @@ class Dashboard extends Component {
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = screatedOnFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -866,7 +1014,7 @@ class Dashboard extends Component {
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      var sItems = sFilterCheckbox.split(",");
+      var sItems = sassignedToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1922,6 +2070,61 @@ class Dashboard extends Component {
         tempFinalSearchTicketData = tempColor;
       } else {
         tempFinalSearchTicketData = this.state.tempSearchTicketData;
+      }
+      if (this.state.sortColumnName === "status") {
+        if (this.state.sticketStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "category") {
+        if (this.state.scategoryFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "priority") {
+        if (this.state.spriorityFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            scategoryFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "createdOn") {
+        if (this.state.screatedOnFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            scategoryFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            sassignedToFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumnName === "assignedTo") {
+        if (this.state.sassignedToFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sticketStatusFilterCheckbox: "",
+            scategoryFilterCheckbox: "",
+            spriorityFilterCheckbox: "",
+            screatedOnFilterCheckbox: ""
+          });
+        }
       }
     } else {
       var tempSearchTicketData = this.state.sortAllData;
@@ -4036,6 +4239,15 @@ class Dashboard extends Component {
                       name="filter-type"
                       id={"fil-open"}
                       value="all"
+                      checked={
+                        this.state.sticketStatusFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.scategoryFilterCheckbox.includes("all") ||
+                        this.state.spriorityFilterCheckbox.includes("all") ||
+                        this.state.screatedOnFilterCheckbox.includes("all") ||
+                        this.state.sassignedToFilterCheckbox.includes("all")
+                      }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
@@ -4051,6 +4263,9 @@ class Dashboard extends Component {
                             name="filter-type"
                             id={"fil-open" + item.ticketStatus}
                             value={item.ticketStatus}
+                            checked={this.state.sticketStatusFilterCheckbox.includes(
+                              item.ticketStatus
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "status",
@@ -4075,6 +4290,9 @@ class Dashboard extends Component {
                             name="filter-type"
                             id={"fil-open" + item.category}
                             value={item.category}
+                            checked={this.state.scategoryFilterCheckbox.includes(
+                              item.category
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "category",
@@ -4099,6 +4317,9 @@ class Dashboard extends Component {
                             name="filter-type"
                             id={"fil-open" + item.priority}
                             value={item.priority}
+                            checked={this.state.spriorityFilterCheckbox.includes(
+                              item.priority
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priority",
@@ -4123,6 +4344,9 @@ class Dashboard extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdOn}
                             value={item.createdOn}
+                            checked={this.state.screatedOnFilterCheckbox.includes(
+                              item.createdOn
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdOn",
@@ -4147,6 +4371,9 @@ class Dashboard extends Component {
                             name="filter-type"
                             id={"fil-open" + item.assignedTo}
                             value={item.assignedTo}
+                            checked={this.state.sassignedToFilterCheckbox.includes(
+                              item.assignedTo
+                            )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "assignedTo",
@@ -4322,13 +4549,15 @@ class Dashboard extends Component {
           </div>
           <div>
             <div className="row">
-            <div className="col-md-6 col-6"><span style={{float:"right"}}>Date Range : </span></div>
-            <div className="col-md-6 col-6 p-0">
-              <div className="DashTimeRange">
-                <div className="show-grid">
-                  {/* <Col xs={3} /> */}
-                  <div id="DateTimeRangeContainerNoMobileMode">
-                    {/* <DateTimeRangeContainer
+              <div className="col-md-6 col-6">
+                <span style={{ float: "right" }}>Date Range : </span>
+              </div>
+              <div className="col-md-6 col-6 p-0">
+                <div className="DashTimeRange">
+                  <div className="show-grid">
+                    {/* <Col xs={3} /> */}
+                    <div id="DateTimeRangeContainerNoMobileMode">
+                      {/* <DateTimeRangeContainer
                       ranges={ranges}
                       start={this.state.start}
                       end={this.state.end}
@@ -4349,7 +4578,7 @@ class Dashboard extends Component {
                         value={value}
                       />
                     </DateTimeRangeContainer> */}
-                    {/* <RangePicker
+                      {/* <RangePicker
                       onChange={this.applyCallback}
                       bordered={false}
                       format="DD-MM-YYYY"
@@ -4358,12 +4587,14 @@ class Dashboard extends Component {
                         moment(this.state.end, "DD-MM-YYYY")
                       ]}
                     /> */}
-                    <DatePickerComponenet applyCallback={this.applyCallback} />
+                      <DatePickerComponenet
+                        applyCallback={this.applyCallback}
+                      />
+                    </div>
+                    {/* <Col xs={3} md={4} /> */}
                   </div>
-                  {/* <Col xs={3} md={4} /> */}
                 </div>
               </div>
-            </div>
             </div>
           </div>
         </div>
