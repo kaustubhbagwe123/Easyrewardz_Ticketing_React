@@ -435,7 +435,7 @@ class TicketSystemOrder extends Component {
     }
   }
   hadleAddManuallyOrderData() {
-    //
+    
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -1515,6 +1515,7 @@ class TicketSystemOrder extends Component {
                     value={this.state.orderMRP}
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
+                    maxLength={10}
                   />
                   {this.validator.message(
                     "mrp",
@@ -1531,6 +1532,7 @@ class TicketSystemOrder extends Component {
                     value={this.state.pricePaid}
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
+                    maxLength={10}
                   />
                   {this.validator.message(
                     "PricePaid",
@@ -1550,6 +1552,7 @@ class TicketSystemOrder extends Component {
                     value={this.state.discount}
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
+                    maxLength={10}
                   />
                   {this.validator.message(
                     "Discount",
@@ -1748,7 +1751,6 @@ class TicketSystemOrder extends Component {
                       title: "",
                       dataIndex: "orderMasterID",
                       render: (row, data) => {
-                        // //
                         return (
                           <div className="filter-checkbox">
                             <input
@@ -1822,7 +1824,6 @@ class TicketSystemOrder extends Component {
                       title: "",
                       dataIndex: "orderMasterID",
                       render: (row, data) => {
-                        // //
                         return (
                           <div className="filter-checkbox">
                             <input
@@ -1890,7 +1891,6 @@ class TicketSystemOrder extends Component {
                             title: "",
                             dataIndex: "orderMasterID",
                             render: (row, item) => {
-                              //
                               return (
                                 <div className="filter-checkbox">
                                   <input

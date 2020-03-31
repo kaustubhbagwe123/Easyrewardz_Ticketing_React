@@ -13,7 +13,7 @@ let config = {
     ],
     userTemplate:[
     ["UserName","FirstName","LastName","Mobile Number","User Email ID","User Designation","Reportee Designation","Reports To","CRM Role","Copy Escalation","Assign Escalation","Escalation Agent Name","Status"],
-    ["Shlok.barot","Shlok","barot","9665958060","mangesh@gmail.com","Executive","Manager","Chetan","Admin","Yes","Yes","Vikas","Active"],
+    ["Shlok.barot","Shlok","barot","9665958060","shlok@gmail.com","Executive","Manager","Chetan","Admin","Yes","Yes","Vikas","Active"],
     ["Mangesh.Mishra","Mangesh","Mishra","9665958060","mangesh@gmail.com","Executive","Supervisor","Chetan","Admin","Yes","Yes","Vikas","Active"]
     
     ],
@@ -23,9 +23,9 @@ let config = {
     ["Agent Call","Mail,Sms","Active"],
     ],
     categoryTemplate:[
-    ["BrandName","Category","SubCat","IssueType","Status"],
-    ["Tata","Category-1","SubCat-1","IssueType-1","Active"],
-    ["Bata","Category-2","SubCat-2","IssueType-2","In-Active"],
+    ["UserID","Brand","Category","SubCategory","IssueTypeName","Status"],
+    ["1","Tata","Category-1","SubCat-1","IssueType-1","Active"],
+    ["2","Bata","Category-2","SubCat-2","IssueType-2","In-Active"],
     ],
     slaTemplate:[
     ["IssueType","SLAByPriority","Status"],

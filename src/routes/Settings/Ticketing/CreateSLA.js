@@ -1109,7 +1109,7 @@ class CreateSLA extends Component {
       this.setState({ showProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/SLA/BulkUploadUser",
+        url: config.apiUrl + "/SLA/BulkUploadSLA",
         headers: authHeader(),
         data: formData,
         onUploadProgress: (ev = ProgressEvent) => {
@@ -1120,7 +1120,7 @@ class CreateSLA extends Component {
         .then(function(res) {
           debugger;
           let status = res.data.message;
-          let data = res.data.responseData;
+          // let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
@@ -1954,7 +1954,6 @@ class CreateSLA extends Component {
                           </div>
                           <div>
                             <span className="file-size">
-                              {" "}
                               {this.state.fileSize}
                             </span>
                           </div>

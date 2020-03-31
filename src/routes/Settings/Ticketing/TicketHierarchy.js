@@ -209,7 +209,7 @@ class TicketHierarchy extends Component {
     );
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
-    this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
+    // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   callBackEdit = (designationName, reportTo, status, rowData) => {
     debugger;

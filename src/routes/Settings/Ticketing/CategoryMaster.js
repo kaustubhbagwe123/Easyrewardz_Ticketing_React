@@ -16,7 +16,7 @@ import { Popover } from "antd";
 import DownExcel from "./../../../assets/Images/csv.png";
 import ReactTable from "react-table";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
@@ -119,7 +119,7 @@ class CategoryMaster extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
-    this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
+    // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
 
   componentDidMount() {
@@ -1536,7 +1536,7 @@ class CategoryMaster extends Component {
         .then(function(res) {
           debugger;
           let status = res.data.message;
-          let data = res.data.responseData;
+          // let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
