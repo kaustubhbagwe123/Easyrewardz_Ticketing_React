@@ -1486,12 +1486,12 @@ class TicketSystem extends Component {
             <tbody>
               <tr>
                 <td className="tdicon">
-                  <img
-                    src={ArrowLeftCircleBlue}
-                    alt="arrow-circle-left"
-                    className="bitmapback"
-                    onClick={this.handlebackprev.bind(this)}
-                  />
+                  <a href="#!" className="bitmapback" onClick={this.handlebackprev.bind(this)}>
+                    <img
+                      src={ArrowLeftCircleBlue}
+                      alt="arrow-circle-left"
+                    />
+                  </a>
                   <label className="source">Source</label>
                   <img
                     src={RedHeadPhoneIcon}
@@ -1503,12 +1503,13 @@ class TicketSystem extends Component {
                     text={CustNumber}
                     onCopy={() => this.setState({ copiedNumber: true })}
                   >
-                    <img
-                      src={CopyIcon}
-                      alt="Copy-Icon"
-                      className="bitmapheadpone"
-                      onClick={this.handleCopyToaster}
-                    />
+                    <a href="#!" className="bitmapheadpone d-inline-block p-0 ml-2" style={{ width: '20px' }} onClick={this.handleCopyToaster}>
+                      <img
+                        src={CopyIcon}
+                        alt="Copy-Icon"
+                        className="w-100"
+                      />
+                    </a>
                   </CopyToClipboard>
                   {/* {this.state.copiedNumber ? (
                     <span
@@ -2172,15 +2173,15 @@ class TicketSystem extends Component {
                             Please select Brand
                           </label>
                         ) : ( */}
-                        <a href="#!" className="kblink1">
+                        <a href="#!" className="kblink1" onClick={this.HandleKbLinkModalOpen.bind(this)}>
                           <img
                             src={KnowledgeLogo}
                             alt="KnowledgeLogo"
                             className="knoim"
-                            onClick={this.HandleKbLinkModalOpen.bind(this)}
+                            // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           />
                           <label
-                            onClick={this.HandleKbLinkModalOpen.bind(this)}
+                            // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           >
                             KB
                           </label>
@@ -2268,14 +2269,16 @@ class TicketSystem extends Component {
                         Please select Brand
                       </label>
                     ) : ( */}
-                    <a href="#!" className="kblink1">
+                    <a href="#!" className="kblink1" onClick={this.HandleKbLinkModalOpen.bind(this)}>
                       <img
                         src={KnowledgeLogo}
                         alt="KnowledgeLogo"
                         className="knoim"
-                        onClick={this.HandleKbLinkModalOpen.bind(this)}
+                        // onClick={this.HandleKbLinkModalOpen.bind(this)}
                       />
-                      <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                      <label 
+                        // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                      >
                         KB
                       </label>
                     </a>
@@ -3119,24 +3122,24 @@ class TicketSystem extends Component {
                           )}
                         </div>
                         <div>
+                          <span onClick={this.handleviewPolicyModelOpen} style={{ float: 'left' }}>
+                            <a href="#!" className="copyblue-kbtext d-inline-block">
+                              VIEW POLICY
+                              <img
+                                src={ViewBlue}
+                                alt="viewpolicy"
+                                className="viewpolicy-kb"
+                              />
+                            </a>
+                          </span>
+                        </div>
+                        <div>
                           <button
                             onClick={this.handleKbLinkPopupSearch}
                             className="kblink-search"
                           >
                             SEARCH
                           </button>
-                        </div>
-                        <div>
-                          <span onClick={this.handleviewPolicyModelOpen}>
-                            <a href="#!" className="copyblue-kbtext">
-                              VIEW POLICY
-                            </a>
-                            <img
-                              src={ViewBlue}
-                              alt="viewpolicy"
-                              className="viewpolicy-kb"
-                            />
-                          </span>
                         </div>
                         <Modal
                           open={this.state.viewPolicyModel}
