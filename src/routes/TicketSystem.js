@@ -1388,11 +1388,11 @@ class TicketSystem extends Component {
 
           ////Check Task data
 
-          // if (TaskData > 0) {
+          if (TaskData > 0) {
           self.setState({
             showTaskData: true
           });
-          // }
+          }
           self.setState({
             titleSuggValue: Ticket_title,
             ticketDetails: Ticket_details,
