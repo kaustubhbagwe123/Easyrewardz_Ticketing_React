@@ -70,7 +70,6 @@ class TicketSystemOrder extends Component {
       SelectedAllOrder: [],
       SelectedAllItem: [],
       saveLoader: false,
-      showOrderData: true
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -97,15 +96,14 @@ class TicketSystemOrder extends Component {
     this.handleGetChannelOfPurchaseList();
   }
   componentDidUpdate() {
-    // debugger
-    var OderData = this.state.ShowOderdData;
+    debugger
+    var OderData = this.props.ShowOderdData;
     if (OderData === true) {
-      if (this.state.showOrderData === true) {
         var ticketIDS = this.props.ticket_IDS;
         if (ticketIDS) {
           this.handleGetOrderData(ticketIDS);
         }
-      }
+      
     }
 
     var modeId = this.props.purchaseMode;
@@ -130,6 +128,7 @@ class TicketSystemOrder extends Component {
       }
     })
       .then(function(res) {
+        debugger
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -158,7 +157,6 @@ class TicketSystemOrder extends Component {
             orderDetailsData: selectedRow,
             OrderSubItem,
             message: "Success",
-            showOrderData: false
           });
         } else {
            
