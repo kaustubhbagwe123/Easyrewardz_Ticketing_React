@@ -123,7 +123,6 @@ class FileUploadLogs extends Component {
   }
 
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterFileType.length === 0 ||
       this.state.sortFilterFileName.length === 0 ||
@@ -132,7 +131,7 @@ class FileUploadLogs extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+
     if (data === "fileType") {
       if (
         this.state.sfileNameFilterCheckbox !== "" ||

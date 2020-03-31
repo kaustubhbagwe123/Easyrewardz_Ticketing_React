@@ -119,6 +119,7 @@ class TicketSystemOrder extends Component {
 
   ////hanlde Get Order Data
   handleGetOrderData(ticketIDS) {
+    this.props.parentCallBackFuncation("order");
     let self = this;
     axios({
       method: "post",
@@ -133,7 +134,7 @@ class TicketSystemOrder extends Component {
         let data = res.data.responseData;
         if (Msg === "Success") {
           // self.props.ShowOderdData = false;
-          self.props.parentCallBackFuncation("order");
+          
           const newSelected = Object.assign({}, self.state.CheckOrderID);
           var OrderSubItem = [];
           var selectedRow = [];
@@ -160,7 +161,7 @@ class TicketSystemOrder extends Component {
             showOrderData: false
           });
         } else {
-          self.props.parentCallBackFuncation("order");
+           
           self.setState({
             orderDetailsData: []
           });

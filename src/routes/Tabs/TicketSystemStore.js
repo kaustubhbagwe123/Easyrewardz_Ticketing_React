@@ -58,6 +58,7 @@ class TicketSystemStore extends Component {
   ////handle Get Store Details
   handleGetStoreData(ID) {
     // 
+    this.props.parentCallBackFuncation("store");
     let self = this;
 
     axios({
@@ -75,7 +76,7 @@ class TicketSystemStore extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.props.parentCallBackFuncation("store");
+       
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
