@@ -4451,7 +4451,7 @@ class MyTicketList extends Component {
                                               {item.searchName}
                                             </label>
                                             <div>
-                                              <a
+                                              <a href="#!"
                                                 className="applySearch"
                                                 onClick={this.handleApplySearch.bind(
                                                   this,
@@ -4460,15 +4460,22 @@ class MyTicketList extends Component {
                                               >
                                                 APPLY
                                               </a>
-                                              <img
-                                                src={DelSearch}
-                                                alt="del-search"
-                                                className="cr-pnt"
-                                                onClick={this.hadleSearchDeleteData.bind(
-                                                  this,
-                                                  item.searchParamID
-                                                )}
-                                              />
+                                              <a href="#!" className="m-0"
+                                              onClick={this.hadleSearchDeleteData.bind(
+                                                this,
+                                                item.searchParamID
+                                              )}
+                                              >
+                                                <img
+                                                  src={DelSearch}
+                                                  alt="del-search"
+                                                  className="cr-pnt"
+                                                  // onClick={this.hadleSearchDeleteData.bind(
+                                                  //   this,
+                                                  //   item.searchParamID
+                                                  // )}
+                                                />
+                                              </a>
                                             </div>
                                           </li>
                                         )
@@ -5488,22 +5495,22 @@ class MyTicketList extends Component {
                                       </span>
                                       Results
                                     </p>
-                                    <p
-                                      className="blue-clr fs-14"
+                                    <a href="#!"
+                                      className="blue-clr fs-14 a-mar"
                                       onClick={this.clearSearch}
                                     >
                                       CLEAR SEARCH
-                                    </p>
+                                    </a>
                                     &nbsp; &nbsp; &nbsp;
-                                    <p
-                                      className="blue-clr fs-14"
+                                    <a href="#!"
+                                      className="blue-clr fs-14 a-mar"
                                       onClick={this.setSortCheckStatus.bind(
                                         this,
                                         "all"
                                       )}
                                     >
                                       CLEAR FILTER
-                                    </p>
+                                    </a>
                                   </div>
                                   <div className="col-auto mob-mar-btm">
                                     <CSVLink

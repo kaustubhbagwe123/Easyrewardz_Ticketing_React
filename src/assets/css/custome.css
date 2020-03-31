@@ -3268,10 +3268,16 @@ table tr th:last-child {
   border-color: transparent;
   box-shadow: none;
 }
+.normal-dropdown .css-1pahdxg-control {
+  border-color: #7aacfe;
+}
 .normal-dropdown .css-yk16xz-control:hover,
 .normal-dropdown .css-1pahdxg-control:hover {
   border-color: transparent;
   box-shadow: none;
+}
+.normal-dropdown .css-1pahdxg-control:hover {
+  border-color: #7aacfe;
 }
 .normal-dropdown .css-1n7v3ny-option,
 .normal-dropdown .css-yt9ioa-option,
@@ -3373,6 +3379,12 @@ table tr th:last-child {
 }
 .my-tic-ck-height iframe {
   height: calc(100% - 50px) !important;
+}
+.a-mar {
+  margin-bottom: 14px;
+}
+.ReactTable .-pagination input:focus, .ReactTable .-pagination select:focus, .ReactTable .-pagination .-btn:focus {
+  outline: 1.5px #7aacfe solid;
 }
 /* my ticket list ends */
 

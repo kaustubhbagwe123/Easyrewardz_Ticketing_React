@@ -4599,7 +4599,7 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <div
+          <a href="#!"
             className={
               this.state.collapse
                 ? "dashboard-collapse-icon"
@@ -4616,7 +4616,7 @@ class Dashboard extends Component {
                 className="collapse-icon"
               />
             )}
-          </div>
+          </a>
           <Collapse isOpen={this.state.collapse}>
             <Card>
               <CardBody>
@@ -5207,7 +5207,7 @@ class Dashboard extends Component {
                                       {item.searchName}
                                     </label>
                                     <div>
-                                      <a
+                                      <a href="#!"
                                         className="applySearch"
                                         onClick={this.handleApplySearch.bind(
                                           this,
@@ -5216,15 +5216,22 @@ class Dashboard extends Component {
                                       >
                                         APPLY
                                       </a>
-                                      <img
-                                        src={DelSearch}
-                                        alt="del-search"
-                                        className="cr-pnt"
+                                      <a href="#!"
                                         onClick={this.hadleSearchDeleteData.bind(
                                           this,
                                           item.searchParamID
                                         )}
-                                      />
+                                      >
+                                        <img
+                                          src={DelSearch}
+                                          alt="del-search"
+                                          className="cr-pnt"
+                                          // onClick={this.hadleSearchDeleteData.bind(
+                                          //   this,
+                                          //   item.searchParamID
+                                          // )}
+                                        />
+                                      </a>
                                     </div>
                                   </li>
                                 ))}
@@ -6203,22 +6210,22 @@ class Dashboard extends Component {
                                 </span>{" "}
                                 Results
                               </p>
-                              <p
-                                className="blue-clr fs-14"
+                              <a href="#!"
+                                className="blue-clr fs-14 a-mar"
                                 onClick={this.clearSearch}
                               >
                                 CLEAR SEARCH
-                              </p>
+                              </a>
                               &nbsp; &nbsp; &nbsp;
-                              <p
-                                className="blue-clr fs-14"
+                              <a href="#!"
+                                className="blue-clr fs-14 a-mar"
                                 onClick={this.setSortCheckStatus.bind(
                                   this,
                                   "all"
                                 )}
                               >
                                 CLEAR FILTER
-                              </p>
+                              </a>
                             </div>
                             <div className="col-auto mob-mar-btm">
                               <CSVLink
@@ -6702,14 +6709,20 @@ class Dashboard extends Component {
                                 modalId="AssignPop-up"
                               >
                                 <div className="assign-modal-headerDashboard">
-                                  <img
-                                    src={BlackLeftArrow}
-                                    alt="black-left-arrow-icon"
-                                    className="black-left-arrow"
+                                  <a href="#!"
                                     onClick={this.handleAssignModalClose.bind(
                                       this
                                     )}
-                                  />
+                                  >
+                                    <img
+                                      src={BlackLeftArrow}
+                                      alt="black-left-arrow-icon"
+                                      className="black-left-arrow"
+                                      // onClick={this.handleAssignModalClose.bind(
+                                      //   this
+                                      // )}
+                                    />
+                                  </a>
                                   <label className="claim-details">
                                     Assign Tickets To
                                   </label>
