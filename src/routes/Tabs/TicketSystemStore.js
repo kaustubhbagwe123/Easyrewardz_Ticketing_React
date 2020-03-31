@@ -44,12 +44,10 @@ class TicketSystemStore extends Component {
   }
 
   componentDidUpdate() {
-    
     var storeDat = this.props.showStore_Date;
     if (storeDat === true) {
       var ticket_Id = this.props.ticket_IDS;
       if (ticket_Id) {
-        // alert('Store Data')
         this.handleGetStoreData(ticket_Id);
       }
     }
@@ -57,7 +55,8 @@ class TicketSystemStore extends Component {
 
   ////handle Get Store Details
   handleGetStoreData(ID) {
-    // 
+    //
+    this.props.parentCallBackFuncation("store");
     let self = this;
 
     axios({
@@ -69,13 +68,9 @@ class TicketSystemStore extends Component {
       }
     })
       .then(function(res) {
-        
-
-        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.props.parentCallBackFuncation("store");
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
@@ -89,7 +84,6 @@ class TicketSystemStore extends Component {
               });
             }
           }
-          
 
           self.setState({
             selectedStoreData: selectedRow,
@@ -97,7 +91,6 @@ class TicketSystemStore extends Component {
             AddSelectDetail: true,
             message: "Success"
           });
-          
         } else {
           self.props.parentCallBackFuncation("store");
           self.setState({
@@ -280,7 +273,7 @@ class TicketSystemStore extends Component {
 
   render() {
     const { SearchData, selectedStoreData } = this.state;
-  
+
     return (
       <Fragment>
         <div className="ticketSycard">
