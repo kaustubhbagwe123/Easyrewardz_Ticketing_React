@@ -464,11 +464,17 @@ a {
   vertical-align: top;
   cursor: pointer;
 }
+.loading-rectangle-cntr {
+  display: inline-block;
+  position: relative;
+  top: -15px;
+  margin-left: 10px;
+}
 .oval-55 {
   background-color: #f8e71c;
   border-radius: 100%;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   padding: 6px;
   margin-top: -3px;
 }

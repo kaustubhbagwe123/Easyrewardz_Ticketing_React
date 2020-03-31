@@ -665,12 +665,14 @@ class MyTicketTask extends Component {
             visible={this.state.TaskDetailDrawer}
           >
             <div style={{ marginLeft: "10px" }}>
-              <img
-                src={BlackLeftArrow}
-                alt="black-left-arrow-icon"
-                className="black-left-arrow"
-                onClick={this.handleTaskDetailsDrawerCls.bind(this)}
-              />
+              <a href="#!" onClick={this.handleTaskDetailsDrawerCls.bind(this)}>
+                <img
+                  src={BlackLeftArrow}
+                  alt="black-left-arrow-icon"
+                  className="black-left-arrow"
+                  // onClick={this.handleTaskDetailsDrawerCls.bind(this)}
+                />
+              </a>
               <label className="task-details">Task Details</label>
             </div>
             <hr className="claimline" />

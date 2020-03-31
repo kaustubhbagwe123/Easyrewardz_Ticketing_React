@@ -2860,19 +2860,19 @@ class MyTicket extends Component {
     // );
 
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
-      <div
+      <a href="#!"
         style={{ height: "30px", cursor: "pointer" }}
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       >
         <img src={MinusImg} alt="Minus" className="minus-img" />
-      </div>
+      </a>
     ) : (
-      <div
+      <a href="#!"
         style={{ height: "30px", cursor: "pointer" }}
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       >
         <img src={PlusImg} alt="Plush" className="plush-img" />
-      </div>
+      </a>
     );
 
     const data1 = [
@@ -2958,13 +2958,15 @@ class MyTicket extends Component {
                         {ticketDetailsData.updateDate}
                       </span>
                     </label>
-                    <img
-                      src={LoadingImg}
-                      alt="Loading"
-                      className="loading-rectangle"
-                      title="Ticket Historical"
-                      onClick={this.handleGetHistoricalData.bind(this)}
-                    />
+                    <a href="#!" className="loading-rectangle-cntr" onClick={this.handleGetHistoricalData.bind(this)}>
+                      <img
+                        src={LoadingImg}
+                        alt="Loading"
+                        className="loading-rectangle m-0"
+                        title="Ticket Historical"
+                        // onClick={this.handleGetHistoricalData.bind(this)}
+                      />
+                    </a>
                   </div>
 
                   <div className="historical-model">
@@ -3022,19 +3024,21 @@ class MyTicket extends Component {
 
                   <div className="col-12 col-xs-8 col-sm-8 col-md-9">
                     <div style={{ float: "right", marginTop: "0px" }}>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55"
-                        title="Agent List"
-                      />
-                      <label
-                        className="naman-r"
-                        onClick={this.HandlelabelModalOpen.bind(this)}
-                      >
-                        {ticketDetailsData.username}
-                      </label>
-                      <img src={DownImg} alt="down" className="down-header" />
+                      <a href="#!" className="d-inline-block" onClick={this.HandlelabelModalOpen.bind(this)}>
+                        <img
+                          src={Headphone2Img}
+                          alt="headphone"
+                          className="oval-55"
+                          title="Agent List"
+                        />
+                        <label
+                          className="naman-r"
+                          // onClick={this.HandlelabelModalOpen.bind(this)}
+                        >
+                          {ticketDetailsData.username}
+                        </label>
+                        <img src={DownImg} alt="down" className="down-header" />
+                      </a>
                       <button
                         type="button"
                         className="myticket-submit-solve-button"
@@ -3183,13 +3187,15 @@ class MyTicket extends Component {
                       <label className="mobile-no">
                         {ticketDetailsData.customerPhoneNumber}
                       </label>
-                      <img
-                        src={EyeImg}
-                        alt="eye"
-                        className="eyeImg1"
-                        title="Customer Profile"
-                        onClick={this.HandleProfileModalOpen.bind(this)}
-                      />
+                      <a href="#!" onClick={this.HandleProfileModalOpen.bind(this)}>
+                        <img
+                          src={EyeImg}
+                          alt="eye"
+                          className="eyeImg1"
+                          title="Customer Profile"
+                          // onClick={this.HandleProfileModalOpen.bind(this)}
+                        />
+                      </a>
                       <Modal
                         open={this.state.profilemodal}
                         onClose={this.HandleProfileModalClose.bind(this)}
@@ -3264,7 +3270,7 @@ class MyTicket extends Component {
                           </div>
                         </div>
                       </Modal>
-                      <div
+                      <a href="#!" onClick={this.handleBillImgModalOpen.bind(this)}
                         className=""
                         style={{
                           display: "inline",
@@ -3276,7 +3282,7 @@ class MyTicket extends Component {
                           alt="eye"
                           className="billImg"
                           title="Historical Order"
-                          onClick={this.handleBillImgModalOpen.bind(this)}
+                          // onClick={this.handleBillImgModalOpen.bind(this)}
                         />
                         <Modal
                           open={this.state.BillInvoiceModal}
@@ -3533,7 +3539,7 @@ class MyTicket extends Component {
                             </div>
                           </div>
                         </Modal>
-                      </div>
+                      </a>
                       <div className="card-space-1">
                         <label className="target-closure-date">
                           Target Closure Date &nbsp;
@@ -3909,8 +3915,8 @@ class MyTicket extends Component {
                       <div className="storebox">
                         <div className="form-group">
                           <label className="label-4 storeSpacing">Store</label>
-                          <label
-                            className="bata-rajouri-garden"
+                          <a href="#!"
+                            className="bata-rajouri-garden d-inline-block"
                             onClick={this.HandleStoreModalOpen.bind(this)}
                           >
                             {this.state.StoreName === "" ? (
@@ -3927,7 +3933,7 @@ class MyTicket extends Component {
                               className="pencilImg"
                               title="Attach Store"
                             />
-                          </label>
+                          </a>
                           <Modal
                             open={this.state.storemodal}
                             onClose={this.HandleStoreModalClose.bind(this)}
@@ -4294,8 +4300,8 @@ class MyTicket extends Component {
                         </div>
                         <div className="">
                           <label className="label-4">Product</label>
-                          <label
-                            className="bata-rajouri-garden"
+                          <a href="#!"
+                            className="bata-rajouri-garden d-inline-block"
                             onClick={this.handleOrderTableOpen.bind(this)}
                           >
                             {this.state.ProductName === "" ? (
@@ -4312,7 +4318,7 @@ class MyTicket extends Component {
                               className="pencilImg"
                               title="Attach Product"
                             />
-                          </label>
+                          </a>
                           <Modal
                             onClose={this.handleOrderTableClose.bind(this)}
                             open={this.state.OrderTable}
@@ -5721,14 +5727,14 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                            <a href="#!" className="copyblue-kbtext">
+                            <a href="#!" className="copyblue-kbtext d-inline-block">
                               VIEW POLICY
+                              <img
+                                src={ViewBlue}
+                                alt="viewpolicy"
+                                className="viewpolicy-kb"
+                              />
                             </a>
-                            <img
-                              src={ViewBlue}
-                              alt="viewpolicy"
-                              className="viewpolicy-kb"
-                            />
                           </div>
                         </div>
                       </div>
@@ -5905,12 +5911,12 @@ class MyTicket extends Component {
                     </div>
                     <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
                       <div className="inlineGridTicket">
-                        <label
+                        <a href="#!"
                           className="comment-text"
                           onClick={this.handleFreeTextCommentOpen.bind(this)}
                         >
                           Comment
-                        </label>
+                        </a>
                       </div>
                     </div>
                     {this.state.messageDetails !== null &&
@@ -6138,7 +6144,7 @@ class MyTicket extends Component {
                                           <div className="inlineGridTicket">
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
-                                              <label
+                                              <a href="#!"
                                                 className="reply-comment"
                                                 onClick={this.hanldeCommentOpen2.bind(
                                                   this,
@@ -6147,10 +6153,10 @@ class MyTicket extends Component {
                                                 )}
                                               >
                                                 Reply
-                                              </label>
+                                              </a>
                                             ) : null}
 
-                                            <label
+                                            <a href="#!"
                                               className="comment-text"
                                               onClick={this.handleCommentCollapseOpen.bind(
                                                 this,
@@ -6159,7 +6165,7 @@ class MyTicket extends Component {
                                               )}
                                             >
                                               Comment
-                                            </label>
+                                            </a>
                                           </div>
                                           <div
                                             className="row"
