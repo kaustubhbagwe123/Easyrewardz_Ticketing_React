@@ -1,342 +1,344 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from "react";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import Demo from "./../../../store/Hashtag";
-import {Link} from 'react-router-dom';
+import Demo from "../../../store/Hashtag";
+import { Link } from "react-router-dom";
 import BlackDeleteIcon from "./../../../assets/Images/del-big.png";
 import { Table } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import Braille from "./../../../assets/Images/braille.svg";
 
-
 const closest = function(el, selector, rootNode) {
-    rootNode = rootNode || document.body;
-    // console.log('rootNode:', rootNode);
-    const matchesSelector =
-      el.matches ||
-      el.webkitMatchesSelector ||
-      el.mozMatchesSelector ||
-      el.msMatchesSelector;
-    while (el) {
-      const flagRoot = el === rootNode;
-      if (flagRoot || matchesSelector.call(el, selector)) {
-        if (flagRoot) {
-          el = null;
-        }
-        break;
+  rootNode = rootNode || document.body;
+  // console.log('rootNode:', rootNode);
+  const matchesSelector =
+    el.matches ||
+    el.webkitMatchesSelector ||
+    el.mozMatchesSelector ||
+    el.msMatchesSelector;
+  while (el) {
+    const flagRoot = el === rootNode;
+    if (flagRoot || matchesSelector.call(el, selector)) {
+      if (flagRoot) {
+        el = null;
       }
-      el = el.parentElement;
+      break;
     }
-    el.setAttribute("style", "border: 50px solid red;");
-    return el;
-  };
-  
+    el = el.parentElement;
+  }
+  el.setAttribute("style", "border: 50px solid red;");
+  return el;
+};
 
 class StorePriority extends Component {
-    constructor(props) {
-        super(props);
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onDragStart = this.onDragStart.bind(this);
-        this.onDragEnter = this.onDragEnter.bind(this);
-        this.onDragEnd = this.onDragEnd.bind(this);
-        this.state = {
-          data: [
-            {
-              priorityName: "High",
-              content: (
-                <span>
-                  Admin
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id="created1"
-                  />
-                </span>
-              ),
-              key: "1",
-              createdDate: "23-May-19",
-              status: "Active",
-              action: (
-                <span>
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id="del1"
-                  />
-                  <button className="react-tabel-button" id="peditpop1">
-                    <label className="Table-action-edit-button-text">EDIT</label>
-                  </button>
-                </span>
-              )
-            },
-            {
-              priorityName: "Medium",
-              content: (
-                <span>
-                  Admin
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id="created2"
-                  />
-                </span>
-              ),
-              key: "2",
-              createdDate: "23-May-19",
-              status: "Inactive",
-              action: (
-                <span>
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id="del2"
-                  />
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">EDIT</label>
-                  </button>
-                </span>
-              )
-            },
-            {
-              priorityName: "Low",
-              content: (
-                <span>
-                  Admin
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id="created-3"
-                  />
-                </span>
-              ),
-              key: "3",
-              createdDate: "23-May-19",
-              status: "Active",
-              action: (
-                <span>
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id="del3"
-                  />
-                  <button className="react-tabel-button" id="p-edit-pop-3">
-                    <label className="Table-action-edit-button-text">EDIT</label>
-                  </button>
-                </span>
-              )
-            },
-            {
-              priorityName: "6",
-              content: (
-                <span>
-                  Admin
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id="created-4"
-                  />
-                </span>
-              ),
-              key: "4",
-              createdDate: "23-May-19",
-              status: "Inactive",
-              action: (
-                <span>
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id="del4"
-                  />
-                  <button className="react-tabel-button" id="p-edit-pop-4">
-                    <label className="Table-action-edit-button-text">EDIT</label>
-                  </button>
-                </span>
-              )
-            },
-            {
-              priorityName: "8",
-              content: (
-                <span>
-                  Admin
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id="created5"
-                  />
-                </span>
-              ),
-              key: "5",
-              createdDate: "23-May-19",
-              status: "Active",
-              action: (
-                <span>
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id="del5"
-                  />
-                  <button className="react-tabel-button" id="p-edit-pop-5">
-                    <label className="Table-action-edit-button-text">EDIT</label>
-                  </button>
-                </span>
-              )
-            }
-          ],
-          dragIndex: -1,
-          draggedIndex: -1
-        };
-        this.columns = [
-          {
-            // title: 'Created Date',
-            key: "operate",
-            render: (text, record, index) => (
-              <span>
-                {(this.state.dragIndex >= 0 &&
-                  this.state.dragIndex !== this.state.draggedIndex &&
-                  index === this.state.draggedIndex && (
-                    <span
-                      className={`drag-target-line ${
-                        this.state.draggedIndex < this.state.dragIndex
-                          ? "drag-target-top"
-                          : ""
-                      }`}
-                    />
-                  )) ||
-                  ""}
-                <a
-                  className="drag-handle"
-                  draggable="false"
-                  onMouseDown={this.onMouseDown}
-                  href="#!"
-                >
-                  <img src={Braille} alt="braille-icon" />
-                </a>
-              </span>
-            )
-          },
-          {
-            title: "Priority Name",
-            dataIndex: "priorityName",
-            key: "priorityName",
-            filterMultiple: false,
-            onFilter: (value, record) => record.priorityName.indexOf(value) === 0,
-            sorter: (a, b) => a.priorityName.length - b.priorityName.length,
-            sortDirections: ["descend", "ascend"]
-          },
-          {
-            title: "Created By",
-            dataIndex: "content",
-            key: "content",
-            filterMultiple: false,
-            onFilter: (value, record) => record.content.indexOf(value) === 0,
-            sorter: (a, b) => a.content.length - b.content.length,
-            sortDirections: ["descend", "ascend"]
-          },
-          {
-            title: "Created Date",
-            dataIndex: "createdDate",
-            key: "createdDate",
-            sortDirections: ["descend", "ascend"],
-            onFilter: (value, record) => record.createdDate.indexOf(value) === 0,
-            // defaultSortOrder: "descend",
-            sorter: (a, b) => a.createdDate.length - b.createdDate.length
-          },
-          {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            filterMultiple: false,
-            onFilter: (value, record) => record.status.indexOf(value) === 0,
-            sorter: (a, b) => a.status.length - b.status.length,
-            sortDirections: ["descend", "ascend"]
-          },
-          {
-            title: "Action",
-            dataIndex: "action",
-            key: "action",
-          }
-        ];
-      }
-    
-      onMouseDown(e) {
-        const target = this.getTrNode(e.target);
-        if (target) {
-          target.setAttribute("draggable", true);
-          target.ondragstart = this.onDragStart;
-          target.ondragend = this.onDragEnd;
+  constructor(props) {
+    super(props);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onDragStart = this.onDragStart.bind(this);
+    this.onDragEnter = this.onDragEnter.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
+    this.state = {
+      data: [
+        {
+          priorityName: "High",
+          content: (
+            <span>
+              Admin
+              <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id="created1"
+              />
+            </span>
+          ),
+          key: "1",
+          createdDate: "23-May-19",
+          status: "Active",
+          action: (
+            <span>
+              <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                id="del1"
+              />
+              <button className="react-tabel-button" id="peditpop1">
+                <label className="Table-action-edit-button-text">EDIT</label>
+              </button>
+            </span>
+          )
+        },
+        {
+          priorityName: "Medium",
+          content: (
+            <span>
+              Admin
+              <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id="created2"
+              />
+            </span>
+          ),
+          key: "2",
+          createdDate: "23-May-19",
+          status: "Inactive",
+          action: (
+            <span>
+              <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                id="del2"
+              />
+              <button className="react-tabel-button" id="p-edit-pop-2">
+                <label className="Table-action-edit-button-text">EDIT</label>
+              </button>
+            </span>
+          )
+        },
+        {
+          priorityName: "Low",
+          content: (
+            <span>
+              Admin
+              <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id="created-3"
+              />
+            </span>
+          ),
+          key: "3",
+          createdDate: "23-May-19",
+          status: "Active",
+          action: (
+            <span>
+              <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                id="del3"
+              />
+              <button className="react-tabel-button" id="p-edit-pop-3">
+                <label className="Table-action-edit-button-text">EDIT</label>
+              </button>
+            </span>
+          )
+        },
+        {
+          priorityName: "6",
+          content: (
+            <span>
+              Admin
+              <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id="created-4"
+              />
+            </span>
+          ),
+          key: "4",
+          createdDate: "23-May-19",
+          status: "Inactive",
+          action: (
+            <span>
+              <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                id="del4"
+              />
+              <button className="react-tabel-button" id="p-edit-pop-4">
+                <label className="Table-action-edit-button-text">EDIT</label>
+              </button>
+            </span>
+          )
+        },
+        {
+          priorityName: "8",
+          content: (
+            <span>
+              Admin
+              <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id="created5"
+              />
+            </span>
+          ),
+          key: "5",
+          createdDate: "23-May-19",
+          status: "Active",
+          action: (
+            <span>
+              <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                id="del5"
+              />
+              <button className="react-tabel-button" id="p-edit-pop-5">
+                <label className="Table-action-edit-button-text">EDIT</label>
+              </button>
+            </span>
+          )
         }
+      ],
+      dragIndex: -1,
+      draggedIndex: -1
+    };
+    this.columns = [
+      {
+        // title: 'Created Date',
+        key: "operate",
+        render: (text, record, index) => (
+          <span>
+            {(this.state.dragIndex >= 0 &&
+              this.state.dragIndex !== this.state.draggedIndex &&
+              index === this.state.draggedIndex && (
+                <span
+                  className={`drag-target-line ${
+                    this.state.draggedIndex < this.state.dragIndex
+                      ? "drag-target-top"
+                      : ""
+                  }`}
+                />
+              )) ||
+              ""}
+            <a
+              className="drag-handle"
+              draggable="false"
+              onMouseDown={this.onMouseDown}
+              href="#!"
+            >
+              <img src={Braille} alt="braille-icon" />
+            </a>
+          </span>
+        )
+      },
+      {
+        title: "Priority Name",
+        dataIndex: "priorityName",
+        key: "priorityName",
+        filterMultiple: false,
+        onFilter: (value, record) => record.priorityName.indexOf(value) === 0,
+        sorter: (a, b) => a.priorityName.length - b.priorityName.length,
+        sortDirections: ["descend", "ascend"]
+      },
+      {
+        title: "Created By",
+        dataIndex: "content",
+        key: "content",
+        filterMultiple: false,
+        onFilter: (value, record) => record.content.indexOf(value) === 0,
+        sorter: (a, b) => a.content.length - b.content.length,
+        sortDirections: ["descend", "ascend"]
+      },
+      {
+        title: "Created Date",
+        dataIndex: "createdDate",
+        key: "createdDate",
+        sortDirections: ["descend", "ascend"],
+        onFilter: (value, record) => record.createdDate.indexOf(value) === 0,
+        // defaultSortOrder: "descend",
+        sorter: (a, b) => a.createdDate.length - b.createdDate.length
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        filterMultiple: false,
+        onFilter: (value, record) => record.status.indexOf(value) === 0,
+        sorter: (a, b) => a.status.length - b.status.length,
+        sortDirections: ["descend", "ascend"]
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action"
       }
-      onDragStart(e) {
-        const target = this.getTrNode(e.target);
-        if (target) {
-          e.dataTransfer.effectAllowed = "move";
-          target.parentElement.ondragenter = this.onDragEnter;
-          target.parentElement.ondragover = function(ev) {
-            ev.preventDefault();
-            return true;
-          };
-          const dragIndex = target.rowIndex - 1;
-          this.setState({ dragIndex, draggedIndex: dragIndex });
-        }
-      }
-    
-      onDragEnter(e) {
-        const target = this.getTrNode(e.target);
-        this.setState({
-          draggedIndex: target ? target.rowIndex - 1 : -1
-        });
-      }
-      onDragEnd(e) {
-        const target = this.getTrNode(e.target);
-        if (target) {
-          target.setAttribute("draggable", false);
-          target.ondragstart = null;
-          target.ondragend = null;
-          target.parentElement.ondragenter = null;
-          target.parentElement.ondragover = null;
-          this.changeRowIndex();
-        }
-      }
-    
-      getTrNode(target) {
-        return closest(target, "tr");
-      }
-    
-      changeRowIndex() {
-        const result = {};
-        const currentState = this.state;
-        result.dragIndex = result.draggedIndex = -1;
-        if (
-          currentState.dragIndex >= 0 &&
-          currentState.dragIndex !== currentState.draggedIndex
-        ) {
-          const { dragIndex, draggedIndex, data: oldData } = currentState;
-          const data = [...oldData];
-          const item = data.splice(dragIndex, 1)[0];
-          data.splice(draggedIndex, 0, item);
-          result.data = data;
-          result.dragIndex = -1;
-          result.draggedIndex = -1;
-        }
-        this.setState(result);
-      }
-    render() {
-        return (
-            <Fragment>
-                 <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+    ];
+  }
+
+  onMouseDown(e) {
+    const target = this.getTrNode(e.target);
+    if (target) {
+      target.setAttribute("draggable", true);
+      target.ondragstart = this.onDragStart;
+      target.ondragend = this.onDragEnd;
+    }
+  }
+  onDragStart(e) {
+    const target = this.getTrNode(e.target);
+    if (target) {
+      e.dataTransfer.effectAllowed = "move";
+      target.parentElement.ondragenter = this.onDragEnter;
+      target.parentElement.ondragover = function(ev) {
+        ev.preventDefault();
+        return true;
+      };
+      const dragIndex = target.rowIndex - 1;
+      this.setState({ dragIndex, draggedIndex: dragIndex });
+    }
+  }
+
+  onDragEnter(e) {
+    const target = this.getTrNode(e.target);
+    this.setState({
+      draggedIndex: target ? target.rowIndex - 1 : -1
+    });
+  }
+  onDragEnd(e) {
+    const target = this.getTrNode(e.target);
+    if (target) {
+      target.setAttribute("draggable", false);
+      target.ondragstart = null;
+      target.ondragend = null;
+      target.parentElement.ondragenter = null;
+      target.parentElement.ondragover = null;
+      this.changeRowIndex();
+    }
+  }
+
+  getTrNode(target) {
+    return closest(target, "tr");
+  }
+
+  changeRowIndex() {
+    const result = {};
+    const currentState = this.state;
+    result.dragIndex = result.draggedIndex = -1;
+    if (
+      currentState.dragIndex >= 0 &&
+      currentState.dragIndex !== currentState.draggedIndex
+    ) {
+      const { dragIndex, draggedIndex, data: oldData } = currentState;
+      const data = [...oldData];
+      const item = data.splice(dragIndex, 1)[0];
+      data.splice(draggedIndex, 0, item);
+      result.data = data;
+      result.dragIndex = -1;
+      result.draggedIndex = -1;
+    }
+    this.setState(result);
+  }
+  render() {
+    return (
+      <Fragment>
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/admin/settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Store</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Store
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
             Priority
@@ -355,7 +357,7 @@ class StorePriority extends Component {
                     pagination={false}
                     dataSource={this.state.data}
                   />
-                   
+
                   <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"
@@ -857,9 +859,9 @@ class StorePriority extends Component {
             </div>
           </div>
         </div>
-            </Fragment>
-        )
-    }
+      </Fragment>
+    );
+  }
 }
 
-export default StorePriority
+export default StorePriority;

@@ -46,7 +46,7 @@ class StoreReports extends Component {
     this.setState({ ReportCreateDate: date });
   }
   handleEndDate(date) {
-    this.setState({ EndDate : date });
+    this.setState({ EndDate: date });
   }
   handleChangeTab(index) {
     this.setState({
@@ -148,13 +148,8 @@ class StoreReports extends Component {
               className="downloadaction"
             />
             <Popover content={ActionDelete} placement="bottom" trigger="click">
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    
-                  />
-                </Popover>
+              <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
+            </Popover>
             <button className="react-tabel-button editre" id="p-edit-pop-2">
               EDIT
             </button>
@@ -199,7 +194,7 @@ class StoreReports extends Component {
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">
+          <Link to="/admin/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
@@ -217,8 +212,7 @@ class StoreReports extends Component {
                 className="addplusbtnReport"
                 onClick={this.handleAddReportOpen}
               >
-              + Add
-                
+                + Add
               </button>
             </div>
           </div>
@@ -240,7 +234,7 @@ class StoreReports extends Component {
                     role="tab"
                     aria-controls="task-tab"
                     aria-selected="true"
-                    style={{pointerEvents:'none'}}
+                    style={{ pointerEvents: "none" }}
                   >
                     Task
                   </a>
@@ -254,7 +248,7 @@ class StoreReports extends Component {
                     role="tab"
                     aria-controls="claim-tab"
                     aria-selected="false"
-                    style={{pointerEvents:'none'}}
+                    style={{ pointerEvents: "none" }}
                   >
                     Claim
                   </a>
@@ -268,7 +262,7 @@ class StoreReports extends Component {
                     role="tab"
                     aria-controls="campaign-tab"
                     aria-selected="false"
-                    style={{pointerEvents:'none'}}
+                    style={{ pointerEvents: "none" }}
                   >
                     Campaign
                   </a>
@@ -309,14 +303,14 @@ class StoreReports extends Component {
                     <div className="col-md-4 ticketstrReport">
                       <label>Task Creation On</label>
                       <div className="ticketreportdat">
-                      <DatePicker
-                        selected={this.state.ReportCreateDate}
-                        onChange={this.handleReportCreateDate.bind(this)}
-                        placeholderText="Creation Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        // className="form-control"
-                      />
+                        <DatePicker
+                          selected={this.state.ReportCreateDate}
+                          onChange={this.handleReportCreateDate.bind(this)}
+                          placeholderText="Creation Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          // className="form-control"
+                        />
                       </div>
                       {/* <input
                         className="no-bg"
@@ -421,14 +415,14 @@ class StoreReports extends Component {
                     <div className="col-md-4 ticketstrReport">
                       <label>Claim Creation On</label>
                       <div className="ticketreportdat">
-                      <DatePicker
-                        selected={this.state.ReportCreateDate}
-                        onChange={this.handleReportCreateDate.bind(this)}
-                        placeholderText="Creation Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        // className="form-control"
-                      />
+                        <DatePicker
+                          selected={this.state.ReportCreateDate}
+                          onChange={this.handleReportCreateDate.bind(this)}
+                          placeholderText="Creation Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          // className="form-control"
+                        />
                       </div>
                     </div>
                   </div>
@@ -526,16 +520,16 @@ class StoreReports extends Component {
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                    <label>Campaign End Date</label>
-                    <div className="ticketreportdat">
-                      <DatePicker
-                        selected={this.state.EndDate}
-                        onChange={this.handleEndDate.bind(this)}
-                        placeholderText="End Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        // className="form-control"
-                      />
+                      <label>Campaign End Date</label>
+                      <div className="ticketreportdat">
+                        <DatePicker
+                          selected={this.state.EndDate}
+                          onChange={this.handleEndDate.bind(this)}
+                          placeholderText="End Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          // className="form-control"
+                        />
                       </div>
                       {/* <input className="no-bg" type="text" /> */}
                     </div>
@@ -548,7 +542,7 @@ class StoreReports extends Component {
                         <option>Closed</option>
                       </select>
                     </div>
-                    </div>
+                  </div>
                   <div className="row nextbutton1">
                     <div className="nextbutton">
                       <button
@@ -603,7 +597,12 @@ class StoreReports extends Component {
                     <button className="Schedulenext">SCHEDULE</button>
                   </div>
                   <div className="buttonschdulesave1">
-                    <button className="Schedulenext1" onClick={this.handleNextPopupClose}>SAVE</button>
+                    <button
+                      className="Schedulenext1"
+                      onClick={this.handleNextPopupClose}
+                    >
+                      SAVE
+                    </button>
                   </div>
                 </div>
               </div>
@@ -613,53 +612,53 @@ class StoreReports extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport">
-          <div style={{backgroundColor:"#fff"}}>
-            <ReactTable
-              data={datareport}
-              columns={columnsreport}
-              // resizable={false}
-              defaultPageSize={5}
-              showPagination={false}
-            />
-             <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
-                  </div>
+            <div style={{ backgroundColor: "#fff" }}>
+              <ReactTable
+                data={datareport}
+                columns={columnsreport}
+                // resizable={false}
+                defaultPageSize={5}
+                showPagination={false}
+              />
+              <div className="position-relative">
+                <div className="pagi">
+                  <ul>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&lt;</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>1</a>
+                    </li>
+                    <li className="active">
+                      <a href={Demo.BLANK_LINK}>2</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>3</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>4</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>5</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>6</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&gt;</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="item-selection">
+                  <select>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Fragment>
