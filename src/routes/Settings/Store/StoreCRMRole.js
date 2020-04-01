@@ -2,310 +2,772 @@ import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import Demo from "../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
+import Sorting from "./../../../assets/Images/sorting.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
+import StoreCRMService from "./../Service/StoreCRMRoleService";
+import { NotificationManager } from "react-notifications";
+import Modal from "react-responsive-modal";
+import matchSorter from "match-sorter";
 
 class StoreCRMRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: ""
+      fileName: "",
+      crmRoles: [],
+      ModulesEnabled: "",
+      ModulesDisabled: "",
+      modulesList: [
+        { moduleId: 1, moduleName: "Dashboard", isActive: true },
+        { moduleId: 2, moduleName: "Tasks", isActive: false },
+        { moduleId: 3, moduleName: "Claim", isActive: true },
+        { moduleId: 4, moduleName: "Notification", isActive: true },
+        { moduleId: 5, moduleName: "Settings", isActive: true },
+        { moduleId: 6, moduleName: "Reports", isActive: false }
+      ],
+      RoleName: "",
+      checkRoleName: "",
+      RoleisActive: "true",
+      editSaveLoading: false,
+      editRoleNameValidMsg: "",
+      editCheckRoleName: "",
+      modulesData: [],
+      modulestatus: "",
+      filterTxtValue: "",
+      sFilterCheckbox: "",
+      sortFilterRoleName: [],
+      sortFilterCreated: [],
+      sortFilterStatus: [],
+      tempcrmRoles: [],
+      StatusModel: false,
+      updateRoleName: "",
+      updateRoleisActive: "",
+      updateModulesEnabled: "",
+      updateModulesDisabled: "",
+      updateModulesList: [],
+      sroleNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisRoleActiveFilterCheckbox: "",
+      sortColumn: "",
+      roleColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortHeader: "",
+      sortAllData: [],
+      sortRoleName: [],
+      sortCreated: [],
+      sortStatus: [],
     };
+    this.StoreCRMService = new StoreCRMService();
+    this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
   }
-  handleTabChange(index){
+
+  componentDidMount() {
+    this.handleGetCRMGridData();
+  }
+  handleTabChange(index) {
     this.setState({
-      tabIndex:index
-    })
+      tabIndex: index
+    });
   }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
 
+  /// Role name onchange
+  handleRoleName(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+  //// Status on change
+  handleRoleisActive = e => {
+    debugger;
+    let RoleisActive = e.currentTarget.value;
+    this.setState({ RoleisActive });
+  };
+  ///handle change Module
+  checkModule = async moduleId => {
+    debugger;
+    let modulesList = [...this.state.modulesList],
+      isActive,
+      ModulesEnabled = "",
+      ModulesDisabled = "";
+    for (let i = 0; i < modulesList.length; i++) {
+      if (modulesList[i].moduleId === moduleId) {
+        isActive = modulesList[i].isActive;
+        modulesList[i].isActive = !isActive;
+      }
+    }
+    for (let i = 0; i < modulesList.length; i++) {
+      if (modulesList[i].isActive === true) {
+        ModulesEnabled += modulesList[i].moduleId + ",";
+      } else if (modulesList[i].isActive === false) {
+        ModulesDisabled += modulesList[i].moduleId + ",";
+      }
+    }
+    await this.setState({
+      modulesList,
+      ModulesEnabled,
+      ModulesDisabled
+    });
+  };
+
+  ////Get CRM grid data
+  handleGetCRMGridData() {
+    let self = this;
+    this.StoreCRMService.GetCRMGridData()
+      .then(res => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ crmRoles: data });
+        } else {
+          self.setState({ crmRoles: [] });
+        }
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].roleName]) {
+              distinct.push(data[i].roleName);
+              unique[data[i].roleName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortRoleName.push({ roleName: distinct[i] });
+            self.state.sortFilterRoleName.push({ roleName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortCreated.push({ createdBy: distinct[i] });
+            self.state.sortFilterCreated.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].isRoleActive]) {
+              distinct.push(data[i].isRoleActive);
+              unique[data[i].isRoleActive] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortStatus.push({ isRoleActive: distinct[i] });
+            self.state.sortFilterStatus.push({ isRoleActive: distinct[i] });
+          }
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+  }
+
+  /// hanlde module default
+  handleModulesDefault = async () => {
+    debugger;
+    let modulesList = [...this.state.modulesList],
+      isActive,
+      ModulesEnabled = "",
+      ModulesDisabled = "";
+    for (let i = 0; i < modulesList.length; i++) {
+      if (modulesList[i].isActive === true) {
+        ModulesEnabled += modulesList[i].moduleId + ",";
+      } else if (modulesList[i].isActive === false) {
+        ModulesDisabled += modulesList[i].moduleId + ",";
+      }
+    }
+    await this.setState({
+      ModulesEnabled,
+      ModulesDisabled
+    });
+  };
+  //// delete CRM role
+  handleDeleteCrmRole(Id) {
+    debugger;
+    let self = this;
+    this.StoreCRMService.DeleteCRMData(Id)
+      .then(res => {
+        debugger;
+        let status = res.data.message;
+        if (status === "Record In use") {
+          NotificationManager.error("Record in use.");
+        } else if (status === "Record deleted Successfully") {
+          NotificationManager.success("Record deleted Successfully.");
+          self.handleGetCRMGridData();
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+  }
+
+  //// hanlde Create and Update function
+  hanldeCreateUpdateCrmRole(e, addUpdate, crmRoleId) {
+    debugger;
+    let self = this;
+    let RoleisActive,
+      CRMRoleID,
+      RoleName,
+      ModulesEnabled = "",
+      ModulesDisabled = "";
+    if (e === "add") {
+      if (self.state.RoleisActive === "true") {
+        RoleisActive = true;
+      } else if (self.state.RoleisActive === "false") {
+        RoleisActive = false;
+      }
+    } else if (e === "update") {
+      if (this.state.modulestatus === "Active") {
+        RoleisActive = true;
+      } else if (this.state.modulestatus === "Inactive") {
+        RoleisActive = false;
+      }
+    }
+    if (e === "add") {
+      if (self.state.RoleName === "") {
+        this.setState({ checkRoleName: "Required" });
+        return false;
+      }
+      CRMRoleID = 0;
+      RoleName = self.state.RoleName;
+      ModulesEnabled = self.state.ModulesEnabled;
+      ModulesDisabled = self.state.ModulesDisabled;
+    } else if (e === "update") {
+      if (this.state.editRoleName == "") {
+        this.setState({ editCheckRoleName: "Required" });
+        return false;
+      }
+
+      CRMRoleID = this.state.crmRoleID;
+      RoleName = this.state.editRoleName;
+
+      for (let j = 0; j < this.state.modulesData.length; j++) {
+        if (this.state.modulesData[j].modulestatus) {
+          ModulesEnabled += this.state.modulesData[j].moduleID + ",";
+        } else {
+          ModulesDisabled += this.state.modulesData[j].moduleID + ",";
+        }
+      }
+    }
+    this.StoreCRMService.CreateUpdateCRM(
+      CRMRoleID,
+      RoleName,
+      RoleisActive,
+      ModulesEnabled,
+      ModulesDisabled
+    )
+      .then(res => {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          if (e === "add") {
+            NotificationManager.success("CRM Role added successfully.");
+            self.setState({
+              RoleName: "",
+              RoleisActive: "true",
+              ModulesEnabled: "",
+              ModulesDisabled: "",
+              updateModulesEnabled: "",
+              updateModulesDisabled: ""
+            });
+            self.handleGetCRMGridData();
+          } else if (e === "update") {
+            self.toggleEditModal();
+            self.setState({
+              editSaveLoading: false,
+              editRoleNameValidMsg: ""
+            });
+            NotificationManager.success("CRM Role updated successfully.");
+            self.handleGetCRMGridData();
+          }
+        } else if (status === "Record Already Exists ") {
+          if (e === "add") {
+            NotificationManager.error("Record Already Exists ");
+          }
+        } else {
+          if (e === "add") {
+            NotificationManager.error("CRM Role not added.");
+          } else if (e === "update") {
+            self.setState({ editSaveLoading: false });
+            NotificationManager.error("CRM Role not updated.");
+          }
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+  }
+
+  //// Store CRM data for edit
+  hanldeEditCRM = rowData => {
+    debugger;
+    this.setState({
+      modulesData: rowData.modules,
+      modulestatus: rowData.isRoleActive,
+      editRoleName: rowData.roleName,
+      crmRoleID: rowData.crmRoleID,
+      editmodel: true
+    });
+  };
+
+  ////call back edit
+  callBackEdit = (RoleName, modules, Status, rowData) => {
+    debugger;
+    // this.setState({RoleName,updateRoleisActive:Status})
+    this.state.RoleName = RoleName;
+    this.state.updateModulesList = modules;
+    this.state.updateRoleisActive = Status;
+    this.state.rowData = rowData;
+  };
+/// set sorting status
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var sroleNameFilterCheckbox = this.state.sroleNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sisRoleActiveFilterCheckbox = this.state.sisRoleActiveFilterCheckbox;
+
+    if (column === "roleName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all", "");
+        sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all,", "");
+        if (sroleNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sroleNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sroleNameFilterCheckbox.includes("all")) {
+          sroleNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "roleName") {
+            for (let i = 0; i < this.state.sortRoleName.length; i++) {
+              sroleNameFilterCheckbox +=
+                this.state.sortRoleName[i].roleName + ",";
+            }
+            sroleNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreated.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreated[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "isRoleActive" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sisRoleActiveFilterCheckbox.includes(e.currentTarget.value)) {
+          sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sisRoleActiveFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sisRoleActiveFilterCheckbox.includes("all")) {
+          sisRoleActiveFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "isRoleActive") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sisRoleActiveFilterCheckbox +=
+                this.state.sortStatus[i].isRoleActive + ",";
+            }
+            sisRoleActiveFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      sroleNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      sisRoleActiveFilterCheckbox,
+      roleColor: "",
+      createdColor: "",
+      statusColor: ""
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "roleName") {
+      var sItems = sroleNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.roleName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        roleColor: "sort-column"
+      });
+    } else if (column === "createdBy") {
+      var sItems = screatedByFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column"
+      });
+    } else if (column === "isRoleActive") {
+      var sItems = sisRoleActiveFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.isRoleActive === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column"
+      });
+    }
+
+    this.setState({
+      tempcrmRoles: itemsArray
+    });
+    // this.StatusCloseModel();
+  };
+/// update check module data
+  updateCheckModule = async (e, moduleId) => {
+    debugger;
+    let updateModulesList = [...this.state.updateModulesList],
+      isActive,
+      updateModulesEnabled = "",
+      updateModulesDisabled = "";
+    for (let i = 0; i < updateModulesList.length; i++) {
+      if (updateModulesList[i].moduleID === moduleId) {
+        isActive = updateModulesList[i].modulestatus;
+        updateModulesList[i].modulestatus = !isActive;
+      }
+    }
+    for (let i = 0; i < updateModulesList.length; i++) {
+      if (updateModulesList[i].modulestatus === true) {
+        updateModulesEnabled += updateModulesList[i].moduleID + ",";
+      } else if (updateModulesList[i].modulestatus === false) {
+        updateModulesDisabled += updateModulesList[i].moduleID + ",";
+      }
+    }
+    await this.setState({
+      updateModulesList,
+      updateModulesEnabled,
+      updateModulesDisabled
+    });
+  };
+  ///toggle change
+  toggleEditModal() {
+    this.setState({
+      editmodel: false,
+      editRoleNameValidMsg: "",
+      editCheckRoleName: ""
+    });
+  }
+  //// Modal data change
+  handleModaleDataChange(e) {
+    debugger;
+    var Name = e.target.name;
+    var value = e.target.value;
+
+    if (Name === "status") {
+      this.setState({ modulestatus: value });
+    } else {
+      if (value !== "") {
+        this.setState({
+          editRoleName: value,
+          editRoleNameValidMsg: "",
+          editCheckRoleName: ""
+        });
+      } else {
+        this.setState({
+          editRoleName: value,
+          editRoleNameValidMsg: "The role name field is required.",
+          editCheckRoleName: "Required"
+        });
+      }
+    }
+  }
+//// status open modal
+  StatusOpenModel(data, header) {
+    debugger;
+    if (
+      this.state.sortFilterRoleName.length === 0 ||
+      this.state.sortFilterCreated.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "roleName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sisRoleActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sisRoleActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sroleNameFilterCheckbox !== "" ||
+        this.state.sisRoleActiveFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sroleNameFilterCheckbox: "",
+          sisRoleActiveFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "isRoleActive") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sroleNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sroleNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+  }
+
+  /// status close modal
+  StatusCloseModel = e => {
+    if (this.state.tempcrmRoles.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        crmRoles: this.state.tempcrmRoles
+      });
+      if (this.state.sortColumn === "roleName") {
+        if (this.state.sroleNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sisRoleActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sroleNameFilterCheckbox: "",
+            sisRoleActiveFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "isRoleActive") {
+        if (this.state.sisRoleActiveFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sroleNameFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        crmRoles: this.state.sortAllData
+      });
+    }
+  };
+
+  /// filter text change
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "roleName") {
+      var sortFilterRoleName = matchSorter(
+        this.state.sortRoleName,
+        e.target.value,
+        { keys: ["roleName"] }
+      );
+      if (sortFilterRoleName.length > 0) {
+        this.setState({ sortFilterRoleName });
+      } else {
+        this.setState({
+          sortFilterRoleName: this.state.sortRoleName
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreated = matchSorter(
+        this.state.sortCreated,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreated.length > 0) {
+        this.setState({ sortFilterCreated });
+      } else {
+        this.setState({
+          sortFilterCreated: this.state.sortCreated
+        });
+      }
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["isRoleActive"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
+  /// sort status A to Z
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  /// sort status Z to A
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  /// Edit Module change
+  handleModuleChange = id => {
+    debugger;
+    var index = this.state.modulesData.findIndex(x => x.moduleID === id);
+    var modulesData = this.state.modulesData;
+    modulesData[index].modulestatus = !modulesData[index].modulestatus;
+    this.setState({ modulesData });
+  };
   render() {
-    const popoverRoleName = (
-      <div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Dashboard</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Task</p>
-          <label className="pop-over-lbl-text-pop">Disable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Claim</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Notification</p>
-          <label className="pop-over-lbl-text-pop">Disable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Settings</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Reports</p>
-          <label className="pop-over-lbl-text-pop">Disable</label>
-        </div>
-      </div>
-    );
-
-    const dataStorCrmRole = [
-      {
-        id: "Cr1",
-        roleName: (
-          <div>
-            <span>
-              Store Manager
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Active</span>
-      },
-      {
-        id: "Cr2",
-        roleName: (
-          <div>
-            <span>
-              Store Executive
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Inactive</span>
-      }
-    ];
-
-    const columnsStorCrmRole = [
-      {
-        Header: (
-          <span>
-            Role Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "roleName"
-      },
-      {
-        Header: (
-          <span>
-            Created By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "CretedBy",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={ActionDelete}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button editre" id="p-edit-pop-2">
-                    EDIT
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
-
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CRM ROLE</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Role Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Role Name"
-            maxLength="25"
-          />
-        </div>
-
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Dashboard</label>
-            <input type="checkbox" id="Dashboard-po-1" />
-            <label
-              htmlFor="Dashboard-po-1"
-              className="cr cr-float-auto"
-            ></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Task</label>
-            <input type="checkbox" id="Tickets-po-2" />
-            <label htmlFor="Tickets-po-2" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Claim</label>
-            <input type="checkbox" id="Knowledge-po-3" />
-            <label
-              htmlFor="Knowledge-po-3"
-              className="cr cr-float-auto"
-            ></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Notification</label>
-            <input type="checkbox" id="Claim-po-3" />
-            <label htmlFor="Claim-po-3" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Settings</label>
-            <input type="checkbox" id="Chat-po-5" />
-            <label htmlFor="Chat-po-5" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Reports</label>
-            <input type="checkbox" id="Notification-po-4" />
-            <label
-              htmlFor="Notification-po-4"
-              className="cr cr-float-auto"
-            ></label>
-          </div>
-        </div>
-
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Reports</label>
-            <input type="checkbox" id="Reports-po-6" />
-            <label htmlFor="Reports-po-6" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Status</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <label className="pop-over-cancle">CANCEL</label>
-          <button className="pop-over-button">
-            SAVE
-          </button>
-        </div>
-      </div>
-    );
-
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -313,7 +775,13 @@ class StoreCRMRole extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link
+            to={{
+              pathname: "/admin/settings",
+              tabName: "store-tab"
+            }}
+            className="header-path"
+          >
             Store
           </Link>
           <span>&gt;</span>
@@ -323,17 +791,350 @@ class StoreCRMRole extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+              >
+                clear search
+              </a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+
+                <div className="FTypeScroll">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      checked={
+                        this.state.sroleNameFilterCheckbox.includes("all") ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sisRoleActiveFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "roleName"
+                    ? this.state.sortFilterRoleName !== null &&
+                      this.state.sortFilterRoleName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.roleName}
+                            id={"fil-open" + item.roleName}
+                            value={item.roleName}
+                            checked={this.state.sroleNameFilterCheckbox.includes(
+                              item.roleName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "roleName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.roleName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.roleName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortFilterCreated !== null &&
+                      this.state.sortFilterCreated.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "isRoleActive"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.isRoleActive}
+                            id={"fil-open" + item.isRoleActive}
+                            value={item.isRoleActive}
+                            checked={this.state.sisRoleActiveFilterCheckbox.includes(
+                              item.isRoleActive
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "isRoleActive"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.isRoleActive}>
+                            <span className="table-btn table-blue-btn">
+                              {item.isRoleActive}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </div>
+          </Modal>
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height StorCrmRoleReact">
                   <ReactTable
-                    data={dataStorCrmRole}
-                    columns={columnsStorCrmRole}
-                    // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
+                    data={this.state.crmRoles}
+                    columns={[
+                      {
+                        Header: (
+                          <span
+                            className={this.state.roleColor}
+                            onClick={this.StatusOpenModel.bind(this, "roleName", "Role Name")}
+                          >
+                            Role Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "roleName",
+                        Cell: row => {
+                          // var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.roleName}
+                                <Popover
+                                  content={
+                                    <div>
+                                      {row.original.modules !== null &&
+                                        row.original.modules.map((item, i) => (
+                                          <div className="rvmmargin" key={i}>
+                                            <p className="rolle-name-text-popover">
+                                              {item.moduleName}
+                                            </p>
+                                            <label className="pop-over-lbl-text-pop">
+                                              {item.modulestatus === true
+                                                ? "Enabled"
+                                                : "Disabled"}
+                                            </label>
+                                          </div>
+                                        ))}
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created By")}
+                          >
+                            Created By
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdBy",
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.createdBy}
+                                <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Created By: {row.original.createdBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Created Date:{" "}
+                                          {row.original.createdDate}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Updated By:{" "}
+                                            {row.original.modifiedBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Updated Date:{" "}
+                                          {row.original.modifiedDate}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(this, "isRoleActive", "Status")}
+                          >
+                            Status
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "isRoleActive"
+                      },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "actiondept",
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <>
+                              <span>
+                                <Popover
+                                  content={
+                                    <div className="d-flex general-popover popover-body">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.handleDeleteCrmRole.bind(
+                                              this,
+                                              row.original.crmRoleID
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                    id={ids}
+                                  />
+                                </Popover>
+
+                                <button
+                                  className="react-tabel-button ReNewBtn"
+                                  type="button"
+                                  onClick={this.hanldeEditCRM.bind(
+                                    this,
+                                    row.original
+                                  )}
+                                >
+                                  EDIT
+                                </button>
+                              </span>
+                            </>
+                          );
+                        }
+                      }
+                    ]}
+                    resizable={false}
+                    minRows={2}
+                    defaultPageSize={10}
+                    showPagination={true}
                   />
-                   <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -370,7 +1171,7 @@ class StoreCRMRole extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -383,85 +1184,70 @@ class StoreCRMRole extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Role Name"
-                        maxLength="25"
+                        maxLength={25}
+                        name="RoleName"
+                        value={this.state.RoleName}
+                        onChange={this.handleRoleName.bind(this)}
                       />
+                      {this.state.checkRoleName != "" && (
+                        <p
+                          style={{
+                            color: "red",
+                            marginBottom: "0px"
+                          }}
+                        >
+                          {this.state.checkRoleName}
+                        </p>
+                      )}
                     </div>
-                    <div className="crm-margin-div crm-padding-div">
-                      <div className="switch switch-primary d-inline m-r-10">
-                        <label className="storeRole-name-text">Dashboard</label>
-                        <input type="checkbox" id="Dashboard-p-1" />
-                        <label
-                          htmlFor="Dashboard-p-1"
-                          className="cr cr-float-auto"
-                        ></label>
-                      </div>
-                    </div>
-                    <div className="crm-margin-div crm-padding-div">
-                      <div className="switch switch-primary d-inline m-r-10">
-                        <label className="storeRole-name-text">Tasks</label>
-                        <input type="checkbox" id="Tasks-p-2" />
-                        <label
-                          htmlFor="Tasks-p-2"
-                          className="cr cr-float-auto"
-                        ></label>
-                      </div>
-                    </div>
-                    <div className="crm-margin-div crm-padding-div">
-                      <div className="switch switch-primary d-inline m-r-10">
-                        <label className="storeRole-name-text">Claim</label>
-                        <input type="checkbox" id="Claim-p-3" />
-                        <label
-                          htmlFor="Claim-p-3"
-                          className="cr cr-float-auto"
-                        ></label>
-                      </div>
-                    </div>
-                    <div className="crm-margin-div crm-padding-div">
-                      <div className="switch switch-primary d-inline m-r-10">
-                        <label className="storeRole-name-text">
-                          Notification
-                        </label>
-                        <input type="checkbox" id="Notification-p-5" />
-                        <label
-                          htmlFor="Notification-p-5"
-                          className="cr cr-float-auto"
-                        ></label>
-                      </div>
-                    </div>
-                    <div className="crm-margin-div crm-padding-div">
-                      <div className="switch switch-primary d-inline m-r-10">
-                        <label className="storeRole-name-text">Settings</label>
-                        <input type="checkbox" id="Notification-p-4" />
-                        <label
-                          htmlFor="Notification-p-4"
-                          className="cr cr-float-auto"
-                        ></label>
-                      </div>
-                    </div>
+                    {this.state.modulesList !== null &&
+                      this.state.modulesList.map((item, i) => (
+                        <div
+                          className="module-switch crm-margin-div crm-padding-div"
+                          key={i}
+                        >
+                          <div className="switch switch-primary d-inline m-r-10">
+                            <label className="storeRole-name-text">
+                              {item.moduleName}
+                            </label>
+                            <input
+                              type="checkbox"
+                              id={"i" + item.moduleId}
+                              name="allModules"
+                              attrIds={item.moduleId}
+                              checked={item.isActive}
+                              onChange={this.checkModule.bind(
+                                this,
+                                item.moduleId
+                              )}
+                            />
+                            <label
+                              htmlFor={"i" + item.moduleId}
+                              className="cr cr-float-auto"
+                            ></label>
+                          </div>
+                        </div>
+                      ))}
 
-                    <div className="crm-margin-div crm-padding-div">
-                      <div className="switch switch-primary d-inline m-r-10">
-                        <label className="storeRole-name-text">Reports</label>
-                        <input type="checkbox" id="Reports-p-6" />
-                        <label
-                          htmlFor="Reports-p-6"
-                          className="cr cr-float-auto"
-                        ></label>
-                      </div>
-                    </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Status</label>
                       <select
-                        id="inputState"
                         className="form-control dropdown-setting"
+                        value={this.state.RoleisActive}
+                        onChange={this.handleRoleisActive}
                       >
-                        <option>select</option>
-                        <option>Active</option>
-                        <option>Deactive</option>
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
                       </select>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy">
+                      <button
+                        className="addBtn-ticket-hierarchy"
+                        onClick={this.hanldeCreateUpdateCrmRole.bind(
+                          this,
+                          "add"
+                        )}
+                      >
                         ADD ROLE
                       </button>
                     </div>
@@ -554,6 +1340,106 @@ class StoreCRMRole extends Component {
                   </div>
                 </div>
               </div>
+              <Modal
+                open={this.state.editmodel}
+                onClose={this.toggleEditModal}
+                modalId="categoryEditModal"
+              >
+                <div className="edtpadding">
+                  <div className="">
+                    <label className="popover-header-text">EDIT CRM ROLE</label>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Role Name</label>
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      placeholder="Enter Role Name"
+                      maxLength={25}
+                      name="editRoleName"
+                      value={this.state.editRoleName}
+                      onChange={this.handleModaleDataChange.bind(this)}
+                    />
+                  </div>
+                  {this.state.editCheckRoleName != "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editCheckRoleName}
+                    </p>
+                  )}
+                  {this.state.modulesData !== null &&
+                    this.state.modulesData.map((item, i) => (
+                      <div
+                        className="module-switch crm-margin-div crm-padding-div"
+                        key={i}
+                      >
+                        <div className="switch switch-primary d-inline m-r-10">
+                          <label className="storeRole-name-text">
+                            {item.moduleName}
+                          </label>
+                          <input
+                            type="checkbox"
+                            id={"k" + item.moduleID}
+                            name="allModules"
+                            attrIds={item.moduleID}
+                            checked={item.modulestatus}
+                            onChange={this.handleModuleChange.bind(
+                              this,
+                              item.moduleID
+                            )}
+                          />
+                          <label
+                            htmlFor={"k" + item.moduleID}
+                            className="cr cr-float-auto"
+                          ></label>
+                        </div>
+                      </div>
+                    ))}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Status</label>
+                    <select
+                      id="inputStatus"
+                      className="edit-dropDwon dropdown-setting"
+                      value={this.state.modulestatus}
+                      name="status"
+                      onChange={this.handleModaleDataChange.bind(this)}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <br />
+                  <div className="text-center">
+                    <a
+                      className="pop-over-cancle"
+                      onClick={this.toggleEditModal}
+                    >
+                      CANCEL
+                    </a>
+                    <button
+                      className="pop-over-button FlNone"
+                      onClick={this.hanldeCreateUpdateCrmRole.bind(
+                        this,
+                        "update",
+                        this.state.crmRoleID
+                      )}
+                      disabled={this.state.editSaveLoading}
+                    >
+                      <label className="pop-over-btnsave-text">
+                        {this.state.editSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
+                        SAVE
+                      </label>
+                    </button>
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
         </div>

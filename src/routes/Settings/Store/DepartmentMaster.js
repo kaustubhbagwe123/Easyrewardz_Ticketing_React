@@ -13,14 +13,28 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { Popover } from "antd";
+import Select from "react-select";
+import DepartmentService from "./../../../routes/Settings/Service/DepartmentService";
 
 class DepartmentMaster extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fileName: ""
+      fileName: "",
+      brandData: [],
+      selectedBrand: [],
+      selectedStatus: "true",
     };
+    this.DepartmentService = new DepartmentService();
+    this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
+      this
+    );
+    this.handleGetBrandData = this.handleGetBrandData.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleGetBrandData();
   }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
@@ -36,6 +50,46 @@ class DepartmentMaster extends Component {
     e.preventDefault();
   };
 
+  ////handle Brand change
+  handleBrandChange = e => {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ selectedBrand: e, CategoryData: [] });
+    } else {
+      this.setState({ selectedBrand: e });
+    }
+  };
+ 
+  ////get Brand data
+  handleGetBrandData() {
+    let self = this;
+    this.DepartmentService.GetBrandData()
+      .then(res => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ brandData: data });
+        } else {
+          self.setState({ brandData: [] });
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+  ////Get Detapartment grid data
+  handleGetDepartmentGridData() {
+    let self = this;
+    this.DepartmentService.GetDetapartmentGridData()
+      .then(res => {
+        debugger;
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
   render() {
     const dataDeptMaster = [
       {
@@ -68,88 +122,6 @@ class DepartmentMaster extends Component {
       }
     ];
 
-    const columnsDeptMaster = [
-      {
-        Header: (
-          <span>
-            Brand Name <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "brandName"
-      },
-      {
-        Header: (
-          <span>
-            Store Code
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "storeCode"
-      },
-      {
-        Header: (
-          <span>
-            Department Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "deptName"
-      },
-      {
-        Header: (
-          <span>
-            Function
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "function"
-      },
-      {
-        Header: (
-          <span>
-            Created By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "creatBy"
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <Popover content={ActionDelete} placement="bottom" trigger="click">
-              <img src={DeleteIcon} alt="del-icon" className="downloadaction"  style={{marginRight: "5px"}}/>
-              </Popover>
-              <Popover content={DepartEdit} placement="bottom" trigger="click">
-                <button className="react-tabel-button editre" id={ids}>
-                  EDIT
-                </button>
-              </Popover>
-            </div>
-          );
-        }
-        //   Cell: props => (
-        //     <span>
-        //       <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
-        //       <button className="react-tabel-button" id="p-edit-pop-2">
-        //         <label className="Table-action-edit-button-text">EDIT</label>
-        //       </button>
-        //     </span>
-        //   )
-      }
-    ];
     const DepartEdit = (
       <div className="edtpadding">
         <div className="">
@@ -176,13 +148,14 @@ class DepartmentMaster extends Component {
           </select>
         </div>
         <div className="pop-over-div">
-            <label className="edit-label-1">Function</label>
-            <input type="text"  
-                   className="txt-edit-popover" 
-                   placeholder="Attendance" 
-                   maxLength={25} 
-            />
-          </div>
+          <label className="edit-label-1">Function</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Attendance"
+            maxLength={25}
+          />
+        </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
@@ -192,14 +165,14 @@ class DepartmentMaster extends Component {
         </div>
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
-          <button className="pop-over-button">
-            SAVE
-          </button>
+          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
+            CANCEL
+          </a>
+          <button className="pop-over-button">SAVE</button>
         </div>
       </div>
     );
-  
+
     const ActionDelete = (
       <div className="d-flex general-popover popover-body">
         <div className="del-big-icon">
@@ -224,7 +197,13 @@ class DepartmentMaster extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link
+            to={{
+              pathname: "/admin/settings",
+              tabName: "store-tab"
+            }}
+            className="header-path"
+          >
             Store
           </Link>
           <span>&gt;</span>
@@ -240,12 +219,100 @@ class DepartmentMaster extends Component {
                 <div className="table-cntr table-height deptMaster">
                   <ReactTable
                     data={dataDeptMaster}
-                    columns={columnsDeptMaster}
-                    // resizable={false}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
+                            Brand Name <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "brandName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Store Code
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "storeCode"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Department Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "deptName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Function
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "function"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Created By
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "creatBy"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Status
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "status"
+                      },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "actiondept",
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <div>
+                              <Popover
+                                content={ActionDelete}
+                                placement="bottom"
+                                trigger="click"
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  alt="del-icon"
+                                  className="downloadaction"
+                                  style={{ marginRight: "5px" }}
+                                />
+                              </Popover>
+                              <Popover
+                                content={DepartEdit}
+                                placement="bottom"
+                                trigger="click"
+                              >
+                                <button
+                                  className="react-tabel-button editre"
+                                  id={ids}
+                                >
+                                  EDIT
+                                </button>
+                              </Popover>
+                            </div>
+                          );
+                        }
+                      }
+                    ]}
                     defaultPageSize={2}
                     showPagination={false}
                   />
-                   <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -282,7 +349,7 @@ class DepartmentMaster extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -290,9 +357,19 @@ class DepartmentMaster extends Component {
                   <h3>CREATE DEPARTMENT</h3>
                   <div className="div-cntr">
                     <label>Brand</label>
-                    <select>
-                      <option>Bata</option>
-                    </select>
+                    <Select
+                      getOptionLabel={option => option.brandName}
+                      getOptionValue={option => option.brandID}
+                      options={this.state.brandData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      closeMenuOnSelect={false}
+                      name="selectedBrand"
+                      onChange={this.handleBrandChange.bind(this)}
+                      value={this.state.selectedBrand}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
                   </div>
                   <div className="div-cntr">
                     <label>Store Code</label>
@@ -308,13 +385,21 @@ class DepartmentMaster extends Component {
                   </div>
                   <div className="div-cntr">
                     <label>Function</label>
-                    <input type="text" placeholder="Attendance" maxLength={25} />
+                    <input
+                      type="text"
+                      placeholder="Attendance"
+                      maxLength={25}
+                    />
                   </div>
                   <div className="div-cntr">
                     <label>Status</label>
-                    <select>
-                      <option>Active</option>
-                      <option>Inactive</option>
+                    <select
+                      name="selectedStatus"
+                      value={this.state.selectedStatus}
+                      onChange={this.handleOnChangeUserData}
+                    >
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
                     </select>
                   </div>
                   <div className="btn-coll">

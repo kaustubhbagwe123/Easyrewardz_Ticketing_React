@@ -19,7 +19,7 @@ class ItemMaster extends Component {
 
     this.state = {
       fileName: ""
-    };
+    }; 
 
     this.ItemMasterService = new ItemMasterService();
     this.handleGetItem = this.handleGetItem.bind(this);
