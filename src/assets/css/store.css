@@ -616,8 +616,8 @@
   padding: 8px 25px;
   border-radius: 5px;
   cursor: pointer;
-  height: 40px;
-  width: 155px;
+  /* height: 40px; */
+  /* width: 155px; */
   float: right;
   text-transform: uppercase;
 }
@@ -691,7 +691,7 @@
   font-size: 16px;
   font-weight: 700;
   line-height: 19px;
-  /* width: 100%; */
+  width: 100%;
   text-align: left;
 }
 .store-edit-data-1 {
