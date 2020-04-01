@@ -9,9 +9,9 @@ import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
 import ReactTable from "react-table";
-
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ItemMasterService from "./../../../routes/Settings/Service/ItemMasterService";
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -20,8 +20,14 @@ class ItemMaster extends Component {
     this.state = {
       fileName: ""
     };
+
+    this.ItemMasterService = new ItemMasterService();
+    this.handleGetItem = this.handleGetItem.bind(this);
   }
 
+  componentDidMount() {
+    this.handleGetItem();
+  }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
@@ -35,6 +41,15 @@ class ItemMaster extends Component {
   fileDragEnter = e => {
     e.preventDefault();
   };
+  handleGetItem() {
+    this.ItemMasterService.GetItemList()
+      .then(response => {
+        debugger;
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
   render() {
     const dataStorItem = [
       {
@@ -145,7 +160,7 @@ class ItemMaster extends Component {
                     defaultPageSize={5}
                     showPagination={false}
                   />
-                   <div className="position-relative">
+                  <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>

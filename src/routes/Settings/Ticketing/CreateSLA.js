@@ -1901,6 +1901,7 @@ class CreateSLA extends Component {
                       id="file-upload"
                       className="file-upload d-none"
                       type="file"
+                      // value={this.state.fileN.length>0?this.state.fileN[0]:null}
                       onChange={this.fileUpload.bind(this)}
                     />
                     <label htmlFor="file-upload">
