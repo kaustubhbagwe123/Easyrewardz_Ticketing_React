@@ -388,10 +388,11 @@ class TicketHierarchy extends Component {
     }
   }
   StatusCloseModel() {
+    debugger;
     if (this.state.temphierarchyData.length > 0) {
       this.setState({
         StatusModel: false,
-        userData: this.state.tempuserData,
+        hierarchyData: this.state.temphierarchyData,
         filterTxtValue: ""
       });
       if (this.state.sortColumn === "designationName") {

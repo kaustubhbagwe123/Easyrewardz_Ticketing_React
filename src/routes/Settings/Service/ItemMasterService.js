@@ -7,10 +7,17 @@ export default class ItemMasterService {
   async GetItemList() {
     return axios({
       method: "post",
-      url: config.apiUrl + "/SLA/GetSLA",
+      url: config.apiUrl + "/Item/GetItem",
       headers: authHeader()
     });
   }
-  
+  ////bulk upload API
+  async BulkUploadItem(formData) {
+    return axios({
+      method: "post",
+      url: config.apiUrl + "/Item/BulkUploadItem",
+      headers: authHeader(),
+      data: formData
+    });
+  }
 }
- 
