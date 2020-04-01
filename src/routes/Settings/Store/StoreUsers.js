@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Demo from "./../../../store/Hashtag.js";
+import Demo from "../../../store/Hashtag.js";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
@@ -168,7 +168,7 @@ class StoreUsers extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">
+          <Link to="/admin/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>

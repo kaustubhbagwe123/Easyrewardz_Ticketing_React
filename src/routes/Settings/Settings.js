@@ -22,6 +22,33 @@ import audit from "./../../assets/Images/audit.png";
 import { Link } from "react-router-dom";
 
 class Settings extends Component {
+
+  componentDidMount() {
+    debugger;
+    if (this.props.location.tabName) {
+      let lowerTabsPane = document.querySelectorAll(
+        ".tab-pane"
+      );
+      for (let i = 0; i < lowerTabsPane.length; i++) {
+        lowerTabsPane[i].classList.remove("active");
+        lowerTabsPane[i].classList.remove("show");
+        if (this.props.location.tabName === lowerTabsPane[i].id) {
+          lowerTabsPane[i].classList.add("active");
+          lowerTabsPane[i].classList.add("show");
+        }
+      }
+
+      let upperTabs = document.querySelectorAll(".nav-link");
+      for (let i = 0; i < upperTabs.length; i++) {
+        upperTabs[i].classList.remove("active");
+        if ("#" + this.props.location.tabName === upperTabs[i].getAttribute('href')) {
+          upperTabs[i].classList.add("active");
+        }
+      }
+
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -328,7 +355,7 @@ class Settings extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="hierarchyMaster" className="setting-box">
+                      <Link to="/store/hierarchyMaster" className="setting-box">
                         <div className="setting-icons">
                           <img src={hierarchy} alt="hierarchy" />
                         </div>
@@ -341,7 +368,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="itemMaster" className="setting-box">
+                      <Link to="/store/itemMaster" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={item} alt="item" />
                         </div>
@@ -354,7 +381,10 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="departmentMaster" className="setting-box">
+                      <Link
+                        to="/store/departmentMaster"
+                        className="setting-box"
+                      >
                         <div className="setting-icons icon-small">
                           <img src={department} alt="department" />
                         </div>
@@ -371,7 +401,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="storePriority" className="setting-box">
+                      <Link to="/store/storePriority" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -384,7 +414,10 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="SlaTemplateDepartment" className="setting-box">
+                      <Link
+                        to="/store/SlaTemplateDepartment"
+                        className="setting-box"
+                      >
                         <div className="setting-icons icon-small">
                           <img src={templates} alt="templates" />
                         </div>
@@ -397,7 +430,10 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="claimCategoryMaster" className="setting-box">
+                      <Link
+                        to="/store/claimCategoryMaster"
+                        className="setting-box"
+                      >
                         <div className="setting-icons">
                           <img src={category} alt="category" />
                         </div>
@@ -414,7 +450,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="Storecrmrole" className="setting-box">
+                      <Link to="/store/Storecrmrole" className="setting-box">
                         <div className="setting-icons">
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
@@ -427,7 +463,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="storeusers" className="setting-box">
+                      <Link to="/store/storeusers" className="setting-box">
                         <div className="setting-icons big-icon">
                           <img src={users} alt="users" />
                         </div>
@@ -440,7 +476,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="storeAlerts" className="setting-box">
+                      <Link to="/store/storeAlerts" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={alert} alt="alert" />
                         </div>
@@ -457,7 +493,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="storereports" className="setting-box">
+                      <Link to="/store/storereports" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={reports} alt="reports" />
                         </div>
@@ -470,7 +506,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="storeModule" className="setting-box">
+                      <Link to="/store/storeModule" className="setting-box">
                         <div className="setting-icons">
                           <img src={modules} alt="modules" />
                         </div>

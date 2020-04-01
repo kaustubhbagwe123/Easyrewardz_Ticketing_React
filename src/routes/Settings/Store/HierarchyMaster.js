@@ -134,7 +134,7 @@ class HierarchyMaster extends Component {
                   trigger="click"
                 >
                   <button className="react-tabel-button editre" id="p-edit-pop-2">
-                  EDIT
+                    EDIT
                   </button>
                 </Popover>
               </span>
@@ -207,9 +207,9 @@ class HierarchyMaster extends Component {
         </div>
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
+          <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
-           SAVE
+            SAVE
           </button>
         </div>
       </div>
@@ -218,9 +218,14 @@ class HierarchyMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="/admin/settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <Link to="#!" className="header-path">Store</Link>
+          <Link
+            to={{
+              pathname: "settings",
+              tabName: "store-tab"
+            }}
+            className="header-path">Store</Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
             Hierarchy Master
@@ -238,7 +243,7 @@ class HierarchyMaster extends Component {
                     defaultPageSize={5}
                     showPagination={false}
                   />
-                   <div className="position-relative1">
+                  <div className="position-relative1">
                     <div className="pagi">
                       <ul>
                         <li>

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import Demo from "./../../../store/Hashtag.js";
+import Demo from "../../../store/Hashtag.js";
 import ReactTable from "react-table";
 import BlackDeleteIcon from "./../../../assets/Images/del-big.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
@@ -232,7 +232,7 @@ class SlaTemplateDepartment extends Component {
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">
+          <Link to="/admin/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
