@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import axios from "axios";
 import { authHeader } from "./../../../helpers/authHeader";
 import config from "./../../../helpers/config";
