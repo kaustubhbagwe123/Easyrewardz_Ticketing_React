@@ -12,13 +12,24 @@ import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ItemMasterService from "./../../../routes/Settings/Service/ItemMasterService";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class ItemMaster extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fileName: ""
+      fileName: "",
+      itemData: [],
+      file: {},
+      fileValidation: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
     };
 
     this.ItemMasterService = new ItemMasterService();
@@ -28,38 +39,79 @@ class ItemMaster extends Component {
   componentDidMount() {
     this.handleGetItem();
   }
-  fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+  fileUpload = file => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: ""
+      });
+    }
   };
-  fileDrop = e => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
-    e.preventDefault();
-  };
+
   fileDragOver = e => {
     e.preventDefault();
   };
   fileDragEnter = e => {
     e.preventDefault();
   };
+  ////handel get item data
   handleGetItem() {
+    let self = this;
     this.ItemMasterService.GetItemList()
       .then(response => {
-        debugger;
+        var status = response.data.status;
+        var itemData = response.data.responseData;
+
+        if (status && itemData.lenght > 0) {
+          self.setState(itemData);
+        } else {
+        }
       })
       .catch(response => {
         console.log(response);
       });
   }
+  handleBulkUpload() {
+    let self = this;
+    if (this.state.file) {
+      const formData = new FormData();
+      formData.append("file", this.state.file);
+      this.ItemMasterService.BulkUploadItem(formData)
+        .then(response => {
+          var status = response.data.status;
+          var itemData = response.data.responseData;
+          if (status && itemData.lenght > 0) {
+            self.setState(itemData);
+            self.setState({ isErrorBulkUpload: false });
+          } else {
+            self.setState({ isErrorBulkUpload: true });
+          }
+        })
+        .catch(response => {
+          self.setState({ isErrorBulkUpload: true });
+          console.log(response);
+        });
+    } else {
+      this.setState({ fileValidation: "Please Select File." });
+    }
+  }
+  DeleteBulkUploadFile = () => {
+    debugger;
+    this.setState({
+      file: {},
+      fileName: "",
+      fileSize: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
+    });
+    NotificationManager.success("File deleted successfully.");
+  };
   render() {
-    const dataStorItem = [
-      {
-        id: "I1"
-      },
-      {
-        id: "I2"
-      }
-    ];
-
     const columnsStorItem = [
       {
         Header: (
@@ -68,8 +120,7 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "brandName",
-        Cell: row => <span>Bata</span>
+        accessor: "brandName"
       },
       {
         Header: (
@@ -78,8 +129,7 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "itemCode",
-        Cell: row => <span>12345</span>
+        accessor: "itemCode"
       },
       {
         Header: (
@@ -88,8 +138,7 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "itemName",
-        Cell: row => <span>White Sneakers</span>
+        accessor: "itemName"
       },
       {
         Header: (
@@ -98,8 +147,7 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "depatName",
-        Cell: row => <span>Casual Shoes</span>
+        accessor: "depatName"
       },
       {
         Header: (
@@ -108,8 +156,7 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "itemCat",
-        Cell: row => <span>Shoes</span>
+        accessor: "itemCat"
       },
       {
         Header: (
@@ -118,8 +165,7 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "itemSubCat",
-        Cell: rwo => <span>Casual Shoes</span>
+        accessor: "itemSubCat"
       },
       {
         Header: (
@@ -128,13 +174,13 @@ class ItemMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "itemGroup",
-        Cell: row => <span>Shoes</span>
+        accessor: "itemGroup"
       }
     ];
 
     return (
       <React.Fragment>
+        <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/admin/settings" className="header-path">
             Settings
@@ -154,50 +200,12 @@ class ItemMaster extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height StoreItemMasterReact">
                   <ReactTable
-                    data={dataStorItem}
+                    data={this.state.itemData}
                     columns={columnsStorItem}
-                    // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
+                    defaultPageSize={10}
+                    minRows={2}
+                    showPagination={true}
                   />
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div className="col-md-4">
@@ -211,23 +219,29 @@ class ItemMaster extends Component {
                       </a>
                     </div>
                   </div>
-                  <input
-                    id="file-upload"
-                    className="file-upload d-none"
-                    type="file"
-                    onChange={this.fileUpload}
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
-                  >
-                    <div className="file-icon">
-                      <img src={FileUpload} alt="file-upload" />
-                    </div>
-                    <span>Add File</span> or Drop File here
-                  </label>
+                  <div className="mainfileUpload">
+                    <Dropzone onDrop={this.fileUpload}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input
+                            {...getInputProps()}
+                            className="file-upload d-none"
+                          />
+                          <div className="file-icon">
+                            <img src={FileUpload} alt="file-upload" />
+                          </div>
+                          <span className={"fileupload-span"}>Add File</span> or
+                          Drop File here
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
+
+                  {this.state.fileValidation ? (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.fileValidation}
+                    </p>
+                  ) : null}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -255,42 +269,56 @@ class ItemMaster extends Component {
                                 </p>
                                 <div className="del-can">
                                   <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                  <button className="butn">Delete</button>
+                                  <button
+                                    className="butn"
+                                    onClick={this.DeleteBulkUploadFile}
+                                  >
+                                    Delete
+                                  </button>
                                 </div>
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
                         <div>
-                          <span className="file-size">122.6kb</span>
+                          <span className="file-size">
+                            {this.state.fileSize}
+                          </span>
                         </div>
                       </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <a className="file-retry" href={Demo.BLANK_LINK}>
-                            Retry
-                          </a>
+                      {this.state.isErrorBulkUpload ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name">{this.state.fileName}</p>
+                            <span
+                              className="file-retry"
+                              onClick={this.handleBulkUpload.bind(this)}
+                            >
+                              Retry
+                            </span>
+                          </div>
+                          <div>
+                            <span className="file-failed">Failed</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="file-failed">Failed</span>
-                        </div>
-                      </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name pr-0">
-                            {this.state.fileName}
-                          </p>
-                        </div>
-                        <div>
-                          <div className="d-flex align-items-center mt-2">
-                            <ProgressBar className="file-progress" now={60} />
-                            <div className="cancel-upload">
-                              <img src={UploadCancel} alt="upload cancel" />
+                      ) : null}
+                      {this.state.isShowProgress ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name pr-0">
+                              {this.state.fileName}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="d-flex align-items-center mt-2">
+                              <ProgressBar className="file-progress" now={60} />
+                              <div className="cancel-upload">
+                                <img src={UploadCancel} alt="upload cancel" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : null}
                     </div>
                   )}
                   <button className="butn">ADD</button>
