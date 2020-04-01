@@ -222,7 +222,7 @@ class HierarchyMaster extends Component {
           <span>&gt;</span>
           <Link
             to={{
-              pathname: "settings",
+              pathname: "/admin/settings",
               tabName: "store-tab"
             }}
             className="header-path">Store</Link>

@@ -37,7 +37,6 @@ class Settings extends Component {
           lowerTabsPane[i].classList.add("show");
         }
       }
-
       let upperTabs = document.querySelectorAll(".nav-link");
       for (let i = 0; i < upperTabs.length; i++) {
         upperTabs[i].classList.remove("active");
@@ -45,7 +44,6 @@ class Settings extends Component {
           upperTabs[i].classList.add("active");
         }
       }
-
     }
   }
 
