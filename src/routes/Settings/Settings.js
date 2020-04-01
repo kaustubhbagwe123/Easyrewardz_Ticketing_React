@@ -22,6 +22,33 @@ import audit from "./../../assets/Images/audit.png";
 import { Link } from "react-router-dom";
 
 class Settings extends Component {
+
+  componentDidMount() {
+    debugger;
+    if (this.props.location.tabName) {
+      let lowerTabsPane = document.querySelectorAll(
+        ".tab-pane"
+      );
+      for (let i = 0; i < lowerTabsPane.length; i++) {
+        lowerTabsPane[i].classList.remove("active");
+        lowerTabsPane[i].classList.remove("show");
+        if (this.props.location.tabName === lowerTabsPane[i].id) {
+          lowerTabsPane[i].classList.add("active");
+          lowerTabsPane[i].classList.add("show");
+        }
+      }
+
+      let upperTabs = document.querySelectorAll(".nav-link");
+      for (let i = 0; i < upperTabs.length; i++) {
+        upperTabs[i].classList.remove("active");
+        if ("#" + this.props.location.tabName === upperTabs[i].getAttribute('href')) {
+          upperTabs[i].classList.add("active");
+        }
+      }
+
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
