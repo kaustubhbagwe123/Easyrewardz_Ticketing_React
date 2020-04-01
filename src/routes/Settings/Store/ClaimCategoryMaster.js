@@ -17,6 +17,12 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { Select, Popover } from "antd";
 import SweetAlert from "react-bootstrap-sweetalert";
+import ClaimCategoryService from "../Service/ClaimCategoryService";
+import Dropzone from "react-dropzone";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
@@ -28,23 +34,26 @@ class ClaimCategoryMaster extends Component {
     this.state = {
       fileName: "",
       catmulti: false,
-      listOfCategory: [
-        "Complaint 1",
-        "Complaint 2",
-        "Complaint 3",
-        "Complaint 4"
-      ],
-      listOfSubCategory: [
-        "Complaint 1",
-        "Complaint 2",
-        "Complaint 3",
-        "Complaint 4"
-      ],
       list1Value: "",
       showList1: false,
       ListOfSubCate: "",
-      ShowSubCate: false
+      ShowSubCate: false,
+      brandData: [],
+      brandId: 0,
+      categoryId: 0,
+      subCategoryId: 0,
+      IssueTypeId: 0,
+      isbrandValid: "",
+      claimCategoryData: [],
+      categoryData: [],
+      subCategoryData: [],
+      issueTypeData: []
     };
+    this.service = new ClaimCategoryService();
+  }
+  componentDidMount() {
+    this.handleGetBrandList();
+    this.handleGetClaimCategoryList();
   }
 
   HandleMultiSelect() {
@@ -97,51 +106,165 @@ class ClaimCategoryMaster extends Component {
       this.setState({ ShowSubCate: true });
     }
   };
+  handleBrandChange = async e => {
+    debugger;
+    if (e.target.value !== "select") {
+      await this.setState({
+        brandId: Number(e.target.value)
+      });
+      this.handleGetCategoryByBrandId();
+    } else {
+      this.setState({ isbrandValid: "Please Select Brand." });
+    }
+  };
+  // --------------------------------------API-----------------------------------
+  ////handle get cliam category listing
+  handleGetClaimCategoryList() {
+    let self = this;
+    this.service
+      .GetClaimCategoryList()
+      .then(response => {
+        debugger;
+        var claimCategoryData = response.data.responseData;
+        var status = response.data.status;
+        if (status && claimCategoryData.length > 0) {
+          self.setState({ claimCategoryData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----Claim Category List");
+      });
+  }
+  ////handle get brand listing
+  handleGetBrandList() {
+    let self = this;
+    this.service
+      .GetBrandList()
+      .then(response => {
+        var brandData = response.data.responseData;
+        var status = response.data.status;
+        if (status && brandData.length > 0) {
+          self.setState({ brandData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----Get Brand List");
+      });
+  }
+  ///handle get category listing by brand id
+  handleGetCategoryByBrandId() {
+    let self = this;
+    var brandId = this.state.brandId;
+    this.service
+      .GetCategoryListByBrandId(brandId)
+      .then(response => {
+        var categoryData = response.data.responseData;
+        var status = response.data.status;
+        if (status && categoryData.length > 0) {
+          self.setState({ categoryData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----Get Category List");
+      });
+  }
+  ///handle get sub category listing by category id
+  handleGetSubCategoryByCateId() {
+    let self = this;
+    var categoryId = this.state.categoryId;
+    this.service
+      .GetSubCategoryListByCateId(categoryId)
+      .then(response => {
+        var subCategoryData = response.data.responseData;
+        var status = response.data.status;
+        if (status && subCategoryData.length > 0) {
+          self.setState({ subCategoryData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----get sub category list");
+      });
+  }
+  ///handle get issue type listing by sub category id
+  handleGetCategoryByBrandId() {
+    let self = this;
+    var subCategoryId = this.state.subCategoryId;
+    this.service
+      .GetIssueTyepListBySubCateId(subCategoryId)
+      .then(response => {
+        var issueTypeData = response.data.responseData;
+        var status = response.data.status;
+        if (status && issueTypeData.length > 0) {
+          self.setState({ issueTypeData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----get issue type list");
+      });
+  }
+  ////handle add cateogry by brand id and category name
+  handleAddCategoryByBrandId(categoryName) {
+    let self = this;
+    var brandId = this.state.brandId;
+    var categoryName = categoryName;
+    this.service
+      .AddCategoryByBrandId(brandId, categoryName)
+      .then(response => {
+        var issueTypeData = response.data.responseData;
+        var status = response.data.status;
+        if (status && issueTypeData.length > 0) {
+          self.setState({ issueTypeData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----add category");
+      });
+  }
+  ///handle add sub category by category id and sub category name
+  handleAddSubCategoryByCateId(subCateName) {
+    let self = this;
+    var categoryId = this.state.categoryId;
+    var subCateogryName = subCateName;
+    this.service
+      .AddSubCategoryByCateId(categoryId, subCateogryName)
+      .then(response => {
+        var issueTypeData = response.data.responseData;
+        var status = response.data.status;
+        if (status && issueTypeData.length > 0) {
+          self.setState({ issueTypeData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----add sub category");
+      });
+  }
+
+  handleAddSubCategoryByCateId(issueTypeName) {
+    let self = this;
+    var subCategoryId = this.state.subCategoryId;
+
+    this.service
+      .AddSubCategoryByCateId(subCategoryId, issueTypeName)
+      .then(response => {
+        var issueTypeData = response.data.responseData;
+        var status = response.data.status;
+        if (status && issueTypeData.length > 0) {
+          self.setState({ issueTypeData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "-----add issue Type");
+      });
+  }
   render() {
     const { list1Value, ListOfSubCate } = this.state;
-    const list1SelectOptions = this.state.listOfCategory.map(o => (
-      <Option key={o}>{o}</Option>
-    ));
-    const listSubCategory = this.state.listOfSubCategory.map(o => (
-      <Option key={o}>{o}</Option>
-    ));
-    const data = [
-      {
-        id: "A1",
-        brandName: "Bata",
-        claimCategory:"Exchange",
-        claimSubCat:"Defective Article",
-        status: "Active"
-      },
-      {
-        id: "A2",
-        brandName: "Bata",
-        claimCategory:"Refund",
-        claimSubCat:"Defective Article",
-        status: "Inactive"
-      },
-      {
-        id: "A3",
-        brandName: "Bata",
-        claimCategory:"Exchange",
-        claimSubCat:"Defective Article",
-        status: "Active"
-      },
-      {
-        id: "A4",
-        brandName: "Bata",
-        claimCategory:"Exchange",
-        claimSubCat:"Defective Article",
-        status: "Inactive"
-      },
-      {
-        id: "A5",
-        brandName: "Bata",
-        claimCategory:"Exchange",
-        claimSubCat:"Defective Article",
-        status: "Active"
-      }
-    ];
+
+    // const list1SelectOptions = this.state.listOfCategory.map(o => (
+    //   <Option key={o}>{o}</Option>
+    // ));
+    // const listSubCategory = this.state.listOfSubCategory.map(o => (
+    //   <Option key={o}>{o}</Option>
+    // ));
 
     const columns = [
       {
@@ -180,7 +303,7 @@ class ClaimCategoryMaster extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        Cell:row=>{
+        Cell: row => {
           var ids = row.original["id"];
           return (
             <div>
@@ -216,7 +339,11 @@ class ClaimCategoryMaster extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom" trigger="click">
+                <Popover
+                  content={ActionDelete}
+                  placement="bottom"
+                  trigger="click"
+                >
                   <img
                     src={RedDeleteIcon}
                     alt="del-icon"
@@ -224,8 +351,15 @@ class ClaimCategoryMaster extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={ActionEditBtn} placement="bottom" trigger="click">
-                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                <Popover
+                  content={ActionEditBtn}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <button
+                    className="react-tabel-button editre"
+                    id="p-edit-pop-2"
+                  >
                     EDIT
                   </button>
                 </Popover>
@@ -237,7 +371,9 @@ class ClaimCategoryMaster extends Component {
     ];
     const ClaimIssueTyep = (
       <div className="claim-padding">
-        <b><p className="title">Claim Issue type: Active</p></b>
+        <b>
+          <p className="title">Claim Issue type: Active</p>
+        </b>
         <p className="sub-title">Broken Shoes</p>
       </div>
     );
@@ -297,19 +433,24 @@ class ClaimCategoryMaster extends Component {
         </div>
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
-          <button className="pop-over-button">
-            SAVE
-          </button>
+          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
+            CANCEL
+          </a>
+          <button className="pop-over-button">SAVE</button>
         </div>
       </div>
     );
     return (
       <React.Fragment>
+        <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/admin/settings" className="header-path">Settings</Link>
+          <Link to="/admin/settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Store</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Store
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             Claim Category Master
@@ -321,13 +462,13 @@ class ClaimCategoryMaster extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height claim-tableData">
                   <ReactTable
-                    data={data}
+                    data={this.state.claimCategoryData}
                     columns={columns}
                     // resizable={false}
                     defaultPageSize={5}
                     showPagination={false}
                   />
-                
+
                   <div className="position-relative">
                     <div className="pagi">
                       <ul>
@@ -376,19 +517,40 @@ class ClaimCategoryMaster extends Component {
                     </label>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Brand Name</label>
-                      <select id="inputState" className="store-create-select">
-                        <option>Bata</option>
+                      <select
+                        id="inputState"
+                        className="store-create-select"
+                        onChange={this.handleBrandChange}
+                      >
+                        <option value="select">Select</option>
+                        {this.state.brandData !== null &&
+                          this.state.brandData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={Number(item.brandID)}
+                              className="select-category-placeholder"
+                            >
+                              {item.brandName}
+                            </option>
+                          ))}
                       </select>
+                      {this.state.isbrandValid ? (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.brandCompulsion}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to reports-dis">Claim Category</label>
+                      <label className="reports-to reports-dis">
+                        Claim Category
+                      </label>
                       <Select
                         showSearch={true}
                         value={list1Value}
                         style={{ width: "100%" }}
                         onChange={this.onChangeList1}
                       >
-                        {list1SelectOptions}
+                        {/* {list1SelectOptions} */}
                         <Option value={NEW_ITEM}>
                           <span className="sweetAlert-inCategory">
                             + ADD NEW
@@ -434,14 +596,16 @@ class ClaimCategoryMaster extends Component {
                     </div>
 
                     <div className="dropDrownSpace">
-                      <label className="reports-to reports-dis">Claim Sub Category</label>
+                      <label className="reports-to reports-dis">
+                        Claim Sub Category
+                      </label>
                       <Select
                         showSearch={true}
                         value={ListOfSubCate}
                         style={{ width: "100%" }}
                         onChange={this.onChangeListSubCate}
                       >
-                        {listSubCategory}
+                        {/* {listSubCategory} */}
                         <Option value={NEW_ITEM}>
                           <span className="sweetAlert-inCategory">
                             + ADD NEW
@@ -506,9 +670,7 @@ class ClaimCategoryMaster extends Component {
                       </div>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy">
-                        ADD
-                      </button>
+                      <button className="addBtn-ticket-hierarchy">ADD</button>
                     </div>
                   </div>
                 </div>

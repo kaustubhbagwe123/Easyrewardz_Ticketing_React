@@ -3306,3 +3306,17 @@ background: transparent;
   .FTypeScroll::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
   }
+.mainfileUpload{
+  font-weight: 400;
+    border: 1px solid #99afc9;
+    border-radius: 8px;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.fileupload-span{
+  font-weight: 700;
+  color: #2561a8;
+}

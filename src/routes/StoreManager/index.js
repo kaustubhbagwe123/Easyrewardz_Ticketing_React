@@ -109,7 +109,7 @@ export class StoreApp extends Component {
           path={`${match.url}/storeAlerts`}
           component={StoreAlerts}
         />
-      <NotificationContainer />
+        <NotificationContainer />
       </StoreLayout>
     );
   }

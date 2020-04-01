@@ -19,7 +19,6 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-// import DropdownList from "react-widgets/lib/DropdownList";
 import {
   // NotificationContainer,
   NotificationManager
@@ -385,7 +384,9 @@ class CreateSLA extends Component {
       if (sItems1.length > 0) {
         for (let i = 0; i < sItems1.length; i++) {
           if (sItems1[i] !== "") {
-            var tempFilterData1 = allData.filter(a => a.createdBy === sItems1[i]);
+            var tempFilterData1 = allData.filter(
+              a => a.createdBy === sItems1[i]
+            );
             if (tempFilterData1.length > 0) {
               for (let j = 0; j < tempFilterData1.length; j++) {
                 itemsArray.push(tempFilterData1[j]);
