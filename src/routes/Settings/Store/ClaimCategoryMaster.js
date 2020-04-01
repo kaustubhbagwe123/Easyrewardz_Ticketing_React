@@ -307,7 +307,7 @@ class ClaimCategoryMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="/admin/settings" className="header-path">Settings</Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path">Store</Link>
           <span>&gt;</span>

@@ -11,7 +11,7 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
-import Demo from "./../../../store/Hashtag";
+import Demo from "../../../store/Hashtag";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import LetterBox from "./../../../assets/Images/SecuredLetter2.png";
 import SmsImg from "./../../../assets/Images/Sms.png";
@@ -317,7 +317,7 @@ class StoreAlerts extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">
+          <Link to="/admin/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
