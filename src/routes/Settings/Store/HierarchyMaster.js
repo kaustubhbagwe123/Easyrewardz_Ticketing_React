@@ -571,6 +571,7 @@ class HierarchyMaster extends Component {
     this.setState({ selectReportTo: value });
   };
   handleStatusChange = e => {
+    debugger;
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
@@ -591,11 +592,8 @@ class HierarchyMaster extends Component {
   hanldeGetReportListDropDown() {
     axios({
       method: "post",
-      url: config.apiUrl + "/Designation/GetDesignationList",
-      headers: authHeader(),
-      params: {
-        hierarchyFor: 2
-      }
+      url: config.apiUrl + "/StoreHierarchy/GetStoreDesignationList",
+      headers: authHeader()
     })
       .then(response => {
         debugger;
@@ -732,11 +730,8 @@ class HierarchyMaster extends Component {
   handleGetItem() {
     axios({
       method: "post",
-      url: config.apiUrl + "/Hierarchy/ListHierarchy",
-      headers: authHeader(),
-      params: {
-        HierarchyFor: 2
-      }
+      url: config.apiUrl + "/StoreHierarchy/ListStoreHierarchy",
+      headers: authHeader()
     })
       .then(response => {
         debugger;
@@ -834,12 +829,10 @@ class HierarchyMaster extends Component {
     debugger;
     axios({
       method: "post",
-      url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+      url: config.apiUrl + "/StoreHierarchy/DeleteStoreHierarchy",
       headers: authHeader(),
       data: {
-        DesignationID: hierarchy_Id,
-        Deleteflag: 1,
-        HierarchyFor: 2
+        designationID: hierarchy_Id
       }
     })
       .then(response => {
@@ -878,14 +871,13 @@ class HierarchyMaster extends Component {
       // update item
       axios({
         method: "post",
-        url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+        url: config.apiUrl + "/StoreHierarchy/UpdateStoreHierarchy",
         headers: authHeader(),
         data: {
           DesignationID: designationID,
           DesignationName: this.state.updateDesignation.trim(),
           ReportToDesignation: this.state.updateReprtTo,
-          IsActive: activeStatus,
-          HierarchyFor: 2
+          IsActive: activeStatus
         }
       })
         .then(response => {
@@ -1027,8 +1019,8 @@ class HierarchyMaster extends Component {
     debugger;
     if (
       this.state.designation_name.length > 0 &&
-      this.state.selectReportTo !== 0 &&
-      this.state.selectStatus !== 0
+      parseInt(this.state.selectReportTo) !== 0 &&
+      parseInt(this.state.selectStatus) !== 0
     ) {
       let self = this;
       var activeStatus = 0;
@@ -1047,13 +1039,12 @@ class HierarchyMaster extends Component {
       // create item
       axios({
         method: "post",
-        url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+        url: config.apiUrl + "/StoreHierarchy/CreateStoreHierarchy",
         headers: authHeader(),
         data: {
           DesignationName: this.state.designation_name.trim(),
           ReportToDesignation: ReportId,
-          IsActive: activeStatus,
-          HierarchyFor: 2
+          IsActive: activeStatus
         }
       })
         .then(response => {
@@ -1585,7 +1576,7 @@ class HierarchyMaster extends Component {
                           value={this.state.selectReportTo}
                           onChange={this.handleOnReportToChange}
                         >
-                          <option>select</option>
+                          <option value="0">select</option>
                           <option value={1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
@@ -1608,7 +1599,7 @@ class HierarchyMaster extends Component {
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option>select</option>
+                        <option value="0">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
