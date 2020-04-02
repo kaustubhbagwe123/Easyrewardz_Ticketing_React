@@ -24,7 +24,7 @@ class SingIn extends Component {
       emailID: "",
       password: "",
       loading: false,
-      programCode: "",
+      programCode: ""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -51,7 +51,6 @@ class SingIn extends Component {
     } else {
       this.props.history.push("/");
     }
-
   }
 
   handleCRMRole() {
@@ -70,7 +69,11 @@ class SingIn extends Component {
           if (data !== null) {
             for (var i = 0; i <= data.length; i++) {
               if (i === data.length) {
-                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2000);
+                NotificationManager.error(
+                  "You don't have any sufficient page access. Please contact administrator for access.",
+                  "",
+                  2000
+                );
                 self.setState({
                   loading: false
                 });
@@ -78,7 +81,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Dashboard" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/dashboard");
                 }, 400);
                 return;
@@ -86,7 +89,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Tickets" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/myTicketlist");
                 }, 400);
                 return;
@@ -94,7 +97,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Knowledge Base" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/knowledgebase");
                 }, 400);
                 return;
@@ -102,7 +105,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Settings" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/settings");
                 }, 400);
                 return;
@@ -127,7 +130,10 @@ class SingIn extends Component {
       let X_Authorized_password = encryption(password, "enc");
 
       //let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
+      let X_Authorized_Domainname = encryption(
+        "https://erbelltkt.dcdev.brainvire.net",
+        "enc"
+      );
       // let X_Authorized_Domainname = encryption(
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
@@ -146,7 +152,7 @@ class SingIn extends Component {
             "X-Authorized-password": X_Authorized_password,
             "X-Authorized-Domainname": X_Authorized_Domainname
           }
-        }).then(function (res) {
+        }).then(function(res) {
           debugger;
           let resValid = res.data.message;
           self.setState({
@@ -161,7 +167,11 @@ class SingIn extends Component {
             //   self.props.history.push("/admin/dashboard");
             // }, 400);
           } else {
-            NotificationManager.error("Username or password is invalid.", '', 1500);
+            NotificationManager.error(
+              "Username or password is invalid.",
+              "",
+              1500
+            );
             self.setState({
               loading: false
             });
@@ -225,7 +235,6 @@ class SingIn extends Component {
                   className="program-code-button"
                   disabled={this.state.loading}
                 >
-
                   {this.state.loading ? (
                     <FontAwesomeIcon
                       className="circular-loader"
@@ -233,8 +242,8 @@ class SingIn extends Component {
                       spin
                     />
                   ) : (
-                      ""
-                    )}
+                    ""
+                  )}
                   {this.state.loading ? "Please Wait ..." : "LOGIN"}
                 </button>
               </form>
