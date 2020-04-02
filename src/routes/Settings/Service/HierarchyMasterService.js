@@ -71,6 +71,16 @@ export default class HierarchyMasterService {
       }
     });
   }
+
+  // bulk upload API
+  async BulkUploadItem(formData) {
+    return axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+      headers: authHeader(),
+      data: formData
+    });
+  }
   
 }
  

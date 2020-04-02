@@ -4,6 +4,8 @@ import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
@@ -19,6 +21,9 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import HierarchyMasterService from "./../../../routes/Settings/Service/HierarchyMasterService";
 import { CSVLink } from "react-csv";
 import config from "../../../helpers/config";
+import Dropzone from "react-dropzone";
+import matchSorter from "match-sorter";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import {
   NotificationManager
 } from "react-notifications";
@@ -193,7 +198,11 @@ class HierarchyMaster extends Component {
       sdesignationNameFilterCheckbox: "",
       sreportToFilterCheckbox: "",
       screatedbypersonFilterCheckbox: "",
-      sstatusFilterCheckbox: ""
+      sstatusFilterCheckbox: "",
+      file: {},
+      fileValidation: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -202,7 +211,7 @@ class HierarchyMaster extends Component {
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
     );
-    // this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
 
   componentDidMount() {
@@ -210,6 +219,345 @@ class HierarchyMaster extends Component {
     this.handleGetItem();
     this.hanldeGetReportListDropDown();
   }
+
+  StatusCloseModel() {
+    debugger;
+    if (this.state.temphierarchyData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        hierarchyData: this.state.temphierarchyData,
+        filterTxtValue: ""
+      });
+      if (this.state.sortColumn === "designationName") {
+        if (this.state.sdesignationNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportToFilterCheckbox	:"",	
+            screatedbypersonFilterCheckbox		:"",	
+            sstatusFilterCheckbox		:"",	
+            
+          });
+        }
+      }
+      if (this.state.sortColumn === "reportTo") {
+        if (this.state.sreportToFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationNameFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdbyperson") {
+        if (this.state.screatedbypersonFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationNameFilterCheckbox: "",
+            sreportToFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "status") {
+        if (this.state.sstatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdesignationNameFilterCheckbox: "",
+            sreportToFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: ""
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        hierarchyData: this.state.sortAllData,
+        filterTxtValue: ""
+      });
+    }
+  }
+
+  handleBulkUpload() {
+    let self = this;
+    if (this.state.file) {
+      const formData = new FormData();
+      formData.append("file", this.state.file);
+      this.HierarchyMasterService.BulkUploadItem(formData)
+        .then(response => {
+          var status = response.data.status;
+          var itemData = response.data.responseData;
+          if (status && itemData.lenght > 0) {
+            self.setState(itemData);
+            self.setState({ isErrorBulkUpload: false });
+          } else {
+            self.setState({ isErrorBulkUpload: true });
+          }
+        })
+        .catch(response => {
+          self.setState({ isErrorBulkUpload: true });
+          console.log(response);
+        });
+    } else {
+      this.setState({ fileValidation: "Please Select File." });
+    }
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    // function myFunction() {
+    // First sort the array
+    //itemsArray.designationName.sort();
+    // Then reverse it:
+    //fruits.reverse();
+
+    // }
+
+    itemsArray.sort((a, b) => a.designationName > b.designationName);
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    var itemsArray1 = [];
+    itemsArray1 = this.state.hierarchyData;
+    itemsArray = itemsArray1.sort((a, b) => {
+      return b.designationName > a.designationName;
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var sdesignationNameFilterCheckbox = this.state
+      .sdesignationNameFilterCheckbox;
+    var sreportToFilterCheckbox = this.state.sreportToFilterCheckbox;
+    var screatedbypersonFilterCheckbox = this.state
+      .screatedbypersonFilterCheckbox;
+    var sstatusFilterCheckbox = this.state.sstatusFilterCheckbox;
+
+    if (column === "designationName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sdesignationNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sdesignationNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sdesignationNameFilterCheckbox.includes("all")) {
+          sdesignationNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "designationName") {
+            for (let i = 0; i < this.state.sortDesignation.length; i++) {
+              sdesignationNameFilterCheckbox +=
+                this.state.sortDesignation[i].designationName + ",";
+            }
+            sdesignationNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "reportTo" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportToFilterCheckbox = sreportToFilterCheckbox.replace("all", "");
+        sreportToFilterCheckbox = sreportToFilterCheckbox.replace("all,", "");
+        if (sreportToFilterCheckbox.includes(e.currentTarget.value)) {
+          sreportToFilterCheckbox = sreportToFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sreportToFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportToFilterCheckbox.includes("all")) {
+          sreportToFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportTo") {
+            for (let i = 0; i < this.state.sortReportTo.length; i++) {
+              sreportToFilterCheckbox +=
+                this.state.sortReportTo[i].reportTo + ",";
+            }
+            sreportToFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdbyperson" || column === "all") {
+      screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+        "all",
+        ""
+      );
+      screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+        "all,",
+        ""
+      );
+      if (type === "value" && type !== "All") {
+        if (screatedbypersonFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedbypersonFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedbypersonFilterCheckbox.includes("all")) {
+          screatedbypersonFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdbyperson") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedbypersonFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdbyperson + ",";
+            }
+            screatedbypersonFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "status" || column === "all") {
+      sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
+      sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
+      if (type === "value" && type !== "All") {
+        if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstatusFilterCheckbox.includes("all")) {
+          sstatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "status") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sstatusFilterCheckbox += this.state.sortStatus[i].status + ",";
+            }
+            sstatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      designationColor: "",
+      reportToColor: "",
+      createdColor: "",
+      statusColor: "",
+      sdesignationNameFilterCheckbox,
+      sreportToFilterCheckbox,
+      screatedbypersonFilterCheckbox,
+      sstatusFilterCheckbox
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "designationName") {
+      var sItems = sdesignationNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.designationName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        designationColor: "sort-column",
+        [e.target.name]: true
+      });
+    } else if (column === "reportTo") {
+      var sItems = sreportToFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.reportTo === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        reportToColor: "sort-column"
+      });
+    } else if (column === "createdbyperson") {
+      var sItems = screatedbypersonFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.createdbyperson === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column"
+      });
+    } else if (column === "status") {
+      var sItems = sstatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.status === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column"
+      });
+    }
+
+    this.setState({
+      temphierarchyData: itemsArray
+    });
+    // this.StatusCloseModel();
+  };
 
   handleOnChangeHierarchyData = e => {
     this.setState({
@@ -223,6 +571,19 @@ class HierarchyMaster extends Component {
   handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
+  };
+  fileUpload = file => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: ""
+      });
+    }
   };
 
   hanldeGetReportListDropDown() {
@@ -246,70 +607,19 @@ class HierarchyMaster extends Component {
       });
   }
 
-  fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
-  };
-  fileDrop = e => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
-    e.preventDefault();
-  };
-  fileDragOver = e => {
-    e.preventDefault();
-  };
-  fileDragEnter = e => {
-    e.preventDefault();
-  };
-
-  hanldeAddBulkUpload() {
-    debugger;
-    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
-      let self = this;
-      const formData = new FormData();
-
-      formData.append("file", this.state.fileN[0]);
-
-      this.setState({ showProgress: true });
-      // axios({
-      //   method: "post",
-      //   url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
-      //   headers: authHeader(),
-      //   data: formData,
-      //   // cancelToken: source.token,
-      //   onUploadProgress: (ev = ProgressEvent) => {
-      //     const progress = (ev.loaded / ev.total) * 100;
-      //     this.updateUploadProgress(Math.round(progress));
-      //   }
-      // })
-      //   .then(function(res) {
-      //     debugger;
-      //     let status = res.data.message;
-      //     let data = res.data.responseData;
-      //     if (status === "Success") {
-      //       NotificationManager.success("File uploaded successfully.");
-      //       self.setState({ fileName: "", fileSize: "", fileN: [] });
-      //       self.handleGetHierarchyData();
-      //     } else {
-      //       self.setState({
-      //         showProgress: false,
-      //         isFileUploadFail: true,
-      //         progressValue: 0
-      //       });
-      //       NotificationManager.error("File not uploaded.");
-      //     }
-      //   })
-      //   .catch(data => {
-      //     debugger;
-      //     if (data.message) {
-      //       this.setState({ showProgress: false, isFileUploadFail: true });
-      //     }
-      //     console.log(data);
-      //   });
-    } else {
-      this.setState({
-        bulkuploadCompulsion: "Please select file."
-      });
-    }
-  }
+  // fileUpload = e => {
+  //   this.setState({ fileName: e.target.files[0].name });
+  // };
+  // fileDrop = e => {
+  //   this.setState({ fileName: e.dataTransfer.files[0].name });
+  //   e.preventDefault();
+  // };
+  // fileDragOver = e => {
+  //   e.preventDefault();
+  // };
+  // fileDragEnter = e => {
+  //   e.preventDefault();
+  // };
 
   callBackEdit = (designationName, reportTo, status, rowData) => {
     debugger;
@@ -343,6 +653,72 @@ class HierarchyMaster extends Component {
       "none";
   }
 
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "designationName") {
+      var sortFilterDesignation = matchSorter(
+        this.state.sortDesignation,
+        e.target.value,
+        { keys: ["designationName"] }
+      );
+      if (sortFilterDesignation.length > 0) {
+        this.setState({ sortFilterDesignation });
+      } else {
+        this.setState({
+          sortFilterDesignation: this.state.sortDesignation
+        });
+      }
+    }
+    if (this.state.sortColumn === "reportTo") {
+      var sortFilterReportTo = matchSorter(
+        this.state.sortReportTo,
+        e.target.value,
+        { keys: ["reportTo"] }
+      );
+      if (sortFilterReportTo.length > 0) {
+        this.setState({ sortFilterReportTo });
+      } else {
+        this.setState({
+          sortFilterReportTo: this.state.sortReportTo
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdbyperson") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        {
+          keys: ["createdbyperson"]
+        }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreatedBy
+        });
+      }
+    }
+    if (this.state.sortColumn === "status") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        {
+          keys: ["status"]
+        }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortCreatedBy
+        });
+      }
+    }
+  }
+
   // get item list
   handleGetItem() {
     this.HierarchyMasterService.GetItemList()
@@ -350,6 +726,7 @@ class HierarchyMaster extends Component {
         debugger;
         let status = response.data.message;
         let data = response.data.responseData;
+
         if (data !== null) {
           this.state.sortAllData = data;
           var unique = [];
@@ -408,6 +785,7 @@ class HierarchyMaster extends Component {
             this.state.sortFilterStatus.push({ status: distinct[i] });
           }
         }
+
         if (status === "Success" && data) {
           this.setState({
             hierarchyData: data
@@ -422,6 +800,18 @@ class HierarchyMaster extends Component {
         console.log(response);
       });
   }
+
+  DeleteBulkUploadFile = () => {
+    debugger;
+    this.setState({
+      file: {},
+      fileName: "",
+      fileSize: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
+    });
+    NotificationManager.success("File deleted successfully.");
+  };
 
   // delete item
   handleDeleteHierarchy(hierarchy_Id) {
@@ -441,18 +831,6 @@ class HierarchyMaster extends Component {
       .catch(response => {
         console.log(response);
       });
-  }
-
-  handleDeleteBulkupload = e => {
-    debugger;
-    this.setState({
-      fileN: [],
-      fileName: ""
-    });
-    NotificationManager.success("File deleted successfully.");
-  };
-  updateUploadProgress(value) {
-    this.setState({ progressValue: value });
   }
 
   handleUpdateHierarchyData(e, designationID) {
@@ -669,170 +1047,191 @@ class HierarchyMaster extends Component {
   render() {
     const { hierarchyData } = this.state;
 
-    const columnsStorHier = [
-      {
-        Header: (
-          <span>
-            Designation
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Desig"
-      },
-      {
-        Header: (
-          <span>
-            Report To
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Report"
-      },
-      {
-        Header: (
-          <span>
-            Created By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "creat",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={ActionDelete}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button editre" id="p-edit-pop-2">
-                    EDIT
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT HIERARCHY</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Designation Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Designation Name"
-            maxLength={25}
-          />
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Report To</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Status</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
-          <button className="pop-over-button">
-            SAVE
-          </button>
-        </div>
-      </div>
-    );
-
     return (
       <React.Fragment>
+                <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+              >
+                clear search
+              </a>
+              <div className="filter-type ">
+                <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+                <div className="FTypeScroll">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      checked={
+                        this.state.sdesignationNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sreportToFilterCheckbox.includes("all") ||
+                        this.state.screatedbypersonFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sstatusFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "designationName"
+                    ? this.state.sortFilterDesignation !== null &&
+                      this.state.sortFilterDesignation.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.designationName}
+                            id={"fil-open" + item.designationName}
+                            value={item.designationName}
+                            checked={this.state.sdesignationNameFilterCheckbox.includes(
+                              item.designationName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "designationName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.designationName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.designationName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "reportTo"
+                    ? this.state.sortFilterReportTo !== null &&
+                      this.state.sortFilterReportTo.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.reportTo}
+                            value={item.reportTo}
+                            checked={this.state.sreportToFilterCheckbox.includes(
+                              item.reportTo
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportTo",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportTo}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportTo}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdbyperson"
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdbyperson}
+                            value={item.createdbyperson}
+                            checked={this.state.screatedbypersonFilterCheckbox.includes(
+                              item.createdbyperson
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdbyperson",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdbyperson}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdbyperson}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "status"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/admin/settings" className="header-path">Settings</Link>
           <span>&gt;</span>
@@ -1209,47 +1608,42 @@ class HierarchyMaster extends Component {
                       </CSVLink>
                     </div>
                   </div>
-                  <input
-                    id="file-upload"
-                    className="file-upload d-none"
-                    type="file"
-                    onChange={this.fileUpload}
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
-                  >
-                    <div className="file-icon">
-                      <img src={FileUpload} alt="file-upload" />
-                    </div>
-                    <span>Add File</span> or Drop File here
-                  </label>
-                  {this.state.fileN.length === 0 && (
+                  <div className="mainfileUpload">
+                    <Dropzone onDrop={this.fileUpload}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input
+                            {...getInputProps()}
+                            className="file-upload d-none"
+                          />
+                          <div className="file-icon">
+                            <img src={FileUpload} alt="file-upload" />
+                          </div>
+                          <span className={"fileupload-span"}>Add File</span> or
+                          Drop File here
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
+
+                  {this.state.fileValidation ? (
                     <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.bulkuploadCompulsion}
+                      {this.state.fileValidation}
                     </p>
-                  )}
+                  ) : null}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
                         <div className="file-dtls">
                           <p className="file-name">{this.state.fileName}</p>
                           <div className="del-file" id="del-file-1">
-                            <img
-                              src={DelBlack}
-                              alt="delete-black"
-                              onClick={this.togglePopover}
-                            />
+                            <img src={DelBlack} alt="delete-black" />
                           </div>
                           <UncontrolledPopover
                             trigger="legacy"
                             placement="auto"
                             target="del-file-1"
                             className="general-popover delete-popover"
-                            isOpen={this.state.isOpen}
-                            toggle={this.togglePopover}
                           >
                             <PopoverBody className="d-flex">
                               <div className="del-big-icon">
@@ -1263,15 +1657,10 @@ class HierarchyMaster extends Component {
                                   Are you sure you want to delete this file?
                                 </p>
                                 <div className="del-can">
-                                  <a
-                                    className="canblue"
-                                    onClick={this.togglePopover}
-                                  >
-                                    CANCEL
-                                  </a>
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
                                   <button
                                     className="butn"
-                                    onClick={this.handleDeleteBulkupload}
+                                    onClick={this.DeleteBulkUploadFile}
                                   >
                                     Delete
                                   </button>
@@ -1286,24 +1675,23 @@ class HierarchyMaster extends Component {
                           </span>
                         </div>
                       </div>
-                      {this.state.fileN.length > 0 &&
-                      this.state.isFileUploadFail ? (
+                      {this.state.isErrorBulkUpload ? (
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a
+                            <span
                               className="file-retry"
-                              onClick={this.hanldeAddBulkUpload.bind(this)}
+                              onClick={this.handleBulkUpload.bind(this)}
                             >
                               Retry
-                            </a>
+                            </span>
                           </div>
                           <div>
                             <span className="file-failed">Failed</span>
                           </div>
                         </div>
                       ) : null}
-                      {this.state.showProgress ? (
+                      {this.state.isShowProgress ? (
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name pr-0">
@@ -1312,28 +1700,17 @@ class HierarchyMaster extends Component {
                           </div>
                           <div>
                             <div className="d-flex align-items-center mt-2">
-                              <ProgressBar
-                                className="file-progress"
-                                now={this.state.progressValue}
-                              />
-                              {/* {this.state.progressValue !== 100 ? ( */}
+                              <ProgressBar className="file-progress" now={60} />
                               <div className="cancel-upload">
-                                {/* <img src={UploadCancel} alt="upload cancel" onClick={source.cancel('Operation canceled by the user.')} /> */}
                                 <img src={UploadCancel} alt="upload cancel" />
                               </div>
-                              {/* ) : null} */}
                             </div>
                           </div>
                         </div>
                       ) : null}
                     </div>
                   )}
-                  <button
-                    className="butn"
-                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                  >
-                    ADD
-                  </button>
+                  <button className="butn" onClick={this.handleBulkUpload.bind(this)}>ADD</button>
                 </div>
               </div>
             </div>
