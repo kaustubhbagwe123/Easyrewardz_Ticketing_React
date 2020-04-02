@@ -14,7 +14,9 @@ import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { Popover } from "antd";
 import Select from "react-select";
-import DepartmentService from "./../../../routes/Settings/Service/DepartmentService";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import { authHeader } from "../../../helpers/authHeader";
 
 class DepartmentMaster extends Component {
   constructor(props) {
@@ -24,9 +26,8 @@ class DepartmentMaster extends Component {
       fileName: "",
       brandData: [],
       selectedBrand: [],
-      selectedStatus: "true",
+      selectedStatus: "true"
     };
-    this.DepartmentService = new DepartmentService();
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
     );
@@ -60,12 +61,15 @@ class DepartmentMaster extends Component {
       this.setState({ selectedBrand: e });
     }
   };
- 
+
   ////get Brand data
   handleGetBrandData() {
     let self = this;
-    this.DepartmentService.GetBrandData()
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    }).then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -82,12 +86,16 @@ class DepartmentMaster extends Component {
   ////Get Detapartment grid data
   handleGetDepartmentGridData() {
     let self = this;
-    this.DepartmentService.GetDetapartmentGridData()
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Department/GetSLA",
+      headers: authHeader()
+    })
       .then(res => {
         debugger;
       })
-      .catch(response => {
-        console.log(response);
+      .catch(res => {
+        console.log(res);
       });
   }
   render() {

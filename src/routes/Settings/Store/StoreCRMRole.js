@@ -16,7 +16,6 @@ import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
-import StoreCRMService from "./../Service/StoreCRMRoleService";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
 import matchSorter from "match-sorter";
@@ -76,7 +75,6 @@ class StoreCRMRole extends Component {
       bulkuploadCompulsion: "",
       progressValue: 0,
     };
-    this.StoreCRMService = new StoreCRMService();
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
   }
@@ -150,8 +148,11 @@ class StoreCRMRole extends Component {
   ////Get CRM grid data
   handleGetCRMGridData() {
     let self = this;
-    this.StoreCRMService.GetCRMGridData()
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetCRMRoles",
+      headers: authHeader()
+    }).then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -230,8 +231,14 @@ class StoreCRMRole extends Component {
   handleDeleteCrmRole(Id) {
     debugger;
     let self = this;
-    this.StoreCRMService.DeleteCRMData(Id)
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/DeleteCRMRole",
+      headers: authHeader(),
+      params: {
+        CRMRoleID: Id
+      }
+    }).then(res => {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
@@ -294,14 +301,18 @@ class StoreCRMRole extends Component {
         }
       }
     }
-    this.StoreCRMService.CreateUpdateCRM(
-      CRMRoleID,
-      RoleName,
-      RoleisActive,
-      ModulesEnabled,
-      ModulesDisabled
-    )
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/CreateUpdateCRMRole",
+      headers: authHeader(),
+      params: {
+        CRMRoleID: CRMRoleID,
+        RoleName: RoleName,
+        RoleisActive: RoleisActive,
+        ModulesEnabled: ModulesEnabled,
+        ModulesDisabled: ModulesDisabled
+      }
+    }).then(res => {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
