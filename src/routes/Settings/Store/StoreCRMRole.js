@@ -11,14 +11,19 @@ import Demo from "../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
 import Sorting from "./../../../assets/Images/sorting.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import DownExcel from "./../../../assets/Images/csv.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
-import StoreCRMService from "./../Service/StoreCRMRoleService";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
 import matchSorter from "match-sorter";
+import config from "./../../../helpers/config";
+import { CSVLink } from "react-csv";
+import axios from "axios";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import { authHeader } from "../../../helpers/authHeader";
 
 class StoreCRMRole extends Component {
   constructor(props) {
@@ -52,10 +57,8 @@ class StoreCRMRole extends Component {
       tempcrmRoles: [],
       StatusModel: false,
       updateRoleName: "",
-      updateRoleisActive: "",
       updateModulesEnabled: "",
       updateModulesDisabled: "",
-      updateModulesList: [],
       sroleNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       sisRoleActiveFilterCheckbox: "",
@@ -68,8 +71,10 @@ class StoreCRMRole extends Component {
       sortRoleName: [],
       sortCreated: [],
       sortStatus: [],
+      fileN: [],
+      bulkuploadCompulsion: "",
+      progressValue: 0,
     };
-    this.StoreCRMService = new StoreCRMService();
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
   }
@@ -82,8 +87,23 @@ class StoreCRMRole extends Component {
       tabIndex: index
     });
   }
+
+  ////hanlde file uploading
   fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    if (selectedFiles) {
+      allFiles.push(selectedFiles[0]);
+
+      var fileSize = formatSizeUnits(selectedFiles[0].size);
+      this.setState({
+        fileSize,
+        fileN: allFiles,
+        fileName: allFiles[0].name,
+        bulkuploadCompulsion: ""
+      });
+    }
   };
 
   /// Role name onchange
@@ -128,8 +148,11 @@ class StoreCRMRole extends Component {
   ////Get CRM grid data
   handleGetCRMGridData() {
     let self = this;
-    this.StoreCRMService.GetCRMGridData()
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetCRMRoles",
+      headers: authHeader()
+    }).then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -208,8 +231,14 @@ class StoreCRMRole extends Component {
   handleDeleteCrmRole(Id) {
     debugger;
     let self = this;
-    this.StoreCRMService.DeleteCRMData(Id)
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/DeleteCRMRole",
+      headers: authHeader(),
+      params: {
+        CRMRoleID: Id
+      }
+    }).then(res => {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
@@ -272,14 +301,18 @@ class StoreCRMRole extends Component {
         }
       }
     }
-    this.StoreCRMService.CreateUpdateCRM(
-      CRMRoleID,
-      RoleName,
-      RoleisActive,
-      ModulesEnabled,
-      ModulesDisabled
-    )
-      .then(res => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/CreateUpdateCRMRole",
+      headers: authHeader(),
+      params: {
+        CRMRoleID: CRMRoleID,
+        RoleName: RoleName,
+        RoleisActive: RoleisActive,
+        ModulesEnabled: ModulesEnabled,
+        ModulesDisabled: ModulesDisabled
+      }
+    }).then(res => {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -320,7 +353,56 @@ class StoreCRMRole extends Component {
         console.log(res);
       });
   }
+//// CRM Bulk uploading 
+  hanldeAddBulkUpload() {
+    debugger;
+    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+      let self = this;
 
+      const formData = new FormData();
+
+      formData.append("file", this.state.fileN[0]);
+      this.setState({ showProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          // let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetCRMGridData();
+          } else {
+            self.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              progressValue: 0
+            });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(data => {
+          debugger;
+          if (data.message) {
+            this.setState({ showProgress: false, isFileUploadFail: true });
+          }
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        bulkuploadCompulsion: "Please select file."
+      });
+    }
+  }
   //// Store CRM data for edit
   hanldeEditCRM = rowData => {
     debugger;
@@ -333,15 +415,7 @@ class StoreCRMRole extends Component {
     });
   };
 
-  ////call back edit
-  callBackEdit = (RoleName, modules, Status, rowData) => {
-    debugger;
-    // this.setState({RoleName,updateRoleisActive:Status})
-    this.state.RoleName = RoleName;
-    this.state.updateModulesList = modules;
-    this.state.updateRoleisActive = Status;
-    this.state.rowData = rowData;
-  };
+
 /// set sorting status
   setSortCheckStatus = (column, type, e) => {
     debugger;
@@ -509,32 +583,7 @@ class StoreCRMRole extends Component {
     });
     // this.StatusCloseModel();
   };
-/// update check module data
-  updateCheckModule = async (e, moduleId) => {
-    debugger;
-    let updateModulesList = [...this.state.updateModulesList],
-      isActive,
-      updateModulesEnabled = "",
-      updateModulesDisabled = "";
-    for (let i = 0; i < updateModulesList.length; i++) {
-      if (updateModulesList[i].moduleID === moduleId) {
-        isActive = updateModulesList[i].modulestatus;
-        updateModulesList[i].modulestatus = !isActive;
-      }
-    }
-    for (let i = 0; i < updateModulesList.length; i++) {
-      if (updateModulesList[i].modulestatus === true) {
-        updateModulesEnabled += updateModulesList[i].moduleID + ",";
-      } else if (updateModulesList[i].modulestatus === false) {
-        updateModulesDisabled += updateModulesList[i].moduleID + ",";
-      }
-    }
-    await this.setState({
-      updateModulesList,
-      updateModulesEnabled,
-      updateModulesDisabled
-    });
-  };
+
   ///toggle change
   toggleEditModal() {
     this.setState({
@@ -766,6 +815,19 @@ class StoreCRMRole extends Component {
     var modulesData = this.state.modulesData;
     modulesData[index].modulestatus = !modulesData[index].modulestatus;
     this.setState({ modulesData });
+  };
+/// get file progress value 
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+  /// Delete file on bulk uploading
+  handleDeleteBulkupload = e => {
+    debugger;
+    this.setState({
+      fileN: [],
+      fileName: ""
+    });
+    NotificationManager.success("File deleted successfully.");
   };
   render() {
     return (
@@ -1187,6 +1249,7 @@ class StoreCRMRole extends Component {
                         maxLength={25}
                         name="RoleName"
                         value={this.state.RoleName}
+                        autoComplete="off"
                         onChange={this.handleRoleName.bind(this)}
                       />
                       {this.state.checkRoleName != "" && (
@@ -1255,9 +1318,13 @@ class StoreCRMRole extends Component {
                 </div>
                 <br />
                 <div className="store-col-2">
-                  <div className="right-sect-div">
+                <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
+                    Template
+                    <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
+                      <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
                     <input
                       id="file-upload"
                       className="file-upload d-none"
@@ -1270,6 +1337,11 @@ class StoreCRMRole extends Component {
                       </div>
                       <span>Add File</span> or Drop File here
                     </label>
+                    {this.state.fileN.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.bulkuploadCompulsion}
+                      </p>
+                    )}
                     {this.state.fileName && (
                       <div className="file-info">
                         <div className="file-cntr">
@@ -1297,45 +1369,68 @@ class StoreCRMRole extends Component {
                                   </p>
                                   <div className="del-can">
                                     <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleDeleteBulkupload}
+                                    >
+                                      Delete
+                                    </button>
                                   </div>
                                 </div>
                               </PopoverBody>
                             </UncontrolledPopover>
                           </div>
                           <div>
-                            <span className="file-size">122.6kb</span>
+                            <span className="file-size">
+                              {this.state.fileSize}
+                            </span>
                           </div>
                         </div>
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <a className="file-retry" href={Demo.BLANK_LINK}>
-                              Retry
-                            </a>
+                        {this.state.fileN.length > 0 &&
+                        this.state.isFileUploadFail ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <a
+                                className="file-retry"
+                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              >
+                                Retry
+                              </a>
+                            </div>
+                            <div>
+                              <span className="file-failed">Failed</span>
+                            </div>
                           </div>
-                          <div>
-                            <span className="file-failed">Failed</span>
-                          </div>
-                        </div>
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name pr-0">
-                              {this.state.fileName}
-                            </p>
-                          </div>
-                          <div>
-                            <div className="d-flex align-items-center mt-2">
-                              <ProgressBar className="file-progress" now={60} />
-                              <div className="cancel-upload">
-                                <img src={UploadCancel} alt="upload cancel" />
+                        ) : null}
+                        {this.state.showProgress ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name pr-0">
+                                {this.state.fileName}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="d-flex align-items-center mt-2">
+                                <ProgressBar
+                                  className="file-progress"
+                                  now={this.state.progressValue}
+                                />
+                                <div className="cancel-upload">
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        ) : null}
                       </div>
                     )}
-                    <button className="butn">ADD</button>
+                    <button
+                      className="butn"
+                      onClick={this.hanldeAddBulkUpload.bind(this)}
+                    >
+                      ADD
+                    </button>
                     <br />
                   </div>
                 </div>
