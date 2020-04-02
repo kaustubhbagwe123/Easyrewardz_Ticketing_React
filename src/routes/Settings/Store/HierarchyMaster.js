@@ -18,7 +18,6 @@ import { Popover } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import ReactTable from "react-table";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import HierarchyMasterService from "./../../../routes/Settings/Service/HierarchyMasterService";
 import { CSVLink } from "react-csv";
 import config from "../../../helpers/config";
 import Dropzone from "react-dropzone";
@@ -27,6 +26,8 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import {
   NotificationManager
 } from "react-notifications";
+import axios from "axios";
+import { authHeader } from "./../../../helpers/authHeader";
 
 const MyButton = props => {
   const { children } = props;
@@ -206,7 +207,6 @@ class HierarchyMaster extends Component {
     };
 
     this.togglePopover = this.togglePopover.bind(this);
-    this.HierarchyMasterService = new HierarchyMasterService();
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
@@ -283,8 +283,12 @@ class HierarchyMaster extends Component {
     if (this.state.file) {
       const formData = new FormData();
       formData.append("file", this.state.file);
-      this.HierarchyMasterService.BulkUploadItem(formData)
-        .then(response => {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+        headers: authHeader(),
+        data: formData
+      }).then(response => {
           var status = response.data.status;
           var itemData = response.data.responseData;
           if (status && itemData.lenght > 0) {
@@ -587,8 +591,14 @@ class HierarchyMaster extends Component {
   };
 
   hanldeGetReportListDropDown() {
-    this.HierarchyMasterService.GetReportListDropDown()
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Designation/GetDesignationList",
+      headers: authHeader(),
+      params: {
+        hierarchyFor: 2
+      }
+    }).then(response => {
         debugger;
         let status = response.data.message;
         let data = response.data.responseData;
@@ -721,8 +731,14 @@ class HierarchyMaster extends Component {
 
   // get item list
   handleGetItem() {
-    this.HierarchyMasterService.GetItemList()
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/ListHierarchy",
+      headers: authHeader(),
+      params: {
+        HierarchyFor: 2
+      }
+    }).then(response => {
         debugger;
         let status = response.data.message;
         let data = response.data.responseData;
@@ -816,8 +832,16 @@ class HierarchyMaster extends Component {
   // delete item
   handleDeleteHierarchy(hierarchy_Id) {
     debugger;
-    this.HierarchyMasterService.DeleteItem(hierarchy_Id)
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+      headers: authHeader(),
+      data: {
+        DesignationID: hierarchy_Id,
+        Deleteflag: 1,
+        HierarchyFor: 2
+      }
+    }).then(response => {
         debugger;
         let status = response.data.message;
         if (status === "Success") {
@@ -851,8 +875,18 @@ class HierarchyMaster extends Component {
       this.setState({ editSaveLoading: true });
 
       // update item
-      this.HierarchyMasterService.UpdateItem(designationID, this.state.updateDesignation, this.state.updateReprtTo, activeStatus)
-      .then(response => {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+        headers: authHeader(),
+        data: {
+          DesignationID: designationID,
+          DesignationName: this.state.updateDesignation.trim(),
+          ReportToDesignation: this.state.updateReprtTo,
+          IsActive: activeStatus,
+          HierarchyFor: 2
+        }
+      }).then(response => {
         debugger;
         let status = response.data.message;
           if (status === "Success") {
@@ -1010,8 +1044,17 @@ class HierarchyMaster extends Component {
       this.setState({ addSaveLoading: true });
       
       // create item
-      this.HierarchyMasterService.CreateItem(this.state.designation_name, ReportId, activeStatus)
-      .then(response => {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+        headers: authHeader(),
+        data: {
+          DesignationName: this.state.designation_name.trim(),
+          ReportToDesignation: ReportId,
+          IsActive: activeStatus,
+          HierarchyFor: 2
+        }
+      }).then(response => {
         debugger;
         let status = response.data.message;
           if (status === "Success") {
