@@ -995,7 +995,7 @@ class Dashboard extends Component {
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      var sItems = screatedOnFilterCheckbox.split(",");
+      var sItems = sassignedToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1014,7 +1014,7 @@ class Dashboard extends Component {
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      var sItems = sassignedToFilterCheckbox.split(",");
+      var sItems = screatedOnFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {

@@ -21,6 +21,7 @@ import StoreModule from "./../Settings/Store/StoreModule";
 import DepartmentMaster from "./../Settings/Store/DepartmentMaster";
 import ClaimCategoryMaster from "./../Settings/Store/ClaimCategoryMaster";
 import StoreAlerts from "./../Settings/Store/StoreAlerts";
+import { NotificationContainer } from "react-notifications";
 
 export class StoreApp extends Component {
   render() {
@@ -108,6 +109,7 @@ export class StoreApp extends Component {
           path={`${match.url}/storeAlerts`}
           component={StoreAlerts}
         />
+        <NotificationContainer />
       </StoreLayout>
     );
   }

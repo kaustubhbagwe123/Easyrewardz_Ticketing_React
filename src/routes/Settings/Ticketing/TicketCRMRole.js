@@ -18,7 +18,7 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import DownExcel from "../../../assets/Images/csv.png";
@@ -182,8 +182,6 @@ class TicketCRMRole extends Component {
 
   StatusOpenModel(data, header) {
     debugger;
-
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterRoleName.length === 0 ||
       this.state.sortFilterCreated.length === 0 ||
@@ -960,187 +958,6 @@ class TicketCRMRole extends Component {
     NotificationManager.success("File deleted successfully.");
   };
   render() {
-    const columnsTickCrmRole = [
-      {
-        Header: (
-          <span
-            className={this.state.roleColor}
-            onClick={this.StatusOpenModel.bind(this, "roleName", "Role Name")}
-          >
-            Role Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "roleName",
-        Cell: row => {
-          // var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                {row.original.roleName}
-                <Popover
-                  content={
-                    <div>
-                      {row.original.modules !== null &&
-                        row.original.modules.map((item, i) => (
-                          <div className="rvmmargin" key={i}>
-                            <p className="rolle-name-text-popover">
-                              {item.moduleName}
-                            </p>
-                            <label className="pop-over-lbl-text-pop">
-                              {item.modulestatus === true
-                                ? "Enabled"
-                                : "Disabled"}
-                            </label>
-                          </div>
-                        ))}
-                    </div>
-                  }
-                  placement="bottom"
-                >
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span
-            className={this.state.createdColor}
-            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created By")}
-          >
-            Created By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "createdBy",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                {row.original.createdBy}
-                <Popover
-                  content={
-                    <>
-                      <div>
-                        <b>
-                          <p className="title">
-                            Created By: {row.original.createdBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          Created Date: {row.original.createdDate}
-                        </p>
-                      </div>
-                      <div>
-                        <b>
-                          <p className="title">
-                            Updated By: {row.original.modifiedBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          Updated Date: {row.original.modifiedDate}
-                        </p>
-                      </div>
-                    </>
-                  }
-                  placement="bottom"
-                >
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span
-            className={this.state.statusColor}
-            onClick={this.StatusOpenModel.bind(this, "isRoleActive", "Status")}
-          >
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "isRoleActive"
-      },
-      {
-        Header: <span>Actions</span>,
-        sortable: false,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={
-                    <div className="d-flex general-popover popover-body">
-                      <div className="del-big-icon">
-                        <img src={DelBigIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button
-                            className="butn"
-                            onClick={this.deleteCrmRole.bind(
-                              this,
-                              row.original.crmRoleID
-                            )}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  }
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-
-                <button
-                  className="react-tabel-button ReNewBtn"
-                  type="button"
-                  onClick={this.hanldeEditCRM.bind(this, row.original)}
-                >
-                  EDIT
-                </button>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
 
     return (
       <React.Fragment>
@@ -1316,7 +1133,184 @@ class TicketCRMRole extends Component {
                   <ReactTable
                     minRows={2}
                     data={this.state.crmRoles}
-                    columns={columnsTickCrmRole}
+                    columns={[
+                      {
+                        Header: (
+                          <span
+                            className={this.state.roleColor}
+                            onClick={this.StatusOpenModel.bind(this, "roleName", "Role Name")}
+                          >
+                            Role Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "roleName",
+                        Cell: row => {
+                          // var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.roleName}
+                                <Popover
+                                  content={
+                                    <div>
+                                      {row.original.modules !== null &&
+                                        row.original.modules.map((item, i) => (
+                                          <div className="rvmmargin" key={i}>
+                                            <p className="rolle-name-text-popover">
+                                              {item.moduleName}
+                                            </p>
+                                            <label className="pop-over-lbl-text-pop">
+                                              {item.modulestatus === true
+                                                ? "Enabled"
+                                                : "Disabled"}
+                                            </label>
+                                          </div>
+                                        ))}
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created By")}
+                          >
+                            Created By
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdBy",
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.createdBy}
+                                <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Created By: {row.original.createdBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Created Date: {row.original.createdDate}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Updated By: {row.original.modifiedBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Updated Date: {row.original.modifiedDate}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(this, "isRoleActive", "Status")}
+                          >
+                            Status
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "isRoleActive"
+                      },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "actiondept",
+                        Cell: row => {
+                          var ids = row.original["id"];
+                          return (
+                            <>
+                              <span>
+                                <Popover
+                                  content={
+                                    <div className="d-flex general-popover popover-body">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.deleteCrmRole.bind(
+                                              this,
+                                              row.original.crmRoleID
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                    id={ids}
+                                  />
+                                </Popover>
+                
+                                <button
+                                  className="react-tabel-button ReNewBtn"
+                                  type="button"
+                                  onClick={this.hanldeEditCRM.bind(this, row.original)}
+                                >
+                                  EDIT
+                                </button>
+                             
+                              </span>
+                            </>
+                          );
+                        }
+                      }
+                    ]}
                     resizable={false}
                     defaultPageSize={10}
                     showPagination={true}

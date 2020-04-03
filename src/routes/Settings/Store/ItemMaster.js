@@ -11,13 +11,15 @@ import { Link } from "react-router-dom";
 import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ItemMasterService from "./../../../routes/Settings/Service/ItemMasterService";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
 import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import { authHeader } from "../../../helpers/authHeader";
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -32,7 +34,6 @@ class ItemMaster extends Component {
       isShowProgress: false
     };
 
-    this.ItemMasterService = new ItemMasterService();
     this.handleGetItem = this.handleGetItem.bind(this);
   }
 
@@ -62,7 +63,11 @@ class ItemMaster extends Component {
   ////handel get item data
   handleGetItem() {
     let self = this;
-    this.ItemMasterService.GetItemList()
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Item/GetItem",
+      headers: authHeader()
+    })
       .then(response => {
         var status = response.data.status;
         var itemData = response.data.responseData;
@@ -81,7 +86,12 @@ class ItemMaster extends Component {
     if (this.state.file) {
       const formData = new FormData();
       formData.append("file", this.state.file);
-      this.ItemMasterService.BulkUploadItem(formData)
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Item/BulkUploadItem",
+        headers: authHeader(),
+        data: formData
+      })
         .then(response => {
           var status = response.data.status;
           var itemData = response.data.responseData;

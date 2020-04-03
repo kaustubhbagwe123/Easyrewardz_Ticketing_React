@@ -17,12 +17,14 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { Select, Popover } from "antd";
 import SweetAlert from "react-bootstrap-sweetalert";
-import ClaimCategoryService from "../Service/ClaimCategoryService";
-import Dropzone from "react-dropzone";
+// import Dropzone from "react-dropzone";
 import {
   NotificationContainer,
-  NotificationManager
+  // NotificationManager
 } from "react-notifications";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import { authHeader } from "../../../helpers/authHeader";
 
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
@@ -49,7 +51,6 @@ class ClaimCategoryMaster extends Component {
       subCategoryData: [],
       issueTypeData: []
     };
-    this.service = new ClaimCategoryService();
   }
   componentDidMount() {
     this.handleGetBrandList();
@@ -121,9 +122,11 @@ class ClaimCategoryMaster extends Component {
   ////handle get cliam category listing
   handleGetClaimCategoryList() {
     let self = this;
-    this.service
-      .GetClaimCategoryList()
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimCategoryList",
+      headers: authHeader()
+    }).then(response => {
         debugger;
         var claimCategoryData = response.data.responseData;
         var status = response.data.status;
@@ -138,9 +141,11 @@ class ClaimCategoryMaster extends Component {
   ////handle get brand listing
   handleGetBrandList() {
     let self = this;
-    this.service
-      .GetBrandList()
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    }).then(response => {
         var brandData = response.data.responseData;
         var status = response.data.status;
         if (status && brandData.length > 0) {
@@ -154,10 +159,14 @@ class ClaimCategoryMaster extends Component {
   ///handle get category listing by brand id
   handleGetCategoryByBrandId() {
     let self = this;
-    var brandId = this.state.brandId;
-    this.service
-      .GetCategoryListByBrandId(brandId)
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimCategoryListByBrandID",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.brandId
+      }
+    }).then(response => {
         var categoryData = response.data.responseData;
         var status = response.data.status;
         if (status && categoryData.length > 0) {
@@ -171,10 +180,14 @@ class ClaimCategoryMaster extends Component {
   ///handle get sub category listing by category id
   handleGetSubCategoryByCateId() {
     let self = this;
-    var categoryId = this.state.categoryId;
-    this.service
-      .GetSubCategoryListByCateId(categoryId)
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/BulkUploadItem",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.categoryId
+      }
+    }).then(response => {
         var subCategoryData = response.data.responseData;
         var status = response.data.status;
         if (status && subCategoryData.length > 0) {
@@ -188,10 +201,14 @@ class ClaimCategoryMaster extends Component {
   ///handle get issue type listing by sub category id
   handleGetCategoryByBrandId() {
     let self = this;
-    var subCategoryId = this.state.subCategoryId;
-    this.service
-      .GetIssueTyepListBySubCateId(subCategoryId)
-      .then(response => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/BulkUploadItem",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.subCategoryId
+      }
+    }).then(response => {
         var issueTypeData = response.data.responseData;
         var status = response.data.status;
         if (status && issueTypeData.length > 0) {
@@ -204,12 +221,16 @@ class ClaimCategoryMaster extends Component {
   }
   ////handle add cateogry by brand id and category name
   handleAddCategoryByBrandId(categoryName) {
-    let self = this;
-    var brandId = this.state.brandId;
-    var categoryName = categoryName;
-    this.service
-      .AddCategoryByBrandId(brandId, categoryName)
-      .then(response => {
+    let self = this; 
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/AddClaimCategory ",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.brandId,
+        CategoryName: categoryName
+      }
+    }).then(response => {
         var issueTypeData = response.data.responseData;
         var status = response.data.status;
         if (status && issueTypeData.length > 0) {
@@ -222,12 +243,16 @@ class ClaimCategoryMaster extends Component {
   }
   ///handle add sub category by category id and sub category name
   handleAddSubCategoryByCateId(subCateName) {
-    let self = this;
-    var categoryId = this.state.categoryId;
-    var subCateogryName = subCateName;
-    this.service
-      .AddSubCategoryByCateId(categoryId, subCateogryName)
-      .then(response => {
+    let self = this; 
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/BulkUploadItem",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.categoryId,
+        CategoryName: subCateName
+      }
+    }).then(response => {
         var issueTypeData = response.data.responseData;
         var status = response.data.status;
         if (status && issueTypeData.length > 0) {
@@ -241,11 +266,16 @@ class ClaimCategoryMaster extends Component {
 
   handleAddSubCategoryByCateId(issueTypeName) {
     let self = this;
-    var subCategoryId = this.state.subCategoryId;
 
-    this.service
-      .AddSubCategoryByCateId(subCategoryId, issueTypeName)
-      .then(response => {
+   axios({
+      method: "post",
+      url: config.apiUrl + "/Category/BulkUploadItem",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.subCategoryId,
+        CategoryName: issueTypeName
+      }
+    }).then(response => {
         var issueTypeData = response.data.responseData;
         var status = response.data.status;
         if (status && issueTypeData.length > 0) {

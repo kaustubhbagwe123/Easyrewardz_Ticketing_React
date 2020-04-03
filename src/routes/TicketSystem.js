@@ -1255,7 +1255,7 @@ class TicketSystem extends Component {
   };
   setTicketPriorityValue = e => {
     let value = e.target.value;
-    this.setState({ selectedTicketPriority: value });
+    this.setState({ selectedTicketPriority: Number(value) });
   };
   setTicketActionTypeValue = e => {
     ////

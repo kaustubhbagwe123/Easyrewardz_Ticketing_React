@@ -28,7 +28,7 @@ export class TenantApp extends Component {
         <Route exact path={`${match.url}/listAllFeature`} component={ListAllFeature} />
         <Route exact path={`${match.url}/editDetails`} component={EditDetails} />
         <Route exact path={`${match.url}/editUserDetails`} component={EditUserDetails} />
-
+        
       </TenantLayout>
     );
   }
