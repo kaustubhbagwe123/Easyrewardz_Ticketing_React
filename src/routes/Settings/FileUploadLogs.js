@@ -36,7 +36,8 @@ class FileUploadLogs extends Component {
       sfileTypeFilterCheckbox: "",
       sfileNameFilterCheckbox: "",
       screatedDateFilterCheckbox: "",
-      sfileUploadStatusFilterCheckbox: ""
+      sfileUploadStatusFilterCheckbox: "",
+      isortA: false
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -274,7 +275,9 @@ class FileUploadLogs extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        fileUploadLog: this.state.sortAllData,
+        fileUploadLog: this.state.isortA
+          ? this.state.fileUploadLog
+          : this.state.sortAllData,
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
@@ -345,31 +348,91 @@ class FileUploadLogs extends Component {
       }
     }
   }
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.fileUploadLog;
-
-    itemsArray.sort(function(a, b) {
-      return a.fileUploadStatus > b.fileUploadStatus ? 1 : -1;
-    });
-
-    this.setState({
-      fileUploadLog: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
-    itemsArray.sort((a, b) => {
-      return a.fileUploadStatus < b.fileUploadStatus;
-    });
+
+    if (this.state.sortColumn === "fileType") {
+      itemsArray.sort((a, b) => {
+        if (a.fileType < b.fileType) return 1;
+        if (a.fileType > b.fileType) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "fileName") {
+      itemsArray.sort((a, b) => {
+        if (a.fileName < b.fileName) return 1;
+        if (a.fileName > b.fileName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort((a, b) => {
+        if (a.createdDate < b.createdDate) return 1;
+        if (a.createdDate > b.createdDate) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "fileUploadStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.fileUploadStatus < b.fileUploadStatus) return 1;
+        if (a.fileUploadStatus > b.fileUploadStatus) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
+      isortA: true,
       fileUploadLog: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+    itemsArray = this.state.fileUploadLog;
+
+    if (this.state.sortColumn === "fileType") {
+      itemsArray.sort((a, b) => {
+        if (a.fileType < b.fileType) return -1;
+        if (a.fileType > b.fileType) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "fileName") {
+      itemsArray.sort((a, b) => {
+        if (a.fileName < b.fileName) return -1;
+        if (a.fileName > b.fileName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort((a, b) => {
+        if (a.createdDate < b.createdDate) return -1;
+        if (a.createdDate > b.createdDate) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "fileUploadStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.fileUploadStatus < b.fileUploadStatus) return -1;
+        if (a.fileUploadStatus > b.fileUploadStatus) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      fileUploadLog: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   setSortCheckStatus = (column, type, e) => {
@@ -600,6 +663,7 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "fileType"
       },
       {
@@ -609,6 +673,7 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "fileName"
       },
       {
@@ -620,6 +685,7 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "date",
         Cell: row => {
           var ids = row.original["id"];
@@ -633,7 +699,7 @@ class FileUploadLogs extends Component {
                       <div>
                         <b>
                           <p className="title">
-                            Created By: {row.original.createdBy}
+                            Created By: {row.original.createdDate}
                           </p>
                         </b>
                         <p className="sub-title">
@@ -679,11 +745,13 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "fileUploadStatus"
       },
       {
         Header: <span>Error File</span>,
         accessor: "Erroor",
+        sortable: false,
         Cell: row => (
           <div>
             <button className="downloadBtn">

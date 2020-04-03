@@ -106,7 +106,8 @@ class CategoryMaster extends Component {
       scategoryNameFilterCheckbox: "",
       ssubCategoryNameFilterCheckbox: "",
       sissueTypeNameFilterCheckbox: "",
-      sstatusNameFilterCheckbox: ""
+      sstatusNameFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -126,33 +127,106 @@ class CategoryMaster extends Component {
     this.handleGetCategoryGridData();
     this.handleGetBrandList();
   }
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.categoryGridData;
-
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
-    this.setState({
-      categoryGridData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    var headerName = "";
+
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return 1;
+        if (a.brandName > b.brandName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return 1;
+        if (a.categoryName > b.categoryName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "subCategoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.subCategoryName < b.subCategoryName) return 1;
+        if (a.subCategoryName > b.subCategoryName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "issueTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTypeName < b.issueTypeName) return 1;
+        if (a.issueTypeName > b.issueTypeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "statusName") {
+      itemsArray.sort((a, b) => {
+        if (a.statusName < b.statusName) return 1;
+        if (a.statusName > b.statusName) return -1;
+        return 0;
+      });
+    }
     this.setState({
+      isortA: true,
       categoryGridData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.categoryGridData;
+    var headerName = "";
+
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return -1;
+        if (a.brandName > b.brandName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return -1;
+        if (a.categoryName > b.categoryName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "subCategoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.subCategoryName < b.subCategoryName) return -1;
+        if (a.subCategoryName > b.subCategoryName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "issueTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTypeName < b.issueTypeName) return -1;
+        if (a.issueTypeName > b.issueTypeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "statusName") {
+      itemsArray.sort((a, b) => {
+        if (a.statusName < b.statusName) return -1;
+        if (a.statusName > b.statusName) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      categoryGridData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
   StatusOpenModel(data, header) {
     if (
       this.state.sortFilterBrandName.length === 0 ||
@@ -352,7 +426,9 @@ class CategoryMaster extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        categoryGridData: this.state.sortAllData,
+        categoryGridData: this.state.isortA
+          ? this.state.categoryGridData
+          : this.state.sortAllData,
         sFilterCheckbox: ""
       });
     }
@@ -531,11 +607,11 @@ class CategoryMaster extends Component {
       subCategoryColor: "",
       issueColor: "",
       statusColor: "",
-      sbrandNameFilterCheckbox: "",
-      scategoryNameFilterCheckbox: "",
-      ssubCategoryNameFilterCheckbox: "",
-      sissueTypeNameFilterCheckbox: "",
-      sstatusNameFilterCheckbox: ""
+      sbrandNameFilterCheckbox,
+      scategoryNameFilterCheckbox,
+      ssubCategoryNameFilterCheckbox,
+      sissueTypeNameFilterCheckbox,
+      sstatusNameFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -1839,6 +1915,7 @@ class CategoryMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "brandName"
                         },
                         {
@@ -1855,6 +1932,7 @@ class CategoryMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "categoryName"
                         },
                         {
@@ -1871,6 +1949,7 @@ class CategoryMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "subCategoryName"
                         },
                         {
@@ -1887,6 +1966,7 @@ class CategoryMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "issueTypeName"
                         },
                         {
@@ -1903,6 +1983,7 @@ class CategoryMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "statusName"
                         },
                         {

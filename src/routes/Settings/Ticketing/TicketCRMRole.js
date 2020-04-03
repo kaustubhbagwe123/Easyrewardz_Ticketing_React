@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -90,7 +90,8 @@ class TicketCRMRole extends Component {
       fileN: [],
       sroleNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      sisRoleActiveFilterCheckbox: ""
+      sisRoleActiveFilterCheckbox: "",
+      isortA: false
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -107,31 +108,76 @@ class TicketCRMRole extends Component {
     this.handleModulesDefault();
   }
 
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.crmRoles;
+
+    if (this.state.sortColumn === "roleName") {
+      itemsArray.sort((a, b) => {
+        if (a.roleName < b.roleName) return 1;
+        if (a.roleName > b.roleName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isRoleActive < b.isRoleActive) return 1;
+        if (a.isRoleActive > b.isRoleActive) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      crmRoles: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.crmRoles;
+
+    if (this.state.sortColumn === "roleName") {
+      itemsArray.sort((a, b) => {
+        if (a.roleName < b.roleName) return -1;
+        if (a.roleName > b.roleName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isRoleActive < b.isRoleActive) return -1;
+        if (a.isRoleActive > b.isRoleActive) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      crmRoles: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -244,7 +290,9 @@ class TicketCRMRole extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        crmRoles: this.state.sortAllData
+        crmRoles: this.state.isortA
+          ? this.state.crmRoles
+          : this.state.sortAllData
       });
     }
   };
@@ -923,6 +971,7 @@ class TicketCRMRole extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "roleName",
         Cell: row => {
           // var ids = row.original["id"];
@@ -971,6 +1020,7 @@ class TicketCRMRole extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "createdBy",
         Cell: row => {
           var ids = row.original["id"];
@@ -1027,10 +1077,12 @@ class TicketCRMRole extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "isRoleActive"
       },
       {
         Header: <span>Actions</span>,
+        sortable: false,
         accessor: "actiondept",
         Cell: row => {
           var ids = row.original["id"];
@@ -1083,27 +1135,6 @@ class TicketCRMRole extends Component {
                 >
                   EDIT
                 </button>
-                {/* <Popover
-                  content={
-                    <Content
-                      rowData={row.original}
-                      callBackEdit={this.callBackEdit}
-                      modulesList={this.state.modulesList}
-                      updateCheckModule={this.updateCheckModule.bind(this)}
-                      // updateModulesList={this.state.updateModulesList}
-                      // updateModulesEnabled={this.state.updateModulesEnabled}
-                      // updateModulesDisabled={this.state.updateModulesDisabled}
-                      createUpdateCrmRole={this.createUpdateCrmRole.bind(this)}
-                      checkModule={this.checkModule}
-                    />
-                  }
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <label className="Table-action-edit-button-text">
-                    <MyButton>EDIT</MyButton>
-                  </label>
-                </Popover> */}
               </span>
             </>
           );

@@ -130,7 +130,8 @@ class StoreMaster extends Component {
       sstoreCodeFilterCheckbox: "",
       scityNameFilterCheckbox: "",
       sstateNameFilterCheckbox: "",
-      sstrPinCodeFilterCheckbox: ""
+      sstrPinCodeFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -201,31 +202,105 @@ class StoreMaster extends Component {
       });
     }
   }
-  sortStatusAtoZ() {
-    var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
+    debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.storeData;
+    var headerName = "";
+
+    if (this.state.sortColumn === "storeName") {
+      itemsArray.sort((a, b) => {
+        if (a.storeName < b.storeName) return 1;
+        if (a.storeName > b.storeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "storeCode") {
+      itemsArray.sort((a, b) => {
+        if (a.storeCode < b.storeCode) return 1;
+        if (a.storeCode > b.storeCode) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "cityName") {
+      itemsArray.sort((a, b) => {
+        if (a.cityName < b.cityName) return 1;
+        if (a.cityName > b.cityName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "stateName") {
+      itemsArray.sort((a, b) => {
+        if (a.stateName < b.stateName) return 1;
+        if (a.stateName > b.stateName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "strPinCode") {
+      itemsArray.sort((a, b) => {
+        if (a.strPinCode < b.strPinCode) return 1;
+        if (a.strPinCode > b.strPinCode) return -1;
+        return 0;
+      });
+    }
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      storeData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.storeData;
+    var headerName = "";
+
+    if (this.state.sortColumn === "storeName") {
+      itemsArray.sort((a, b) => {
+        if (a.storeName < b.storeName) return -1;
+        if (a.storeName > b.storeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "storeCode") {
+      itemsArray.sort((a, b) => {
+        if (a.storeCode < b.storeCode) return -1;
+        if (a.storeCode > b.storeCode) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "cityName") {
+      itemsArray.sort((a, b) => {
+        if (a.cityName < b.cityName) return -1;
+        if (a.cityName > b.cityName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "stateName") {
+      itemsArray.sort((a, b) => {
+        if (a.stateName < b.stateName) return -1;
+        if (a.stateName > b.stateName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "strPinCode") {
+      itemsArray.sort((a, b) => {
+        if (a.strPinCode < b.strPinCode) return -1;
+        if (a.strPinCode > b.strPinCode) return 1;
+        return 0;
+      });
+    }
+    this.setState({
+      isortA: true,
+      storeData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
   StatusOpenModel(data, header) {
     debugger;
 
@@ -427,11 +502,19 @@ class StoreMaster extends Component {
         }
       }
     } else {
-      this.setState({
-        StatusModel: false,
-        storeData: this.state.sortAllData,
-        filterTxtValue: ""
-      });
+      if (this.state.isortA) {
+        this.setState({
+          StatusModel: false,
+          storeData: this.state.storeData,
+          filterTxtValue: ""
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          storeData: this.state.sortAllData,
+          filterTxtValue: ""
+        });
+      }
     }
   }
 
@@ -549,10 +632,15 @@ class StoreMaster extends Component {
       }
     }
     if (column === "strPinCode" || column === "all") {
-      
       if (type === "value" && type !== "All") {
-        sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace("all", "");
-      sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace("all,", "");
+        sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace(
+          "all,",
+          ""
+        );
         if (sstrPinCodeFilterCheckbox.includes(e.currentTarget.value)) {
           sstrPinCodeFilterCheckbox = sstrPinCodeFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -1805,6 +1893,7 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "storeName"
                         },
                         {
@@ -1821,6 +1910,7 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "storeCode"
                         },
                         {
@@ -1834,10 +1924,11 @@ class StoreMaster extends Component {
                               // )}
                             >
                               Brand Name
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                             </span>
                           ),
                           accessor: "brand_Names",
+                          sortable: false,
                           Cell: row => {
                             if (isNaN(row.original.brand_Names)) {
                               return (
@@ -1888,6 +1979,7 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "cityName"
                         },
                         {
@@ -1920,6 +2012,7 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "strPinCode"
                         },
                         // {
@@ -1934,6 +2027,7 @@ class StoreMaster extends Component {
                         {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
+                          sortable: false,
                           Cell: row => {
                             var ids = row.original["storeID"];
                             return (

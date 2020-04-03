@@ -66,7 +66,7 @@ class CreateSLA extends Component {
       stattusColor: "",
       sortHeader: "",
       issueTypeName: "",
-      brandName: "",
+      createdBy: "",
       categoryName: "",
       subCategoryName: "",
       SLAId: 0,
@@ -86,7 +86,8 @@ class CreateSLA extends Component {
       fileN: [],
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      sisSLAActiveFilterCheckbox: ""
+      sisSLAActiveFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -103,31 +104,76 @@ class CreateSLA extends Component {
     this.handleGetPriorityList();
   }
 
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.sla;
+
+    if (this.state.sortColumn === "issueTpeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTpeName < b.issueTpeName) return 1;
+        if (a.issueTpeName > b.issueTpeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return 1;
+        if (a.isSLAActive > b.isSLAActive) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      sla: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.sla;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "issueTpeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTpeName < b.issueTpeName) return -1;
+        if (a.issueTpeName > b.issueTpeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return -1;
+        if (a.isSLAActive > b.isSLAActive) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       sla: itemsArray
     });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.sla;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
-      sla: itemsArray
-    });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -242,7 +288,7 @@ class CreateSLA extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        sla: this.state.sortAllData,
+        sla: this.state.isortA ? this.state.sla : this.state.sortAllData,
         sFilterCheckbox: ""
       });
     }
@@ -776,7 +822,7 @@ class CreateSLA extends Component {
         if (message === "Success" && statusCode === 200) {
           var data = res.data.responseData;
           var issueTypeName = data.issueTypeName;
-          var brandName = data.brandName;
+          var createdBy = data.createdBy;
           var categoryName = data.categoryName;
           var subCategoryName = data.subCategoryName;
           var isActive = data.isActive;
@@ -799,7 +845,7 @@ class CreateSLA extends Component {
           }
           self.setState({
             issueTypeName,
-            brandName,
+            createdBy,
             categoryName,
             subCategoryName,
             isActive,
@@ -1001,7 +1047,7 @@ class CreateSLA extends Component {
     var inputParamter = {};
     inputParamter.SLAId = this.state.SLAId;
     inputParamter.IsActive = this.state.isActive;
-    inputParamter.BrandName = this.state.brandName;
+    inputParamter.createdBy = this.state.createdBy;
     inputParamter.CategoryName = this.state.categoryName;
     inputParamter.SubCategoryName = this.state.subCategoryName;
     inputParamter.IssueTypeName = this.state.issueTypeName;
@@ -1353,6 +1399,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "issueTpeName",
                         Cell: row => {
                           var ids = row.original["id"];
@@ -1366,7 +1413,7 @@ class CreateSLA extends Component {
                                       <div>
                                         <p className="title">
                                           <b> Brand: </b>
-                                          {row.original.brandName}
+                                          {row.original.createdBy}
                                         </p>
 
                                         <p className="sub-title">
@@ -1403,6 +1450,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "slaTarget",
                         Cell: row => {
                           var ids = row.original["id"];
@@ -1494,6 +1542,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdBy",
                         Cell: row => {
                           var ids = row.original["id"];
@@ -1558,11 +1607,13 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "isSLAActive"
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
+                        sortable: false,
                         Cell: row => {
                           var ids = row.original["id"];
                           return (
@@ -1719,7 +1770,7 @@ class CreateSLA extends Component {
                                             <img src={Correct} alt="Checked" />
                                           </div>
                                         </label>
-                                        <span>{item.brandName}</span>
+                                        <span>{item.createdBy}</span>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
@@ -2033,7 +2084,7 @@ class CreateSLA extends Component {
               <div className="col-md-6">
                 <label className="createhead-text-new">Brand Name: </label>
                 <label className="createhead-text-1">
-                  {this.state.brandName}
+                  {this.state.createdBy}
                 </label>
               </div>
               <div className="col-md-6">

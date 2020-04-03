@@ -164,7 +164,8 @@ class Brands extends Component {
       sbrandCodeFilterCheckbox: "",
       sbrandNameFilterCheckbox: "",
       screated_ByFilterCheckbox: "",
-      sstatusFilterCheckbox: ""
+      sstatusFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -195,31 +196,92 @@ class Brands extends Component {
     this.state.updateStatus = status;
     this.state.rowData = rowData;
   };
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.brandData;
+
+
+    if (this.state.sortColumn === "brandCode") {
+      itemsArray.sort((a, b) => {
+        if (a.brandCode < b.brandCode) return 1;
+        if (a.brandCode > b.brandCode) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return 1;
+        if (a.brandName > b.brandName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "created_By") {
+      itemsArray.sort((a, b) => {
+        if (a.created_By < b.created_By) return 1;
+        if (a.created_By > b.created_By) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      brandData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.brandData;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+
+    if (this.state.sortColumn === "brandCode") {
+      itemsArray.sort((a, b) => {
+        if (a.brandCode < b.brandCode) return -1;
+        if (a.brandCode > b.brandCode) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return -1;
+        if (a.brandName > b.brandName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "created_By") {
+      itemsArray.sort((a, b) => {
+        if (a.created_By < b.created_By) return -1;
+        if (a.created_By > b.created_By) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       brandData: itemsArray
     });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.brandData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
-      brandData: itemsArray
-    });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -376,7 +438,9 @@ class Brands extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        brandData: this.state.sortAllData,
+        brandData: this.state.isortA
+          ? this.state.brandData
+          : this.state.sortAllData,
         filterTxtValue: ""
       });
     }
@@ -1131,6 +1195,7 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "brandCode"
                         },
                         {
@@ -1147,6 +1212,7 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "brandName"
                         },
                         {
@@ -1163,6 +1229,7 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "created_By",
                           Cell: row => {
                             debugger;
@@ -1226,11 +1293,13 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "status"
                         },
                         {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
+                          sortable: false,
                           Cell: row => {
                             var brand_ID = row.original["brandID"];
                             return (
@@ -1318,16 +1387,6 @@ class Brands extends Component {
                                     placement="bottom"
                                     trigger="click"
                                   >
-                                    {/* <button
-                                    className="react-tabel-button"
-                                    // type="button"
-                                    onClick={this.handleGetDataForEdit.bind(
-                                      this,
-                                      row.original
-                                    )}
-                                  >
-                                    EDIT
-                                  </button> */}
                                     <label className="Table-action-edit-button-text">
                                       <MyButton>EDIT</MyButton>
                                     </label>
@@ -1342,44 +1401,6 @@ class Brands extends Component {
                       defaultPageSize={5}
                       showPagination={true}
                     />
-                    {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                   </div>
                 )}
               </div>

@@ -156,7 +156,8 @@ class Users extends Component {
       sdesignationFilterCheckbox: "",
       suserNameFilterCheckbox: "",
       smobileNumberFilterCheckbox: "",
-      semailIDFilterCheckbox: ""
+      semailIDFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -194,31 +195,90 @@ class Users extends Component {
     this.handleGetReporteedesignationList();
     this.handleGetReportTOList();
   }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.userData;
+
+    if (this.state.sortColumn === "userName") {
+      itemsArray.sort((a, b) => {
+        if (a.userName < b.userName) return 1;
+        if (a.userName > b.userName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "designation") {
+      itemsArray.sort((a, b) => {
+        if (a.designation < b.designation) return 1;
+        if (a.designation > b.designation) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "mobileNumber") {
+      itemsArray.sort((a, b) => {
+        if (a.mobileNumber < b.mobileNumber) return 1;
+        if (a.mobileNumber > b.mobileNumber) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "emailID") {
+      itemsArray.sort((a, b) => {
+        if (a.emailID < b.emailID) return 1;
+        if (a.emailID > b.emailID) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      userData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "designation") {
+      itemsArray.sort((a, b) => {
+        if (a.designation < b.designation) return -1;
+        if (a.designation > b.designation) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "userName") {
+      itemsArray.sort((a, b) => {
+        if (a.userName < b.userName) return -1;
+        if (a.userName > b.userName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "mobileNumber") {
+      itemsArray.sort((a, b) => {
+        if (a.mobileNumber < b.mobileNumber) return -1;
+        if (a.mobileNumber > b.mobileNumber) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "emailID") {
+      itemsArray.sort((a, b) => {
+        if (a.emailID < b.emailID) return -1;
+        if (a.emailID > b.emailID) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       userData: itemsArray
     });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.userData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
-      userData: itemsArray
-    });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -443,9 +503,9 @@ class Users extends Component {
           sdesignationFilterCheckbox = "";
         } else {
           if (this.state.sortColumn === "designation") {
-            for (let i = 0; i < this.state.sortUsername.length; i++) {
+            for (let i = 0; i < this.state.sortDesignation.length; i++) {
               sdesignationFilterCheckbox +=
-                this.state.sortUsername[i].userName + ",";
+                this.state.sortDesignation[i].designation + ",";
             }
             sdesignationFilterCheckbox += "all";
           }
@@ -453,15 +513,15 @@ class Users extends Component {
       }
     }
     if (column === "mobileNumber" || column === "all") {
-      smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
-        "all",
-        ""
-      );
-      smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
-        "all,",
-        ""
-      );
       if (type === "value" && type !== "All") {
+        smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+          "all,",
+          ""
+        );
         if (smobileNumberFilterCheckbox.includes(e.currentTarget.value)) {
           smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -485,9 +545,9 @@ class Users extends Component {
       }
     }
     if (column === "emailID" || column === "all") {
-      semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all", "");
-      semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all,", "");
       if (type === "value" && type !== "All") {
+        semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all", "");
+        semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all,", "");
         if (semailIDFilterCheckbox.includes(e.currentTarget.value)) {
           semailIDFilterCheckbox = semailIDFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -3089,6 +3149,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "userName",
                         Cell: row => <span>{row.original.userName}</span>
                       },
@@ -3106,6 +3167,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "mobileNumber",
                         Cell: row => <span>{row.original.mobileNumber}</span>
                       },
@@ -3123,6 +3185,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "email ID",
                         Cell: row => <span>{row.original.emailID}</span>
                       },
@@ -3140,6 +3203,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "designation",
                         Cell: row => {
                           var ids = row.original["userId"];
@@ -3277,6 +3341,7 @@ class Users extends Component {
                       {
                         Header: <span>Actions</span>,
                         accessor: "userId",
+                        sortable: false,
                         Cell: row => {
                           var ids = row.original["userId"];
                           return (

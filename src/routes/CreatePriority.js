@@ -23,6 +23,7 @@ import update from "immutability-helper";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import matchSorter from "match-sorter";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 let dragingIndex = -1;
 
@@ -164,7 +165,8 @@ class CreatePriority extends Component {
       spriortyNameFilterCheckbox: "",
       screatedDateFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      spriortyStatusFilterCheckbox: ""
+      spriortyStatusFilterCheckbox: "",
+      isortA: false
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -178,33 +180,92 @@ class CreatePriority extends Component {
     this.handleGetPriorityList();
   }
 
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.priorityData;
+
+    if (this.state.sortColumn === "priortyName") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyName < b.priortyName) return 1;
+        if (a.priortyName > b.priortyName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort((a, b) => {
+        if (a.createdDate < b.createdDate) return 1;
+        if (a.createdDate > b.createdDate) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "priortyStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyStatus < b.priortyStatus) return 1;
+        if (a.priortyStatus > b.priortyStatus) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      priorityData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+    itemsArray = this.state.priorityData;
+
+    if (this.state.sortColumn === "priortyName") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyName < b.priortyName) return -1;
+        if (a.priortyName > b.priortyName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort((a, b) => {
+        if (a.createdDate < b.createdDate) return -1;
+        if (a.createdDate > b.createdDate) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "priortyStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyStatus < b.priortyStatus) return -1;
+        if (a.priortyStatus > b.priortyStatus) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      priorityData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
   StatusOpenModel(data, header) {
     debugger;
     this.setState({
@@ -264,7 +325,9 @@ class CreatePriority extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        priorityData: this.state.sortAllData,
+        priorityData: this.state.isortA
+          ? this.state.priorityData
+          : this.state.sortAllData,
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
@@ -442,7 +505,9 @@ class CreatePriority extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.createdByName === sItems[i]);
+            var tempFilterData = allData.filter(
+              a => a.createdByName === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1159,14 +1224,19 @@ class CreatePriority extends Component {
                           )
                         },
                         {
-                          title: "Priority Name",
+                          title: (filters, sortOrder) => (
+                            <span>
+                              Priority Name
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
                           dataIndex: "priortyName",
                           key: "priortyName",
                           filterMultiple: false,
                           onFilter: (value, record) =>
                             record.priortyName.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.priortyName.length - b.priortyName.length,
+                          // sorter: (a, b) =>
+                          //   a.priortyName.length - b.priortyName.length,
                           sortDirections: ["descend", "ascend"],
 
                           onHeaderCell: column => {
@@ -1199,14 +1269,19 @@ class CreatePriority extends Component {
                           }
                         },
                         {
-                          title: "Created By",
+                          title: (filters, sortOrder) => (
+                            <span>
+                              Created By
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
                           dataIndex: "createdByName",
                           key: "createdByName",
                           filterMultiple: false,
                           onFilter: (value, record) =>
                             record.createdByName.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.createdByName.length - b.createdByName.length,
+                          // sorter: (a, b) =>
+                          //   a.createdByName.length - b.createdByName.length,
                           sortDirections: ["descend", "ascend"],
 
                           onHeaderCell: column => {
@@ -1315,16 +1390,21 @@ class CreatePriority extends Component {
                             };
                           },
 
-                          title: "Created Date",
+                          title: (filters, sortOrder) => (
+                            <span>
+                              Created Date
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
                           dataIndex: "createdDateFormated",
                           key: "createdDateFormated",
                           onFilter: (value, record) =>
                             record.createdDateFormated.indexOf(value) === 0,
                           // defaultSortOrder: "descend",
                           filterMultiple: false,
-                          sorter: (a, b) =>
-                            a.createdDateFormated.length -
-                            b.createdDateFormated.length,
+                          // sorter: (a, b) =>
+                          //   a.createdDateFormated.length -
+                          //   b.createdDateFormated.length,
                           sortDirections: ["descend", "ascend"]
                         },
                         {
@@ -1361,14 +1441,19 @@ class CreatePriority extends Component {
                             };
                           },
 
-                          title: "Status",
+                          title: (filters, sortOrder) => (
+                            <span>
+                              Status
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
                           dataIndex: "priortyStatus",
                           key: "priortyStatus",
                           filterMultiple: false,
                           onFilter: (value, record) =>
                             record.priortyStatus.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.priortyStatus.length - b.priortyStatus.length,
+                          // sorter: (a, b) =>
+                          //   a.priortyStatus.length - b.priortyStatus.length,
                           sortDirections: ["descend", "ascend"]
                         },
                         {

@@ -122,7 +122,9 @@ class KnowledgeBase extends Component {
       sissueTypeNameFilterCheckboxN: "",
       scategoryNameFilterCheckbox: "",
       ssubCategoryNameFilterCheckbox: "",
-      sissueTypeNameFilterCheckbox: ""
+      sissueTypeNameFilterCheckbox: "",
+      NisortA: false,
+      AisortA: false
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -320,7 +322,9 @@ class KnowledgeBase extends Component {
       } else {
         this.setState({
           StatusModel: false,
-          KBListData: this.state.sortAllDataApprove
+          KBListData: this.state.AisortA
+            ? this.state.KBListData
+            : this.state.sortAllDataApprove
         });
       }
     } else {
@@ -360,7 +364,9 @@ class KnowledgeBase extends Component {
       } else {
         this.setState({
           StatusModel: false,
-          KBListnotApproveData: this.state.sortAllData
+          KBListnotApproveData: this.state.NisortA
+            ? this.state.KBListnotApproveData
+            : this.state.sortAllData
         });
       }
     }
@@ -1520,6 +1526,102 @@ class KnowledgeBase extends Component {
       }
     }
   }
+
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    if (this.state.sortTable == "approve") {
+      itemsArray = this.state.KBListData;
+    } else {
+      itemsArray = this.state.KBListnotApproveData;
+    }
+
+    if (this.state.sortColumnName === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return 1;
+        if (a.categoryName > b.categoryName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "subCategoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.subCategoryName < b.subCategoryName) return 1;
+        if (a.subCategoryName > b.subCategoryName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "issueTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTypeName < b.issueTypeName) return 1;
+        if (a.issueTypeName > b.issueTypeName) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortTable == "approve") {
+      this.setState({
+        AisortA: true,
+        KBListData: itemsArray
+      });
+    } else {
+      this.setState({
+        NisortA: true,
+        KBListnotApproveData: itemsArray
+      });
+    }
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+    if (this.state.sortTable == "approve") {
+      itemsArray = this.state.KBListData;
+    } else {
+      itemsArray = this.state.KBListnotApproveData;
+    }
+
+    if (this.state.sortColumnName === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return -1;
+        if (a.categoryName > b.categoryName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "subCategoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.subCategoryName < b.subCategoryName) return -1;
+        if (a.subCategoryName > b.subCategoryName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "issueTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTypeName < b.issueTypeName) return -1;
+        if (a.issueTypeName > b.issueTypeName) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortTable == "approve") {
+      this.setState({
+        AisortA: true,
+        KBListData: itemsArray
+      });
+    } else {
+      this.setState({
+        NisortA: true,
+        KBListnotApproveData: itemsArray
+      });
+    }
+
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
   render() {
     return (
       <Fragment>
@@ -1537,14 +1639,18 @@ class KnowledgeBase extends Component {
                 </label>
                 <div className="d-flex">
                   <a href="#!" className="sorting-icon">
-                    <img src={Sorting} alt="sorting-icon" />
+                    <img
+                      src={Sorting}
+                      alt="sorting-icon"
+                      onClick={this.sortStatusAtoZ.bind(this)}
+                    />
                   </a>
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
                   <a
                     href="#!"
-                    //onClick={this.sortStatusZtoA.bind(this)}
+                    onClick={this.sortStatusZtoA.bind(this)}
                     className="sorting-icon"
                   >
                     <img src={Sorting} alt="sorting-icon" />

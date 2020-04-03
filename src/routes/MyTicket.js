@@ -294,8 +294,8 @@ class MyTicket extends Component {
   onCkBlurReply = evt => {
     debugger;
     var ckCusrsorPositionReply = evt.editor.getSelection().getRanges()[0];
-    var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0].endContainer.$
-      .wholeText;
+    var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0]
+      .endContainer.$.wholeText;
     if (!ckCusrsorDataReply) {
       ckCusrsorDataReply = "";
     }
@@ -528,13 +528,13 @@ class MyTicket extends Component {
     this.setState({
       notiCurPosiCmnt: e.target.selectionStart
     });
-  }
+  };
   setNotiCurPosiFreeCmnt = e => {
     debugger;
     this.setState({
       notiCurPosiFreeCmnt: e.target.selectionStart
     });
-  }
+  };
 
   handleUpdateTicketStatus(ticStaId) {
     ////
@@ -718,34 +718,58 @@ class MyTicket extends Component {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let textBefore = this.state.ticketFreeTextcomment.substring(0, this.state.notiCurPosiFreeCmnt);
-      let textAfter = this.state.ticketFreeTextcomment.substring(this.state.notiCurPosiFreeCmnt, this.state.notiCountFreeCmnt);
+      let textBefore = this.state.ticketFreeTextcomment.substring(
+        0,
+        this.state.notiCurPosiFreeCmnt
+      );
+      let textAfter = this.state.ticketFreeTextcomment.substring(
+        this.state.notiCurPosiFreeCmnt,
+        this.state.notiCountFreeCmnt
+      );
       // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
-      let text = textBefore + ' @' + userName + textAfter;
+      let text = textBefore + " @" + userName + textAfter;
       let notiCurPosiFreeCmnt = textBefore.length + userName.length + 2;
-      let notiCountFreeCmnt = textBefore.length + userName.length + 2 + textAfter.length;
-      this.setState({ ticketFreeTextcomment: text, followUpIds, notiCurPosiFreeCmnt, notiCountFreeCmnt });
+      let notiCountFreeCmnt =
+        textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({
+        ticketFreeTextcomment: text,
+        followUpIds,
+        notiCurPosiFreeCmnt,
+        notiCountFreeCmnt
+      });
     } else if (check === "comment") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let textBefore = this.state.ticketcommentMSG.substring(0, this.state.notiCurPosiCmnt);
-      let textAfter = this.state.ticketcommentMSG.substring(this.state.notiCurPosiCmnt, this.state.notiCountCmnt);
+      let textBefore = this.state.ticketcommentMSG.substring(
+        0,
+        this.state.notiCurPosiCmnt
+      );
+      let textAfter = this.state.ticketcommentMSG.substring(
+        this.state.notiCurPosiCmnt,
+        this.state.notiCountCmnt
+      );
       // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
-      let text = textBefore + ' @' + userName + textAfter;
+      let text = textBefore + " @" + userName + textAfter;
       let notiCurPosiCmnt = textBefore.length + userName.length + 2;
-      let notiCountCmnt = textBefore.length + userName.length + 2 + textAfter.length;
-      this.setState({ ticketcommentMSG: text, followUpIds, notiCurPosiCmnt, notiCountCmnt });
+      let notiCountCmnt =
+        textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({
+        ticketcommentMSG: text,
+        followUpIds,
+        notiCurPosiCmnt,
+        notiCountCmnt
+      });
     } else if (check === "rply") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -753,32 +777,35 @@ class MyTicket extends Component {
       let text = this.state.replymailBodyData;
       let ckDataArr = text.split("\n\n");
       let ckDataArrNew = [];
-    for (let i = 0; i < ckDataArr.length; i++) {
-      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
-      const element2 = element1.replace(/&nbsp;/g, " ");
-      const element = element2.replace(/\n/g, " ");
-      ckDataArrNew.push(element);
-    }
-    let selectedVal = "",
-      loopFlag = true,
-      ckTags,
-      selectedArr;
-    for (let i = 0; i < ckDataArrNew.length; i++) {
-      if (loopFlag) {
-        if (this.state.ckCusrsorDataReply.trim() === ckDataArrNew[i].trim()) {
-          selectedVal = ckDataArrNew[i];
-          selectedArr = i;
-          ckTags = ckDataArr[i].match(/<[^>]+>/g);
-          loopFlag = false;
+      for (let i = 0; i < ckDataArr.length; i++) {
+        const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+        const element2 = element1.replace(/&nbsp;/g, " ");
+        const element = element2.replace(/\n/g, " ");
+        ckDataArrNew.push(element);
+      }
+      let selectedVal = "",
+        loopFlag = true,
+        ckTags,
+        selectedArr;
+      for (let i = 0; i < ckDataArrNew.length; i++) {
+        if (loopFlag) {
+          if (this.state.ckCusrsorDataReply.trim() === ckDataArrNew[i].trim()) {
+            selectedVal = ckDataArrNew[i];
+            selectedArr = i;
+            ckTags = ckDataArr[i].match(/<[^>]+>/g);
+            loopFlag = false;
+          }
         }
       }
-    }
-    let ckDataArrLast = selectedVal;
-    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionReply);
-    let textAfter = ckDataArrLast.substring(
-      this.state.ckCusrsorPositionReply,
-      ckDataArrLast.length
-    );
+      let ckDataArrLast = selectedVal;
+      let textBefore = ckDataArrLast.substring(
+        0,
+        this.state.ckCusrsorPositionReply
+      );
+      let textAfter = ckDataArrLast.substring(
+        this.state.ckCusrsorPositionReply,
+        ckDataArrLast.length
+      );
       // let ckDataArrLast = ckDataArr.pop();
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -788,12 +815,12 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
       ckDataArrLast = textBefore + " @" + userName + textAfter;
-    let newCkCusrsorPosition =
-      this.state.ckCusrsorPositionReply + userName.length + 2;
-    this.setState({
-      ckCusrsorPositionReply: newCkCusrsorPosition,
-      ckCusrsorDataReply: ckDataArrLast
-    });
+      let newCkCusrsorPosition =
+        this.state.ckCusrsorPositionReply + userName.length + 2;
+      this.setState({
+        ckCusrsorPositionReply: newCkCusrsorPosition,
+        ckCusrsorDataReply: ckDataArrLast
+      });
       if (ckTags) {
         // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
@@ -813,32 +840,32 @@ class MyTicket extends Component {
       let ckData = this.state.mailBodyData;
       let ckDataArr = ckData.split("\n\n");
       let ckDataArrNew = [];
-    for (let i = 0; i < ckDataArr.length; i++) {
-      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
-      const element2 = element1.replace(/&nbsp;/g, " ");
-      const element = element2.replace(/\n/g, " ");
-      ckDataArrNew.push(element);
-    }
-    let selectedVal = "",
-      loopFlag = true,
-      ckTags,
-      selectedArr;
-    for (let i = 0; i < ckDataArrNew.length; i++) {
-      if (loopFlag) {
-        if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
-          selectedVal = ckDataArrNew[i];
-          selectedArr = i;
-          ckTags = ckDataArr[i].match(/<[^>]+>/g);
-          loopFlag = false;
+      for (let i = 0; i < ckDataArr.length; i++) {
+        const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+        const element2 = element1.replace(/&nbsp;/g, " ");
+        const element = element2.replace(/\n/g, " ");
+        ckDataArrNew.push(element);
+      }
+      let selectedVal = "",
+        loopFlag = true,
+        ckTags,
+        selectedArr;
+      for (let i = 0; i < ckDataArrNew.length; i++) {
+        if (loopFlag) {
+          if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
+            selectedVal = ckDataArrNew[i];
+            selectedArr = i;
+            ckTags = ckDataArr[i].match(/<[^>]+>/g);
+            loopFlag = false;
+          }
         }
       }
-    }
-    let ckDataArrLast = selectedVal;
-    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
-    let textAfter = ckDataArrLast.substring(
-      this.state.ckCusrsorPosition,
-      ckDataArrLast.length
-    );
+      let ckDataArrLast = selectedVal;
+      let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+      let textAfter = ckDataArrLast.substring(
+        this.state.ckCusrsorPosition,
+        ckDataArrLast.length
+      );
       // let ckDataArrLast = ckDataArr.pop();
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -848,12 +875,12 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
       ckDataArrLast = textBefore + " @" + userName + textAfter;
-    let newCkCusrsorPosition =
-      this.state.ckCusrsorPosition + userName.length + 2;
-    this.setState({
-      ckCusrsorPosition: newCkCusrsorPosition,
-      ckCusrsorData: ckDataArrLast
-    });
+      let newCkCusrsorPosition =
+        this.state.ckCusrsorPosition + userName.length + 2;
+      this.setState({
+        ckCusrsorPosition: newCkCusrsorPosition,
+        ckCusrsorData: ckDataArrLast
+      });
       if (ckTags) {
         // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
@@ -2009,7 +2036,7 @@ class MyTicket extends Component {
             selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
           }
         } else {
-           selectedStore = "";
+          selectedStore = "";
         }
         const formData = new FormData();
         var paramMessageData = {
@@ -2077,7 +2104,7 @@ class MyTicket extends Component {
               store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
             }
           } else {
-              store_Id = "";
+            store_Id = "";
           }
           const formData = new FormData();
           var paramData2 = {
@@ -2778,16 +2805,22 @@ class MyTicket extends Component {
   handleAddKnwoldgeBase() {
     debugger;
     let self = this;
-    var tempDescription = this.state.messageDetails[0][
-      "msgDetails"
-    ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
-    var Description = tempDescription.replace(/&nbsp;/gi, " ");
+    var tempDescription = "";
+    var Description = "";
+
+    if (this.state.messageDetails.length > 0) {
+      tempDescription = this.state.messageDetails[0][
+        "msgDetails"
+      ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
+      Description = tempDescription.replace(/&nbsp;/gi, " ");
+    }
+
     var inputParam = {
       KBCODE: "",
       CategoryID: this.state.selectetedParameters.categoryID,
       SubCategoryID: this.state.selectetedParameters.subCategoryID,
       Subject: this.state.ticketDetailsData.ticketTitle,
-      Description: Description,
+      Description: Description || "",
       IsActive: 1,
       IssueTypeID: this.state.selectetedParameters.issueTypeID
     };
@@ -2860,14 +2893,16 @@ class MyTicket extends Component {
     // );
 
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
-      <a href="#!"
+      <a
+        href="#!"
         style={{ height: "30px", cursor: "pointer" }}
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       >
         <img src={MinusImg} alt="Minus" className="minus-img" />
       </a>
     ) : (
-      <a href="#!"
+      <a
+        href="#!"
         style={{ height: "30px", cursor: "pointer" }}
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       >
@@ -2958,7 +2993,11 @@ class MyTicket extends Component {
                         {ticketDetailsData.updateDate}
                       </span>
                     </label>
-                    <a href="#!" className="loading-rectangle-cntr" onClick={this.handleGetHistoricalData.bind(this)}>
+                    <a
+                      href="#!"
+                      className="loading-rectangle-cntr"
+                      onClick={this.handleGetHistoricalData.bind(this)}
+                    >
                       <img
                         src={LoadingImg}
                         alt="Loading"
@@ -3024,7 +3063,11 @@ class MyTicket extends Component {
 
                   <div className="col-12 col-xs-8 col-sm-8 col-md-9">
                     <div style={{ float: "right", marginTop: "0px" }}>
-                      <a href="#!" className="d-inline-block" onClick={this.HandlelabelModalOpen.bind(this)}>
+                      <a
+                        href="#!"
+                        className="d-inline-block"
+                        onClick={this.HandlelabelModalOpen.bind(this)}
+                      >
                         <img
                           src={Headphone2Img}
                           alt="headphone"
@@ -3187,7 +3230,10 @@ class MyTicket extends Component {
                       <label className="mobile-no">
                         {ticketDetailsData.customerPhoneNumber}
                       </label>
-                      <a href="#!" onClick={this.HandleProfileModalOpen.bind(this)}>
+                      <a
+                        href="#!"
+                        onClick={this.HandleProfileModalOpen.bind(this)}
+                      >
                         <img
                           src={EyeImg}
                           alt="eye"
@@ -3270,7 +3316,9 @@ class MyTicket extends Component {
                           </div>
                         </div>
                       </Modal>
-                      <a href="#!" onClick={this.handleBillImgModalOpen.bind(this)}
+                      <a
+                        href="#!"
+                        onClick={this.handleBillImgModalOpen.bind(this)}
                         className=""
                         style={{
                           display: "inline",
@@ -3915,7 +3963,8 @@ class MyTicket extends Component {
                       <div className="storebox">
                         <div className="form-group">
                           <label className="label-4 storeSpacing">Store</label>
-                          <a href="#!"
+                          <a
+                            href="#!"
                             className="bata-rajouri-garden d-inline-block"
                             onClick={this.HandleStoreModalOpen.bind(this)}
                           >
@@ -4300,7 +4349,8 @@ class MyTicket extends Component {
                         </div>
                         <div className="">
                           <label className="label-4">Product</label>
-                          <a href="#!"
+                          <a
+                            href="#!"
                             className="bata-rajouri-garden d-inline-block"
                             onClick={this.handleOrderTableOpen.bind(this)}
                           >
@@ -5727,7 +5777,10 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                            <a href="#!" className="copyblue-kbtext d-inline-block">
+                            <a
+                              href="#!"
+                              className="copyblue-kbtext d-inline-block"
+                            >
                               VIEW POLICY
                               <img
                                 src={ViewBlue}
@@ -5911,7 +5964,8 @@ class MyTicket extends Component {
                     </div>
                     <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
                       <div className="inlineGridTicket">
-                        <a href="#!"
+                        <a
+                          href="#!"
                           className="comment-text"
                           onClick={this.handleFreeTextCommentOpen.bind(this)}
                         >
@@ -6144,7 +6198,8 @@ class MyTicket extends Component {
                                           <div className="inlineGridTicket">
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
-                                              <a href="#!"
+                                              <a
+                                                href="#!"
                                                 className="reply-comment"
                                                 onClick={this.hanldeCommentOpen2.bind(
                                                   this,
@@ -6156,7 +6211,8 @@ class MyTicket extends Component {
                                               </a>
                                             ) : null}
 
-                                            <a href="#!"
+                                            <a
+                                              href="#!"
                                               className="comment-text"
                                               onClick={this.handleCommentCollapseOpen.bind(
                                                 this,

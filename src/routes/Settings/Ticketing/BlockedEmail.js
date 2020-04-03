@@ -265,32 +265,93 @@ class BlockEmail extends Component {
         console.log(data);
       });
   }
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.BlockEmailData;
-
-    itemsArray.sort(function(a, b) {
-      return a.blockedBy > b.blockedBy ? 1 : -1;
-    });
-
-    this.setState({
-      BlockEmailData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.BlockEmailData;
-    itemsArray.sort((a, b) => {
-      return a.blockedBy < b.blockedBy;
-    });
+
+    if (this.state.sortColumn === "emailID") {
+      itemsArray.sort((a, b) => {
+        if (a.emailID < b.emailID) return 1;
+        if (a.emailID > b.emailID) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reason") {
+      itemsArray.sort((a, b) => {
+        if (a.reason < b.reason) return 1;
+        if (a.reason > b.reason) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "blockedDate") {
+      itemsArray.sort((a, b) => {
+        if (a.blockedDate < b.blockedDate) return 1;
+        if (a.blockedDate > b.blockedDate) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "blockedBy") {
+      itemsArray.sort((a, b) => {
+        if (a.blockedBy < b.blockedBy) return 1;
+        if (a.blockedBy > b.blockedBy) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
+      isortA: true,
       BlockEmailData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
+
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+    itemsArray = this.state.BlockEmailData;
+
+    if (this.state.sortColumn === "emailID") {
+      itemsArray.sort((a, b) => {
+        if (a.emailID < b.emailID) return -1;
+        if (a.emailID > b.emailID) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reason") {
+      itemsArray.sort((a, b) => {
+        if (a.reason < b.reason) return -1;
+        if (a.reason > b.reason) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "blockedDate") {
+      itemsArray.sort((a, b) => {
+        if (a.blockedDate < b.blockedDate) return -1;
+        if (a.blockedDate > b.blockedDate) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "blockedBy") {
+      itemsArray.sort((a, b) => {
+        if (a.blockedBy < b.blockedBy) return -1;
+        if (a.blockedBy > b.blockedBy) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      BlockEmailData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   setSortCheckStatus = (column, type, e) => {
     debugger;
 
@@ -551,7 +612,9 @@ class BlockEmail extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        BlockEmailData: this.state.sortAllData,
+        BlockEmailData: this.state.isortA
+          ? this.state.BlockEmailData
+          : this.state.sortAllData,
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
@@ -1033,6 +1096,7 @@ class BlockEmail extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+                      sortable: false,
                       accessor: "emailID"
                     },
                     {
@@ -1048,6 +1112,7 @@ class BlockEmail extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+                      sortable: false,
                       accessor: "reason"
                     },
                     {
@@ -1063,6 +1128,7 @@ class BlockEmail extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+                      sortable: false,
                       accessor: "blockedDate"
                     },
                     {
@@ -1078,13 +1144,15 @@ class BlockEmail extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+
                       accessor: "blockedBy",
+                      sortable: false,
                       Cell: row => {
                         var ids = row.original["Id"];
                         return (
                           <div>
                             <span>
-                              Admin
+                              {row.original.blockedBy}
                               <Popover
                                 content={
                                   <>
@@ -1118,6 +1186,7 @@ class BlockEmail extends Component {
                     {
                       Header: <span>Actions</span>,
                       accessor: "actionReport",
+                      sortable: false,
                       Cell: row => (
                         <div className="report-action">
                           <div>

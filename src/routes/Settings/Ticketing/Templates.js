@@ -90,7 +90,8 @@ class Templates extends Component {
       screatedByFilterCheckbox: "",
       stemplateStatusFilterCheckbox: "",
       ckCusrsorPosition: 0,
-      ckCusrsorData: ""
+      ckCusrsorData: "",
+      isortA: false
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -123,7 +124,8 @@ class Templates extends Component {
   onCkBlur = evt => {
     debugger;
     var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
-    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$.wholeText;
+    var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
+      .wholeText;
     if (!ckCusrsorData) {
       ckCusrsorData = "";
     }
@@ -131,7 +133,7 @@ class Templates extends Component {
       ckCusrsorPosition: ckCusrsorPosition.startOffset,
       ckCusrsorData
     });
-  }
+  };
 
   handlePlaceholderList() {
     let self = this;
@@ -173,7 +175,10 @@ class Templates extends Component {
       const element = element2.replace(/\n/g, " ");
       ckDataArrNew.push(element);
     }
-    let selectedVal = "", loopFlag = true, ckTags, selectedArr;
+    let selectedVal = "",
+      loopFlag = true,
+      ckTags,
+      selectedArr;
     for (let i = 0; i < ckDataArrNew.length; i++) {
       if (loopFlag) {
         if (this.state.ckCusrsorData.trim() == ckDataArrNew[i].trim()) {
@@ -186,7 +191,10 @@ class Templates extends Component {
     }
     let ckDataArrLast = selectedVal;
     let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
-    let textAfter = ckDataArrLast.substring(this.state.ckCusrsorPosition, ckDataArrLast.length);
+    let textAfter = ckDataArrLast.substring(
+      this.state.ckCusrsorPosition,
+      ckDataArrLast.length
+    );
     // let ckDataArrLast = ckDataArr.pop();
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -195,8 +203,9 @@ class Templates extends Component {
     );
     let placeholderName = matchedArr[0].parameterName;
     // ck += placeholderName;
-    ckDataArrLast = textBefore + ' ' + placeholderName + textAfter;
-    let newCkCusrsorPosition = this.state.ckCusrsorPosition + placeholderName.length + 1;
+    ckDataArrLast = textBefore + " " + placeholderName + textAfter;
+    let newCkCusrsorPosition =
+      this.state.ckCusrsorPosition + placeholderName.length + 1;
     this.setState({
       ckCusrsorPosition: newCkCusrsorPosition,
       ckCusrsorData: ckDataArrLast
@@ -310,33 +319,77 @@ class Templates extends Component {
         console.log(data);
       });
   }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.template;
+
+    if (this.state.sortColumn === "templateName") {
+      itemsArray.sort((a, b) => {
+        if (a.templateName < b.templateName) return 1;
+        if (a.templateName > b.templateName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "templateStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.templateStatus < b.templateStatus) return 1;
+        if (a.templateStatus > b.templateStatus) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      template: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.template;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "templateName") {
+      itemsArray.sort((a, b) => {
+        if (a.templateName < b.templateName) return -1;
+        if (a.templateName > b.templateName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "templateStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.templateStatus < b.templateStatus) return -1;
+        if (a.templateStatus > b.templateStatus) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
-      brantemplatedData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.template;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
+      isortA: true,
       template: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
-
   StatusOpenModel(data, header) {
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
@@ -445,7 +498,9 @@ class Templates extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        template: this.state.sortAllData,
+        template: this.state.isortA
+          ? this.state.template
+          : this.state.sortAllData,
         sFilterCheckbox: "",
         filterTxtValue: ""
       });
@@ -1321,7 +1376,6 @@ class Templates extends Component {
                             checked={this.state.stemplateNameFilterCheckbox.includes(
                               item.templateName
                             )}
-           
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "templateName",
@@ -1432,6 +1486,7 @@ class Templates extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "templateName"
                       },
                       {
@@ -1445,10 +1500,10 @@ class Templates extends Component {
                             // )}
                           >
                             Issue Type
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                           </span>
                         ),
-
+                        sortable: false,
                         accessor: "issueTypeCount",
                         // Cell: props => <span className="number">{props.value}</span>
                         Cell: row => {
@@ -1482,6 +1537,7 @@ class Templates extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         Cell: row => {
                           var ids = row.original["id"];
                           return (
@@ -1545,6 +1601,7 @@ class Templates extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "templateStatus"
                       },
                       {
@@ -1609,52 +1666,12 @@ class Templates extends Component {
                             </>
                           );
                         }
-
-                        //  className:"action-template",
                       }
                     ]}
                     resizable={false}
                     defaultPageSize={5}
                     showPagination={true}
                   />
-                  {/* <div className="position-relative1">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -1925,7 +1942,7 @@ class Templates extends Component {
                             <CKEditor
                               content={this.state.editorContent}
                               events={{
-                                "blur": this.onCkBlur,
+                                blur: this.onCkBlur,
                                 // "afterPaste": this.afterPaste,
                                 change: this.onEditorChange,
                                 items: this.fileUpload

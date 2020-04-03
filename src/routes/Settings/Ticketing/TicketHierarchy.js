@@ -200,7 +200,9 @@ class TicketHierarchy extends Component {
       sdesignationNameFilterCheckbox: "",
       sreportToFilterCheckbox: "",
       screatedbypersonFilterCheckbox: "",
-      sstatusFilterCheckbox: ""
+      sstatusFilterCheckbox: "",
+      isortA: false,
+      temphierarchyData: []
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -245,40 +247,94 @@ class TicketHierarchy extends Component {
     this.handleGetHierarchyData();
     this.hanldeGetReportListDropDown();
   }
+
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    var headerName = "";
+
+    if (this.state.sortColumn === "designationName") {
+      itemsArray.sort((a, b) => {
+        if (a.designationName < b.designationName) return 1;
+        if (a.designationName > b.designationName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportTo") {
+      itemsArray.sort((a, b) => {
+        if (a.reportTo < b.reportTo) return 1;
+        if (a.reportTo > b.reportTo) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdbyperson") {
+      itemsArray.sort((a, b) => {
+        if (a.createdbyperson < b.createdbyperson) return 1;
+        if (a.createdbyperson > b.createdbyperson) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      hierarchyData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
+    var headerName = "";
 
-    // function myFunction() {
-    // First sort the array
-    //itemsArray.designationName.sort();
-    // Then reverse it:
-    //fruits.reverse();
-
-    // }
-
-    itemsArray.sort((a, b) => a.designationName > b.designationName);
+    if (this.state.sortColumn === "designationName") {
+      itemsArray.sort((a, b) => {
+        if (a.designationName < b.designationName) return -1;
+        if (a.designationName > b.designationName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportTo") {
+      itemsArray.sort((a, b) => {
+        if (a.reportTo < b.reportTo) return -1;
+        if (a.reportTo > b.reportTo) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdbyperson") {
+      itemsArray.sort((a, b) => {
+        if (a.createdbyperson < b.createdbyperson) return -1;
+        if (a.createdbyperson > b.createdbyperson) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       hierarchyData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    var itemsArray1 = [];
-    itemsArray1 = this.state.hierarchyData;
-    itemsArray = itemsArray1.sort((a, b) => {
-      return b.designationName > a.designationName;
-    });
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
-
   StatusOpenModel(data, header) {
     debugger;
 
@@ -399,10 +455,9 @@ class TicketHierarchy extends Component {
         if (this.state.sdesignationNameFilterCheckbox === "") {
         } else {
           this.setState({
-            sreportToFilterCheckbox	:"",	
-            screatedbypersonFilterCheckbox		:"",	
-            sstatusFilterCheckbox		:"",	
-            
+            sreportToFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -437,11 +492,19 @@ class TicketHierarchy extends Component {
         }
       }
     } else {
-      this.setState({
-        StatusModel: false,
-        hierarchyData: this.state.sortAllData,
-        filterTxtValue: ""
-      });
+      if (this.state.isortA) {
+        this.setState({
+          StatusModel: false,
+          hierarchyData: this.state.hierarchyData,
+          filterTxtValue: ""
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          hierarchyData: this.state.sortAllData,
+          filterTxtValue: ""
+        });
+      }
     }
   }
 
@@ -1343,6 +1406,7 @@ class TicketHierarchy extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "designationName"
                       },
                       {
@@ -1359,6 +1423,7 @@ class TicketHierarchy extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "reportTo"
                       },
                       {
@@ -1376,6 +1441,7 @@ class TicketHierarchy extends Component {
                           </span>
                         ),
                         accessor: "createdbyperson",
+                        sortable: false,
                         Cell: row => {
                           // var ids = row.original["designationID"];
                           return (
@@ -1438,6 +1504,7 @@ class TicketHierarchy extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "status"
                       },
                       {

@@ -665,7 +665,8 @@ class MyTicketList extends Component {
       selectedWithTaskAll: "no",
       selectedTaskStatus: 0,
       selectedDepartment: 0,
-      selectedFunction: 0
+      selectedFunction: 0,
+      isortA: false
     });
 
     let self = this;
@@ -2618,7 +2619,13 @@ class MyTicketList extends Component {
         }
       }
     } else {
-      var tempSearchTicketData = this.state.sortAllData;
+      var tempSearchTicketData = [];
+      debugger;
+      if (this.state.isortA) {
+        tempSearchTicketData = this.state.SearchTicketData;
+      } else {
+        tempSearchTicketData = this.state.sortAllData;
+      }
       var tempColor = [];
       if (this.state.isRed) {
         var tempFilterData = tempSearchTicketData.filter(
@@ -2666,7 +2673,7 @@ class MyTicketList extends Component {
       if (tempColor.length > 0) {
         tempFinalSearchTicketData = tempColor;
       } else {
-        tempFinalSearchTicketData = this.state.sortAllData;
+        tempFinalSearchTicketData = tempSearchTicketData;
       }
     }
     this.setState({
@@ -2978,7 +2985,7 @@ class MyTicketList extends Component {
         priorityColor: "sort-column"
       });
     } else if (column === "assignedTo") {
-      var sItems = screatedOnFilterCheckbox.split(",");
+      var sItems = sassignedToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -2997,7 +3004,7 @@ class MyTicketList extends Component {
         assignColor: "sort-column"
       });
     } else if (column === "createdOn") {
-      var sItems = sassignedToFilterCheckbox.split(",");
+      var sItems = screatedOnFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -3026,30 +3033,109 @@ class MyTicketList extends Component {
     const { name } = e.target;
     this.setState({ [name]: e.target.checked });
   };
-  sortStatusAtoZ() {
-    //debugger;
-    var itemsArray = [];
-    itemsArray = this.state.SearchTicketData;
-
-    itemsArray.sort((a, b) => {
-      return a.name > b.name;
-    });
-    this.setState({
-      SearchTicketData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
-    //debugger;
+    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
-    itemsArray.sort((a, b) => {
-      return a.name < b.name;
-    });
+    var headerName = "";
+
+    if (this.state.sortColumnName === "status") {
+      itemsArray.sort((a, b) => {
+        itemsArray.sort((a, b) => {
+          itemsArray.sort((a, b) => {
+            if (a.ticketStatus < b.ticketStatus) return -1;
+            if (a.ticketStatus > b.ticketStatus) return 1;
+            return 0;
+          });
+        });
+      });
+    }
+    if (this.state.sortColumnName === "category") {
+      itemsArray.sort((a, b) => {
+        if (a.category < b.category) return -1;
+        if (a.category > b.category) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "priority") {
+      itemsArray.sort((a, b) => {
+        if (a.priority < b.priority) return -1;
+        if (a.priority > b.priority) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "createdOn") {
+      itemsArray.sort((a, b) => {
+        if (a.createdOn < b.createdOn) return -1;
+        if (a.createdOn > b.createdOn) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "assignedTo") {
+      itemsArray.sort((a, b) => {
+        if (a.assignedTo < b.assignedTo) return -1;
+        if (a.assignedTo > b.assignedTo) return 1;
+        return 0;
+      });
+    }
+
     this.setState({
+      isortA: true,
       SearchTicketData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.SearchTicketData;
+    var headerName = "";
+
+    if (this.state.sortColumnName === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.ticketStatus < b.ticketStatus) return 1;
+        if (a.ticketStatus > b.ticketStatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "category") {
+      itemsArray.sort((a, b) => {
+        if (a.category < b.category) return 1;
+        if (a.category > b.category) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "priority") {
+      itemsArray.sort((a, b) => {
+        if (a.priority < b.priority) return 1;
+        if (a.priority > b.priority) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "createdOn") {
+      itemsArray.sort((a, b) => {
+        if (a.createdOn < b.createdOn) return 1;
+        if (a.createdOn > b.createdOn) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumnName === "assignedTo") {
+      itemsArray.sort((a, b) => {
+        if (a.assignedTo < b.assignedTo) return 1;
+        if (a.assignedTo > b.assignedTo) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      SearchTicketData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   handleGetAssignTo() {
@@ -3767,8 +3853,8 @@ class MyTicketList extends Component {
   }
 
   render() {
-    const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-
+    const { DraftDetails, SearchAssignData } = this.state;
+    console.log(this.state.SearchTicketData, "------------SearchTicketData");
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -3793,20 +3879,20 @@ class MyTicketList extends Component {
                 <label style={{ color: "#0066cc", fontWeight: "bold" }}>
                   {this.state.sortHeader}
                 </label>
-                <div className="d-flex">
-                  <a
-                    onClick={this.sortStatusAtoZ.bind(this)}
-                    className="sorting-icon"
-                  >
+                <div
+                  className="d-flex"
+                  onClick={this.sortStatusAtoZ.bind(this)}
+                >
+                  <a className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY A TO Z</p>
                 </div>
-                <div className="d-flex">
-                  <a
-                    onClick={this.sortStatusZtoA.bind(this)}
-                    className="sorting-icon"
-                  >
+                <div
+                  className="d-flex"
+                  onClick={this.sortStatusZtoA.bind(this)}
+                >
+                  <a className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY Z TO A</p>
@@ -4304,13 +4390,14 @@ class MyTicketList extends Component {
                     className="table-cntr mt-3 mtictab table-responsive"
                     style={{ overflow: "initial" }}
                   >
-                    <a href="#!"
-                          className="float-search"
-                          onClick={this.toggleSearch}
-                        >
-                          <small>{TitleChange}</small>
-                          {ImgChange}
-                        </a>
+                    <a
+                      href="#!"
+                      className="float-search"
+                      onClick={this.toggleSearch}
+                    >
+                      <small>{TitleChange}</small>
+                      {ImgChange}
+                    </a>
                     <div>
                       <Collapse isOpen={this.state.collapseSearch}>
                         <Card>
@@ -4451,7 +4538,8 @@ class MyTicketList extends Component {
                                               {item.searchName}
                                             </label>
                                             <div>
-                                              <a href="#!"
+                                              <a
+                                                href="#!"
                                                 className="applySearch"
                                                 onClick={this.handleApplySearch.bind(
                                                   this,
@@ -4460,11 +4548,13 @@ class MyTicketList extends Component {
                                               >
                                                 APPLY
                                               </a>
-                                              <a href="#!" className="m-0"
-                                              onClick={this.hadleSearchDeleteData.bind(
-                                                this,
-                                                item.searchParamID
-                                              )}
+                                              <a
+                                                href="#!"
+                                                className="m-0"
+                                                onClick={this.hadleSearchDeleteData.bind(
+                                                  this,
+                                                  item.searchParamID
+                                                )}
                                               >
                                                 <img
                                                   src={DelSearch}
@@ -5495,14 +5585,16 @@ class MyTicketList extends Component {
                                       </span>
                                       Results
                                     </p>
-                                    <a href="#!"
+                                    <a
+                                      href="#!"
                                       className="blue-clr fs-14 a-mar"
                                       onClick={this.clearSearch}
                                     >
                                       CLEAR SEARCH
                                     </a>
                                     &nbsp; &nbsp; &nbsp;
-                                    <a href="#!"
+                                    <a
+                                      href="#!"
                                       className="blue-clr fs-14 a-mar"
                                       onClick={this.setSortCheckStatus.bind(
                                         this,
@@ -6250,7 +6342,7 @@ class MyTicketList extends Component {
                       <div>
                         <div className="MyTicketListReact cus-head">
                           <ReactTable
-                            data={SearchTicketData}
+                            data={this.state.SearchTicketData}
                             columns={[
                               {
                                 Header: (
@@ -6575,15 +6667,16 @@ class MyTicketList extends Component {
                                       "Category"
                                     )}
                                   >
-                                    Category{" "}
+                                    Category
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
                                 accessor: "category",
+                                sortable: false,
                                 Cell: row => (
                                   <span className="one-line-outer">
                                     <label className="one-line">
-                                      {row.original.category}{" "}
+                                      {row.original.category}
                                     </label>
 
                                     <Popover
