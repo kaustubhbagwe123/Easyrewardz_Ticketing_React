@@ -32,7 +32,7 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
-class CategoryMaster extends Component {
+class CategoryMaster extends Component { 
   constructor(props) {
     super(props);
     this.state = {

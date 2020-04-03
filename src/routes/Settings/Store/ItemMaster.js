@@ -122,72 +122,7 @@ class ItemMaster extends Component {
     NotificationManager.success("File deleted successfully.");
   };
   render() {
-    const columnsStorItem = [
-      {
-        Header: (
-          <span>
-            Brand Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "brandName"
-      },
-      {
-        Header: (
-          <span>
-            Item Code
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "itemCode"
-      },
-      {
-        Header: (
-          <span>
-            Item Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "itemName"
-      },
-      {
-        Header: (
-          <span>
-            Department Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "depatName"
-      },
-      {
-        Header: (
-          <span>
-            Item Cat
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "itemCat"
-      },
-      {
-        Header: (
-          <span>
-            Item Sub Cat
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "itemSubCat"
-      },
-      {
-        Header: (
-          <span>
-            Item Group
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "itemGroup"
-      }
-    ];
-
+   
     return (
       <React.Fragment>
         <NotificationContainer />
@@ -211,7 +146,71 @@ class ItemMaster extends Component {
                 <div className="table-cntr table-height StoreItemMasterReact">
                   <ReactTable
                     data={this.state.itemData}
-                    columns={columnsStorItem}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
+                            Brand Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "brandName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Item Code
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "itemCode"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Item Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "itemName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Department Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "depatName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Item Cat
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "itemCat"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Item Sub Cat
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "itemSubCat"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Item Group
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "itemGroup"
+                      }
+                    ]}
                     defaultPageSize={10}
                     minRows={2}
                     showPagination={true}

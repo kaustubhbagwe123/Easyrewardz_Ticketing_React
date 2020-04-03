@@ -1320,7 +1320,7 @@ class TicketCRMRole extends Component {
                         maxLength={25}
                         onChange={this.handleRoleName}
                       />
-                      {this.state.checkRoleName != "" && (
+                      {this.state.checkRoleName !== "" && (
                         <p
                           style={{
                             color: "red",

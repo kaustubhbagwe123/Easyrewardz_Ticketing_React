@@ -24,12 +24,14 @@ import { CSVLink } from "react-csv";
 import axios from "axios";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import { authHeader } from "../../../helpers/authHeader";
+import ActiveStatus from "../../activeStatus";
 
 class StoreCRMRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileName: "",
+      activeData: ActiveStatus(),
       crmRoles: [],
       ModulesEnabled: "",
       ModulesDisabled: "",
@@ -43,7 +45,7 @@ class StoreCRMRole extends Component {
       ],
       RoleName: "",
       checkRoleName: "",
-      RoleisActive: "true",
+      RoleisActive: 0,
       editSaveLoading: false,
       editRoleNameValidMsg: "",
       editCheckRoleName: "",
@@ -74,6 +76,7 @@ class StoreCRMRole extends Component {
       fileN: [],
       bulkuploadCompulsion: "",
       progressValue: 0,
+      statusCompulsory: ""
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -150,9 +153,10 @@ class StoreCRMRole extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/CRMRole/GetCRMRoles",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreCRMRoles",
       headers: authHeader()
-    }).then(res => {
+    })
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -233,12 +237,13 @@ class StoreCRMRole extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/CRMRole/DeleteCRMRole",
+      url: config.apiUrl + "/StoreCRMRole/DeleteStoreCRMRole",
       headers: authHeader(),
       params: {
         CRMRoleID: Id
       }
-    }).then(res => {
+    })
+      .then(res => {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
@@ -263,9 +268,9 @@ class StoreCRMRole extends Component {
       ModulesEnabled = "",
       ModulesDisabled = "";
     if (e === "add") {
-      if (self.state.RoleisActive === "true") {
+      if (self.state.RoleisActive === "Active") {
         RoleisActive = true;
-      } else if (self.state.RoleisActive === "false") {
+      } else if (self.state.RoleisActive === "Inactive") {
         RoleisActive = false;
       }
     } else if (e === "update") {
@@ -276,14 +281,18 @@ class StoreCRMRole extends Component {
       }
     }
     if (e === "add") {
-      if (self.state.RoleName === "") {
-        this.setState({ checkRoleName: "Required" });
+      if (this.state.RoleName.length > 0 && this.state.RoleisActive.length > 0) {
+        CRMRoleID = 0;
+        RoleName = self.state.RoleName;
+        ModulesEnabled = self.state.ModulesEnabled;
+        ModulesDisabled = self.state.ModulesDisabled;
+      } else {
+        this.setState({
+          checkRoleName: "Required",
+          statusCompulsory: "Please select status."
+        });
         return false;
       }
-      CRMRoleID = 0;
-      RoleName = self.state.RoleName;
-      ModulesEnabled = self.state.ModulesEnabled;
-      ModulesDisabled = self.state.ModulesDisabled;
     } else if (e === "update") {
       if (this.state.editRoleName == "") {
         this.setState({ editCheckRoleName: "Required" });
@@ -303,7 +312,7 @@ class StoreCRMRole extends Component {
     }
     axios({
       method: "post",
-      url: config.apiUrl + "/CRMRole/CreateUpdateCRMRole",
+      url: config.apiUrl + "/StoreCRMRole/CreateUpdateStoreCRMRole",
       headers: authHeader(),
       params: {
         CRMRoleID: CRMRoleID,
@@ -312,7 +321,8 @@ class StoreCRMRole extends Component {
         ModulesEnabled: ModulesEnabled,
         ModulesDisabled: ModulesDisabled
       }
-    }).then(res => {
+    })
+      .then(res => {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -320,7 +330,7 @@ class StoreCRMRole extends Component {
             NotificationManager.success("CRM Role added successfully.");
             self.setState({
               RoleName: "",
-              RoleisActive: "true",
+              RoleisActive: 0,
               ModulesEnabled: "",
               ModulesDisabled: "",
               updateModulesEnabled: "",
@@ -353,7 +363,7 @@ class StoreCRMRole extends Component {
         console.log(res);
       });
   }
-//// CRM Bulk uploading 
+  //// CRM Bulk uploading
   hanldeAddBulkUpload() {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
@@ -365,7 +375,7 @@ class StoreCRMRole extends Component {
       this.setState({ showProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
+        url: config.apiUrl + "/StoreCRMRole/BulkUploadStoreCRMRole",
         headers: authHeader(),
         data: formData,
         onUploadProgress: (ev = ProgressEvent) => {
@@ -415,8 +425,7 @@ class StoreCRMRole extends Component {
     });
   };
 
-
-/// set sorting status
+  /// set sorting status
   setSortCheckStatus = (column, type, e) => {
     debugger;
 
@@ -616,7 +625,7 @@ class StoreCRMRole extends Component {
       }
     }
   }
-//// status open modal
+  //// status open modal
   StatusOpenModel(data, header) {
     debugger;
     if (
@@ -816,7 +825,7 @@ class StoreCRMRole extends Component {
     modulesData[index].modulestatus = !modulesData[index].modulestatus;
     this.setState({ modulesData });
   };
-/// get file progress value 
+  /// get file progress value
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
@@ -853,155 +862,155 @@ class StoreCRMRole extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr">
-          <Modal
-            onClose={this.StatusCloseModel}
-            open={this.state.StatusModel}
-            modalId="Status-popup"
-            overlayId="logout-ovrly"
-          >
-            <div className="status-drop-down">
-              <div className="sort-sctn text-center">
-                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
-                  {this.state.sortHeader}
-                </label>
-                <div className="d-flex">
-                  <a
-                    href="#!"
-                    onClick={this.sortStatusAtoZ.bind(this)}
-                    className="sorting-icon"
-                  >
-                    <img src={Sorting} alt="sorting-icon" />
-                  </a>
-                  <p>SORT BY A TO Z</p>
-                </div>
-                <div className="d-flex">
-                  <a
-                    href="#!"
-                    onClick={this.sortStatusZtoA.bind(this)}
-                    className="sorting-icon"
-                  >
-                    <img src={Sorting} alt="sorting-icon" />
-                  </a>
-                  <p>SORT BY Z TO A</p>
-                </div>
-              </div>
-              <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
-              >
-                clear search
-              </a>
-              <div className="filter-type">
-                <p>FILTER BY TYPE</p>
-                <input
-                  type="text"
-                  style={{ display: "block" }}
-                  value={this.state.filterTxtValue}
-                  onChange={this.filteTextChange.bind(this)}
-                />
-
-                <div className="FTypeScroll">
-                  <div className="filter-checkbox">
-                    <input
-                      type="checkbox"
-                      name="filter-type"
-                      id={"fil-open"}
-                      value="all"
-                      checked={
-                        this.state.sroleNameFilterCheckbox.includes("all") ||
-                        this.state.screatedByFilterCheckbox.includes("all") ||
-                        this.state.sisRoleActiveFilterCheckbox.includes("all")
-                      }
-                      onChange={this.setSortCheckStatus.bind(this, "all")}
-                    />
-                    <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
-                    </label>
+            <Modal
+              onClose={this.StatusCloseModel}
+              open={this.state.StatusModel}
+              modalId="Status-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="status-drop-down">
+                <div className="sort-sctn text-center">
+                  <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                    {this.state.sortHeader}
+                  </label>
+                  <div className="d-flex">
+                    <a
+                      href="#!"
+                      onClick={this.sortStatusAtoZ.bind(this)}
+                      className="sorting-icon"
+                    >
+                      <img src={Sorting} alt="sorting-icon" />
+                    </a>
+                    <p>SORT BY A TO Z</p>
                   </div>
-                  {this.state.sortColumn === "roleName"
-                    ? this.state.sortFilterRoleName !== null &&
-                      this.state.sortFilterRoleName.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name={item.roleName}
-                            id={"fil-open" + item.roleName}
-                            value={item.roleName}
-                            checked={this.state.sroleNameFilterCheckbox.includes(
-                              item.roleName
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "roleName",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.roleName}>
-                            <span className="table-btn table-blue-btn">
-                              {item.roleName}
-                            </span>
-                          </label>
-                        </div>
-                      ))
-                    : null}
+                  <div className="d-flex">
+                    <a
+                      href="#!"
+                      onClick={this.sortStatusZtoA.bind(this)}
+                      className="sorting-icon"
+                    >
+                      <img src={Sorting} alt="sorting-icon" />
+                    </a>
+                    <p>SORT BY Z TO A</p>
+                  </div>
+                </div>
+                <a
+                  href=""
+                  style={{ margin: "0 25px", textDecoration: "underline" }}
+                  onClick={this.setSortCheckStatus.bind(this, "all")}
+                >
+                  clear search
+                </a>
+                <div className="filter-type">
+                  <p>FILTER BY TYPE</p>
+                  <input
+                    type="text"
+                    style={{ display: "block" }}
+                    value={this.state.filterTxtValue}
+                    onChange={this.filteTextChange.bind(this)}
+                  />
 
-                  {this.state.sortColumn === "createdBy"
-                    ? this.state.sortFilterCreated !== null &&
-                      this.state.sortFilterCreated.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name={item.createdBy}
-                            id={"fil-open" + item.createdBy}
-                            value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "createdBy",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.createdBy}>
-                            <span className="table-btn table-blue-btn">
-                              {item.createdBy}
-                            </span>
-                          </label>
-                        </div>
-                      ))
-                    : null}
+                  <div className="FTypeScroll">
+                    <div className="filter-checkbox">
+                      <input
+                        type="checkbox"
+                        name="filter-type"
+                        id={"fil-open"}
+                        value="all"
+                        checked={
+                          this.state.sroleNameFilterCheckbox.includes("all") ||
+                          this.state.screatedByFilterCheckbox.includes("all") ||
+                          this.state.sisRoleActiveFilterCheckbox.includes("all")
+                        }
+                        onChange={this.setSortCheckStatus.bind(this, "all")}
+                      />
+                      <label htmlFor={"fil-open"}>
+                        <span className="table-btn table-blue-btn">ALL</span>
+                      </label>
+                    </div>
+                    {this.state.sortColumn === "roleName"
+                      ? this.state.sortFilterRoleName !== null &&
+                        this.state.sortFilterRoleName.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name={item.roleName}
+                              id={"fil-open" + item.roleName}
+                              value={item.roleName}
+                              checked={this.state.sroleNameFilterCheckbox.includes(
+                                item.roleName
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "roleName",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.roleName}>
+                              <span className="table-btn table-blue-btn">
+                                {item.roleName}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
 
-                  {this.state.sortColumn === "isRoleActive"
-                    ? this.state.sortFilterStatus !== null &&
-                      this.state.sortFilterStatus.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name={item.isRoleActive}
-                            id={"fil-open" + item.isRoleActive}
-                            value={item.isRoleActive}
-                            checked={this.state.sisRoleActiveFilterCheckbox.includes(
-                              item.isRoleActive
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "isRoleActive"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.isRoleActive}>
-                            <span className="table-btn table-blue-btn">
-                              {item.isRoleActive}
-                            </span>
-                          </label>
-                        </div>
-                      ))
-                    : null}
+                    {this.state.sortColumn === "createdBy"
+                      ? this.state.sortFilterCreated !== null &&
+                        this.state.sortFilterCreated.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name={item.createdBy}
+                              id={"fil-open" + item.createdBy}
+                              value={item.createdBy}
+                              checked={this.state.screatedByFilterCheckbox.includes(
+                                item.createdBy
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "createdBy",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.createdBy}>
+                              <span className="table-btn table-blue-btn">
+                                {item.createdBy}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+
+                    {this.state.sortColumn === "isRoleActive"
+                      ? this.state.sortFilterStatus !== null &&
+                        this.state.sortFilterStatus.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name={item.isRoleActive}
+                              id={"fil-open" + item.isRoleActive}
+                              value={item.isRoleActive}
+                              checked={this.state.sisRoleActiveFilterCheckbox.includes(
+                                item.isRoleActive
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "isRoleActive"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.isRoleActive}>
+                              <span className="table-btn table-blue-btn">
+                                {item.isRoleActive}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Modal>
+            </Modal>
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height StorCrmRoleReact">
@@ -1012,7 +1021,11 @@ class StoreCRMRole extends Component {
                         Header: (
                           <span
                             className={this.state.roleColor}
-                            onClick={this.StatusOpenModel.bind(this, "roleName", "Role Name")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "roleName",
+                              "Role Name"
+                            )}
                           >
                             Role Name
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1060,7 +1073,11 @@ class StoreCRMRole extends Component {
                         Header: (
                           <span
                             className={this.state.createdColor}
-                            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created By")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy",
+                              "Created By"
+                            )}
                           >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1119,7 +1136,11 @@ class StoreCRMRole extends Component {
                         Header: (
                           <span
                             className={this.state.statusColor}
-                            onClick={this.StatusOpenModel.bind(this, "isRoleActive", "Status")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "isRoleActive",
+                              "Status"
+                            )}
                           >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1252,7 +1273,7 @@ class StoreCRMRole extends Component {
                         autoComplete="off"
                         onChange={this.handleRoleName.bind(this)}
                       />
-                      {this.state.checkRoleName != "" && (
+                      {this.state.RoleName.length === 0 && (
                         <p
                           style={{
                             color: "red",
@@ -1299,9 +1320,19 @@ class StoreCRMRole extends Component {
                         value={this.state.RoleisActive}
                         onChange={this.handleRoleisActive}
                       >
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
+                        <option>select</option>
+                        {this.state.activeData !== null &&
+                          this.state.activeData.map((item, j) => (
+                            <option key={j} value={item.ActiveID}>
+                              {item.ActiveName}
+                            </option>
+                          ))}
                       </select>
+                      {this.state.RoleisActive === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.statusCompulsory}
+                        </p>
+                      )}
                     </div>
                     <div className="btnSpace">
                       <button
@@ -1318,7 +1349,7 @@ class StoreCRMRole extends Component {
                 </div>
                 <br />
                 <div className="store-col-2">
-                <div className="right-sect-div">
+                  <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
                     Template
