@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import RedDeleteIcon from "./../assets/Images/red-delete-icon.png";
 import Sorting from "./../assets/Images/sorting.png";
 import BlackDeleteIcon from "./../assets/Images/del-big.png";
@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { authHeader } from "../helpers/authHeader";
 import activeStatus from "./activeStatus";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import Modal from "react-bootstrap/Modal";

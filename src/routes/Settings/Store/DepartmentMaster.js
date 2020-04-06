@@ -8,6 +8,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
+import Sorting from "./../../../assets/Images/sorting.png";
 import { ProgressBar } from "react-bootstrap";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
@@ -21,6 +22,7 @@ import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
 import ActiveStatus from "../../activeStatus.js";
 import Modal from "react-responsive-modal";
+import matchSorter from "match-sorter";
 
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
@@ -52,15 +54,17 @@ class DepartmentMaster extends Component {
       storeCodeCompulsory: "",
       editDepartment: {},
       departmentMapId: 0,
-      brandColor: "",
       sortHeader: "",
       StatusModel: false,
-      sroleNameFilterCheckbox: "",
+      sbrandNameFilterCheckbox: "",
+      sStoreCodeFilterCheckbox: "",
+      sDepartNameFilterCheckbox: "",
+      sFunctionFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      sisRoleActiveFilterCheckbox: "",
+      sstatusFilterCheckbox: "",
       sortFilterBrandName: [],
       sortFilterStoreCode: [],
-      sortFilterDepartmentName: [],
+      sortFilterDepartName: [],
       sortFilterFunction: [],
       sortFilterCreatedBy: [],
       sortFilterStatus: [],
@@ -70,6 +74,21 @@ class DepartmentMaster extends Component {
       editFunctionCompulsory: "Please Select Function.",
       editSaveLoading: false,
       editmodel: false,
+      tempDepartment: [],
+      sortAllData: [],
+      sortBrandName: [],
+      sortStoreCode: [],
+      sortDepartName: [],
+      sortFunction: [],
+      sortCreated: [],
+      sortStatus: [],
+      brandColor: "",
+      storeCodeColor: "",
+      DepartNameColor: "",
+      FunctionColor: "",
+      createdColor: "",
+      statusColor: "",
+      sortColumn: ""
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -200,79 +219,774 @@ class DepartmentMaster extends Component {
     }
   };
   /// status open modal
-  // StatusOpenModel(data, header) {
-  // debugger;
-  // if (
-  //   this.state.sortFilterBrandName.length === 0 ||
-  //   this.state.sortFilterStoreCode.length === 0 ||
-  //   this.state.sortFilterDepartmentName.length === 0 ||
-  //   this.state.sortFilterFunction.length === 0 ||
-  //   this.state.sortFilterCreatedBy.length === 0 ||
-  //   this.state.sortFilterStatus.length === 0
-  // ) {
-  //   return false;
-  // }
-  // if (data === "brandName") {
-  //   if (
-  //     this.state.screatedByFilterCheckbox !== "" ||
-  //     this.state.sisRoleActiveFilterCheckbox !== ""
-  //   ) {
-  //     this.setState({
-  //       StatusModel: true,
-  //       sortColumn: data,
-  //       sortHeader: header
-  //     });
-  //   } else {
-  //     this.setState({
-  //       screatedByFilterCheckbox: "",
-  //       sisRoleActiveFilterCheckbox: "",
-  //       StatusModel: true,
-  //       sortColumn: data,
-  //       sortHeader: header
-  //     });
-  //   }
-  // }
-  // if (data === "createdBy") {
-  //   if (
-  //     this.state.sroleNameFilterCheckbox !== "" ||
-  //     this.state.sisRoleActiveFilterCheckbox !== ""
-  //   ) {
-  //     this.setState({
-  //       StatusModel: true,
-  //       sortColumn: data,
-  //       sortHeader: header
-  //     });
-  //   } else {
-  //     this.setState({
-  //       sroleNameFilterCheckbox: "",
-  //       sisRoleActiveFilterCheckbox: "",
-  //       StatusModel: true,
-  //       sortColumn: data,
-  //       sortHeader: header
-  //     });
-  //   }
-  // }
-  // if (data === "isRoleActive") {
-  //   if (
-  //     this.state.screatedByFilterCheckbox !== "" ||
-  //     this.state.sroleNameFilterCheckbox !== ""
-  //   ) {
-  //     this.setState({
-  //       StatusModel: true,
-  //       sortColumn: data,
-  //       sortHeader: header
-  //     });
-  //   } else {
-  //     this.setState({
-  //       sroleNameFilterCheckbox: "",
-  //       screatedByFilterCheckbox: "",
-  //       StatusModel: true,
-  //       sortColumn: data,
-  //       sortHeader: header
-  //     });
-  //   }
-  // }
-  // }
+  StatusOpenModel(data, header) {
+    debugger;
+    if (
+      this.state.sortFilterBrandName.length === 0 ||
+      this.state.sortFilterStoreCode.length === 0 ||
+      this.state.sortFilterDepartName.length === 0 ||
+      this.state.sortFilterFunction.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "brandName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sStoreCodeFilterCheckbox !== "" ||
+        this.state.sDepartNameFilterCheckbox !== "" ||
+        this.state.sFunctionFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          sStoreCodeFilterCheckbox: "",
+          sDepartNameFilterCheckbox: "",
+          sFunctionFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "storeCode") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sDepartNameFilterCheckbox !== "" ||
+        this.state.sFunctionFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sDepartNameFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          sFunctionFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "departmentName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sStoreCodeFilterCheckbox !== "" ||
+        this.state.sFunctionFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sStoreCodeFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          sFunctionFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "functionName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sStoreCodeFilterCheckbox !== "" ||
+        this.state.sDepartNameFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sStoreCodeFilterCheckbox: "",
+          sDepartNameFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sStoreCodeFilterCheckbox !== "" ||
+        this.state.sDepartNameFilterCheckbox !== "" ||
+        this.state.sFunctionFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sbrandNameFilterCheckbox: "",
+          sStoreCodeFilterCheckbox: "",
+          sDepartNameFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          sFunctionFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+    if (data === "status") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sStoreCodeFilterCheckbox !== "" ||
+        this.state.sDepartNameFilterCheckbox !== "" ||
+        this.state.sFunctionFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      } else {
+        this.setState({
+          sbrandNameFilterCheckbox: "",
+          sStoreCodeFilterCheckbox: "",
+          sDepartNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sFunctionFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header
+        });
+      }
+    }
+  }
+
+  /// status close modal
+  StatusCloseModel = e => {
+    if (this.state.tempDepartment.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        departmentGrid: this.state.tempDepartment
+      });
+      if (this.state.sortColumn === "brandName") {
+        if (this.state.sbrandNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+            sStoreCodeFilterCheckbox: "",
+            sFunctionFilterCheckbox: "",
+            sDepartNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "storeCode") {
+        if (this.state.sStoreCodeFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+            sbrandNameFilterCheckbox: "",
+            sFunctionFilterCheckbox: "",
+            sDepartNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "departmentName") {
+        if (this.state.sDepartNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            sStoreCodeFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+            sFunctionFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "functionName") {
+        if (this.state.sFunctionFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            sStoreCodeFilterCheckbox: "",
+            sDepartNameFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+            sStoreCodeFilterCheckbox: "",
+            sFunctionFilterCheckbox: "",
+            sDepartNameFilterCheckbox: ""
+          });
+        }
+      }
+      if (this.state.sortColumn === "status") {
+        if (this.state.sstatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sStoreCodeFilterCheckbox: "",
+            sFunctionFilterCheckbox: "",
+            sDepartNameFilterCheckbox: ""
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        departmentGrid: this.state.sortAllData
+      });
+    }
+  };
+
+  /// set sorting status
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
+    var sStoreCodeFilterCheckbox = this.state.sStoreCodeFilterCheckbox;
+    var sDepartNameFilterCheckbox = this.state.sDepartNameFilterCheckbox;
+    var sFunctionFilterCheckbox = this.state.sFunctionFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sstatusFilterCheckbox = this.state.sstatusFilterCheckbox;
+
+    if (column === "brandName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all", "");
+        sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
+        if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sbrandNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sbrandNameFilterCheckbox.includes("all")) {
+          sbrandNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "brandName") {
+            for (let i = 0; i < this.state.sortBrandName.length; i++) {
+              sbrandNameFilterCheckbox +=
+                this.state.sortBrandName[i].brandName + ",";
+            }
+            sbrandNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "storeCode" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sStoreCodeFilterCheckbox = sStoreCodeFilterCheckbox.replace("all", "");
+        sStoreCodeFilterCheckbox = sStoreCodeFilterCheckbox.replace("all,", "");
+        if (sStoreCodeFilterCheckbox.includes(e.currentTarget.value)) {
+          sStoreCodeFilterCheckbox = sStoreCodeFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sStoreCodeFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sStoreCodeFilterCheckbox.includes("all")) {
+          sStoreCodeFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "storeCode") {
+            for (let i = 0; i < this.state.sortStoreCode.length; i++) {
+              sStoreCodeFilterCheckbox +=
+                this.state.sortStoreCode[i].storeCode + ",";
+            }
+            sStoreCodeFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "departmentName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sDepartNameFilterCheckbox = sDepartNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sDepartNameFilterCheckbox = sDepartNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sDepartNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sDepartNameFilterCheckbox = sDepartNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sDepartNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sDepartNameFilterCheckbox.includes("all")) {
+          sDepartNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "departmentName") {
+            for (let i = 0; i < this.state.sortDepartName.length; i++) {
+              sDepartNameFilterCheckbox +=
+                this.state.sortDepartName[i].departmentName + ",";
+            }
+            sDepartNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "functionName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sFunctionFilterCheckbox = sFunctionFilterCheckbox.replace("all", "");
+        sFunctionFilterCheckbox = sFunctionFilterCheckbox.replace("all,", "");
+        if (sFunctionFilterCheckbox.includes(e.currentTarget.value)) {
+          sFunctionFilterCheckbox = sFunctionFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sFunctionFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sFunctionFilterCheckbox.includes("all")) {
+          sFunctionFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "functionName") {
+            for (let i = 0; i < this.state.sortFunction.length; i++) {
+              sFunctionFilterCheckbox +=
+                this.state.sortFunction[i].functionName + ",";
+            }
+            sFunctionFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreated.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreated[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "status" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
+        sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
+        if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstatusFilterCheckbox.includes("all")) {
+          sstatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "status") {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
+              sstatusFilterCheckbox += this.state.sortStatus[i].status + ",";
+            }
+            sstatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      sbrandNameFilterCheckbox,
+      sStoreCodeFilterCheckbox,
+      sDepartNameFilterCheckbox,
+      sFunctionFilterCheckbox,
+      sstatusFilterCheckbox,
+      screatedByFilterCheckbox,
+      brandColor: "",
+      storeCodeColor: "",
+      DepartNameColor: "",
+      FunctionColor: "",
+      createdColor: "",
+      statusColor: ""
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "brandName") {
+      var sItems = sbrandNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        brandColor: "sort-column"
+      });
+    } else if (column === "storeCode") {
+      var sCode = sStoreCodeFilterCheckbox.split(",");
+      if (sCode.length > 0) {
+        for (let i = 0; i < sCode.length; i++) {
+          if (sCode[i] !== "") {
+            var tempFilterData = allData.filter(a => a.storeCode === sCode[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        storeCodeColor: "sort-column"
+      });
+    } else if (column === "departmentName") {
+      var sDepat = sDepartNameFilterCheckbox.split(",");
+      if (sDepat.length > 0) {
+        for (let i = 0; i < sDepat.length; i++) {
+          if (sDepat[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.departmentName === sDepat[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        DepartNameColor: "sort-column"
+      });
+    } else if (column === "functionName") {
+      var sfunct = sFunctionFilterCheckbox.split(",");
+      if (sfunct.length > 0) {
+        for (let i = 0; i < sfunct.length; i++) {
+          if (sfunct[i] !== "") {
+            var tempFilterData = allData.filter(
+              a => a.functionName === sfunct[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        FunctionColor: "sort-column"
+      });
+    } else if (column === "createdBy") {
+      var sItems = screatedByFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column"
+      });
+    } else if (column === "status") {
+      var sItems = sstatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(a => a.status === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column"
+      });
+    }
+
+    this.setState({
+      tempDepartment: itemsArray
+    });
+  };
+  /// filter text change
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "brandName") {
+      var sortFilterBrandName = matchSorter(
+        this.state.sortBrandName,
+        e.target.value,
+        { keys: ["brandName"] }
+      );
+      if (sortFilterBrandName.length > 0) {
+        this.setState({ sortFilterBrandName });
+      } else {
+        this.setState({
+          sortFilterBrandName: this.state.sortBrandName
+        });
+      }
+    }
+    if (this.state.sortColumn === "storeCode") {
+      var sortFilterStoreCode = matchSorter(
+        this.state.sortStoreCode,
+        e.target.value,
+        { keys: ["storeCode"] }
+      );
+      if (sortFilterStoreCode.length > 0) {
+        this.setState({ sortFilterStoreCode });
+      } else {
+        this.setState({
+          sortFilterStoreCode: this.state.sortStoreCode
+        });
+      }
+    }
+    if (this.state.sortColumn === "departmentName") {
+      var sortFilterDepartName = matchSorter(
+        this.state.sortDepartName,
+        e.target.value,
+        { keys: ["departmentName"] }
+      );
+      if (sortFilterDepartName.length > 0) {
+        this.setState({ sortFilterDepartName });
+      } else {
+        this.setState({
+          sortFilterDepartName: this.state.sortDepartName
+        });
+      }
+    }
+    if (this.state.sortColumn === "functionName") {
+      var sortFilterFunction = matchSorter(
+        this.state.sortFunction,
+        e.target.value,
+        { keys: ["functionName"] }
+      );
+      if (sortFilterFunction.length > 0) {
+        this.setState({ sortFilterFunction });
+      } else {
+        this.setState({
+          sortFilterFunction: this.state.sortFunction
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreated,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: this.state.sortCreated
+        });
+      }
+    }
+    if (this.state.sortColumn === "status") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["status"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
+    }
+  }
+  /// sort status by A to Z
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.departmentGrid;
+
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return -1;
+        if (a.brandName > b.brandName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "storeCode") {
+      itemsArray.sort((a, b) => {
+        if (a.storeCode < b.storeCode) return -1;
+        if (a.storeCode > b.storeCode) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "departmentName") {
+      itemsArray.sort((a, b) => {
+        if (a.departmentName < b.departmentName) return -1;
+        if (a.departmentName > b.departmentName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "functionName") {
+      itemsArray.sort((a, b) => {
+        if (a.functionName < b.functionName) return -1;
+        if (a.functionName > b.functionName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      departmentGrid: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+  /// sort status by Z to A
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.departmentGrid;
+
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return 1;
+        if (a.brandName > b.brandName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "storeCode") {
+      itemsArray.sort((a, b) => {
+        if (a.storeCode < b.storeCode) return 1;
+        if (a.storeCode > b.storeCode) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "departmentName") {
+      itemsArray.sort((a, b) => {
+        if (a.departmentName < b.departmentName) return 1;
+        if (a.departmentName > b.departmentName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "functionName") {
+      itemsArray.sort((a, b) => {
+        if (a.functionName < b.functionName) return 1;
+        if (a.functionName > b.functionName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      departmentGrid: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
   // --------------------------API---------------------------------
   ////Get Detapartment grid data
   handleGetDepartmentGridData() {
@@ -290,6 +1004,90 @@ class DepartmentMaster extends Component {
           self.setState({ departmentGrid: data });
         } else {
           self.setState({ departmentGrid: [] });
+        }
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].brandName]) {
+              distinct.push(data[i].brandName);
+              unique[data[i].brandName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortBrandName.push({ brandName: distinct[i] });
+            self.state.sortFilterBrandName.push({ brandName: distinct[i] });
+          }
+
+          var uniqueSC = [];
+          var distinctSC = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!uniqueSC[data[i].storeCode]) {
+              distinctSC.push(data[i].storeCode);
+              uniqueSC[data[i].storeCode] = 1;
+            }
+          }
+          for (let i = 0; i < distinctSC.length; i++) {
+            self.state.sortStoreCode.push({ storeCode: distinctSC[i] });
+            self.state.sortFilterStoreCode.push({ storeCode: distinctSC[i] });
+          }
+
+          var uniqueDn = [];
+          var distinctDn = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!uniqueDn[data[i].departmentName]) {
+              distinctDn.push(data[i].departmentName);
+              uniqueDn[data[i].departmentName] = 1;
+            }
+          }
+          for (let i = 0; i < distinctDn.length; i++) {
+            self.state.sortDepartName.push({ departmentName: distinctDn[i] });
+            self.state.sortFilterDepartName.push({
+              departmentName: distinctDn[i]
+            });
+          }
+
+          var uniqueFn = [];
+          var distinctFn = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!uniqueFn[data[i].functionName]) {
+              distinctFn.push(data[i].functionName);
+              uniqueFn[data[i].functionName] = 1;
+            }
+          }
+          for (let i = 0; i < distinctFn.length; i++) {
+            self.state.sortFunction.push({ functionName: distinctFn[i] });
+            self.state.sortFilterFunction.push({
+              functionName: distinctFn[i]
+            });
+          }
+
+          var unique1 = [];
+          var distinct1 = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique1[data[i].createdBy]) {
+              distinct1.push(data[i].createdBy);
+              unique1[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct1.length; i++) {
+            self.state.sortCreated.push({ createdBy: distinct1[i] });
+            self.state.sortFilterCreatedBy.push({ createdBy: distinct1[i] });
+          }
+
+          var unique2 = [];
+          var distinct2 = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique2[data[i].status]) {
+              distinct2.push(data[i].status);
+              unique2[data[i].status] = 1;
+            }
+          }
+          for (let i = 0; i < distinct2.length; i++) {
+            self.state.sortStatus.push({ status: distinct2[i] });
+            self.state.sortFilterStatus.push({ status: distinct2[i] });
+          }
         }
       })
       .catch(res => {
@@ -584,15 +1382,14 @@ class DepartmentMaster extends Component {
       activeStatus = 0;
     }
     this.setState({ editSaveLoading: true });
-    var brd=parseInt(this.state.editDepartment.brandID);
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/UpdateBrandDepartmentMapping",
       headers: authHeader(),
-      params: {
+      data: {
         DepartmentBrandID: this.state.departmentMapId,
-        BrandID: parseInt(this.state.editDepartment.brandID),
-        StoreID: parseInt(this.state.editDepartment.storeID),
+        BrandID: this.state.editDepartment.brandID,
+        StoreID: this.state.editDepartment.storeID,
         DepartmentID: parseInt(this.state.editDepartment.departmentID),
         FunctionID: parseInt(this.state.editDepartment.functionID),
         Status: activeStatus
@@ -604,9 +1401,10 @@ class DepartmentMaster extends Component {
         if (status === "Success") {
           self.handleGetDepartmentGridData();
           NotificationManager.success("Department updated successfully.");
+          self.toggleEditModal();
           self.setState({
             editSaveLoading: false
-          })
+          });
         }
       })
       .catch(data => {
@@ -674,6 +1472,241 @@ class DepartmentMaster extends Component {
 
         <div className="container-fluid">
           <div className="store-settings-cntr">
+            <Modal
+              onClose={this.StatusCloseModel}
+              open={this.state.StatusModel}
+              modalId="Status-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="status-drop-down">
+                <div className="sort-sctn text-center">
+                  <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                    {this.state.sortHeader}
+                  </label>
+                  <div className="d-flex">
+                    <a
+                      href="#!"
+                      onClick={this.sortStatusAtoZ.bind(this)}
+                      className="sorting-icon"
+                    >
+                      <img src={Sorting} alt="sorting-icon" />
+                    </a>
+                    <p>SORT BY A TO Z</p>
+                  </div>
+                  <div className="d-flex">
+                    <a
+                      href="#!"
+                      onClick={this.sortStatusZtoA.bind(this)}
+                      className="sorting-icon"
+                    >
+                      <img src={Sorting} alt="sorting-icon" />
+                    </a>
+                    <p>SORT BY Z TO A</p>
+                  </div>
+                </div>
+                <a
+                  href=""
+                  style={{ margin: "0 25px", textDecoration: "underline" }}
+                  onClick={this.setSortCheckStatus.bind(this, "all")}
+                >
+                  clear search
+                </a>
+                <div className="filter-type">
+                  <p>FILTER BY TYPE</p>
+                  <input
+                    type="text"
+                    style={{ display: "block" }}
+                    value={this.state.filterTxtValue}
+                    onChange={this.filteTextChange.bind(this)}
+                  />
+
+                  <div className="FTypeScroll">
+                    <div className="filter-checkbox">
+                      <input
+                        type="checkbox"
+                        name="filter-type"
+                        id={"fil-open"}
+                        value="all"
+                        checked={
+                          this.state.sbrandNameFilterCheckbox.includes("all") ||
+                          this.state.sStoreCodeFilterCheckbox.includes("all") ||
+                          this.state.sDepartNameFilterCheckbox.includes(
+                            "all"
+                          ) ||
+                          this.state.sFunctionFilterCheckbox.includes("all") ||
+                          this.state.screatedByFilterCheckbox.includes("all") ||
+                          this.state.sstatusFilterCheckbox.includes("all")
+                        }
+                        onChange={this.setSortCheckStatus.bind(this, "all")}
+                      />
+                      <label htmlFor={"fil-open"}>
+                        <span className="table-btn table-blue-btn">ALL</span>
+                      </label>
+                    </div>
+                    {this.state.sortColumn === "brandName"
+                      ? this.state.sortFilterBrandName !== null &&
+                        this.state.sortFilterBrandName.map((item, i) => (
+                          <div className="filter-checkbox" key={i}>
+                            <input
+                              type="checkbox"
+                              name={item.brandName}
+                              id={"fil-open" + item.brandName}
+                              value={item.brandName}
+                              checked={this.state.sbrandNameFilterCheckbox.includes(
+                                item.brandName
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "brandName",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.brandName}>
+                              <span className="table-btn table-blue-btn">
+                                {item.brandName}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+
+                    {this.state.sortColumn === "storeCode"
+                      ? this.state.sortFilterStoreCode !== null &&
+                        this.state.sortFilterStoreCode.map((item, p) => (
+                          <div className="filter-checkbox" key={p}>
+                            <input
+                              type="checkbox"
+                              name={item.storeCode}
+                              id={"fil-open" + item.storeCode}
+                              value={item.storeCode}
+                              checked={this.state.sStoreCodeFilterCheckbox.includes(
+                                item.storeCode
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "storeCode",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.storeCode}>
+                              <span className="table-btn table-blue-btn">
+                                {item.storeCode}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+
+                    {this.state.sortColumn === "departmentName"
+                      ? this.state.sortFilterDepartName !== null &&
+                        this.state.sortFilterDepartName.map((item, d) => (
+                          <div className="filter-checkbox" key={d}>
+                            <input
+                              type="checkbox"
+                              name={item.departmentName}
+                              id={"fil-open" + item.departmentName}
+                              value={item.departmentName}
+                              checked={this.state.sDepartNameFilterCheckbox.includes(
+                                item.departmentName
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "departmentName",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.departmentName}>
+                              <span className="table-btn table-blue-btn">
+                                {item.departmentName}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+
+                    {this.state.sortColumn === "functionName"
+                      ? this.state.sortFilterFunction !== null &&
+                        this.state.sortFilterFunction.map((item, f) => (
+                          <div className="filter-checkbox" key={f}>
+                            <input
+                              type="checkbox"
+                              name={item.functionName}
+                              id={"fil-open" + item.functionName}
+                              value={item.functionName}
+                              checked={this.state.sFunctionFilterCheckbox.includes(
+                                item.functionName
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "functionName",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.functionName}>
+                              <span className="table-btn table-blue-btn">
+                                {item.functionName}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+
+                    {this.state.sortColumn === "createdBy"
+                      ? this.state.sortFilterCreatedBy !== null &&
+                        this.state.sortFilterCreatedBy.map((item, p) => (
+                          <div className="filter-checkbox" key={p}>
+                            <input
+                              type="checkbox"
+                              name={item.createdBy}
+                              id={"fil-open" + item.createdBy}
+                              value={item.createdBy}
+                              checked={this.state.screatedByFilterCheckbox.includes(
+                                item.createdBy
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "createdBy",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.createdBy}>
+                              <span className="table-btn table-blue-btn">
+                                {item.createdBy}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+
+                    {this.state.sortColumn === "status"
+                      ? this.state.sortFilterStatus !== null &&
+                        this.state.sortFilterStatus.map((item, j) => (
+                          <div className="filter-checkbox" key={j}>
+                            <input
+                              type="checkbox"
+                              name={item.status}
+                              id={"fil-open" + item.status}
+                              value={item.status}
+                              checked={this.state.sstatusFilterCheckbox.includes(
+                                item.status
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "status"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.status}>
+                              <span className="table-btn table-blue-btn">
+                                {item.status}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : null}
+                  </div>
+                </div>
+              </div>
+            </Modal>
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height deptMaster">
@@ -683,12 +1716,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                          // className={this.state.brandColor}
-                          // onClick={this.StatusOpenModel.bind(
-                          //   this,
-                          //   "brandName",
-                          //   "Brand Name"
-                          // )}
+                            className={this.state.brandColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "brandName",
+                              "Brand Name"
+                            )}
                           >
                             Brand Name <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -697,7 +1730,14 @@ class DepartmentMaster extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.storeCodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "storeCode",
+                              "Store Code"
+                            )}
+                          >
                             Store Code
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -706,7 +1746,14 @@ class DepartmentMaster extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.DepartNameColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "departmentName",
+                              "Department Name"
+                            )}
+                          >
                             Department Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -715,7 +1762,14 @@ class DepartmentMaster extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.FunctionColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "functionName",
+                              "Function"
+                            )}
+                          >
                             Function
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -724,7 +1778,14 @@ class DepartmentMaster extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.createdColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy",
+                              "Created By"
+                            )}
+                          >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -733,7 +1794,14 @@ class DepartmentMaster extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span
+                            className={this.state.statusColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "status",
+                              "Status"
+                            )}
+                          >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -1235,12 +2303,12 @@ class DepartmentMaster extends Component {
                       value={
                         this.state.editDepartment.status === "Active"
                           ? "Active"
-                          : "InActive"
+                          : "Inactive"
                       }
                       onChange={this.handleModalEditData}
                     >
                       <option value="Active">Active</option>
-                      <option value="InActive">InActive</option>
+                      <option value="Inactive">InActive</option>
                     </select>
                   </div>
                   <br />
@@ -1256,15 +2324,15 @@ class DepartmentMaster extends Component {
                       type="button"
                       onClick={this.handleUpdateDepartment.bind(this)}
                     >
-                       {this.state.editSaveLoading ? (
-                          <FontAwesomeIcon
-                            className="circular-loader"
-                            icon={faCircleNotch}
-                            spin
-                          />
-                        ) : (
-                          ""
-                        )}
+                      {this.state.editSaveLoading ? (
+                        <FontAwesomeIcon
+                          className="circular-loader"
+                          icon={faCircleNotch}
+                          spin
+                        />
+                      ) : (
+                        ""
+                      )}
                       SAVE
                     </button>
                   </div>

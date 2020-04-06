@@ -207,7 +207,6 @@ class TicketHierarchy extends Component {
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
     );
-    this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
@@ -282,7 +281,6 @@ class TicketHierarchy extends Component {
   StatusOpenModel(data, header) {
     debugger;
 
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterDesignation.length === 0 ||
       this.state.sortFilterReportTo.length === 0 ||
@@ -291,7 +289,6 @@ class TicketHierarchy extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "designationName") {
       if (
         this.state.sreportToFilterCheckbox !== "" ||
@@ -321,9 +318,6 @@ class TicketHierarchy extends Component {
         this.state.sdesignationNameFilterCheckbox !== ""
       ) {
         this.setState({
-          // sdesignationFilterCheckbox: "",
-          // smobileNumberFilterCheckbox: "",
-          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header
@@ -346,9 +340,6 @@ class TicketHierarchy extends Component {
         this.state.sdesignationNameFilterCheckbox !== ""
       ) {
         this.setState({
-          // sdesignationFilterCheckbox: "",
-          // suserNameFilterCheckbox: "",
-          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header

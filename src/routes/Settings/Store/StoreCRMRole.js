@@ -591,7 +591,6 @@ class StoreCRMRole extends Component {
     this.setState({
       tempcrmRoles: itemsArray
     });
-    // this.StatusCloseModel();
   };
 
   ///toggle change
