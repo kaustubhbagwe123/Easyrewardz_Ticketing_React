@@ -29,7 +29,7 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-
+import Dropzone from "react-dropzone";
 class CreateSLA extends Component {
   constructor(props) {
     super(props);
@@ -1949,19 +1949,23 @@ class CreateSLA extends Component {
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
                     </div>
-                    <input
-                      id="file-upload"
-                      className="file-upload d-none"
-                      type="file"
-                      // value={this.state.fileN.length>0?this.state.fileN[0]:null}
-                      onChange={this.fileUpload.bind(this)}
-                    />
-                    <label htmlFor="file-upload">
-                      <div className="file-icon">
-                        <img src={FileUpload} alt="file-upload" />
-                      </div>
-                      <span>Add File</span> or Drop File here
-                    </label>
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>Add File</span>{" "}
+                            or Drop File here
+                          </div>
+                        )}
+                      </Dropzone>
+                    </div>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.bulkuploadCompulsion}

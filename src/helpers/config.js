@@ -129,28 +129,27 @@ let config = {
       "Store01@gmail.com",
       "909090909",
       "Active",
-      
     ],
     [
-        "BATA",
-        "Ahmedabad",
-        "Gujarat",
-        "370001",
-        "Store-Name-02",
-        "Store-address-02",
-        "Store-Code-02",
-        "Gujarat",
-        "West",
-        "Retail",
-        "Store02@gmail.com",
-        "909090909",
-        "In-Active",
-        
+      "BATA",
+      "Ahmedabad",
+      "Gujarat",
+      "370001",
+      "Store-Name-02",
+      "Store-address-02",
+      "Store-Code-02",
+      "Gujarat",
+      "West",
+      "Retail",
+      "Store02@gmail.com",
+      "909090909",
+      "In-Active",
+    ],
   ],
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
   //apiUrl: 'http://10.50.250.18:9512/api'
-  //apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
+  apiUrl: 'https://ertktapi.dcdev.brainvire.net/Api'
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
 };
 
