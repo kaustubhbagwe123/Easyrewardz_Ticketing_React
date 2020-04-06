@@ -19,7 +19,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import config from "../../../helpers/config";
 import axios from "axios";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";

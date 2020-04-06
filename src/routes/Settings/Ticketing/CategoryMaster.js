@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import Demo from "./../../../store/Hashtag.js";

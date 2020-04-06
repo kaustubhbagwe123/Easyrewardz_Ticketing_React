@@ -18,7 +18,7 @@ import config from "../../../helpers/config";
 import axios from "axios";
 import Select from "react-select";
 import {
-  NotificationContainer,
+  // NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
@@ -2620,7 +2620,7 @@ class StoreMaster extends Component {
                       className="form-control dropdown-setting"
                       name="status_ID"
                       value={
-                        this.state.userEditData.status_ID == true
+                        this.state.userEditData.status_ID === true
                           ? "Active"
                           : "Inactive"
                       }

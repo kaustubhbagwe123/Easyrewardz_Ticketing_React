@@ -76,7 +76,8 @@ class StoreCRMRole extends Component {
       fileN: [],
       bulkuploadCompulsion: "",
       progressValue: 0,
-      statusCompulsory: ""
+      statusCompulsory: "",
+      isortA: false
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -789,33 +790,77 @@ class StoreCRMRole extends Component {
       }
     }
   }
-  /// sort status A to Z
+  /// sort status by A to Z
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
+    itemsArray = this.state.crmRoles;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "roleName") {
+      itemsArray.sort((a, b) => {
+        if (a.roleName < b.roleName) return -1;
+        if (a.roleName > b.roleName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isRoleActive < b.isRoleActive) return -1;
+        if (a.isRoleActive > b.isRoleActive) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      crmRoles: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
-  /// sort status Z to A
+  /// sort status by Z to A
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.crmRoles;
+
+    if (this.state.sortColumn === "roleName") {
+      itemsArray.sort((a, b) => {
+        if (a.roleName < b.roleName) return 1;
+        if (a.roleName > b.roleName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isRoleActive < b.isRoleActive) return 1;
+        if (a.isRoleActive > b.isRoleActive) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      crmRoles: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
   /// Edit Module change
   handleModuleChange = id => {

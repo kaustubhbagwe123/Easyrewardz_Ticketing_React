@@ -4,8 +4,8 @@ import Demo from "./../../../store/Hashtag.js";
 import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import InfoIcon from "./../../../assets/Images/Info-black.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import { ProgressBar } from "react-bootstrap";
@@ -20,9 +20,11 @@ import config from "./../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
 import ActiveStatus from "../../activeStatus.js";
+import Modal from "react-responsive-modal";
 
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
+
 class DepartmentMaster extends Component {
   constructor(props) {
     super(props);
@@ -42,11 +44,32 @@ class DepartmentMaster extends Component {
       listFunction: "",
       ShowFunction: false,
       department_Id: 0,
+      function_Id: 0,
       functionData: [],
       statusCompulsory: "",
       functionCompulsory: "",
       departmentCompulsory: "",
-      storeCodeCompulsory: ""
+      storeCodeCompulsory: "",
+      editDepartment: {},
+      departmentMapId: 0,
+      brandColor: "",
+      sortHeader: "",
+      StatusModel: false,
+      sroleNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisRoleActiveFilterCheckbox: "",
+      sortFilterBrandName: [],
+      sortFilterStoreCode: [],
+      sortFilterDepartmentName: [],
+      sortFilterFunction: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: [],
+      editBrandCompulsory: "Please Select Brand.",
+      editStoreCompulsory: "Please Select Store.",
+      editDepartmentCompulsory: "Please Select Department.",
+      editFunctionCompulsory: "Please Select Function.",
+      editSaveLoading: false,
+      editmodel: false,
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -57,6 +80,7 @@ class DepartmentMaster extends Component {
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleAddFunction = this.handleAddFunction.bind(this);
     this.handleGetFunction = this.handleGetFunction.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
   }
 
   componentDidMount() {
@@ -112,7 +136,7 @@ class DepartmentMaster extends Component {
       });
       setTimeout(() => {
         if (this.state.list1Value) {
-          this.handleGetFunction();
+          this.handleGetFunction("Add");
         }
       }, 1);
     } else {
@@ -129,13 +153,133 @@ class DepartmentMaster extends Component {
     }
   };
 
+  toggleEditModal() {
+    this.setState({ editmodel: false });
+  }
+  ///Get data for department update
+  hanldeEditDepartment(rowData) {
+    debugger;
+    var editDepartment = {};
+
+    editDepartment.brandID = rowData.brandID;
+    editDepartment.brandName = rowData.brandName;
+    this.handleGetStoreCodeData(rowData.brandID);
+
+    editDepartment.storeID = rowData.storeID;
+    editDepartment.storeCode = rowData.storeCode;
+
+    editDepartment.departmentID = rowData.departmentID;
+    editDepartment.departmentName = rowData.departmentName;
+    this.handleGetFunction(rowData.departmentID);
+
+    editDepartment.functionID = rowData.functionID;
+    editDepartment.functionName = rowData.functionName;
+
+    editDepartment.status = rowData.status;
+
+    this.setState({
+      editmodel: true,
+      editDepartment,
+      departmentMapId: rowData.departmentBrandMappingID
+    });
+  }
+  //// handle Edit change data
+  handleModalEditData = e => {
+    debugger;
+
+    var name = e.target.name;
+    var value = e.target.value;
+    var editDepartment = this.state.editDepartment;
+    editDepartment[name] = value;
+    this.setState({ editDepartment });
+
+    if (name === "brandID") {
+      this.handleGetStoreCodeData(value);
+    } else if (name === "departmentID") {
+      this.handleGetFunction(value);
+    }
+  };
+  /// status open modal
+  // StatusOpenModel(data, header) {
+  // debugger;
+  // if (
+  //   this.state.sortFilterBrandName.length === 0 ||
+  //   this.state.sortFilterStoreCode.length === 0 ||
+  //   this.state.sortFilterDepartmentName.length === 0 ||
+  //   this.state.sortFilterFunction.length === 0 ||
+  //   this.state.sortFilterCreatedBy.length === 0 ||
+  //   this.state.sortFilterStatus.length === 0
+  // ) {
+  //   return false;
+  // }
+  // if (data === "brandName") {
+  //   if (
+  //     this.state.screatedByFilterCheckbox !== "" ||
+  //     this.state.sisRoleActiveFilterCheckbox !== ""
+  //   ) {
+  //     this.setState({
+  //       StatusModel: true,
+  //       sortColumn: data,
+  //       sortHeader: header
+  //     });
+  //   } else {
+  //     this.setState({
+  //       screatedByFilterCheckbox: "",
+  //       sisRoleActiveFilterCheckbox: "",
+  //       StatusModel: true,
+  //       sortColumn: data,
+  //       sortHeader: header
+  //     });
+  //   }
+  // }
+  // if (data === "createdBy") {
+  //   if (
+  //     this.state.sroleNameFilterCheckbox !== "" ||
+  //     this.state.sisRoleActiveFilterCheckbox !== ""
+  //   ) {
+  //     this.setState({
+  //       StatusModel: true,
+  //       sortColumn: data,
+  //       sortHeader: header
+  //     });
+  //   } else {
+  //     this.setState({
+  //       sroleNameFilterCheckbox: "",
+  //       sisRoleActiveFilterCheckbox: "",
+  //       StatusModel: true,
+  //       sortColumn: data,
+  //       sortHeader: header
+  //     });
+  //   }
+  // }
+  // if (data === "isRoleActive") {
+  //   if (
+  //     this.state.screatedByFilterCheckbox !== "" ||
+  //     this.state.sroleNameFilterCheckbox !== ""
+  //   ) {
+  //     this.setState({
+  //       StatusModel: true,
+  //       sortColumn: data,
+  //       sortHeader: header
+  //     });
+  //   } else {
+  //     this.setState({
+  //       sroleNameFilterCheckbox: "",
+  //       screatedByFilterCheckbox: "",
+  //       StatusModel: true,
+  //       sortColumn: data,
+  //       sortHeader: header
+  //     });
+  //   }
+  // }
+  // }
   // --------------------------API---------------------------------
   ////Get Detapartment grid data
   handleGetDepartmentGridData() {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getDepartmentList",
+      url: config.apiUrl + "/StoreDepartment/GetDeparmentBrandMappingList",
       headers: authHeader()
     })
       .then(res => {
@@ -179,25 +323,23 @@ class DepartmentMaster extends Component {
     debugger;
     let self = this;
     var finalBrandId = "";
+    var brand_Ids = "";
     if (data === "add") {
       if (this.state.selectedBrand !== null) {
         for (let i = 0; i < this.state.selectedBrand.length; i++) {
           finalBrandId += this.state.selectedBrand[i].brandID + ",";
+          var brand_Ids = finalBrandId.substring(",", finalBrandId.length - 1);
         }
       }
-    } else if (data === "edit") {
-      if (this.state.editBrand !== null) {
-        for (let i = 0; i < this.state.editBrand.length; i++) {
-          finalBrandId += this.state.editBrand[i].brandID + ",";
-        }
-      }
+    } else {
+      brand_Ids = data;
     }
     axios({
       method: "post",
-      url: config.apiUrl + "/Department/GetStoreCodeByBrandID",
+      url: config.apiUrl + "/StoreDepartment/GetStoreCodeByBrandID",
       headers: authHeader(),
       params: {
-        BrandIDs: finalBrandId.substring(",",finalBrandId.length - 1)
+        BrandIDs: brand_Ids
       }
     })
       .then(res => {
@@ -219,7 +361,7 @@ class DepartmentMaster extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getDepartmentList",
+      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader()
     })
       .then(res => {
@@ -240,11 +382,10 @@ class DepartmentMaster extends Component {
   ///hanlde Add new Department
   handleAddDepartment(value) {
     debugger;
-
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/AddDepartment",
+      url: config.apiUrl + "/StoreDepartment/AddStoreDepartment",
       headers: authHeader(),
       params: {
         DepartmentName: value
@@ -256,7 +397,6 @@ class DepartmentMaster extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Department added successfully.");
-
           self.setState({
             department_Id: data
           });
@@ -270,15 +410,21 @@ class DepartmentMaster extends Component {
       });
   }
   ////handle Get function by Department Id
-  handleGetFunction() {
+  handleGetFunction(check) {
     debugger;
     let self = this;
+    var finalDepartmentId = 0;
+    if (check === "Add") {
+      finalDepartmentId = this.state.list1Value;
+    } else {
+      finalDepartmentId = parseInt(this.state.editDepartment.departmentID);
+    }
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.list1Value
+        DepartmentId: finalDepartmentId
       }
     })
       .then(function(res) {
@@ -299,12 +445,18 @@ class DepartmentMaster extends Component {
   handleAddFunction(value) {
     debugger;
     let self = this;
+    var finalId = 0;
+    if (this.state.department_Id === 1) {
+      finalId = this.state.list1Value;
+    } else {
+      finalId = this.state.department_Id;
+    }
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/AddFunction",
+      url: config.apiUrl + "/StoreDepartment/AddStoreFunction",
       headers: authHeader(),
       params: {
-        DepartmentID: this.state.department_Id,
+        DepartmentID: finalId,
         FunctionName: value
       }
     })
@@ -314,7 +466,10 @@ class DepartmentMaster extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Function added successfully.");
-          self.handleGetFunction();
+          self.handleGetFunction("Add");
+          self.setState({
+            function_Id: data
+          });
         } else {
           NotificationManager.error("Function not added.");
         }
@@ -326,6 +481,7 @@ class DepartmentMaster extends Component {
   /// handle create Department
   handleCreateDepartment() {
     debugger;
+    let self = this;
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedStoreCode !== null &&
@@ -333,14 +489,80 @@ class DepartmentMaster extends Component {
       (this.state.listFunction > 0 || this.state.listFunction !== "") &&
       this.state.selectStatus.length > 0
     ) {
-      alert("hello");
-      this.setState({
-        brandCompulsory: "",
-        storeCodeCompulsory: "",
-        departmentCompulsory: "",
-        functionCompulsory: "",
-        statusCompulsory: ""
-      });
+      var activeStatus = 0;
+      var departmentData = 0;
+      var functionData = 0;
+      var brandIds = "";
+      var storeIds = "";
+      //// multi Brand Ids
+      if (this.state.selectedBrand !== null) {
+        for (let i = 0; i < this.state.selectedBrand.length; i++) {
+          brandIds += this.state.selectedBrand[i].brandID + ",";
+        }
+      }
+      /// multi Store Ids
+      if (this.state.selectedStoreCode !== null) {
+        for (let i = 0; i < this.state.selectedStoreCode.length; i++) {
+          storeIds += this.state.selectedStoreCode[i].storeID + ",";
+        }
+      }
+      if (isNaN(this.state.list1Value)) {
+        departmentData = this.state.department_Id;
+      } else {
+        departmentData = this.state.list1Value;
+      }
+
+      if (isNaN(this.state.listFunction)) {
+        functionData = this.state.function_Id;
+      } else {
+        functionData = this.state.listFunction;
+      }
+
+      if (this.state.selectStatus === "Active") {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
+      }
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreDepartment/CreateDepartment",
+        headers: authHeader(),
+        data: {
+          BrandID: brandIds,
+          StoreID: storeIds,
+          DepartmentID: departmentData,
+          FunctionID: functionData,
+          Status: activeStatus
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetDepartmentGridData();
+            NotificationManager.success("Department added successfully.");
+            self.setState({
+              selectedBrand: [],
+              selectedStoreCode: [],
+              list1Value: "",
+              listFunction: "",
+              selectStatus: 0,
+              brandCompulsory: "",
+              storeCodeCompulsory: "",
+              departmentCompulsory: "",
+              functionCompulsory: "",
+              statusCompulsory: ""
+            });
+          } else if (status === "Record Already Exists") {
+            NotificationManager.error("Record Already Exists.");
+          } else {
+            NotificationManager.error(status);
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       this.setState({
         brandCompulsory: "Please Select Brand",
@@ -351,6 +573,71 @@ class DepartmentMaster extends Component {
       });
     }
   }
+  //// handle update department
+  handleUpdateDepartment() {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    if (this.state.editDepartment.status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    this.setState({ editSaveLoading: true });
+    var brd=parseInt(this.state.editDepartment.brandID);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/UpdateBrandDepartmentMapping",
+      headers: authHeader(),
+      params: {
+        DepartmentBrandID: this.state.departmentMapId,
+        BrandID: parseInt(this.state.editDepartment.brandID),
+        StoreID: parseInt(this.state.editDepartment.storeID),
+        DepartmentID: parseInt(this.state.editDepartment.departmentID),
+        FunctionID: parseInt(this.state.editDepartment.functionID),
+        Status: activeStatus
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetDepartmentGridData();
+          NotificationManager.success("Department updated successfully.");
+          self.setState({
+            editSaveLoading: false
+          })
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  //// delete Department by DepartmentId
+  handleDeleteDepartmentData(department_Id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/DeleteBrandDepartmentMapping",
+      headers: authHeader(),
+      params: {
+        DepartmentBrandMappingID: department_Id
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetDepartmentGridData();
+          NotificationManager.success("Department deleted successfully.");
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
   render() {
     const departmentList = this.state.departmentData.map((item, i) => (
       <Option key={i} value={item.departmentID}>
@@ -362,36 +649,6 @@ class DepartmentMaster extends Component {
         {item.funcationName}
       </Option>
     ));
-    const dataDeptMaster = [
-      {
-        id: "D1",
-        brandName: "Bata",
-        storeCode: "12345",
-        deptName: "Admin",
-        function: "Attendace",
-        creatBy: (
-          <span>
-            <label>Admin</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </span>
-        ),
-        status: "Active"
-      },
-      {
-        id: "D2",
-        brandName: "Bata",
-        storeCode: "12345",
-        deptName: "HR",
-        function: "Salary",
-        creatBy: (
-          <span>
-            <label>Admin</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </span>
-        ),
-        status: "Inactive"
-      }
-    ];
 
     return (
       <Fragment>
@@ -421,11 +678,18 @@ class DepartmentMaster extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height deptMaster">
                   <ReactTable
-                    data={dataDeptMaster}
+                    data={this.state.departmentGrid}
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span
+                          // className={this.state.brandColor}
+                          // onClick={this.StatusOpenModel.bind(
+                          //   this,
+                          //   "brandName",
+                          //   "Brand Name"
+                          // )}
+                          >
                             Brand Name <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -447,7 +711,7 @@ class DepartmentMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "deptName"
+                        accessor: "departmentName"
                       },
                       {
                         Header: (
@@ -456,7 +720,7 @@ class DepartmentMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "function"
+                        accessor: "functionName"
                       },
                       {
                         Header: (
@@ -465,7 +729,7 @@ class DepartmentMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "creatBy"
+                        accessor: "createdBy"
                       },
                       {
                         Header: (
@@ -480,7 +744,7 @@ class DepartmentMaster extends Component {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
                         Cell: row => {
-                          var ids = row.original["id"];
+                          var ids = row.original["departmentBrandMappingID"];
                           return (
                             <div>
                               <Popover
@@ -499,7 +763,15 @@ class DepartmentMaster extends Component {
                                       </p>
                                       <div className="del-can">
                                         <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                        <button className="butn">Delete</button>
+                                        <button
+                                          className="butn"
+                                          onClick={this.handleDeleteDepartmentData.bind(
+                                            this,
+                                            ids
+                                          )}
+                                        >
+                                          Delete
+                                        </button>
                                       </div>
                                     </div>
                                   </div>
@@ -514,103 +786,24 @@ class DepartmentMaster extends Component {
                                   style={{ marginRight: "5px" }}
                                 />
                               </Popover>
-                              <Popover
-                                content={
-                                  <div className="edtpadding">
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        Edit Department
-                                      </label>
-                                    </div>
-                                    <div className="pop-over-div">
-                                      <label className="edit-label-1">
-                                        Brand
-                                      </label>
-                                      <select
-                                        id="inputStatus"
-                                        className="edit-dropDwon dropdown-setting"
-                                      >
-                                        <option>Bata1</option>
-                                        <option>Bata2</option>
-                                      </select>
-                                    </div>
-                                    <div className="pop-over-div">
-                                      <label className="edit-label-1">
-                                        Store Code
-                                      </label>
-                                      <select
-                                        id="inputStatus"
-                                        className="edit-dropDwon dropdown-setting"
-                                      >
-                                        <option>Code 1</option>
-                                        <option>Code 2</option>
-                                      </select>
-                                    </div>
-                                    <div className="pop-over-div">
-                                      <label className="edit-label-1">
-                                        Department
-                                      </label>
-                                      <select
-                                        id="inputStatus"
-                                        className="edit-dropDwon dropdown-setting"
-                                      >
-                                        <option>Admin 1</option>
-                                      </select>
-                                    </div>
-                                    <div className="pop-over-div">
-                                      <label className="edit-label-1">
-                                        Function
-                                      </label>
-                                      <input
-                                        type="text"
-                                        className="txt-edit-popover"
-                                        placeholder="Attendance"
-                                        maxLength={25}
-                                      />
-                                    </div>
-                                    <div className="pop-over-div">
-                                      <label className="edit-label-1">
-                                        Status
-                                      </label>
-                                      <select
-                                        id="inputStatus"
-                                        className="edit-dropDwon dropdown-setting"
-                                      >
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <a
-                                        className="pop-over-cancle"
-                                        href={Demo.BLANK_LINK}
-                                      >
-                                        CANCEL
-                                      </a>
-                                      <button className="pop-over-button">
-                                        SAVE
-                                      </button>
-                                    </div>
-                                  </div>
-                                }
-                                placement="bottom"
-                                trigger="click"
+                              <button
+                                className="react-tabel-button ReNewBtn"
+                                type="button"
+                                onClick={this.hanldeEditDepartment.bind(
+                                  this,
+                                  row.original
+                                )}
                               >
-                                <button
-                                  className="react-tabel-button editre"
-                                  id={ids}
-                                >
-                                  EDIT
-                                </button>
-                              </Popover>
+                                EDIT
+                              </button>
                             </div>
                           );
                         }
                       }
                     ]}
-                    defaultPageSize={2}
-                    showPagination={false}
+                    minRows={2}
+                    defaultPageSize={10}
+                    showPagination={true}
                   />
                   {/* <div className="position-relative">
                     <div className="pagi">
@@ -923,6 +1116,160 @@ class DepartmentMaster extends Component {
                   <button className="butn">ADD</button>
                 </div>
               </div>
+              <Modal
+                open={this.state.editmodel}
+                onClose={this.toggleEditModal}
+                modalId="storeEditModal"
+              >
+                <div className="edtpadding">
+                  <label className="popover-header-text">Edit Department</label>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Brand</label>
+                    <select
+                      className="store-create-select"
+                      name="brandID"
+                      value={this.state.editDepartment.brandID}
+                      onChange={this.handleModalEditData}
+                    >
+                      <option value={0}>Select</option>
+                      {this.state.brandData !== null &&
+                        this.state.brandData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.brandID}
+                            className="select-category-placeholder"
+                          >
+                            {item.brandName}
+                          </option>
+                        ))}
+                    </select>
+                    {this.state.editDepartment.brandID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editBrandCompulsory}
+                      </p>
+                    )}
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Store Code</label>
+                    <select
+                      className="store-create-select"
+                      name="storeID"
+                      value={this.state.editDepartment.storeID}
+                      onChange={this.handleModalEditData}
+                    >
+                      <option value={0}>Select</option>
+                      {this.state.StoreCode !== null &&
+                        this.state.StoreCode.map((item, j) => (
+                          <option
+                            key={j}
+                            value={item.storeID}
+                            className="select-category-placeholder"
+                          >
+                            {item.storeName}
+                          </option>
+                        ))}
+                    </select>
+                    {this.state.editDepartment.storeID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editStoreCompulsory}
+                      </p>
+                    )}
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Department</label>
+                    <select
+                      className="store-create-select"
+                      name="departmentID"
+                      value={this.state.editDepartment.departmentID}
+                      onChange={this.handleModalEditData}
+                    >
+                      <option value={0}>Select</option>
+                      {this.state.departmentData !== null &&
+                        this.state.departmentData.map((item, j) => (
+                          <option
+                            key={j}
+                            value={item.departmentID}
+                            className="select-category-placeholder"
+                          >
+                            {item.departmentName}
+                          </option>
+                        ))}
+                    </select>
+                    {this.state.editDepartment.departmentID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editDepartmentCompulsory}
+                      </p>
+                    )}
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Function</label>
+                    <select
+                      className="store-create-select"
+                      name="functionID"
+                      value={this.state.editDepartment.functionID}
+                      onChange={this.handleModalEditData}
+                    >
+                      <option value={0}>Select</option>
+                      {this.state.functionData !== null &&
+                        this.state.functionData.map((item, j) => (
+                          <option
+                            key={j}
+                            value={item.functionID}
+                            className="select-category-placeholder"
+                          >
+                            {item.funcationName}
+                          </option>
+                        ))}
+                    </select>
+                    {this.state.editDepartment.functionID === "0" && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editFunctionCompulsory}
+                      </p>
+                    )}
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Status</label>
+                    <select
+                      className="store-create-select"
+                      name="status"
+                      value={
+                        this.state.editDepartment.status === "Active"
+                          ? "Active"
+                          : "InActive"
+                      }
+                      onChange={this.handleModalEditData}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="InActive">InActive</option>
+                    </select>
+                  </div>
+                  <br />
+                  <div>
+                    <a
+                      className="pop-over-cancle"
+                      onClick={this.toggleEditModal}
+                    >
+                      CANCEL
+                    </a>
+                    <button
+                      className="pop-over-button"
+                      type="button"
+                      onClick={this.handleUpdateDepartment.bind(this)}
+                    >
+                       {this.state.editSaveLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
+                      SAVE
+                    </button>
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
         </div>
