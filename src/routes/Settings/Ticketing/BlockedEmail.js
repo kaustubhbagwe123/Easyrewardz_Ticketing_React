@@ -193,7 +193,7 @@ class BlockEmail extends Component {
       })
         .then(function(res) {
           if (res.data.message === "Success") {
-            this.setState({ loading: true });
+            self.setState({ loading: true });
             NotificationManager.success("Record saved successfully");
             self.handleAddEmailClose();
             self.handleBlockEmailList();
