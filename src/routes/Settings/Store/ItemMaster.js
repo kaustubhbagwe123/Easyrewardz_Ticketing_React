@@ -1462,7 +1462,13 @@ class ItemMaster extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link
+            to={{
+              pathname: "/admin/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
             Store
           </Link>
           <span>&gt;</span>
@@ -1720,7 +1726,12 @@ class ItemMaster extends Component {
                       ) : null}
                     </div>
                   )}
-                  <button className="butn" onClick={this.handleBulkUpload.bind(this)}>ADD</button>
+                  <button
+                    className="butn"
+                    onClick={this.handleBulkUpload.bind(this)}
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             </div>
