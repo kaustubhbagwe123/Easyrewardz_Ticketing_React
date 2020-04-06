@@ -1,19 +1,19 @@
 import React, { Component } from "react";
-import Demo from "./../../store/Hashtag.js";
+import Demo from "./../../../store/Hashtag.js";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
-import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import ReactTable from "react-table";
 import { Link } from "react-router-dom";
-import { authHeader } from "./../../helpers/authHeader";
+import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
-import config from "./../../helpers/config";
+import config from "./../../../helpers/config";
 import Modal from "react-bootstrap/Modal";
 import matchSorter from "match-sorter";
-import Sorting from "./../../assets/Images/sorting.png";
+import Sorting from "./../../../assets/Images/sorting.png";
 
-class FileUploadLogs extends Component {
+class StoreFileUploadLogs extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,12 +48,20 @@ class FileUploadLogs extends Component {
     this.handleGetFileUploadLog();
   }
 
+  downloadDefaultReport = (csvFile) => {
+    debugger;
+    // window.open(
+    //   "https://ertktapi.dcdev.brainvire.net/ReportDownload/DefaultReport_202004061846089363.csv"
+    // );
+    window.open(csvFile);
+  };
+
   handleGetFileUploadLog() {
     debugger;
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/File/GetFileUploadLogs",
+      url: config.apiUrl + "/StoreFile/GetStoreFileUploadLogs",
       headers: authHeader(),
     })
       .then(function (res) {
@@ -556,7 +564,7 @@ class FileUploadLogs extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter((a) => a.Date === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.date === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -688,26 +696,40 @@ class FileUploadLogs extends Component {
       {
         Header: <span>Error File</span>,
         accessor: "Erroor",
-        Cell: (row) => (
-          <div>
-            <button className="downloadBtn">
-              DOWNLOAD
-              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
-            </button>
-          </div>
-        ),
+        Cell: (row) =>
+          row.original.fileUploadStatus == "Completed" && (
+            <div>
+              <button
+                className="downloadBtn"
+                onClick={this.downloadDefaultReport.bind(
+                  this,
+                  row.original.errorFilePath
+                )}
+              >
+                DOWNLOAD
+                {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
+              </button>
+            </div>
+          ),
       },
       {
         Header: <span>Success File</span>,
         accessor: "success",
-        Cell: (row) => (
-          <div>
-            <button className="downloadBtn">
-              DOWNLOAD
-              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
-            </button>
-          </div>
-        ),
+        Cell: (row) =>
+          row.original.fileUploadStatus == "Completed" && (
+            <div>
+              <button
+                className="downloadBtn"
+                onClick={this.downloadDefaultReport.bind(
+                  this,
+                  row.original.successFilePath
+                )}
+              >
+                DOWNLOAD
+                {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
+              </button>
+            </div>
+          ),
       },
     ];
 
@@ -895,12 +917,18 @@ class FileUploadLogs extends Component {
           </Modal>
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">
+          <Link to="/admin/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to="settings" className="header-path">
-            Ticketing
+          <Link
+            to={{
+              pathname: "/admin/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
@@ -961,4 +989,4 @@ class FileUploadLogs extends Component {
   }
 }
 
-export default FileUploadLogs;
+export default StoreFileUploadLogs;

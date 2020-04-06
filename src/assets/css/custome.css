@@ -1844,7 +1844,8 @@ select:focus,
 textarea:focus {
   outline: none;
 } */
-a:focus, a:hover:focus {
+a:focus,
+a:hover:focus {
   outline: 1.5px #7aacfe solid;
   /* outline: 1.5px #e5efff solid; */
 }
@@ -3383,7 +3384,9 @@ table tr th:last-child {
 .a-mar {
   margin-bottom: 14px;
 }
-.ReactTable .-pagination input:focus, .ReactTable .-pagination select:focus, .ReactTable .-pagination .-btn:focus {
+.ReactTable .-pagination input:focus,
+.ReactTable .-pagination select:focus,
+.ReactTable .-pagination .-btn:focus {
   outline: 1.5px #7aacfe solid;
 }
 /* my ticket list ends */
@@ -3672,8 +3675,8 @@ table tr th:last-child {
 }
 .ck-exp-width .placeholder-dropdown-tktSys {
   top: 45px;
-    right: -375px;
-    left: inherit;
+  right: -375px;
+  left: inherit;
 }
 .ck-exp-width .ck-det-cntr .cke_top {
   height: 70px !important;
@@ -3835,15 +3838,15 @@ table tr th:last-child {
   right: 65px;
   top: 15px;
 }
-.tic-createTic{
+.tic-createTic {
   right: -100px;
   top: 45px;
   width: 100px;
 }
-.template-user{
+.template-user {
   right: 80px;
-    top: 38px;
-    width: 160px;
+  top: 38px;
+  width: 160px;
 }
 
 /* my ticket ends */
@@ -4965,7 +4968,6 @@ progress::-webkit-progress-bar {
   max-width: 30%;
   min-width: 30%;
 }
-
 
 /*------------------------------Knowledge Base start-------------------------*/
 
@@ -6390,6 +6392,9 @@ table thead tr {
   padding-right: 18px !important;
   font-weight: 500 !important;
 }
+.cre-str-alrt .ant-checkbox + span {
+  padding-right: 9px !important;
+}
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #2561a8 !important;
   border-color: #2561a8 !important;
@@ -6407,7 +6412,6 @@ table thead tr {
 }
 .notification-placeholder {
   position: static;
-
 }
 .noti-plchldr-cntr {
   display: flex;
@@ -6532,7 +6536,8 @@ table thead tr {
   margin-bottom: -10px;
 }
 .label-color-alert {
-  color: #807e7e;    padding-top: 5px;
+  color: #807e7e;
+  padding-top: 5px;
 }
 .butn-2 {
   background-color: #2561a8;
@@ -7216,7 +7221,7 @@ table tr th:last-child {
 }
 
 .namepad {
-  padding:0;
+  padding: 0;
   /* padding: 0 0 0 35px; */
   margin-bottom: 20px;
   display: grid;
@@ -10144,7 +10149,7 @@ table tr th:last-child {
 }
 .loader-icon-cntr-ovrlay .loader-icon {
   position: fixed;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .loader-icon-height {
   height: 200px;
@@ -10666,36 +10671,36 @@ table tr th:last-child {
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
   width: 670px;
   border-radius: 10px;
-  }
-  
-  .btn-block {
+}
+
+.btn-block {
   float: right;
   margin-top: 15px;
   margin-bottom: 15px;
   text-align: center;
-  }
-  
-  .block-cancelImg {
+}
+
+.block-cancelImg {
   height: 20px;
   float: right;
   margin-top: -11px;
   margin-right: -13px;
-  }
+}
 
 /* Responsive starts */
 @media only screen and (max-width: 1300px) {
-  
-.my-tic-email1 {
-  width: 130px;background-size: 10px;
-}
-.kblink1 {
-  font-size: 12px;
-}
-.tic-createTic {
-  right: -135px;
-  top: 45px;
-  width: 130px;
-}
+  .my-tic-email1 {
+    width: 130px;
+    background-size: 10px;
+  }
+  .kblink1 {
+    font-size: 12px;
+  }
+  .tic-createTic {
+    right: -135px;
+    top: 45px;
+    width: 130px;
+  }
 }
 @media only screen and (max-width: 1200px) {
   .colladrow label {
@@ -10704,18 +10709,19 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 50%;
     min-width: 50%;
-}
-.my-tic-email1 {
-  width: 130px;background-size: 10px;
-}
-.kblink1 {
-  font-size: 12px;
-}
-.tic-createTic {
-  right: -135px;
-  top: 45px;
-  width: 130px;
-}
+  }
+  .my-tic-email1 {
+    width: 130px;
+    background-size: 10px;
+  }
+  .kblink1 {
+    font-size: 12px;
+  }
+  .tic-createTic {
+    right: -135px;
+    top: 45px;
+    width: 130px;
+  }
 }
 @media only screen and (max-width: 1024px) {
   /* Qa Dashboard */
@@ -10815,7 +10821,8 @@ table tr th:last-child {
     padding: 10px 5px !important;
   }
   .my-tic-email1 {
-    width: 130px;background-size: 10px;
+    width: 130px;
+    background-size: 10px;
   }
   .kblink1 {
     font-size: 12px;
@@ -10824,24 +10831,24 @@ table tr th:last-child {
     right: -135px;
     top: 45px;
     width: 130px;
-}
-.setting-tabs .nav-tabs .nav-item {
-  margin-right: 25px;
-}
-.Add-ticket-button {
-  width: 130px;
-}
-.seacrh-img-addsearch {
-  width: 8%;
-}
-.placeholder-dropdown-tktSys {
-  top: 83px;
-  left: 20px;
-  width: 128px;
-}
-.CCdi1 {
-  width: 95px;
-}
+  }
+  .setting-tabs .nav-tabs .nav-item {
+    margin-right: 25px;
+  }
+  .Add-ticket-button {
+    width: 130px;
+  }
+  .seacrh-img-addsearch {
+    width: 8%;
+  }
+  .placeholder-dropdown-tktSys {
+    top: 83px;
+    left: 20px;
+    width: 128px;
+  }
+  .CCdi1 {
+    width: 95px;
+  }
 }
 @media only screen and (max-width: 992px) {
   /* dashboard starts */
@@ -10975,7 +10982,7 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 50%;
     min-width: 50%;
-}
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -11006,23 +11013,23 @@ table tr th:last-child {
   .card-details-1 {
     height: auto;
   }
-  
+
   #slaEditModal {
     max-width: 70%;
     min-width: 70%;
-}
-#categoryEditModal {
-  border-radius: 8px;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-  padding: 10px;
-  margin: auto;
-  display: inline-block;
-  max-width: 70%;
-  min-width: 70%;
-}
-.EditModa .modal-dialog {
-  width: 70%;
-}
+  }
+  #categoryEditModal {
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 10px;
+    margin: auto;
+    display: inline-block;
+    max-width: 70%;
+    min-width: 70%;
+  }
+  .EditModa .modal-dialog {
+    width: 70%;
+  }
 }
 @media only screen and (max-width: 767px) {
   .storebox {
@@ -11089,7 +11096,7 @@ table tr th:last-child {
   }
   #Notification-popup {
     left: 5px;
-}
+  }
   /* dashboard ends */
 }
 
@@ -11121,7 +11128,7 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 70%;
     min-width: 70%;
-}
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -11405,7 +11412,7 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 90%;
     min-width: 90%;
-}
+  }
   /* dashboard ends */
 }
 
@@ -11443,10 +11450,10 @@ table tr th:last-child {
     display: inline-block;
     max-width: 100%;
     min-width: 100%;
-}
-.EditModa .modal-dialog {
-  width: 100%;
-}
+  }
+  .EditModa .modal-dialog {
+    width: 100%;
+  }
   /* dashboard ends */
 }
 
@@ -11471,28 +11478,27 @@ table tr th:last-child {
   #slaEditModal {
     max-width: 98%;
     min-width: 98%;
-}
-#logout-ovrly {
-  padding: 70px 0px 0 0;
-}
+  }
+  #logout-ovrly {
+    padding: 70px 0px 0 0;
+  }
   /* dashboard ends */
 }
 #customer-tab {
   position: relative;
 }
 .alertckuser {
-  top:132px !important
+  top: 132px !important;
 }
-.alertckuserinter{
+.alertckuserinter {
   right: 75px;
-  top:37% !important
+  top: 37% !important;
 }
 .placeholder-alert-2 {
   top: 37% !important;
 }
 
 /* Responsive ends */
-
 
 #DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-input {
   width: 40%;
@@ -11533,7 +11539,7 @@ table tr th:last-child {
 .csv-button img {
   margin-right: 5px;
 }
-.myticlist-expand-sect img  {
+.myticlist-expand-sect img {
   margin-right: 5px;
 }
 .dis-btn {

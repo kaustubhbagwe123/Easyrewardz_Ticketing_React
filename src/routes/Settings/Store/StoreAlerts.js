@@ -164,7 +164,7 @@ class Alerts extends Component {
     this.handleAlertData = this.handleAlertData.bind(this);
     this.handleUpdateAlert = this.handleUpdateAlert.bind(this);
     this.handleEditModal = this.handleEditModal.bind(this);
-    this.handleAlertTabs = this.handleAlertTabs.bind(this);
+    // this.handleAlertTabs = this.handleAlertTabs.bind(this);
     this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
   }
 
@@ -883,7 +883,7 @@ class Alerts extends Component {
       });
   }
 
-  handleAlertTabs = (e) => {
+  handleAlertTabs(createVal, e) {
     debugger;
     let check = e.target.checked;
     let val = e.target.value;
@@ -939,71 +939,71 @@ class Alerts extends Component {
     }, 100);
     if (val === "emailCust" && check === true) {
       this.state.selectedEmailCustomer = true;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewEmailCustomer = true;
       }
     } else if (val === "emailCust" && check === false) {
       this.state.selectedEmailCustomer = false;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewEmailCustomer = false;
       }
     }
     if (val === "emailInt" && check === true) {
       this.state.selectedEmailInternal = true;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewEmailInternal = true;
       }
     } else if (val === "emailInt" && check === false) {
       this.state.selectedEmailInternal = false;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewEmailInternal = false;
       }
     }
     if (val === "emailTicketing" && check === true) {
       this.state.selectedEmailStore = true;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewEmailStore = true;
       }
     } else if (val === "emailTicketing" && check === false) {
       this.state.selectedEmailStore = false;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewEmailStore = false;
       }
     }
     if (val === "smsCust" && check === true) {
       this.state.selectedSMSCustomer = true;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewSMSCustomer = true;
       }
     } else if (val === "smsCust" && check === false) {
       this.state.selectedSMSCustomer = false;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewSMSCustomer = false;
       }
     }
     if (val === "notiInt" && check === true) {
       this.state.selectedNotifInternal = true;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewNotifInternal = true;
       }
     } else if (val === "notiInt" && check === false) {
       this.state.selectedNotifInternal = false;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewNotifInternal = false;
       }
     }
     if (val === "notiTicketing" && check === true) {
       this.state.selectedNotifTicketing = true;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewNotifTicketing = true;
       }
     } else if (val === "notiTicketing" && check === false) {
       this.state.selectedNotifTicketing = false;
-      if (!this.state.isEdit) {
+      if (createVal && createVal == "1") {
         this.state.viewNotifTicketing = false;
       }
     }
-  };
+  }
 
   handleGetAlert(id) {
     debugger;
@@ -1490,12 +1490,12 @@ class Alerts extends Component {
       notiTicketing: false,
       smsCust: false,
       notiInt: false,
-      viewEmailCustomer: false,
-      viewEmailInternal: false,
-      viewEmailStore: false,
-      viewSMSCustomer: false,
-      viewNotifInternal: false,
-      viewNotifTicketing: false,
+      // viewEmailCustomer: false,
+      // viewEmailInternal: false,
+      // viewEmailStore: false,
+      // viewSMSCustomer: false,
+      // viewNotifInternal: false,
+      // viewNotifTicketing: false,
       // isEdit: false
     });
   }
@@ -1711,6 +1711,12 @@ class Alerts extends Component {
             SMSContentCompulsion: "",
             NotifContentCompulsion: "",
             NotifTicketingContentCompulsion: "",
+            viewEmailCustomer: false,
+            viewEmailInternal: false,
+            viewEmailStore: false,
+            viewSMSCustomer: false,
+            viewNotifInternal: false,
+            viewNotifTicketing: false,
           });
         } else if (status === "Record Already Exists ") {
           NotificationManager.error("Record Already Exists.");
@@ -2448,21 +2454,24 @@ class Alerts extends Component {
                     <label>Email</label>
                     <br />
                     <Checkbox
-                      onChange={this.handleAlertTabs}
+                      className="cre-str-alrt"
+                      onChange={this.handleAlertTabs.bind(this, "1")}
                       value="emailCust"
                       checked={this.state.viewEmailCustomer}
                     >
                       Customer
                     </Checkbox>
                     <Checkbox
-                      onChange={this.handleAlertTabs}
+                      className="cre-str-alrt"
+                      onChange={this.handleAlertTabs.bind(this, "1")}
                       value="emailInt"
                       checked={this.state.viewEmailInternal}
                     >
                       Internal
                     </Checkbox>
                     <Checkbox
-                      onChange={this.handleAlertTabs}
+                      className="cre-str-alrt"
+                      onChange={this.handleAlertTabs.bind(this, "1")}
                       value="emailTicketing"
                       checked={this.state.viewEmailStore}
                     >
@@ -2473,7 +2482,8 @@ class Alerts extends Component {
                     <label>SMS</label>
                     <br />
                     <Checkbox
-                      onChange={this.handleAlertTabs}
+                      className="cre-str-alrt"
+                      onChange={this.handleAlertTabs.bind(this, "1")}
                       value="smsCust"
                       checked={this.state.viewSMSCustomer}
                     >
@@ -2484,14 +2494,16 @@ class Alerts extends Component {
                     <label>Notification</label>
                     <br />
                     <Checkbox
-                      onChange={this.handleAlertTabs}
+                      className="cre-str-alrt"
+                      onChange={this.handleAlertTabs.bind(this, "1")}
                       value="notiInt"
                       checked={this.state.viewNotifInternal}
                     >
                       Internal
                     </Checkbox>
                     <Checkbox
-                      onChange={this.handleAlertTabs}
+                      className="cre-str-alrt"
+                      onChange={this.handleAlertTabs.bind(this, "1")}
                       value="notiTicketing"
                       checked={this.state.viewNotifTicketing}
                     >
@@ -3423,21 +3435,21 @@ class Alerts extends Component {
               <label>Email</label>
               <br />
               <Checkbox
-                onChange={this.handleAlertTabs}
+                onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailCust}
                 value="emailCust"
               >
                 Customer
               </Checkbox>
               <Checkbox
-                onChange={this.handleAlertTabs}
+                onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailInt}
                 value="emailInt"
               >
                 Internal
               </Checkbox>
               <Checkbox
-                onChange={this.handleAlertTabs}
+                onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailTicketing}
                 value="emailTicketing"
               >
@@ -3448,7 +3460,7 @@ class Alerts extends Component {
               <label>SMS</label>
               <br />
               <Checkbox
-                onChange={this.handleAlertTabs}
+                onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.smsCust}
                 value="smsCust"
               >
@@ -3459,14 +3471,14 @@ class Alerts extends Component {
               <label>Notification</label>
               <br />
               <Checkbox
-                onChange={this.handleAlertTabs}
+                onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.notiInt}
                 value="notiInt"
               >
                 Internal
               </Checkbox>
               <Checkbox
-                onChange={this.handleAlertTabs}
+                onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.notiTicketing}
                 value="notiTicketing"
               >

@@ -22,13 +22,10 @@ import audit from "./../../assets/Images/audit.png";
 import { Link } from "react-router-dom";
 
 class Settings extends Component {
-
   componentDidMount() {
     debugger;
     if (this.props.location.tabName) {
-      let lowerTabsPane = document.querySelectorAll(
-        ".tab-pane"
-      );
+      let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {
         lowerTabsPane[i].classList.remove("active");
         lowerTabsPane[i].classList.remove("show");
@@ -40,7 +37,10 @@ class Settings extends Component {
       let upperTabs = document.querySelectorAll(".nav-link");
       for (let i = 0; i < upperTabs.length; i++) {
         upperTabs[i].classList.remove("active");
-        if ("#" + this.props.location.tabName === upperTabs[i].getAttribute('href')) {
+        if (
+          "#" + this.props.location.tabName ===
+          upperTabs[i].getAttribute("href")
+        ) {
           upperTabs[i].classList.add("active");
         }
       }
@@ -517,7 +517,10 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="fileuploadlogs" className="setting-box">
+                      <Link
+                        to="/store/storeFileUploadLogs"
+                        className="setting-box"
+                      >
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>

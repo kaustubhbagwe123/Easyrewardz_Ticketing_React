@@ -22,6 +22,7 @@ import DepartmentMaster from "./../Settings/Store/DepartmentMaster";
 import ClaimCategoryMaster from "./../Settings/Store/ClaimCategoryMaster";
 import StoreAlerts from "./../Settings/Store/StoreAlerts";
 import { NotificationContainer } from "react-notifications";
+import StoreFileUploadLogs from "../Settings/Store/StoreFileUploadLogs";
 
 export class StoreApp extends Component {
   render() {
@@ -108,6 +109,11 @@ export class StoreApp extends Component {
           exact
           path={`${match.url}/storeAlerts`}
           component={StoreAlerts}
+        />
+        <Route
+          exact
+          path={`${match.url}/storeFileUploadLogs`}
+          component={StoreFileUploadLogs}
         />
         <NotificationContainer />
       </StoreLayout>
