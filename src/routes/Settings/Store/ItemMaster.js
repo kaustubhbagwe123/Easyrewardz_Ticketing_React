@@ -65,7 +65,7 @@ class ItemMaster extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Item/GetItem",
+      url: config.apiUrl + "/Item/GetItemList",
       headers: authHeader()
     })
       .then(response => {
