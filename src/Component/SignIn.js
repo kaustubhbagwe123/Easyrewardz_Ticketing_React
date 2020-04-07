@@ -12,7 +12,7 @@ import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import SimpleReactValidator from "simple-react-validator";
 
@@ -33,7 +33,7 @@ class SingIn extends Component {
   }
   hanleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -43,7 +43,7 @@ class SingIn extends Component {
       var finalEncProgramCode = this.props.location.encProgramCode;
       if (finalEncProgramCode) {
         this.setState({
-          programCode: finalEncProgramCode
+          programCode: finalEncProgramCode,
         });
       } else {
         this.props.history.push("/");
@@ -51,7 +51,6 @@ class SingIn extends Component {
     } else {
       this.props.history.push("/");
     }
-
   }
 
   handleCRMRole() {
@@ -60,7 +59,7 @@ class SingIn extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -70,15 +69,19 @@ class SingIn extends Component {
           if (data !== null) {
             for (var i = 0; i <= data.length; i++) {
               if (i === data.length) {
-                NotificationManager.error("You don't have any sufficient page access. Please contact administrator for access.", '', 2000);
+                NotificationManager.error(
+                  "You don't have any sufficient page access. Please contact administrator for access.",
+                  "",
+                  2000
+                );
                 self.setState({
-                  loading: false
+                  loading: false,
                 });
               } else if (
                 data[i].moduleName === "Dashboard" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/dashboard");
                 }, 400);
                 return;
@@ -86,7 +89,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Tickets" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/myTicketlist");
                 }, 400);
                 return;
@@ -94,7 +97,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Knowledge Base" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/knowledgebase");
                 }, 400);
                 return;
@@ -102,7 +105,7 @@ class SingIn extends Component {
                 data[i].moduleName === "Settings" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/settings");
                 }, 400);
                 return;
@@ -111,7 +114,7 @@ class SingIn extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -127,8 +130,11 @@ class SingIn extends Component {
       let X_Authorized_password = encryption(password, "enc");
 
       //let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      //let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
-      let X_Authorized_Domainname = encryption('https://ertktapistable.dcdev.brainvire.net', "enc");
+      let X_Authorized_Domainname = encryption(
+        "https://erbelltkt.dcdev.brainvire.net",
+        "enc"
+      );
+      // let X_Authorized_Domainname = encryption('https://ertktapistable.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption(
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
@@ -145,13 +151,13 @@ class SingIn extends Component {
             "X-Authorized-Programcode": X_Authorized_Programcode,
             "X-Authorized-userId": X_Authorized_userId,
             "X-Authorized-password": X_Authorized_password,
-            "X-Authorized-Domainname": X_Authorized_Domainname
-          }
-        }).then(function (res) {
+            "X-Authorized-Domainname": X_Authorized_Domainname,
+          },
+        }).then(function(res) {
           debugger;
           let resValid = res.data.message;
           self.setState({
-            loading: true
+            loading: true,
           });
           if (resValid === "Valid Login") {
             debugger;
@@ -162,9 +168,13 @@ class SingIn extends Component {
             //   self.props.history.push("/admin/dashboard");
             // }, 400);
           } else {
-            NotificationManager.error("Username or password is invalid.", '', 1500);
+            NotificationManager.error(
+              "Username or password is invalid.",
+              "",
+              1500
+            );
             self.setState({
-              loading: false
+              loading: false,
             });
           }
         });
@@ -226,7 +236,6 @@ class SingIn extends Component {
                   className="program-code-button"
                   disabled={this.state.loading}
                 >
-
                   {this.state.loading ? (
                     <FontAwesomeIcon
                       className="circular-loader"
@@ -234,8 +243,8 @@ class SingIn extends Component {
                       spin
                     />
                   ) : (
-                      ""
-                    )}
+                    ""
+                  )}
                   {this.state.loading ? "Please Wait ..." : "LOGIN"}
                 </button>
               </form>
