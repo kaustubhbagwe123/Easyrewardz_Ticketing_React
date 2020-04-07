@@ -10,9 +10,22 @@ let config = {
     ["BrandName", "Category","SubCategory","IssueType","StatusID"],
     ["EasyRewarz", "Exchange","Defective Article","Broken Shoe", "Active"],
     ["EasyRewarz", "Exchange","Defective Article","Broken Shoe", "Active"],
-    
-    
     ],
+    slaTemplate: [
+        [
+          "IssueType",
+          "Priority",
+          "SLABreachPercent",
+          "RespondValue",
+          "RespondDuration",
+          "ResolutionValue",
+          "ResolutionDuration",
+          "Status",
+        ],
+        ["Issue1", "High", "30", "1", "Day", "2", "Day", "Active"],
+        ["Issue1", "Medium", "30", "1", "Day", "2", "Day", "Active"],
+        ["Issue1", "Low", "30", "1", "Day", "2", "Day", "Active"],
+      ],
      
     //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
     // apiUrl: 'http://easyrewardertz.demo.brainvire.net'

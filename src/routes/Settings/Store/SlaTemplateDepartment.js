@@ -19,9 +19,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -63,10 +61,11 @@ class SlaTemplateDepartment extends Component {
       createdColor: "",
       stattusColor: "",
       sortHeader: "",
-      issueTypeName: "",
+      functionName: "",
+      functionId: "",
       brandName: "",
-      categoryName: "",
-      subCategoryName: "",
+      departmentName: "",
+      storeName: "",
       SLAId: 0,
       editmodel: false,
       editSaveLoading: false,
@@ -84,7 +83,7 @@ class SlaTemplateDepartment extends Component {
       fileN: [],
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      sisSLAActiveFilterCheckbox: ""
+      sisSLAActiveFilterCheckbox: "",
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -106,12 +105,12 @@ class SlaTemplateDepartment extends Component {
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
 
-    itemsArray.sort(function(a, b) {
+    itemsArray.sort(function (a, b) {
       return a.ticketStatus > b.ticketStatus ? 1 : -1;
     });
 
     this.setState({
-      slaTemplateGrid: itemsArray
+      slaTemplateGrid: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -123,7 +122,7 @@ class SlaTemplateDepartment extends Component {
       return a.ticketStatus < b.ticketStatus;
     });
     this.setState({
-      slaTemplateGrid: itemsArray
+      slaTemplateGrid: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -145,7 +144,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -153,7 +152,7 @@ class SlaTemplateDepartment extends Component {
           sisSLAActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -165,7 +164,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -173,7 +172,7 @@ class SlaTemplateDepartment extends Component {
           sisSLAActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -185,7 +184,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -193,7 +192,7 @@ class SlaTemplateDepartment extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -204,14 +203,14 @@ class SlaTemplateDepartment extends Component {
         StatusModel: false,
         filterTxtValue: "",
         slaTemplateGrid: this.state.tempsla,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
       });
       if (this.state.sortColumn === "functionName") {
         if (this.state.sissueTpeNameFilterCheckbox === "") {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sisSLAActiveFilterCheckbox: ""
+            sisSLAActiveFilterCheckbox: "",
           });
         }
       }
@@ -220,7 +219,7 @@ class SlaTemplateDepartment extends Component {
         } else {
           this.setState({
             sissueTpeNameFilterCheckbox: "",
-            sisSLAActiveFilterCheckbox: ""
+            sisSLAActiveFilterCheckbox: "",
           });
         }
       }
@@ -229,7 +228,7 @@ class SlaTemplateDepartment extends Component {
         } else {
           this.setState({
             sissueTpeNameFilterCheckbox: "",
-            screatedByFilterCheckbox: ""
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -238,7 +237,7 @@ class SlaTemplateDepartment extends Component {
         StatusModel: false,
         filterTxtValue: "",
         slaTemplateGrid: this.state.sortAllData,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
       });
     }
   }
@@ -351,7 +350,7 @@ class SlaTemplateDepartment extends Component {
       sisSLAActiveFilterCheckbox,
       issueColor: "",
       createdColor: "",
-      stattusColor: ""
+      stattusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -361,7 +360,7 @@ class SlaTemplateDepartment extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.functionName === sItems[i]
+              (a) => a.functionName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -372,7 +371,7 @@ class SlaTemplateDepartment extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column"
+        issueColor: "sort-column",
       });
     } else if (column === "createdBy") {
       var sItems1 = screatedByFilterCheckbox.split(",");
@@ -380,7 +379,7 @@ class SlaTemplateDepartment extends Component {
         for (let i = 0; i < sItems1.length; i++) {
           if (sItems1[i] !== "") {
             var tempFilterData1 = allData.filter(
-              a => a.createdBy === sItems1[i]
+              (a) => a.createdBy === sItems1[i]
             );
             if (tempFilterData1.length > 0) {
               for (let j = 0; j < tempFilterData1.length; j++) {
@@ -391,7 +390,7 @@ class SlaTemplateDepartment extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     } else if (column === "isSLAActive") {
       var sItems2 = sisSLAActiveFilterCheckbox.split(",");
@@ -399,7 +398,7 @@ class SlaTemplateDepartment extends Component {
         for (let i = 0; i < sItems2.length; i++) {
           if (sItems2[i] !== "") {
             var tempFilterData2 = allData.filter(
-              a => a.isSLAActive === sItems2[i]
+              (a) => a.isSLAActive === sItems2[i]
             );
             if (tempFilterData2.length > 0) {
               for (let j = 0; j < tempFilterData2.length; j++) {
@@ -410,12 +409,12 @@ class SlaTemplateDepartment extends Component {
         }
       }
       this.setState({
-        stattusColor: "sort-column"
+        stattusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempsla: itemsArray
+      tempsla: itemsArray,
     });
   };
 
@@ -432,7 +431,7 @@ class SlaTemplateDepartment extends Component {
         indiSla = values.join(separator);
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       document.getElementById("issueTypeValue").textContent =
         this.state.indiSla.split(",").length - 1 + " selected";
@@ -444,7 +443,7 @@ class SlaTemplateDepartment extends Component {
         }
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       if (this.state.indiSla.split(",").length - 1 !== 0) {
         document.getElementById("issueTypeValue").textContent =
@@ -467,7 +466,7 @@ class SlaTemplateDepartment extends Component {
         indiSla = values.join(separator);
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       document.getElementById("issueTypeValue").textContent =
         this.state.indiSla.split(",").length - 1 + " selected";
@@ -479,7 +478,7 @@ class SlaTemplateDepartment extends Component {
         }
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       if (this.state.indiSla.split(",").length - 1 !== 0) {
         document.getElementById("issueTypeValue").textContent =
@@ -490,7 +489,7 @@ class SlaTemplateDepartment extends Component {
     }
   };
 
-  selectAllSLA = async event => {
+  selectAllSLA = async (event) => {
     debugger;
     var indiSla = "";
     var checkboxes = document.getElementsByName("allSla");
@@ -507,11 +506,11 @@ class SlaTemplateDepartment extends Component {
       }
     }
     await this.setState({
-      indiSla
+      indiSla,
     });
   };
 
-  selectNoSLA = async event => {
+  selectNoSLA = async (event) => {
     debugger;
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent = "Select";
@@ -521,10 +520,10 @@ class SlaTemplateDepartment extends Component {
       }
     }
     await this.setState({
-      indiSla: ""
+      indiSla: "",
     });
   };
-  selectNoAboveSLA = async event => {
+  selectNoAboveSLA = async (event) => {
     debugger;
     var checkboxes = document.getElementsByName("searchedSla");
     for (var i in checkboxes) {
@@ -539,19 +538,15 @@ class SlaTemplateDepartment extends Component {
     debugger;
     const { name, value } = e.target;
     let finalEditData = [...this.state.finalEditData];
-    if (
-      name === "SlaBreach" &&
-      // name === "Rerspondtime" &&
-      name === "ResolveTime"
-    ) {
+    if (name === "SlaBreach" && name === "ResolveTime") {
       finalEditData[i] = {
         ...finalEditData[i],
-        [name]: parseFloat(value)
+        [name]: parseFloat(value),
       };
     } else {
       finalEditData[i] = {
         ...finalEditData[i],
-        [name]: value
+        [name]: value,
       };
     }
 
@@ -564,14 +559,14 @@ class SlaTemplateDepartment extends Component {
     let finalData = [...this.state.finalData];
     finalData[i] = {
       ...finalData[i],
-      [name]: value
+      [name]: value,
     };
     this.setState({ finalData });
   };
   handleSlaTargetsDropdowns(e) {
     debugger;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -583,10 +578,10 @@ class SlaTemplateDepartment extends Component {
       url: config.apiUrl + "/StoreSLA/BindFunctions",
       headers: authHeader(),
       params: {
-        SearchText: this.state.SearchText
-      }
+        SearchText: this.state.SearchText,
+      },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let slaFunctionName = res.data.responseData;
         if (slaFunctionName !== null && slaFunctionName !== undefined) {
@@ -599,22 +594,22 @@ class SlaTemplateDepartment extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  handleCreate(issueTypeName) {
+  handleCreate(functionName) {
     let { slaFunctionName, value } = this.state;
 
     let newOption = {
-      issueTypeName,
-      issueTypeID: slaFunctionName.length + 1
+      functionName,
+      issueTypeID: slaFunctionName.length + 1,
     };
 
     this.setState({
       value: newOption, // select new option
-      slaFunctionName: [...slaFunctionName, newOption] // add new option to our dataset
+      slaFunctionName: [...slaFunctionName, newOption], // add new option to our dataset
     });
   }
 
@@ -625,9 +620,9 @@ class SlaTemplateDepartment extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreSLA/GetStoreSLA",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -680,7 +675,7 @@ class SlaTemplateDepartment extends Component {
           self.setState({ slaTemplateGrid: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -690,9 +685,9 @@ class SlaTemplateDepartment extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -715,82 +710,83 @@ class SlaTemplateDepartment extends Component {
           self.setState({ PriorityData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  handleUpdateSlaIssueType = e => {
+  handleUpdateSlaIssueType = (e) => {
     let updateSlaIssueType = e.currentTarget.value;
     this.setState({ updateIssueTypeId: updateSlaIssueType });
   };
-  handleUpdateSlaisActive = e => {
+  handleUpdateSlaisActive = (e) => {
     let updateSlaisActive = e.currentTarget.value;
     this.setState({ updateSlaisActive });
   };
-  handleSlaIsActive = e => {
+  handleSlaIsActive = (e) => {
     let SlaIsActive = e.currentTarget.value;
     this.setState({ SlaIsActive });
   };
 
   ////handle change edit
-  handleEditSlaIsActive = e => {
+  handleEditSlaIsActive = (e) => {
     let isActive = e.currentTarget.value;
     this.setState({ isActive });
   };
 
   ////get SLA data by SLA ID
-  handleEditSLAById(idSLA) {
+  handleGetDataForEditSLAById(idSLA) {
     debugger;
     var SLAId = idSLA || 0;
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreSLA/UpdateStoreSLA",
+      url: config.apiUrl + "/StoreSLA/GetStoreSLADetail",
       headers: authHeader(),
       params: {
-        SLAId: SLAId
-      }
+        SLAId: SLAId,
+      },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
           var data = res.data.responseData;
-          var issueTypeName = data.issueTypeName;
+          var functionId = data.functionID;
+          var functionName = data.functionName;
           var brandName = data.brandName;
-          var categoryName = data.categoryName;
-          var subCategoryName = data.subCategoryName;
-          var isActive = data.isActive;
-          var tempData = data.sLATargetDetails;
+          var departmentName = data.departmentName;
+          var storeName = data.storeName;
+          var isActive = data.isSLAActive;
+          var tempData = data.slaTarget;
           var tempFinalData = [];
           if (tempData.length > 0) {
             for (let i = 0; i < tempData.length; i++) {
               var tempObj = {};
               tempObj.priorityID = tempData[i].priorityID;
               tempObj.priortyName = tempData[i].priorityName;
-              tempObj.SlaBreach = tempData[i].slaBridgeInPercantage;
-              tempObj.ResolveTime = tempData[i].slaResolveValue;
-              tempObj.ResolveType = tempData[i].slaResolveType;
-              tempObj.isActive = tempData[i].isActive;
+              tempObj.SlaBreach = tempData[i].slaBreachPercent;
+              tempObj.ResolveTime = tempData[i].priorityResolution;
+              tempObj.ResolveType = tempData[i].priorityResolutionDuration;
               tempObj.slaTargetID = tempData[i].slaTargetID;
               tempFinalData.push(tempObj);
             }
           }
           self.setState({
-            issueTypeName,
+            functionId,
+            functionName,
             brandName,
-            categoryName,
-            subCategoryName,
+            departmentName,
+            storeName,
             isActive,
             SLAId,
             finalEditData: tempFinalData,
-            editmodel: true
+            editmodel: true,
           });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -829,8 +825,6 @@ class SlaTemplateDepartment extends Component {
         var temp = {};
         temp.PriorityID = data[i].priorityID;
         temp.SLABreachPercent = data[i].SlaBreach;
-        // temp.PriorityRespondValue = data[i].Rerspondtime;
-        // temp.PriorityRespondDuration = data[i].RerspondType;
         temp.PriorityResolutionValue = data[i].ResolveTime;
         temp.PriorityResolutionDuration = data[i].ResolveType;
         paramData.push(temp);
@@ -838,42 +832,40 @@ class SlaTemplateDepartment extends Component {
 
       axios({
         method: "post",
-        url: config.apiUrl + "/SLA/CreateSLA",
+        url: config.apiUrl + "/StoreSLA/CreateStoreSLA",
         headers: authHeader(),
         data: {
-          IssueTypeID: commaSeperatedSla,
-          isSLAActive: SlaIsActive,
+          FunctionID: commaSeperatedSla,
           SLATarget: paramData,
-          SLAFor: 1
-        }
+          isSLAActive: SlaIsActive,
+        },
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("SLA added successfully.");
             self.setState({
-              // selectedSlaIssueType: 0,
               SlaIsActive: "true",
               SearchText: "",
               issueTypeCompulsory: "",
-              slaTargetCompulsory: ""
+              slaTargetCompulsory: "",
             });
             self.handleGetSLATemplateGrid();
             self.handleGetPriorityList();
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error("SLA not added.");
+            NotificationManager.error(status);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
         issueTypeCompulsory: "Please select issuetype.",
-        slaTargetCompulsory: "Required."
+        slaTargetCompulsory: "Required.",
       });
     }
   }
@@ -886,10 +878,10 @@ class SlaTemplateDepartment extends Component {
       url: config.apiUrl + "/StoreSLA/DeleteStoreSLA",
       headers: authHeader(),
       params: {
-        SLAID: deleteId
-      }
+        SLAID: deleteId,
+      },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
@@ -899,12 +891,12 @@ class SlaTemplateDepartment extends Component {
           NotificationManager.error("SLA not deleted.");
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  fileUpload = e => {
+  fileUpload = (e) => {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
@@ -916,28 +908,28 @@ class SlaTemplateDepartment extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: ""
+        bulkuploadCompulsion: "",
       });
     }
   };
-  handleSearchSla = async e => {
+  handleSearchSla = async (e) => {
     debugger;
     if (e.target.value.length > 3) {
       await this.setState({
-        SearchText: e.target.value
+        SearchText: e.target.value,
       });
       this.handleGetSLAFunctionName();
     } else {
       await this.setState({
-        SearchText: ""
+        SearchText: "",
       });
       this.handleGetSLAFunctionName();
     }
   };
-  handleClearSearchSla = async e => {
+  handleClearSearchSla = async (e) => {
     debugger;
     await this.setState({
-      SearchText: ""
+      SearchText: "",
     });
     document.getElementById("SlaInput").value = "";
     this.handleGetSLAFunctionName();
@@ -949,7 +941,7 @@ class SlaTemplateDepartment extends Component {
     let slaOvrlayShow = !slaOvrlayShowOriginal;
     this.setState({
       slaShow,
-      slaOvrlayShow
+      slaOvrlayShow,
     });
   }
 
@@ -960,38 +952,39 @@ class SlaTemplateDepartment extends Component {
   handleUpdareSLADetails() {
     debugger;
     let self = this;
-    // if (valid === true) {
     var inputParamter = {};
+    var isActiveStatus = 0;
+    if (this.state.isActive === "Active") {
+      isActiveStatus = 1;
+    } else {
+      isActiveStatus = 0;
+    }
+
     inputParamter.SLAId = this.state.SLAId;
-    inputParamter.IsActive = this.state.isActive;
-    inputParamter.BrandName = this.state.brandName;
-    inputParamter.CategoryName = this.state.categoryName;
-    inputParamter.SubCategoryName = this.state.subCategoryName;
-    inputParamter.IssueTypeName = this.state.issueTypeName;
+    inputParamter.isSLAActive = isActiveStatus;
+    inputParamter.FunctionID = this.state.functionId;
+
     var SLATargetTempData = [];
     for (let i = 0; i < this.state.finalEditData.length > 0; i++) {
       var obj = {};
       obj.priorityID = this.state.finalEditData[i].priorityID;
-      obj.priorityName = this.state.finalEditData[i].priortyName;
-      obj.slaBridgeInPercantage = this.state.finalEditData[i].SlaBreach;
-      // obj.slaResponseValue = this.state.finalEditData[i].Rerspondtime;
-      // obj.slaResponseType = this.state.finalEditData[i].RerspondType;
-      obj.slaResolveValue = this.state.finalEditData[i].ResolveTime;
-      obj.slaResolveType = this.state.finalEditData[i].ResolveType;
-      obj.isActive = this.state.finalEditData[i].isActive;
-      obj.slaTargetID = this.state.finalEditData[i].slaTargetID;
+      obj.priortyName = this.state.finalEditData[i].priortyName;
+      obj.SLABreachPercent = this.state.finalEditData[i].SlaBreach;
+      obj.PriorityResolutionValue = this.state.finalEditData[i].ResolveTime;
+      obj.PriorityResolutionDuration = this.state.finalEditData[i].ResolveType;
+      obj.SLATargetID = this.state.finalEditData[i].slaTargetID;
       SLATargetTempData.push(obj);
     }
-    inputParamter.sLATargetDetails = SLATargetTempData;
+    inputParamter.SLATarget = SLATargetTempData;
     this.setState({ editSaveLoading: true });
 
     axios({
       method: "post",
-      url: config.apiUrl + "/SLA/UpdareSLADetails",
+      url: config.apiUrl + "/StoreSLA/UpdateStoreSLA",
       headers: authHeader(),
-      data: inputParamter
+      data: inputParamter,
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -1001,12 +994,12 @@ class SlaTemplateDepartment extends Component {
           self.handleGetSLATemplateGrid();
         } else {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Not Updated");
+          NotificationManager.error("SLA Not Updated");
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ editSaveLoading: false, editmodel: false });
-        NotificationManager.success("SLA Not Updated");
+        NotificationManager.error("SLA Not Updated");
         console.log(response);
       });
   }
@@ -1025,7 +1018,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueType
+          sortFilterIssueType: this.state.sortIssueType,
         });
       }
     }
@@ -1039,7 +1032,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy
+          sortFilterCreatedBy: this.state.sortCreatedBy,
         });
       }
     }
@@ -1053,7 +1046,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus
+          sortFilterStatus: this.state.sortStatus,
         });
       }
     }
@@ -1076,9 +1069,9 @@ class SlaTemplateDepartment extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        }
+        },
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
@@ -1090,12 +1083,12 @@ class SlaTemplateDepartment extends Component {
             self.setState({
               showProgress: false,
               isFileUploadFail: true,
-              progressValue: 0
+              progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -1104,7 +1097,7 @@ class SlaTemplateDepartment extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
@@ -1112,11 +1105,11 @@ class SlaTemplateDepartment extends Component {
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -1285,7 +1278,7 @@ class SlaTemplateDepartment extends Component {
           <Link
             to={{
               pathname: "/admin/settings",
-              tabName: "store-tab"
+              tabName: "store-tab",
             }}
             className="header-path"
           >
@@ -1329,7 +1322,7 @@ class SlaTemplateDepartment extends Component {
                           </span>
                         ),
                         accessor: "slaTarget",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           let slaTarget = row.original.slaTarget,
                             priorityNameComma = "",
@@ -1397,7 +1390,7 @@ class SlaTemplateDepartment extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -1414,7 +1407,7 @@ class SlaTemplateDepartment extends Component {
                           </span>
                         ),
                         accessor: "createdBy",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <div>
@@ -1460,7 +1453,7 @@ class SlaTemplateDepartment extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
 
                       {
@@ -1477,12 +1470,12 @@ class SlaTemplateDepartment extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "isSLAActive"
+                        accessor: "isSLAActive",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
-                        Cell: row => {
+                        Cell: (row) => {
                           // var ids = row.original["slaid"];
                           return (
                             <>
@@ -1529,7 +1522,7 @@ class SlaTemplateDepartment extends Component {
                                 <button
                                   className="react-tabel-button"
                                   id={row.original.slaid}
-                                  onClick={this.handleEditSLAById.bind(
+                                  onClick={this.handleGetDataForEditSLAById.bind(
                                     this,
                                     row.original.slaid
                                   )}
@@ -1541,8 +1534,8 @@ class SlaTemplateDepartment extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     resizable={false}
                     minRows={2}
@@ -1678,7 +1671,7 @@ class SlaTemplateDepartment extends Component {
                     </div>
 
                     <div className="slatargetRow-3 ma">
-                    <label className="createhead-text-new-1">Priority</label>
+                      <label className="createhead-text-new-1">Priority</label>
                       <label className="createhead-text-5">% SLA</label>
                       <label className="createhead-text-6">Resolve</label>
                     </div>
@@ -1714,7 +1707,6 @@ class SlaTemplateDepartment extends Component {
                             )}
                           </div>
 
-                        
                           <div className="sla-div-1">
                             <div>
                               <div className="inner-div">
@@ -1923,35 +1915,33 @@ class SlaTemplateDepartment extends Component {
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Category Name: </label>
+                <label className="createhead-text-new">Store Name: </label>
                 <label className="createhead-text-1">
-                  {this.state.categoryName}
+                  {this.state.departmentName}
                 </label>
               </div>
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">
-                  Sub Category Name:{" "}
-                </label>
+                <label className="createhead-text-new">Department Name:</label>
                 <label className="createhead-text-1">
-                  {this.state.subCategoryName}
+                  {this.state.storeName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Issue Type: </label>
+                <label className="createhead-text-new">Function Name: </label>
                 <label className="createhead-text-1">
-                  {this.state.issueTypeName}
+                  {this.state.functionName}
                 </label>
               </div>
             </div>
             <br />
-             
+
             <div className="slatargetRow-3 ma">
-                      <label className="createhead-text-new-1">Priority</label>
-                      <label className="createhead-text-5">% SLA</label>
-                      <label className="createhead-text-6">Resolve</label>
-                    </div>
+              <label className="createhead-text-new-1">Priority</label>
+              <label className="createhead-text-5">% SLA</label>
+              <label className="createhead-text-6">Resolve</label>
+            </div>
             {this.state.finalEditData !== null &&
               this.state.finalEditData.map((item, i) => (
                 <div className="slatargetRow-1" key={i}>
@@ -1983,7 +1973,7 @@ class SlaTemplateDepartment extends Component {
                       </p>
                     )}
                   </div>
- 
+
                   <div className="sla-div-4">
                     <div>
                       <div className="inner-div">
@@ -2024,11 +2014,13 @@ class SlaTemplateDepartment extends Component {
                 <label className="reports-to">Status</label>
                 <select
                   className="store-create-select"
-                  value={this.state.isActive}
+                  value={
+                    this.state.isActive === "Active" ? "Active" : "Inactive"
+                  }
                   onChange={this.handleEditSlaIsActive}
                 >
-                  <option value={true}>Active</option>
-                  <option value={false}>Inactive</option>
+                  <option value={"Active"}>Active</option>
+                  <option value={"Inactive"}>Inactive</option>
                 </select>
               </div>
             </div>
