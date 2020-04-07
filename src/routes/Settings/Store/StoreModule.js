@@ -12,50 +12,176 @@ import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import { NotificationManager } from "react-notifications";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 class StoreModule extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fileName: ""
+      fileName: "",
+      maxAttachSize: [],
+      fileFormat: [],
+      selectedMaxAttachSize: "0",
+      selectedFileFormat: "0",
+      maxAttachSizeCompulsion: "",
+      fileFormatCompulsion: "",
+      claimTabLoading: false,
+      campaignScriptData: [],
     };
+
+    this.handleClaimTabData = this.handleClaimTabData.bind(this);
+    this.handleCampaignScriptGridData = this.handleCampaignScriptGridData.bind(
+      this
+    );
   }
-  fileUpload = e => {
+  fileUpload = (e) => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  fileDrop = e => {
+  fileDrop = (e) => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
+
+  componentDidMount() {
+    this.handleClaimTabData();
+    this.handleCampaignScriptGridData();
+  }
+
+  setClaimTabData = (e) => {
+    debugger;
+    let name = e.target.name;
+    let value = e.target.value;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleClaimTabData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/ModuleSetting/GetStoreAttachmentSettings",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            maxAttachSize: data.arrachementSizeList,
+            fileFormat: data.storeAttachmentFileFormatList,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleCampaignScriptGridData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/ModuleSetting/GetCampaignScript",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            campaignScriptData: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleAttachmentSave() {
+    debugger;
+    if (
+      parseInt(this.state.selectedMaxAttachSize) != 0 &&
+      parseInt(this.state.selectedFileFormat) != 0
+    ) {
+      let self = this;
+      this.setState({
+        claimTabLoading: true,
+      });
+
+      // save attachment settings
+      axios({
+        method: "post",
+        url: config.apiUrl + "/ModuleSetting/ModifyStoreAttachmentSettings",
+        headers: authHeader(),
+        data: {
+          AttachmentSize: this.state.selectedMaxAttachSize,
+          FileFomatID: this.state.selectedFileFormat,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Attachment saved successfully.");
+            self.setState({
+              selectedMaxAttachSize: "0",
+              selectedFileFormat: "0",
+              maxAttachSizeCompulsion: "",
+              fileFormatCompulsion: "",
+              claimTabLoading: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        maxAttachSizeCompulsion: "Please select max attachment size",
+        fileFormatCompulsion: "Please select file format",
+      });
+    }
+  }
+
   render() {
     const data = [
       {
         id: "A1",
         campaignName: "Birthday",
-        status: "Active"
+        status: "Active",
       },
       {
         id: "A2",
         campaignName: "Anniversary",
-        status: "Inactive"
+        status: "Inactive",
       },
       {
         id: "A3",
         campaignName: "EOSS",
-        status: "Active"
+        status: "Active",
       },
       {
         id: "A4",
         campaignName: "SOSS",
-        status: "Inactive"
-      }
+        status: "Inactive",
+      },
     ];
 
     const columns = [
@@ -66,31 +192,31 @@ class StoreModule extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "campaignName"
+        accessor: "campaignName",
       },
       {
         Header: "Campaign Script",
         // accessor: "campaignScript",
         className: "communication-labelHeader",
         sortable: false,
-        Cell: row => {
+        Cell: (row) => {
           var ids = row.original["id"];
           return (
             <div>
               <span>
                 Dear Mr./Mrs. We wish you...
                 <Popover content={CampaignWish} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                  id={ids}
-                />
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
                 </Popover>
               </span>
             </div>
           );
-        }
+        },
       },
       {
         id: "createdBy",
@@ -100,24 +226,24 @@ class StoreModule extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        Cell: row => {
+        Cell: (row) => {
           var ids = row.original["id"];
           return (
             <div>
               <span>
                 Admin
                 <Popover content={popoverData} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                  id={ids}
-                />
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
                 </Popover>
               </span>
             </div>
           );
-        }
+        },
         // accessor: "createdBy"
       },
       {
@@ -127,101 +253,110 @@ class StoreModule extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "status",
       },
       {
         Header: "Actions",
         // accessor: "action",
         sortable: false,
-        Cell: row => {
+        Cell: (row) => {
           var ids = row.original["id"];
           return (
             <>
               <span>
                 <Popover content={ActionDelete} placement="bottom">
-                <img
-                  src={RedDeleteIcon}
-                  alt="del-icon"
-                  className="del-btn"
-                  id={ids}
-                />
+                  <img
+                    src={RedDeleteIcon}
+                    alt="del-icon"
+                    className="del-btn"
+                    id={ids}
+                  />
                 </Popover>
-              <Popover content={ActionEditBtn} placement="bottom" trigger="click">
-                <button className="react-tabel-button editre" id="p-edit-pop-2">
-                  EDIT
-                </button>
+                <Popover
+                  content={ActionEditBtn}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <button
+                    className="react-tabel-button editre"
+                    id="p-edit-pop-2"
+                  >
+                    EDIT
+                  </button>
                 </Popover>
               </span>
             </>
           );
-        }
-      }
+        },
+      },
     ];
 
-    const CampaignWish =(
-        <div className="store-popDiv">
-            <label className="storePop-lbl">Dear Mr./Mrs. We wish you <br/> Happy Birthday!</label>
-        </div>
-    )
+    const CampaignWish = (
+      <div className="store-popDiv">
+        <label className="storePop-lbl">
+          Dear Mr./Mrs. We wish you <br /> Happy Birthday!
+        </label>
+      </div>
+    );
     const popoverData = (
-        <>
-          <div>
-            <b>
-              <p className="title">Created By: Admin</p>
-            </b>
-            <p className="sub-title">Created Date: 12 March 2018</p>
-          </div>
-          <div>
-            <b>
-              <p className="title">Updated By: Manager</p>
-            </b>
-            <p className="sub-title">Updated Date: 12 March 2018</p>
-          </div>
-        </>
-      );
-      const ActionDelete = (
-        <div className="d-flex general-popover popover-body">
-          <div className="del-big-icon">
-            <img src={DelBigIcon} alt="del-icon" />
-          </div>
-          <div>
-            <p className="font-weight-bold blak-clr">Delete file?</p>
-            <p className="mt-1 fs-12">
-              Are you sure you want to delete this file?
-            </p>
-            <div className="del-can">
-              <a href={Demo.BLANK_LINK}>CANCEL</a>
-              <button className="butn">Delete</button>
-            </div>
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
           </div>
         </div>
-      );
-      const ActionEditBtn = (
-        <div className="edtpadding">
+      </div>
+    );
+    const ActionEditBtn = (
+      <div className="edtpadding">
         <div className="">
           <label className="popover-header-text">EDIT CAMPAIGN SCRIPT</label>
         </div>
         <div className=" pop-over-div">
           <label className="pop-over-lbl-text"> Campaign Name</label>
           <select className="pop-over-select">
-              <option>Birthday</option>
-              <option>Anniversary</option>
+            <option>Birthday</option>
+            <option>Anniversary</option>
           </select>
         </div>
         <div className="div-cntr">
-            <label className="pop-over-lbl-text">Script Details</label>
-              <textarea className="stort-textArea" rows="4"></textarea>
+          <label className="pop-over-lbl-text">Script Details</label>
+          <textarea className="stort-textArea" rows="4"></textarea>
         </div>
 
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
-          <button className="pop-over-button">
-            SAVE
-          </button>
+          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
+            CANCEL
+          </a>
+          <button className="pop-over-button">SAVE</button>
         </div>
       </div>
-      );
+    );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -229,7 +364,13 @@ class StoreModule extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link
+            to={{
+              pathname: "/admin/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
             Store
           </Link>
           <span>&gt;</span>
@@ -243,7 +384,7 @@ class StoreModule extends Component {
             <section>
               <Tabs>
                 <Tab label="Claim">
-                  <div style={{ height: "100vh" }}>
+                  <div style={{ height: "100vh" }} className="chatallowedStore">
                     <div className="row">
                       <div className="col-md-4 chatallowed">
                         <label className="claimtab-lbl">
@@ -252,21 +393,62 @@ class StoreModule extends Component {
                         <label className="claimTab-DDl">
                           Maximum Attachment Size
                         </label>
-                        <select>
-                          <option>5 MB</option>
-                          <option>6 MB</option>
+                        <select
+                          name="selectedMaxAttachSize"
+                          value={this.state.selectedMaxAttachSize}
+                          onChange={this.setClaimTabData}
+                        >
+                          <option value={0}>Select Size</option>
+                          {this.state.maxAttachSize !== null &&
+                            this.state.maxAttachSize.map((item, i) => (
+                              <option key={i} value={item.numb}>
+                                {item.numbMB}
+                              </option>
+                            ))}
                         </select>
+                        {parseInt(this.state.selectedMaxAttachSize) == 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.maxAttachSizeCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="row claim-mgn">
                       <div className="col-md-3 chatallowed">
                         <label className="claimTab-DDl">File Format</label>
-                        <select>
-                          <option>JPEG, PNG</option>
-                          <option>PDF</option>
+                        <select
+                          name="selectedFileFormat"
+                          value={this.state.selectedFileFormat}
+                          onChange={this.setClaimTabData}
+                        >
+                          <option value={0}>Select File Format</option>
+                          {this.state.fileFormat !== null &&
+                            this.state.fileFormat.map((item, i) => (
+                              <option key={i} value={item.formatID}>
+                                {item.fileFormaName}
+                              </option>
+                            ))}
                         </select>
-                        <div className="btn-store">
-                          <button className="Schedulenext1">
+                        {parseInt(this.state.selectedFileFormat) == 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.fileFormatCompulsion}
+                          </p>
+                        )}
+                        <div className="btn-store mt-4">
+                          <button
+                            className="Schedulenext1"
+                            onClick={this.handleAttachmentSave.bind(this)}
+                            disabled={this.state.claimTabLoading}
+                          >
+                            {this.state.claimTabLoading ? (
+                              <FontAwesomeIcon
+                                className="circular-loader"
+                                icon={faCircleNotch}
+                                spin
+                              />
+                            ) : (
+                              ""
+                            )}
                             SAVE
                           </button>
                         </div>
@@ -281,51 +463,231 @@ class StoreModule extends Component {
                       <div className="col-md-8">
                         <div className="table-cntr table-height alertsTable">
                           <ReactTable
-                            data={data}
-                            columns={columns}
+                            data={this.state.campaignScriptData}
+                            columns={[
+                              {
+                                Header: (
+                                  <span className="table-column">
+                                    Campaign Name
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "campaignName",
+                              },
+                              {
+                                Header: "Campaign Script",
+                                accessor: "campaignScriptLess",
+                                className: "communication-labelHeader",
+                                sortable: false,
+                                Cell: (row) => {
+                                  var ids = row.original["id"];
+                                  return (
+                                    <div>
+                                      <span>
+                                        {row.original.campaignScriptLess}
+                                        <Popover
+                                          content={
+                                            <div className="store-popDiv">
+                                              <label className="storePop-lbl">
+                                                {row.original.campaignScript}
+                                              </label>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                        >
+                                          <img
+                                            className="info-icon-cp"
+                                            src={BlackInfoIcon}
+                                            alt="info-icon"
+                                            id={ids}
+                                          />
+                                        </Popover>
+                                      </span>
+                                    </div>
+                                  );
+                                },
+                              },
+                              {
+                                id: "createdBy",
+                                Header: (
+                                  <span className="table-column">
+                                    Created by
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                Cell: (row) => {
+                                  var ids = row.original["id"];
+                                  return (
+                                    <div>
+                                      <span>
+                                        {row.original.createdBy}
+                                        <Popover
+                                          content={
+                                            <>
+                                              <div>
+                                                <b>
+                                                  <p className="title">
+                                                    Created By:{" "}
+                                                    {row.original.createdBy}
+                                                  </p>
+                                                </b>
+                                                <p className="sub-title">
+                                                  Created Date:{" "}
+                                                  {row.original.createdOn}
+                                                </p>
+                                              </div>
+                                              <div>
+                                                <b>
+                                                  <p className="title">
+                                                    Updated By:{" "}
+                                                    {row.original.modifiedBy}
+                                                  </p>
+                                                </b>
+                                                <p className="sub-title">
+                                                  Updated Date:{" "}
+                                                  {row.original.modifiedOn}
+                                                </p>
+                                              </div>
+                                            </>
+                                          }
+                                          placement="bottom"
+                                        >
+                                          <img
+                                            className="info-icon-cp"
+                                            src={BlackInfoIcon}
+                                            alt="info-icon"
+                                            id={ids}
+                                          />
+                                        </Popover>
+                                      </span>
+                                    </div>
+                                  );
+                                },
+                                // accessor: "createdBy"
+                              },
+                              {
+                                Header: (
+                                  <span className="table-column">
+                                    Status
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "status",
+                                Cell: (row) => {
+                                  return row.original.status
+                                    ? "Active"
+                                    : "Inactive";
+                                },
+                              },
+                              {
+                                Header: "Actions",
+                                // accessor: "action",
+                                sortable: false,
+                                Cell: (row) => {
+                                  var ids = row.original["id"];
+                                  return (
+                                    <>
+                                      <span>
+                                        <Popover
+                                          content={
+                                            <div className="d-flex general-popover popover-body">
+                                              <div className="del-big-icon">
+                                                <img
+                                                  src={DelBigIcon}
+                                                  alt="del-icon"
+                                                />
+                                              </div>
+                                              <div>
+                                                <p className="font-weight-bold blak-clr">
+                                                  Delete file?
+                                                </p>
+                                                <p className="mt-1 fs-12">
+                                                  Are you sure you want to
+                                                  delete this file?
+                                                </p>
+                                                <div className="del-can">
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    CANCEL
+                                                  </a>
+                                                  <button className="butn">
+                                                    Delete
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <img
+                                            src={RedDeleteIcon}
+                                            alt="del-icon"
+                                            className="del-btn"
+                                            id={ids}
+                                          />
+                                        </Popover>
+                                        <Popover
+                                          content={
+                                            <div className="edtpadding">
+                                              <div className="">
+                                                <label className="popover-header-text">
+                                                  EDIT CAMPAIGN SCRIPT
+                                                </label>
+                                              </div>
+                                              <div className=" pop-over-div">
+                                                <label className="pop-over-lbl-text">
+                                                  {" "}
+                                                  Campaign Name
+                                                </label>
+                                                <select className="pop-over-select">
+                                                  <option>Birthday</option>
+                                                  <option>Anniversary</option>
+                                                </select>
+                                              </div>
+                                              <div className="div-cntr">
+                                                <label className="pop-over-lbl-text">
+                                                  Script Details
+                                                </label>
+                                                <textarea
+                                                  className="stort-textArea"
+                                                  rows="4"
+                                                ></textarea>
+                                              </div>
+
+                                              <br />
+                                              <div>
+                                                <a
+                                                  className="pop-over-cancle"
+                                                  href={Demo.BLANK_LINK}
+                                                >
+                                                  CANCEL
+                                                </a>
+                                                <button className="pop-over-button">
+                                                  SAVE
+                                                </button>
+                                              </div>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <button
+                                            className="react-tabel-button editre"
+                                            id="p-edit-pop-2"
+                                          >
+                                            EDIT
+                                          </button>
+                                        </Popover>
+                                      </span>
+                                    </>
+                                  );
+                                },
+                              },
+                            ]}
                             // resizable={false}
                             defaultPageSize={5}
-                            showPagination={false}
+                            showPagination={true}
                           />
-
-                          <div className="position-relative">
-                            <div className="pagi">
-                              <ul>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>&lt;</a>
-                                </li>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>1</a>
-                                </li>
-                                <li className="active">
-                                  <a href={Demo.BLANK_LINK}>2</a>
-                                </li>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>3</a>
-                                </li>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>4</a>
-                                </li>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>5</a>
-                                </li>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>6</a>
-                                </li>
-                                <li>
-                                  <a href={Demo.BLANK_LINK}>&gt;</a>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="item-selection">
-                              <select>
-                                <option>30</option>
-                                <option>50</option>
-                                <option>100</option>
-                              </select>
-                              <p>Items per page</p>
-                            </div>
-                          </div>
                         </div>
                       </div>
                       <div className="col-md-4">
@@ -338,17 +700,15 @@ class StoreModule extends Component {
                               <option>Anniversary</option>
                             </select>
                           </div>
-                          
-                        
+
                           <div className="div-cntr">
                             <label>Script Details</label>
-                            <textarea className="stort-textArea" rows="7"></textarea>
+                            <textarea
+                              className="stort-textArea"
+                              rows="7"
+                            ></textarea>
                           </div>
-                          <button
-                            className="butn"
-                          >
-                            ADD
-                          </button>
+                          <button className="butn">ADD</button>
                         </div>
                         <div className="right-sect-div">
                           <div className="d-flex justify-content-between align-items-center pb-2">
@@ -356,7 +716,11 @@ class StoreModule extends Component {
                             <div className="down-excel">
                               <p>Template</p>
                               <a href={Demo.BLANK_LINK}>
-                                <img src={DownExcel} alt="download icon" className="storeImg-dwn"/>
+                                <img
+                                  src={DownExcel}
+                                  alt="download icon"
+                                  className="storeImg-dwn"
+                                />
                               </a>
                             </div>
                           </div>
