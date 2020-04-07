@@ -2538,6 +2538,12 @@
 }
 .storePop-lbl {
   font-weight: 500;
+  max-width: 250px;
+}
+.campaign-script-less {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .stort-textArea {
   display: flex;
