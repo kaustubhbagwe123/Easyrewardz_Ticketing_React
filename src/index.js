@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { MyProvider, MyContext } from './context'
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/ie11";
 
@@ -39,19 +40,27 @@ import ChangePassword from "./Component/ChangePassword";
 import UserForgotPassword from "./Component/UserForgotPassword";
 
 ReactDOM.render(
+  <MyProvider>
   <Router>
-    <Route path="/admin" component={App} />
-    <Route path="/store" component={StoreApp} />
-    <Route path="/qa" component={QAApp} />
-    <Route exact path="/" component={ProgramCodeSignIn} />
-    <Route exact path="/SignIn" component={SignIn} />
-    <Route exact path="/Forgotpassword" component={ForgotPassword} />
-    <Route exact path="/ChangePassword" component={ChangePassword} />
-    <Route exact path="/UserForgotPassword" component={UserForgotPassword} />
-    <Route exact path="/PieChart" component={PieChart} />
-    <Route path="/artBoard" component={ArtBoardApp} />
-    <Route path="/tenantApp" component={TenantApp} />
-  </Router>,
+    <MyContext.Consumer>
+        {(context) => (
+           <React.Fragment>
+            <Route path="/admin" component={App} />
+            <Route path="/store" component={StoreApp} />
+            <Route path="/qa" component={QAApp} />
+            <Route exact path="/" component={ProgramCodeSignIn} />
+            <Route exact path="/SignIn" component={SignIn} />
+            <Route exact path="/Forgotpassword" component={ForgotPassword} />
+            <Route exact path="/ChangePassword" component={ChangePassword} />
+            <Route exact path="/UserForgotPassword" component={UserForgotPassword} />
+            <Route exact path="/PieChart" component={PieChart} />
+            <Route path="/artBoard" component={ArtBoardApp} />
+            <Route path="/tenantApp" component={TenantApp} />
+          </React.Fragment>
+        )}
+    </MyContext.Consumer>
+  </Router>
+  </MyProvider>,
   document.getElementById("root")
 );
 

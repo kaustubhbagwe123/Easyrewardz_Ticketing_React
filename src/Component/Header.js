@@ -31,6 +31,7 @@ import config from "../helpers/config";
 import axios from "axios";
 import PencilImg from "./../assets/Images/pencil.png";
 import {transferData} from "./../helpers/transferData";
+import { MyContext } from '../context'
 
 class Header extends Component {
   constructor(props) {
@@ -503,6 +504,8 @@ class Header extends Component {
         </div>
       </>
     );
+
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div
@@ -511,7 +514,18 @@ class Header extends Component {
         >
           <div className="d-flex">
             <div className="er">
-              <label className="er-label">ER</label>
+              <label className="er-label">
+              {
+                (() => {
+                  if (TranslationContext!==undefined) {
+                    return TranslationContext.label.er
+                  }
+                  else{
+                    return 'ER'
+                  }
+                })()
+              }
+              </label>
             </div>
             <div className="hamb-menu">
               <div className="dropdown">
@@ -549,7 +563,24 @@ class Header extends Component {
                       className={item.imgClass}
                     />
                   </div>
-                  {item.data}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                        if (item.data === "Dashboards") {
+                          return TranslationContext.nav.dashboard
+                        }
+                        else if (item.data === "My Tickets") {
+                          return TranslationContext.nav.ticket
+                        }
+                        else{
+                          return TranslationContext.nav.knowledge
+                        }
+                      }
+                    else{
+                      return item.data
+                    }
+                    })()
+                  }         
                 </Link>
               ))}
             </div>
@@ -995,7 +1026,11 @@ class Header extends Component {
                 </div>
               </Drawer>
             </div>
-
+            <select onClick={this.context.changeLanguage}>
+                <option value="en">ENGLISH</option>
+                <option value="hindi">HINDI</option>
+                <option value="marathi">MARATHI</option>
+            </select>
             <a href="#!" style={{ display: this.state.notificationAccess }}>
               <div
                 className="position-relative"
@@ -1159,8 +1194,8 @@ class Header extends Component {
                 </div>
                 <div className="logout-flex">
                   <div>
-                    <p style={{ fontSize: "16px", fontWeight: "600" }}>
-                      {this.state.UserName}
+                    <p style={{ fontSize: "16px", fontWeight: "600" }}>                     
+                        {this.state.UserName}
                       &nbsp;
                       <Link to="userprofile">
                         <img
@@ -1270,4 +1305,5 @@ class Header extends Component {
   }
 }
 
+Header.contextType = MyContext;
 export default Header;
