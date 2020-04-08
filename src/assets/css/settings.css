@@ -41,7 +41,7 @@
   font-weight: 400;
   padding: 7px 0px;
   font-size: 14px;
-    font-weight: 600;
+  font-weight: 600;
   border-radius: 3px;
 }
 .setting-tabs .nav-tabs .nav-link.active {
@@ -285,7 +285,7 @@
   width: 100%;
 }
 .ticketMSGCmt-textarea {
-  background-color: #FFFF;
+  background-color: #ffff;
   /* border-radius: 2px; */
   border: none;
   width: 100%;
@@ -602,15 +602,15 @@
 }
 .del-big-icon {
   background-color: #f3f3f3;
-    border-radius: 50%;
-    flex: 0 0 50px;
-    height: 50px;
-    width: 50px;
-    display: flex;
-    float: right;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
+  border-radius: 50%;
+  flex: 0 0 50px;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  float: right;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
 .del-can button {
   padding-top: 6px;
@@ -1267,7 +1267,7 @@
   width: 100%;
   height: 43px;
   cursor: pointer;
-  color:#FFFF;
+  color: #ffff;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
@@ -1832,7 +1832,7 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   display: block;
   width: 100%;
-  font-size:14px;
+  font-size: 14px;
   height: 43px;
   padding: 10px;
   padding-left: 15px;
@@ -1930,7 +1930,7 @@
   line-height: 0;
   padding: 5px 10px;
   cursor: pointer;
-  color:#ffffff
+  color: #ffffff;
 }
 
 .pop-over-btnsave-text {
@@ -2206,7 +2206,7 @@
   line-height: 14px;
   text-align: left;
   /* padding-right:8px; */
-  padding-left:8px;
+  padding-left: 8px;
   display: inline-block;
 }
 
@@ -2432,18 +2432,18 @@
   max-height: 444px;
 }
 .table-priority::-webkit-scrollbar {
-width: 7px;
+  width: 7px;
 }
 .table-priority::-webkit-scrollbar-track {
-background: #f1f1f1;
-border-radius: 10px;
+  background: #f1f1f1;
+  border-radius: 10px;
 }
 .table-priority::-webkit-scrollbar-thumb {
-background: #cac8c8;
-border-radius: 10px;
+  background: #cac8c8;
+  border-radius: 10px;
 }
 .table-priority::-webkit-scrollbar-thumb:hover {
-background: #a5a3a3;
+  background: #a5a3a3;
 }
 .claim-tableData table th {
   font-size: 12px;
@@ -2457,7 +2457,7 @@ background: #a5a3a3;
 .esc {
   padding: 9px 10px;
 }
-.esc1 .nav-tabs .nav-link{
+.esc1 .nav-tabs .nav-link {
   margin-right: -10px;
 }
 .mlistbtn {
@@ -2538,6 +2538,12 @@ background: #a5a3a3;
 }
 .storePop-lbl {
   font-weight: 500;
+  max-width: 250px;
+}
+.campaign-script-less {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .stort-textArea {
   display: flex;
@@ -2673,6 +2679,12 @@ background: #a5a3a3;
   cursor: pointer;
   border: none;
   font-weight: 600;
+  margin-bottom: 25px;
+}
+.chatallowedStore select {
+  margin-bottom: 0;
+}
+.chatallowedStore .row {
   margin-bottom: 25px;
 }
 .chatagent {
@@ -2863,23 +2875,25 @@ background: #a5a3a3;
 .insertpop1 {
   padding: 20px;
 }
-.ticketreport .ticketreportdat  input[type=text] {
+.ticketreport .ticketreportdat input[type="text"] {
   width: 100%;
   border-radius: 4px;
   padding: 10px 50px 10px 10px;
   border: 0;
-  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
   color: #4a4a4a;
 }
 .ticketreport .react-datepicker-wrapper {
   width: 100%;
 }
-.ticketstrReport .ticketreportdat  input[type=text] {
+.ticketstrReport .ticketreportdat input[type="text"] {
   width: 100%;
   border-radius: 4px;
   padding: 10px 50px 10px 10px;
   border: 0;
-  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
   color: #4a4a4a;
 }
 .ticketstrReport .react-datepicker-wrapper {
@@ -2902,13 +2916,13 @@ background: #a5a3a3;
   margin: 10px -40px;
 }
 .setmainscreen {
-  font-weight:  bold !important;
+  font-weight: bold !important;
   font-size: 19px;
   color: #000;
-} 
+}
 .QaAudit .tab-content {
   padding-top: 0;
-} 
+}
 
 .alignradio .status-options input + label::before {
   content: "";
@@ -2932,128 +2946,132 @@ background: #a5a3a3;
 .dropDrownSpace .ant-select-selection--single {
   background-color: #ecf2f4;
 }
-.tickhierpad table th{
+.tickhierpad table th {
   padding: 15px 20px;
 }
 /* Module Css End */
 /* Setting ReactTable Css Start Kalpesh */
-.TicketStoreReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.TicketStoreReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 8px !important;
 }
 .TicketStoreReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 8px !important;
 }
-.TicketCategoyMasReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.TicketCategoyMasReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 10px !important;
 }
 .TicketCategoyMasReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 10px !important;
 }
-.StoreItemMasterReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.StoreItemMasterReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 5px !important;
 }
 .StoreItemMasterReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 5px !important;
 }
-.StoreUserReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+.StoreUserReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 7px !important;
 }
 .TicketBrandReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .TicketCrmRoleReact svg:not(:root).svg-inline--fa {
+}
+.TicketCrmRoleReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .reactreport svg:not(:root).svg-inline--fa {
+}
+.reactreport svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .modulereact svg:not(:root).svg-inline--fa {
+}
+.modulereact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .StorCrmRoleReact svg:not(:root).svg-inline--fa {
+}
+.StorCrmRoleReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .StoreHierarchyReact svg:not(:root).svg-inline--fa {
+}
+.StoreHierarchyReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .TicketFileUploadReact svg:not(:root).svg-inline--fa {
+}
+.TicketFileUploadReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .deptMaster svg:not(:root).svg-inline--fa {
+}
+.deptMaster svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .StoreUserReact svg:not(:root).svg-inline--fa {
+}
+.StoreUserReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .slatempreact svg:not(:root).svg-inline--fa {
+}
+.slatempreact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .StoreItemMasterReact svg:not(:root).svg-inline--fa {
+}
+.StoreItemMasterReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .modulereactShortcut .goodby {
-   background-color: #F3F3F3;
-   padding: 3px 5px;
- }
- .modulereactShortcut svg:not(:root).svg-inline--fa {
+}
+.modulereactShortcut .goodby {
+  background-color: #f3f3f3;
+  padding: 3px 5px;
+}
+.modulereactShortcut svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .StoreRaiseReact svg:not(:root).svg-inline--fa {
+}
+.StoreRaiseReact svg:not(:root).svg-inline--fa {
   overflow: visible;
-  color:#a7aaad;
+  color: #a7aaad;
   width: 20px;
   height: 18px;
   margin: -3px 0;
- }
- .editre {
+}
+.editre {
   color: #ffffff;
   font-family: Lato;
   font-size: 10px;
@@ -3061,11 +3079,11 @@ background: #a5a3a3;
   line-height: 23px;
   text-align: center;
   cursor: pointer;
- }
- .EditButtonUSer {
-   width: 180px;
- }
- .EditButtonUSer .collapse-title {
+}
+.EditButtonUSer {
+  width: 180px;
+}
+.EditButtonUSer .collapse-title {
   font-weight: 700;
   color: hsl(0, 0%, 29%);
   font-size: 14px;
@@ -3091,7 +3109,8 @@ background: #a5a3a3;
 }
 .EditButtonUSer .collapse-title[aria-expanded="true"] {
   background-color: #f3f3f3;
-  background: #f3f3f3 url("./../Images/table-arr-up.png") no-repeat right 8px center;
+  background: #f3f3f3 url("./../Images/table-arr-up.png") no-repeat right 8px
+    center;
   background-size: 11px;
   font-size: 14px;
   font-weight: 700;
@@ -3124,7 +3143,7 @@ background: #a5a3a3;
 }
 .EditButtonUSer .sup-agent-cntr .status-options {
   display: block;
-  margin:0;
+  margin: 0;
 }
 .EditButtonUSer .right-sect-div select {
   background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 15px
@@ -3147,13 +3166,15 @@ background: #a5a3a3;
 /* Akasha css start */
 
 .cus-cs .ant-select-selection {
-  border:none !important;
+  border: none !important;
 }
 .dropDrownSpace .ant-select-selection--single {
   background-color: #ecf2f4;
 }
 .cus-cs .ant-select-selection--single {
-  background: #ecf2f4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAICAYAAAAiJnXPAAAAcElEQVR4nJXPMQrCUBBF0TNGhTTRbVho4f43IQlkGyEIsVIL/w/ykQRvM/DgzpsJVNjgZZ3Ac4sdTqhXxMCEPlJwxAX7BemBDkN8hQ3OqbFkwg13Pr9kRrRpY9nQZqGUfolZGBfOnjngmuZflFfMvAHCTRZc4oUWEgAAAABJRU5ErkJggg==) no-repeat right 12px center;
+  background: #ecf2f4
+    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAICAYAAAAiJnXPAAAAcElEQVR4nJXPMQrCUBBF0TNGhTTRbVho4f43IQlkGyEIsVIL/w/ykQRvM/DgzpsJVNjgZZ3Ac4sdTqhXxMCEPlJwxAX7BemBDkN8hQ3OqbFkwg13Pr9kRrRpY9nQZqGUfolZGBfOnjngmuZflFfMvAHCTRZc4oUWEgAAAABJRU5ErkJggg==)
+    no-repeat right 12px center;
 }
 .cus-cs .ant-select-selection--single {
   height: 43px !important;
@@ -3172,18 +3193,18 @@ background: #a5a3a3;
 .chatpadtoggle {
   padding-right: 90px;
 }
-.canblue{
+.canblue {
   color: #2561a8 !important;
 }
 .Save-Use {
-    background-color: #2561a8;
-    border-radius: 4px;
-    min-width: 75px;
-    height: 30px;
-    line-height: 1;
-    cursor: pointer;
-    color: #fff;
-    margin: 0 5px;
+  background-color: #2561a8;
+  border-radius: 4px;
+  min-width: 75px;
+  height: 30px;
+  line-height: 1;
+  cursor: pointer;
+  color: #fff;
+  margin: 0 5px;
 }
 #UsEdit-popup {
   border-radius: 8px;
@@ -3197,7 +3218,6 @@ background: #a5a3a3;
 }
 /* Akasha css end */
 
-
 .drag-handle {
   cursor: move !important;
 }
@@ -3208,8 +3228,8 @@ background: #a5a3a3;
 }
 
 .dragging-container tbody tr {
-  background: #fff!important;
-  xtransition: none!important;
+  background: #fff !important;
+  xtransition: none !important;
 }
 
 .dragging-container tbody tr td {
@@ -3234,21 +3254,25 @@ background: #a5a3a3;
   top: -1px;
 }
 
-
-.dragging-container .ant-table-tbody > tr.ant-table-row-hover > td, 
-.dragging-container .ant-table-tbody > tr > td
-.dragging-container .ant-table-tbody > tr:hover > td {
-background: transparent;
+.dragging-container .ant-table-tbody > tr.ant-table-row-hover > td,
+.dragging-container
+  .ant-table-tbody
+  > tr
+  > td
+  .dragging-container
+  .ant-table-tbody
+  > tr:hover
+  > td {
+  background: transparent;
 }
 
 .store-pop-over-div {
   display: block;
   margin-top: 65px;
 }
-.storecancel{
+.storecancel {
   float: right;
   margin: 0;
-  
 }
 .ReNewBtn {
   font-family: Lato;
@@ -3291,32 +3315,32 @@ background: transparent;
   height: 175px;
   overflow-x: hidden;
   overflow-y: auto;
-  }
-  .FTypeScroll::-webkit-scrollbar {
+}
+.FTypeScroll::-webkit-scrollbar {
   width: 7px;
-  }
-  .FTypeScroll::-webkit-scrollbar-track {
+}
+.FTypeScroll::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
-  }
-  .FTypeScroll::-webkit-scrollbar-thumb {
+}
+.FTypeScroll::-webkit-scrollbar-thumb {
   background: #cac8c8;
   border-radius: 10px;
-  }
-  .FTypeScroll::-webkit-scrollbar-thumb:hover {
-  background: #a5a3a3;
-  }
-.mainfileUpload{
-  font-weight: 400;
-    border: 1px solid #99afc9;
-    border-radius: 8px;
-    width: 100%;
-    padding: 40px;
-    text-align: center;
-    margin-top: 15px;
-    cursor: pointer;
 }
-.fileupload-span{
+.FTypeScroll::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+}
+.mainfileUpload {
+  font-weight: 400;
+  border: 1px solid #99afc9;
+  border-radius: 8px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.fileupload-span {
   font-weight: 700;
   color: #2561a8;
 }

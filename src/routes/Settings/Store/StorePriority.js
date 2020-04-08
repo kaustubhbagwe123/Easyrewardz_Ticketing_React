@@ -515,10 +515,7 @@ class CreatePriority extends Component {
     this.setState(
       update(this.state, {
         priorityData: {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, dragRow],
-          ],
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
         },
       })
     );
