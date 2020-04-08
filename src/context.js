@@ -8,13 +8,11 @@ export const MyContext = React.createContext()
 // Then create a Provider Component
 export class MyProvider extends Component {
   state = {
-    isNavOpen: false,
     language: '',
     translateLanguage: {}
   }
 
   changeLanguage = (e) =>{
-    debugger;
     if (e.target.value === 'hindi') {
       this.state.translateLanguage = translationHI
     }
@@ -25,20 +23,10 @@ export class MyProvider extends Component {
       this.state.translateLanguage = {}
     }
     this.setState({
-      isNavOpen: !this.state.isNavOpen,
       language: e.target.value,
       translateLanguage: this.state.translateLanguage
     })
 
-    document.body.classList.toggle('nav-is-open')
-  }
-
-  toggleNav = () => {
-    this.setState({
-      isNavOpen: !this.state.isNavOpen,
-    })
-
-    document.body.classList.toggle('nav-is-open')
   }
 
   render() {
