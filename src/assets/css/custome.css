@@ -11571,3 +11571,11 @@ table tr th:last-child {
   margin-right: auto !important;
   min-width: 30%;
 }
+
+.knowticketID{
+  color: #2561A8 !important;
+  cursor: pointer;
+}
+.iskbticket{
+  pointer-events: none;
+}

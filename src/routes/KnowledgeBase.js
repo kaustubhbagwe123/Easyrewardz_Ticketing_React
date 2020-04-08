@@ -18,6 +18,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import matchSorter from "match-sorter";
 import ReactHtmlParser from "react-html-parser";
+import { Link } from "react-router-dom";
 
 class KnowledgeBase extends Component {
   constructor(props) {
@@ -124,7 +125,8 @@ class KnowledgeBase extends Component {
       ssubCategoryNameFilterCheckbox: "",
       sissueTypeNameFilterCheckbox: "",
       NisortA: false,
-      AisortA: false
+      AisortA: false,
+      similarTickets: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -158,7 +160,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         } else {
           this.setState({
@@ -167,7 +169,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         }
       }
@@ -180,7 +182,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         } else {
           this.setState({
@@ -189,7 +191,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         }
       }
@@ -202,7 +204,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         } else {
           this.setState({
@@ -211,7 +213,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         }
       }
@@ -225,7 +227,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         } else {
           this.setState({
@@ -234,7 +236,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         }
       }
@@ -247,7 +249,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         } else {
           this.setState({
@@ -256,7 +258,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         }
       }
@@ -269,7 +271,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         } else {
           this.setState({
@@ -278,7 +280,7 @@ class KnowledgeBase extends Component {
             StatusModel: true,
             sortColumnName: data,
             sortTable: table,
-            sortHeader: header
+            sortHeader: header,
           });
         }
       }
@@ -290,14 +292,14 @@ class KnowledgeBase extends Component {
       if (this.state.tempKBListData.length > 0) {
         this.setState({
           StatusModel: false,
-          KBListData: this.state.tempKBListData
+          KBListData: this.state.tempKBListData,
         });
         if (this.state.sortColumnName === "subCategoryName") {
           if (this.state.ssubCategoryNameFilterCheckbox === "") {
           } else {
             this.setState({
               scategoryNameFilterCheckbox: "",
-              sissueTypeNameFilterCheckbox: ""
+              sissueTypeNameFilterCheckbox: "",
             });
           }
         }
@@ -306,7 +308,7 @@ class KnowledgeBase extends Component {
           } else {
             this.setState({
               ssubCategoryNameFilterCheckbox: "",
-              sissueTypeNameFilterCheckbox: ""
+              sissueTypeNameFilterCheckbox: "",
             });
           }
         }
@@ -315,7 +317,7 @@ class KnowledgeBase extends Component {
           } else {
             this.setState({
               ssubCategoryNameFilterCheckbox: "",
-              scategoryNameFilterCheckbox: ""
+              scategoryNameFilterCheckbox: "",
             });
           }
         }
@@ -324,14 +326,14 @@ class KnowledgeBase extends Component {
           StatusModel: false,
           KBListData: this.state.AisortA
             ? this.state.KBListData
-            : this.state.sortAllDataApprove
+            : this.state.sortAllDataApprove,
         });
       }
     } else {
       if (this.state.tempKBListnotApproveData.length > 0) {
         this.setState({
           StatusModel: false,
-          KBListnotApproveData: this.state.tempKBListnotApproveData
+          KBListnotApproveData: this.state.tempKBListnotApproveData,
         });
 
         if (this.state.sortColumnName === "categoryName") {
@@ -339,7 +341,7 @@ class KnowledgeBase extends Component {
           } else {
             this.setState({
               ssubCategoryNameFilterCheckboxN: "",
-              sissueTypeNameFilterCheckboxN: ""
+              sissueTypeNameFilterCheckboxN: "",
             });
           }
         }
@@ -348,7 +350,7 @@ class KnowledgeBase extends Component {
           } else {
             this.setState({
               scategoryNameFilterCheckboxN: "",
-              sissueTypeNameFilterCheckboxN: ""
+              sissueTypeNameFilterCheckboxN: "",
             });
           }
         }
@@ -357,7 +359,7 @@ class KnowledgeBase extends Component {
           } else {
             this.setState({
               scategoryNameFilterCheckboxN: "",
-              ssubCategoryNameFilterCheckboxN: ""
+              ssubCategoryNameFilterCheckboxN: "",
             });
           }
         }
@@ -366,7 +368,7 @@ class KnowledgeBase extends Component {
           StatusModel: false,
           KBListnotApproveData: this.state.NisortA
             ? this.state.KBListnotApproveData
-            : this.state.sortAllData
+            : this.state.sortAllData,
         });
       }
     }
@@ -591,7 +593,7 @@ class KnowledgeBase extends Component {
       sissueTypeNameFilterCheckboxN,
       scategoryNameFilterCheckbox,
       ssubCategoryNameFilterCheckbox,
-      sissueTypeNameFilterCheckbox
+      sissueTypeNameFilterCheckbox,
     });
     var AllDataApprove = this.state.sortAllDataApprove;
     var sortAllData = this.state.sortAllData;
@@ -602,7 +604,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "",
           categoryColor: "",
-          subCategoryColor: ""
+          subCategoryColor: "",
         });
       } else if (column === "issueTypeName") {
         var sItems = sissueTypeNameFilterCheckboxN.split(",");
@@ -610,7 +612,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
               var tempFilterData = sortAllData.filter(
-                a => a.issueTypeName === sItems[i]
+                (a) => a.issueTypeName === sItems[i]
               );
               if (tempFilterData.length > 0) {
                 for (let j = 0; j < tempFilterData.length; j++) {
@@ -623,7 +625,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "sort-column",
           categoryColor: "",
-          subCategoryColor: ""
+          subCategoryColor: "",
         });
       } else if (column === "categoryName") {
         var sItems = scategoryNameFilterCheckboxN.split(",");
@@ -631,7 +633,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
               var tempFilterData = sortAllData.filter(
-                a => a.categoryName === sItems[i]
+                (a) => a.categoryName === sItems[i]
               );
               if (tempFilterData.length > 0) {
                 for (let j = 0; j < tempFilterData.length; j++) {
@@ -644,7 +646,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "",
           categoryColor: "sort-column",
-          subCategoryColor: ""
+          subCategoryColor: "",
         });
       } else if (column === "subCategoryName") {
         var sItems = ssubCategoryNameFilterCheckboxN.split(",");
@@ -652,7 +654,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
               var tempFilterData = sortAllData.filter(
-                a => a.subCategoryName === sItems[i]
+                (a) => a.subCategoryName === sItems[i]
               );
               if (tempFilterData.length > 0) {
                 for (let j = 0; j < tempFilterData.length; j++) {
@@ -665,7 +667,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "",
           categoryColor: "",
-          subCategoryColor: "sort-column"
+          subCategoryColor: "sort-column",
         });
       }
       this.setState({ tempKBListnotApproveData: itemsArray });
@@ -676,7 +678,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "",
           categoryColor: "",
-          subCategoryColor: ""
+          subCategoryColor: "",
         });
       } else if (column === "issueTypeName") {
         var sItems = sissueTypeNameFilterCheckbox.split(",");
@@ -684,7 +686,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
               var tempFilterData = AllDataApprove.filter(
-                a => a.issueTypeName === sItems[i]
+                (a) => a.issueTypeName === sItems[i]
               );
               if (tempFilterData.length > 0) {
                 for (let j = 0; j < tempFilterData.length; j++) {
@@ -697,7 +699,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "sort-column",
           categoryColor: "",
-          subCategoryColor: ""
+          subCategoryColor: "",
         });
       } else if (column === "categoryName") {
         var sItems = scategoryNameFilterCheckbox.split(",");
@@ -705,7 +707,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
               var tempFilterData = AllDataApprove.filter(
-                a => a.categoryName === sItems[i]
+                (a) => a.categoryName === sItems[i]
               );
               if (tempFilterData.length > 0) {
                 for (let j = 0; j < tempFilterData.length; j++) {
@@ -718,7 +720,7 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "",
           categoryColor: "sort-column",
-          subCategoryColor: ""
+          subCategoryColor: "",
         });
       } else if (column === "subCategoryName") {
         var sItems = ssubCategoryNameFilterCheckbox.split(",");
@@ -726,7 +728,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < sItems.length; i++) {
             if (sItems[i] !== "") {
               var tempFilterData = AllDataApprove.filter(
-                a => a.subCategoryName === sItems[i]
+                (a) => a.subCategoryName === sItems[i]
               );
               if (tempFilterData.length > 0) {
                 for (let j = 0; j < tempFilterData.length; j++) {
@@ -739,11 +741,11 @@ class KnowledgeBase extends Component {
         this.setState({
           issueColor: "",
           categoryColor: "",
-          subCategoryColor: "sort-column"
+          subCategoryColor: "sort-column",
         });
       }
       this.setState({
-        tempKBListData: itemsArray
+        tempKBListData: itemsArray,
       });
     }
 
@@ -755,7 +757,7 @@ class KnowledgeBase extends Component {
       searchmodal: true,
       selectedCategory: "",
       selectedSubCategory: "",
-      selectedIssueType: ""
+      selectedIssueType: "",
     });
   }
   closeSearchModal() {
@@ -765,7 +767,7 @@ class KnowledgeBase extends Component {
   openEditAproveBModal(rowdata) {
     this.setState({
       editapprove: true,
-      selectedCategory: this.state.updateCategoryValue
+      selectedCategory: this.state.updateCategoryValue,
     });
 
     this.setUpdateData(rowdata);
@@ -793,7 +795,7 @@ class KnowledgeBase extends Component {
       subjectCompulsion: "",
       selectedCategory: "",
       selectedSubCategory: "",
-      selectedIssueType: ""
+      selectedIssueType: "",
     });
   }
   closeAddNewKBModal() {
@@ -816,7 +818,7 @@ class KnowledgeBase extends Component {
       tabCount: 1,
       issueColor: "",
       categoryColor: "",
-      subCategoryColor: ""
+      subCategoryColor: "",
     });
   }
   setUpdateData(individualData) {
@@ -849,7 +851,7 @@ class KnowledgeBase extends Component {
       ckeditorUpdate,
       selectedCategory,
       selectedSubCategory,
-      selectedIssueType
+      selectedIssueType,
     });
   }
   setApproveData(individualData) {
@@ -882,30 +884,30 @@ class KnowledgeBase extends Component {
       ckeditorApprove,
       selectedCategory,
       selectedSubCategory,
-      selectedIssueType
+      selectedIssueType,
     });
   }
 
-  onAddCKEditorChange = evt => {
+  onAddCKEditorChange = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      ckeditorAdd: newContent
+      ckeditorAdd: newContent,
     });
   };
 
-  onUpdateCKEditorChange = evt => {
+  onUpdateCKEditorChange = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      ckeditorUpdate: newContent
+      ckeditorUpdate: newContent,
     });
   };
-  onApproveCKEditorChange = evt => {
+  onApproveCKEditorChange = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      ckeditorApprove: newContent
+      ckeditorApprove: newContent,
     });
   };
 
@@ -921,11 +923,12 @@ class KnowledgeBase extends Component {
       categoryColor: "",
       subCategoryColor: "",
       collapseId: "",
-      collapseUp: false
+      collapseUp: false,
+      similarTickets:[]
     });
   }
 
-  setCategoryValue = e => {
+  setCategoryValue = (e) => {
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -939,7 +942,7 @@ class KnowledgeBase extends Component {
     }, 1);
   };
 
-  setSubCategoryValue = e => {
+  setSubCategoryValue = (e) => {
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
     setTimeout(() => {
@@ -949,27 +952,27 @@ class KnowledgeBase extends Component {
     }, 1);
   };
 
-  setIssueType = e => {
+  setIssueType = (e) => {
     let issuetype = e.currentTarget.value;
     this.setState({ selectedIssueType: issuetype });
   };
 
-  setSubjectValue = e => {
+  setSubjectValue = (e) => {
     let subjectvalue = e.currentTarget.value;
     this.setState({ selectedSubject: subjectvalue });
   };
 
-  setUpdateSubjectValue = e => {
+  setUpdateSubjectValue = (e) => {
     let subjectvalue = e.currentTarget.value;
     this.setState({ updateSubject: subjectvalue });
   };
 
-  setApproveSubjectValue = e => {
+  setApproveSubjectValue = (e) => {
     let subjectvalue = e.currentTarget.value;
     this.setState({ approveSubject: subjectvalue });
   };
 
-  setDescriptionValue = e => {
+  setDescriptionValue = (e) => {
     let descriptionvalue = e.currentTarget.value;
     this.setState({ selectedDescription: descriptionvalue });
   };
@@ -980,18 +983,18 @@ class KnowledgeBase extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         let CategoryData = res.data;
         // let CategoryDataAll = res.data;
         self.setState({
-          CategoryData: CategoryData
+          CategoryData: CategoryData,
           // CategoryDataAll: CategoryDataAll
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1006,17 +1009,17 @@ class KnowledgeBase extends Component {
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: cateId
-      }
+        CategoryID: cateId,
+      },
     })
       .then(function(res) {
         debugger;
         var SubCategoryData = res.data.responseData;
         self.setState({
-          SubCategoryData: SubCategoryData
+          SubCategoryData: SubCategoryData,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1029,15 +1032,15 @@ class KnowledgeBase extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: subCateId
-      }
+        SubCategoryID: subCateId,
+      },
     })
       .then(function(res) {
         debugger;
         let IssueTypeData = res.data.responseData;
         self.setState({ IssueTypeData: IssueTypeData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1050,8 +1053,8 @@ class KnowledgeBase extends Component {
       url: config.apiUrl + "/KnowledgeBase/DeleteKB",
       headers: authHeader(),
       params: {
-        KBID: id
-      }
+        KBID: id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1063,7 +1066,7 @@ class KnowledgeBase extends Component {
           self.handleKBList();
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1080,13 +1083,13 @@ class KnowledgeBase extends Component {
         IssueTypeID: 0,
         IsApproved: bit,
         Subject: "",
-        Description: ""
+        Description: "",
       };
       axios({
         method: "post",
         url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -1098,7 +1101,7 @@ class KnowledgeBase extends Component {
 
           self.handleKBList();
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -1120,13 +1123,13 @@ class KnowledgeBase extends Component {
           IssueTypeID: this.state.selectedIssueType,
           IsApproved: bit,
           Subject: this.state.approveSubject,
-          Description: ckeditor
+          Description: ckeditor,
         };
         axios({
           method: "post",
           url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
           headers: authHeader(),
-          data: jsonData
+          data: jsonData,
         })
           .then(function(res) {
             debugger;
@@ -1138,7 +1141,7 @@ class KnowledgeBase extends Component {
             self.closeEditAproveModal1();
             self.handleKBList();
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
       } else {
@@ -1146,7 +1149,7 @@ class KnowledgeBase extends Component {
           approveCategoryCompulsion: "Category field is compulsory.",
           approveSubCategoryCompulsion: "Sub Category field is compulsory.",
           approveIssueTypeCompulsion: "Issue Type field is compulsory.",
-          approveSubjectCompulsion: "Subject field is compulsory."
+          approveSubjectCompulsion: "Subject field is compulsory.",
         });
       }
     }
@@ -1158,7 +1161,7 @@ class KnowledgeBase extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/KnowledgeBase/KBList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1171,7 +1174,7 @@ class KnowledgeBase extends Component {
           KBListData: approve,
           KBListnotApproveData: notapprove,
           countApprove: approveconut,
-          countNotApprove: notapproveconut
+          countNotApprove: notapproveconut,
         });
 
         if (notapprove !== null) {
@@ -1187,7 +1190,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
             self.state.sortFilterIssueTypeNot.push({
-              issueTypeName: distinct[i]
+              issueTypeName: distinct[i],
             });
           }
 
@@ -1202,7 +1205,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCategory.push({ categoryName: distinct[i] });
             self.state.sortFilterCategoryNot.push({
-              categoryName: distinct[i]
+              categoryName: distinct[i],
             });
           }
 
@@ -1217,7 +1220,7 @@ class KnowledgeBase extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
             self.state.sortFilterSubCategoryNot.push({
-              subCategoryName: distinct[i]
+              subCategoryName: distinct[i],
             });
           }
         }
@@ -1234,10 +1237,10 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueTypeApprove.push({
-              issueTypeName: distinct[i]
+              issueTypeName: distinct[i],
             });
             self.state.sortFilterIssueType.push({
-              issueTypeName: distinct[i]
+              issueTypeName: distinct[i],
             });
           }
 
@@ -1264,25 +1267,25 @@ class KnowledgeBase extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSubCategoryApprove.push({
-              subCategoryName: distinct[i]
+              subCategoryName: distinct[i],
             });
             self.state.sortFilterSubCategory.push({
-              subCategoryName: distinct[i]
+              subCategoryName: distinct[i],
             });
           }
         }
 
         if (self.state.tabCount === 1) {
           self.setState({
-            kbClearNew: false
+            kbClearNew: false,
           });
         } else {
           self.setState({
-            kbClearList: false
+            kbClearList: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1302,8 +1305,8 @@ class KnowledgeBase extends Component {
         params: {
           Category_ID: this.state.selectedCategory,
           SubCategory_ID: this.state.selectedSubCategory,
-          type_ID: this.state.selectedIssueType
-        }
+          type_ID: this.state.selectedIssueType,
+        },
       })
         .then(function(res) {
           debugger;
@@ -1311,7 +1314,10 @@ class KnowledgeBase extends Component {
           var notapprove = res.data.responseData.notApproved;
           var approveconut = res.data.responseData.approved.length;
           var notapproveconut = res.data.responseData.notApproved.length;
+          var similarTickets = res.data.responseData.similarTickets;
+
           self.setState({
+            similarTickets,
             // KBListData: approve,
             // KBListnotApproveData: notapprove,
             // countApprove: approveconut,
@@ -1323,31 +1329,31 @@ class KnowledgeBase extends Component {
             selectedIssueType: "",
             searchCategoryCompulsion: "",
             searchSubCategoryCompulsion: "",
-            searchIssueCompulsion: ""
+            searchIssueCompulsion: "",
           });
           if (self.state.tabCount === 1) {
             self.setState({
               kbClearNew: true,
               KBListnotApproveData: notapprove,
-              countNotApprove: notapproveconut
+              countNotApprove: notapproveconut,
             });
           } else {
             self.setState({
               kbClearList: true,
               KBListData: approve,
-              countApprove: approveconut
+              countApprove: approveconut,
             });
           }
           self.closeSearchModal();
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
         searchCategoryCompulsion: "Please select category.",
         searchSubCategoryCompulsion: "Please select subcategory.",
-        searchIssueCompulsion: "Please select issuetype."
+        searchIssueCompulsion: "Please select issuetype.",
       });
     }
   }
@@ -1372,13 +1378,13 @@ class KnowledgeBase extends Component {
         Subject: this.state.updateSubject,
         Description: ckeditor,
 
-        IssueTypeID: this.state.selectedIssueType
+        IssueTypeID: this.state.selectedIssueType,
       };
       axios({
         method: "post",
         url: config.apiUrl + "/KnowledgeBase/UpdateKB",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -1391,7 +1397,7 @@ class KnowledgeBase extends Component {
           self.closeEditAproveModal();
           self.handleKBList();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -1399,7 +1405,7 @@ class KnowledgeBase extends Component {
         updateCategoryCompulsion: "Category field is compulsory.",
         updateSubCategoryCompulsion: "Sub Category field is compulsory.",
         updateIssueTypeCompulsion: "Issue Type field is compulsory.",
-        updateSubjectCompulsion: "Subject field is compulsory."
+        updateSubjectCompulsion: "Subject field is compulsory.",
       });
     }
   }
@@ -1426,13 +1432,13 @@ class KnowledgeBase extends Component {
         Subject: this.state.selectedSubject,
         Description: ckeditor,
         IsActive: 1,
-        IssueTypeID: this.state.selectedIssueType
+        IssueTypeID: this.state.selectedIssueType,
       };
       axios({
         method: "post",
         url: config.apiUrl + "/KnowledgeBase/AddKB",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -1445,12 +1451,12 @@ class KnowledgeBase extends Component {
             selectedSubCategory: "",
             selectedIssueType: "",
             selectedSubject: "",
-            ckeditorAdd: ""
+            ckeditorAdd: "",
           });
           self.closeAddNewKBModal();
           self.handleKBList();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -1458,7 +1464,7 @@ class KnowledgeBase extends Component {
         categoryCompulsion: "Category field is compulsory.",
         subCategoryCompulsion: "Sub Category field is compulsory.",
         issueTypeCompulsion: "Issue Type field is compulsory.",
-        subjectCompulsion: "Subject field is compulsory."
+        subjectCompulsion: "Subject field is compulsory.",
       });
     }
   }
@@ -1493,7 +1499,7 @@ class KnowledgeBase extends Component {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueTypeApprove
+          sortFilterIssueType: this.state.sortIssueTypeApprove,
         });
       }
     }
@@ -1507,7 +1513,7 @@ class KnowledgeBase extends Component {
         this.setState({ sortFilterCategory });
       } else {
         this.setState({
-          sortFilterCategory: this.state.sortCategoryApprove
+          sortFilterCategory: this.state.sortCategoryApprove,
         });
       }
     }
@@ -1521,7 +1527,7 @@ class KnowledgeBase extends Component {
         this.setState({ sortFilterSubCategory });
       } else {
         this.setState({
-          sortFilterSubCategory: this.state.sortSubCategoryApprove
+          sortFilterSubCategory: this.state.sortSubCategoryApprove,
         });
       }
     }
@@ -1561,12 +1567,12 @@ class KnowledgeBase extends Component {
     if (this.state.sortTable == "approve") {
       this.setState({
         AisortA: true,
-        KBListData: itemsArray
+        KBListData: itemsArray,
       });
     } else {
       this.setState({
         NisortA: true,
-        KBListnotApproveData: itemsArray
+        KBListnotApproveData: itemsArray,
       });
     }
     setTimeout(() => {
@@ -1609,12 +1615,12 @@ class KnowledgeBase extends Component {
     if (this.state.sortTable == "approve") {
       this.setState({
         AisortA: true,
-        KBListData: itemsArray
+        KBListData: itemsArray,
       });
     } else {
       this.setState({
         NisortA: true,
-        KBListnotApproveData: itemsArray
+        KBListnotApproveData: itemsArray,
       });
     }
 
@@ -1947,7 +1953,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "kbid",
                     width: 100,
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <div>
@@ -1955,7 +1961,7 @@ class KnowledgeBase extends Component {
                           </div>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -1967,7 +1973,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "subject",
                     minWidth: 175,
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span className="table-details-data">
                           <label className="table-details-data">
@@ -1995,7 +2001,7 @@ class KnowledgeBase extends Component {
                           </UncontrolledCollapse>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2014,7 +2020,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "issueTypeName",
 
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <div>
@@ -2024,7 +2030,7 @@ class KnowledgeBase extends Component {
                           </div>
                         </span>
                       );
-                    }
+                    },
                   },
 
                   {
@@ -2043,7 +2049,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "categoryName",
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <label className="table-category">
@@ -2051,7 +2057,7 @@ class KnowledgeBase extends Component {
                           </label>{" "}
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2069,7 +2075,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subCategoryName",
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <label className="table-subcategory">
@@ -2077,7 +2083,7 @@ class KnowledgeBase extends Component {
                           </label>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2087,7 +2093,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "kbid",
                     width: 200,
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <button
@@ -2116,8 +2122,8 @@ class KnowledgeBase extends Component {
                           </button>
                         </span>
                       );
-                    }
-                  }
+                    },
+                  },
                 ]}
                 // resizable={false}
                 defaultPageSize={10}
@@ -2126,38 +2132,140 @@ class KnowledgeBase extends Component {
                 getTrProps={this.HandleRowClickPage}
               />
             </div>
+
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
+              <h4>Similar Type of Tickets</h4>
+              <ReactTable
+                data={this.state.similarTickets}
+                columns={[
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Ticket ID</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "ticketID",
+                    width: 100,
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label
+                              title={"Ticket ID"}
+                              className="table-category knowticketID"
+                            >
+                              <Link
+                                to={{
+                                  pathname: "myticket",
+                                  ticketDetailID: row.original.ticketID,
+                                  isKB: true,
+                                }}
+                              >
+                                {row.original.ticketID}
+                              </Link>
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Ticket Tital</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "subject",
+                    width: 175,
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.subject}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Type</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "issueTypeName",
+
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.issueTypeName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Category</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "categoryName",
+
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.categoryName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Sub Category</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "subCategoryName",
+
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.subCategoryName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                ]}
+                minRows={2}
+                showPagination={true}
+                defaultPageSize={5}
+              />
+            </div>
           </div>
-          {/* <div className="pagi">
-            <ul>
-              <li>
-                <a href={Demo.BLANK_LINK}>&lt;</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>1</a>
-              </li>
-              <li className="active">
-                <a href={Demo.BLANK_LINK}>2</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>3</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>4</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>5</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>6</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>7</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>&gt;</a>
-              </li>
-            </ul>
-          </div> */}
         </div>
 
         <div
@@ -2205,7 +2313,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "kbid",
                     width: 100,
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <div>
@@ -2213,7 +2321,7 @@ class KnowledgeBase extends Component {
                           </div>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2225,7 +2333,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "subject",
                     minWidth: 175,
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span className="table-details-data">
                           <label className="table-details-data">
@@ -2251,7 +2359,7 @@ class KnowledgeBase extends Component {
                           </UncontrolledCollapse>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2270,7 +2378,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "issueTypeName",
 
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <div>
@@ -2280,7 +2388,7 @@ class KnowledgeBase extends Component {
                           </div>
                         </span>
                       );
-                    }
+                    },
                   },
 
                   {
@@ -2299,7 +2407,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "categoryName",
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <label className="table-category">
@@ -2307,7 +2415,7 @@ class KnowledgeBase extends Component {
                           </label>{" "}
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2325,7 +2433,7 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subCategoryName",
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <span>
                           <label className="table-subcategory">
@@ -2333,7 +2441,7 @@ class KnowledgeBase extends Component {
                           </label>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -2343,7 +2451,7 @@ class KnowledgeBase extends Component {
                     ),
                     accessor: "kbid",
                     width: 200,
-                    Cell: row => {
+                    Cell: (row) => {
                       return (
                         <>
                           <span>
@@ -2374,14 +2482,146 @@ class KnowledgeBase extends Component {
                           </span>
                         </>
                       );
-                    }
-                  }
+                    },
+                  },
                 ]}
                 // resizable={false}
                 minRows={2}
                 defaultPageSize={10}
                 showPagination={true}
                 getTrProps={this.HandleRowClickPage}
+              />
+            </div>
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
+              <h4>Similar Type of Tickets</h4>
+              <ReactTable
+                data={this.state.similarTickets}
+                columns={[
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Ticket ID</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "ticketID",
+                    width: 100,
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label
+                              title={"Ticket ID"}
+                              className="table-category knowticketID"
+                            >
+                              <Link
+                                to={{
+                                  pathname: "myticket",
+                                  ticketDetailID: row.original.ticketID,
+                                  isKB: true,
+                                }}
+                              >
+                                {row.original.ticketID}
+                              </Link>
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Ticket Tital</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "subject",
+                    width: 175,
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.subject}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Type</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "issueTypeName",
+
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.issueTypeName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Category</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "categoryName",
+
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.categoryName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>Sub Category</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "subCategoryName",
+
+                    Cell: (row) => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-category">
+                              {row.original.subCategoryName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    },
+                  },
+                ]}
+                minRows={2}
+                showPagination={true}
+                defaultPageSize={5}
               />
             </div>
           </div>
@@ -2623,33 +2863,33 @@ class KnowledgeBase extends Component {
                       toolbar: [
                         {
                           name: "basicstyles",
-                          items: ["Bold", "Italic", "Strike"]
+                          items: ["Bold", "Italic", "Strike"],
                         },
                         {
                           name: "styles",
-                          items: ["Styles", "Format"]
+                          items: ["Styles", "Format"],
                         },
                         {
                           name: "paragraph",
-                          items: ["NumberedList", "BulletedList"]
+                          items: ["NumberedList", "BulletedList"],
                         },
                         {
                           name: "links",
-                          items: ["Link", "Unlink"]
+                          items: ["Link", "Unlink"],
                         },
                         {
                           name: "insert",
-                          items: ["Image", "Table"]
+                          items: ["Image", "Table"],
                         },
                         {
                           name: "tools",
-                          items: ["Maximize"]
+                          items: ["Maximize"],
                         },
                         {
                           name: "editing",
-                          items: ["Scayt"]
-                        }
-                      ]
+                          items: ["Scayt"],
+                        },
+                      ],
                     }}
                   />
                 </div>
@@ -2793,33 +3033,33 @@ class KnowledgeBase extends Component {
                       toolbar: [
                         {
                           name: "basicstyles",
-                          items: ["Bold", "Italic", "Strike"]
+                          items: ["Bold", "Italic", "Strike"],
                         },
                         {
                           name: "styles",
-                          items: ["Styles", "Format"]
+                          items: ["Styles", "Format"],
                         },
                         {
                           name: "paragraph",
-                          items: ["NumberedList", "BulletedList"]
+                          items: ["NumberedList", "BulletedList"],
                         },
                         {
                           name: "links",
-                          items: ["Link", "Unlink"]
+                          items: ["Link", "Unlink"],
                         },
                         {
                           name: "insert",
-                          items: ["Image", "Table"]
+                          items: ["Image", "Table"],
                         },
                         {
                           name: "tools",
-                          items: ["Maximize"]
+                          items: ["Maximize"],
                         },
                         {
                           name: "editing",
-                          items: ["Scayt"]
-                        }
-                      ]
+                          items: ["Scayt"],
+                        },
+                      ],
                     }}
                   />
                 </div>
@@ -2968,33 +3208,33 @@ class KnowledgeBase extends Component {
                       toolbar: [
                         {
                           name: "basicstyles",
-                          items: ["Bold", "Italic", "Strike"]
+                          items: ["Bold", "Italic", "Strike"],
                         },
                         {
                           name: "styles",
-                          items: ["Styles", "Format"]
+                          items: ["Styles", "Format"],
                         },
                         {
                           name: "paragraph",
-                          items: ["NumberedList", "BulletedList"]
+                          items: ["NumberedList", "BulletedList"],
                         },
                         {
                           name: "links",
-                          items: ["Link", "Unlink"]
+                          items: ["Link", "Unlink"],
                         },
                         {
                           name: "insert",
-                          items: ["Image", "Table"]
+                          items: ["Image", "Table"],
                         },
                         {
                           name: "tools",
-                          items: ["Maximize"]
+                          items: ["Maximize"],
                         },
                         {
                           name: "editing",
-                          items: ["Scayt"]
-                        }
-                      ]
+                          items: ["Scayt"],
+                        },
+                      ],
                     }}
                   />
                 </div>
