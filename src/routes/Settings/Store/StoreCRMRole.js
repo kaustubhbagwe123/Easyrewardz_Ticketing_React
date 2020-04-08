@@ -25,6 +25,7 @@ import axios from "axios";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
+import Dropzone from "react-dropzone";
 
 class StoreCRMRole extends Component {
   constructor(props) {
@@ -96,7 +97,7 @@ class StoreCRMRole extends Component {
   fileUpload = e => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -1396,22 +1397,27 @@ class StoreCRMRole extends Component {
                   <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
-                    Template
+                     Template 
                     <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
-                      <img src={DownExcel} alt="download icon" />
+                      <img src={DownExcel} alt="download icon" style={{marginLeft:"5px"}} />
                     </CSVLink>
-                    <input
-                      id="file-upload"
-                      className="file-upload d-none"
-                      type="file"
-                      onChange={this.fileUpload.bind(this)}
-                    />
-                    <label htmlFor="file-upload">
-                      <div className="file-icon">
-                        <img src={FileUpload} alt="file-upload" />
-                      </div>
-                      <span>Add File</span> or Drop File here
-                    </label>
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>Add File</span>
+                            or Drop File here
+                          </div>
+                        )}
+                      </Dropzone>
+                    </div>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.bulkuploadCompulsion}

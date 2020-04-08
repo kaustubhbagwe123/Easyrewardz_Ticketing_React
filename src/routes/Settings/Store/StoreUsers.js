@@ -13,141 +13,432 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
 import ReactTable from "react-table";
+import { authHeader } from "../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import Select from "react-select";
 
 class StoreUsers extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fileName: ""
+      fileName: "",
+      brandData: [],
+      storeCodeData: [],
+      departmentData: [],
+      functionData: [],
+      selectBrand: 0,
+      selectStore: 0,
+      brandCompulsory: "",
+      storeCodeCompulsory: "",
+      checkPersonalDetailTab: "",
+      checkProfileDetailTab: "",
+      userName: "",
+      mobile_no: "",
+      email_Id: "",
+      phoneFlag: true,
+      emailFlag: true,
+      mobilenumberCompulsory: "",
+      userNameCompulsory: "",
+      departmentCompulsory: "",
+      designationCompulsory: "",
+      reportDesignationCompulsory: "",
+      reportToCompulsory: "",
+      emailCompulsory: "",
+      mobileValidation: "",
+      emailValidation: "",
+      selectDepartment: 0,
+      selectDesignation: 0,
+      selectReportDesignation: 0,
+      selectReportTo: 0,
+      selectedFunction: [],
+      userDesignationData: [],
+      reportDesignation: [],
+      reportToData: [],
     };
+    this.handleGetBrandData = this.handleGetBrandData.bind(this);
+    this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
+    this.handleGetDepartmentData = this.handleGetDepartmentData.bind(this);
+    this.handleGetFunctionData = this.handleGetFunctionData.bind(this);
+    this.handleGetUserDesignationData = this.handleGetUserDesignationData.bind(
+      this
+    );
+    this.handleGetRepoteeDesignationData = this.handleGetRepoteeDesignationData.bind(
+      this
+    );
+    this.handleGetReportToData = this.handleGetReportToData.bind(this);
   }
 
-  fileUpload = e => {
+  componentDidMount() {
+    this.handleGetBrandData();
+    this.handleGetstoreCodeData();
+    this.handleGetUserDesignationData();
+  }
+
+  fileUpload = (e) => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  fileDrop = e => {
+  fileDrop = (e) => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
+
+  /// drop down on change
+  handleBrandAndStoreChange = (e) => {
+    debugger;
+    let value = e.target.value;
+    let name = e.target.name;
+    if (name === "brandName") {
+      this.setState({
+        selectBrand: value,
+        departmentData: [],
+        functionData: [],
+        selectedFunction: [],
+      });
+    } else if (name === "storeCode") {
+      this.setState({
+        selectStore: value,
+        departmentData: [],
+        functionData: [],
+        selectedFunction: [],
+      });
+    }
+    setTimeout(() => {
+      if (this.state.selectBrand && this.state.selectStore) {
+        var brandId = this.state.selectBrand;
+        var storeId = this.state.selectStore;
+        this.handleGetDepartmentData(brandId, storeId);
+      }
+    }, 1);
+  };
+  /// Department drop down OnChange
+  handleDepartmentOnChange = (e) => {
+    let value = e.target.value;
+    this.setState({
+      selectDepartment: value,
+      functionData: [],
+      selectedFunction: [],
+    });
+    setTimeout(() => {
+      if (this.state.selectDepartment) {
+        this.handleGetFunctionData();
+      }
+    }, 1);
+  };
+  /// handle onchange for drop down
+  handleDropDownOnChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "selectDesignation") {
+      this.setState({
+        selectDesignation: value,
+        reportDesignation: [],
+      });
+      setTimeout(() => {
+        if (this.state.selectDesignation) {
+          this.handleGetRepoteeDesignationData();
+        }
+      }, 1);
+    } else if (name === "selectReportDesignation") {
+      this.setState({
+        selectReportDesignation: value,
+      });
+      setTimeout(() => {
+        if (this.state.selectReportDesignation) {
+          this.handleGetReportToData();
+        }
+      }, 1);
+    } else if (name === "selectReportTo") {
+      this.setState({
+        selectReportTo: value,
+      });
+    }
+  };
+  /// Onchange for Mobile no
+  hanldeMobileNoChange = (e) => {
+    debugger;
+    var name = e.target.name;
+    var reg = /^[0-9\b]+$/;
+    if (name === "mobile_no") {
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        this.setState({ [e.target.name]: e.target.value });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length === 10 || e.target.value.length === 0) {
+        this.setState({
+          phoneFlag: true,
+        });
+      } else {
+        this.setState({
+          phoneFlag: false,
+        });
+      }
+    }
+  };
+  /// Onchange function
+  handleOnChangeUserData = (e) => {
+    debugger;
+    var name = e.target.name;
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+    if (name === "email_Id") {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (e.target.value === "") {
+        this.setState({
+          emailFlag: true,
+        });
+      } else if (reg.test(e.target.value) === false) {
+        this.setState({
+          emailFlag: false,
+        });
+      } else {
+        this.setState({
+          emailFlag: true,
+        });
+      }
+    }
+  };
+  /// handle Function Onchange
+  handleFunctionChange(e) {
+    this.setState({ selectedFunction: e });
+  }
+  // -------------------API Start------------------------
+  ////get Brand data for dropdown
+  handleGetBrandData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ brandData: data });
+        } else {
+          self.setState({ brandData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  ////get Store Code for dropdown
+  handleGetstoreCodeData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/StoreList",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ storeCodeData: data });
+        } else {
+          self.setState({ storeCodeData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
+  /// handle Get Department Data by Brand and store id  for dropdown list
+  handleGetDepartmentData(brand_id, store_id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindDepartmentByBrandAndStore",
+      headers: authHeader(),
+      params: {
+        BrandID: brand_id,
+        storeID: store_id,
+      },
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ departmentData: data });
+        } else {
+          self.setState({ departmentData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// handle Get Function data by department id for drop down list
+  handleGetFunctionData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
+      headers: authHeader(),
+      params: {
+        DepartmentId: this.state.selectDepartment,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ functionData: data });
+        } else {
+          self.setState({ functionData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  ////get User Designation data for dropdown
+  handleGetUserDesignationData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreHierarchy/GetStoreDesignationList",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ userDesignationData: data });
+        } else {
+          self.setState({ userDesignationData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// handle get Repotee designation by Designation id for dropdown
+  handleGetRepoteeDesignationData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreReporteeDesignation",
+      headers: authHeader(),
+      params: {
+        DesignationID: this.state.selectDesignation,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ reportDesignation: data });
+        } else {
+          self.setState({ reportDesignation: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle get Report to data by designation id and isStoreUser for dropdown list
+  handleGetReportToData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreReportToUser",
+      headers: authHeader(),
+      params: {
+        DesignationID: this.state.selectReportDesignation,
+        IsStoreUser: true,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ reportToData: data });
+        } else {
+          self.setState({ reportToData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  //// handle Save Store Details
+  handleSaveStoreDetails() {
+    debugger;
+    if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
+      alert("Store Details");
+      this.setState({
+        checkPersonalDetailTab: "#personal-details",
+      });
+    } else {
+      this.setState({
+        brandCompulsory: "Please Select Brand.",
+        storeCodeCompulsory: "Please Select Store Code.",
+      });
+    }
+  }
+  //// handle Save Personal Details
+  handleSavePersonalDetails() {
+    debugger;
+    if (
+      this.state.userName.length > 0 &&
+      this.state.mobile_no.length > 0 &&
+      this.state.email_Id.length > 0 &&
+      this.state.emailFlag === true &&
+      this.state.phoneFlag === true
+    ) {
+      alert("Personal Details");
+      this.setState({
+        checkProfileDetailTab: "#profile-Details",
+      });
+    } else {
+      this.setState({
+        userNameCompulsory: "Please enter user name.",
+        mobilenumberCompulsory: "Please enter mobile no.",
+        emailCompulsory: "Please enter email id.",
+      });
+    }
+  }
   render() {
     const dataStorUser = [
       {
         id: "H1",
         Desig: <span>Store Manager</span>,
         Report: <span>Root</span>,
-        status: <span>Active</span>
+        status: <span>Active</span>,
       },
       {
         id: "H2",
         Desig: <span>Store Executive</span>,
         Report: <span>Store Manager</span>,
-        status: <span>Inactive</span>
-      }
+        status: <span>Inactive</span>,
+      },
     ];
 
-    const columnsStorUser = [
-      {
-        Header: (
-          <span>
-            Brand Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "brandName",
-        Cell: row => <span>Bata1</span>
-      },
-      {
-        Header: (
-          <span>
-            Store Code
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "storeCode",
-        Cell: row => <span>1234</span>
-      },
-      {
-        Header: (
-          <span>
-            User Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "uName",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Vikas
-                <Popover content={popoverData} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span>
-            Reportee Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "ReporName",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Naman
-                <Popover content={popoverData} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span>
-            Department
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Dept",
-        Cell: row => <span>IT</span>
-      },
-      {
-        Header: (
-          <span>
-            Function
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Fun",
-        Cell: row => <span>Infra</span>
-      }
-    ];
     const popoverData = (
       <>
         <div>
@@ -172,7 +463,13 @@ class StoreUsers extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link
+            to={{
+              pathname: "/admin/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
             Store
           </Link>
           <span>&gt;</span>
@@ -187,12 +484,113 @@ class StoreUsers extends Component {
                 <div className="table-cntr table-height StoreUserReact">
                   <ReactTable
                     data={dataStorUser}
-                    columns={columnsStorUser}
-                    // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
+                            Brand Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "brandName",
+                        Cell: (row) => <span>Bata1</span>,
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Store Code
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "storeCode",
+                        Cell: (row) => <span>1234</span>,
+                      },
+                      {
+                        Header: (
+                          <span>
+                            User Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "uName",
+                        Cell: (row) => {
+                          var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                Vikas
+                                <Popover
+                                  content={popoverData}
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Reportee Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "ReporName",
+                        Cell: (row) => {
+                          var ids = row.original["id"];
+                          return (
+                            <div>
+                              <span>
+                                Naman
+                                <Popover
+                                  content={popoverData}
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Department
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "Dept",
+                        Cell: (row) => <span>IT</span>,
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Function
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "Fun",
+                        Cell: (row) => <span>Infra</span>,
+                      },
+                    ]}
+                    minRows={2}
+                    defaultPageSize={10}
+                    showPagination={true}
                   />
-                 <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -229,7 +627,7 @@ class StoreUsers extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -250,21 +648,61 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Brand</label>
                         <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
+                          className="store-create-select"
+                          name="brandName"
+                          value={this.state.selectBrand}
+                          onChange={this.handleBrandAndStoreChange}
                         >
-                          <option>Bata</option>
+                          <option>Select</option>
+                          {this.state.brandData !== null &&
+                            this.state.brandData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.brandID}
+                                className="select-category-placeholder"
+                              >
+                                {item.brandName}
+                              </option>
+                            ))}
                         </select>
+                        {this.state.selectBrand === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.brandCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Store Code</label>
-                        <input type="text" placeholder="Enter Store Code" maxLength={10} />
+                        <select
+                          className="store-create-select"
+                          name="storeCode"
+                          value={this.state.selectStore}
+                          onChange={this.handleBrandAndStoreChange}
+                        >
+                          <option>Select</option>
+                          {this.state.storeCodeData !== null &&
+                            this.state.storeCodeData.map((item, s) => (
+                              <option
+                                key={s}
+                                value={item.storeID}
+                                className="select-category-placeholder"
+                              >
+                                {item.storeCode}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectStore === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.storeCodeCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="btn-coll">
                         <button
-                          data-target="#profile-details"
+                          data-target={this.state.checkPersonalDetailTab}
                           data-toggle="collapse"
                           className="butn"
+                          onClick={this.handleSaveStoreDetails.bind(this)}
                         >
                           SAVE &amp; NEXT
                         </button>
@@ -288,21 +726,77 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>User Name</label>
-                        <input type="text" placeholder="Enter User Name" maxLength={25} />
+                        <input
+                          type="text"
+                          placeholder="Enter User Name"
+                          maxLength={25}
+                          autoComplete="off"
+                          name="userName"
+                          value={this.state.userName}
+                          onChange={this.handleOnChangeUserData}
+                        />
+                        {this.state.userName.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.userNameCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
-                        <input type="text" placeholder="Enter Mobile Number" maxLength={10} />
+                        <input
+                          type="text"
+                          placeholder="Enter Mobile Number"
+                          maxLength={10}
+                          name="mobile_no"
+                          value={this.state.mobile_no}
+                          onChange={this.hanldeMobileNoChange}
+                          autoComplete="off"
+                        />
+                        {this.state.phoneFlag === false && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            Please enter valid Mobile Number.
+                          </p>
+                        )}
+                        {this.state.mobile_no.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.mobilenumberCompulsory}
+                          </p>
+                        )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.mobileValidation}
+                        </p>
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
-                        <input type="text" placeholder="Enter Email ID" maxLength={100} />
+                        <input
+                          type="text"
+                          placeholder="Enter Email ID"
+                          maxLength={100}
+                          name="email_Id"
+                          value={this.state.email_Id}
+                          onChange={this.handleOnChangeUserData}
+                          autoComplete="off"
+                        />
+                        {this.state.emailFlag === false && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            Please enter valid Email Id.
+                          </p>
+                        )}
+                        {this.state.email_Id.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.emailCompulsory}
+                          </p>
+                        )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.emailValidation}
+                        </p>
                       </div>
                       <div className="btn-coll">
                         <button
-                          data-target="#mapped-category"
+                          data-target={this.state.checkProfileDetailTab}
                           data-toggle="collapse"
                           className="butn"
+                          onClick={this.handleSavePersonalDetails.bind(this)}
                         >
                           SAVE &amp; NEXT
                         </button>
@@ -326,36 +820,135 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>Department</label>
-                        <select>
-                          <option>Admin</option>
+                        <select
+                          className="store-create-select"
+                          name="selectDepartment"
+                          value={this.state.selectDepartment}
+                          onChange={this.handleDepartmentOnChange}
+                        >
+                          <option>Select</option>
+                          {this.state.departmentData !== null &&
+                            this.state.departmentData.map((item, d) => (
+                              <option
+                                key={d}
+                                value={item.departmentID}
+                                className="select-category-placeholder"
+                              >
+                                {item.departmentName}
+                              </option>
+                            ))}
                         </select>
+                        {this.state.selectDepartment === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.departmentCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Function</label>
-                        <select>
-                          <option>Attendence</option>
-                        </select>
+                        <Select
+                          getOptionLabel={(option) => option.funcationName}
+                          getOptionValue={(option) => option.functionID}
+                          options={this.state.functionData}
+                          placeholder="Select"
+                          closeMenuOnSelect={false}
+                          name="selectedFunction"
+                          onChange={this.handleFunctionChange.bind(this)}
+                          value={this.state.selectedFunction}
+                          isMulti
+                        />
+                        {this.state.selectedFunction.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.storeCodeCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>User Designation</label>
-                        <select>
-                          <option>Manager</option>
+                        <select
+                          className="store-create-select"
+                          name="selectDesignation"
+                          value={this.state.selectDesignation}
+                          onChange={this.handleDropDownOnChange}
+                        >
+                          <option>Select</option>
+                          {this.state.userDesignationData !== null &&
+                            this.state.userDesignationData.map((item, d) => (
+                              <option
+                                key={d}
+                                value={item.designationID}
+                                className="select-category-placeholder"
+                              >
+                                {item.designationName}
+                              </option>
+                            ))}
                         </select>
+                        {this.state.selectDesignation === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.designationCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
-                        <select>
-                          <option>HOD</option>
+                        <select
+                          className="store-create-select"
+                          name="selectReportDesignation"
+                          value={this.state.selectReportDesignation}
+                          onChange={this.handleDropDownOnChange}
+                        >
+                          <option>Select</option>
+                          {this.state.reportDesignation !== null &&
+                            this.state.reportDesignation.map((item, d) => (
+                              <option
+                                key={d}
+                                value={item.designationID}
+                                className="select-category-placeholder"
+                              >
+                                {item.designationName}
+                              </option>
+                            ))}
                         </select>
+                        {this.state.selectReportDesignation === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.reportDesignationCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Report To</label>
-                        <select>
-                          <option>HOD</option>
+                        <select
+                          className="store-create-select"
+                          name="selectReportTo"
+                          value={this.state.selectReportTo}
+                          onChange={this.handleDropDownOnChange}
+                        >
+                          <option>Select</option>
+                          {this.state.reportToData !== null &&
+                            this.state.reportToData.map((item, d) => (
+                              <option
+                                key={d}
+                                value={item.designationID}
+                                className="select-category-placeholder"
+                              >
+                                {item.designationName}
+                              </option>
+                            ))}
                         </select>
+                        {this.state.selectReportTo === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.reportToCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="btn-coll">
-                        <button className="butn">SAVE & NEXT</button>
+                        <button
+                          data-target="#mapped-category"
+                          data-toggle="collapse"
+                          className="butn"
+                        >
+                          SAVE &amp; NEXT
+                        </button>
                       </div>
                     </div>
                   </div>

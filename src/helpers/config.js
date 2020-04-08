@@ -26,7 +26,26 @@ let config = {
         ["Issue1", "Medium", "30", "1", "Day", "2", "Day", "Active"],
         ["Issue1", "Low", "30", "1", "Day", "2", "Day", "Active"],
       ],
-     
+      hierarchyTemplate: [
+        ["Designation", "ReportTo", "Status"],
+        ["HOD", "Root", "Active"],
+        ["Manager", "HOD", "Active"],
+      ],
+      crmRoleTemplate: [
+        ["RoleName", "Status", "EnabledModules", "DisabledModules"],
+        [
+          "HOD",
+          "InActive",
+          "Dashboard|Tickets|Knowledge Base",
+          "Settings|Chat|Notification|Reports",
+        ],
+        [
+          "Agent",
+          "Active",
+          "Settings|Chat|Notification|Reports",
+          "Settings|Chat|Notification|Reports",
+        ],
+      ],
     //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
     // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
     //apiUrl: 'http://10.50.250.18:9512/api'
