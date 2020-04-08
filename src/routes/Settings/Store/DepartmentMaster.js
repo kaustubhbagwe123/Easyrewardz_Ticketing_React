@@ -138,7 +138,12 @@ class DepartmentMaster extends Component {
 
   /// handle Store code change
   handleStoreCodeChange = e => {
+    if (e === null) {
+      e = [];
     this.setState({ selectedStoreCode: e });
+    }else{
+      this.setState({ selectedStoreCode: e });
+    }
   };
   ////handle status change drop-down
   handleStatusChange = e => {

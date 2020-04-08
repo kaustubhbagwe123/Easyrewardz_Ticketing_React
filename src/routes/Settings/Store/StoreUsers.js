@@ -17,6 +17,8 @@ import { authHeader } from "../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import Select from "react-select";
+import ActiveStatus from "../../activeStatus.js";
+import { NotificationManager } from "react-notifications";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -28,6 +30,7 @@ class StoreUsers extends Component {
       storeCodeData: [],
       departmentData: [],
       functionData: [],
+      activeData: ActiveStatus(),
       selectBrand: 0,
       selectStore: 0,
       brandCompulsory: "",
@@ -43,6 +46,7 @@ class StoreUsers extends Component {
       userNameCompulsory: "",
       departmentCompulsory: "",
       designationCompulsory: "",
+      functionCompulsory: "",
       reportDesignationCompulsory: "",
       reportToCompulsory: "",
       emailCompulsory: "",
@@ -56,6 +60,28 @@ class StoreUsers extends Component {
       userDesignationData: [],
       reportDesignation: [],
       reportToData: [],
+      selectedClaimBrand: [],
+      selectedClaimCategory: [],
+      selectedClaimSubCategory: [],
+      selectedClaimIssueType: [],
+      checkMappedClaimCategoryTab: "",
+      mappedBrandCompulsory: "",
+      mappedCategoryCompulsory: "",
+      mappedSubCategoryCompulsory: "",
+      mappedIssueTypeCompulsory: "",
+      claimCategoryData: [],
+      claimSubCategoryData: [],
+      claimIssueTypeData: [],
+      selectClaimApprover: "",
+      ClaimApproverCompulsory: "",
+      selectStatus: 0,
+      statusCompulsory: "",
+      selectCrmRole: 0,
+      CrmRoleCompulsory: "",
+      CrmRoleData: [],
+      StoreReadOnly: false,
+      personalReadOnly: false,
+      user_ID: 0,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -68,12 +94,21 @@ class StoreUsers extends Component {
       this
     );
     this.handleGetReportToData = this.handleGetReportToData.bind(this);
+    this.handleGetClaimCategoryData = this.handleGetClaimCategoryData.bind(
+      this
+    );
+    this.handleGetClaimSubCategoryData = this.handleGetClaimSubCategoryData.bind(
+      this
+    );
+    this.handleGetClaimIssueType = this.handleGetClaimIssueType.bind(this);
+    this.handleGetCRMRole = this.handleGetCRMRole.bind(this);
   }
 
   componentDidMount() {
     this.handleGetBrandData();
     this.handleGetstoreCodeData();
     this.handleGetUserDesignationData();
+    this.handleGetCRMRole();
   }
 
   fileUpload = (e) => {
@@ -134,12 +169,14 @@ class StoreUsers extends Component {
   };
   /// handle onchange for drop down
   handleDropDownOnChange = (e) => {
+    debugger;
     let name = e.target.name;
     let value = e.target.value;
     if (name === "selectDesignation") {
       this.setState({
         selectDesignation: value,
         reportDesignation: [],
+        reportToData: [],
       });
       setTimeout(() => {
         if (this.state.selectDesignation) {
@@ -149,6 +186,7 @@ class StoreUsers extends Component {
     } else if (name === "selectReportDesignation") {
       this.setState({
         selectReportDesignation: value,
+        reportToData: [],
       });
       setTimeout(() => {
         if (this.state.selectReportDesignation) {
@@ -159,6 +197,14 @@ class StoreUsers extends Component {
       this.setState({
         selectReportTo: value,
       });
+    } else if (name === "selectClaimApprover") {
+      this.setState({
+        selectClaimApprover: value,
+      });
+    } else if (name === "selectStatus") {
+      this.setState({ selectStatus: value });
+    } else if (name === "selectCrmRole") {
+      this.setState({ selectCrmRole: value });
     }
   };
   /// Onchange for Mobile no
@@ -207,9 +253,78 @@ class StoreUsers extends Component {
       }
     }
   };
-  /// handle Function Onchange
-  handleFunctionChange(e) {
-    this.setState({ selectedFunction: e });
+  /// handle Function Onchange for drop down
+  handleFunctionOnChange(e) {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ selectedFunction: e });
+    } else {
+      this.setState({ selectedFunction: e });
+    }
+  }
+  /// handle Mapped Brand  multiselect Onchange
+  handleMultiBrandonChange(e) {
+    if (e === null) {
+      e = [];
+      this.setState({
+        selectedClaimBrand: e,
+        selectedClaimCategory: [],
+        selectedClaimSubCategory: [],
+        selectedClaimIssueType: [],
+      });
+    } else {
+      this.setState({ selectedClaimBrand: e });
+      setTimeout(() => {
+        if (this.state.selectedClaimBrand) {
+          this.handleGetClaimCategoryData();
+        }
+      }, 1);
+    }
+  }
+  /// handle Mapped Category  multiselect Onchange
+  handleMultiCategoryonChange(e) {
+    if (e === null) {
+      e = [];
+      this.setState({
+        selectedClaimCategory: e,
+        selectedClaimSubCategory: [],
+        selectedClaimIssueType: [],
+      });
+    } else {
+      this.setState({ selectedClaimCategory: e });
+      setTimeout(() => {
+        if (this.state.selectedClaimCategory) {
+          this.handleGetClaimSubCategoryData();
+        }
+      }, 1);
+    }
+  }
+  /// handle Mapped SubCategory  multiselect Onchange
+  handleMultiSubCategoryonChange(e) {
+    if (e === null) {
+      e = [];
+      this.setState({
+        selectedClaimSubCategory: e,
+        selectedClaimIssueType: [],
+      });
+    } else {
+      this.setState({ selectedClaimSubCategory: e });
+      setTimeout(() => {
+        if (this.state.selectedClaimSubCategory) {
+          this.handleGetClaimIssueType();
+        }
+      }, 1);
+    }
+  }
+  /// handle Mapped Issue Type  multiselect Onchange
+  handleMultiIssueTypeonChange(e) {
+    if (e === null) {
+      e = [];
+      this.setState({ selectedClaimIssueType: e });
+    } else {
+      this.setState({ selectedClaimIssueType: e });
+    }
   }
   // -------------------API Start------------------------
   ////get Brand data for dropdown
@@ -386,6 +501,132 @@ class StoreUsers extends Component {
         console.log(data);
       });
   }
+  //// handle get Claim category data by BrandIds for dropdown
+  handleGetClaimCategoryData() {
+    debugger;
+    let self = this;
+    let finalBrandIds = "";
+    if (this.state.selectedClaimBrand !== null) {
+      for (let i = 0; i < this.state.selectedClaimBrand.length; i++) {
+        finalBrandIds += this.state.selectedClaimBrand[i].brandID + ",";
+      }
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
+      headers: authHeader(),
+      params: {
+        BrandIds: finalBrandIds.substring(",", finalBrandIds.length - 1),
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ claimCategoryData: data });
+        } else {
+          self.setState({ claimCategoryData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  //// handle get claim Sub category data for dropdown
+  handleGetClaimSubCategoryData() {
+    debugger;
+    let self = this;
+    let finalCategoryIds = "";
+    if (this.state.selectedClaimCategory !== null) {
+      for (let i = 0; i < this.state.selectedClaimCategory.length; i++) {
+        finalCategoryIds +=
+          this.state.selectedClaimCategory[i].categoryID + ",";
+      }
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimSubCategory",
+      headers: authHeader(),
+      params: {
+        CategoryIDs: finalCategoryIds.substring(
+          ",",
+          finalCategoryIds.length - 1
+        ),
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ claimSubCategoryData: data });
+        } else {
+          self.setState({ claimSubCategoryData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle get claim Issue Type data for dropdown
+  handleGetClaimIssueType() {
+    debugger;
+    let self = this;
+    let finalSubCategoryIds = "";
+    if (this.state.selectedClaimSubCategory !== null) {
+      for (let i = 0; i < this.state.selectedClaimSubCategory.length; i++) {
+        finalSubCategoryIds +=
+          this.state.selectedClaimSubCategory[i].subCategoryID + ",";
+      }
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimIssueType",
+      headers: authHeader(),
+      params: {
+        subCategoryIDs: finalSubCategoryIds.substring(
+          ",",
+          finalSubCategoryIds.length - 1
+        ),
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ claimIssueTypeData: data });
+        } else {
+          self.setState({ claimIssueTypeData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  ////get Crm Role data for dropdown
+  handleGetCRMRole() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreCRMRoleDropdown",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ CrmRoleData: data });
+        } else {
+          self.setState({ CrmRoleData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
   //// handle Save Store Details
   handleSaveStoreDetails() {
     debugger;
@@ -404,6 +645,7 @@ class StoreUsers extends Component {
   //// handle Save Personal Details
   handleSavePersonalDetails() {
     debugger;
+    let self = this;
     if (
       this.state.userName.length > 0 &&
       this.state.mobile_no.length > 0 &&
@@ -411,15 +653,128 @@ class StoreUsers extends Component {
       this.state.emailFlag === true &&
       this.state.phoneFlag === true
     ) {
-      alert("Personal Details");
-      this.setState({
-        checkProfileDetailTab: "#profile-Details",
-      });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/AddStoreUserPersonalDetail",
+        headers: authHeader(),
+        data: {
+          UserName: this.state.userName.trim(),
+          MobileNo: this.state.mobile_no,
+          EmailID: this.state.email_Id.trim(),
+          FirstName: "",
+          LastName: "",
+          IsStoreUser: true,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("Record Saved Successfully.");
+            self.setState({
+              user_ID: data,
+              personalReadOnly: true,
+              checkProfileDetailTab: "#profile-Details",
+            });
+          } else {
+            NotificationManager.error("Record Not Save.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
     } else {
       this.setState({
-        userNameCompulsory: "Please enter user name.",
-        mobilenumberCompulsory: "Please enter mobile no.",
-        emailCompulsory: "Please enter email id.",
+        userNameCompulsory: "Please Enter User Name.",
+        mobilenumberCompulsory: "Please Enter Mobile No.",
+        emailCompulsory: "Please Enter Email Id.",
+      });
+    }
+  }
+  //// handle save profile details
+  handleSaveProfileDetails() {
+    debugger;
+    let self = this;
+    if (
+      this.state.selectDepartment > 0 &&
+      this.state.selectedFunction.length > 0 &&
+      this.state.selectDesignation > 0 &&
+      this.state.selectReportDesignation > 0 &&
+      this.state.selectReportTo > 0
+    ) {
+      if (this.state.user_ID) {
+        var function_ids = "";
+        if (this.state.selectedFunction !== null) {
+          for (let i = 0; i < this.state.selectedFunction.length; i++) {
+            function_ids += this.state.selectedFunction[i].functionID + ",";
+          }
+        }
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreUser/AddStoreUserProfileDetail",
+          headers: authHeader(),
+          params: {
+            userID: this.state.user_ID,
+            BrandID: this.state.selectBrand,
+            storeID: this.state.selectStore,
+            departmentId: this.state.selectDepartment,
+            functionIDs: function_ids.substring(",", function_ids.length - 1),
+            designationID: this.state.selectDesignation,
+            reporteeID: this.state.selectReportTo,
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            // let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success("Record Saved Successfully.");
+              self.setState({
+                checkMappedClaimCategoryTab: "#mapped-category",
+              });
+            } else {
+              NotificationManager.error("Record Not Saved.");
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Enter Personal Details.");
+      }
+    } else {
+      this.setState({
+        departmentCompulsory: "Please Select Department.",
+        functionCompulsory: "Please Select Function.",
+        designationCompulsory: "Please Select User Designation.",
+        reportDesignationCompulsory: "Please Select Reportee Designation.",
+        reportToCompulsory: "Please Select Report To.",
+      });
+    }
+  }
+  //// final save User data
+  handleFinalSaveUserData() {
+    debugger;
+    if (
+      this.state.selectedClaimBrand.length > 0 &&
+      this.state.selectedClaimCategory.length > 0 &&
+      this.state.selectedClaimSubCategory.length > 0 &&
+      this.state.selectedClaimIssueType.length > 0 &&
+      this.state.selectClaimApprover.length > 0 &&
+      this.state.selectCrmRole.length > 0 &&
+      this.state.selectStatus.length > 0
+    ) {
+      alert("Finale data save");
+    } else {
+      this.setState({
+        mappedBrandCompulsory: "Please Select Brand.",
+        mappedCategoryCompulsory: "Please Select Category.",
+        mappedSubCategoryCompulsory: "Please Select Sub Category.",
+        mappedIssueTypeCompulsory: "Please Select Issue Type.",
+        ClaimApproverCompulsory: "Please Select Claim Approver.",
+        CrmRoleCompulsory: "Please Select Crm Role.",
+        statusCompulsory: "Please Select Status.",
       });
     }
   }
@@ -731,6 +1086,10 @@ class StoreUsers extends Component {
                           placeholder="Enter User Name"
                           maxLength={25}
                           autoComplete="off"
+                          readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="userName"
                           value={this.state.userName}
                           onChange={this.handleOnChangeUserData}
@@ -747,6 +1106,10 @@ class StoreUsers extends Component {
                           type="text"
                           placeholder="Enter Mobile Number"
                           maxLength={10}
+                          readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="mobile_no"
                           value={this.state.mobile_no}
                           onChange={this.hanldeMobileNoChange}
@@ -772,6 +1135,10 @@ class StoreUsers extends Component {
                           type="text"
                           placeholder="Enter Email ID"
                           maxLength={100}
+                          readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
                           name="email_Id"
                           value={this.state.email_Id}
                           onChange={this.handleOnChangeUserData}
@@ -853,13 +1220,13 @@ class StoreUsers extends Component {
                           placeholder="Select"
                           closeMenuOnSelect={false}
                           name="selectedFunction"
-                          onChange={this.handleFunctionChange.bind(this)}
+                          onChange={this.handleFunctionOnChange.bind(this)}
                           value={this.state.selectedFunction}
                           isMulti
                         />
                         {this.state.selectedFunction.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.storeCodeCompulsory}
+                            {this.state.functionCompulsory}
                           </p>
                         )}
                       </div>
@@ -928,10 +1295,10 @@ class StoreUsers extends Component {
                             this.state.reportToData.map((item, d) => (
                               <option
                                 key={d}
-                                value={item.designationID}
+                                value={item.user_ID}
                                 className="select-category-placeholder"
                               >
-                                {item.designationName}
+                                {item.agentName}
                               </option>
                             ))}
                         </select>
@@ -943,9 +1310,10 @@ class StoreUsers extends Component {
                       </div>
                       <div className="btn-coll">
                         <button
-                          data-target="#mapped-category"
+                          data-target={this.state.checkMappedClaimCategoryTab}
                           data-toggle="collapse"
                           className="butn"
+                          onClick={this.handleSaveProfileDetails.bind(this)}
                         >
                           SAVE &amp; NEXT
                         </button>
@@ -969,54 +1337,158 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>Brand</label>
-                        <select>
-                          <option>Bata, PVR</option>
-                          <option>Bata, PVR</option>
-                        </select>
+                        <Select
+                          getOptionLabel={(option) => option.brandName}
+                          getOptionValue={(option) => option.brandID}
+                          options={this.state.brandData}
+                          placeholder="Select"
+                          closeMenuOnSelect={false}
+                          name="selectedClaimBrand"
+                          onChange={this.handleMultiBrandonChange.bind(this)}
+                          value={this.state.selectedClaimBrand}
+                          isMulti
+                        />
+                        {this.state.selectedClaimBrand.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.mappedBrandCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Categories</label>
-                        <select>
-                          <option>Compliant</option>
-                          <option>Compliant</option>
-                        </select>
+                        <Select
+                          getOptionLabel={(option) => option.categoryName}
+                          getOptionValue={(option) => option.categoryID}
+                          options={this.state.claimCategoryData}
+                          placeholder="Select"
+                          closeMenuOnSelect={false}
+                          name="selectedClaimCategory"
+                          onChange={this.handleMultiCategoryonChange.bind(this)}
+                          value={this.state.selectedClaimCategory}
+                          isMulti
+                        />
+                        {this.state.selectedClaimCategory.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.mappedCategoryCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Sub Categories</label>
-                        <select>
-                          <option>Payments</option>
-                          <option>Payments</option>
-                        </select>
+                        <Select
+                          getOptionLabel={(option) => option.subCategoryName}
+                          getOptionValue={(option) => option.subCategoryID}
+                          options={this.state.claimSubCategoryData}
+                          placeholder="Select"
+                          closeMenuOnSelect={false}
+                          name="selectedClaimSubCategory"
+                          onChange={this.handleMultiSubCategoryonChange.bind(
+                            this
+                          )}
+                          value={this.state.selectedClaimSubCategory}
+                          isMulti
+                        />
+                        {this.state.selectedClaimSubCategory.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.mappedSubCategoryCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Issue Type</label>
-                        <select>
-                          <option>Not Processed</option>
-                          <option>Not Processed</option>
-                        </select>
+                        <Select
+                          getOptionLabel={(option) => option.issueTypeName}
+                          getOptionValue={(option) => option.issueTypeID}
+                          options={this.state.claimIssueTypeData}
+                          placeholder="Select"
+                          closeMenuOnSelect={false}
+                          name="selectedClaimIssueType"
+                          onChange={this.handleMultiIssueTypeonChange.bind(
+                            this
+                          )}
+                          value={this.state.selectedClaimIssueType}
+                          isMulti
+                        />
+                        {this.state.selectedClaimIssueType.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.mappedIssueTypeCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="div-cntr">
                         <label>Claim Approver</label>
-                        <select>
-                          <option>No</option>
+                        <select
+                          name="selectClaimApprover"
+                          value={this.state.selectClaimApprover}
+                          onChange={this.handleDropDownOnChange}
+                        >
+                          <option>Select</option>
+                          <option value={"yes"}>Yes</option>
+                          <option value={"no"}>No</option>
                         </select>
+                        {this.state.selectClaimApprover.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ClaimApproverCompulsory}
+                          </p>
+                        )}
                       </div>
                       <div className="mapped-cate-extra">
                         <div className="div-cntr">
                           <label>CRM Role</label>
-                          <select>
-                            <option>Manager</option>
+                          <select
+                            className="store-create-select"
+                            name="selectCrmRole"
+                            value={this.state.selectCrmRole}
+                            onChange={this.handleDropDownOnChange}
+                          >
+                            <option>Select</option>
+                            {this.state.CrmRoleData !== null &&
+                              this.state.CrmRoleData.map((item, d) => (
+                                <option
+                                  key={d}
+                                  value={item.crmRoleID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.roleName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.selectCrmRole === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.CrmRoleCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label>Status</label>
-                          <select>
-                            <option>Inactive</option>
+                          <select
+                            name="selectStatus"
+                            value={this.state.selectStatus}
+                            onChange={this.handleDropDownOnChange}
+                          >
+                            <option>Select</option>
+                            {this.state.activeData !== null &&
+                              this.state.activeData.map((item, j) => (
+                                <option key={j} value={item.ActiveID}>
+                                  {item.ActiveName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.selectStatus === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.statusCompulsory}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="btn-coll">
-                        <button className="butn">ADD</button>
+                        <button
+                          className="butn"
+                          type="button"
+                          onClick={this.handleFinalSaveUserData.bind(this)}
+                        >
+                          ADD
+                        </button>
                       </div>
                     </div>
                   </div>
