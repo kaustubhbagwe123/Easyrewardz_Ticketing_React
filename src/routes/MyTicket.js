@@ -60,6 +60,7 @@ import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { withRouter } from "react-router";
 import ReactHtmlParser from "react-html-parser";
+import Demo from "../store/Hashtag";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -78,7 +79,6 @@ class MyTicket extends Component {
       EmailCollapse: false,
       CommentsDrawer: false,
       BillInvoiceModal: false,
-      HistOrderShow: true,
       ReAssignComment: false,
       FreeTextComment: false,
       CommentCollapse: false,
@@ -208,7 +208,7 @@ class MyTicket extends Component {
       notiCurPosiFreeCmnt: 0,
       isKB: false,
     };
-    this.toggleView = this.toggleView.bind(this);
+    // this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -651,7 +651,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1407,11 +1407,6 @@ class MyTicket extends Component {
   fileDragEnter = (e) => {
     e.preventDefault();
   };
-  toggleView() {
-    this.setState({
-      HistOrderShow: !this.state.HistOrderShow,
-    });
-  }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
   }
@@ -1513,7 +1508,8 @@ class MyTicket extends Component {
     this.setState({ BillInvoiceModal: true });
   }
   handleBillImgModalClose() {
-    this.setState({ BillInvoiceModal: false });
+    debugger;
+    this.setState({ BillInvoiceModal: !this.state.BillInvoiceModal });
   }
   handleThumbModalOpen() {
     this.setState({ Plus: true });
@@ -2886,22 +2882,6 @@ class MyTicket extends Component {
       }
     }
 
-    // const HidecollapsUp = this.state.collapseUp ? (
-    //   <img
-    //     src={Up1Img}
-    //     alt="up"
-    //     className="up-1"
-    //     onClick={this.handleUpClose.bind(this)}
-    //   />
-    // ) : (
-    //   <img
-    //     src={Down1Img}
-    //     alt="up"
-    //     className="up-1"
-    //     onClick={this.handleUpOpen.bind(this)}
-    //   />
-    // );
-
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
       <a
         href="#!"
@@ -2919,69 +2899,7 @@ class MyTicket extends Component {
         <img src={PlusImg} alt="Plush" className="plush-img" />
       </a>
     );
-
-    const data1 = [
-      {
-        sku: (
-          <span>
-            <div className="filter-type order1checkbox">
-              <div className="filter-checkbox order2checkbox">
-                <input type="checkbox" id="fil-id" name="filter-type" />
-                <label htmlFor="fil-id">BB221345</label>
-              </div>
-            </div>
-          </span>
-        ),
-
-        Name: (
-          <span>
-            <label>
-              HUSH PUPPIES{" "}
-              <span style={{ display: "block" }}>
-                Blue Casual Shoes For Men
-              </span>
-            </label>
-          </span>
-        ),
-        Price: "4500",
-        Quantity: (
-          <span>
-            <label>01</label>
-          </span>
-        ),
-        Mop: <label>Cash</label>,
-      },
-      {
-        sku: (
-          <span>
-            <div className="filter-type order1checkbox">
-              <div className="filter-checkbox order2checkbox">
-                <input type="checkbox" id="fil-id1" name="filter-type" />
-                <label htmlFor="fil-id1">BB221345</label>
-              </div>
-            </div>
-          </span>
-        ),
-        Name: (
-          <span>
-            <label>
-              HUSH PUPPIES
-              <span style={{ display: "block" }}>
-                Blue Casual Shoes For Men
-              </span>
-            </label>
-          </span>
-        ),
-        Price: "4500",
-        Quantity: (
-          <span>
-            <label>01</label>
-          </span>
-        ),
-        Mop: <label>Cash</label>,
-      },
-    ];
-
+ 
     return (
       <Fragment>
         {this.state.loading === true ? (
@@ -3147,17 +3065,14 @@ class MyTicket extends Component {
                             accessor: "designation",
                           },
                         ]}
-                        // resizable={false}
                         minRows={2}
                         // defaultPageSize={5}
                         showPagination={false}
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
-                          // ////
                           const index = column ? column.index : -1;
                           return {
                             onClick: (e) => {
-                              ////
                               this.selectedRow = index;
                               var agentId = column.original["user_ID"];
                               this.setState({ agentId });
@@ -3344,7 +3259,7 @@ class MyTicket extends Component {
                         </div>
                       </Modal>
                       <a
-                        href="#!"
+                        href={Demo.BLANK_LINK}
                         onClick={this.handleBillImgModalOpen.bind(this)}
                         className=""
                         style={{
@@ -3359,6 +3274,7 @@ class MyTicket extends Component {
                           title="Historical Order"
                           // onClick={this.handleBillImgModalOpen.bind(this)}
                         />
+                        </a>
                         <Modal
                           open={this.state.BillInvoiceModal}
                           onClose={this.handleBillImgModalClose.bind(this)}
@@ -3412,209 +3328,66 @@ class MyTicket extends Component {
                                   this
                                 )}
                               />
-                              {this.state.HistOrderShow ? (
-                                <div>
-                                  <div className="histo">
-                                    <img
-                                      src={Order}
-                                      alt="customer-icon"
-                                      style={{ marginTop: "-10px" }}
-                                    />
-                                    <label className="customer-text">
-                                      HISTORICAL ORDER
-                                    </label>
-                                  </div>
-
-                                  <div className="tablehistrical">
-                                    <ReactTable
-                                      data={orderDetails}
-                                      columns={[
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Order Number
-                                            </span>
-                                          ),
-                                          accessor: "orderNumber",
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Mobile Number
-                                            </span>
-                                          ),
-                                          accessor: "mobileNumber",
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Amount
-                                            </span>
-                                          ),
-                                          accessor: "itemPrice",
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Purchase Date
-                                            </span>
-                                          ),
-                                          accessor: "dateFormat",
-                                        },
-                                      ]}
-                                      // resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                    />
-                                  </div>
-
-                                  {/* <div className="row skipmar">
-                                <div className="col-md-5">
-                                  <label className="skiptext">
-                                    SKIP ATTATCHING ORDER
+                              <div>
+                                <div className="histo">
+                                  <img
+                                    src={Order}
+                                    alt="customer-icon"
+                                    style={{ marginTop: "-10px" }}
+                                  />
+                                  <label className="customer-text">
+                                    HISTORICAL ORDER
                                   </label>
                                 </div>
-                                <div className="col-md-7">
-                                  <div className="calnex">
-                                    <button type="button" className="calnexbtn">
-                                      <label className="calnexbtn-text">
-                                        Cancel
-                                      </label>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="calnexbtn1"
-                                      onClick={this.toggleView}
-                                    >
-                                      <label className="calnexbtn1-text">
-                                        Next
-                                      </label>
-                                    </button>
-                                  </div>
+
+                                <div className="tablehistrical">
+                                  <ReactTable
+                                    data={orderDetails}
+                                    columns={[
+                                      {
+                                        Header: (
+                                          <span className="historyTable-header">
+                                            Order Number
+                                          </span>
+                                        ),
+                                        accessor: "orderNumber",
+                                      },
+                                      {
+                                        Header: (
+                                          <span className="historyTable-header">
+                                            Mobile Number
+                                          </span>
+                                        ),
+                                        accessor: "mobileNumber",
+                                      },
+                                      {
+                                        Header: (
+                                          <span className="historyTable-header">
+                                            Amount
+                                          </span>
+                                        ),
+                                        // accessor: "itemPrice",
+                                        accessor: "ordeItemPrice",
+                                      },
+                                      {
+                                        Header: (
+                                          <span className="historyTable-header">
+                                            Purchase Date
+                                          </span>
+                                        ),
+                                        accessor: "dateFormat",
+                                      },
+                                    ]}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                    // minRows={2}
+                                  />
                                 </div>
-                              </div> */}
-                                </div>
-                              ) : (
-                                <div>
-                                  <div className="row histo">
-                                    <div className="col-md-7">
-                                      <img
-                                        src={UserIcon}
-                                        alt="customer-icon"
-                                        className="usericon"
-                                      />
-                                      <img
-                                        src={Up1Img}
-                                        alt="down"
-                                        className="down-header"
-                                      />
-                                      <label className="customer-text">
-                                        ORDER - BB2213451123
-                                      </label>
-                                    </div>
-                                    <div className="col-md-5">
-                                      <label className="customerOrder-text">
-                                        ORDER
-                                      </label>
-                                      <label className="customerItem-text">
-                                        ITEM
-                                      </label>
-                                      <div className="orderswitch">
-                                        <div className="switch switch-primary d-inline">
-                                          <input
-                                            type="checkbox"
-                                            id="editTasks-p-2"
-                                          />
-                                          <label
-                                            htmlFor="editTasks-p-2"
-                                            className="cr ord"
-                                          ></label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="tablehistrical tablehistricaldetail">
-                                    <ReactTable
-                                      data={data1}
-                                      columns={[
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header ">
-                                              SKU
-                                            </span>
-                                          ),
-                                          accessor: "sku",
-                                        },
-                                        {
-                                          id: "createdBy",
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Name
-                                            </span>
-                                          ),
-                                          accessor: "Name",
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Price
-                                            </span>
-                                          ),
-                                          accessor: "Price",
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Quantity
-                                            </span>
-                                          ),
-                                          accessor: "Quantity",
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              MOP
-                                            </span>
-                                          ),
-                                          accessor: "Mop",
-                                        },
-                                      ]}
-                                      // resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                    />
-                                  </div>
-                                  <div className="row skipmar done">
-                                    <div className="col-md-12">
-                                      <div className="calnex">
-                                        <button
-                                          type="button"
-                                          className="calnexbtn"
-                                        >
-                                          <label className="calnexbtn-text">
-                                            Cancel
-                                          </label>
-                                        </button>
-                                        <button
-                                          type="button"
-                                          className="calnexbtn1"
-                                          onClick={this.handleBillImgModalClose.bind(
-                                            this
-                                          )}
-                                        >
-                                          <label className="calnexbtn1-text">
-                                            DONE
-                                          </label>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
+                              </div>
                             </div>
                           </div>
                         </Modal>
-                      </a>
+                      
                       <div className="card-space-1">
                         <label className="target-closure-date">
                           Target Closure Date &nbsp;
@@ -7205,14 +6978,7 @@ class MyTicket extends Component {
             >
               <div className="commenttextborder">
                 <div className="comment-disp">
-                  <div>
-                    {/* <img
-                      src={CrossIcon}
-                      alt="Minus"
-                      className="pro-cross-icn m-0"
-                      
-                    /> */}
-                  </div>
+                  <div></div>
                 </div>
                 <div className="Commentlabel">
                   <p className="Commentlabel1 mb-4 text-center">
@@ -7238,7 +7004,6 @@ class MyTicket extends Component {
               </div>
             </Modal>
             {/* -------------------End knowledge base modal pop up----------------------- */}
-            {/* <NotificationContainer /> */}
           </div>
         )}
       </Fragment>

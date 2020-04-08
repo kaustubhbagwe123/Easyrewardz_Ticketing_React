@@ -85,7 +85,7 @@ class DepartmentMaster extends Component {
   }
   ////Get Detapartment grid data
   handleGetDepartmentGridData() {
-    let self = this;
+    // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Department/GetSLA",
