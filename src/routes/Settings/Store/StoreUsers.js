@@ -4,6 +4,7 @@ import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
@@ -22,6 +23,7 @@ import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
+import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -115,6 +117,8 @@ class StoreUsers extends Component {
       StatusModel: false,
       tempitemData: [],
       isortA: false,
+      editmodel: false,
+      selTab: "Personal Details",
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -136,6 +140,14 @@ class StoreUsers extends Component {
     this.handleGetClaimIssueType = this.handleGetClaimIssueType.bind(this);
     this.handleGetCRMRole = this.handleGetCRMRole.bind(this);
     this.handleGetStoreUserGridData=this.handleGetStoreUserGridData.bind(this);
+    this.closeEditModals = this.closeEditModals.bind(this);
+  }
+
+  opneEditModal = () => {
+    this.setState({ editmodel: true });
+  };
+  closeEditModals() {
+    this.setState({ editmodel: false, selTab: "Personal Details" });
   }
 
   componentDidMount() {
@@ -1822,7 +1834,7 @@ class StoreUsers extends Component {
               NotificationManager.success("Record Saved Successfully.");
               self.setState({
                 checkMappedClaimCategoryTab: "#mapped-category",
-                profileReadOnly:true
+                profileReadOnly: true,
               });
             } else {
               NotificationManager.error("Record Not Saved.");
@@ -2342,129 +2354,86 @@ class StoreUsers extends Component {
                         sortable: false,
                         accessor: "mappedFunctions",
                       },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "userId",
+                        Cell: (row) => {
+                          var ids = row.original["userId"];
+                          return (
+                            <>
+                              <span>
+                                {/* <Popover
+                                  content={
+                                    <div
+                                      className="samdel d-flex general-popover popover-body"
+                                      id={"samdel" + ids}
+                                    >
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a
+                                            className="canblue"
+                                            onClick={() =>
+                                              this.hide(this, "samdel" + ids)
+                                            }
+                                          >
+                                            CANCEL
+                                          </a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.handleDeleteUser.bind(
+                                              this,
+                                              row.original.userId
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                    id={ids}
+                                    onClick={() => this.show(this, "samdel" + ids)}
+                                  />
+                                </Popover> */}
+
+                                <button
+                                  className="react-tabel-button editre"
+                                  // onClick={this.handleGetUserListByID.bind(
+                                  //   this,
+                                  //   row.original.userId
+                                  // )}
+                                  onClick={() => this.opneEditModal()}
+                                >
+                                  EDIT
+                                </button>
+                              </span>
+                            </>
+                          );
+                        },
+                      },
                     ]}
                     defaultPageSize={10}
                     minRows={2}
                     showPagination={true}
                   />
-                  {/* <ReactTable
-                    data={dataStorUser}
-                    columns={[
-                      {
-                        Header: (
-                          <span>
-                            Brand Name
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "brandName",
-                        Cell: (row) => <span>Bata1</span>,
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Store Code
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "storeCode",
-                        Cell: (row) => <span>1234</span>,
-                      },
-                      {
-                        Header: (
-                          <span>
-                            User Name
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "uName",
-                        Cell: (row) => {
-                          var ids = row.original["id"];
-                          return (
-                            <div>
-                              <span>
-                                Vikas
-                                <Popover
-                                  content={popoverData}
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon-cp"
-                                    src={BlackInfoIcon}
-                                    alt="info-icon"
-                                    id={ids}
-                                  />
-                                </Popover>
-                              </span>
-                            </div>
-                          );
-                        },
-                      },
-                      {
-                        Header: (
-                          <span>
-                           User Designation
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "storeCode",
-                        Cell: (row) => <span>Cxo</span>,
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Reportee Name
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "ReporName",
-                        Cell: (row) => {
-                          var ids = row.original["id"];
-                          return (
-                            <div>
-                              <span>
-                                Naman
-                                <Popover
-                                  content={popoverData}
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon-cp"
-                                    src={BlackInfoIcon}
-                                    alt="info-icon"
-                                    id={ids}
-                                  />
-                                </Popover>
-                              </span>
-                            </div>
-                          );
-                        },
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Department
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "Dept",
-                        Cell: (row) => <span>IT</span>,
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Function
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "Fun",
-                        Cell: (row) => <span>Infra</span>,
-                      },
-                    ]}
-                    minRows={2}
-                    defaultPageSize={10}
-                    showPagination={true}
-                  /> */}
+                  
                   {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
@@ -2505,7 +2474,7 @@ class StoreUsers extends Component {
                   </div> */}
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 cus-drp">
                 <div className="right-sect-div right-sect-collapse">
                   <h3>Create Users</h3>
                   <div className="collapse-cntr">
@@ -2789,12 +2758,12 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
                         <select
-                         className={
-                          this.state.profileReadOnly
-                            ? "disabled-input store-create-select"
-                            : "store-create-select"
-                        }
-                        disabled={this.state.profileReadOnly}
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input store-create-select"
+                              : "store-create-select"
+                          }
+                          disabled={this.state.profileReadOnly}
                           name="selectReportDesignation"
                           value={this.state.selectReportDesignation}
                           onChange={this.handleDropDownOnChange}
@@ -2887,6 +2856,7 @@ class StoreUsers extends Component {
                           onChange={this.handleMultiBrandonChange.bind(this)}
                           value={this.state.selectedClaimBrand}
                           isMulti
+                          isDisabled={true}
                         />
                         {this.state.selectedClaimBrand.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3129,6 +3099,23 @@ class StoreUsers extends Component {
                 </div>
               </div>
             </div>
+            <Modal
+              open={this.state.editmodel}
+              onClose={this.closeEditModals}
+              modalId="UsEdit-popup"
+            >
+              <div>
+                <Tabs
+                  onSelect={(index, label) => this.setState({ selTab: label })}
+                  selected={this.state.selTab}
+                >
+                  <Tab label="Personal Details">1</Tab>
+                  <Tab label="Profile Details">2</Tab>
+                  <Tab label="Mapped Category">3</Tab>
+                  <Tab label="Last wala">4</Tab>
+                </Tabs>
+              </div>
+            </Modal>
           </div>
         </div>
       </React.Fragment>
