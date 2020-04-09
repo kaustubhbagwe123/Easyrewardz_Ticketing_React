@@ -81,6 +81,7 @@ class StoreUsers extends Component {
       CrmRoleData: [],
       StoreReadOnly: false,
       personalReadOnly: false,
+      profileReadOnly: false,
       user_ID: 0,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
@@ -732,6 +733,7 @@ class StoreUsers extends Component {
               NotificationManager.success("Record Saved Successfully.");
               self.setState({
                 checkMappedClaimCategoryTab: "#mapped-category",
+                profileReadOnly:true
               });
             } else {
               NotificationManager.error("Record Not Saved.");
@@ -1188,7 +1190,12 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Department</label>
                         <select
-                          className="store-create-select"
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input store-create-select"
+                              : "store-create-select"
+                          }
+                          disabled={this.state.profileReadOnly}
                           name="selectDepartment"
                           value={this.state.selectDepartment}
                           onChange={this.handleDepartmentOnChange}
@@ -1233,7 +1240,12 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>User Designation</label>
                         <select
-                          className="store-create-select"
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input store-create-select"
+                              : "store-create-select"
+                          }
+                          disabled={this.state.profileReadOnly}
                           name="selectDesignation"
                           value={this.state.selectDesignation}
                           onChange={this.handleDropDownOnChange}
@@ -1259,7 +1271,12 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
                         <select
-                          className="store-create-select"
+                         className={
+                          this.state.profileReadOnly
+                            ? "disabled-input store-create-select"
+                            : "store-create-select"
+                        }
+                        disabled={this.state.profileReadOnly}
                           name="selectReportDesignation"
                           value={this.state.selectReportDesignation}
                           onChange={this.handleDropDownOnChange}
@@ -1285,7 +1302,12 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Report To</label>
                         <select
-                          className="store-create-select"
+                          className={
+                            this.state.profileReadOnly
+                              ? "disabled-input store-create-select"
+                              : "store-create-select"
+                          }
+                          disabled={this.state.profileReadOnly}
                           name="selectReportTo"
                           value={this.state.selectReportTo}
                           onChange={this.handleDropDownOnChange}
