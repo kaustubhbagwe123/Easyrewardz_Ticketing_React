@@ -99,18 +99,17 @@ class TicketSystemOrder extends Component {
     // debugger
     var OderData = this.props.ShowOderdData;
     if (OderData === true) {
-        var ticketIDS = this.props.ticket_IDS;
-        if (ticketIDS) {
-          this.handleGetOrderData(ticketIDS);
-        }
-      
+      var ticketIDS = this.props.ticket_IDS;
+      if (ticketIDS) {
+        this.handleGetOrderData(ticketIDS);
+      }
     }
 
     var modeId = this.props.purchaseMode;
     var value = parseInt(modeId);
     if (value !== this.state.selectedTicketSource) {
       this.setState({
-        selectedTicketSource: value
+        selectedTicketSource: value,
       });
     }
   }
@@ -124,16 +123,16 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Order/getOrderDetailByTicketID",
       headers: authHeader(),
       params: {
-        TicketID: ticketIDS
-      }
+        TicketID: ticketIDS,
+      },
     })
       .then(function(res) {
-        debugger
+        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
           // self.props.ShowOderdData = false;
-          
+
           const newSelected = Object.assign({}, self.state.CheckOrderID);
           var OrderSubItem = [];
           var selectedRow = [];
@@ -144,7 +143,7 @@ class TicketSystemOrder extends Component {
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckOrderID: data[i].orderMasterID ? newSelected : false
+                CheckOrderID: data[i].orderMasterID ? newSelected : false,
               });
             }
             if (data[i].orderItems.length > 0) {
@@ -159,13 +158,12 @@ class TicketSystemOrder extends Component {
             message: "Success",
           });
         } else {
-           
           self.setState({
-            orderDetailsData: []
+            orderDetailsData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -175,7 +173,7 @@ class TicketSystemOrder extends Component {
     var id = rowData.orderItemID;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var index = this.state.OrderSubItem.findIndex(
-      x => x.orderItemID === rowData.orderItemID
+      (x) => x.orderItemID === rowData.orderItemID
     );
 
     var OrderSubItem = this.state.OrderSubItem;
@@ -189,14 +187,14 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         //
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -208,55 +206,55 @@ class TicketSystemOrder extends Component {
   handleOrderTableClose() {
     this.setState({ OrderTable: false });
   }
-  handleByDateCreate = date => {
+  handleByDateCreate = (date) => {
     this.setState({ OrderCreatDate: date });
   };
 
   handleShowSearchOrderDetails() {
     this.setState({
-      SearchOrderDetails: !this.state.SearchOrederDetails
+      SearchOrderDetails: !this.state.SearchOrederDetails,
     });
   }
   handleOrderChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
-  setModePaymentValue = e => {
+  setModePaymentValue = (e) => {
     let dataValue = e.currentTarget.value;
     this.setState({ modeOfPayment: dataValue });
   };
   handleChangeToggle() {
     this.setState({
-      AddManuallyData: !this.state.AddManuallyData
+      AddManuallyData: !this.state.AddManuallyData,
     });
   }
   handelCheckBoxCheckedChange = () => {
     this.setState({
-      CheckBoxChecked: !this.state.CheckBoxChecked
+      CheckBoxChecked: !this.state.CheckBoxChecked,
     });
   };
   handleChangeSaveManualTbl() {
     this.setState({
-      AddManualSaveTbl: !this.state.AddManualSaveTbl
+      AddManualSaveTbl: !this.state.AddManualSaveTbl,
     });
   }
-  handleManuallyOnchange = e => {
+  handleManuallyOnchange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
-  setTicketSourceValue = e => {
+  setTicketSourceValue = (e) => {
     //
     let value = e.currentTarget.value;
     this.setState({ selectedTicketSource: value });
   };
 
-  handleCheckOrder = e => {
+  handleCheckOrder = (e) => {
     //
     this.setState({
       custAttachOrder: this.state.custAttachOrder === 1 ? 0 : 1,
       orderDetailsData: [],
       SwitchBtnStatus: e.target.checked,
-      orderNumber: ""
+      orderNumber: "",
     });
     {
       this.props.AttachOrder(
@@ -270,7 +268,7 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         //
@@ -278,15 +276,15 @@ class TicketSystemOrder extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            TicketSourceData: data
+            TicketSourceData: data,
           });
         } else {
           self.setState({
-            TicketSourceData: []
+            TicketSourceData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -296,14 +294,14 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       headers: authHeader(),
-      url: config.apiUrl + "/Master/getPaymentMode"
+      url: config.apiUrl + "/Master/getPaymentMode",
     })
       .then(function(res) {
         //
         let finalData = res.data.data;
         self.setState({ finalData: finalData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -312,7 +310,7 @@ class TicketSystemOrder extends Component {
     debugger;
     let self = this;
     var CustID = this.props.custDetails;
-    
+
     if (OrdData === "1") {
       e.preventDefault();
       if (this.state.custAttachOrder === 0) {
@@ -331,24 +329,24 @@ class TicketSystemOrder extends Component {
               let Msg = res.data.message;
               let mainData = res.data.responseData;
 
-              var OrderSubItem = [];
+            var OrderSubItem = [];
 
-              for (let i = 0; i < mainData.length; i++) {
-                if (mainData[i].orderItems.length > 0) {
-                  for (let j = 0; j < mainData[i].orderItems.length; j++) {
-                    OrderSubItem.push(mainData[i].orderItems[j]);
-                  }
+            for (let i = 0; i < mainData.length; i++) {
+              if (mainData[i].orderItems.length > 0) {
+                for (let j = 0; j < mainData[i].orderItems.length; j++) {
+                  OrderSubItem.push(mainData[i].orderItems[j]);
                 }
               }
-              self.setState({
-                message: Msg,
-                orderDetailsData: mainData,
-                OrderSubItem
-              });
-            })
-            .catch(data => {
-              console.log(data);
+            }
+            self.setState({
+              message: Msg,
+              orderDetailsData: mainData,
+              OrderSubItem,
             });
+          })
+          .catch((data) => {
+            console.log(data);
+          });
         // } else {
         //   self.setState({
         //     validOrdernumber: "Please Enter Order Number"
@@ -357,44 +355,44 @@ class TicketSystemOrder extends Component {
       }
     } else if (OrdData === "2") {
       if (this.state.custAttachOrder === 0) {
-        if (this.state.ModalorderNumber.length > 0) {
-          axios({
-            method: "post",
-            url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-            headers: authHeader(),
-            params: {
-              OrderNumber: this.state.ModalorderNumber,
-              CustomerID: CustID
-            }
-          })
-            .then(function(res) {
-              //
-              let Msg = res.data.message;
-              let mainData = res.data.responseData;
+        // if (this.state.ModalorderNumber.length > 0) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+          headers: authHeader(),
+          params: {
+            OrderNumber: this.state.ModalorderNumber,
+            CustomerID: CustID,
+          },
+        })
+          .then(function(res) {
+            //
+            let Msg = res.data.message;
+            let mainData = res.data.responseData;
 
-              var OrderSubItem = [];
+            var OrderSubItem = [];
 
-              for (let i = 0; i < mainData.length; i++) {
-                if (mainData[i].orderItems.length > 0) {
-                  for (let j = 0; j < mainData[i].orderItems.length; j++) {
-                    OrderSubItem.push(mainData[i].orderItems[j]);
-                  }
+            for (let i = 0; i < mainData.length; i++) {
+              if (mainData[i].orderItems.length > 0) {
+                for (let j = 0; j < mainData[i].orderItems.length; j++) {
+                  OrderSubItem.push(mainData[i].orderItems[j]);
                 }
               }
-              self.setState({
-                message: Msg,
-                orderDetailsData: mainData,
-                OrderSubItem
-              });
-            })
-            .catch(data => {
-              console.log(data);
+            }
+            self.setState({
+              message: Msg,
+              orderDetailsData: mainData,
+              OrderSubItem,
             });
-        } else {
-          self.setState({
-            validMdlOrdernumber: "Please Enter Order Number"
+          })
+          .catch((data) => {
+            console.log(data);
           });
-        }
+        // } else {
+        //   self.setState({
+        //     validMdlOrdernumber: "Please Enter Order Number",
+        //   });
+        // }
       }
     } else {
       axios({
@@ -403,11 +401,11 @@ class TicketSystemOrder extends Component {
         headers: authHeader(),
         params: {
           OrderNumber: OrdData,
-          CustomerID: CustID
-        }
+          CustomerID: CustID,
+        },
       })
         .then(function(res) {
-         debugger
+          debugger;
           // let Msg = res.data.message;
           let mainData = res.data.responseData;
 
@@ -425,16 +423,16 @@ class TicketSystemOrder extends Component {
             message: "Success",
             orderDetailsData: mainData,
             OrderSubItem,
-            orderNumber: ""
+            orderNumber: "",
           });
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
   }
   hadleAddManuallyOrderData() {
-    debugger
+    debugger;
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -460,11 +458,11 @@ class TicketSystemOrder extends Component {
           PurchaseFromStoreId: this.state.purchaseFrmStorID,
           Discount: this.state.discount,
           Size: this.state.size,
-          RequireSize: this.state.requiredSize
-        }
+          RequireSize: this.state.requiredSize,
+        },
       })
         .then(function(res) {
-         debugger
+          debugger;
           let status = res.data.message;
 
           if (status === "Success") {
@@ -486,16 +484,16 @@ class TicketSystemOrder extends Component {
               size: "",
               requiredSize: "",
               message: "Success",
-              saveLoader: false
+              saveLoader: false,
             });
           } else {
             NotificationManager.error("Order not added.");
             self.setState({
-              saveLoader: false
+              saveLoader: false,
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
       // } else {
@@ -522,8 +520,8 @@ class TicketSystemOrder extends Component {
         url: config.apiUrl + "/Store/getStores",
         headers: authHeader(),
         params: {
-          SearchText: SearchData[field]
-        }
+          SearchText: SearchData[field],
+        },
       })
         .then(function(res) {
           //
@@ -531,20 +529,20 @@ class TicketSystemOrder extends Component {
           var data = res.data.responseData;
           if (status === "Success") {
             self.setState({
-              SearchItem: data
+              SearchItem: data,
             });
           } else {
             self.setState({
-              SearchItem: []
+              SearchItem: [],
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       self.setState({
-        SearchData
+        SearchData,
       });
     }
   }
@@ -560,7 +558,7 @@ class TicketSystemOrder extends Component {
     this.setState({
       SearchData,
       StorAddress,
-      purchaseFrmStorID: Store_Id
+      purchaseFrmStorID: Store_Id,
     });
   }
   handleModeOfPaymentDropDown() {
@@ -568,13 +566,13 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getPaymentMode",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let modeData = res.data.responseData;
         self.setState({ modeData: modeData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -584,8 +582,8 @@ class TicketSystemOrder extends Component {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
       this.setState({
-        filtered: filtered.filter(item => item.id !== "all"),
-        filterAll
+        filtered: filtered.filter((item) => item.id !== "all"),
+        filterAll,
       });
     } else this.setState({ filtered });
   }
@@ -607,10 +605,10 @@ class TicketSystemOrder extends Component {
     }
 
     this.setState({
-      expanded: expanded
+      expanded: expanded,
     });
   }
-  handleNumberOnchange = e => {
+  handleNumberOnchange = (e) => {
     //
     var values = e.target.value;
     var names = e.target.name;
@@ -667,7 +665,7 @@ class TicketSystemOrder extends Component {
     }
   };
 
-  handleChangeOrderItem = e => {
+  handleChangeOrderItem = (e) => {
     //
     var values = e.target.checked;
     if (values) {
@@ -683,10 +681,10 @@ class TicketSystemOrder extends Component {
       j.style.display = "block ";
     }
     this.setState({
-      OrdItmBtnStatus: e.target.checked
+      OrdItmBtnStatus: e.target.checked,
     });
   };
-  handleChangeModalOrderItem = e => {
+  handleChangeModalOrderItem = (e) => {
     //
     var values = e.target.checked;
     if (values) {
@@ -702,7 +700,7 @@ class TicketSystemOrder extends Component {
       j.style.display = "block ";
     }
     this.setState({
-      OrdItmBtnStatus: e.target.checked
+      OrdItmBtnStatus: e.target.checked,
     });
   };
 
@@ -713,14 +711,14 @@ class TicketSystemOrder extends Component {
     const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
     newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
     this.setState({
-      CheckBoxAllOrder: orderMasterID ? newSelected : false
+      CheckBoxAllOrder: orderMasterID ? newSelected : false,
     });
     var selectedRow = [];
     var CselectedRow = [];
     if (this.state.SelectedAllOrder.length === 0) {
       selectedRow.push(rowData);
       var Order_Master = this.state.OrderSubItem.filter(
-        x => x.orderMasterID === orderMasterID
+        (x) => x.orderMasterID === orderMasterID
       );
       if (Order_Master.length > 0) {
         var objCheckBoxAllItem = new Object();
@@ -730,12 +728,12 @@ class TicketSystemOrder extends Component {
           CselectedRow.push(Order_Master[j]);
         }
         this.setState({
-          CheckBoxAllItem: objCheckBoxAllItem
+          CheckBoxAllItem: objCheckBoxAllItem,
         });
       }
       this.setState({
         SelectedAllOrder: selectedRow,
-        SelectedAllItem: CselectedRow
+        SelectedAllItem: CselectedRow,
       });
     } else {
       if (newSelected[orderMasterID] === true) {
@@ -744,7 +742,7 @@ class TicketSystemOrder extends Component {
             selectedRow = this.state.SelectedAllOrder;
             selectedRow.push(rowData);
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === orderMasterID
+              (x) => x.orderMasterID === orderMasterID
             );
             if (Order_Master.length > 0) {
               var objCheckBoxAllItem = new Object();
@@ -754,13 +752,13 @@ class TicketSystemOrder extends Component {
                 CselectedRow.push(Order_Master[j]);
               }
               this.setState({
-                CheckBoxAllItem: objCheckBoxAllItem
+                CheckBoxAllItem: objCheckBoxAllItem,
               });
             }
 
             this.setState({
               SelectedAllOrder: selectedRow,
-              SelectedAllItem: CselectedRow
+              SelectedAllItem: CselectedRow,
             });
 
             break;
@@ -772,7 +770,7 @@ class TicketSystemOrder extends Component {
             selectedRow = this.state.SelectedAllOrder;
             selectedRow.splice(i, 1);
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === orderMasterID
+              (x) => x.orderMasterID === orderMasterID
             );
             if (Order_Master.length > 0) {
               var objCheckBoxAllItem = new Object();
@@ -780,13 +778,13 @@ class TicketSystemOrder extends Component {
                 objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
               }
               this.setState({
-                CheckBoxAllItem: objCheckBoxAllItem
+                CheckBoxAllItem: objCheckBoxAllItem,
               });
             }
 
             this.setState({
               SelectedAllOrder: selectedRow,
-              SelectedAllItem: []
+              SelectedAllItem: [],
             });
 
             break;
@@ -797,7 +795,7 @@ class TicketSystemOrder extends Component {
 
     this.setState({
       SelectedAllOrder: selectedRow,
-      SelectedAllItem: CselectedRow
+      SelectedAllItem: CselectedRow,
     });
     {
       this.props.getParentOrderData(selectedRow, CselectedRow);
@@ -809,13 +807,13 @@ class TicketSystemOrder extends Component {
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
     this.setState({
-      CheckBoxAllItem: orderItemID ? newSelected : false
+      CheckBoxAllItem: orderItemID ? newSelected : false,
     });
     var selectedRow = [];
     if (this.state.SelectedAllItem.length === 0) {
       selectedRow.push(rowData);
       this.setState({
-        SelectedAllItem: selectedRow
+        SelectedAllItem: selectedRow,
       });
     } else {
       if (newSelected[orderItemID] === true) {
@@ -823,7 +821,8 @@ class TicketSystemOrder extends Component {
           selectedRow = this.state.SelectedAllItem;
           selectedRow.push(rowData);
           var Order_Master = this.state.OrderSubItem.filter(
-            x => x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+            (x) =>
+              x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
           );
           if (Order_Master.length === selectedRow.length) {
             const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
@@ -832,16 +831,16 @@ class TicketSystemOrder extends Component {
             this.setState({
               CheckBoxAllOrder: Order_Master[0].orderMasterID
                 ? newSelected
-                : false
+                : false,
             });
             var data_master = this.state.orderDetailsData.filter(
-              y => y.orderMasterID === Order_Master[0].orderMasterID
+              (y) => y.orderMasterID === Order_Master[0].orderMasterID
             );
             if (data_master.length > 0) {
               var MastOrd = this.state.SelectedAllOrder;
               MastOrd.push(data_master[0]);
               this.setState({
-                SelectedAllOrder: MastOrd
+                SelectedAllOrder: MastOrd,
               });
             }
           }
@@ -854,7 +853,7 @@ class TicketSystemOrder extends Component {
             selectedRow.splice(j, 1);
 
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === rowData.orderMasterID
+              (x) => x.orderMasterID === rowData.orderMasterID
             );
 
             if (Order_Master.length !== selectedRow.length) {
@@ -866,19 +865,19 @@ class TicketSystemOrder extends Component {
               this.setState({
                 CheckBoxAllOrder: Order_Master[0].orderMasterID
                   ? newSelected
-                  : false
+                  : false,
               });
               var data_master = this.state.orderDetailsData.filter(
-                y => y.orderMasterID === Order_Master[0].orderMasterID
+                (y) => y.orderMasterID === Order_Master[0].orderMasterID
               );
               var GetIndex = this.state.orderDetailsData.findIndex(
-                y => y.orderMasterID === Order_Master[0].orderMasterID
+                (y) => y.orderMasterID === Order_Master[0].orderMasterID
               );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
                 MastOrd.splice(GetIndex, 1);
                 this.setState({
-                  SelectedAllOrder: MastOrd
+                  SelectedAllOrder: MastOrd,
                 });
               }
             }
@@ -889,7 +888,7 @@ class TicketSystemOrder extends Component {
       }
     }
     this.setState({
-      SelectedAllItem: selectedRow
+      SelectedAllItem: selectedRow,
     });
     {
       this.props.getItemOrderData(selectedRow);
@@ -1050,7 +1049,7 @@ class TicketSystemOrder extends Component {
                   <p
                     style={{
                       color: "red",
-                      marginBottom: "0px"
+                      marginBottom: "0px",
                     }}
                   >
                     {this.state.validMdlOrdernumber}
@@ -1089,40 +1088,40 @@ class TicketSystemOrder extends Component {
                           <label htmlFor={"all" + data.orderMasterID}></label>
                         </div>
                       );
-                    }
+                    },
                   },
                   {
                     title: "Invoice Number",
-                    dataIndex: "invoiceNumber"
+                    dataIndex: "invoiceNumber",
                   },
                   {
                     title: "Invoice Date",
-                    dataIndex: "dateFormat"
+                    dataIndex: "dateFormat",
                   },
                   {
                     title: "Item Count",
-                    dataIndex: "itemCount"
+                    dataIndex: "itemCount",
                   },
                   {
                     title: "Item Price",
-                    dataIndex: "ordeItemPrice"
+                    dataIndex: "ordeItemPrice",
                   },
                   {
                     title: "Price Paid",
-                    dataIndex: "orderPricePaid"
+                    dataIndex: "orderPricePaid",
                   },
                   {
                     title: "Store Code",
-                    dataIndex: "storeCode"
+                    dataIndex: "storeCode",
                   },
                   {
                     title: "Store Address",
-                    dataIndex: "storeAddress"
+                    dataIndex: "storeAddress",
                   },
                   {
                     title: "Discount",
-                    dataIndex: "discount"
-                  }
+                    dataIndex: "discount",
+                  },
                 ]}
                 dataSource={orderDetailsData}
                 pagination={false}
@@ -1162,46 +1161,46 @@ class TicketSystemOrder extends Component {
                           <label htmlFor={"all" + data.orderMasterID}></label>
                         </div>
                       );
-                    }
+                    },
                   },
                   {
                     title: "Invoice Number",
-                    dataIndex: "invoiceNumber"
+                    dataIndex: "invoiceNumber",
                   },
                   {
                     title: "Invoice Date",
-                    dataIndex: "dateFormat"
+                    dataIndex: "dateFormat",
                   },
                   {
                     title: "Item Count",
-                    dataIndex: "itemCount"
+                    dataIndex: "itemCount",
                   },
                   {
                     title: "Item Price",
-                    dataIndex: "ordeItemPrice"
+                    dataIndex: "ordeItemPrice",
                   },
                   {
                     title: "Price Paid",
-                    dataIndex: "orderPricePaid"
+                    dataIndex: "orderPricePaid",
                   },
                   {
                     title: "Store Code",
-                    dataIndex: "storeCode"
+                    dataIndex: "storeCode",
                   },
                   {
                     title: "Store Address",
-                    dataIndex: "storeAddress"
+                    dataIndex: "storeAddress",
                   },
                   {
                     title: "Discount",
-                    dataIndex: "discount"
-                  }
+                    dataIndex: "discount",
+                  },
                 ]}
-                expandedRowRender={row => {
+                expandedRowRender={(row) => {
                   return (
                     <Table
                       dataSource={this.state.OrderSubItem.filter(
-                        x => x.orderMasterID === row.orderMasterID
+                        (x) => x.orderMasterID === row.orderMasterID
                       )}
                       columns={[
                         {
@@ -1232,27 +1231,27 @@ class TicketSystemOrder extends Component {
                                 ></label>
                               </div>
                             );
-                          }
+                          },
                         },
                         {
                           title: "Article Number",
-                          dataIndex: "articleNumber"
+                          dataIndex: "articleNumber",
                         },
                         {
                           title: "Article Name",
-                          dataIndex: "articleName"
+                          dataIndex: "articleName",
                         },
                         {
                           title: "Article MRP",
-                          dataIndex: "itemPrice"
+                          dataIndex: "itemPrice",
                         },
                         {
                           title: "Price Paid",
-                          dataIndex: "pricePaid"
+                          dataIndex: "pricePaid",
                         },
                         {
                           title: "Discount",
-                          dataIndex: "discount"
+                          dataIndex: "discount",
                         },
                         {
                           title: "Required Size",
@@ -1273,8 +1272,8 @@ class TicketSystemOrder extends Component {
                                 />
                               </div>
                             );
-                          }
-                        }
+                          },
+                        },
                       ]}
                       // rowSelection={rowSelection}
                       pagination={false}
@@ -1325,7 +1324,7 @@ class TicketSystemOrder extends Component {
                     <p
                       style={{
                         color: "red",
-                        marginBottom: "0px"
+                        marginBottom: "0px",
                       }}
                     >
                       {this.state.validOrdernumber}
@@ -1604,12 +1603,12 @@ class TicketSystemOrder extends Component {
                       /> */}
                   <ReactAutocomplete
                     wrapperStyle={{ display: "block" }}
-                    getItemValue={item => item.storeName}
+                    getItemValue={(item) => item.storeName}
                     items={this.state.SearchItem}
                     renderItem={(item, isHighlighted) => (
                       <div
                         style={{
-                          background: isHighlighted ? "lightgray" : "white"
+                          background: isHighlighted ? "lightgray" : "white",
                         }}
                         value={item.storeID}
                       >
@@ -1629,7 +1628,7 @@ class TicketSystemOrder extends Component {
                     onChange={this.handlePurchaseStoreName.bind(this, "store")}
                     onSelect={this.HandleSelectdata.bind(
                       this,
-                      item => item.storeID,
+                      (item) => item.storeID,
                       "store"
                     )}
                     value={this.state.purchaseFrmStorName["store"]}
@@ -1771,40 +1770,40 @@ class TicketSystemOrder extends Component {
                             <label htmlFor={"all" + data.orderMasterID}></label>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
                       title: "Invoice Number",
-                      dataIndex: "invoiceNumber"
+                      dataIndex: "invoiceNumber",
                     },
                     {
                       title: "Invoice Date",
-                      dataIndex: "dateFormat"
+                      dataIndex: "dateFormat",
                     },
                     {
                       title: "Item Count",
-                      dataIndex: "itemCount"
+                      dataIndex: "itemCount",
                     },
                     {
                       title: "Item Price",
-                      dataIndex: "ordeItemPrice"
+                      dataIndex: "ordeItemPrice",
                     },
                     {
                       title: "Price Paid",
-                      dataIndex: "orderPricePaid"
+                      dataIndex: "orderPricePaid",
                     },
                     {
                       title: "Store Code",
-                      dataIndex: "storeCode"
+                      dataIndex: "storeCode",
                     },
                     {
                       title: "Store Address",
-                      dataIndex: "storeAddress"
+                      dataIndex: "storeAddress",
                     },
                     {
                       title: "Discount",
-                      dataIndex: "discount"
-                    }
+                      dataIndex: "discount",
+                    },
                   ]}
                   dataSource={orderDetailsData}
                   pagination={false}
@@ -1844,46 +1843,46 @@ class TicketSystemOrder extends Component {
                             <label htmlFor={"all" + data.orderMasterID}></label>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
                       title: "Invoice Number",
-                      dataIndex: "invoiceNumber"
+                      dataIndex: "invoiceNumber",
                     },
                     {
                       title: "Invoice Date",
-                      dataIndex: "dateFormat"
+                      dataIndex: "dateFormat",
                     },
                     {
                       title: "Item Count",
-                      dataIndex: "itemCount"
+                      dataIndex: "itemCount",
                     },
                     {
                       title: "Item Price",
-                      dataIndex: "ordeItemPrice"
+                      dataIndex: "ordeItemPrice",
                     },
                     {
                       title: "Price Paid",
-                      dataIndex: "orderPricePaid"
+                      dataIndex: "orderPricePaid",
                     },
                     {
                       title: "Store Code",
-                      dataIndex: "storeCode"
+                      dataIndex: "storeCode",
                     },
                     {
                       title: "Store Address",
-                      dataIndex: "storeAddress"
+                      dataIndex: "storeAddress",
                     },
                     {
                       title: "Discount",
-                      dataIndex: "discount"
-                    }
+                      dataIndex: "discount",
+                    },
                   ]}
-                  expandedRowRender={row => {
+                  expandedRowRender={(row) => {
                     return (
                       <Table
                         dataSource={this.state.OrderSubItem.filter(
-                          x => x.orderMasterID === row.orderMasterID
+                          (x) => x.orderMasterID === row.orderMasterID
                         )}
                         columns={[
                           {
@@ -1913,27 +1912,27 @@ class TicketSystemOrder extends Component {
                                   ></label>
                                 </div>
                               );
-                            }
+                            },
                           },
                           {
                             title: "Article Number",
-                            dataIndex: "articleNumber"
+                            dataIndex: "articleNumber",
                           },
                           {
                             title: "Article Name",
-                            dataIndex: "articleName"
+                            dataIndex: "articleName",
                           },
                           {
                             title: "Article MRP",
-                            dataIndex: "itemPrice"
+                            dataIndex: "itemPrice",
                           },
                           {
                             title: "Price Paid",
-                            dataIndex: "pricePaid"
+                            dataIndex: "pricePaid",
                           },
                           {
                             title: "Discount",
-                            dataIndex: "discount"
+                            dataIndex: "discount",
                           },
                           {
                             title: "Required Size",
@@ -1954,8 +1953,8 @@ class TicketSystemOrder extends Component {
                                   />
                                 </div>
                               );
-                            }
-                          }
+                            },
+                          },
                         ]}
                         // rowSelection={rowSelection}
                         pagination={false}
