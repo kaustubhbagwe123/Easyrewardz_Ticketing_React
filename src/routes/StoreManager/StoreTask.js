@@ -14,11 +14,18 @@ class StoreTask extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      raisedByMeData: [],
+      assignToMeData: [],
+      taskByTicketData: [],
+      campaignData: [],
+      isloading: false,
+    };
+    this.handleGetTaskData = this.handleGetTaskData.bind(this);
   }
 
   componentDidMount() {
-    
+    this.handleGetTaskData(1);
   }
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
@@ -29,13 +36,24 @@ class StoreTask extends Component {
   handleChagneAddTask() {
     this.props.history.push("storeAddTask");
   }
-  HandleRowClickPage = () => {
+
+  ////handle row click raised by me table
+  handleRowClickRaisedTable = (rowInfo, column) => {
     return {
       onClick: (e) => {
-        this.props.history.push("editStoreTask");
+        var storeTaskID = column.original["storeTaskID"];
+        this.handleRedirectToEditStoreTask(storeTaskID);
       },
     };
   };
+  ////handle redirect to edit store task
+  handleRedirectToEditStoreTask(storeTaskID) {
+    debugger;
+    this.props.history.push({
+      pathname: "editStoreTask",
+      state: { TaskID: storeTaskID },
+    });
+  }
   HandleRowTaskByClickPage = () => {
     return {
       onClick: (e) => {
@@ -43,6 +61,42 @@ class StoreTask extends Component {
       },
     };
   };
+////handle get task data by tab click
+  handleGetTaskData(tabFor) {
+    debugger;
+    this.setState({ isloading: true });
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreTaskList",
+      headers: authHeader(),
+      params: { tabFor: tabFor },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          if (tabFor === 1) {
+            self.setState({ raisedByMeData: responseData, isloading: false });
+          }
+          if (tabFor === 2) {
+            self.setState({ assignToMeData: responseData, isloading: false });
+          }
+        } else {
+          if (tabFor === 1) {
+            self.setState({ raisedByMeData: responseData, isloading: false });
+          }
+          if (tabFor === 2) {
+            self.setState({ assignToMeData: responseData, isloading: false });
+          }
+        }
+      })
+      .catch((response) => {
+        self.setState({ isloading: false });
+        console.log(response, "---handleGetTaskData");
+      });
+  }
 
   render() {
     const DefArti = (
@@ -199,16 +253,16 @@ class StoreTask extends Component {
     const columnsRaise = [
       {
         Header: <span>ID</span>,
-        accessor: "idClose",
-        Cell: (props) => <label>ABCD123</label>,
+        accessor: "storeTaskID",
+        // Cell: (props) => <label>ABCD123</label>,
       },
       {
         Header: <span>Status</span>,
-        accessor: "statusNew",
+        accessor: "taskStatus",
       },
       {
         Header: <span>Task Title</span>,
-        accessor: "TaskTitle",
+        accessor: "taskTitle",
       },
       {
         Header: (
@@ -216,7 +270,7 @@ class StoreTask extends Component {
             Department <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "DeptName",
+        accessor: "departmentName",
       },
       {
         Header: (
@@ -224,7 +278,7 @@ class StoreTask extends Component {
             Store Name <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "StName",
+        accessor: "storeName",
       },
       {
         Header: (
@@ -232,8 +286,8 @@ class StoreTask extends Component {
             Priority <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "assigneeNew",
-        Cell: (props) => <span>High</span>,
+        accessor: "priorityName	",
+        // Cell: (props) => <span>High</span>,
       },
       {
         Header: (
@@ -241,7 +295,7 @@ class StoreTask extends Component {
             Creation On <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "creationNew",
+        accessor: "creationOn",
         Cell: (props) => (
           <span>
             <label>12 March 2018</label>
@@ -259,12 +313,12 @@ class StoreTask extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "assignToNew",
-        Cell: (props) => (
-          <span>
-            <label>A, Bansal</label>
-          </span>
-        ),
+        accessor: "assignto",
+        // Cell: (props) => (
+        //   <span>
+        //     <label>A, Bansal</label>
+        //   </span>
+        // ),
       },
     ];
 
@@ -812,6 +866,7 @@ class StoreTask extends Component {
                 role="tab"
                 aria-controls="raised-by-me-tab"
                 aria-selected="true"
+                onClick={this.handleGetTaskData.bind(this, 1)}
               >
                 Raised by Me
               </a>
@@ -824,6 +879,7 @@ class StoreTask extends Component {
                 role="tab"
                 aria-controls="assigned-to-me-tab"
                 aria-selected="false"
+                onClick={this.handleGetTaskData.bind(this, 2)}
               >
                 Assigned To Me
               </a>
@@ -870,509 +926,139 @@ class StoreTask extends Component {
             role="tabpanel"
             aria-labelledby="raised-by-me-tab"
           >
-            <div className="table-cntr raisereactTable">
-              <ReactTable
-                data={dataRaise}
-                columns={columnsRaise}
-                // resizable={false}
-                defaultPageSize={8}
-                showPagination={false}
-                getTrProps={this.HandleRowClickPage}
-              />
-              {/* <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Status</th>
-                    <th>Task Title</th>
-                    <th>
-                      Department <img src={TableArr} alt="table-arr" />
-                    </th>
-                    <th>
-                      Store Name <img src={TableArr} alt="table-arr" />
-                    </th>
-                    <th>
-                      Priority <img src={TableArr} alt="table-arr" />
-                    </th>
-                    <th>
-                      Creation on <img src={TableArr} alt="table-arr" />
-                    </th>
-                    <th>
-                      Assign to <img src={TableArr} alt="table-arr" />
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr onClick={this.handleChangeStoreTask.bind(this)}>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-blue-btn">Open</span>
-                    </td>
-                    <td>Wif is not working form 5hrs</td>
-                    <td>
-                      Internet
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="Internet1"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="Internet1"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </div>
-                    </td>
-                    <td>BATA1</td>
-                    <td>High</td>
-                    <td>
-                      2 Hour Ago
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup dash-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                    <td>A. Bansal</td>
-                  </tr>
-                  <tr>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-blue-btn">Open</span>
-                    </td>
-                    <td>Store door are not working</td>
-                    <td>
-                      Hardware
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="hardware1"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="hardware1"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </div>
-                    </td>
-                    <td>BATA2</td>
-                    <td>High</td>
-                    <td>
-                      12 March 2018
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup dash-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                    <td>G. Bansal</td>
-                  </tr>
-                  <tr>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-green-btn">Solved</span>
-                    </td>
-                    <td>Supplies are not coming on time</td>
-                    <td>
-                      Supply
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="supply1"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="supply1"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </div>
-                    </td>
-                    <td>BATA3</td>
-                    <td>High</td>
-                    <td>
-                      12 March 2018
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup dash-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                    <td>G. Bansal</td>
-                  </tr>
-                  <tr>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-blue-btn">Open</span>
-                    </td>
-                    <td>Wif is not working form 5hrs</td>
-                    <td>
-                      Internet
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                        id="internet2"
-                      />
-                      <UncontrolledPopover
-                        trigger="hover"
-                        placement="bottom"
-                        target="internet2"
-                        className="general-popover created-popover"
-                      >
-                        <PopoverBody>
-                          <div>
-                            <p className="sub-title">Category</p>
-                            <p className="title">Defective article</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Sub Category</p>
-                            <p className="title">Customer wants refund</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Type</p>
-                            <p className="title">Delivery</p>
-                          </div>
-                        </PopoverBody>
-                      </UncontrolledPopover>
-                    </td>
-                    <td>BATA1</td>
-                    <td>High</td>
-                    <td>
-                      12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
-                    </td>
-                    <td>A. Bansal</td>
-                  </tr>
-                  <tr>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-blue-btn">Open</span>
-                    </td>
-                    <td>Store door are not working</td>
-                    <td>
-                      Hardware
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                        id="hardware5"
-                      />
-                      <UncontrolledPopover
-                        trigger="hover"
-                        placement="bottom"
-                        target="hardware5"
-                        className="general-popover created-popover"
-                      >
-                        <PopoverBody>
-                          <div>
-                            <p className="sub-title">Category</p>
-                            <p className="title">Defective article</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Sub Category</p>
-                            <p className="title">Customer wants refund</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Type</p>
-                            <p className="title">Delivery</p>
-                          </div>
-                        </PopoverBody>
-                      </UncontrolledPopover>
-                    </td>
-                    <td>BATA2</td>
-                    <td>High</td>
-                    <td>
-                      12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
-                    </td>
-                    <td>G. Bansal</td>
-                  </tr>
-                  <tr>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-green-btn">Solved</span>
-                    </td>
-                    <td>Store door are not working</td>
-                    <td>
-                      Supply
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                        id="supply2"
-                      />
-                      <UncontrolledPopover
-                        trigger="hover"
-                        placement="bottom"
-                        target="supply2"
-                        className="general-popover created-popover"
-                      >
-                        <PopoverBody>
-                          <div>
-                            <p className="sub-title">Category</p>
-                            <p className="title">Defective article</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Sub Category</p>
-                            <p className="title">Customer wants refund</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Type</p>
-                            <p className="title">Delivery</p>
-                          </div>
-                        </PopoverBody>
-                      </UncontrolledPopover>
-                    </td>
-                    <td>BATA3</td>
-                    <td>High</td>
-                    <td>
-                      12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
-                    </td>
-                    <td>G. Bansal</td>
-                  </tr>
-                  <tr>
-                    <td>ABC1234</td>
-                    <td>
-                      <span className="table-btn table-green-btn">Solved</span>
-                    </td>
-                    <td>Supplies are not coming on time</td>
-                    <td>
-                      Hardware
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                        id="hardware3"
-                      />
-                      <UncontrolledPopover
-                        trigger="hover"
-                        placement="bottom"
-                        target="hardware3"
-                        className="general-popover created-popover"
-                      >
-                        <PopoverBody>
-                          <div>
-                            <p className="sub-title">Category</p>
-                            <p className="title">Defective article</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Sub Category</p>
-                            <p className="title">Customer wants refund</p>
-                          </div>
-                          <div>
-                            <p className="sub-title">Type</p>
-                            <p className="title">Delivery</p>
-                          </div>
-                        </PopoverBody>
-                      </UncontrolledPopover>
-                    </td>
-                    <td>BATA3</td>
-                    <td>High</td>
-                    <td>
-                      12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
-                    </td>
-                    <td>G. Bansal</td>
-                  </tr>
-                </tbody>
-              </table> */}
-              <div className="position-relative">
-                <div className="pagi">
-                  <ul>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>&lt;</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>1</a>
-                    </li>
-                    <li className="active">
-                      <a href={Demo.BLANK_LINK}>2</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>3</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>4</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>5</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>6</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>&gt;</a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="item-selection">
-                  <select>
-                    <option>30</option>
-                    <option>50</option>
-                    <option>100</option>
-                  </select>
-                  <p>Items per page</p>
-                </div>
+            {this.state.isloading === true ? (
+              <div className="loader-icon-cntr">
+                <div className="loader-icon"></div>
               </div>
-            </div>
+            ) : (
+              <div className="table-cntr raisereactTable">
+                <ReactTable
+                  data={this.state.raisedByMeData}
+                  columns={[
+                    {
+                      Header: <span>ID</span>,
+                      accessor: "storeTaskID",
+                    },
+                    {
+                      Header: <span>Status</span>,
+                      accessor: "taskStatus",
+                      Cell: (row) => {
+                        return (
+                          <span className="table-btn table-blue-btn">
+                            <label>{row.original.taskStatus}</label>
+                          </span>
+                        );
+                      },
+                    },
+                    {
+                      Header: <span>Task Title</span>,
+                      accessor: "taskTitle",
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Department <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "departmentName",
+                      Cell: (row) => {
+                        return (
+                          <>
+                            {row.original.departmentName}
+                            <Popover
+                              content={
+                                <div className="dash-creation-popup-cntr">
+                                  <ul className="dash-category-popup dashnewpopup">
+                                    <li>
+                                      <p>Category</p>
+                                      <p>Defective article</p>
+                                    </li>
+                                    <li>
+                                      <p>Sub Category</p>
+                                      <p>Customer wants refund</p>
+                                    </li>
+                                    <li>
+                                      <p>Type</p>
+                                      <p>Delivery</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              }
+                              placement="bottom"
+                            >
+                              <img
+                                className="info-icon"
+                                src={InfoIcon}
+                                alt="info-icon"
+                              />
+                            </Popover>
+                          </>
+                        );
+                      },
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Store Name <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "storeName",
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Priority <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "priorityName	",
+                      Cell: (row) => {
+                        return <span>{row.original.priorityName}</span>;
+                      },
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Creation On <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "creationOn",
+                      Cell: (row) => (
+                        <span>
+                          <label>{row.original.creationOn}</label>
+
+                          <Popover content={InsertPlaceholder} placement="left">
+                            <img
+                              className="info-icon"
+                              src={InfoIcon}
+                              alt="info-icon"
+                            />
+                          </Popover>
+                        </span>
+                      ),
+                    },
+                    {
+                      Header: (
+                        <span>
+                          Assign to
+                          <FontAwesomeIcon icon={faCaretDown} />
+                        </span>
+                      ),
+                      accessor: "assignto",
+                      // Cell: (props) => (
+                      //   <span>
+                      //     <label>A, Bansal</label>
+                      //   </span>
+                      // ),
+                    },
+                  ]}
+                  // resizable={false}
+                  defaultPageSize={10}
+                  minRows={2}
+                  showPagination={true}
+                  getTrProps={this.handleRowClickRaisedTable}
+                />
+              </div>
+            )}
           </div>
           <div
             className="tab-pane fade"
@@ -1380,790 +1066,163 @@ class StoreTask extends Component {
             role="tabpanel"
             aria-labelledby="assigned-to-me-tab"
           >
-            <div>
-              <div className="table-cntr">
-                <ReactTable
-                  data={dataAssign}
-                  columns={columnsAssign}
-                  // resizable={false}
-                  defaultPageSize={8}
-                  showPagination={false}
-                  getTrProps={this.HandleRowClickPage}
-                />
-                <div className="position-relative">
-                  <div className="pagi">
-                    <ul>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>&lt;</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>1</a>
-                      </li>
-                      <li className="active">
-                        <a href={Demo.BLANK_LINK}>2</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>3</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>4</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>5</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>6</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>&gt;</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="item-selection">
-                    <select>
-                      <option>30</option>
-                      <option>50</option>
-                      <option>100</option>
-                    </select>
-                    <p>Items per page</p>
-                  </div>
-                </div>
-                {/* <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Status</th>
-                      <th>Task Title</th>
-                      <th>
-                        Department <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Created By <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Store Name <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Creation on <img src={TableArr} alt="table-arr" />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr onClick={this.handleChangeStoreTask.bind(this)}>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Wif is not working form 5hrs</td>
-                      <td>
-                        Internet
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="AbcInterner"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="AbcInterner"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Department</p>
-                                <p className="title">Internet</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>BATA1</td>
-                      <td>
-                        ABS
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="ABSStore"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="ABSStore"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">ABS</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        2 Hour Ago
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="hrago2"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="hrago2"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Store door are not working</td>
-                      <td>
-                        Hardware
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="HhhHardware"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="HhhHardware"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Department</p>
-                                <p className="title">Hardware</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>BATA2</td>
-                      <td>
-                        HHH
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="HHH2Store"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="HHH2Store"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">HHH</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="marchHhr"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="marchHhr"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td>Supplies are not coming on time</td>
-                      <td>
-                        Supply
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="BataSupply"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="BataSupply"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Department</p>
-                                <p className="title">Supply</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>BATA3</td>
-                      <td>
-                        BATA
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="BATA1Store"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="BATA1Store"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">BATA</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="marchBata"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="marchBata"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Wif is not working form 5hrs</td>
-                      <td>
-                        Internet
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="HnmInternet"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="HnmInternet"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Internet</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>BATA1</td>
-                      <td>
-                        HNM
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="HNMStore"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="HNMStore"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">HNM</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        12 March 2018{" "}
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="HnmMarch"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="auto"
-                          target="HnmMarch"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <ul className="dash-creation-popup">
-                              <li className="title">Creation details</li>
-                              <li>
-                                <p>Naman Created</p>
-                                <p>2 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Assigned to Vikas</p>
-                                <p>1.5 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Vikas updated</p>
-                                <p>1 Hr ago</p>
-                              </li>
-                              <li>
-                                <p>Response time remaining by</p>
-                                <p>30 mins</p>
-                              </li>
-                              <li>
-                                <p>Response overdue by</p>
-                                <p>1 Hr</p>
-                              </li>
-                              <li>
-                                <p>Resolution overdue by</p>
-                                <p>2 Hrs</p>
-                              </li>
-                            </ul>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Store door are not working</td>
-                      <td>
-                        Hardware
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="HhhHardware1"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="HhhHardware1"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Hardware</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>BATA2</td>
-                      <td>
-                        HHH
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="HHH1Store"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="HHH1Store"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">HHH</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="Hhh1march"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="auto"
-                          target="Hhh1march"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <ul className="dash-creation-popup">
-                              <li className="title">Creation details</li>
-                              <li>
-                                <p>Naman Created</p>
-                                <p>2 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Assigned to Vikas</p>
-                                <p>1.5 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Vikas updated</p>
-                                <p>1 Hr ago</p>
-                              </li>
-                              <li>
-                                <p>Response time remaining by</p>
-                                <p>30 mins</p>
-                              </li>
-                              <li>
-                                <p>Response overdue by</p>
-                                <p>1 Hr</p>
-                              </li>
-                              <li>
-                                <p>Resolution overdue by</p>
-                                <p>2 Hrs</p>
-                              </li>
-                            </ul>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td>Store door are not working</td>
-                      <td>
-                        Supply
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="RRtSupply"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="RRtSupply"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Supply</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>BATA3</td>
-                      <td>
-                        RRT
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="RRTStore"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="RRTStore"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">RRT</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="Rrt3march"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="auto"
-                          target="Rrt3march"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <ul className="dash-creation-popup">
-                              <li className="title">Creation details</li>
-                              <li>
-                                <p>Naman Created</p>
-                                <p>2 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Assigned to Vikas</p>
-                                <p>1.5 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Vikas updated</p>
-                                <p>1 Hr ago</p>
-                              </li>
-                              <li>
-                                <p>Response time remaining by</p>
-                                <p>30 mins</p>
-                              </li>
-                              <li>
-                                <p>Response overdue by</p>
-                                <p>1 Hr</p>
-                              </li>
-                              <li>
-                                <p>Resolution overdue by</p>
-                                <p>2 Hrs</p>
-                              </li>
-                            </ul>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td>Supplies are not coming on time</td>
-                      <td>
-                        Hardware
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="HghHardware"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="HghHardware"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Hardware</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>BATA3</td>
-                      <td>
-                        HGH
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="HGHStore"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="HGHStore"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Store Name</p>
-                                <p className="title">HGH</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="HGHMarch"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="auto"
-                          target="HGHMarch"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <ul className="dash-creation-popup">
-                              <li className="title">Creation details</li>
-                              <li>
-                                <p>Naman Created</p>
-                                <p>2 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Assigned to Vikas</p>
-                                <p>1.5 Hrs ago</p>
-                              </li>
-                              <li>
-                                <p>Vikas updated</p>
-                                <p>1 Hr ago</p>
-                              </li>
-                              <li>
-                                <p>Response time remaining by</p>
-                                <p>30 mins</p>
-                              </li>
-                              <li>
-                                <p>Response overdue by</p>
-                                <p>1 Hr</p>
-                              </li>
-                              <li>
-                                <p>Resolution overdue by</p>
-                                <p>2 Hrs</p>
-                              </li>
-                            </ul>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> */}
+            {this.state.isloading === true ? (
+              <div className="loader-icon-cntr">
+                <div className="loader-icon"></div>
               </div>
-            </div>
+            ) : (
+              <div>
+                <div className="table-cntr">
+                  <ReactTable
+                    data={this.state.assignToMeData}
+                    columns={[
+                      {
+                        Header: <span>ID</span>,
+                        accessor: "storeTaskID",
+                      },
+                      {
+                        Header: <span>Status</span>,
+                        accessor: "taskStatus",
+                        Cell: (row) => {
+                          return (
+                            <span className="table-btn table-blue-btn">
+                              <label>{row.original.taskStatus}</label>
+                            </span>
+                          );
+                        },
+                      },
+                      {
+                        Header: <span>Task Title</span>,
+                        accessor: "taskTitle",
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Department <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "departmentName",
+                        Cell: (row) => {
+                          return (
+                            <span>
+                              <label>{row.original.departmentName}</label>
+                              <Popover
+                                content={
+                                  <div className="dash-creation-popup-cntr">
+                                    <ul className="dash-category-popup dashnewpopup">
+                                      <li>
+                                        <p>Category</p>
+                                        <p>Defective article</p>
+                                      </li>
+                                      <li>
+                                        <p>Sub Category</p>
+                                        <p>Customer wants refund</p>
+                                      </li>
+                                      <li>
+                                        <p>Type</p>
+                                        <p>Delivery</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Created by <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdBy",
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Priority <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "priorityName",
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Store Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "storeName",
+                        Cell: (row) => {
+                          return (
+                            <span>
+                              <label>{row.original.storeName}</label>
+                              <Popover
+                                content={
+                                  <div className="dash-creation-popup-cntr">
+                                    <ul className="dash-category-popup dashnewpopup">
+                                      <li>
+                                        <p>Store Name</p>
+                                        <p>ABS</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "creationOn",
+                        Cell: (row) => {
+                          return (
+                            <span>
+                              <label>{row.original.creationOn}</label>
+
+                              <Popover
+                                content={InsertPlaceholder}
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          );
+                        },
+                      },
+                    ]}
+                    // resizable={false}
+                    defaultPageSize={8}
+                    showPagination={false}
+                    getTrProps={this.HandleRowClickPage}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <div
             className="tab-pane fade"
@@ -2181,764 +1240,6 @@ class StoreTask extends Component {
                   showPagination={false}
                   getTrProps={this.HandleRowTaskByClickPage}
                 />
-                <div className="position-relative">
-                  <div className="pagi">
-                    <ul>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>&lt;</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>1</a>
-                      </li>
-                      <li className="active">
-                        <a href={Demo.BLANK_LINK}>2</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>3</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>4</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>5</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>6</a>
-                      </li>
-                      <li>
-                        <a href={Demo.BLANK_LINK}>&gt;</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="item-selection">
-                    <select>
-                      <option>30</option>
-                      <option>50</option>
-                      <option>100</option>
-                    </select>
-                    <p>Items per page</p>
-                  </div>
-                </div>
-                {/* <table>
-                  <thead>
-                    <tr>
-                      <th>Task ID</th>
-                      <th>Ticket ID</th>
-                      <th>Status</th>
-                      <th>Task Title</th>
-                      <th>
-                        Department <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Created By <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Store Name <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Creation on <img src={TableArr} alt="table-arr" />
-                      </th>
-                      <th>
-                        Assign to <img src={TableArr} alt="table-arr" />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr onClick={this.handleChangeTaskByTicket.bind(this)}>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Wif is not working form 5hrs</td>
-                      <td>
-                        Internet
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskInternet1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="TaskInternet1"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Department</p>
-                                <p className="title">Internet</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>A. Bansal</td>
-                      <td>
-                        ABS
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskABS"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskABS"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">ABS</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>
-                        2 Hour Ago
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="Taskhrago2"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="Taskhrago2"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>A. Bansal</td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Store door are not working</td>
-                      <td>
-                        Hardware
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskHardware1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="TaskHardware1"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Department</p>
-                                <p className="title">Hardware</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                      <td>
-                        HHH
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskHHH1"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskHHH1"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">HHH</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskMarch1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="TaskMarch1"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td>Supplies are not coming on time</td>
-                      <td>
-                        Supply
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskSupply1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="TaskSupply1"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">Department</p>
-                                <p className="title">Supply</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                      <td>
-                        BATA
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="Taskbata11"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="Taskbata11"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">BATA</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskMarch2"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="TaskMarch2"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Wif is not working form 5hrs</td>
-                      <td>
-                        Internet
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskInternet2"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskInternet2"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Internet</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>A. Bansal</td>
-                      <td>
-                        HNM
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskHardware3"
-                        />
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskMarch3"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="TaskMarch3"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>A. Bansal</td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-blue-btn">Open</span>
-                      </td>
-                      <td>Store door are not working</td>
-                      <td>
-                        Hardware
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskHardware2"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskHardware2"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Hardware</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>G. Bansal</td>
-                      <td>
-                        HHH
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskHHH3"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskHHH3"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">HHH</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskMarch4"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="TaskMarch4"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td>Store door are not working</td>
-                      <td>
-                        Supply
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskSupply2"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskSupply2"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Supply</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>G. Bansal</td>
-                      <td>
-                        RRT
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskRRT3"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskRRT3"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">RRT</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskMarch5"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="TaskMarch5"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                    </tr>
-                    <tr>
-                      <td>ABC1234</td>
-                      <td>ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td>Supplies are not coming on time</td>
-                      <td>
-                        Hardware
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskHardware3"
-                        />
-                        <UncontrolledPopover
-                          trigger="hover"
-                          placement="bottom"
-                          target="TaskHardware3"
-                          className="general-popover created-popover"
-                        >
-                          <PopoverBody>
-                            <div>
-                              <p className="sub-title">Department</p>
-                              <p className="title">Hardware</p>
-                            </div>
-                          </PopoverBody>
-                        </UncontrolledPopover>
-                      </td>
-                      <td>BATA3</td>
-                      <td>
-                        HGH
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                          id="TaskHardware3"
-                        />
-                      </td>
-                      <td>
-                        12 March 2018
-                        <div className="dash-creation-popup-cntr">
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="TaskMarch6"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="TaskMarch6"
-                            className="general-popover created-popover"
-                          >
-                            <PopoverBody>
-                              <ul className="dash-creation-popup">
-                                <li className="title">Creation details</li>
-                                <li>
-                                  <p>Naman Created</p>
-                                  <p>2 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Assigned to Vikas</p>
-                                  <p>1.5 Hrs ago</p>
-                                </li>
-                                <li>
-                                  <p>Vikas updated</p>
-                                  <p>1 Hr ago</p>
-                                </li>
-                                <li>
-                                  <p>Response time remaining by</p>
-                                  <p>30 mins</p>
-                                </li>
-                                <li>
-                                  <p>Response overdue by</p>
-                                  <p>1 Hr</p>
-                                </li>
-                                <li>
-                                  <p>Resolution overdue by</p>
-                                  <p>2 Hrs</p>
-                                </li>
-                              </ul>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                      </td>
-                      <td>G. Bansal</td>
-                    </tr>
-                  </tbody>
-                </table> */}
               </div>
             </div>
           </div>
