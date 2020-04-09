@@ -6,6 +6,9 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
 
 class StoreTask extends Component {
   constructor(props) {
@@ -14,31 +17,34 @@ class StoreTask extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.handleGetDepartement();
+  }
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
   }
   handleChangeTaskByTicket() {
     this.props.history.push("/store/storeTaskByTicket");
   }
-  handleChagneAddTask(){
+  handleChagneAddTask() {
     this.props.history.push("storeAddTask");
   }
   HandleRowClickPage = () => {
     return {
-      onClick: e => {
+      onClick: (e) => {
         this.props.history.push("editStoreTask");
-      }
+      },
     };
   };
   HandleRowTaskByClickPage = () => {
     return {
-      onClick: e => {
+      onClick: (e) => {
         this.props.history.push("storeTaskByTicket");
-      }
+      },
     };
   };
-  render() {
 
+  render() {
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -74,41 +80,33 @@ class StoreTask extends Component {
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Wifi is not working from 5 Hrs</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
+        DeptName: (
           <span>
-          <label>Internet</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Internet</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata1</label>
-        ),
+        StName: <label>Bata1</label>,
       },
-      {  
+      {
         statusNew: (
           <span className="table-btn table-blue-btn">
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Hardware</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardware</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata2</label>
-        ),
+        StName: <label>Bata2</label>,
       },
       {
         statusNew: (
@@ -116,43 +114,34 @@ class StoreTask extends Component {
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Supplies are not coming on time</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Supplies are not coming on time</label>,
+        DeptName: (
           <span>
-          <label>Supply</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Supply</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata3</label>
-        ),
+        StName: <label>Bata3</label>,
       },
 
-     
       {
         statusNew: (
           <span className="table-btn table-blue-btn">
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Wifi is not working from 5 Hrs</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
+        DeptName: (
           <span>
-          <label>Internet</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Internet</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata1</label>
-        ),
+        StName: <label>Bata1</label>,
       },
       {
         statusNew: (
@@ -160,93 +149,65 @@ class StoreTask extends Component {
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Hardware</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardware</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata2</label>
-        ),
+        StName: <label>Bata2</label>,
       },
-      { 
+      {
         statusNew: (
           <span className="table-btn table-green-btn">
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Supply</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Supply</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata3</label>
-        ),
+        StName: <label>Bata3</label>,
       },
-      { 
+      {
         statusNew: (
           <span className="table-btn table-green-btn">
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Supplies are not coming on time</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Supplies are not coming on time</label>,
+        DeptName: (
           <span>
-          <label>Hardwares</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardwares</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        StName: (
-          <label>Bata3</label>
-        ),
-      }
+        StName: <label>Bata3</label>,
+      },
     ];
 
     const columnsRaise = [
       {
-        Header: (
-          <span>
-           ID
-          </span>
-        ),
+        Header: <span>ID</span>,
         accessor: "idClose",
-        Cell: props => ( 
-          <label>
-            ABCD123
-          </label>
-        ),
+        Cell: (props) => <label>ABCD123</label>,
       },
       {
-        Header: (
-          <span>
-            Status
-          </span>
-        ),
-        accessor: "statusNew"
+        Header: <span>Status</span>,
+        accessor: "statusNew",
       },
       {
-        Header: (
-          <span>
-           Task Title
-          </span>
-        ),
+        Header: <span>Task Title</span>,
         accessor: "TaskTitle",
       },
       {
@@ -272,7 +233,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "assigneeNew",
-        Cell: props => <span>High</span>
+        Cell: (props) => <span>High</span>,
       },
       {
         Header: (
@@ -281,7 +242,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "creationNew",
-        Cell: props => (
+        Cell: (props) => (
           <span>
             <label>12 March 2018</label>
 
@@ -289,21 +250,22 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        )
+        ),
       },
       {
         Header: (
           <span>
-            Assign to<FontAwesomeIcon icon={faCaretDown} />
+            Assign to
+            <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "assignToNew",
-        Cell: props => (
+        Cell: (props) => (
           <span>
             <label>A, Bansal</label>
           </span>
-        )
-      }
+        ),
+      },
     ];
 
     const dataAssign = [
@@ -313,56 +275,48 @@ class StoreTask extends Component {
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Wifi is not working from 5 Hrs</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
+        DeptName: (
           <span>
-          <label>Internet</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Internet</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>ABS</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>ABS</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
-      {  
+      {
         statusNew: (
           <span className="table-btn table-blue-btn">
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Hardware</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardware</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>HHH</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>HHH</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
       {
@@ -371,58 +325,49 @@ class StoreTask extends Component {
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Supplies are not coming on time</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Supplies are not coming on time</label>,
+        DeptName: (
           <span>
-          <label>Supply</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Supply</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>BATA</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>BATA</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
 
-     
       {
         statusNew: (
           <span className="table-btn table-blue-btn">
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Wifi is not working from 5 Hrs</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
+        DeptName: (
           <span>
-          <label>Internet</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Internet</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>HNM</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>HNM</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
       {
@@ -431,117 +376,89 @@ class StoreTask extends Component {
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Hardware</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardware</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>HHH</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>HHH</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
-      { 
+      {
         statusNew: (
           <span className="table-btn table-green-btn">
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Supply</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Supply</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>RRT</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>RRT</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
-      { 
+      {
         statusNew: (
           <span className="table-btn table-green-btn">
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Supplies are not coming on time</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Supplies are not coming on time</label>,
+        DeptName: (
           <span>
-          <label>Hardwares</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardwares</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        CreatedBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        CreatedBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>HGH</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>HGH</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-      }
+      },
     ];
 
     const columnsAssign = [
       {
-        Header: (
-          <span>
-           ID
-          </span>
-        ),
+        Header: <span>ID</span>,
         accessor: "idClose",
-        Cell: props => ( 
-          <label>
-            ABCD1234
-          </label>
-        ),
+        Cell: (props) => <label>ABCD1234</label>,
       },
       {
-        Header: (
-          <span>
-            Status
-          </span>
-        ),
-        accessor: "statusNew"
+        Header: <span>Status</span>,
+        accessor: "statusNew",
       },
       {
-        Header: (
-          <span>
-           Task Title
-          </span>
-        ),
+        Header: <span>Task Title</span>,
         accessor: "TaskTitle",
       },
       {
@@ -567,12 +484,13 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "assigneeNew",
-        Cell: props => <span>High</span>
+        Cell: (props) => <span>High</span>,
       },
       {
         Header: (
           <span>
-            Store Name<FontAwesomeIcon icon={faCaretDown} />
+            Store Name
+            <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "StoName",
@@ -584,7 +502,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "creationNew",
-        Cell: props => (
+        Cell: (props) => (
           <span>
             <label>12 March 2018</label>
 
@@ -592,10 +510,10 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        )
-      }
+        ),
+      },
     ];
-   
+
     const dataTaskByTick = [
       {
         statusNew: (
@@ -603,57 +521,49 @@ class StoreTask extends Component {
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Wifi is not working from 5 Hrs</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
+        DeptName: (
           <span>
-          <label>Internet</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Internet</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>ABS</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>ABS</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
       },
-      {  
+      {
         statusNew: (
           <span className="table-btn table-blue-btn">
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Hardware</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardware</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>HHH</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
-        )
+            <label>HHH</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        ),
       },
       {
         statusNew: (
@@ -661,61 +571,50 @@ class StoreTask extends Component {
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Supplies are not coming on time</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Supplies are not coming on time</label>,
+        DeptName: (
           <span>
-          <label>Supply</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Supply</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>BATA</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>BATA</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-
       },
 
-     
       {
         statusNew: (
           <span className="table-btn table-blue-btn">
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Wifi is not working from 5 Hrs</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
+        DeptName: (
           <span>
-          <label>Internet</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Internet</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>HNM</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>HNM</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        
       },
       {
         statusNew: (
@@ -723,130 +622,94 @@ class StoreTask extends Component {
             <label>Open</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Hardware</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardware</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>HHH</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
-        )
+            <label>HHH</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        ),
       },
-      { 
+      {
         statusNew: (
           <span className="table-btn table-green-btn">
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Store door are not working</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Store door are not working</label>,
+        DeptName: (
           <span>
-          <label>Supply</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Supply</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>G. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>G. Bansal</label>,
+        StoName: (
           <span>
-          <label>RRT</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
-        )
+            <label>RRT</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        ),
       },
-      { 
+      {
         statusNew: (
           <span className="table-btn table-green-btn">
             <label>Solved</label>
           </span>
         ),
-        TaskTitle: (
-          <label>Supplies are not coming on time</label>
-        ),
-        DeptName:(
+        TaskTitle: <label>Supplies are not coming on time</label>,
+        DeptName: (
           <span>
-          <label>Hardwares</label>
-          <Popover content={DefArti} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
+            <label>Hardwares</label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
         ),
-        cretBy: (
-          <label>A. Bansal</label>
-        ),
-        StoName:(
+        cretBy: <label>A. Bansal</label>,
+        StoName: (
           <span>
-          <label>HGH</label>
-          <Popover content={DefArti1} placement="bottom">
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-          </Popover>
-        </span>
-        )
-      }
+            <label>HGH</label>
+            <Popover content={DefArti1} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        ),
+      },
     ];
 
     const columnsTaskByTick = [
       {
-        Header: (
-          <span>
-           Task ID
-          </span>
-        ),
+        Header: <span>Task ID</span>,
         accessor: "idClose",
-        Cell: props => ( 
-          <label>
-            ABCD1234
-          </label>
-        ),
+        Cell: (props) => <label>ABCD1234</label>,
       },
       {
-        Header: (
-          <span>
-           Ticket ID
-          </span>
-        ),
+        Header: <span>Ticket ID</span>,
         accessor: "idClose",
-        Cell: props => ( 
-          <label>
-            ABCD1234
-          </label>
-        ),
+        Cell: (props) => <label>ABCD1234</label>,
       },
       {
-        Header: (
-          <span>
-            Status
-          </span>
-        ),
-        accessor: "statusNew"
+        Header: <span>Status</span>,
+        accessor: "statusNew",
       },
       {
-        Header: (
-          <span>
-           Task Title
-          </span>
-        ),
+        Header: <span>Task Title</span>,
         accessor: "TaskTitle",
       },
       {
@@ -868,7 +731,8 @@ class StoreTask extends Component {
       {
         Header: (
           <span>
-            Store Name<FontAwesomeIcon icon={faCaretDown} />
+            Store Name
+            <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "StoName",
@@ -880,7 +744,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "creationNew",
-        Cell: props => (
+        Cell: (props) => (
           <span>
             <label>12 March 2018</label>
 
@@ -888,21 +752,22 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        )
+        ),
       },
       {
         Header: (
           <span>
-            Assign to<FontAwesomeIcon icon={faCaretDown} />
+            Assign to
+            <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "assignToNew",
-        Cell: props => (
+        Cell: (props) => (
           <span>
             <label>A, Bansal</label>
           </span>
-        )
-      }
+        ),
+      },
     ];
     const InsertPlaceholder = (
       <div className="insertpop1">
@@ -988,9 +853,17 @@ class StoreTask extends Component {
               </a>
             </li>
           </ul>
-          <button className="butn" onClick={this.handleChagneAddTask.bind(this)}>Add Task</button>
+          <button
+            className="butn"
+            onClick={this.handleChagneAddTask.bind(this)}
+          >
+            Add Task
+          </button>
         </div>
-        <div className="tab-content store-task-tab-cont" style={{padding:"15px"}}>
+        <div
+          className="tab-content store-task-tab-cont"
+          style={{ padding: "15px" }}
+        >
           <div
             className="tab-pane fade show active"
             id="raised-by-me-tab"
@@ -1461,44 +1334,44 @@ class StoreTask extends Component {
                   </tr>
                 </tbody>
               </table> */}
-               <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div>
+              <div className="position-relative">
+                <div className="pagi">
+                  <ul>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&lt;</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>1</a>
+                    </li>
+                    <li className="active">
+                      <a href={Demo.BLANK_LINK}>2</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>3</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>4</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>5</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>6</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&gt;</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="item-selection">
+                  <select>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -1509,52 +1382,52 @@ class StoreTask extends Component {
           >
             <div>
               <div className="table-cntr">
-              <ReactTable
-                data={dataAssign}
-                columns={columnsAssign}
-                // resizable={false}
-                defaultPageSize={8}
-                showPagination={false}
-                getTrProps={this.HandleRowClickPage}
-              />
-               <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div>
+                <ReactTable
+                  data={dataAssign}
+                  columns={columnsAssign}
+                  // resizable={false}
+                  defaultPageSize={8}
+                  showPagination={false}
+                  getTrProps={this.HandleRowClickPage}
+                />
+                <div className="position-relative">
+                  <div className="pagi">
+                    <ul>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>&lt;</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>1</a>
+                      </li>
+                      <li className="active">
+                        <a href={Demo.BLANK_LINK}>2</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>3</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>4</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>5</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>6</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>&gt;</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="item-selection">
+                    <select>
+                      <option>30</option>
+                      <option>50</option>
+                      <option>100</option>
+                    </select>
+                    <p>Items per page</p>
+                  </div>
+                </div>
                 {/* <table>
                   <thead>
                     <tr>
@@ -2289,7 +2162,6 @@ class StoreTask extends Component {
                     </tr>
                   </tbody>
                 </table> */}
-               
               </div>
             </div>
           </div>
@@ -2301,52 +2173,52 @@ class StoreTask extends Component {
           >
             <div>
               <div className="table-cntr taskByTable">
-              <ReactTable
-                data={dataTaskByTick}
-                columns={columnsTaskByTick}
-                // resizable={false}
-                defaultPageSize={8}
-                showPagination={false}
-                getTrProps={this.HandleRowTaskByClickPage}
-              />
-               <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div>
+                <ReactTable
+                  data={dataTaskByTick}
+                  columns={columnsTaskByTick}
+                  // resizable={false}
+                  defaultPageSize={8}
+                  showPagination={false}
+                  getTrProps={this.HandleRowTaskByClickPage}
+                />
+                <div className="position-relative">
+                  <div className="pagi">
+                    <ul>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>&lt;</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>1</a>
+                      </li>
+                      <li className="active">
+                        <a href={Demo.BLANK_LINK}>2</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>3</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>4</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>5</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>6</a>
+                      </li>
+                      <li>
+                        <a href={Demo.BLANK_LINK}>&gt;</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="item-selection">
+                    <select>
+                      <option>30</option>
+                      <option>50</option>
+                      <option>100</option>
+                    </select>
+                    <p>Items per page</p>
+                  </div>
+                </div>
                 {/* <table>
                   <thead>
                     <tr>
@@ -3067,7 +2939,6 @@ class StoreTask extends Component {
                     </tr>
                   </tbody>
                 </table> */}
-               
               </div>
             </div>
           </div>

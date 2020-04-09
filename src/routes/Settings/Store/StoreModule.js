@@ -19,6 +19,8 @@ import { NotificationManager } from "react-notifications";
 import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
+import Sorting from "./../../../assets/Images/sorting.png";
+import matchSorter from "match-sorter";
 
 class StoreModule extends Component {
   constructor(props) {
@@ -49,8 +51,23 @@ class StoreModule extends Component {
       updateScriptDetailsCompulsion: "",
       updateCampaignId: 0,
       updateCampaignLoading: false,
+      sortFiltercampaignName: [],
+      sortFiltercreatedBy: [],
+      sortFilteristatus: [],
+      scampaignNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sstatusFilterCheckbox: "",
+      sortcampaignName: [],
+      sortcreatedBy: [],
+      sortstatus: [],
+      isortA: false,
+      sortColumn: "",
+      sortAllData: [],
+      sortHeader: "",
+      tempcampaignScriptData: [],
+      StatusModel: false,
+      filterTxtValue: "",
     };
-
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
     this.handleCampaignScriptGridData = this.handleCampaignScriptGridData.bind(
@@ -58,6 +75,8 @@ class StoreModule extends Component {
     );
     this.handleCampaignButton = this.handleCampaignButton.bind(this);
     this.handleEditModal = this.handleEditModal.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
   }
   fileUpload = (e) => {
     this.setState({ fileName: e.target.files[0].name });
@@ -310,6 +329,48 @@ class StoreModule extends Component {
           self.setState({
             campaignScriptData: data,
           });
+
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].campaignName]) {
+              distinct.push(data[i].campaignName);
+              unique[data[i].campaignName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortcampaignName.push({ campaignName: distinct[i] });
+            self.state.sortFiltercampaignName.push({
+              campaignName: distinct[i],
+            });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdBy]) {
+              distinct.push(data[i].createdBy);
+              unique[data[i].createdBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortcreatedBy.push({ createdBy: distinct[i] });
+            self.state.sortFiltercreatedBy.push({ createdBy: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].status]) {
+              distinct.push(data[i].status);
+              unique[data[i].status] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortstatus.push({ status: distinct[i] });
+            self.state.sortFilteristatus.push({ status: distinct[i] });
+          }
         }
       })
       .catch((data) => {
@@ -418,15 +479,11 @@ class StoreModule extends Component {
 
   handleUpdateCampaignScript() {
     debugger;
-    if (
-      // this.state.indiCampaign.length != 0 &&
-      this.state.updateScriptDetails.length != 0
-    ) {
+    if (this.state.updateScriptDetails.length != 0) {
       let self = this;
       this.setState({
         updateCampaignLoading: true,
       });
-
       // update campaign script
       axios({
         method: "post",
@@ -463,183 +520,572 @@ class StoreModule extends Component {
       });
     }
   }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.campaignScriptData;
+
+    if (this.state.sortColumn === "campaignName") {
+      itemsArray.sort((a, b) => {
+        if (a.campaignName < b.campaignName) return 1;
+        if (a.campaignName > b.campaignName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      campaignScriptData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.campaignScriptData;
+
+    if (this.state.sortColumn === "campaignName") {
+      itemsArray.sort((a, b) => {
+        if (a.campaignName < b.campaignName) return -1;
+        if (a.campaignName > b.campaignName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      campaignScriptData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  StatusOpenModel(data, header) {
+    debugger;
+
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+
+    if (
+      this.state.sortFiltercampaignName.length === 0 ||
+      this.state.sortFiltercreatedBy.length === 0 ||
+      this.state.sortFilteristatus.length === 0
+    ) {
+      return false;
+    }
+    if (data === "campaignName") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.scampaignNameFilterCheckbox !== "" ||
+        this.state.sstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scampaignNameFilterCheckbox: "",
+          sstatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "status") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.scampaignNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scampaignNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+  }
+  StatusCloseModel() {
+    debugger;
+
+    if (this.state.tempcampaignScriptData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        campaignScriptData: this.state.tempcampaignScriptData,
+      });
+      if (this.state.sortColumn === "campaignName") {
+        if (this.state.scampaignNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scampaignNameFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "status") {
+        if (this.state.sstatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scampaignNameFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        campaignScriptData: this.state.isortA
+          ? this.state.campaignScriptData
+          : this.state.sortAllData,
+        sFilterCheckbox: "",
+      });
+    }
+  }
+
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var scampaignNameFilterCheckbox = this.state.scampaignNameFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sstatusFilterCheckbox = this.state.sstatusFilterCheckbox;
+
+    var allData = this.state.sortAllData;
+
+    if (column === "campaignName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scampaignNameFilterCheckbox = scampaignNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        scampaignNameFilterCheckbox = scampaignNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (scampaignNameFilterCheckbox.includes(e.currentTarget.value)) {
+          scampaignNameFilterCheckbox = scampaignNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          scampaignNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scampaignNameFilterCheckbox.includes("all")) {
+          scampaignNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "campaignName") {
+            for (let i = 0; i < this.state.sortcampaignName.length; i++) {
+              scampaignNameFilterCheckbox +=
+                this.state.sortcampaignName[i].campaignName + ",";
+            }
+            scampaignNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortcreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortcreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "status" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
+        sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
+        if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
+          sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sstatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstatusFilterCheckbox.includes("all")) {
+          sstatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "status") {
+            for (let i = 0; i < this.state.sortstatus.length; i++) {
+              sstatusFilterCheckbox += this.state.sortstatus[i].status + ",";
+            }
+            sstatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    this.setState({
+      scampaignNameFilterCheckbox,
+      screatedByFilterCheckbox,
+      sstatusFilterCheckbox,
+      issueColor: "",
+      createdColor: "",
+      stattusColor: "",
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "campaignName") {
+      var sItems = scampaignNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.campaignName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        issueColor: "sort-column",
+      });
+    } else if (column === "createdBy") {
+      var sItems1 = screatedByFilterCheckbox.split(",");
+      if (sItems1.length > 0) {
+        for (let i = 0; i < sItems1.length; i++) {
+          if (sItems1[i] !== "") {
+            var tempFilterData1 = allData.filter(
+              (a) => a.createdBy === sItems1[i]
+            );
+            if (tempFilterData1.length > 0) {
+              for (let j = 0; j < tempFilterData1.length; j++) {
+                itemsArray.push(tempFilterData1[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column",
+      });
+    } else if (column === "status") {
+      var sItems2 = sstatusFilterCheckbox.split(",");
+      if (sItems2.length > 0) {
+        for (let i = 0; i < sItems2.length; i++) {
+          if (sItems2[i] !== "") {
+            var tempFilterData2 = allData.filter(
+              (a) => a.status === sItems2[i]
+            );
+            if (tempFilterData2.length > 0) {
+              for (let j = 0; j < tempFilterData2.length; j++) {
+                itemsArray.push(tempFilterData2[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        stattusColor: "sort-column",
+      });
+    }
+
+    this.setState({
+      tempcampaignScriptData: itemsArray,
+    });
+  };
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "campaignName") {
+      var sortFiltercampaignName = matchSorter(
+        this.state.sortcampaignName,
+        e.target.value,
+        { keys: ["campaignName"] }
+      );
+      if (sortFiltercampaignName.length > 0) {
+        this.setState({ sortFiltercampaignName });
+      } else {
+        this.setState({
+          sortFiltercampaignName: this.state.sortcampaignName,
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFiltercreatedBy = matchSorter(
+        this.state.sortcreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFiltercreatedBy.length > 0) {
+        this.setState({ sortFiltercreatedBy });
+      } else {
+        this.setState({
+          sortFiltercreatedBy: this.state.sortcreatedBy,
+        });
+      }
+    }
+    if (this.state.sortColumn === "status") {
+      var sortFilteristatus = matchSorter(
+        this.state.sortstatus,
+        e.target.value,
+        { keys: ["status"] }
+      );
+      if (sortFilteristatus.length > 0) {
+        this.setState({ sortFilteristatus });
+      } else {
+        this.setState({
+          sortFilteristatus: this.state.sortstatus,
+        });
+      }
+    }
+  }
 
   render() {
-    const columns = [
-      {
-        Header: (
-          <span className="table-column">
-            Campaign Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "campaignName",
-      },
-      {
-        Header: "Campaign Script",
-        // accessor: "campaignScript",
-        className: "communication-labelHeader",
-        sortable: false,
-        Cell: (row) => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Dear Mr./Mrs. We wish you...
-                <Popover content={CampaignWish} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        },
-      },
-      {
-        id: "createdBy",
-        Header: (
-          <span className="table-column">
-            Created by
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        Cell: (row) => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        },
-        // accessor: "createdBy"
-      },
-      {
-        Header: (
-          <span className="table-column">
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status",
-      },
-      {
-        Header: "Actions",
-        // accessor: "action",
-        sortable: false,
-        Cell: (row) => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover content={ActionDelete} placement="bottom">
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button
-                    className="react-tabel-button editre"
-                    id="p-edit-pop-2"
-                  >
-                    EDIT
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        },
-      },
-    ];
-
-    const CampaignWish = (
-      <div className="store-popDiv">
-        <label className="storePop-lbl">
-          Dear Mr./Mrs. We wish you <br /> Happy Birthday!
-        </label>
-      </div>
-    );
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CAMPAIGN SCRIPT</label>
-        </div>
-        <div className=" pop-over-div">
-          <label className="pop-over-lbl-text"> Campaign Name</label>
-          <select className="pop-over-select">
-            <option>Birthday</option>
-            <option>Anniversary</option>
-          </select>
-        </div>
-        <div className="div-cntr">
-          <label className="pop-over-lbl-text">Script Details</label>
-          <textarea className="stort-textArea" rows="4"></textarea>
-        </div>
-
-        <br />
-        <div>
-          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-            CANCEL
-          </a>
-          <button className="pop-over-button">SAVE</button>
-        </div>
-      </div>
-    );
     return (
       <Fragment>
+        <div className="position-relative d-inline-block">
+          <Modal
+            show={this.state.StatusModel}
+            onHide={this.StatusCloseModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+              >
+                clear search
+              </a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+                <div className="FTypeScroll">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      checked={
+                        this.state.scampaignNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sstatusFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "campaignName"
+                    ? this.state.sortFiltercampaignName !== null &&
+                      this.state.sortFiltercampaignName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.campaignName}
+                            value={item.campaignName}
+                            checked={this.state.scampaignNameFilterCheckbox.includes(
+                              item.campaignName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "campaignName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.campaignName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.campaignName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortFiltercreatedBy !== null &&
+                      this.state.sortFiltercreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "status"
+                    ? this.state.sortFilteristatus !== null &&
+                      this.state.sortFilteristatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/admin/settings" className="header-path">
             Settings
@@ -753,11 +1199,19 @@ class StoreModule extends Component {
                             columns={[
                               {
                                 Header: (
-                                  <span className="table-column">
+                                  <span
+                                    className="table-column"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "campaignName",
+                                      "Campaign Name"
+                                    )}
+                                  >
                                     Campaign Name
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
+                                sortable: false,
                                 accessor: "campaignName",
                               },
                               {
@@ -797,8 +1251,16 @@ class StoreModule extends Component {
                               },
                               {
                                 id: "createdBy",
+                                sortable: false,
                                 Header: (
-                                  <span className="table-column">
+                                  <span
+                                    className="table-column"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "createdBy",
+                                      "Created by"
+                                    )}
+                                  >
                                     Created by
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
@@ -855,11 +1317,19 @@ class StoreModule extends Component {
                               },
                               {
                                 Header: (
-                                  <span className="table-column">
+                                  <span
+                                    className="table-column"
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "status",
+                                      "Status"
+                                    )}
+                                  >
                                     Status
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
+                                sortable: false,
                                 accessor: "status",
                                 Cell: (row) => {
                                   return row.original.status
@@ -1017,12 +1487,12 @@ class StoreModule extends Component {
                               <div
                                 className={
                                   this.state.campaignShow
-                                    ? "dropdown-menu dropdown-menu-sla show"
-                                    : "dropdown-menu dropdown-menu-sla"
+                                    ? "dropdown-menu dropdown-menu-campaignScriptData show"
+                                    : "dropdown-menu dropdown-menu-campaignScriptData"
                                 }
                               >
                                 <div className="cat-mainbox">
-                                  {/* <div className="sla-cancel-search">
+                                  {/* <div className="campaignScriptData-cancel-search">
                                                         <input
                                                           type="text"
                                                           className="searchf"
