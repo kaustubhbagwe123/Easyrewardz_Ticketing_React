@@ -19,6 +19,9 @@ import config from "./../../../helpers/config";
 import Select from "react-select";
 import ActiveStatus from "../../activeStatus.js";
 import { NotificationManager } from "react-notifications";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
+import matchSorter from "match-sorter";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -83,6 +86,35 @@ class StoreUsers extends Component {
       personalReadOnly: false,
       profileReadOnly: false,
       user_ID: 0,
+      StoreUserData:[],
+      sortAllData: [],
+      sbrandNameFilterCheckbox: "",
+      sitemCodeFilterCheckbox: "",
+      sitemNameFilterCheckbox: "",
+      sdepartmentNameFilterCheckbox: "",
+      sitemCategoryFilterCheckbox: "",
+      sitemSubCategoryFilterCheckbox: "",
+      sitemGroupFilterCheckbox: "",
+      sortFilterbrandName: [],
+      sortFilteritemCode: [],
+      sortFilteritemName: [],
+      sortFilterdepartmentName: [],
+      sortFilteritemCategory: [],
+      sortFilteritemSubCategory: [],
+      sortFilteritemGroup: [],
+      sortbrandName: [],
+      sortitemCode: [],
+      sortitemName: [],
+      sortdepartmentName: [],
+      sortitemCategory: [],
+      sortitemSubCategory: [],
+      sortitemGroup: [],
+      sortColumn: "",
+      sortHeader: "",
+      filterTxtValue: "",
+      StatusModel: false,
+      tempitemData: [],
+      isortA: false,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -103,6 +135,7 @@ class StoreUsers extends Component {
     );
     this.handleGetClaimIssueType = this.handleGetClaimIssueType.bind(this);
     this.handleGetCRMRole = this.handleGetCRMRole.bind(this);
+    this.handleGetStoreUserGridData=this.handleGetStoreUserGridData.bind(this);
   }
 
   componentDidMount() {
@@ -110,6 +143,7 @@ class StoreUsers extends Component {
     this.handleGetstoreCodeData();
     this.handleGetUserDesignationData();
     this.handleGetCRMRole();
+    this.handleGetStoreUserGridData()
   }
 
   fileUpload = (e) => {
@@ -327,7 +361,1062 @@ class StoreUsers extends Component {
       this.setState({ selectedClaimIssueType: e });
     }
   }
+
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.itemData;
+
+    if (this.state.sortColumn === "itemCode") {
+      itemsArray.sort((a, b) => {
+        if (a.itemCode < b.itemCode) return 1;
+        if (a.itemCode > b.itemCode) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return 1;
+        if (a.brandName > b.brandName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemName") {
+      itemsArray.sort((a, b) => {
+        if (a.itemName < b.itemName) return 1;
+        if (a.itemName > b.itemName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "departmentName") {
+      itemsArray.sort((a, b) => {
+        if (a.departmentName < b.departmentName) return 1;
+        if (a.departmentName > b.departmentName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemCategory") {
+      itemsArray.sort((a, b) => {
+        if (a.itemCategory < b.itemCategory) return 1;
+        if (a.itemCategory > b.itemCategory) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemSubCategory") {
+      itemsArray.sort((a, b) => {
+        if (a.itemSubCategory < b.itemSubCategory) return 1;
+        if (a.itemSubCategory > b.itemSubCategory) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "itemGroup") {
+      itemsArray.sort((a, b) => {
+        if (a.itemGroup < b.itemGroup) return 1;
+        if (a.itemGroup > b.itemGroup) return -1;
+        return 0;
+      });
+    }
+    this.setState({
+      isortA: true,
+      itemData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.itemData;
+
+    if (this.state.sortColumn === "itemCode") {
+      itemsArray.sort((a, b) => {
+        if (a.itemCode < b.itemCode) return -1;
+        if (a.itemCode > b.itemCode) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return -1;
+        if (a.brandName > b.brandName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemName") {
+      itemsArray.sort((a, b) => {
+        if (a.itemName < b.itemName) return -1;
+        if (a.itemName > b.itemName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "departmentName") {
+      itemsArray.sort((a, b) => {
+        if (a.departmentName < b.departmentName) return -1;
+        if (a.departmentName > b.departmentName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemCategory") {
+      itemsArray.sort((a, b) => {
+        if (a.itemCategory < b.itemCategory) return -1;
+        if (a.itemCategory > b.itemCategory) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemSubCategory") {
+      itemsArray.sort((a, b) => {
+        if (a.itemSubCategory < b.itemSubCategory) return -1;
+        if (a.itemSubCategory > b.itemSubCategory) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "itemGroup") {
+      itemsArray.sort((a, b) => {
+        if (a.itemGroup < b.itemGroup) return -1;
+        if (a.itemGroup > b.itemGroup) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      itemData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  StatusOpenModel(data, header) {
+    debugger;
+
+    if (
+      this.state.sortFilterbrandName.length === 0 ||
+      this.state.sortFilteritemCode.length === 0 ||
+      this.state.sortFilteritemName.length === 0 ||
+      this.state.sortFilterdepartmentName.length === 0 ||
+      this.state.sortFilteritemCategory.length === 0 ||
+      this.state.sortFilteritemSubCategory.length === 0 ||
+      this.state.sortFilteritemGroup.length === 0
+    ) {
+      return false;
+    }
+
+    if (data === "itemCode") {
+      if (
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sitemNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.sitemCategoryFilterCheckbox !== "" ||
+        this.state.sitemSubCategoryFilterCheckbox !== "" ||
+        this.state.sitemGroupFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sbrandNameFilterCheckbox: "",
+          sitemNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          sitemCategoryFilterCheckbox: "",
+          sitemSubCategoryFilterCheckbox: "",
+          sitemGroupFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "brandName") {
+      if (
+        this.state.sitemCodeFilterCheckbox !== "" ||
+        this.state.sitemNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.sitemCategoryFilterCheckbox !== "" ||
+        this.state.sitemSubCategoryFilterCheckbox !== "" ||
+        this.state.sitemGroupFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sitemCodeFilterCheckbox: "",
+          sitemNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          sitemCategoryFilterCheckbox: "",
+          sitemSubCategoryFilterCheckbox: "",
+          sitemGroupFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "itemName") {
+      if (
+        this.state.sitemCodeFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.sitemCategoryFilterCheckbox !== "" ||
+        this.state.sitemSubCategoryFilterCheckbox !== "" ||
+        this.state.sitemGroupFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sitemCodeFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          sitemCategoryFilterCheckbox: "",
+          sitemSubCategoryFilterCheckbox: "",
+          sitemGroupFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "departmentName") {
+      if (
+        this.state.sitemCodeFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sitemNameFilterCheckbox !== "" ||
+        this.state.sitemCategoryFilterCheckbox !== "" ||
+        this.state.sitemSubCategoryFilterCheckbox !== "" ||
+        this.state.sitemGroupFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sitemCodeFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sitemNameFilterCheckbox: "",
+          sitemCategoryFilterCheckbox: "",
+          sitemSubCategoryFilterCheckbox: "",
+          sitemGroupFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "itemCategory") {
+      if (
+        this.state.sitemCodeFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sitemNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.sitemSubCategoryFilterCheckbox !== "" ||
+        this.state.sitemGroupFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sitemCodeFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sitemNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          sitemSubCategoryFilterCheckbox: "",
+          sitemGroupFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "itemSubCategory") {
+      if (
+        this.state.sitemCodeFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sitemNameFilterCheckbox !== "" ||
+        this.state.sitemCategoryFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.sitemGroupFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sitemCodeFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sitemNameFilterCheckbox: "",
+          sitemCategoryFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          sitemGroupFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "itemGroup") {
+      if (
+        this.state.sitemCodeFilterCheckbox !== "" ||
+        this.state.sbrandNameFilterCheckbox !== "" ||
+        this.state.sitemNameFilterCheckbox !== "" ||
+        this.state.sitemCategoryFilterCheckbox !== "" ||
+        this.state.sitemSubCategoryFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sitemCodeFilterCheckbox: "",
+          sbrandNameFilterCheckbox: "",
+          sitemNameFilterCheckbox: "",
+          sitemCategoryFilterCheckbox: "",
+          sitemSubCategoryFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+  }
+  StatusCloseModel() {
+    if (this.state.tempitemData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        itemData: this.state.tempitemData,
+        filterTxtValue: "",
+      });
+      if (this.state.sortColumn === "itemCode") {
+        if (this.state.sitemCodeFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sbrandNameFilterCheckbox: "",
+            sitemNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            sitemCategoryFilterCheckbox: "",
+            sitemSubCategoryFilterCheckbox: "",
+            sitemGroupFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "brandName") {
+        if (this.state.sbrandNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sitemCodeFilterCheckbox: "",
+            sitemNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            sitemCategoryFilterCheckbox: "",
+            sitemSubCategoryFilterCheckbox: "",
+            sitemGroupFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "itemName") {
+        if (this.state.sitemNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sitemCodeFilterCheckbox: "",
+            sbrandNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            sitemCategoryFilterCheckbox: "",
+            sitemSubCategoryFilterCheckbox: "",
+            sitemGroupFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "departmentName") {
+        if (this.state.sdepartmentNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sitemCodeFilterCheckbox: "",
+            sbrandNameFilterCheckbox: "",
+            sitemNameFilterCheckbox: "",
+            sitemCategoryFilterCheckbox: "",
+            sitemSubCategoryFilterCheckbox: "",
+            sitemGroupFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "itemCategory") {
+        if (this.state.sitemCategoryFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sitemCodeFilterCheckbox: "",
+            sbrandNameFilterCheckbox: "",
+            sitemNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            sitemSubCategoryFilterCheckbox: "",
+            sitemGroupFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "itemSubCategory") {
+        if (this.state.sitemSubCategoryFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sitemCodeFilterCheckbox: "",
+            sbrandNameFilterCheckbox: "",
+            sitemNameFilterCheckbox: "",
+            sitemCategoryFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            sitemGroupFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "itemGroup") {
+        if (this.state.sitemGroupFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sitemCodeFilterCheckbox: "",
+            sbrandNameFilterCheckbox: "",
+            sitemNameFilterCheckbox: "",
+            sitemCategoryFilterCheckbox: "",
+            sitemSubCategoryFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        itemData: this.state.isortA
+          ? this.state.itemData
+          : this.state.sortAllData,
+        filterTxtValue: "",
+      });
+    }
+  }
+
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
+    var sitemCodeFilterCheckbox = this.state.sitemCodeFilterCheckbox;
+    var sitemNameFilterCheckbox = this.state.sitemNameFilterCheckbox;
+    var sdepartmentNameFilterCheckbox = this.state
+      .sdepartmentNameFilterCheckbox;
+    var sitemCategoryFilterCheckbox = this.state.sitemCategoryFilterCheckbox;
+    var sitemSubCategoryFilterCheckbox = this.state
+      .sitemSubCategoryFilterCheckbox;
+    var sitemGroupFilterCheckbox = this.state.sitemGroupFilterCheckbox;
+
+    if (column === "itemCode" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all", "");
+        sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all,", "");
+        if (sitemCodeFilterCheckbox.includes(e.currentTarget.value)) {
+          sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sitemCodeFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sitemCodeFilterCheckbox.includes("all")) {
+          sitemCodeFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "itemCode") {
+            for (let i = 0; i < this.state.sortitemCode.length; i++) {
+              sitemCodeFilterCheckbox +=
+                this.state.sortitemCode[i].itemCode + ",";
+            }
+            sitemCodeFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "brandName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all", "");
+        sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
+        if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sbrandNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sbrandNameFilterCheckbox.includes("all")) {
+          sbrandNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "brandName") {
+            for (let i = 0; i < this.state.sortbrandName.length; i++) {
+              sbrandNameFilterCheckbox +=
+                this.state.sortbrandName[i].brandName + ",";
+            }
+            sbrandNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "itemName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace("all", "");
+        sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace("all,", "");
+        if (sitemNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sitemNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sitemNameFilterCheckbox.includes("all")) {
+          sitemNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "itemName") {
+            for (let i = 0; i < this.state.sortitemName.length; i++) {
+              sitemNameFilterCheckbox +=
+                this.state.sortitemName[i].itemName + ",";
+            }
+            sitemNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "departmentName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
+          sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sdepartmentNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sdepartmentNameFilterCheckbox.includes("all")) {
+          sdepartmentNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "departmentName") {
+            for (let i = 0; i < this.state.sortdepartmentName.length; i++) {
+              sdepartmentNameFilterCheckbox +=
+                this.state.sortdepartmentName[i].departmentName + ",";
+            }
+            sdepartmentNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "itemCategory" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sitemCategoryFilterCheckbox = sitemCategoryFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sitemCategoryFilterCheckbox = sitemCategoryFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sitemCategoryFilterCheckbox.includes(e.currentTarget.value)) {
+          sitemCategoryFilterCheckbox = sitemCategoryFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sitemCategoryFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sitemCategoryFilterCheckbox.includes("all")) {
+          sitemCategoryFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "itemCategory") {
+            for (let i = 0; i < this.state.sortitemCategory.length; i++) {
+              sitemCategoryFilterCheckbox +=
+                this.state.sortitemCategory[i].itemCategory + ",";
+            }
+            sitemCategoryFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "itemSubCategory" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sitemSubCategoryFilterCheckbox = sitemSubCategoryFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sitemSubCategoryFilterCheckbox = sitemSubCategoryFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (sitemSubCategoryFilterCheckbox.includes(e.currentTarget.value)) {
+          sitemSubCategoryFilterCheckbox = sitemSubCategoryFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sitemSubCategoryFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sitemSubCategoryFilterCheckbox.includes("all")) {
+          sitemSubCategoryFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "itemSubCategory") {
+            for (let i = 0; i < this.state.sortitemSubCategory.length; i++) {
+              sitemSubCategoryFilterCheckbox +=
+                this.state.sortitemSubCategory[i].itemSubCategory + ",";
+            }
+            sitemSubCategoryFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "itemGroup" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace("all", "");
+        sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace("all,", "");
+        if (sitemGroupFilterCheckbox.includes(e.currentTarget.value)) {
+          sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace(
+            e.currentTarget.value + ",",
+            ""
+          );
+        } else {
+          sitemGroupFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sitemGroupFilterCheckbox.includes("all")) {
+          sitemGroupFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "itemGroup") {
+            for (let i = 0; i < this.state.sortitemGroup.length; i++) {
+              sitemGroupFilterCheckbox +=
+                this.state.sortitemGroup[i].itemGroup + ",";
+            }
+            sitemGroupFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      sbrandNameFilterCheckbox,
+      sitemCodeFilterCheckbox,
+      sitemNameFilterCheckbox,
+      sdepartmentNameFilterCheckbox,
+      sitemCategoryFilterCheckbox,
+      sitemSubCategoryFilterCheckbox,
+      sitemGroupFilterCheckbox,
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "itemCode") {
+      var sItems = sitemCodeFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.itemCode === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   brandcodeColor: "sort-column",
+      // });
+    } else if (column === "brandName") {
+      var sItems = sbrandNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.brandName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   brandnameColor: "sort-column",
+      // });
+    } else if (column === "itemName") {
+      var sItems = sitemNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.itemName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   addedColor: "sort-column",
+      // });
+    } else if (column === "departmentName") {
+      var sItems = sdepartmentNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.departmentName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   statusColor: "sort-column",
+      // });
+    } else if (column === "itemCategory") {
+      var sItems = sitemCategoryFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.itemCategory === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   statusColor: "sort-column",
+      // });
+    } else if (column === "itemSubCategory") {
+      var sItems = sitemSubCategoryFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.itemSubCategory === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   statusColor: "sort-column",
+      // });
+    } else if (column === "itemGroup") {
+      var sItems = sitemGroupFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.itemGroup === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
+      });
+    }
+
+    this.setState({
+      tempitemData: itemsArray,
+    });
+  };
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+
+    if (this.state.sortColumn === "itemCode") {
+      var sortFilteritemCode = matchSorter(
+        this.state.sortitemCode,
+        e.target.value,
+        { keys: ["itemCode"] }
+      );
+      if (sortFilteritemCode.length > 0) {
+        this.setState({ sortFilteritemCode });
+      } else {
+        this.setState({
+          sortFilteritemCode: this.state.sortitemCode,
+        });
+      }
+    }
+    if (this.state.sortColumn === "brandName") {
+      var sortFilterbrandName = matchSorter(
+        this.state.sortbrandName,
+        e.target.value,
+        { keys: ["brandName"] }
+      );
+      if (sortFilterbrandName.length > 0) {
+        this.setState({ sortFilterbrandName });
+      } else {
+        this.setState({
+          sortFilterbrandName: this.state.sortbrandName,
+        });
+      }
+    }
+    if (this.state.sortColumn === "itemName") {
+      var sortFilteritemName = matchSorter(
+        this.state.sortitemName,
+        e.target.value,
+        {
+          keys: ["itemName"],
+        }
+      );
+      if (sortFilteritemName.length > 0) {
+        this.setState({ sortFilteritemName });
+      } else {
+        this.setState({
+          sortFilteritemName: this.state.sortitemName,
+        });
+      }
+    }
+    if (this.state.sortColumn === "departmentName") {
+      var sortFilterdepartmentName = matchSorter(
+        this.state.sortdepartmentName,
+        e.target.value,
+        {
+          keys: ["departmentName"],
+        }
+      );
+      if (sortFilterdepartmentName.length > 0) {
+        this.setState({ sortFilterdepartmentName });
+      } else {
+        this.setState({
+          sortFilterdepartmentName: this.state.sortdepartmentName,
+        });
+      }
+    }
+    if (this.state.sortColumn === "itemCategory") {
+      var sortFilteritemCategory = matchSorter(
+        this.state.sortitemCategory,
+        e.target.value,
+        {
+          keys: ["itemCategory"],
+        }
+      );
+      if (sortFilteritemCategory.length > 0) {
+        this.setState({ sortFilteritemCategory });
+      } else {
+        this.setState({
+          sortFilteritemCategory: this.state.sortitemCategory,
+        });
+      }
+    }
+    if (this.state.sortColumn === "itemSubCategory") {
+      var sortFilteritemSubCategory = matchSorter(
+        this.state.sortitemSubCategory,
+        e.target.value,
+        {
+          keys: ["itemSubCategory"],
+        }
+      );
+      if (sortFilteritemSubCategory.length > 0) {
+        this.setState({ sortFilteritemSubCategory });
+      } else {
+        this.setState({
+          sortFilteritemSubCategory: this.state.sortitemSubCategory,
+        });
+      }
+    }
+    if (this.state.sortColumn === "itemGroup") {
+      var sortFilteritemGroup = matchSorter(
+        this.state.sortitemGroup,
+        e.target.value,
+        {
+          keys: ["itemGroup"],
+        }
+      );
+      if (sortFilteritemGroup.length > 0) {
+        this.setState({ sortFilteritemGroup });
+      } else {
+        this.setState({
+          sortFilteritemGroup: this.state.sortitemGroup,
+        });
+      }
+    }
+  }
   // -------------------API Start------------------------
+  ///Show Store User Grid data
+  handleGetStoreUserGridData(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ StoreUserData: data });
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].brandName] && data[i].brandName !== "") {
+              distinct.push(data[i].brandName);
+              unique[data[i].brandName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortbrandName.push({ brandName: distinct[i] });
+            self.state.sortFilterbrandName.push({ brandName: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].itemCode] && data[i].itemCode !== "") {
+              distinct.push(data[i].itemCode);
+              unique[data[i].itemCode] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortitemCode.push({ itemCode: distinct[i] });
+            self.state.sortFilteritemCode.push({ itemCode: distinct[i] });
+          }
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].itemName] && data[i].itemName !== "") {
+              distinct.push(data[i].itemName);
+              unique[data[i].itemName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortitemName.push({ itemName: distinct[i] });
+            self.state.sortFilteritemName.push({ itemName: distinct[i] });
+          }
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (
+              !unique[data[i].departmentName] &&
+              data[i].departmentName !== ""
+            ) {
+              distinct.push(data[i].departmentName);
+              unique[data[i].departmentName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortdepartmentName.push({ departmentName: distinct[i] });
+            self.state.sortFilterdepartmentName.push({
+              departmentName: distinct[i],
+            });
+          }
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].itemCategory] && data[i].itemCategory !== "") {
+              distinct.push(data[i].itemCategory);
+              unique[data[i].itemCategory] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortitemCategory.push({ itemCategory: distinct[i] });
+            self.state.sortFilteritemCategory.push({
+              itemCategory: distinct[i],
+            });
+          }
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (
+              !unique[data[i].itemSubCategory] &&
+              data[i].itemSubCategory !== ""
+            ) {
+              distinct.push(data[i].itemSubCategory);
+              unique[data[i].itemSubCategory] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortitemSubCategory.push({
+              itemSubCategory: distinct[i],
+            });
+            self.state.sortFilteritemSubCategory.push({
+              itemSubCategory: distinct[i],
+            });
+          }
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].itemGroup] && data[i].itemGroup !== "") {
+              distinct.push(data[i].itemGroup);
+              unique[data[i].itemGroup] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortitemGroup.push({ itemGroup: distinct[i] });
+            self.state.sortFilteritemGroup.push({ itemGroup: distinct[i] });
+          }
+        } else {
+          self.setState({ StoreUserData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
   ////get Brand data for dropdown
   handleGetBrandData() {
     let self = this;
@@ -781,23 +1870,9 @@ class StoreUsers extends Component {
     }
   }
   render() {
-    const dataStorUser = [
-      {
-        id: "H1",
-        Desig: <span>Store Manager</span>,
-        Report: <span>Root</span>,
-        status: <span>Active</span>,
-      },
-      {
-        id: "H2",
-        Desig: <span>Store Executive</span>,
-        Report: <span>Store Manager</span>,
-        status: <span>Inactive</span>,
-      },
-    ];
 
     const popoverData = (
-      <>
+      <div>
         <div>
           <b>
             <p className="title">Created By: Admin</p>
@@ -810,12 +1885,276 @@ class StoreUsers extends Component {
           </b>
           <p className="sub-title">Updated Date: 12 March 2018</p>
         </div>
-      </>
+      </div>
     );
 
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
+        <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a
+                href=""
+                style={{ margin: "0 25px", textDecoration: "underline" }}
+                onClick={this.setSortCheckStatus.bind(this, "all")}
+              >
+                clear search
+              </a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+                <div className="FTypeScroll">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      checked={
+                        this.state.sitemCodeFilterCheckbox.includes("all") ||
+                        this.state.sbrandNameFilterCheckbox.includes("all") ||
+                        this.state.sitemNameFilterCheckbox.includes("all") ||
+                        this.state.sdepartmentNameFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sitemCategoryFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sitemSubCategoryFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.sitemGroupFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "itemCode"
+                    ? this.state.sortFilteritemCode !== null &&
+                      this.state.sortFilteritemCode.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.itemCode}
+                            value={item.itemCode}
+                            checked={this.state.sitemCodeFilterCheckbox.includes(
+                              item.itemCode
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "itemCode",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.itemCode}>
+                            <span className="table-btn table-blue-btn">
+                              {item.itemCode}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "brandName"
+                    ? this.state.sortFilterbrandName !== null &&
+                      this.state.sortFilterbrandName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandName}
+                            value={item.brandName}
+                            checked={this.state.sbrandNameFilterCheckbox.includes(
+                              item.brandName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "itemName"
+                    ? this.state.sortFilteritemName !== null &&
+                      this.state.sortFilteritemName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.itemName}
+                            value={item.itemName}
+                            checked={this.state.sitemNameFilterCheckbox.includes(
+                              item.itemName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "itemName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.itemName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.itemName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "departmentName"
+                    ? this.state.sortFilterdepartmentName !== null &&
+                      this.state.sortFilterdepartmentName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.departmentName}
+                            value={item.departmentName}
+                            checked={this.state.sdepartmentNameFilterCheckbox.includes(
+                              item.departmentName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "departmentName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.departmentName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.departmentName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "itemCategory"
+                    ? this.state.sortFilteritemCategory !== null &&
+                      this.state.sortFilteritemCategory.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.itemCategory}
+                            value={item.itemCategory}
+                            checked={this.state.sitemCategoryFilterCheckbox.includes(
+                              item.itemCategory
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "itemCategory",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.itemCategory}>
+                            <span className="table-btn table-blue-btn">
+                              {item.itemCategory}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "itemSubCategory"
+                    ? this.state.sortFilteritemSubCategory !== null &&
+                      this.state.sortFilteritemSubCategory.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.itemSubCategory}
+                            value={item.itemSubCategory}
+                            checked={this.state.sitemSubCategoryFilterCheckbox.includes(
+                              item.itemSubCategory
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "itemSubCategory",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.itemSubCategory}>
+                            <span className="table-btn table-blue-btn">
+                              {item.itemSubCategory}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "itemGroup"
+                    ? this.state.sortFilteritemGroup !== null &&
+                      this.state.sortFilteritemGroup.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.itemGroup}
+                            value={item.itemGroup}
+                            checked={this.state.sitemGroupFilterCheckbox.includes(
+                              item.itemGroup
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "itemGroup",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.itemGroup}>
+                            <span className="table-btn table-blue-btn">
+                              {item.itemGroup}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </div>
+          </Modal>
           <Link to="/admin/settings" className="header-path">
             Settings
           </Link>
@@ -839,7 +2178,176 @@ class StoreUsers extends Component {
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height StoreUserReact">
-                  <ReactTable
+                <ReactTable
+                    data={this.state.StoreUserData}
+                    columns={[
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "brandName",
+                              "Brand Name"
+                            )}
+                          >
+                            Brand Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "brandName",
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "itemCode",
+                              "Item Code"
+                            )}
+                          >
+                            Store Code
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "storeCode",
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "itemName",
+                              "Item Name"
+                            )}
+                          >
+                            User Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "userName",
+                        Cell: (row) => {
+                          var ids = row.original["userID"];
+                          return (
+                            <div>
+                              <span>
+                                Vikas
+                                <Popover
+                                  content={popoverData}
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "departmentName",
+                              "Department Name"
+                            )}
+                          >
+                            User Designation
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "designationName",
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "itemCategory",
+                              "Item Cat"
+                            )}
+                          >
+                            Reportee Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "reporteeName",
+                        Cell: (row) => {
+                          var ids = row.original["userID"];
+                          return (
+                            <div>
+                              <span>
+                                Naman
+                                <Popover
+                                  content={popoverData}
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "itemSubCategory",
+                              "Item Sub Cat"
+                            )}
+                          >
+                           Department
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "departmentName",
+                      },
+                      {
+                        Header: (
+                          <span
+                            className={this.state.brandcodeColor}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "itemGroup",
+                              "Item Group"
+                            )}
+                          >
+                            Function
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "mappedFunctions",
+                      },
+                    ]}
+                    defaultPageSize={10}
+                    minRows={2}
+                    showPagination={true}
+                  />
+                  {/* <ReactTable
                     data={dataStorUser}
                     columns={[
                       {
@@ -895,6 +2403,16 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span>
+                           User Designation
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "storeCode",
+                        Cell: (row) => <span>Cxo</span>,
+                      },
+                      {
+                        Header: (
+                          <span>
                             Reportee Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -946,7 +2464,7 @@ class StoreUsers extends Component {
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
-                  />
+                  /> */}
                   {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
