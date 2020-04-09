@@ -67,6 +67,7 @@ class CreateSLA extends Component {
       sortHeader: "",
       issueTypeName: "",
       createdBy: "",
+      brandName:"",
       categoryName: "",
       subCategoryName: "",
       SLAId: 0,
@@ -822,7 +823,7 @@ class CreateSLA extends Component {
         if (message === "Success" && statusCode === 200) {
           var data = res.data.responseData;
           var issueTypeName = data.issueTypeName;
-          var createdBy = data.createdBy;
+          var brandName = data.brandName;
           var categoryName = data.categoryName;
           var subCategoryName = data.subCategoryName;
           var isActive = data.isActive;
@@ -845,7 +846,7 @@ class CreateSLA extends Component {
           }
           self.setState({
             issueTypeName,
-            createdBy,
+            brandName,
             categoryName,
             subCategoryName,
             isActive,
@@ -929,7 +930,7 @@ class CreateSLA extends Component {
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error("SLA not added.");
+            NotificationManager.error(status);
           }
         })
         .catch(data => {
@@ -1413,7 +1414,7 @@ class CreateSLA extends Component {
                                       <div>
                                         <p className="title">
                                           <b> Brand: </b>
-                                          {row.original.createdBy}
+                                          {row.original.brandName}
                                         </p>
 
                                         <p className="sub-title">
@@ -1770,7 +1771,7 @@ class CreateSLA extends Component {
                                             <img src={Correct} alt="Checked" />
                                           </div>
                                         </label>
-                                        <span>{item.createdBy}</span>
+                                        <span>{item.brandName}</span>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
@@ -2088,7 +2089,7 @@ class CreateSLA extends Component {
               <div className="col-md-6">
                 <label className="createhead-text-new">Brand Name: </label>
                 <label className="createhead-text-1">
-                  {this.state.createdBy}
+                  {this.state.brandName}
                 </label>
               </div>
               <div className="col-md-6">

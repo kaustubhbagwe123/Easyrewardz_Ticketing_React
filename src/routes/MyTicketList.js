@@ -3854,7 +3854,6 @@ class MyTicketList extends Component {
 
   render() {
     const { DraftDetails, SearchAssignData } = this.state;
-    console.log(this.state.SearchTicketData, "------------SearchTicketData");
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";

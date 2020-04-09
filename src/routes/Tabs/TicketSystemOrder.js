@@ -57,7 +57,7 @@ class TicketSystemOrder extends Component {
       filtered: [],
       orderItem: false,
       purchaseFrmStorID: 0,
-      validOrdernumber: "",
+      // validOrdernumber: "",
       validMdlOrdernumber: "",
       expanded: {},
       expandedOrderPopup: {},
@@ -316,7 +316,7 @@ class TicketSystemOrder extends Component {
     if (OrdData === "1") {
       e.preventDefault();
       if (this.state.custAttachOrder === 0) {
-        if (this.state.orderNumber.length > 0) {
+        // if (this.state.orderNumber.length > 0) {
           axios({
             method: "post",
             url: config.apiUrl + "/Order/getOrderListWithItemDetails",
@@ -349,11 +349,11 @@ class TicketSystemOrder extends Component {
             .catch(data => {
               console.log(data);
             });
-        } else {
-          self.setState({
-            validOrdernumber: "Please Enter Order Number"
-          });
-        }
+        // } else {
+        //   self.setState({
+        //     validOrdernumber: "Please Enter Order Number"
+        //   });
+        // }
       }
     } else if (OrdData === "2") {
       if (this.state.custAttachOrder === 0) {
@@ -1321,7 +1321,7 @@ class TicketSystemOrder extends Component {
                       />
                     </div>
                   </form>
-                  {this.state.orderNumber.length === 0 && (
+                  {/* {this.state.orderNumber.length === 0 && (
                     <p
                       style={{
                         color: "red",
@@ -1330,7 +1330,7 @@ class TicketSystemOrder extends Component {
                     >
                       {this.state.validOrdernumber}
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
               {this.state.message === "Record Not Found" ? (
