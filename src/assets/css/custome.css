@@ -10311,11 +10311,18 @@ table tr th:last-child {
 .notification-popover::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-.cus-drp .css-yk16xz-control {
+.cus-drp .css-yk16xz-control,
+.cus-drp .css-1fhf3k1-control {
   border: none;
   color: #000;
   /* display: block; */
   margin-top: 5px;
+}
+.cus-drp .css-14jk2my-container {
+  pointer-events: initial;
+}
+.cus-drp .css-14jk2my-container .css-1hwfws3 {
+  cursor: not-allowed;
 }
 .cus-drp .css-1hwfws3 {
   background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 25px
