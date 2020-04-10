@@ -1331,7 +1331,9 @@ class StoreUsers extends Component {
     }
   }
   EditStoreUserData =(data)=>{
-
+this.setState({
+  UserEditmodel: true
+})
   }
   // -------------------API Start------------------------
   ///Show Store User Grid data
