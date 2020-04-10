@@ -109,14 +109,14 @@
 .contactBtnGreen {
   background-color: #9cc541;
   border-radius: 4px;
-  box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  /* box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.5); */
   width: 81px;
   height: 31px;
 }
 .notConnectedBtnRed {
   background-color: #c0505f;
   border-radius: 4px;
-  box-shadow: inset 0 0 7px 0 rgba(0, 0, 0, 0.5);
+  /* box-shadow: inset 0 0 7px 0 rgba(0, 0, 0, 0.5); */
   width: 105px;
   height: 31px;
   text-transform: initial;
@@ -124,7 +124,7 @@
 .followUpBtnYellow {
   background-color: #f5a623;
   border-radius: 4px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5);
+  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5); */
   width: 78px;
   height: 31px;
   text-transform: initial;
@@ -134,9 +134,17 @@
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
-  line-height: 16px;
-  text-align: left;
   text-transform: initial;
+  /* line-height: 16px;
+  text-align: left; */
+  line-height: 31px;
+  text-align: center;
+  margin-right: 2px;
+  opacity: 0.65;
+}
+.campaign-status-btn:checked + label {
+  opacity: 1;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5);
 }
 .saveBtn {
   background-color: #ecf2f4;
@@ -1168,6 +1176,13 @@ table tr th:last-child {
 }
 .camp-datepick span {
   display: grid;
+}
+.camp-datepick td {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.sml-fnt {
+  font-size: 11px !important;
 }
 .reactstoreclaim .ReactTable {
   background-color: #f8f8f8;

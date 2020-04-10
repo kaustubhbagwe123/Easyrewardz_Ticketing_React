@@ -17,9 +17,7 @@ class StoreTask extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    
-  }
+  componentDidMount() {}
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
   }

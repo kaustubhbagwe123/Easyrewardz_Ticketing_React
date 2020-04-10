@@ -58,10 +58,10 @@ class StoreSignIn extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/CRMRole/GetRolesByUserID",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
@@ -81,31 +81,31 @@ class StoreSignIn extends Component {
                 data[i].moduleName === "Dashboard" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
-                  self.props.history.push("/admin/dashboard");
+                setTimeout(function() {
+                  self.props.history.push("/store/storedashboard");
                 }, 400);
                 return;
               } else if (
-                data[i].moduleName === "Tickets" &&
+                data[i].moduleName === "Tasks" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
-                  self.props.history.push("/admin/myTicketlist");
+                setTimeout(function() {
+                  self.props.history.push("/store/StoreTask");
                 }, 400);
                 return;
               } else if (
-                data[i].moduleName === "Knowledge Base" &&
+                data[i].moduleName === "Claim" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
-                  self.props.history.push("/admin/knowledgebase");
+                setTimeout(function() {
+                  self.props.history.push("/store/claim");
                 }, 400);
                 return;
               } else if (
                 data[i].moduleName === "Settings" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function () {
+                setTimeout(function() {
                   self.props.history.push("/admin/settings");
                 }, 400);
                 return;
@@ -154,7 +154,7 @@ class StoreSignIn extends Component {
             "X-Authorized-Domainname": X_Authorized_Domainname,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let resValid = res.data.message;
             self.setState({
