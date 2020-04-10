@@ -634,6 +634,13 @@
   padding: 25px 35px;
   margin-bottom: 25px;
 }
+.right-sect-div-edit {
+  box-shadow: initial;
+  padding: 0;
+}
+.right-sect-div-edit label {
+  font-size: 12px !important;
+}
 .right-sect-div:last-child {
   margin-bottom: 0;
 }
