@@ -4985,8 +4985,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 20px;
-  padding-top: 17px;
+  /* padding-left: 20px; */
+  /* padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -4997,8 +4997,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 24px;
-  padding-top: 17px;
+  /* padding-left: 24px; */
+  /* padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5202,8 +5202,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 20px;
-  padding-top: 17px;
+  /* padding-left: 20px; */
+  /* padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5214,9 +5214,14 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 24px;
-  padding-top: 17px;
+  /* padding-left: 24px; */
+  /* padding-top: 17px; */
   cursor: pointer;
+}
+.kb-header span {
+  margin-left: 20px;
+  margin-top: 17px;
+  display: inline-block;
 }
 
 .kb-Header-button {
