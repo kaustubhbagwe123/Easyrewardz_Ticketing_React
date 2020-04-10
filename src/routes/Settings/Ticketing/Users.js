@@ -2310,7 +2310,7 @@ class Users extends Component {
   fileUpload = e => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -2396,7 +2396,8 @@ class Users extends Component {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
+      isOpen:false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -2408,16 +2409,16 @@ class Users extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/User/BulkUploadUser",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        }
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -2430,8 +2431,8 @@ class Users extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0
+              // isFileUploadFail: true,
+              // progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }

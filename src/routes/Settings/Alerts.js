@@ -2922,7 +2922,7 @@ class Alerts extends Component {
                     </Modal.Body>
                   </Modal>
                 </div>
-                <div className="right-sect-div">
+                <div className="right-sect-div" style={{ display: "none" }}>
                   <div className="d-flex justify-content-between align-items-center pb-2">
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">

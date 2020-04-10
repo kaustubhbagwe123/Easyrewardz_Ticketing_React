@@ -29,7 +29,6 @@ let config = {
       "Priority",
       "SLABreachPercent",
       "RespondValue",
-      ,
       "RespondDuration",
       "ResolutionValue",
       "ResolutionDuration",
