@@ -19,7 +19,7 @@ class StoreTask extends Component {
       assignToMeData: [],
       taskByTicketData: [],
       campaignData: [],
-      isloading: false,
+      isloading: false
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
   }
@@ -40,10 +40,10 @@ class StoreTask extends Component {
   ////handle row click raised by me table
   handleRowClickRaisedTable = (rowInfo, column) => {
     return {
-      onClick: (e) => {
+      onClick: e => {
         var storeTaskID = column.original["storeTaskID"];
         this.handleRedirectToEditStoreTask(storeTaskID);
-      },
+      }
     };
   };
   ////handle redirect to edit store task
@@ -51,17 +51,17 @@ class StoreTask extends Component {
     debugger;
     this.props.history.push({
       pathname: "editStoreTask",
-      state: { TaskID: storeTaskID },
+      state: { TaskID: storeTaskID }
     });
   }
   HandleRowTaskByClickPage = () => {
     return {
-      onClick: (e) => {
+      onClick: e => {
         this.props.history.push("storeTaskByTicket");
-      },
+      }
     };
   };
-////handle get task data by tab click
+  ////handle get task data by tab click
   handleGetTaskData(tabFor) {
     debugger;
     this.setState({ isloading: true });
@@ -70,7 +70,7 @@ class StoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreTaskList",
       headers: authHeader(),
-      params: { tabFor: tabFor },
+      params: { tabFor: tabFor }
     })
       .then(function(response) {
         debugger;
@@ -92,7 +92,7 @@ class StoreTask extends Component {
           }
         }
       })
-      .catch((response) => {
+      .catch(response => {
         self.setState({ isloading: false });
         console.log(response, "---handleGetTaskData");
       });
@@ -143,7 +143,7 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata1</label>,
+        StName: <label>Bata1</label>
       },
       {
         statusNew: (
@@ -160,7 +160,7 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata2</label>,
+        StName: <label>Bata2</label>
       },
       {
         statusNew: (
@@ -177,7 +177,7 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata3</label>,
+        StName: <label>Bata3</label>
       },
 
       {
@@ -195,7 +195,7 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata1</label>,
+        StName: <label>Bata1</label>
       },
       {
         statusNew: (
@@ -212,7 +212,7 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata2</label>,
+        StName: <label>Bata2</label>
       },
       {
         statusNew: (
@@ -229,7 +229,7 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata3</label>,
+        StName: <label>Bata3</label>
       },
       {
         statusNew: (
@@ -246,23 +246,23 @@ class StoreTask extends Component {
             </Popover>
           </span>
         ),
-        StName: <label>Bata3</label>,
-      },
+        StName: <label>Bata3</label>
+      }
     ];
 
     const columnsRaise = [
       {
         Header: <span>ID</span>,
-        accessor: "storeTaskID",
+        accessor: "storeTaskID"
         // Cell: (props) => <label>ABCD123</label>,
       },
       {
         Header: <span>Status</span>,
-        accessor: "taskStatus",
+        accessor: "taskStatus"
       },
       {
         Header: <span>Task Title</span>,
-        accessor: "taskTitle",
+        accessor: "taskTitle"
       },
       {
         Header: (
@@ -270,7 +270,7 @@ class StoreTask extends Component {
             Department <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "departmentName",
+        accessor: "departmentName"
       },
       {
         Header: (
@@ -278,7 +278,7 @@ class StoreTask extends Component {
             Store Name <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "storeName",
+        accessor: "storeName"
       },
       {
         Header: (
@@ -286,7 +286,7 @@ class StoreTask extends Component {
             Priority <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "priorityName	",
+        accessor: "priorityName	"
         // Cell: (props) => <span>High</span>,
       },
       {
@@ -296,7 +296,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "creationOn",
-        Cell: (props) => (
+        Cell: props => (
           <span>
             <label>12 March 2018</label>
 
@@ -304,7 +304,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         Header: (
@@ -313,13 +313,13 @@ class StoreTask extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "assignto",
+        accessor: "assignto"
         // Cell: (props) => (
         //   <span>
         //     <label>A, Bansal</label>
         //   </span>
         // ),
-      },
+      }
     ];
 
     const dataAssign = [
@@ -346,7 +346,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -371,7 +371,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -396,7 +396,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
 
       {
@@ -422,7 +422,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -447,7 +447,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -472,7 +472,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -497,23 +497,23 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
-      },
+        )
+      }
     ];
 
     const columnsAssign = [
       {
         Header: <span>ID</span>,
         accessor: "idClose",
-        Cell: (props) => <label>ABCD1234</label>,
+        Cell: props => <label>ABCD1234</label>
       },
       {
         Header: <span>Status</span>,
-        accessor: "statusNew",
+        accessor: "statusNew"
       },
       {
         Header: <span>Task Title</span>,
-        accessor: "TaskTitle",
+        accessor: "TaskTitle"
       },
       {
         Header: (
@@ -521,7 +521,7 @@ class StoreTask extends Component {
             Department <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "DeptName",
+        accessor: "DeptName"
       },
       {
         Header: (
@@ -529,7 +529,7 @@ class StoreTask extends Component {
             Created by <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "CreatedBy",
+        accessor: "CreatedBy"
       },
       {
         Header: (
@@ -538,7 +538,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "assigneeNew",
-        Cell: (props) => <span>High</span>,
+        Cell: props => <span>High</span>
       },
       {
         Header: (
@@ -547,7 +547,7 @@ class StoreTask extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "StoName",
+        accessor: "StoName"
       },
       {
         Header: (
@@ -556,7 +556,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "creationNew",
-        Cell: (props) => (
+        Cell: props => (
           <span>
             <label>12 March 2018</label>
 
@@ -564,8 +564,8 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
-      },
+        )
+      }
     ];
 
     const dataTaskByTick = [
@@ -592,7 +592,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -617,7 +617,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -642,7 +642,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
 
       {
@@ -668,7 +668,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -693,7 +693,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -718,7 +718,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         statusNew: (
@@ -743,28 +743,28 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
-      },
+        )
+      }
     ];
 
     const columnsTaskByTick = [
       {
         Header: <span>Task ID</span>,
         accessor: "idClose",
-        Cell: (props) => <label>ABCD1234</label>,
+        Cell: props => <label>ABCD1234</label>
       },
       {
         Header: <span>Ticket ID</span>,
         accessor: "idClose",
-        Cell: (props) => <label>ABCD1234</label>,
+        Cell: props => <label>ABCD1234</label>
       },
       {
         Header: <span>Status</span>,
-        accessor: "statusNew",
+        accessor: "statusNew"
       },
       {
         Header: <span>Task Title</span>,
-        accessor: "TaskTitle",
+        accessor: "TaskTitle"
       },
       {
         Header: (
@@ -772,7 +772,7 @@ class StoreTask extends Component {
             Department <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "DeptName",
+        accessor: "DeptName"
       },
       {
         Header: (
@@ -780,7 +780,7 @@ class StoreTask extends Component {
             Created by <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "cretBy",
+        accessor: "cretBy"
       },
       {
         Header: (
@@ -789,7 +789,7 @@ class StoreTask extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "StoName",
+        accessor: "StoName"
       },
       {
         Header: (
@@ -798,7 +798,7 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "creationNew",
-        Cell: (props) => (
+        Cell: props => (
           <span>
             <label>12 March 2018</label>
 
@@ -806,7 +806,7 @@ class StoreTask extends Component {
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
-        ),
+        )
       },
       {
         Header: (
@@ -816,12 +816,12 @@ class StoreTask extends Component {
           </span>
         ),
         accessor: "assignToNew",
-        Cell: (props) => (
+        Cell: props => (
           <span>
             <label>A, Bansal</label>
           </span>
-        ),
-      },
+        )
+      }
     ];
     const InsertPlaceholder = (
       <div className="insertpop1">
@@ -937,22 +937,22 @@ class StoreTask extends Component {
                   columns={[
                     {
                       Header: <span>ID</span>,
-                      accessor: "storeTaskID",
+                      accessor: "storeTaskID"
                     },
                     {
                       Header: <span>Status</span>,
                       accessor: "taskStatus",
-                      Cell: (row) => {
+                      Cell: row => {
                         return (
                           <span className="table-btn table-blue-btn">
                             <label>{row.original.taskStatus}</label>
                           </span>
                         );
-                      },
+                      }
                     },
                     {
                       Header: <span>Task Title</span>,
-                      accessor: "taskTitle",
+                      accessor: "taskTitle"
                     },
                     {
                       Header: (
@@ -961,7 +961,7 @@ class StoreTask extends Component {
                         </span>
                       ),
                       accessor: "departmentName",
-                      Cell: (row) => {
+                      Cell: row => {
                         return (
                           <>
                             {row.original.departmentName}
@@ -994,7 +994,7 @@ class StoreTask extends Component {
                             </Popover>
                           </>
                         );
-                      },
+                      }
                     },
                     {
                       Header: (
@@ -1002,7 +1002,7 @@ class StoreTask extends Component {
                           Store Name <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                      accessor: "storeName",
+                      accessor: "storeName"
                     },
                     {
                       Header: (
@@ -1011,9 +1011,9 @@ class StoreTask extends Component {
                         </span>
                       ),
                       accessor: "priorityName	",
-                      Cell: (row) => {
+                      Cell: row => {
                         return <span>{row.original.priorityName}</span>;
-                      },
+                      }
                     },
                     {
                       Header: (
@@ -1022,7 +1022,7 @@ class StoreTask extends Component {
                         </span>
                       ),
                       accessor: "creationOn",
-                      Cell: (row) => (
+                      Cell: row => (
                         <span>
                           <label>{row.original.creationOn}</label>
 
@@ -1034,7 +1034,7 @@ class StoreTask extends Component {
                             />
                           </Popover>
                         </span>
-                      ),
+                      )
                     },
                     {
                       Header: (
@@ -1043,13 +1043,13 @@ class StoreTask extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                      accessor: "assignto",
+                      accessor: "assignto"
                       // Cell: (props) => (
                       //   <span>
                       //     <label>A, Bansal</label>
                       //   </span>
                       // ),
-                    },
+                    }
                   ]}
                   // resizable={false}
                   defaultPageSize={10}
@@ -1078,22 +1078,22 @@ class StoreTask extends Component {
                     columns={[
                       {
                         Header: <span>ID</span>,
-                        accessor: "storeTaskID",
+                        accessor: "storeTaskID"
                       },
                       {
                         Header: <span>Status</span>,
                         accessor: "taskStatus",
-                        Cell: (row) => {
+                        Cell: row => {
                           return (
                             <span className="table-btn table-blue-btn">
                               <label>{row.original.taskStatus}</label>
                             </span>
                           );
-                        },
+                        }
                       },
                       {
                         Header: <span>Task Title</span>,
-                        accessor: "taskTitle",
+                        accessor: "taskTitle"
                       },
                       {
                         Header: (
@@ -1102,7 +1102,7 @@ class StoreTask extends Component {
                           </span>
                         ),
                         accessor: "departmentName",
-                        Cell: (row) => {
+                        Cell: row => {
                           return (
                             <span>
                               <label>{row.original.departmentName}</label>
@@ -1135,7 +1135,7 @@ class StoreTask extends Component {
                               </Popover>
                             </span>
                           );
-                        },
+                        }
                       },
                       {
                         Header: (
@@ -1143,7 +1143,7 @@ class StoreTask extends Component {
                             Created by <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "createdBy",
+                        accessor: "createdBy"
                       },
                       {
                         Header: (
@@ -1151,7 +1151,7 @@ class StoreTask extends Component {
                             Priority <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "priorityName",
+                        accessor: "priorityName"
                       },
                       {
                         Header: (
@@ -1161,7 +1161,7 @@ class StoreTask extends Component {
                           </span>
                         ),
                         accessor: "storeName",
-                        Cell: (row) => {
+                        Cell: row => {
                           return (
                             <span>
                               <label>{row.original.storeName}</label>
@@ -1186,7 +1186,7 @@ class StoreTask extends Component {
                               </Popover>
                             </span>
                           );
-                        },
+                        }
                       },
                       {
                         Header: (
@@ -1195,7 +1195,7 @@ class StoreTask extends Component {
                           </span>
                         ),
                         accessor: "creationOn",
-                        Cell: (row) => {
+                        Cell: row => {
                           return (
                             <span>
                               <label>{row.original.creationOn}</label>
@@ -1212,8 +1212,8 @@ class StoreTask extends Component {
                               </Popover>
                             </span>
                           );
-                        },
-                      },
+                        }
+                      }
                     ]}
                     // resizable={false}
                     defaultPageSize={8}
