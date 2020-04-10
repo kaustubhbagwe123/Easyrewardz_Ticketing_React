@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import down from "./../../assets/Images/collapsedown.png";
 import collapseUp from "./../../assets/Images/collapseUp.png";
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
+import { Table } from "antd";
+import DatePicker from "react-datepicker";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CampaignTable1 from "./Tables/Campaign-row1";
 
@@ -9,11 +14,41 @@ class Campaign extends Component {
     super(props);
     this.state = {
       FirstCollapse: false,
-      TwoCollapse: false
+      TwoCollapse: false,
+      campaignGridData: []
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
+    this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
   }
+
+  componentDidMount() {
+    this.handleCampaignGridData();
+  }
+
+  handleCampaignGridData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            campaignGridData: data
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
   firstActionOpenClps() {
     this.setState(state => ({ FirstCollapse: !state.FirstCollapse }));
   }
@@ -50,7 +85,7 @@ class Campaign extends Component {
     return (
       <div>
         <div className="table-cntr store">
-          <table>
+          {/* <table>
             <thead>
               <tr>
                 <th>{HeaderNameChange}</th>
@@ -124,6 +159,183 @@ class Campaign extends Component {
               </tr>
             </tbody>
           </table>
+         */}
+          <Table
+            className="components-table-demo-nested antd-table-campaign custom-antd-table"
+            columns={[
+              {
+                title: "Campaign Name",
+                dataIndex: "campaignName"
+              },
+              {
+                title: "Contacts",
+                dataIndex: "contactCount"
+              },
+              {
+                title: "Campaign Script",
+                dataIndex: "campaignScript"
+              },
+              {
+                title: "Campaign End Date",
+                dataIndex: "campaignEndDate"
+              },
+              {
+                title: "Campaign Status",
+                render: () => {
+                  return (
+                    <button className="closebtn" type="button">
+                      <label className="hdrcloselabel">Close</label>
+                    </button>
+                  );
+                }
+              },
+              {
+                title: "Action"
+                // dataIndex: "orderPricePaid"
+              }
+            ]}
+            expandedRowRender={row => {
+              return (
+                <Table
+                  dataSource={row.storeCampaignCustomerList}
+                  columns={[
+                    {
+                      title: "Customer Name",
+                      // dataIndex: "orderMasterID",
+                      render: (row, item) => {
+                        return (
+                          <>
+                            {item.customerName}
+                            <span className="sml-fnt">
+                              {item.customerPhoneNumber}
+                            </span>
+                          </>
+                        );
+                      }
+                    },
+                    {
+                      title: "Date",
+                      dataIndex: "campaignTypeDate"
+                    },
+                    {
+                      title: "Status",
+                      // dataIndex: "articleName"
+                      render: (row, item) => {
+                        return (
+                          <>
+                            <input
+                              type="radio"
+                              name="campaign-status"
+                              className="campaign-status-btn"
+                              id="contactBtnGreen"
+                            />
+                            <label
+                              className="table-btnlabel contactBtnGreen"
+                              htmlFor="contactBtnGreen"
+                            >
+                              Contacted
+                            </label>
+                            <input
+                              type="radio"
+                              name="campaign-status"
+                              className="campaign-status-btn"
+                              id="notConnectedBtnRed"
+                            />
+                            <label
+                              className="table-btnlabel notConnectedBtnRed"
+                              htmlFor="notConnectedBtnRed"
+                            >
+                              Not Contacted
+                            </label>
+                            <input
+                              type="radio"
+                              name="campaign-status"
+                              className="campaign-status-btn"
+                              id="followUpBtnYellow"
+                            />
+                            <label
+                              className="table-btnlabel followUpBtnYellow"
+                              htmlFor="followUpBtnYellow"
+                            >
+                              Follow Up
+                            </label>
+                          </>
+                        );
+                      }
+                    },
+                    {
+                      title: "Responce",
+                      // dataIndex: "itemPrice"
+                      render: (row, item) => {
+                        return (
+                          <select
+                            id="inputState"
+                            className="responceDrop-down dropdown-label"
+                          >
+                            <option>Ringing No Response</option>
+                            <option>Call Back Later</option>
+                            <option>Mobile No Not Reachable</option>
+                            <option>No Switched Off</option>
+                            <option>Call Disconnected</option>
+                            <option>Mobile No Does Not Exist</option>
+                            <option>Mobile No Does Not Exist</option>
+                            <option>Wrong Mobile Number</option>
+                            <option>Customer Was Happy</option>
+                            <option>Customer Was Not Happy</option>
+                          </select>
+                        );
+                      }
+                    },
+                    {
+                      title: "Call Recheduled To",
+                      // dataIndex: "pricePaid"
+                      render: (row, item) => {
+                        return (
+                          <DatePicker
+                            id="startDate"
+                            name="startDate"
+                            showMonthDropdown
+                            showYearDropdown
+                            selected={this.state.startDate}
+                            onChange={this.DateChange}
+                            className="txtStore dateTimeStore"
+                            placeholderText="Select Date & Time"
+                          />
+                        );
+                      }
+                    },
+                    {
+                      title: "Actions",
+                      // dataIndex: "discount"
+                      render: (row, item) => {
+                        return (
+                          <div className="d-flex">
+                            <button
+                              className="saveBtn"
+                              type="button"
+                              style={{ minWidth: "5px", marginRight: "3px" }}
+                            >
+                              <label className="saveLabel">Save</label>
+                            </button>
+                            <button className="raisedticket-Btn" type="button">
+                              <label className="raise-ticketLbl">
+                                Raise Ticket
+                              </label>
+                            </button>
+                          </div>
+                        );
+                      }
+                    }
+                  ]}
+                  pagination={false}
+                />
+              );
+            }}
+            expandIconColumnIndex={5}
+            expandIconAsCell={false}
+            pagination={false}
+            dataSource={this.state.campaignGridData}
+          />
         </div>
       </div>
     );
