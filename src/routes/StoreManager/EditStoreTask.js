@@ -468,7 +468,7 @@ class EditStoreTask extends Component {
         </div>
         <div className="row width">
           <div className="col-md-7">
-            <div className="card store-card-padding">
+            <div className="card store-card-padding h-100">
               <label className="store-Edit-lbl"> Task Title</label>
               <input
                 type="text"
@@ -669,7 +669,7 @@ class EditStoreTask extends Component {
             </div>
           </div>
           <div className="col-md-5" style={{ padding: "0" }}>
-            <div className="card store-card-2">
+            <div className="card store-card-2 h-100">
               <div className="row">
                 <div className="col-md-6">
                   <label className="store-Edit-lbl">Issue Raised By:</label>
