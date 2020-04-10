@@ -126,7 +126,7 @@ class StoreUsers extends Component {
       departmentColor: "",
       functionColor: "",
       userNameColor: "",
-      userEditData:{}
+      userEditData: {}
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -158,7 +158,7 @@ class StoreUsers extends Component {
     this.setState({ UserEditmodel: true });
   };
   closeEditModals() {
-    this.setState({ UserEditmodel: false, selTab: "Personal Details" });
+    this.setState({ UserEditmodel: false, selTab: "Store Details" });
   }
 
   componentDidMount() {
@@ -169,22 +169,22 @@ class StoreUsers extends Component {
     this.handleGetStoreUserGridData();
   }
 
-  fileUpload = (e) => {
+  fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  fileDrop = (e) => {
+  fileDrop = e => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = (e) => {
+  fileDragOver = e => {
     e.preventDefault();
   };
-  fileDragEnter = (e) => {
+  fileDragEnter = e => {
     e.preventDefault();
   };
 
   /// drop down on change
-  handleBrandAndStoreChange = (e) => {
+  handleBrandAndStoreChange = e => {
     debugger;
     let value = e.target.value;
     let name = e.target.name;
@@ -193,14 +193,14 @@ class StoreUsers extends Component {
         selectBrand: value,
         departmentData: [],
         functionData: [],
-        selectedFunction: [],
+        selectedFunction: []
       });
     } else if (name === "storeCode") {
       this.setState({
         selectStore: value,
         departmentData: [],
         functionData: [],
-        selectedFunction: [],
+        selectedFunction: []
       });
     }
     setTimeout(() => {
@@ -212,12 +212,12 @@ class StoreUsers extends Component {
     }, 1);
   };
   /// Department drop down OnChange
-  handleDepartmentOnChange = (e) => {
+  handleDepartmentOnChange = e => {
     let value = e.target.value;
     this.setState({
       selectDepartment: value,
       functionData: [],
-      selectedFunction: [],
+      selectedFunction: []
     });
     setTimeout(() => {
       if (this.state.selectDepartment) {
@@ -226,7 +226,7 @@ class StoreUsers extends Component {
     }, 1);
   };
   /// handle onchange for drop down
-  handleDropDownOnChange = (e) => {
+  handleDropDownOnChange = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
@@ -234,7 +234,7 @@ class StoreUsers extends Component {
       this.setState({
         selectDesignation: value,
         reportDesignation: [],
-        reportToData: [],
+        reportToData: []
       });
       setTimeout(() => {
         if (this.state.selectDesignation) {
@@ -244,7 +244,7 @@ class StoreUsers extends Component {
     } else if (name === "selectReportDesignation") {
       this.setState({
         selectReportDesignation: value,
-        reportToData: [],
+        reportToData: []
       });
       setTimeout(() => {
         if (this.state.selectReportDesignation) {
@@ -253,11 +253,11 @@ class StoreUsers extends Component {
       }, 1);
     } else if (name === "selectReportTo") {
       this.setState({
-        selectReportTo: value,
+        selectReportTo: value
       });
     } else if (name === "selectClaimApprover") {
       this.setState({
-        selectClaimApprover: value,
+        selectClaimApprover: value
       });
     } else if (name === "selectStatus") {
       this.setState({ selectStatus: value });
@@ -266,7 +266,7 @@ class StoreUsers extends Component {
     }
   };
   /// Onchange for Mobile no
-  hanldeMobileNoChange = (e) => {
+  hanldeMobileNoChange = e => {
     debugger;
     var name = e.target.name;
     var reg = /^[0-9\b]+$/;
@@ -278,35 +278,35 @@ class StoreUsers extends Component {
       }
       if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
-          phoneFlag: true,
+          phoneFlag: true
         });
       } else {
         this.setState({
-          phoneFlag: false,
+          phoneFlag: false
         });
       }
     }
   };
   /// Onchange function
-  handleOnChangeUserData = (e) => {
+  handleOnChangeUserData = e => {
     debugger;
     var name = e.target.name;
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
     if (name === "email_Id") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value === "") {
         this.setState({
-          emailFlag: true,
+          emailFlag: true
         });
       } else if (reg.test(e.target.value) === false) {
         this.setState({
-          emailFlag: false,
+          emailFlag: false
         });
       } else {
         this.setState({
-          emailFlag: true,
+          emailFlag: true
         });
       }
     }
@@ -329,7 +329,7 @@ class StoreUsers extends Component {
         selectedClaimBrand: e,
         selectedClaimCategory: [],
         selectedClaimSubCategory: [],
-        selectedClaimIssueType: [],
+        selectedClaimIssueType: []
       });
     } else {
       this.setState({ selectedClaimBrand: e });
@@ -347,7 +347,7 @@ class StoreUsers extends Component {
       this.setState({
         selectedClaimCategory: e,
         selectedClaimSubCategory: [],
-        selectedClaimIssueType: [],
+        selectedClaimIssueType: []
       });
     } else {
       this.setState({ selectedClaimCategory: e });
@@ -364,7 +364,7 @@ class StoreUsers extends Component {
       e = [];
       this.setState({
         selectedClaimSubCategory: e,
-        selectedClaimIssueType: [],
+        selectedClaimIssueType: []
       });
     } else {
       this.setState({ selectedClaimSubCategory: e });
@@ -442,7 +442,7 @@ class StoreUsers extends Component {
     }
     this.setState({
       isortA: true,
-      StoreUserData: itemsArray,
+      StoreUserData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -506,7 +506,7 @@ class StoreUsers extends Component {
 
     this.setState({
       isortA: true,
-      StoreUserData: itemsArray,
+      StoreUserData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -540,7 +540,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -552,7 +552,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -568,7 +568,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -580,7 +580,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -596,7 +596,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -608,7 +608,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -624,7 +624,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -636,7 +636,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -652,7 +652,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -664,7 +664,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -680,7 +680,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -692,7 +692,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -708,7 +708,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -720,7 +720,7 @@ class StoreUsers extends Component {
           sdesignationNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -730,7 +730,7 @@ class StoreUsers extends Component {
       this.setState({
         StatusModel: false,
         StoreUserData: this.state.tempitemData,
-        filterTxtValue: "",
+        filterTxtValue: ""
       });
       if (this.state.sortColumn === "storeCode") {
         if (this.state.sitemCodeFilterCheckbox === "") {
@@ -741,7 +741,7 @@ class StoreUsers extends Component {
             sdesignationNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: "",
+            smappedFunctionsFilterCheckbox: ""
           });
         }
       }
@@ -754,7 +754,7 @@ class StoreUsers extends Component {
             sdesignationNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: "",
+            smappedFunctionsFilterCheckbox: ""
           });
         }
       }
@@ -767,7 +767,7 @@ class StoreUsers extends Component {
             sdesignationNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: "",
+            smappedFunctionsFilterCheckbox: ""
           });
         }
       }
@@ -780,7 +780,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: "",
+            smappedFunctionsFilterCheckbox: ""
           });
         }
       }
@@ -793,7 +793,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sdesignationNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: "",
+            smappedFunctionsFilterCheckbox: ""
           });
         }
       }
@@ -806,7 +806,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdesignationNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: "",
+            smappedFunctionsFilterCheckbox: ""
           });
         }
       }
@@ -819,7 +819,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            sdesignationNameFilterCheckbox: "",
+            sdesignationNameFilterCheckbox: ""
           });
         }
       }
@@ -829,7 +829,7 @@ class StoreUsers extends Component {
         StoreUserData: this.state.isortA
           ? this.state.StoreUserData
           : this.state.sortAllData,
-        filterTxtValue: "",
+        filterTxtValue: ""
       });
     }
   }
@@ -1073,7 +1073,7 @@ class StoreUsers extends Component {
       reporteeNameColor: "",
       departmentColor: "",
       functionColor: "",
-      userNameColor: "",
+      userNameColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -1082,9 +1082,7 @@ class StoreUsers extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.storeCode === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.storeCode === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1094,16 +1092,14 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        storeCodeColor: "sort-column",
+        storeCodeColor: "sort-column"
       });
     } else if (column === "brandName") {
       var sItems = sbrandNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.brandName === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1113,16 +1109,14 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        brandNameColor: "sort-column",
+        brandNameColor: "sort-column"
       });
     } else if (column === "userName") {
       var sItems = suserNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.userName === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.userName === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1132,7 +1126,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        userNameColor: "sort-column",
+        userNameColor: "sort-column"
       });
     } else if (column === "designationName") {
       var sItems = sdesignationNameFilterCheckbox.split(",");
@@ -1140,7 +1134,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.designationName === sItems[i]
+              a => a.designationName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1151,7 +1145,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        userdesignationColor: "sort-column",
+        userdesignationColor: "sort-column"
       });
     } else if (column === "reporteeName") {
       var sItems = sreporteeNameFilterCheckbox.split(",");
@@ -1159,7 +1153,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.reporteeName === sItems[i]
+              a => a.reporteeName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1170,7 +1164,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        reporteeNameColor: "sort-column",
+        reporteeNameColor: "sort-column"
       });
     } else if (column === "departmentName") {
       var sItems = sdepartmentNameFilterCheckbox.split(",");
@@ -1178,7 +1172,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.departmentName === sItems[i]
+              a => a.departmentName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1189,7 +1183,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        departmentColor: "sort-column",
+        departmentColor: "sort-column"
       });
     } else if (column === "mappedFunctions") {
       var sItems = smappedFunctionsFilterCheckbox.split(",");
@@ -1197,7 +1191,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.mappedFunctions === sItems[i]
+              a => a.mappedFunctions === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1208,12 +1202,12 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        functionColor: "sort-column",
+        functionColor: "sort-column"
       });
     }
 
     this.setState({
-      tempitemData: itemsArray,
+      tempitemData: itemsArray
     });
   };
 
@@ -1231,7 +1225,7 @@ class StoreUsers extends Component {
         this.setState({ sortFilteritemCode });
       } else {
         this.setState({
-          sortFilteritemCode: this.state.sortitemCode,
+          sortFilteritemCode: this.state.sortitemCode
         });
       }
     }
@@ -1245,7 +1239,7 @@ class StoreUsers extends Component {
         this.setState({ sortFilterbrandName });
       } else {
         this.setState({
-          sortFilterbrandName: this.state.sortbrandName,
+          sortFilterbrandName: this.state.sortbrandName
         });
       }
     }
@@ -1254,14 +1248,14 @@ class StoreUsers extends Component {
         this.state.sortuserName,
         e.target.value,
         {
-          keys: ["userName"],
+          keys: ["userName"]
         }
       );
       if (sortFilteruserName.length > 0) {
         this.setState({ sortFilteruserName });
       } else {
         this.setState({
-          sortFilteruserName: this.state.sortuserName,
+          sortFilteruserName: this.state.sortuserName
         });
       }
     }
@@ -1270,14 +1264,14 @@ class StoreUsers extends Component {
         this.state.sortdesignationName,
         e.target.value,
         {
-          keys: ["designationName"],
+          keys: ["designationName"]
         }
       );
       if (sortFilterdesignationName.length > 0) {
         this.setState({ sortFilterdesignationName });
       } else {
         this.setState({
-          sortFilterdesignationName: this.state.sortdesignationName,
+          sortFilterdesignationName: this.state.sortdesignationName
         });
       }
     }
@@ -1286,14 +1280,14 @@ class StoreUsers extends Component {
         this.state.sortreporteeName,
         e.target.value,
         {
-          keys: ["reporteeName"],
+          keys: ["reporteeName"]
         }
       );
       if (sortFilterreporteeName.length > 0) {
         this.setState({ sortFilterreporteeName });
       } else {
         this.setState({
-          sortFilterreporteeName: this.state.sortreporteeName,
+          sortFilterreporteeName: this.state.sortreporteeName
         });
       }
     }
@@ -1302,14 +1296,14 @@ class StoreUsers extends Component {
         this.state.sortdepartmentName,
         e.target.value,
         {
-          keys: ["departmentName"],
+          keys: ["departmentName"]
         }
       );
       if (sortFilterdepartmentName.length > 0) {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName,
+          sortFilterdepartmentName: this.state.sortdepartmentName
         });
       }
     }
@@ -1318,23 +1312,23 @@ class StoreUsers extends Component {
         this.state.sortmappedFunctions,
         e.target.value,
         {
-          keys: ["mappedFunctions"],
+          keys: ["mappedFunctions"]
         }
       );
       if (sortFiltermappedFunctions.length > 0) {
         this.setState({ sortFiltermappedFunctions });
       } else {
         this.setState({
-          sortFiltermappedFunctions: this.state.sortmappedFunctions,
+          sortFiltermappedFunctions: this.state.sortmappedFunctions
         });
       }
     }
   }
-  EditStoreUserData =(data)=>{
-this.setState({
-  UserEditmodel: true
-})
-  }
+  EditStoreUserData = data => {
+    this.setState({
+      UserEditmodel: true
+    });
+  };
   // -------------------API Start------------------------
   ///Show Store User Grid data
   handleGetStoreUserGridData() {
@@ -1342,9 +1336,9 @@ this.setState({
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((res) => {
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1401,10 +1395,10 @@ this.setState({
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortdesignationName.push({
-              designationName: distinct[i],
+              designationName: distinct[i]
             });
             self.state.sortFilterdesignationName.push({
-              designationName: distinct[i],
+              designationName: distinct[i]
             });
           }
           var unique = [];
@@ -1418,7 +1412,7 @@ this.setState({
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortreporteeName.push({ reporteeName: distinct[i] });
             self.state.sortFilterreporteeName.push({
-              reporteeName: distinct[i],
+              reporteeName: distinct[i]
             });
           }
           var unique = [];
@@ -1434,10 +1428,10 @@ this.setState({
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortdepartmentName.push({
-              departmentName: distinct[i],
+              departmentName: distinct[i]
             });
             self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i],
+              departmentName: distinct[i]
             });
           }
           var unique = [];
@@ -1453,17 +1447,17 @@ this.setState({
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortmappedFunctions.push({
-              mappedFunctions: distinct[i],
+              mappedFunctions: distinct[i]
             });
             self.state.sortFiltermappedFunctions.push({
-              mappedFunctions: distinct[i],
+              mappedFunctions: distinct[i]
             });
           }
         } else {
           self.setState({ StoreUserData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -1474,9 +1468,9 @@ this.setState({
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((res) => {
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1486,7 +1480,7 @@ this.setState({
           self.setState({ brandData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -1496,9 +1490,9 @@ this.setState({
     axios({
       method: "post",
       url: config.apiUrl + "/Store/StoreList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((res) => {
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1508,7 +1502,7 @@ this.setState({
           self.setState({ storeCodeData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -1523,10 +1517,10 @@ this.setState({
       headers: authHeader(),
       params: {
         BrandID: brand_id,
-        storeID: store_id,
-      },
+        storeID: store_id
+      }
     })
-      .then((res) => {
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1536,7 +1530,7 @@ this.setState({
           self.setState({ departmentData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -1549,8 +1543,8 @@ this.setState({
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectDepartment,
-      },
+        DepartmentId: this.state.selectDepartment
+      }
     })
       .then(function(res) {
         debugger;
@@ -1562,7 +1556,7 @@ this.setState({
           self.setState({ functionData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1573,9 +1567,9 @@ this.setState({
     axios({
       method: "post",
       url: config.apiUrl + "/StoreHierarchy/GetStoreDesignationList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((res) => {
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1585,7 +1579,7 @@ this.setState({
           self.setState({ userDesignationData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -1598,8 +1592,8 @@ this.setState({
       url: config.apiUrl + "/StoreUser/BindStoreReporteeDesignation",
       headers: authHeader(),
       params: {
-        DesignationID: this.state.selectDesignation,
-      },
+        DesignationID: this.state.selectDesignation
+      }
     })
       .then(function(res) {
         debugger;
@@ -1611,7 +1605,7 @@ this.setState({
           self.setState({ reportDesignation: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1625,8 +1619,8 @@ this.setState({
       headers: authHeader(),
       params: {
         DesignationID: this.state.selectReportDesignation,
-        IsStoreUser: true,
-      },
+        IsStoreUser: true
+      }
     })
       .then(function(res) {
         debugger;
@@ -1638,7 +1632,7 @@ this.setState({
           self.setState({ reportToData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1657,8 +1651,8 @@ this.setState({
       url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
       headers: authHeader(),
       params: {
-        BrandIds: finalBrandIds.substring(",", finalBrandIds.length - 1),
-      },
+        BrandIds: finalBrandIds.substring(",", finalBrandIds.length - 1)
+      }
     })
       .then(function(res) {
         debugger;
@@ -1670,7 +1664,7 @@ this.setState({
           self.setState({ claimCategoryData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1693,8 +1687,8 @@ this.setState({
         CategoryIDs: finalCategoryIds.substring(
           ",",
           finalCategoryIds.length - 1
-        ),
-      },
+        )
+      }
     })
       .then(function(res) {
         debugger;
@@ -1706,7 +1700,7 @@ this.setState({
           self.setState({ claimSubCategoryData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1729,8 +1723,8 @@ this.setState({
         subCategoryIDs: finalSubCategoryIds.substring(
           ",",
           finalSubCategoryIds.length - 1
-        ),
-      },
+        )
+      }
     })
       .then(function(res) {
         debugger;
@@ -1742,7 +1736,7 @@ this.setState({
           self.setState({ claimIssueTypeData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1752,9 +1746,9 @@ this.setState({
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCRMRole/GetStoreCRMRoleDropdown",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((res) => {
+      .then(res => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1764,7 +1758,7 @@ this.setState({
           self.setState({ CrmRoleData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -1777,8 +1771,8 @@ this.setState({
       headers: authHeader(),
       params: {
         UserId: Id,
-        IsStoreUser: true,
-      },
+        IsStoreUser: true
+      }
     })
       .then(function(res) {
         debugger;
@@ -1788,12 +1782,12 @@ this.setState({
           NotificationManager.success("User Deleted Successfully.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
-/// get data for Store User by User id
-  handleGetUserListByID(user_Id){
+  /// get data for Store User by User id
+  handleGetUserListByID(user_Id) {
     let self = this;
     axios({
       method: "post",
@@ -1801,7 +1795,7 @@ this.setState({
       headers: authHeader(),
       params: {
         UserID: user_Id
-      },
+      }
     })
       .then(function(res) {
         debugger;
@@ -1814,7 +1808,7 @@ this.setState({
           self.setState({ userEditData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1824,12 +1818,12 @@ this.setState({
     if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
       alert("Store Details");
       this.setState({
-        checkPersonalDetailTab: "#personal-details",
+        checkPersonalDetailTab: "#personal-details"
       });
     } else {
       this.setState({
         brandCompulsory: "Please Select Brand.",
-        storeCodeCompulsory: "Please Select Store Code.",
+        storeCodeCompulsory: "Please Select Store Code."
       });
     }
   }
@@ -1854,8 +1848,8 @@ this.setState({
           EmailID: this.state.email_Id.trim(),
           FirstName: "",
           LastName: "",
-          IsStoreUser: true,
-        },
+          IsStoreUser: true
+        }
       })
         .then(function(res) {
           debugger;
@@ -1866,20 +1860,20 @@ this.setState({
             self.setState({
               user_ID: data,
               personalReadOnly: true,
-              checkProfileDetailTab: "#profile-Details",
+              checkProfileDetailTab: "#profile-Details"
             });
           } else {
             NotificationManager.error("Record Not Save.");
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         userNameCompulsory: "Please Enter User Name.",
         mobilenumberCompulsory: "Please Enter Mobile No.",
-        emailCompulsory: "Please Enter Email Id.",
+        emailCompulsory: "Please Enter Email Id."
       });
     }
   }
@@ -1912,8 +1906,8 @@ this.setState({
             departmentId: this.state.selectDepartment,
             functionIDs: function_ids.substring(",", function_ids.length - 1),
             designationID: this.state.selectDesignation,
-            reporteeID: this.state.selectReportTo,
-          },
+            reporteeID: this.state.selectReportTo
+          }
         })
           .then(function(res) {
             debugger;
@@ -1923,13 +1917,13 @@ this.setState({
               NotificationManager.success("Record Saved Successfully.");
               self.setState({
                 checkMappedClaimCategoryTab: "#mapped-category",
-                profileReadOnly: true,
+                profileReadOnly: true
               });
             } else {
               NotificationManager.error("Record Not Saved.");
             }
           })
-          .catch((data) => {
+          .catch(data => {
             console.log(data);
           });
       } else {
@@ -1941,7 +1935,7 @@ this.setState({
         functionCompulsory: "Please Select Function.",
         designationCompulsory: "Please Select User Designation.",
         reportDesignationCompulsory: "Please Select Reportee Designation.",
-        reportToCompulsory: "Please Select Report To.",
+        reportToCompulsory: "Please Select Report To."
       });
     }
   }
@@ -2014,8 +2008,8 @@ this.setState({
             isClaimApprover: claimStatus,
             CRMRoleID: this.state.selectCrmRole,
             isActive: isActive,
-            IsStoreUser: true,
-          },
+            IsStoreUser: true
+          }
         })
           .then(function(res) {
             debugger;
@@ -2023,13 +2017,13 @@ this.setState({
             if (status === "Success") {
               NotificationManager.success("Record Saved Successfully.");
               self.setState({
-                profileReadOnly: true,
+                profileReadOnly: true
               });
             } else {
               NotificationManager.error("Record Not Saved.");
             }
           })
-          .catch((data) => {
+          .catch(data => {
             console.log(data);
           });
       } else {
@@ -2043,7 +2037,7 @@ this.setState({
         mappedIssueTypeCompulsory: "Please Select Issue Type.",
         ClaimApproverCompulsory: "Please Select Claim Approver.",
         CrmRoleCompulsory: "Please Select Crm Role.",
-        statusCompulsory: "Please Select Status.",
+        statusCompulsory: "Please Select Status."
       });
     }
   }
@@ -2324,7 +2318,7 @@ this.setState({
           <Link
             to={{
               pathname: "/admin/settings",
-              tabName: "store-tab",
+              tabName: "store-tab"
             }}
             className="header-path"
           >
@@ -2358,7 +2352,7 @@ this.setState({
                           </span>
                         ),
                         sortable: false,
-                        accessor: "brandName",
+                        accessor: "brandName"
                       },
                       {
                         Header: (
@@ -2375,7 +2369,7 @@ this.setState({
                           </span>
                         ),
                         sortable: false,
-                        accessor: "storeCode",
+                        accessor: "storeCode"
                       },
                       {
                         Header: (
@@ -2393,7 +2387,7 @@ this.setState({
                         ),
                         sortable: false,
                         accessor: "userName",
-                        Cell: (row) => {
+                        Cell: row => {
                           var ids = row.original["userID"];
                           return (
                             <div>
@@ -2470,7 +2464,7 @@ this.setState({
                               </span>
                             </div>
                           );
-                        },
+                        }
                       },
                       {
                         Header: (
@@ -2487,7 +2481,7 @@ this.setState({
                           </span>
                         ),
                         sortable: false,
-                        accessor: "designationName",
+                        accessor: "designationName"
                       },
                       {
                         Header: (
@@ -2505,7 +2499,7 @@ this.setState({
                         ),
                         sortable: false,
                         accessor: "reporteeName",
-                        Cell: (row) => {
+                        Cell: row => {
                           var ids = row.original["userID"];
                           return (
                             <div>
@@ -2534,7 +2528,7 @@ this.setState({
                               </span>
                             </div>
                           );
-                        },
+                        }
                       },
                       {
                         Header: (
@@ -2551,7 +2545,7 @@ this.setState({
                           </span>
                         ),
                         sortable: false,
-                        accessor: "departmentName",
+                        accessor: "departmentName"
                       },
                       {
                         Header: (
@@ -2568,12 +2562,12 @@ this.setState({
                           </span>
                         ),
                         sortable: false,
-                        accessor: "mappedFunctions",
+                        accessor: "mappedFunctions"
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "userID",
-                        Cell: (row) => {
+                        Cell: row => {
                           var ids = row.original["userID"];
                           return (
                             <>
@@ -2633,12 +2627,13 @@ this.setState({
                               </span>
                             </>
                           );
-                        },
-                      },
+                        }
+                      }
                     ]}
                     defaultPageSize={10}
                     minRows={2}
                     showPagination={true}
+                    resizable={false}
                   />
 
                   {/* <div className="position-relative">
@@ -2925,8 +2920,8 @@ this.setState({
                       <div className="div-cntr">
                         <label>Function</label>
                         <Select
-                          getOptionLabel={(option) => option.funcationName}
-                          getOptionValue={(option) => option.functionID}
+                          getOptionLabel={option => option.funcationName}
+                          getOptionValue={option => option.functionID}
                           options={this.state.functionData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3065,8 +3060,8 @@ this.setState({
                       <div className="div-cntr">
                         <label>Brand</label>
                         <Select
-                          getOptionLabel={(option) => option.brandName}
-                          getOptionValue={(option) => option.brandID}
+                          getOptionLabel={option => option.brandName}
+                          getOptionValue={option => option.brandID}
                           options={this.state.brandData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3084,8 +3079,8 @@ this.setState({
                       <div className="div-cntr">
                         <label>Categories</label>
                         <Select
-                          getOptionLabel={(option) => option.categoryName}
-                          getOptionValue={(option) => option.categoryID}
+                          getOptionLabel={option => option.categoryName}
+                          getOptionValue={option => option.categoryID}
                           options={this.state.claimCategoryData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3103,8 +3098,8 @@ this.setState({
                       <div className="div-cntr">
                         <label>Sub Categories</label>
                         <Select
-                          getOptionLabel={(option) => option.subCategoryName}
-                          getOptionValue={(option) => option.subCategoryID}
+                          getOptionLabel={option => option.subCategoryName}
+                          getOptionValue={option => option.subCategoryID}
                           options={this.state.claimSubCategoryData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3124,8 +3119,8 @@ this.setState({
                       <div className="div-cntr">
                         <label>Issue Type</label>
                         <Select
-                          getOptionLabel={(option) => option.issueTypeName}
-                          getOptionValue={(option) => option.issueTypeID}
+                          getOptionLabel={option => option.issueTypeName}
+                          getOptionValue={option => option.issueTypeID}
                           options={this.state.claimIssueTypeData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3164,7 +3159,7 @@ this.setState({
                         <div className="div-cntr">
                           <label>CRM Role</label>
                           <select
-                           className="store-create-select"
+                            className="store-create-select"
                             name="selectCrmRole"
                             value={this.state.selectCrmRole}
                             onChange={this.handleDropDownOnChange}
@@ -3330,19 +3325,22 @@ this.setState({
                 >
                   <Tab label="Store Details">
                     <div>
-                      <div className="div-cntr">
-                        <label>Brand</label>
-                        <select className="form-control dropdown-setting">
-                          <option>Bata</option>
-                        </select>
+                      <h4 style={{ textAlign: "center" }}>Store Details</h4>
+                      <div className="right-sect-div right-sect-div-edit">
+                        <div className="div-cntr">
+                          <label className="edit-label-1">Brand</label>
+                          <select className="store-create-select">
+                            <option>Bata</option>
+                          </select>
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">Store Code</label>
+                          <select className="store-create-select">
+                            <option>Store</option>
+                          </select>
+                        </div>
                       </div>
-                      <div className="div-cntr">
-                        <label>Store Code</label>
-                        <select className="form-control dropdown-setting">
-                          <option>Store</option>
-                        </select>
-                      </div>
-                      <div className="btn-coll">
+                      {/* <div className="btn-coll">
                         <button
                           data-target="#profile-details"
                           data-toggle="collapse"
@@ -3350,36 +3348,60 @@ this.setState({
                         >
                           SAVE &amp; NEXT
                         </button>
+                      </div> */}
+                      <div
+                        style={{
+                          textAlign: "center",
+                          margin: "20px 0px 0px 0px"
+                        }}
+                      >
+                        <a
+                          className="pop-over-cancle canblue"
+                          // onClick={this.closeEditModal.bind(this)}
+                          href="#!"
+                        >
+                          CANCEL
+                        </a>
+                        <button
+                          className="Save-Use"
+                          // onClick={this.handleChangePersonalTab}
+                          style={{ marginLeft: "30px" }}
+                        >
+                          NEXT
+                        </button>
                       </div>
                     </div>
                   </Tab>
                   <Tab label="Personal Details">
                     <div>
-                      <div className="div-cntr">
-                        <label>User Name</label>
-                        <input
-                          type="text"
-                          placeholder="Enter User Name"
-                          maxLength={25}
-                        />
+                      <h4 style={{ textAlign: "center" }}>Personal Details</h4>
+                      <div className="right-sect-div right-sect-div-edit">
+                        <div className="div-cntr">
+                          <label className="edit-label-1">User Name</label>
+                          <input
+                            type="text"
+                            placeholder="Enter User Name"
+                            maxLength={25}
+                          />
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">Mobile Number</label>
+                          <input
+                            type="text"
+                            placeholder="Enter Mobile Number"
+                            maxLength={10}
+                          />
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">Email ID</label>
+                          <input
+                            type="text"
+                            placeholder="Enter Email ID"
+                            maxLength={100}
+                          />
+                        </div>
                       </div>
-                      <div className="div-cntr">
-                        <label>Mobile Number</label>
-                        <input
-                          type="text"
-                          placeholder="Enter Mobile Number"
-                          maxLength={10}
-                        />
-                      </div>
-                      <div className="div-cntr">
-                        <label>Email ID</label>
-                        <input
-                          type="text"
-                          placeholder="Enter Email ID"
-                          maxLength={100}
-                        />
-                      </div>
-                      <div className="btn-coll">
+                      {/* <div className="btn-coll">
                         <button
                           data-target="#mapped-category"
                           data-toggle="collapse"
@@ -3387,99 +3409,210 @@ this.setState({
                         >
                           SAVE &amp; NEXT
                         </button>
+                      </div> */}
+                      <div
+                        style={{
+                          textAlign: "center",
+                          margin: "20px 0px 0px 0px"
+                        }}
+                      >
+                        <a
+                          className="pop-over-cancle canblue"
+                          // onClick={this.closeEditModal.bind(this)}
+                          href="#!"
+                        >
+                          CANCEL
+                        </a>
+                        <button
+                          className="Save-Use"
+                          // onClick={this.handleChangePersonalTab}
+                          style={{ marginLeft: "30px" }}
+                        >
+                          NEXT
+                        </button>
                       </div>
                     </div>
                   </Tab>
                   <Tab label="Profile Details">
                     <div>
-                      <div className="div-cntr">
-                        <label>Department</label>
-                        <select>
-                          <option>Admin</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Function</label>
-                        <select>
-                          <option>Attendence</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>User Designation</label>
-                        <select>
-                          <option>Manager</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Reportee Designation</label>
-                        <select>
-                          <option>HOD</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Report To</label>
-                        <select>
-                          <option>HOD</option>
-                        </select>
-                      </div>
-                      <div className="btn-coll">
-                        <button className="butn">SAVE & NEXT</button>
-                      </div>
-                    </div>
-                  </Tab>
-                  <Tab label="Mapped Cliam Category">
-                    {" "}
-                    <div>
-                      <div className="div-cntr">
-                        <label>Brand</label>
-                        <select>
-                          <option>Bata, PVR</option>
-                          <option>Bata, PVR</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Categories</label>
-                        <select>
-                          <option>Compliant</option>
-                          <option>Compliant</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Sub Categories</label>
-                        <select>
-                          <option>Payments</option>
-                          <option>Payments</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Issue Type</label>
-                        <select>
-                          <option>Not Processed</option>
-                          <option>Not Processed</option>
-                        </select>
-                      </div>
-                      <div className="div-cntr">
-                        <label>Claim Approver</label>
-                        <select>
-                          <option>No</option>
-                        </select>
-                      </div>
-                      <div className="mapped-cate-extra">
+                      <h4 style={{ textAlign: "center" }}>Profile Details</h4>
+                      <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr">
-                          <label>CRM Role</label>
+                          <label className="edit-label-1">Department</label>
+                          <select>
+                            <option>Admin</option>
+                          </select>
+                        </div>
+                        <div className="div-cntr cus-drp">
+                          <label className="edit-label-1">Function</label>
+                          <Select
+                            getOptionLabel={option => option.funcationName}
+                            getOptionValue={option => option.functionID}
+                            options={this.state.functionData}
+                            placeholder="Select"
+                            closeMenuOnSelect={false}
+                            name="selectedFunction"
+                            onChange={this.handleFunctionOnChange.bind(this)}
+                            value={this.state.selectedFunction}
+                            isMulti
+                            isDisabled={this.state.profileReadOnly}
+                          />
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">
+                            User Designation
+                          </label>
                           <select>
                             <option>Manager</option>
                           </select>
                         </div>
                         <div className="div-cntr">
-                          <label>Status</label>
+                          <label className="edit-label-1">
+                            Reportee Designation
+                          </label>
                           <select>
-                            <option>Inactive</option>
+                            <option>HOD</option>
+                          </select>
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">Report To</label>
+                          <select>
+                            <option>HOD</option>
                           </select>
                         </div>
                       </div>
-                      <div className="btn-coll">
+                      {/* <div className="btn-coll">
+                        <button className="butn">SAVE & NEXT</button>
+                      </div> */}
+                      <div
+                        style={{
+                          textAlign: "center",
+                          margin: "20px 0px 0px 0px"
+                        }}
+                      >
+                        <a
+                          className="pop-over-cancle canblue"
+                          // onClick={this.closeEditModal.bind(this)}
+                          href="#!"
+                        >
+                          CANCEL
+                        </a>
+                        <button
+                          className="Save-Use"
+                          // onClick={this.handleChangePersonalTab}
+                          style={{ marginLeft: "30px" }}
+                        >
+                          NEXT
+                        </button>
+                      </div>
+                    </div>
+                  </Tab>
+                  <Tab label="Mapped Cliam Category">
+                    <div>
+                      <h4 style={{ textAlign: "center" }}>
+                        Mapped Cliam Category
+                      </h4>
+                      <div className="right-sect-div right-sect-div-edit">
+                        <div className="div-cntr cus-drp">
+                          <label className="edit-label-1">Brand</label>
+                          <Select
+                            getOptionLabel={option => option.brandName}
+                            getOptionValue={option => option.brandID}
+                            options={this.state.brandData}
+                            placeholder="Select"
+                            closeMenuOnSelect={false}
+                            name="selectedClaimBrand"
+                            onChange={this.handleMultiBrandonChange.bind(this)}
+                            value={this.state.selectedClaimBrand}
+                            isMulti
+                          />
+                        </div>
+                        <div className="div-cntr cus-drp">
+                          <label className="edit-label-1">Categories</label>
+                          <Select
+                            getOptionLabel={option => option.brandName}
+                            getOptionValue={option => option.brandID}
+                            options={this.state.brandData}
+                            placeholder="Select"
+                            closeMenuOnSelect={false}
+                            name="selectedClaimBrand"
+                            onChange={this.handleMultiBrandonChange.bind(this)}
+                            value={this.state.selectedClaimBrand}
+                            isMulti
+                          />
+                        </div>
+                        <div className="div-cntr cus-drp">
+                          <label className="edit-label-1">Sub Categories</label>
+                          <Select
+                            getOptionLabel={option => option.brandName}
+                            getOptionValue={option => option.brandID}
+                            options={this.state.brandData}
+                            placeholder="Select"
+                            closeMenuOnSelect={false}
+                            name="selectedClaimBrand"
+                            onChange={this.handleMultiBrandonChange.bind(this)}
+                            value={this.state.selectedClaimBrand}
+                            isMulti
+                          />
+                        </div>
+                        <div className="div-cntr cus-drp">
+                          <label className="edit-label-1">Issue Type</label>
+                          <Select
+                            getOptionLabel={option => option.brandName}
+                            getOptionValue={option => option.brandID}
+                            options={this.state.brandData}
+                            placeholder="Select"
+                            closeMenuOnSelect={false}
+                            name="selectedClaimBrand"
+                            onChange={this.handleMultiBrandonChange.bind(this)}
+                            value={this.state.selectedClaimBrand}
+                            isMulti
+                          />
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">Claim Approver</label>
+                          <select>
+                            <option>No</option>
+                          </select>
+                        </div>
+                        <div className="mapped-cate-extra">
+                          <div className="div-cntr">
+                            <label className="edit-label-1">CRM Role</label>
+                            <select>
+                              <option>Manager</option>
+                            </select>
+                          </div>
+                          <div className="div-cntr">
+                            <label className="edit-label-1">Status</label>
+                            <select>
+                              <option>Inactive</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="btn-coll">
                         <button className="butn">ADD</button>
+                      </div> */}
+                      <div
+                        style={{
+                          textAlign: "center",
+                          margin: "20px 0px 0px 0px"
+                        }}
+                      >
+                        <a
+                          className="pop-over-cancle canblue"
+                          // onClick={this.closeEditModal.bind(this)}
+                          href="#!"
+                        >
+                          CANCEL
+                        </a>
+                        <button
+                          className="Save-Use"
+                          // onClick={this.handleChangePersonalTab}
+                          style={{ marginLeft: "30px" }}
+                        >
+                          SAVE
+                        </button>
                       </div>
                     </div>
                   </Tab>
