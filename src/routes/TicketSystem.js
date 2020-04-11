@@ -152,7 +152,7 @@ class TicketSystem extends Component {
       showTaskData: false,
       fileDummy: [],
       ckCusrsorPosition: 0,
-      ckCusrsorData: ""
+      ckCusrsorData: "",
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -364,6 +364,7 @@ class TicketSystem extends Component {
     });
   }
   handleGetOrderId = (selectParentData, selectChildData) => {
+    debugger;
     this.setState({
       selectedOrderData: selectParentData,
       SelectedItemData: selectChildData
@@ -1006,7 +1007,6 @@ class TicketSystem extends Component {
     ) {
       this.setState({ loading: true });
       let self = this;
-      // var OID = this.state.selectedTicketPriority;
       var selectedRow = "";
 
       // --------------New Code start---------------
@@ -1092,7 +1092,58 @@ class TicketSystem extends Component {
         StoreID: selectedStore.substring(",", selectedStore.length - 1),
         ticketingMailerQues: mailData
       };
+      /// For Attached order
+      var order_data = this.state.selectedOrderData[0];
+      var OrderData = {
+        OrderMasterID: order_data.orderMasterID,
+        OrderNumber: order_data.invoiceNumber,
+        InvoiceDate: order_data.invoiceDate,
+        OrderPrice: order_data.ordeItemPrice,
+        PricePaid: order_data.orderPricePaid,
+        CustomerID: this.state.customer_Id,
+        Discount: order_data.discount,
+        StoreCode: order_data.storeCode,
+        TransactionDate: order_data.invoiceDate,
+        ModeOfPaymentID: 1,
+        TicketSourceID: 30
+      };
+      /// For Attached OrderItem data
+      var item_data = {};
+      var order_itemData = [];
+      for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+        item_data["OrderItemID"] = this.state.SelectedItemData[i][
+          "orderItemID"
+        ];
+        item_data["OrderMasterID"] = this.state.SelectedItemData[i][
+          "orderMasterID"
+        ];
+        item_data["ItemName"] = this.state.SelectedItemData[i]["itemName"];
+        item_data["InvoiceNumber"] = this.state.SelectedItemData[i][
+          "invoiceNumber"
+        ];
+        item_data["InvoiceDate"] = this.state.SelectedItemData[i][
+          "invoiceDate"
+        ];
+        item_data["ItemCount"] = this.state.SelectedItemData[i]["itemCount"];
+        item_data["ItemPrice"] = this.state.SelectedItemData[i]["itemPrice"];
+        item_data["PricePaid"] = this.state.SelectedItemData[i]["pricePaid"];
+        item_data["Size"] = this.state.SelectedItemData[i]["size"];
+        item_data["RequireSize"] = this.state.SelectedItemData[i][
+          "requireSize"
+        ];
+        item_data["Discount"] = this.state.SelectedItemData[i]["discount"];
+        item_data["ArticleNumber"] = this.state.SelectedItemData[i][
+          "articleNumber"
+        ];
+        item_data["ArticleName"] = this.state.SelectedItemData[i]["itemName"];
+
+        order_itemData.push(item_data);
+
+      }
+
       formData.append("ticketingDetails", JSON.stringify(paramData));
+      formData.append("orderDetails", JSON.stringify(OrderData));
+      formData.append("orderItemDetails", JSON.stringify(order_itemData));
       for (let j = 0; j < this.state.FileData.length; j++) {
         formData.append("Filedata", this.state.FileData[j]);
       }
@@ -1343,21 +1394,21 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           var Ticket_title = data.ticketTitle;
           var Ticket_details = data.ticketdescription;
           var brand_Id = data.brandID;
-          var selectedTicketPriority=data.priortyID
+          var selectedTicketPriority = data.priortyID;
           var category_Id = parseInt(data.categoryID);
           var subCategory_Id = parseInt(data.subCategoryID);
           var issue_type = parseInt(data.issueTypeID);
           var purchase_Id = data.channelOfPurchaseID;
           var ticketAction_Id = data.ticketActionTypeID;
           var attachementDetails = data.attachment;
-          
+
           var checkALert = data.ticketingMailerQue.alertID;
           var CheckCustomerCmt = data.ticketingMailerQue.isCustomerComment;
           var storeCheck = data.stores;
@@ -1392,9 +1443,9 @@ class TicketSystem extends Component {
           ////Check Task data
 
           if (TaskData > 0) {
-          self.setState({
-            showTaskData: true
-          });
+            self.setState({
+              showTaskData: true
+            });
           }
           self.setState({
             selectedTicketPriority,
@@ -1490,11 +1541,12 @@ class TicketSystem extends Component {
             <tbody>
               <tr>
                 <td className="tdicon">
-                  <a href="#!" className="bitmapback" onClick={this.handlebackprev.bind(this)}>
-                    <img
-                      src={ArrowLeftCircleBlue}
-                      alt="arrow-circle-left"
-                    />
+                  <a
+                    href="#!"
+                    className="bitmapback"
+                    onClick={this.handlebackprev.bind(this)}
+                  >
+                    <img src={ArrowLeftCircleBlue} alt="arrow-circle-left" />
                   </a>
                   <label className="source">Source</label>
                   <img
@@ -1507,12 +1559,13 @@ class TicketSystem extends Component {
                     text={CustNumber}
                     onCopy={() => this.setState({ copiedNumber: true })}
                   >
-                    <a href="#!" className="bitmapheadpone d-inline-block p-0 ml-2" style={{ width: '20px' }} onClick={this.handleCopyToaster}>
-                      <img
-                        src={CopyIcon}
-                        alt="Copy-Icon"
-                        className="w-100"
-                      />
+                    <a
+                      href="#!"
+                      className="bitmapheadpone d-inline-block p-0 ml-2"
+                      style={{ width: "20px" }}
+                      onClick={this.handleCopyToaster}
+                    >
+                      <img src={CopyIcon} alt="Copy-Icon" className="w-100" />
                     </a>
                   </CopyToClipboard>
                   {/* {this.state.copiedNumber ? (
@@ -1765,7 +1818,10 @@ class TicketSystem extends Component {
                                 id={item.priortyName}
                                 value={item.priorityID}
                                 onChange={this.setTicketPriorityValue}
-                                checked={item.priorityID===this.state.selectedTicketPriority}
+                                checked={
+                                  item.priorityID ===
+                                  this.state.selectedTicketPriority
+                                }
                               />
                               <label
                                 htmlFor={item.priortyName}
@@ -2177,7 +2233,11 @@ class TicketSystem extends Component {
                             Please select Brand
                           </label>
                         ) : ( */}
-                        <a href="#!" className="kblink1" onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                        <a
+                          href="#!"
+                          className="kblink1"
+                          onClick={this.HandleKbLinkModalOpen.bind(this)}
+                        >
                           <img
                             src={KnowledgeLogo}
                             alt="KnowledgeLogo"
@@ -2185,7 +2245,7 @@ class TicketSystem extends Component {
                             // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           />
                           <label
-                            // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                          // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           >
                             KB
                           </label>
@@ -2273,15 +2333,19 @@ class TicketSystem extends Component {
                         Please select Brand
                       </label>
                     ) : ( */}
-                    <a href="#!" className="kblink1" onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                    <a
+                      href="#!"
+                      className="kblink1"
+                      onClick={this.HandleKbLinkModalOpen.bind(this)}
+                    >
                       <img
                         src={KnowledgeLogo}
                         alt="KnowledgeLogo"
                         className="knoim"
                         // onClick={this.HandleKbLinkModalOpen.bind(this)}
                       />
-                      <label 
-                        // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                      <label
+                      // onClick={this.HandleKbLinkModalOpen.bind(this)}
                       >
                         KB
                       </label>
@@ -3126,8 +3190,14 @@ class TicketSystem extends Component {
                           )}
                         </div>
                         <div>
-                          <span onClick={this.handleviewPolicyModelOpen} style={{ float: 'left' }}>
-                            <a href="#!" className="copyblue-kbtext d-inline-block">
+                          <span
+                            onClick={this.handleviewPolicyModelOpen}
+                            style={{ float: "left" }}
+                          >
+                            <a
+                              href="#!"
+                              className="copyblue-kbtext d-inline-block"
+                            >
                               VIEW POLICY
                               <img
                                 src={ViewBlue}
