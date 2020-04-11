@@ -6,6 +6,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import { Table } from "antd";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
@@ -71,11 +72,34 @@ class Campaign extends Component {
     }
   }
 
-  onStatusChange(e) {
+  onStatusChange(campaignTypeID, campaignCustomerID, e) {
     debugger;
-    let responseData = this.state.responseData;
-    let statusId = parseInt(e.target.value);
-    responseData.filter(x => x.statusNameID === statusId);
+    this.state.campaignGridData
+      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .storeCampaignCustomerList.filter(
+        x => x.campaignCustomerID == campaignCustomerID
+      )[0].campaignStatus = parseInt(e.target.value);
+    this.setState({ campaignGridData: this.state.campaignGridData });
+  }
+
+  onResponseChange(campaignTypeID, campaignCustomerID, e) {
+    debugger;
+    this.state.campaignGridData
+      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .storeCampaignCustomerList.filter(
+        x => x.campaignCustomerID == campaignCustomerID
+      )[0].response = parseInt(e.target.value);
+    this.setState({ campaignGridData: this.state.campaignGridData });
+  }
+
+  onDateChange(campaignTypeID, campaignCustomerID, e) {
+    debugger;
+    this.state.campaignGridData
+      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .storeCampaignCustomerList.filter(
+        x => x.campaignCustomerID == campaignCustomerID
+      )[0].callReScheduledTo = e;
+    this.setState({ campaignGridData: this.state.campaignGridData });
   }
 
   handleCampaignGridData() {
@@ -560,8 +584,13 @@ class Campaign extends Component {
                                 }
                                 className="campaign-status-btn"
                                 id={"contactBtnGreen" + item.campaignCustomerID}
-                                onChange={this.onStatusChange}
+                                onChange={this.onStatusChange.bind(
+                                  this,
+                                  item.campaignTypeID,
+                                  item.campaignCustomerID
+                                )}
                                 value="100"
+                                checked={item.campaignStatus === 100}
                               />
                               <label
                                 className="table-btnlabel contactBtnGreen"
@@ -582,8 +611,13 @@ class Campaign extends Component {
                                 id={
                                   "notConnectedBtnRed" + item.campaignCustomerID
                                 }
-                                onChange={this.onStatusChange}
+                                onChange={this.onStatusChange.bind(
+                                  this,
+                                  item.campaignTypeID,
+                                  item.campaignCustomerID
+                                )}
                                 value="101"
+                                checked={item.campaignStatus === 101}
                               />
                               <label
                                 className="table-btnlabel notConnectedBtnRed"
@@ -604,8 +638,13 @@ class Campaign extends Component {
                                 id={
                                   "followUpBtnYellow" + item.campaignCustomerID
                                 }
-                                onChange={this.onStatusChange}
+                                onChange={this.onStatusChange.bind(
+                                  this,
+                                  item.campaignTypeID,
+                                  item.campaignCustomerID
+                                )}
                                 value="102"
+                                checked={item.campaignStatus === 102}
                               />
                               <label
                                 className="table-btnlabel followUpBtnYellow"
@@ -625,18 +664,37 @@ class Campaign extends Component {
                       // dataIndex: "itemPrice"
                       render: (row, item) => {
                         return (
-                          <select className="responceDrop-down dropdown-label">
-                            <option>Ringing No Response</option>
-                            <option>Call Back Later</option>
-                            <option>Mobile No Not Reachable</option>
-                            <option>No Switched Off</option>
-                            <option>Call Disconnected</option>
-                            <option>Mobile No Does Not Exist</option>
-                            <option>Mobile No Does Not Exist</option>
-                            <option>Wrong Mobile Number</option>
-                            <option>Customer Was Happy</option>
-                            <option>Customer Was Not Happy</option>
-                          </select>
+                          <div
+                            className={
+                              item.campaignStatus === 0 ? "disabled-input" : ""
+                            }
+                          >
+                            <select
+                              className={
+                                item.campaignStatus === 0
+                                  ? "responceDrop-down dropdown-label disabled-link"
+                                  : "responceDrop-down dropdown-label"
+                              }
+                              value={item.response}
+                              onChange={this.onResponseChange.bind(
+                                this,
+                                item.campaignTypeID,
+                                item.campaignCustomerID
+                              )}
+                            >
+                              <option hidden>Select</option>
+                              {item.campaignResponseList !== null &&
+                                item.campaignResponseList
+                                  .filter(
+                                    x => x.statusNameID === item.campaignStatus
+                                  )
+                                  .map((items, i) => (
+                                    <option key={i} value={items.responseID}>
+                                      {items.response}
+                                    </option>
+                                  ))}
+                            </select>
+                          </div>
                         );
                       }
                     },
@@ -645,16 +703,47 @@ class Campaign extends Component {
                       // dataIndex: "pricePaid"
                       render: (row, item) => {
                         return (
-                          <DatePicker
-                            id="startDate"
-                            name="startDate"
-                            showMonthDropdown
-                            showYearDropdown
-                            selected={this.state.startDate}
-                            onChange={this.DateChange}
-                            className="txtStore dateTimeStore"
-                            placeholderText="Select Date & Time"
-                          />
+                          <div
+                            className={
+                              item.campaignStatus === 102 && item.response === 3
+                                ? ""
+                                : "disabled-input"
+                            }
+                          >
+                            <DatePicker
+                              id="startDate"
+                              showTimeSelect
+                              name="startDate"
+                              showMonthDropdown
+                              showYearDropdown
+                              // selected={
+                              //   item.callReScheduledTo !== ""
+                              //     ? new Date(item.callReScheduledTo)
+                              //     : new Date()
+                              // }
+                              dateFormat="MM/dd/yyyy h:mm aa"
+                              // value={item.callReScheduledTo}
+                              // value={
+                              //   item.callReScheduledTo !== ""
+                              //     ? moment(item.callReScheduledTo).format(
+                              //         "MM/DD/YYYY"
+                              //       )
+                              //     : ""
+                              // }
+                              onChange={this.onDateChange.bind(
+                                this,
+                                item.campaignTypeID,
+                                item.campaignCustomerID
+                              )}
+                              className={
+                                item.campaignStatus === 102 &&
+                                item.response === 3
+                                  ? "txtStore dateTimeStore"
+                                  : "txtStore dateTimeStore disabled-link"
+                              }
+                              placeholderText="Select Date &amp; Time"
+                            />
+                          </div>
                         );
                       }
                     },

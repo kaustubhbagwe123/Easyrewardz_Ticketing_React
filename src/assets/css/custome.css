@@ -3618,6 +3618,20 @@ table tr th:last-child {
   padding-bottom: 7px !important;
   background: #fcfcfc !important;
 }
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:first-child
+  > td {
+  padding-top: 15px !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:last-child
+  > td {
+  padding-bottom: 15px !important;
+}
 .antd-table-campaign tr.ant-table-expanded-row td > .ant-table-wrapper {
   margin: 0;
 }
