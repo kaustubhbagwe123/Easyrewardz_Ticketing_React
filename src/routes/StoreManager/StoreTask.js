@@ -19,7 +19,8 @@ class StoreTask extends Component {
       assignToMeData: [],
       taskByTicketData: [],
       campaignData: [],
-      isloading: false
+      isloading: false,
+      
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
   }
@@ -666,7 +667,6 @@ class StoreTask extends Component {
                                         <p>Function</p>
                                         <p>{row.original.functionName}</p>
                                       </li>
-                                      
                                     </ul>
                                   </div>
                                 }
