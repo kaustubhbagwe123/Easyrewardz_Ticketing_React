@@ -935,8 +935,7 @@ class Dashboard extends Component {
       categoryColor: "",
       priorityColor: "",
       assignColor: "",
-      creationColor: "",
-      
+      creationColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -2019,6 +2018,13 @@ class Dashboard extends Component {
   }
   StatusCloseModel() {
     debugger;
+    this.setState({
+      sortFilterTicketData: this.state.sortTicketData,
+      sortFilterCategoryData: this.state.sortCategoryData,
+      sortFilterPriorityData: this.state.sortPriorityData,
+      sortFiltercreatedOnData: this.state.sortcreatedOnData,
+      sortFilterAssigneeData: this.state.sortAssigneeData
+    });
     var tempFinalSearchTicketData = [];
     if (this.state.tempSearchTicketData.length > 0) {
       var tempSearchTicketData = this.state.tempSearchTicketData;
@@ -4599,7 +4605,8 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <a href="#!"
+          <a
+            href="#!"
             className={
               this.state.collapse
                 ? "dashboard-collapse-icon"
@@ -5207,7 +5214,8 @@ class Dashboard extends Component {
                                       {item.searchName}
                                     </label>
                                     <div>
-                                      <a href="#!"
+                                      <a
+                                        href="#!"
                                         className="applySearch"
                                         onClick={this.handleApplySearch.bind(
                                           this,
@@ -5216,7 +5224,8 @@ class Dashboard extends Component {
                                       >
                                         APPLY
                                       </a>
-                                      <a href="#!"
+                                      <a
+                                        href="#!"
                                         onClick={this.hadleSearchDeleteData.bind(
                                           this,
                                           item.searchParamID
@@ -6210,14 +6219,16 @@ class Dashboard extends Component {
                                 </span>{" "}
                                 Results
                               </p>
-                              <a href="#!"
+                              <a
+                                href="#!"
                                 className="blue-clr fs-14 a-mar"
                                 onClick={this.clearSearch}
                               >
                                 CLEAR SEARCH
                               </a>
                               &nbsp; &nbsp; &nbsp;
-                              <a href="#!"
+                              <a
+                                href="#!"
                                 className="blue-clr fs-14 a-mar"
                                 onClick={this.setSortCheckStatus.bind(
                                   this,
@@ -6709,7 +6720,8 @@ class Dashboard extends Component {
                                 modalId="AssignPop-up"
                               >
                                 <div className="assign-modal-headerDashboard">
-                                  <a href="#!"
+                                  <a
+                                    href="#!"
                                     onClick={this.handleAssignModalClose.bind(
                                       this
                                     )}

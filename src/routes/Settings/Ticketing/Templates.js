@@ -465,8 +465,11 @@ class Templates extends Component {
       this.setState({
         StatusModel: false,
         template: this.state.temptemplate,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterName: this.state.sortName,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "issueTypeName") {
         if (this.state.stemplateNameFilterCheckbox === "") {
@@ -501,8 +504,11 @@ class Templates extends Component {
         template: this.state.isortA
           ? this.state.template
           : this.state.sortAllData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterName: this.state.sortName,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   }

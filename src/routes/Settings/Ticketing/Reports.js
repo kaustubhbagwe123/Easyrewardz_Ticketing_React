@@ -474,8 +474,11 @@ class Reports extends Component {
       this.setState({
         StatusModel: false,
         ReportData: this.state.tempReportData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterName: this.state.sortFilterName,
+        sortFilterSchedule: this.state.sortSchedule,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "reportName") {
         if (this.state.sreportNameFilterCheckbox === "") {
@@ -523,8 +526,11 @@ class Reports extends Component {
         ReportData: this.state.isortA
           ? this.state.ReportData
           : this.state.sortAllData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterName: this.state.sortFilterName,
+        sortFilterSchedule: this.state.sortSchedule,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   };

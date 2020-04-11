@@ -580,8 +580,10 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.tempalert,
-
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterAlertType: this.state.sortAlertType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "alertTypeName") {
         if (this.state.salertTypeNameFilterCheckbox === "") {
@@ -614,7 +616,10 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.isortA ? this.state.alert : this.state.sortAllData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterAlertType: this.state.sortAlertType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   };

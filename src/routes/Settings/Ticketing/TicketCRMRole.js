@@ -256,7 +256,10 @@ class TicketCRMRole extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        crmRoles: this.state.tempcrmRoles
+        crmRoles: this.state.tempcrmRoles,
+        sortFilterRoleName: this.state.sortRoleName,
+        sortFilterCreated: this.state.sortCreated,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "roleName") {
         if (this.state.sroleNameFilterCheckbox === "") {
@@ -289,6 +292,9 @@ class TicketCRMRole extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortFilterRoleName: this.state.sortRoleName,
+        sortFilterCreated: this.state.sortCreated,
+        sortFilterStatus: this.state.sortStatus,
         crmRoles: this.state.isortA
           ? this.state.crmRoles
           : this.state.sortAllData

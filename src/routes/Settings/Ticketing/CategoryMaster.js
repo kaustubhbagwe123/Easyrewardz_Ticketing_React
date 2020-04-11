@@ -366,7 +366,12 @@ class CategoryMaster extends Component {
         StatusModel: false,
         filterTxtValue: "",
         categoryGridData: this.state.tempcategoryGridData,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
+        sortFilterBrandName: this.state.sortBrandName,
+        sortFilterCategory: this.state.sortCategory,
+        sortFilterSubCategory: this.state.sortSubCategory,
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "brandName") {
         if (this.state.sbrandNameFilterCheckbox === "") {
@@ -430,7 +435,12 @@ class CategoryMaster extends Component {
         categoryGridData: this.state.isortA
           ? this.state.categoryGridData
           : this.state.sortAllData,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
+        sortFilterBrandName: this.state.sortBrandName,
+        sortFilterCategory: this.state.sortCategory,
+        sortFilterSubCategory: this.state.sortSubCategory,
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   }
