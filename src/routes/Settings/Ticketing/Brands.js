@@ -201,7 +201,6 @@ class Brands extends Component {
     var itemsArray = [];
     itemsArray = this.state.brandData;
 
-
     if (this.state.sortColumn === "brandCode") {
       itemsArray.sort((a, b) => {
         if (a.brandCode < b.brandCode) return 1;
@@ -244,7 +243,6 @@ class Brands extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.brandData;
-
 
     if (this.state.sortColumn === "brandCode") {
       itemsArray.sort((a, b) => {
@@ -393,7 +391,11 @@ class Brands extends Component {
       this.setState({
         StatusModel: false,
         brandData: this.state.tempbrandData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterBrandCode: this.state.sortBrandCode,
+        sortFilterBrandName: this.state.sortBrandName,
+        sortFilterAddedBy: this.state.sortAddedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "brandCode") {
         if (this.state.sbrandCodeFilterCheckbox === "") {
@@ -441,7 +443,11 @@ class Brands extends Component {
         brandData: this.state.isortA
           ? this.state.brandData
           : this.state.sortAllData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterBrandCode: this.state.sortBrandCode,
+        sortFilterBrandName: this.state.sortBrandName,
+        sortFilterAddedBy: this.state.sortAddedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   }

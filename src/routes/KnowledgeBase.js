@@ -292,7 +292,10 @@ class KnowledgeBase extends Component {
       if (this.state.tempKBListData.length > 0) {
         this.setState({
           StatusModel: false,
-          KBListData: this.state.tempKBListData
+          KBListData: this.state.tempKBListData,
+          sortFilterCategory: this.state.sortCategory,
+          sortFilterSubCategory: this.state.sortSubCategory,
+          sortFilterIssueType: this.state.sortIssueType
         });
         if (this.state.sortColumnName === "subCategoryName") {
           if (this.state.ssubCategoryNameFilterCheckbox === "") {
@@ -326,14 +329,20 @@ class KnowledgeBase extends Component {
           StatusModel: false,
           KBListData: this.state.AisortA
             ? this.state.KBListData
-            : this.state.sortAllDataApprove
+            : this.state.sortAllDataApprove,
+          sortFilterCategory: this.state.sortCategory,
+          sortFilterSubCategory: this.state.sortSubCategory,
+          sortFilterIssueType: this.state.sortIssueType
         });
       }
     } else {
       if (this.state.tempKBListnotApproveData.length > 0) {
         this.setState({
           StatusModel: false,
-          KBListnotApproveData: this.state.tempKBListnotApproveData
+          KBListnotApproveData: this.state.tempKBListnotApproveData,
+          sortFilterCategoryNot: this.state.sortCategory,
+          sortFilterSubCategoryNot: this.state.sortSubCategory,
+          sortFilterIssueTypeNot: this.state.sortIssueType
         });
 
         if (this.state.sortColumnName === "categoryName") {
@@ -368,7 +377,10 @@ class KnowledgeBase extends Component {
           StatusModel: false,
           KBListnotApproveData: this.state.NisortA
             ? this.state.KBListnotApproveData
-            : this.state.sortAllData
+            : this.state.sortAllData,
+          sortFilterCategoryNot: this.state.sortCategory,
+          sortFilterSubCategoryNot: this.state.sortSubCategory,
+          sortFilterIssueTypeNot: this.state.sortIssueType
         });
       }
     }

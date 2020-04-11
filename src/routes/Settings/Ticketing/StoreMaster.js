@@ -167,7 +167,7 @@ class StoreMaster extends Component {
         method: "post",
         url: config.apiUrl + "/Store/BulkUploadStore",
         headers: authHeader(),
-        data: formData,
+        data: formData
         // onUploadProgress: (ev = ProgressEvent) => {
         //   const progress = (ev.loaded / ev.total) * 100;
         //   this.updateUploadProgress(Math.round(progress));
@@ -445,7 +445,12 @@ class StoreMaster extends Component {
       this.setState({
         StatusModel: false,
         storeData: this.state.tempstoreData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterStoreName: this.state.sortStoreName,
+        sortFilterStoreCode: this.state.sortStoreCode,
+        sortFilterCity: this.state.sortCity,
+        sortFilterState: this.state.sortState,
+        sortFilterPincode: this.state.sortPincode
       });
       if (this.state.sortColumn === "storeName") {
         if (this.state.sstoreNameFilterCheckbox === "") {
@@ -507,13 +512,23 @@ class StoreMaster extends Component {
         this.setState({
           StatusModel: false,
           storeData: this.state.storeData,
-          filterTxtValue: ""
+          filterTxtValue: "",
+          sortFilterStoreName: this.state.sortStoreName,
+          sortFilterStoreCode: this.state.sortStoreCode,
+          sortFilterCity: this.state.sortCity,
+          sortFilterState: this.state.sortState,
+          sortFilterPincode: this.state.sortPincode
         });
       } else {
         this.setState({
           StatusModel: false,
           storeData: this.state.sortAllData,
-          filterTxtValue: ""
+          filterTxtValue: "",
+          sortFilterStoreName: this.state.sortStoreName,
+          sortFilterStoreCode: this.state.sortStoreCode,
+          sortFilterCity: this.state.sortCity,
+          sortFilterState: this.state.sortState,
+          sortFilterPincode: this.state.sortPincode
         });
       }
     }

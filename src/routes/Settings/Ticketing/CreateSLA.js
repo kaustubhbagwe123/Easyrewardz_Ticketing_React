@@ -67,7 +67,7 @@ class CreateSLA extends Component {
       sortHeader: "",
       issueTypeName: "",
       createdBy: "",
-      brandName:"",
+      brandName: "",
       categoryName: "",
       subCategoryName: "",
       SLAId: 0,
@@ -256,7 +256,10 @@ class CreateSLA extends Component {
         StatusModel: false,
         filterTxtValue: "",
         sla: this.state.tempsla,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "issueTpeName") {
         if (this.state.sissueTpeNameFilterCheckbox === "") {
@@ -290,7 +293,10 @@ class CreateSLA extends Component {
         StatusModel: false,
         filterTxtValue: "",
         sla: this.state.isortA ? this.state.sla : this.state.sortAllData,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   }
@@ -1159,7 +1165,7 @@ class CreateSLA extends Component {
         method: "post",
         url: config.apiUrl + "/SLA/BulkUploadSLA",
         headers: authHeader(),
-        data: formData,
+        data: formData
         // onUploadProgress: (ev = ProgressEvent) => {
         //   const progress = (ev.loaded / ev.total) * 100;
         //   this.updateUploadProgress(Math.round(progress));

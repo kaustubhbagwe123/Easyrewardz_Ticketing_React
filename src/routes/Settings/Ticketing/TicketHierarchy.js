@@ -450,7 +450,11 @@ class TicketHierarchy extends Component {
       this.setState({
         StatusModel: false,
         hierarchyData: this.state.temphierarchyData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterDesignation: this.state.sortDesignation,
+        sortFilterReportTo: this.state.sortReportTo,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "designationName") {
         if (this.state.sdesignationNameFilterCheckbox === "") {
@@ -497,13 +501,21 @@ class TicketHierarchy extends Component {
         this.setState({
           StatusModel: false,
           hierarchyData: this.state.hierarchyData,
-          filterTxtValue: ""
+          filterTxtValue: "",
+          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterReportTo: this.state.sortReportTo,
+          sortFilterStatus: this.state.sortStatus
         });
       } else {
         this.setState({
           StatusModel: false,
           hierarchyData: this.state.sortAllData,
-          filterTxtValue: ""
+          filterTxtValue: "",
+          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterReportTo: this.state.sortReportTo,
+          sortFilterStatus: this.state.sortStatus
         });
       }
     }
@@ -762,7 +774,7 @@ class TicketHierarchy extends Component {
     this.setState({
       fileN: [],
       fileName: "",
-      isOpen:false
+      isOpen: false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -783,7 +795,7 @@ class TicketHierarchy extends Component {
         method: "post",
         url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
         headers: authHeader(),
-        data: formData,
+        data: formData
         // cancelToken: source.token,
         // onUploadProgress: (ev = ProgressEvent) => {
         //   const progress = (ev.loaded / ev.total) * 100;
@@ -800,7 +812,7 @@ class TicketHierarchy extends Component {
             self.handleGetHierarchyData();
           } else {
             self.setState({
-              showProgress: false,
+              showProgress: false
               // isFileUploadFail: true,
               // progressValue: 0
             });
