@@ -20,7 +20,7 @@ import config from "../../../helpers/config";
 import axios from "axios";
 import {
   NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
@@ -32,7 +32,7 @@ import Dropzone from "react-dropzone";
 // const CancelToken = axios.CancelToken;
 // const source = CancelToken.source();
 
-const MyButton = (props) => {
+const MyButton = props => {
   const { children } = props;
   return (
     <div style={{ cursor: "pointer" }} {...props}>
@@ -43,7 +43,7 @@ const MyButton = (props) => {
   );
 };
 
-const Content = (props) => {
+const Content = props => {
   const { rowData } = props;
   const [designationName, setDesignationvalue] = useState(
     rowData.designationName
@@ -65,7 +65,7 @@ const Content = (props) => {
           maxLength={25}
           name="designation_Name"
           value={designationName}
-          onChange={(e) => setDesignationvalue(e.target.value)}
+          onChange={e => setDesignationvalue(e.target.value)}
         />
         {designationName === "" && (
           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -80,7 +80,7 @@ const Content = (props) => {
           name="report_To"
           value={reportTo}
           //onChange={this.handleOnChangeData}
-          onChange={(e) => setreportToValue(e.target.value)}
+          onChange={e => setreportToValue(e.target.value)}
         >
           <option>select</option>
           <option value={0}>Root</option>
@@ -103,7 +103,7 @@ const Content = (props) => {
           className="edit-dropDwon dropdown-setting"
           name="designation_status"
           value={status}
-          onChange={(e) => setStatusValue(e.target.value)}
+          onChange={e => setStatusValue(e.target.value)}
         >
           <option>select</option>
           {props.activeData !== null &&
@@ -126,7 +126,7 @@ const Content = (props) => {
         </a>
         <button
           className="pop-over-button"
-          onClick={(e) => {
+          onClick={e => {
             props.handleUpdateHierarchyData(e, designationID);
           }}
           disabled={props.editSaveLoading}
@@ -203,7 +203,7 @@ class TicketHierarchy extends Component {
       screatedbypersonFilterCheckbox: "",
       sstatusFilterCheckbox: "",
       isortA: false,
-      temphierarchyData: [],
+      temphierarchyData: []
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -286,7 +286,7 @@ class TicketHierarchy extends Component {
 
     this.setState({
       isortA: true,
-      hierarchyData: itemsArray,
+      hierarchyData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -330,7 +330,7 @@ class TicketHierarchy extends Component {
 
     this.setState({
       isortA: true,
-      hierarchyData: itemsArray,
+      hierarchyData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -358,7 +358,7 @@ class TicketHierarchy extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -367,7 +367,7 @@ class TicketHierarchy extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -383,7 +383,7 @@ class TicketHierarchy extends Component {
           // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -392,7 +392,7 @@ class TicketHierarchy extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -408,7 +408,7 @@ class TicketHierarchy extends Component {
           // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -417,7 +417,7 @@ class TicketHierarchy extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -430,7 +430,7 @@ class TicketHierarchy extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -439,7 +439,7 @@ class TicketHierarchy extends Component {
           screatedbypersonFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -450,7 +450,7 @@ class TicketHierarchy extends Component {
       this.setState({
         StatusModel: false,
         hierarchyData: this.state.temphierarchyData,
-        filterTxtValue: "",
+        filterTxtValue: ""
       });
       if (this.state.sortColumn === "designationName") {
         if (this.state.sdesignationNameFilterCheckbox === "") {
@@ -458,7 +458,7 @@ class TicketHierarchy extends Component {
           this.setState({
             sreportToFilterCheckbox: "",
             screatedbypersonFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -468,7 +468,7 @@ class TicketHierarchy extends Component {
           this.setState({
             sdesignationNameFilterCheckbox: "",
             screatedbypersonFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -478,7 +478,7 @@ class TicketHierarchy extends Component {
           this.setState({
             sdesignationNameFilterCheckbox: "",
             sreportToFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -488,7 +488,7 @@ class TicketHierarchy extends Component {
           this.setState({
             sdesignationNameFilterCheckbox: "",
             sreportToFilterCheckbox: "",
-            screatedbypersonFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: ""
           });
         }
       }
@@ -497,13 +497,13 @@ class TicketHierarchy extends Component {
         this.setState({
           StatusModel: false,
           hierarchyData: this.state.hierarchyData,
-          filterTxtValue: "",
+          filterTxtValue: ""
         });
       } else {
         this.setState({
           StatusModel: false,
           hierarchyData: this.state.sortAllData,
-          filterTxtValue: "",
+          filterTxtValue: ""
         });
       }
     }
@@ -647,7 +647,7 @@ class TicketHierarchy extends Component {
       sdesignationNameFilterCheckbox,
       sreportToFilterCheckbox,
       screatedbypersonFilterCheckbox,
-      sstatusFilterCheckbox,
+      sstatusFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -657,7 +657,7 @@ class TicketHierarchy extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.designationName === sItems[i]
+              a => a.designationName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -669,16 +669,14 @@ class TicketHierarchy extends Component {
       }
       this.setState({
         designationColor: "sort-column",
-        [e.target.name]: true,
+        [e.target.name]: true
       });
     } else if (column === "reportTo") {
       var sItems = sreportToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.reportTo === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.reportTo === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -688,7 +686,7 @@ class TicketHierarchy extends Component {
         }
       }
       this.setState({
-        reportToColor: "sort-column",
+        reportToColor: "sort-column"
       });
     } else if (column === "createdbyperson") {
       var sItems = screatedbypersonFilterCheckbox.split(",");
@@ -696,7 +694,7 @@ class TicketHierarchy extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.createdbyperson === sItems[i]
+              a => a.createdbyperson === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -707,14 +705,14 @@ class TicketHierarchy extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column",
+        createdColor: "sort-column"
       });
     } else if (column === "status") {
       var sItems = sstatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter((a) => a.status === sItems[i]);
+            var tempFilterData = allData.filter(a => a.status === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -724,12 +722,12 @@ class TicketHierarchy extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column",
+        statusColor: "sort-column"
       });
     }
 
     this.setState({
-      temphierarchyData: itemsArray,
+      temphierarchyData: itemsArray
     });
     // this.StatusCloseModel();
   };
@@ -738,7 +736,7 @@ class TicketHierarchy extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -746,24 +744,25 @@ class TicketHierarchy extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            reportToData: data,
+            reportToData: data
           });
         } else {
           self.setState({
-            reportToData: [],
+            reportToData: []
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
 
-  handleDeleteBulkupload = (e) => {
+  handleDeleteBulkupload = e => {
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
+      isOpen:false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -779,17 +778,17 @@ class TicketHierarchy extends Component {
 
       formData.append("file", this.state.fileN[0]);
 
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
         headers: authHeader(),
         data: formData,
         // cancelToken: source.token,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -802,13 +801,13 @@ class TicketHierarchy extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0,
+              // isFileUploadFail: true,
+              // progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch((data) => {
+        .catch(data => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -817,7 +816,7 @@ class TicketHierarchy extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file.",
+        bulkuploadCompulsion: "Please select file."
       });
     }
   }
@@ -826,7 +825,7 @@ class TicketHierarchy extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Hierarchy/ListHierarchy",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -846,7 +845,7 @@ class TicketHierarchy extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({ designationName: distinct[i] });
             self.state.sortFilterDesignation.push({
-              designationName: distinct[i],
+              designationName: distinct[i]
             });
           }
 
@@ -874,7 +873,7 @@ class TicketHierarchy extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortCreatedBy.push({ createdbyperson: distinct[i] });
             self.state.sortFilterCreatedBy.push({
-              createdbyperson: distinct[i],
+              createdbyperson: distinct[i]
             });
           }
 
@@ -894,15 +893,15 @@ class TicketHierarchy extends Component {
 
         if (status === "Success") {
           self.setState({
-            hierarchyData: data,
+            hierarchyData: data
           });
         } else {
           self.setState({
-            hierarchyData: [],
+            hierarchyData: []
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -933,8 +932,8 @@ class TicketHierarchy extends Component {
         data: {
           DesignationName: this.state.designation_name.trim(),
           ReportToDesignation: ReportId,
-          IsActive: activeStatus,
-        },
+          IsActive: activeStatus
+        }
       })
         .then(function(res) {
           debugger;
@@ -950,14 +949,14 @@ class TicketHierarchy extends Component {
               designationNameCompulsion: "",
               reportToCompulsion: "",
               statusCompulsion: "",
-              addSaveLoading: false,
+              addSaveLoading: false
             });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.");
             self.setState({ addSaveLoading: false });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           self.setState({ addSaveLoading: false });
           console.log(data);
         });
@@ -965,7 +964,7 @@ class TicketHierarchy extends Component {
       this.setState({
         designationNameCompulsion: "Designation Name field is compulsory.",
         reportToCompulsion: "ReportTo field is compulsory.",
-        statusCompulsion: "Status field is compulsory.",
+        statusCompulsion: "Status field is compulsory."
       });
     }
   }
@@ -978,8 +977,8 @@ class TicketHierarchy extends Component {
       headers: authHeader(),
       data: {
         DesignationID: hierarchy_Id,
-        Deleteflag: 1,
-      },
+        Deleteflag: 1
+      }
     })
       .then(function(res) {
         debugger;
@@ -992,7 +991,7 @@ class TicketHierarchy extends Component {
           NotificationManager.error(res.data.message);
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1020,8 +1019,8 @@ class TicketHierarchy extends Component {
           DesignationID: designationID,
           DesignationName: self.state.updateDesignation.trim(),
           ReportToDesignation: self.state.updateReprtTo,
-          IsActive: activeStatus,
-        },
+          IsActive: activeStatus
+        }
       })
         .then(function(res) {
           debugger;
@@ -1036,7 +1035,7 @@ class TicketHierarchy extends Component {
             NotificationManager.error("Hierarchy not update.");
           }
         })
-        .catch((data) => {
+        .catch(data => {
           self.setState({ editSaveLoading: false });
           console.log(data);
         });
@@ -1045,7 +1044,7 @@ class TicketHierarchy extends Component {
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
-        editstatusCompulsion: "Status field is compulsory.",
+        editstatusCompulsion: "Status field is compulsory."
       });
     }
   }
@@ -1058,18 +1057,18 @@ class TicketHierarchy extends Component {
     hierarchyEditData.designation_status = hierarchyEditData.status;
 
     this.setState({
-      hierarchyEditData,
+      hierarchyEditData
     });
   }
-  handleOnReportToChange = (e) => {
+  handleOnReportToChange = e => {
     let value = e.target.value;
     this.setState({ selectReportTo: value });
   };
-  handleStatusChange = (e) => {
+  handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
-  handleOnChangeData = (e) => {
+  handleOnChangeData = e => {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
@@ -1078,13 +1077,13 @@ class TicketHierarchy extends Component {
     data[name] = value;
 
     this.setState({
-      EditTemp: data,
+      EditTemp: data
     });
   };
-  fileUpload = (e) => {
+  fileUpload = e => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -1093,30 +1092,30 @@ class TicketHierarchy extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: "",
+        bulkuploadCompulsion: ""
       });
     }
   };
-  fileDrop = (e) => {
+  fileDrop = e => {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
     this.setState({
       fileN: allFiles,
-      fileName: allFiles[0].name,
+      fileName: allFiles[0].name
     });
     e.preventDefault();
   };
-  fileDragOver = (e) => {
+  fileDragOver = e => {
     e.preventDefault();
   };
-  fileDragEnter = (e) => {
+  fileDragEnter = e => {
     e.preventDefault();
   };
-  handleOnChangeHierarchyData = (e) => {
+  handleOnChangeHierarchyData = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
   filteTextChange(e) {
@@ -1133,7 +1132,7 @@ class TicketHierarchy extends Component {
         this.setState({ sortFilterDesignation });
       } else {
         this.setState({
-          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterDesignation: this.state.sortDesignation
         });
       }
     }
@@ -1147,7 +1146,7 @@ class TicketHierarchy extends Component {
         this.setState({ sortFilterReportTo });
       } else {
         this.setState({
-          sortFilterReportTo: this.state.sortReportTo,
+          sortFilterReportTo: this.state.sortReportTo
         });
       }
     }
@@ -1156,14 +1155,14 @@ class TicketHierarchy extends Component {
         this.state.sortCreatedBy,
         e.target.value,
         {
-          keys: ["createdbyperson"],
+          keys: ["createdbyperson"]
         }
       );
       if (sortFilterCreatedBy.length > 0) {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: this.state.sortCreatedBy
         });
       }
     }
@@ -1172,14 +1171,14 @@ class TicketHierarchy extends Component {
         this.state.sortCreatedBy,
         e.target.value,
         {
-          keys: ["status"],
+          keys: ["status"]
         }
       );
       if (sortFilterStatus.length > 0) {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortCreatedBy,
+          sortFilterStatus: this.state.sortCreatedBy
         });
       }
     }
@@ -1410,7 +1409,7 @@ class TicketHierarchy extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "designationName",
+                        accessor: "designationName"
                       },
                       {
                         Header: (
@@ -1427,7 +1426,7 @@ class TicketHierarchy extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "reportTo",
+                        accessor: "reportTo"
                       },
                       {
                         Header: (
@@ -1445,7 +1444,7 @@ class TicketHierarchy extends Component {
                         ),
                         accessor: "createdbyperson",
                         sortable: false,
-                        Cell: (row) => {
+                        Cell: row => {
                           // var ids = row.original["designationID"];
                           return (
                             <div>
@@ -1491,7 +1490,7 @@ class TicketHierarchy extends Component {
                               </span>
                             </div>
                           );
-                        },
+                        }
                       },
                       {
                         Header: (
@@ -1508,12 +1507,12 @@ class TicketHierarchy extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "status",
+                        accessor: "status"
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
-                        Cell: (row) => {
+                        Cell: row => {
                           var ids = row.original["designationID"];
                           return (
                             <>
@@ -1614,8 +1613,8 @@ class TicketHierarchy extends Component {
                               </span>
                             </>
                           );
-                        },
-                      },
+                        }
+                      }
                     ]}
                     // resizable={false}
                     minRows={2}
