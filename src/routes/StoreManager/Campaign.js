@@ -15,15 +15,44 @@ class Campaign extends Component {
     this.state = {
       FirstCollapse: false,
       TwoCollapse: false,
-      campaignGridData: []
+      campaignGridData: [],
+      rowExpanded: false,
+      statusData: [],
+      responseData: []
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
     this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
+    this.handleCampaignStatusResponseList = this.handleCampaignStatusResponseList.bind(
+      this
+    );
+    this.onRowExpand = this.onRowExpand.bind(this);
+    this.onStatusChange = this.onStatusChange.bind(this);
   }
 
   componentDidMount() {
     this.handleCampaignGridData();
+    this.handleCampaignStatusResponseList();
+  }
+
+  onRowExpand(expanded, record) {
+    debugger;
+    if (expanded) {
+      this.setState({
+        rowExpanded: true
+      });
+    } else {
+      this.setState({
+        rowExpanded: false
+      });
+    }
+  }
+
+  onStatusChange(e) {
+    debugger;
+    let responseData = this.state.responseData;
+    let statusId = parseInt(e.target.value);
+    responseData.filter(x => x.statusNameID === statusId);
   }
 
   handleCampaignGridData() {
@@ -41,6 +70,31 @@ class Campaign extends Component {
         if (status === "Success" && data) {
           self.setState({
             campaignGridData: data
+          });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleCampaignStatusResponseList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetCampaignStatusResponse",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let statusData = res.data.responseData.campaignStatusList;
+        let responseData = res.data.responseData.campaignResponseList;
+        if (status === "Success" && statusData && responseData) {
+          self.setState({
+            statusData,
+            responseData
           });
         }
       })
@@ -187,10 +241,11 @@ class Campaign extends Component {
                       <label className="hdrcloselabel">Close</label>
                     </button>
                   );
-                }
+                },
+                className: this.state.rowExpanded ? "d-none" : "d-block"
               },
               {
-                title: "Action"
+                title: "Actions"
                 // dataIndex: "orderPricePaid"
               }
             ]}
@@ -222,44 +277,72 @@ class Campaign extends Component {
                       // dataIndex: "articleName"
                       render: (row, item) => {
                         return (
-                          <>
-                            <input
-                              type="radio"
-                              name="campaign-status"
-                              className="campaign-status-btn"
-                              id="contactBtnGreen"
-                            />
-                            <label
-                              className="table-btnlabel contactBtnGreen"
-                              htmlFor="contactBtnGreen"
-                            >
-                              Contacted
-                            </label>
-                            <input
-                              type="radio"
-                              name="campaign-status"
-                              className="campaign-status-btn"
-                              id="notConnectedBtnRed"
-                            />
-                            <label
-                              className="table-btnlabel notConnectedBtnRed"
-                              htmlFor="notConnectedBtnRed"
-                            >
-                              Not Contacted
-                            </label>
-                            <input
-                              type="radio"
-                              name="campaign-status"
-                              className="campaign-status-btn"
-                              id="followUpBtnYellow"
-                            />
-                            <label
-                              className="table-btnlabel followUpBtnYellow"
-                              htmlFor="followUpBtnYellow"
-                            >
-                              Follow Up
-                            </label>
-                          </>
+                          <div className="d-flex">
+                            <div>
+                              <input
+                                type="radio"
+                                name={
+                                  "campaign-status-" + item.campaignCustomerID
+                                }
+                                className="campaign-status-btn"
+                                id={"contactBtnGreen" + item.campaignCustomerID}
+                                onChange={this.onStatusChange}
+                                value="100"
+                              />
+                              <label
+                                className="table-btnlabel contactBtnGreen"
+                                htmlFor={
+                                  "contactBtnGreen" + item.campaignCustomerID
+                                }
+                              >
+                                Contacted
+                              </label>
+                            </div>
+                            <div>
+                              <input
+                                type="radio"
+                                name={
+                                  "campaign-status-" + item.campaignCustomerID
+                                }
+                                className="campaign-status-btn"
+                                id={
+                                  "notConnectedBtnRed" + item.campaignCustomerID
+                                }
+                                onChange={this.onStatusChange}
+                                value="101"
+                              />
+                              <label
+                                className="table-btnlabel notConnectedBtnRed"
+                                htmlFor={
+                                  "notConnectedBtnRed" + item.campaignCustomerID
+                                }
+                              >
+                                Not Contacted
+                              </label>
+                            </div>
+                            <div>
+                              <input
+                                type="radio"
+                                name={
+                                  "campaign-status-" + item.campaignCustomerID
+                                }
+                                className="campaign-status-btn"
+                                id={
+                                  "followUpBtnYellow" + item.campaignCustomerID
+                                }
+                                onChange={this.onStatusChange}
+                                value="102"
+                              />
+                              <label
+                                className="table-btnlabel followUpBtnYellow"
+                                htmlFor={
+                                  "followUpBtnYellow" + item.campaignCustomerID
+                                }
+                              >
+                                Follow Up
+                              </label>
+                            </div>
+                          </div>
                         );
                       }
                     },
@@ -268,10 +351,7 @@ class Campaign extends Component {
                       // dataIndex: "itemPrice"
                       render: (row, item) => {
                         return (
-                          <select
-                            id="inputState"
-                            className="responceDrop-down dropdown-label"
-                          >
+                          <select className="responceDrop-down dropdown-label">
                             <option>Ringing No Response</option>
                             <option>Call Back Later</option>
                             <option>Mobile No Not Reachable</option>
@@ -331,6 +411,7 @@ class Campaign extends Component {
                 />
               );
             }}
+            onExpand={this.onRowExpand}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}

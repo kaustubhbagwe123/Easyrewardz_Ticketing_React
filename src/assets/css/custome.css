@@ -3594,12 +3594,36 @@ table tr th:last-child {
 }
 .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
   background: #e5e9ed !important;
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
 }
 .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th:last-child {
   text-align: left;
   float: none;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-thead
+  > tr
+  > th {
+  color: #989898;
+  background: #f0f0f0 !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  background: #fcfcfc !important;
+}
+.antd-table-campaign tr.ant-table-expanded-row td > .ant-table-wrapper {
+  margin: 0;
+}
+.custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
 }
 .custom-antd-table.antd-table-campaign table {
   padding: 0;
@@ -3665,6 +3689,7 @@ table tr th:last-child {
   .ant-table-expanded-row
   > td:first-child {
   display: table-cell;
+  padding: 0 !important;
 }
 .custom-antd-table .ant-table-expanded-row,
 .inner-custom-react-table .ReactTable {
