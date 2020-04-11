@@ -1093,20 +1093,25 @@ class TicketSystem extends Component {
         ticketingMailerQues: mailData
       };
       /// For Attached order
-      var order_data = this.state.selectedOrderData[0];
-      var OrderData = {
-        OrderMasterID: order_data.orderMasterID,
-        OrderNumber: order_data.invoiceNumber,
-        InvoiceDate: order_data.invoiceDate,
-        OrderPrice: order_data.ordeItemPrice,
-        PricePaid: order_data.orderPricePaid,
-        CustomerID: this.state.customer_Id,
-        Discount: order_data.discount,
-        StoreCode: order_data.storeCode,
-        TransactionDate: order_data.invoiceDate,
-        ModeOfPaymentID: 1,
-        TicketSourceID: 30
-      };
+      if(this.state.selectedOrderData.length > 0){
+        var order_data = this.state.selectedOrderData[0];
+        var OrderData = {
+          OrderMasterID: order_data.orderMasterID,
+          OrderNumber: order_data.invoiceNumber,
+          InvoiceDate: order_data.invoiceDate,
+          OrderPrice: order_data.ordeItemPrice,
+          PricePaid: order_data.orderPricePaid,
+          CustomerID: this.state.customer_Id,
+          Discount: order_data.discount,
+          StoreCode: order_data.storeCode,
+          TransactionDate: order_data.invoiceDate,
+          ModeOfPaymentID: 1,
+          TicketSourceID: 30
+        };
+      }else{
+        var OrderData = null
+      }
+      
       /// For Attached OrderItem data
       var item_data = {};
       var order_itemData = [];

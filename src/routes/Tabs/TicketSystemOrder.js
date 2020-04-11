@@ -836,9 +836,17 @@ class TicketSystemOrder extends Component {
               SelectedAllItem: CselectedRow
             });
           } else {
+            var selectedInvoiceNo = invoiceNumber;
+            const newSelected = Object.assign({}, self.state.CheckBoxAllOrder);
+            newSelected[invoiceNumber] = !self.state.CheckBoxAllOrder[
+              invoiceNumber
+            ];
             self.setState({
+              CheckBoxAllOrder: newSelected,
+              selectedInvoiceNo,
               OrderSubItem: []
             });
+           
           }
         })
         .catch(data => {
