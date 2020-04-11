@@ -79,7 +79,24 @@ class Campaign extends Component {
       .storeCampaignCustomerList.filter(
         x => x.campaignCustomerID == campaignCustomerID
       )[0].campaignStatus = parseInt(e.target.value);
+    this.state.campaignGridData
+      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .storeCampaignCustomerList.filter(
+        x => x.campaignCustomerID == campaignCustomerID
+      )[0].response = 0;
     this.setState({ campaignGridData: this.state.campaignGridData });
+  }
+
+  // onCampaignSave(campaignTypeID, campaignCustomerID, e) {
+  onCampaignSave(e) {
+    debugger;
+    alert();
+    // this.state.campaignGridData
+    //   .filter(x => x.campaignTypeID == campaignTypeID)[0]
+    //   .storeCampaignCustomerList.filter(
+    //     x => x.campaignCustomerID == campaignCustomerID
+    //   )[0].campaignStatus = parseInt(e.target.value);
+    // this.setState({ campaignGridData: this.state.campaignGridData });
   }
 
   onResponseChange(campaignTypeID, campaignCustomerID, e) {
@@ -716,20 +733,18 @@ class Campaign extends Component {
                               name="startDate"
                               showMonthDropdown
                               showYearDropdown
-                              // selected={
-                              //   item.callReScheduledTo !== ""
-                              //     ? new Date(item.callReScheduledTo)
-                              //     : new Date()
-                              // }
+                              selected={
+                                item.callReScheduledTo !== ""
+                                  ? new Date(item.callReScheduledTo)
+                                  : new Date()
+                              }
                               dateFormat="MM/dd/yyyy h:mm aa"
                               // value={item.callReScheduledTo}
-                              // value={
-                              //   item.callReScheduledTo !== ""
-                              //     ? moment(item.callReScheduledTo).format(
-                              //         "MM/DD/YYYY"
-                              //       )
-                              //     : ""
-                              // }
+                              value={
+                                item.callReScheduledTo !== ""
+                                  ? moment(item.callReScheduledTo)
+                                  : ""
+                              }
                               onChange={this.onDateChange.bind(
                                 this,
                                 item.campaignTypeID,
@@ -753,26 +768,69 @@ class Campaign extends Component {
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
-                            <button
-                              className="saveBtn"
-                              type="button"
-                              style={{ minWidth: "5px", marginRight: "3px" }}
+                            <div
+                              className={
+                                (item.campaignStatus === 100 &&
+                                  item.response !== 0) ||
+                                (item.campaignStatus === 101 &&
+                                  item.response !== 0) ||
+                                (item.campaignStatus === 102 &&
+                                  item.response !== 0 &&
+                                  item.callReScheduledTo !== "")
+                                  ? ""
+                                  : "disabled-input"
+                              }
                             >
-                              <label className="saveLabel">Save</label>
-                            </button>
-                            <button
-                              className="raisedticket-Btn"
-                              type="button"
-                              onClick={this.handleRaisedTicketModalOpen.bind(
-                                this,
-                                row,
-                                item
-                              )}
+                              <button
+                                className={
+                                  (item.campaignStatus === 100 &&
+                                    item.response !== 0) ||
+                                  (item.campaignStatus === 101 &&
+                                    item.response !== 0) ||
+                                  (item.campaignStatus === 102 &&
+                                    item.response !== 0 &&
+                                    item.callReScheduledTo !== "")
+                                    ? "saveBtn"
+                                    : "saveBtn disabled-link"
+                                }
+                                type="button"
+                                style={{ minWidth: "5px", marginRight: "3px" }}
+                                onClick={this.onCampaignSave.bind(
+                                  this
+                                  // item.campaignTypeID,
+                                  // item.campaignCustomerID
+                                )}
+                              >
+                                <label className="saveLabel">Save</label>
+                              </button>
+                            </div>
+                            <div
+                              className={
+                                item.campaignStatus === 100 &&
+                                item.response !== 0
+                                  ? ""
+                                  : "disabled-input"
+                              }
                             >
-                              <label className="raise-ticketLbl">
-                                Raise Ticket
-                              </label>
-                            </button>
+                              <button
+                                className={
+                                  item.campaignStatus === 100 &&
+                                  item.response !== 0
+                                    ? "raisedticket-Btn"
+                                    : "raisedticket-Btn disabled-link"
+                                }
+                                type="button"
+                                onClick={this.handleRaisedTicketModalOpen.bind(
+                                  this,
+                                  row,
+                                  item
+                                )}
+                              >
+                                <label className="raise-ticketLbl">
+                                  Raise Ticket
+                                </label>
+                              </button>
+                            </div>
                           </div>
                         );
                       }
@@ -797,7 +855,7 @@ class Campaign extends Component {
           modalId="Raised-popup"
           overlayId="logout-ovrly"
         >
-          <div>
+          <div className="raise-ticket-popup">
             <div className="row">
               <label>Customer Details</label>
               <label>
