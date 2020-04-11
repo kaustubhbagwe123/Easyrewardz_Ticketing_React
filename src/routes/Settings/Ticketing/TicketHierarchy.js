@@ -1461,7 +1461,7 @@ class TicketHierarchy extends Component {
                           return (
                             <div>
                               <span>
-                                Admin
+                                {row.original.createdbyperson}
                                 <Popover
                                   content={
                                     <div>
@@ -1629,7 +1629,7 @@ class TicketHierarchy extends Component {
                       }
                     ]}
                     // resizable={false}
-                    minRows={1}
+                    minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
                   />
