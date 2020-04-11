@@ -108,10 +108,13 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           var notificationCount = responseData.notiCount;
           if (responseData.storeNotificationModel.length > 0) {
-            self.setState({ notificationData, notificationCount });
+            self.setState({
+              notificationData: responseData,
+              notificationCount
+            });
           }
         } else {
-          self.setState({ notificationData });
+          self.setState({ notificationData:responseData });
         }
       })
       .catch(response => {
