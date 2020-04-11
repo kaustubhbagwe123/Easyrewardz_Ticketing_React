@@ -124,7 +124,6 @@ class Header extends Component {
   ////handle get read store notification
   handleGetReadStoreNotification(typeId, type) {
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/StoreNotification/ReadStoreNotification",
