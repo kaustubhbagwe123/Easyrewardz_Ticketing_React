@@ -843,6 +843,98 @@ class TicketSystemOrder extends Component {
             ];
             self.setState({
               CheckBoxAllOrder: newSelected,
+              selectedInvoiceNo
+            });
+            var selectedRow = [];
+            var CselectedRow = [];
+            if (self.state.SelectedAllOrder.length === 0) {
+              selectedRow.push(rowData);
+              var Order_Master = self.state.OrderSubItem.filter(
+                x => x.invoiceNumber === invoiceNumber
+              );
+              if (Order_Master.length > 0) {
+                var objCheckBoxAllItem = new Object();
+                for (let j = 0; j < Order_Master.length; j++) {
+                  objCheckBoxAllItem[Order_Master[j].invoiceNumber] = true;
+
+                  CselectedRow.push(Order_Master[j]);
+                }
+                self.setState({
+                  CheckBoxAllItem: objCheckBoxAllItem
+                });
+              }
+              self.setState({
+                SelectedAllOrder: selectedRow,
+                SelectedAllItem: CselectedRow
+              });
+            } else {
+              if (newSelected[invoiceNumber] === true) {
+                for (var i = 0; i < self.state.SelectedAllOrder.length; i++) {
+                  if (self.state.SelectedAllOrder[i] === rowData) {
+                    selectedRow = self.state.SelectedAllOrder;
+                    selectedRow.push(rowData);
+                    var Order_Master = self.state.OrderSubItem.filter(
+                      x => x.invoiceNumber === invoiceNumber
+                    );
+                    if (Order_Master.length > 0) {
+                      var objCheckBoxAllItem = new Object();
+                      for (let j = 0; j < Order_Master.length; j++) {
+                        objCheckBoxAllItem[
+                          Order_Master[j].invoiceNumber
+                        ] = true;
+
+                        CselectedRow.push(Order_Master[j]);
+                      }
+                      self.setState({
+                        CheckBoxAllItem: objCheckBoxAllItem
+                      });
+                    }
+
+                    self.setState({
+                      SelectedAllOrder: selectedRow,
+                      SelectedAllItem: CselectedRow
+                    });
+
+                    break;
+                  }
+                }
+              } else {
+                for (var i = 0; i < self.state.SelectedAllOrder.length; i++) {
+                  if (self.state.SelectedAllOrder[i] === rowData) {
+                    selectedRow = self.state.SelectedAllOrder;
+                    selectedRow.splice(i, 1);
+                    var Order_Master = self.state.OrderSubItem.filter(
+                      x => x.invoiceNumber === invoiceNumber
+                    );
+                    if (Order_Master.length > 0) {
+                      var objCheckBoxAllItem = new Object();
+                      for (let j = 0; j < Order_Master.length; j++) {
+                        objCheckBoxAllItem[
+                          Order_Master[j].invoiceNumber
+                        ] = false;
+                      }
+                      self.setState({
+                        CheckBoxAllItem: objCheckBoxAllItem
+                      });
+                    }
+
+                    self.setState({
+                      SelectedAllOrder: selectedRow,
+                      SelectedAllItem: []
+                    });
+
+                    break;
+                  }
+                }
+              }
+            }
+
+            {
+              self.props.getParentOrderData(selectedRow, CselectedRow);
+            }
+           
+            self.setState({
+              CheckBoxAllOrder: newSelected,
               selectedInvoiceNo,
               OrderSubItem: []
             });

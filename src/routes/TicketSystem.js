@@ -1008,6 +1008,11 @@ class TicketSystem extends Component {
       this.setState({ loading: true });
       let self = this;
       var selectedRow = "";
+      var order_masterId=0;
+      if(this.state.selectedOrderData.length > 0){
+        order_masterId =this.state.selectedOrderData[0]["orderMasterID"];
+
+      }
 
       // --------------New Code start---------------
       if (this.state.SelectedItemData.length === 0) {
@@ -1090,7 +1095,8 @@ class TicketSystem extends Component {
         TicketSourceID: 1,
         OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
         StoreID: selectedStore.substring(",", selectedStore.length - 1),
-        ticketingMailerQues: mailData
+        ticketingMailerQues: mailData,
+        OrderMasterID:order_masterId
       };
       /// For Attached order
       if(this.state.selectedOrderData.length > 0){

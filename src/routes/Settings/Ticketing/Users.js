@@ -2776,7 +2776,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     CANCEL
                   </a>
@@ -2868,7 +2867,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     CANCEL
                   </a>
@@ -3116,7 +3114,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     CANCEL
                   </a>
