@@ -1,5 +1,5 @@
 let config = {
-  //apiUrl: "https://localhost:44357/api",
+  // apiUrl: "https://localhost:44357/api",
   hierarchyTemplate: [["Designation", "ReportTo", "Status"]],
   priorityTemplate: [["PriorityName", "Status"]],
   userTemplate: [
@@ -16,12 +16,12 @@ let config = {
       "Copy Escalation",
       "Assign Escalation",
       "Escalation Agent Name",
-      "Status",
-    ],
+      "Status"
+    ]
   ],
   alertTemplate: [["AlertType", "Communication Mode", "Status"]],
   categoryTemplate: [
-    ["BrandName", "Category", "SubCategory", "IssueType", "Status"],
+    ["BrandName", "Category", "SubCategory", "IssueType", "Status"]
   ],
   slaTemplate: [
     [
@@ -32,11 +32,11 @@ let config = {
       "RespondDuration",
       "ResolutionValue",
       "ResolutionDuration",
-      "Status",
-    ],
+      "Status"
+    ]
   ],
   crmRoleTemplate: [
-    ["RoleName", "Status", "EnabledModules", "DisabledModules"],
+    ["RoleName", "Status", "EnabledModules", "DisabledModules"]
   ],
   storeTemplate: [
     [
@@ -52,13 +52,13 @@ let config = {
       "StoreType",
       "StoreEmailID",
       "StorePhoneNo",
-      "Status",
-    ],
+      "Status"
+    ]
   ],
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
   //apiUrl: 'http://10.50.250.18:9512/api'
-  apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
+  apiUrl: "https://ertktapi.dcdev.brainvire.net/Api"
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    // Client API
 };
