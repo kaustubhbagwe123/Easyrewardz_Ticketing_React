@@ -1100,19 +1100,19 @@ class JunkWords extends Component {
                         return (
                           <div>
                             <span>
-                              Admin
+                            {row.original.enteredBy}
                               <Popover
                                 content={
                                   <>
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifiedBy}
+                                          Updated By: {row.original.modifyBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
                                         Updated Date:{" "}
-                                        {row.original.modifiedDate}
+                                        {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>

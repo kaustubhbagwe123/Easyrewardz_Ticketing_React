@@ -1159,12 +1159,12 @@ class BlockEmail extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifiedBy}
+                                          Updated By: {row.original.modifyBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
                                         Updated Date:{" "}
-                                        {row.original.modifiedDate}
+                                        {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>
