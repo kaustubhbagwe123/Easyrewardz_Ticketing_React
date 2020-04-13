@@ -23,6 +23,10 @@ import { NotificationManager } from "react-notifications";
 import ActiveStatus from "../../activeStatus.js";
 import Modal from "react-responsive-modal";
 import matchSorter from "match-sorter";
+import DownExcel from "./../../../assets/Images/csv.png";
+import { CSVLink } from "react-csv";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
 
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
@@ -88,7 +92,12 @@ class DepartmentMaster extends Component {
       FunctionColor: "",
       createdColor: "",
       statusColor: "",
-      sortColumn: ""
+      sortColumn: "",
+      fileSize: "",
+      file: {},
+      fileValidation: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -107,19 +116,6 @@ class DepartmentMaster extends Component {
     this.handleGetDepartmentList();
     this.handleGetDepartmentGridData();
   }
-  fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
-  };
-  fileDrop = e => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
-    e.preventDefault();
-  };
-  fileDragOver = e => {
-    e.preventDefault();
-  };
-  fileDragEnter = e => {
-    e.preventDefault();
-  };
 
   ////handle Brand change
   handleBrandChange = (data, e) => {
@@ -1441,6 +1437,73 @@ class DepartmentMaster extends Component {
       });
   }
 
+  fileUpload = file => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: ""
+      });
+    }
+  };
+
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+
+  handleBulkUpload() {
+    let self = this;
+    if (this.state.fileName) {
+      const formData = new FormData();
+      formData.append("file", this.state.file);
+      this.setState({ isShowProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreDepartment/BulkUploadDepartment",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        },
+      }).then(response => {
+          var status = response.data.message;
+          var itemData = response.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetDepartmentGridData();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else {
+            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(response => {
+          self.setState({ isErrorBulkUpload: true });
+          console.log(response);
+        });
+    } else {
+      this.setState({ fileValidation: "Please Select File." });
+    }
+  }
+
+  DeleteBulkUploadFile = () => {
+    debugger;
+    this.setState({
+      file: {},
+      fileName: "",
+      fileSize: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
+    });
+    NotificationManager.success("File deleted successfully.");
+  };
+
   render() {
     const departmentList = this.state.departmentData.map((item, i) => (
       <Option key={i} value={item.departmentID}>
@@ -1838,10 +1901,7 @@ class DepartmentMaster extends Component {
                                         <a href={Demo.BLANK_LINK}>CANCEL</a>
                                         <button
                                           className="butn"
-                                          onClick={this.handleDeleteDepartmentData.bind(
-                                            this,
-                                            ids
-                                          )}
+                                          onClick={this.DeleteBulkUploadFile}
                                         >
                                           Delete
                                         </button>
@@ -2103,24 +2163,38 @@ class DepartmentMaster extends Component {
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
                     <h3 className="pb-0">Bulk Upload</h3>
-                  </div>
-                  <input
-                    id="file-upload"
-                    className="file-upload d-none"
-                    type="file"
-                    onChange={this.fileUpload}
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
-                  >
-                    <div className="file-icon">
-                      <img src={FileUpload} alt="file-upload" />
+                    <div className="down-excel">
+                      <p>Template</p>
+                        <CSVLink
+                          filename={"Department.csv"}
+                          data={config.departmentTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
                     </div>
-                    <span>Add File</span> or Drop File here
-                  </label>
+                  </div>
+                  <div className="mainfileUpload">
+                    <Dropzone onDrop={this.fileUpload}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input
+                            {...getInputProps()}
+                            className="file-upload d-none"
+                          />
+                          <div className="file-icon">
+                            <img src={FileUpload} alt="file-upload" />
+                          </div>
+                          <span className={"fileupload-span"}>Add File</span> or
+                          Drop File here
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
+                  {this.state.fileValidation ? (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.fileValidation}
+                    </p>
+                  ) : null}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -2158,17 +2232,23 @@ class DepartmentMaster extends Component {
                           <span className="file-size">122.6kb</span>
                         </div>
                       </div>
+                      {this.state.isErrorBulkUpload ? (
                       <div className="file-cntr">
                         <div className="file-dtls">
                           <p className="file-name">{this.state.fileName}</p>
-                          <a className="file-retry" href={Demo.BLANK_LINK}>
-                            Retry
-                          </a>
+                          <span
+                              className="file-retry"
+                              onClick={this.handleBulkUpload.bind(this)}
+                            >
+                              Retry
+                            </span>
                         </div>
                         <div>
                           <span className="file-failed">Failed</span>
                         </div>
                       </div>
+                      ) : null}
+                      {this.state.isShowProgress ? (
                       <div className="file-cntr">
                         <div className="file-dtls">
                           <p className="file-name pr-0">
@@ -2184,9 +2264,12 @@ class DepartmentMaster extends Component {
                           </div>
                         </div>
                       </div>
+                      ) : null}
                     </div>
                   )}
-                  <button className="butn">ADD</button>
+                  <button className="butn"
+                  onClick={this.handleBulkUpload.bind(this)}
+                  >ADD</button>
                 </div>
               </div>
               <Modal

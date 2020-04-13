@@ -69,6 +69,32 @@ let config = {
       "Settings|Chat|Notification|Reports",
     ],
   ],
+  campaignTemplate: [
+    ["CampaignName", "Script"]
+  ],
+  departmentTemplate: [
+    ["Brand", "StoreCode", "Department", "Function", "Status"],
+    ["Paragon|Bata","TestStoreBulkasf|ApitestStoresa","Department 10","Function10-1","Active"]
+  ],
+  storeUserTemplate: [
+    ["Brand", "StoreCode","UserName","MobileNumber","UserEmailID", "Department", "Function", 
+    "UserDesignation","ReporteeDesignation","ReportsTo","CRMRole","Status"],
+    ["Bata","Store95t5","abc","8097654323","abc@gmail.com","Department-1","Function-1|Function-2","CXO",
+    "CTTO","xyz","Admin","Active"]
+  ],
+  storeSlaTemplate: [
+    [
+      "IssueType",
+      "Priority",
+      "SLABreachPercent",
+      "ResolutionValue",
+      "ResolutionDuration",
+      "Status",
+    ],
+    ["Issue1", "High", "30", "2", "Day", "Active"],
+    ["Issue1", "Medium", "30", "2", "Day", "Active"],
+    ["Issue1", "Low", "30", "2", "Day", "Active"],
+  ]
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
   //apiUrl: 'http://10.50.250.18:9512/api'

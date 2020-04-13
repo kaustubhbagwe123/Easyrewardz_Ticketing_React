@@ -1589,6 +1589,9 @@ class ClaimCategoryMaster extends Component {
     this.setState({
       fileN: [],
       fileName: "",
+      fileSize: "",
+      showProgress: false,
+      isFileUploadFail: false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -1602,7 +1605,7 @@ class ClaimCategoryMaster extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Category/BulkUploadClaimCategory",
@@ -1619,7 +1622,7 @@ class ClaimCategoryMaster extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.setState({ fileName: "", fileSize: "", fileN: [], showProgress: false,isFileUploadFail: false });
             self.handleGetCategoryGridData();
           } else {
             self.setState({

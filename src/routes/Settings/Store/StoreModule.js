@@ -21,6 +21,12 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
+import { CSVLink } from "react-csv";
+import Dropzone from "react-dropzone";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { ProgressBar } from "react-bootstrap";
+import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
 class StoreModule extends Component {
   constructor(props) {
@@ -67,6 +73,11 @@ class StoreModule extends Component {
       tempcampaignScriptData: [],
       StatusModel: false,
       filterTxtValue: "",
+      fileSize: "",
+      file: {},
+      fileValidation: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -78,18 +89,85 @@ class StoreModule extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
   }
-  fileUpload = (e) => {
-    this.setState({ fileName: e.target.files[0].name });
+  // fileUpload = (e) => {
+  //   this.setState({ fileName: e.target.files[0].name });
+  // };
+  // fileDrop = (e) => {
+  //   this.setState({ fileName: e.dataTransfer.files[0].name });
+  //   e.preventDefault();
+  // };
+  // fileDragOver = (e) => {
+  //   e.preventDefault();
+  // };
+  // fileDragEnter = (e) => {
+  //   e.preventDefault();
+  // };
+
+  fileUpload = file => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: ""
+      });
+    }
   };
-  fileDrop = (e) => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
-    e.preventDefault();
-  };
-  fileDragOver = (e) => {
-    e.preventDefault();
-  };
-  fileDragEnter = (e) => {
-    e.preventDefault();
+
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+
+  handleBulkUpload() {
+    let self = this;
+    if (this.state.fileName) {
+      const formData = new FormData();
+      formData.append("file", this.state.file);
+      this.setState({ isShowProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/ModuleSetting/BulkUploadCampaign",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        },
+      }).then(response => {
+          var status = response.data.message;
+          var itemData = response.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleCampaignScriptGridData();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else {
+            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(response => {
+          self.setState({ isErrorBulkUpload: true });
+          console.log(response);
+        });
+    } else {
+      this.setState({ fileValidation: "Please Select File." });
+    }
+  }
+
+  DeleteBulkUploadFile = () => {
+    debugger;
+    this.setState({
+      file: {},
+      fileName: "",
+      fileSize: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
+    });
+    NotificationManager.success("File deleted successfully.");
   };
 
   handleEditModal() {
@@ -1641,73 +1719,121 @@ class StoreModule extends Component {
                             <h3 className="pb-0">Bulk Upload</h3>
                             <div className="down-excel">
                               <p>Template</p>
-                              <a href={Demo.BLANK_LINK}>
-                                <img
-                                  src={DownExcel}
-                                  alt="download icon"
-                                  className="storeImg-dwn"
-                                />
-                              </a>
+                              <CSVLink
+                                filename={"Campaign.csv"}
+                                data={config.campaignTemplate}
+                              >
+                                <img src={DownExcel} alt="download icon" />
+                              </CSVLink>
                             </div>
                           </div>
-                          <input
-                            id="file-upload"
-                            className="file-upload d-none"
-                            type="file"
-                            onChange={this.fileUpload}
-                          />
-                          <label
-                            htmlFor="file-upload"
-                            onDrop={this.fileDrop}
-                            onDragOver={this.fileDragOver}
-                            onDragEnter={this.fileDragEnter}
-                          >
-                            <div className="file-icon">
-                              <img src={FileUpload} alt="file-upload" />
-                            </div>
-                            <span>Add File</span> or Drop File here
-                          </label>
+                          <div className="mainfileUpload">
+                          <Dropzone onDrop={this.fileUpload}>
+                            {({ getRootProps, getInputProps }) => (
+                              <div {...getRootProps()}>
+                                <input
+                                  {...getInputProps()}
+                                  className="file-upload d-none"
+                                />
+                                <div className="file-icon">
+                                  <img src={FileUpload} alt="file-upload" />
+                                </div>
+                                <span className={"fileupload-span"}>Add File</span> or
+                                Drop File here
+                              </div>
+                            )}
+                          </Dropzone>
+                        </div>
+                          {this.state.fileValidation ? (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.fileValidation}
+                            </p>
+                          ) : null}
                           {this.state.fileName && (
                             <div className="file-info">
                               <div className="file-cntr">
                                 <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
+                                  <p className="file-name">{this.state.fileName}</p>
                                   <div className="del-file" id="del-file-1">
                                     <img src={DelBlack} alt="delete-black" />
                                   </div>
-                                </div>
-                                <div>
-                                  <span className="file-size">122.6kb</span>
-                                </div>
-                              </div>
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
-                                  <a
-                                    className="file-retry"
-                                    href={Demo.BLANK_LINK}
+                                  <UncontrolledPopover
+                                    trigger="legacy"
+                                    placement="auto"
+                                    target="del-file-1"
+                                    className="general-popover delete-popover"
                                   >
-                                    Retry
-                                  </a>
+                                    <PopoverBody className="d-flex">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.DeleteBulkUploadFile}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </PopoverBody>
+                                  </UncontrolledPopover>
                                 </div>
                                 <div>
-                                  <span className="file-failed">Failed</span>
+                                  <span className="file-size">
+                                    {this.state.fileSize}
+                                  </span>
                                 </div>
                               </div>
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name pr-0">
-                                    {this.state.fileName}
-                                  </p>
+                              {this.state.isErrorBulkUpload ? (
+                                <div className="file-cntr">
+                                  <div className="file-dtls">
+                                    <p className="file-name">{this.state.fileName}</p>
+                                    <span
+                                      className="file-retry"
+                                      onClick={this.handleBulkUpload.bind(this)}
+                                    >
+                                      Retry
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <span className="file-failed">Failed</span>
+                                  </div>
                                 </div>
-                              </div>
+                              ) : null}
+                              {this.state.isShowProgress ? (
+                                <div className="file-cntr">
+                                  <div className="file-dtls">
+                                    <p className="file-name pr-0">
+                                      {this.state.fileName}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <div className="d-flex align-items-center mt-2">
+                                      <ProgressBar className="file-progress" now={60} />
+                                      <div className="cancel-upload">
+                                        <img src={UploadCancel} alt="upload cancel" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : null}
                             </div>
                           )}
-                          <button className="butn">ADD</button>
+                          <button
+                            className="butn"
+                            onClick={this.handleBulkUpload.bind(this)}
+                          >
+                            ADD
+                          </button>
                         </div>
                       </div>
                     </div>
