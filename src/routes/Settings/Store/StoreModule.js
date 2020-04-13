@@ -182,7 +182,7 @@ class StoreModule extends Component {
     let campaignOvrlayShow = !slaOvrlayShowOriginal;
     this.setState({
       campaignShow,
-      campaignOvrlayShow,
+      campaignOvrlayShow
     });
   }
 
@@ -194,8 +194,8 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/DeleteCampaignScript",
       headers: authHeader(),
       params: {
-        CampaignID: deleteId,
-      },
+        CampaignID: deleteId
+      }
     })
       .then(function(res) {
         debugger;
@@ -207,7 +207,7 @@ class StoreModule extends Component {
           NotificationManager.error("Campaign not deleted.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -240,7 +240,7 @@ class StoreModule extends Component {
         indiCampaign = values.join(separator);
       }
       await this.setState({
-        indiCampaign,
+        indiCampaign
       });
       document.getElementById("campaignNameValue").textContent =
         this.state.indiCampaign.split(",").length - 1 + " selected";
@@ -255,7 +255,7 @@ class StoreModule extends Component {
         }
       }
       await this.setState({
-        indiCampaign,
+        indiCampaign
       });
       if (this.state.indiCampaign.split(",").length - 1 !== 0) {
         document.getElementById("campaignNameValue").textContent =
@@ -266,7 +266,7 @@ class StoreModule extends Component {
     }
   };
 
-  selectAllCampaign = async (event) => {
+  selectAllCampaign = async event => {
     debugger;
     var indiCampaign = "";
     var checkboxes = document.getElementsByName("allCampaign");
@@ -283,11 +283,11 @@ class StoreModule extends Component {
       }
     }
     await this.setState({
-      indiCampaign,
+      indiCampaign
     });
   };
 
-  selectNoCampaign = async (event) => {
+  selectNoCampaign = async event => {
     debugger;
     var checkboxes = document.getElementsByName("allCampaign");
     document.getElementById("campaignNameValue").textContent = "Select";
@@ -297,7 +297,7 @@ class StoreModule extends Component {
       }
     }
     await this.setState({
-      indiCampaign: "",
+      indiCampaign: ""
     });
   };
 
@@ -307,30 +307,30 @@ class StoreModule extends Component {
     this.handleCampaignScriptGridData();
   }
 
-  setClaimTabData = (e) => {
+  setClaimTabData = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  setScriptDetails = (e) => {
+  setScriptDetails = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  setUpdateCampaign = (e) => {
+  setUpdateCampaign = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -340,7 +340,7 @@ class StoreModule extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/ModuleSetting/GetStoreAttachmentSettings",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -349,11 +349,11 @@ class StoreModule extends Component {
         if (status === "Success" && data) {
           self.setState({
             maxAttachSize: data.arrachementSizeList,
-            fileFormat: data.storeAttachmentFileFormatList,
+            fileFormat: data.storeAttachmentFileFormatList
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -364,7 +364,7 @@ class StoreModule extends Component {
       editModal: true,
       updateIndiCampaignId: individualData.campaignNameID,
       updateScriptDetails: individualData.campaignScript,
-      updateCampaignId: individualData.campaignID,
+      updateCampaignId: individualData.campaignID
     });
   }
 
@@ -374,7 +374,7 @@ class StoreModule extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/ModuleSetting/GetCampaignName",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -382,11 +382,11 @@ class StoreModule extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            campaignName: data,
+            campaignName: data
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -397,7 +397,7 @@ class StoreModule extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/ModuleSetting/GetCampaignScript",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -405,7 +405,7 @@ class StoreModule extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            campaignScriptData: data,
+            campaignScriptData: data
           });
 
           self.state.sortAllData = data;
@@ -420,7 +420,7 @@ class StoreModule extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortcampaignName.push({ campaignName: distinct[i] });
             self.state.sortFiltercampaignName.push({
-              campaignName: distinct[i],
+              campaignName: distinct[i]
             });
           }
 
@@ -451,7 +451,7 @@ class StoreModule extends Component {
           }
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -464,7 +464,7 @@ class StoreModule extends Component {
     ) {
       let self = this;
       this.setState({
-        claimTabLoading: true,
+        claimTabLoading: true
       });
 
       // save attachment settings
@@ -474,8 +474,8 @@ class StoreModule extends Component {
         headers: authHeader(),
         data: {
           AttachmentSize: this.state.selectedMaxAttachSize,
-          FileFomatID: this.state.selectedFileFormat,
-        },
+          FileFomatID: this.state.selectedFileFormat
+        }
       })
         .then(function(res) {
           debugger;
@@ -487,17 +487,17 @@ class StoreModule extends Component {
               selectedFileFormat: "0",
               maxAttachSizeCompulsion: "",
               fileFormatCompulsion: "",
-              claimTabLoading: false,
+              claimTabLoading: false
             });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         maxAttachSizeCompulsion: "Please select max attachment size",
-        fileFormatCompulsion: "Please select file format",
+        fileFormatCompulsion: "Please select file format"
       });
     }
   }
@@ -510,7 +510,7 @@ class StoreModule extends Component {
     ) {
       let self = this;
       this.setState({
-        addCampaignLoading: true,
+        addCampaignLoading: true
       });
 
       // add campaign script
@@ -524,8 +524,8 @@ class StoreModule extends Component {
             this.state.indiCampaign.length - 1
           ),
           CampaignScript: this.state.scriptDetails,
-          Status: true,
-        },
+          Status: true
+        }
       })
         .then(function(res) {
           debugger;
@@ -540,17 +540,17 @@ class StoreModule extends Component {
               scriptDetails: "",
               campaignCompulsion: "",
               scriptDetailsCompulsion: "",
-              addCampaignLoading: false,
+              addCampaignLoading: false
             });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         campaignCompulsion: "Please select campaign name",
-        scriptDetailsCompulsion: "Please enter script details",
+        scriptDetailsCompulsion: "Please enter script details"
       });
     }
   }
@@ -560,7 +560,7 @@ class StoreModule extends Component {
     if (this.state.updateScriptDetails.length != 0) {
       let self = this;
       this.setState({
-        updateCampaignLoading: true,
+        updateCampaignLoading: true
       });
       // update campaign script
       axios({
@@ -571,8 +571,8 @@ class StoreModule extends Component {
           CampaignID: this.state.updateCampaignId,
           CampaignNameID: this.state.updateIndiCampaignId,
           CampaignScript: this.state.updateScriptDetails,
-          Status: true,
-        },
+          Status: true
+        }
       })
         .then(function(res) {
           debugger;
@@ -584,17 +584,17 @@ class StoreModule extends Component {
               // campaignCompulsion: "",
               updateScriptDetailsCompulsion: "",
               updateCampaignLoading: false,
-              editModal: false,
+              editModal: false
             });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         // campaignCompulsion: "Please select campaign name",
-        updateScriptDetailsCompulsion: "Please enter script details",
+        updateScriptDetailsCompulsion: "Please enter script details"
       });
     }
   }
@@ -627,7 +627,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
-      campaignScriptData: itemsArray,
+      campaignScriptData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -663,7 +663,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
-      campaignScriptData: itemsArray,
+      campaignScriptData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -690,7 +690,7 @@ class StoreModule extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -698,7 +698,7 @@ class StoreModule extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -710,7 +710,7 @@ class StoreModule extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -718,7 +718,7 @@ class StoreModule extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -730,7 +730,7 @@ class StoreModule extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -738,26 +738,30 @@ class StoreModule extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
   }
   StatusCloseModel() {
     debugger;
-
+    this.setState({
+      sortFiltercampaignName: this.state.sortcampaignName,
+      sortFiltercreatedBy: this.state.sortcreatedBy,
+      sortFilteristatus: this.state.sortstatus
+    });
     if (this.state.tempcampaignScriptData.length > 0) {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        campaignScriptData: this.state.tempcampaignScriptData,
+        campaignScriptData: this.state.tempcampaignScriptData
       });
       if (this.state.sortColumn === "campaignName") {
         if (this.state.scampaignNameFilterCheckbox === "") {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -766,7 +770,7 @@ class StoreModule extends Component {
         } else {
           this.setState({
             scampaignNameFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -775,7 +779,7 @@ class StoreModule extends Component {
         } else {
           this.setState({
             scampaignNameFilterCheckbox: "",
-            screatedByFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
           });
         }
       }
@@ -786,7 +790,7 @@ class StoreModule extends Component {
         campaignScriptData: this.state.isortA
           ? this.state.campaignScriptData
           : this.state.sortAllData,
-        sFilterCheckbox: "",
+        sFilterCheckbox: ""
       });
     }
   }
@@ -892,7 +896,7 @@ class StoreModule extends Component {
       sstatusFilterCheckbox,
       issueColor: "",
       createdColor: "",
-      stattusColor: "",
+      stattusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -902,7 +906,7 @@ class StoreModule extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.campaignName === sItems[i]
+              a => a.campaignName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -913,7 +917,7 @@ class StoreModule extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column",
+        issueColor: "sort-column"
       });
     } else if (column === "createdBy") {
       var sItems1 = screatedByFilterCheckbox.split(",");
@@ -921,7 +925,7 @@ class StoreModule extends Component {
         for (let i = 0; i < sItems1.length; i++) {
           if (sItems1[i] !== "") {
             var tempFilterData1 = allData.filter(
-              (a) => a.createdBy === sItems1[i]
+              a => a.createdBy === sItems1[i]
             );
             if (tempFilterData1.length > 0) {
               for (let j = 0; j < tempFilterData1.length; j++) {
@@ -932,16 +936,14 @@ class StoreModule extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column",
+        createdColor: "sort-column"
       });
     } else if (column === "status") {
       var sItems2 = sstatusFilterCheckbox.split(",");
       if (sItems2.length > 0) {
         for (let i = 0; i < sItems2.length; i++) {
           if (sItems2[i] !== "") {
-            var tempFilterData2 = allData.filter(
-              (a) => a.status === sItems2[i]
-            );
+            var tempFilterData2 = allData.filter(a => a.status === sItems2[i]);
             if (tempFilterData2.length > 0) {
               for (let j = 0; j < tempFilterData2.length; j++) {
                 itemsArray.push(tempFilterData2[j]);
@@ -951,12 +953,12 @@ class StoreModule extends Component {
         }
       }
       this.setState({
-        stattusColor: "sort-column",
+        stattusColor: "sort-column"
       });
     }
 
     this.setState({
-      tempcampaignScriptData: itemsArray,
+      tempcampaignScriptData: itemsArray
     });
   };
 
@@ -974,7 +976,7 @@ class StoreModule extends Component {
         this.setState({ sortFiltercampaignName });
       } else {
         this.setState({
-          sortFiltercampaignName: this.state.sortcampaignName,
+          sortFiltercampaignName: this.state.sortcampaignName
         });
       }
     }
@@ -988,7 +990,7 @@ class StoreModule extends Component {
         this.setState({ sortFiltercreatedBy });
       } else {
         this.setState({
-          sortFiltercreatedBy: this.state.sortcreatedBy,
+          sortFiltercreatedBy: this.state.sortcreatedBy
         });
       }
     }
@@ -1002,7 +1004,7 @@ class StoreModule extends Component {
         this.setState({ sortFilteristatus });
       } else {
         this.setState({
-          sortFilteristatus: this.state.sortstatus,
+          sortFilteristatus: this.state.sortstatus
         });
       }
     }
@@ -1172,7 +1174,7 @@ class StoreModule extends Component {
           <Link
             to={{
               pathname: "/admin/settings",
-              tabName: "store-tab",
+              tabName: "store-tab"
             }}
             className="header-path"
           >
@@ -1290,14 +1292,14 @@ class StoreModule extends Component {
                                   </span>
                                 ),
                                 sortable: false,
-                                accessor: "campaignName",
+                                accessor: "campaignName"
                               },
                               {
                                 Header: "Campaign Script",
                                 accessor: "campaignScriptLess",
                                 className: "communication-labelHeader",
                                 sortable: false,
-                                Cell: (row) => {
+                                Cell: row => {
                                   var ids = row.original["id"];
                                   return (
                                     <div>
@@ -1325,7 +1327,7 @@ class StoreModule extends Component {
                                       </span>
                                     </div>
                                   );
-                                },
+                                }
                               },
                               {
                                 id: "createdBy",
@@ -1343,7 +1345,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
-                                Cell: (row) => {
+                                Cell: row => {
                                   var ids = row.original["id"];
                                   return (
                                     <div>
@@ -1390,7 +1392,7 @@ class StoreModule extends Component {
                                       </span>
                                     </div>
                                   );
-                                },
+                                }
                                 // accessor: "createdBy"
                               },
                               {
@@ -1409,17 +1411,17 @@ class StoreModule extends Component {
                                 ),
                                 sortable: false,
                                 accessor: "status",
-                                Cell: (row) => {
+                                Cell: row => {
                                   return row.original.status
                                     ? "Active"
                                     : "Inactive";
-                                },
+                                }
                               },
                               {
                                 Header: "Actions",
                                 // accessor: "action",
                                 sortable: false,
-                                Cell: (row) => {
+                                Cell: row => {
                                   var ids = row.original["id"];
                                   return (
                                     <>
@@ -1527,8 +1529,8 @@ class StoreModule extends Component {
                                       </span>
                                     </>
                                   );
-                                },
-                              },
+                                }
+                              }
                             ]}
                             // resizable={false}
                             defaultPageSize={5}
@@ -1556,7 +1558,7 @@ class StoreModule extends Component {
                                 <p
                                   style={{
                                     color: "red",
-                                    marginBottom: "0px",
+                                    marginBottom: "0px"
                                   }}
                                 >
                                   {this.state.issueTypeCompulsion}
@@ -1661,7 +1663,7 @@ class StoreModule extends Component {
                                     </li>
                                     <li
                                       style={{
-                                        float: "right",
+                                        float: "right"
                                       }}
                                     >
                                       <button

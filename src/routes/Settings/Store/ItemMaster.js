@@ -15,7 +15,7 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
 import {
   NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 import axios from "axios";
 import config from "./../../../helpers/config";
@@ -63,7 +63,7 @@ class ItemMaster extends Component {
       filterTxtValue: "",
       StatusModel: false,
       tempitemData: [],
-      isortA: false,
+      isortA: false
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -74,7 +74,7 @@ class ItemMaster extends Component {
   componentDidMount() {
     this.handleGetItem();
   }
-  fileUpload = (file) => {
+  fileUpload = file => {
     debugger;
     if (file) {
       var fileName = file[0].name;
@@ -83,15 +83,15 @@ class ItemMaster extends Component {
         fileName,
         fileSize,
         file: file[0],
-        fileValidation: "",
+        fileValidation: ""
       });
     }
   };
 
-  fileDragOver = (e) => {
+  fileDragOver = e => {
     e.preventDefault();
   };
-  fileDragEnter = (e) => {
+  fileDragEnter = e => {
     e.preventDefault();
   };
   ////handel get item data
@@ -100,9 +100,9 @@ class ItemMaster extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Item/GetItemList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((response) => {
+      .then(response => {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
@@ -161,7 +161,7 @@ class ItemMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortdepartmentName.push({ departmentName: distinct[i] });
             self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i],
+              departmentName: distinct[i]
             });
           }
           var unique = [];
@@ -175,7 +175,7 @@ class ItemMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortitemCategory.push({ itemCategory: distinct[i] });
             self.state.sortFilteritemCategory.push({
-              itemCategory: distinct[i],
+              itemCategory: distinct[i]
             });
           }
           var unique = [];
@@ -191,10 +191,10 @@ class ItemMaster extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortitemSubCategory.push({
-              itemSubCategory: distinct[i],
+              itemSubCategory: distinct[i]
             });
             self.state.sortFilteritemSubCategory.push({
-              itemSubCategory: distinct[i],
+              itemSubCategory: distinct[i]
             });
           }
           var unique = [];
@@ -213,7 +213,7 @@ class ItemMaster extends Component {
           self.setState({ itemData: [] });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response);
       });
   }
@@ -253,7 +253,7 @@ class ItemMaster extends Component {
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch((response) => {
+        .catch(response => {
           self.setState({ isErrorBulkUpload: true });
           console.log(response);
         });
@@ -268,7 +268,7 @@ class ItemMaster extends Component {
       fileName: "",
       fileSize: "",
       isErrorBulkUpload: false,
-      isShowProgress: false,
+      isShowProgress: false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -330,7 +330,7 @@ class ItemMaster extends Component {
     }
     this.setState({
       isortA: true,
-      itemData: itemsArray,
+      itemData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -394,7 +394,7 @@ class ItemMaster extends Component {
 
     this.setState({
       isortA: true,
-      itemData: itemsArray,
+      itemData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -428,7 +428,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -440,7 +440,7 @@ class ItemMaster extends Component {
           sitemGroupFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -456,7 +456,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -468,7 +468,7 @@ class ItemMaster extends Component {
           sitemGroupFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -484,7 +484,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -496,7 +496,7 @@ class ItemMaster extends Component {
           sitemGroupFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -512,7 +512,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -524,7 +524,7 @@ class ItemMaster extends Component {
           sitemGroupFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -540,7 +540,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -552,7 +552,7 @@ class ItemMaster extends Component {
           sitemGroupFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -568,7 +568,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -580,7 +580,7 @@ class ItemMaster extends Component {
           sitemGroupFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -596,7 +596,7 @@ class ItemMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -608,17 +608,26 @@ class ItemMaster extends Component {
           sdepartmentNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
   }
   StatusCloseModel() {
+    this.setState({
+      sortFilterbrandName: this.state.sortbrandName,
+      sortFilteritemCode: this.state.sortitemCode,
+      sortFilteritemName: this.state.sortitemName,
+      sortFilterdepartmentName: this.state.sortdepartmentName,
+      sortFilteritemCategory: this.state.sortitemCategory,
+      sortFilteritemSubCategory: this.state.sortitemSubCategory,
+      sortFilteritemGroup: this.state.sortitemGroup
+    });
     if (this.state.tempitemData.length > 0) {
       this.setState({
         StatusModel: false,
         itemData: this.state.tempitemData,
-        filterTxtValue: "",
+        filterTxtValue: ""
       });
       if (this.state.sortColumn === "itemCode") {
         if (this.state.sitemCodeFilterCheckbox === "") {
@@ -629,7 +638,7 @@ class ItemMaster extends Component {
             sdepartmentNameFilterCheckbox: "",
             sitemCategoryFilterCheckbox: "",
             sitemSubCategoryFilterCheckbox: "",
-            sitemGroupFilterCheckbox: "",
+            sitemGroupFilterCheckbox: ""
           });
         }
       }
@@ -642,7 +651,7 @@ class ItemMaster extends Component {
             sdepartmentNameFilterCheckbox: "",
             sitemCategoryFilterCheckbox: "",
             sitemSubCategoryFilterCheckbox: "",
-            sitemGroupFilterCheckbox: "",
+            sitemGroupFilterCheckbox: ""
           });
         }
       }
@@ -655,7 +664,7 @@ class ItemMaster extends Component {
             sdepartmentNameFilterCheckbox: "",
             sitemCategoryFilterCheckbox: "",
             sitemSubCategoryFilterCheckbox: "",
-            sitemGroupFilterCheckbox: "",
+            sitemGroupFilterCheckbox: ""
           });
         }
       }
@@ -668,7 +677,7 @@ class ItemMaster extends Component {
             sitemNameFilterCheckbox: "",
             sitemCategoryFilterCheckbox: "",
             sitemSubCategoryFilterCheckbox: "",
-            sitemGroupFilterCheckbox: "",
+            sitemGroupFilterCheckbox: ""
           });
         }
       }
@@ -681,7 +690,7 @@ class ItemMaster extends Component {
             sitemNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
             sitemSubCategoryFilterCheckbox: "",
-            sitemGroupFilterCheckbox: "",
+            sitemGroupFilterCheckbox: ""
           });
         }
       }
@@ -694,7 +703,7 @@ class ItemMaster extends Component {
             sitemNameFilterCheckbox: "",
             sitemCategoryFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            sitemGroupFilterCheckbox: "",
+            sitemGroupFilterCheckbox: ""
           });
         }
       }
@@ -707,7 +716,7 @@ class ItemMaster extends Component {
             sitemNameFilterCheckbox: "",
             sitemCategoryFilterCheckbox: "",
             sitemSubCategoryFilterCheckbox: "",
-            sdepartmentNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: ""
           });
         }
       }
@@ -717,7 +726,7 @@ class ItemMaster extends Component {
         itemData: this.state.isortA
           ? this.state.itemData
           : this.state.sortAllData,
-        filterTxtValue: "",
+        filterTxtValue: ""
       });
     }
   }
@@ -946,7 +955,7 @@ class ItemMaster extends Component {
       sdepartmentNameFilterCheckbox,
       sitemCategoryFilterCheckbox,
       sitemSubCategoryFilterCheckbox,
-      sitemGroupFilterCheckbox,
+      sitemGroupFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -955,9 +964,7 @@ class ItemMaster extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.itemCode === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.itemCode === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -974,9 +981,7 @@ class ItemMaster extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.brandName === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -993,9 +998,7 @@ class ItemMaster extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.itemName === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.itemName === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1013,7 +1016,7 @@ class ItemMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.departmentName === sItems[i]
+              a => a.departmentName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1032,7 +1035,7 @@ class ItemMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.itemCategory === sItems[i]
+              a => a.itemCategory === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1051,7 +1054,7 @@ class ItemMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.itemSubCategory === sItems[i]
+              a => a.itemSubCategory === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1069,9 +1072,7 @@ class ItemMaster extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.itemGroup === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.itemGroup === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1081,12 +1082,12 @@ class ItemMaster extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column",
+        statusColor: "sort-column"
       });
     }
 
     this.setState({
-      tempitemData: itemsArray,
+      tempitemData: itemsArray
     });
   };
   filteTextChange(e) {
@@ -1103,7 +1104,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemCode });
       } else {
         this.setState({
-          sortFilteritemCode: this.state.sortitemCode,
+          sortFilteritemCode: this.state.sortitemCode
         });
       }
     }
@@ -1117,7 +1118,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilterbrandName });
       } else {
         this.setState({
-          sortFilterbrandName: this.state.sortbrandName,
+          sortFilterbrandName: this.state.sortbrandName
         });
       }
     }
@@ -1126,14 +1127,14 @@ class ItemMaster extends Component {
         this.state.sortitemName,
         e.target.value,
         {
-          keys: ["itemName"],
+          keys: ["itemName"]
         }
       );
       if (sortFilteritemName.length > 0) {
         this.setState({ sortFilteritemName });
       } else {
         this.setState({
-          sortFilteritemName: this.state.sortitemName,
+          sortFilteritemName: this.state.sortitemName
         });
       }
     }
@@ -1142,14 +1143,14 @@ class ItemMaster extends Component {
         this.state.sortdepartmentName,
         e.target.value,
         {
-          keys: ["departmentName"],
+          keys: ["departmentName"]
         }
       );
       if (sortFilterdepartmentName.length > 0) {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName,
+          sortFilterdepartmentName: this.state.sortdepartmentName
         });
       }
     }
@@ -1158,14 +1159,14 @@ class ItemMaster extends Component {
         this.state.sortitemCategory,
         e.target.value,
         {
-          keys: ["itemCategory"],
+          keys: ["itemCategory"]
         }
       );
       if (sortFilteritemCategory.length > 0) {
         this.setState({ sortFilteritemCategory });
       } else {
         this.setState({
-          sortFilteritemCategory: this.state.sortitemCategory,
+          sortFilteritemCategory: this.state.sortitemCategory
         });
       }
     }
@@ -1174,14 +1175,14 @@ class ItemMaster extends Component {
         this.state.sortitemSubCategory,
         e.target.value,
         {
-          keys: ["itemSubCategory"],
+          keys: ["itemSubCategory"]
         }
       );
       if (sortFilteritemSubCategory.length > 0) {
         this.setState({ sortFilteritemSubCategory });
       } else {
         this.setState({
-          sortFilteritemSubCategory: this.state.sortitemSubCategory,
+          sortFilteritemSubCategory: this.state.sortitemSubCategory
         });
       }
     }
@@ -1190,14 +1191,14 @@ class ItemMaster extends Component {
         this.state.sortitemGroup,
         e.target.value,
         {
-          keys: ["itemGroup"],
+          keys: ["itemGroup"]
         }
       );
       if (sortFilteritemGroup.length > 0) {
         this.setState({ sortFilteritemGroup });
       } else {
         this.setState({
-          sortFilteritemGroup: this.state.sortitemGroup,
+          sortFilteritemGroup: this.state.sortitemGroup
         });
       }
     }
@@ -1479,7 +1480,7 @@ class ItemMaster extends Component {
           <Link
             to={{
               pathname: "/admin/settings",
-              tabName: "store-tab",
+              tabName: "store-tab"
             }}
             className="header-path"
           >
@@ -1513,7 +1514,7 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "brandName",
+                        accessor: "brandName"
                       },
                       {
                         Header: (
@@ -1530,7 +1531,7 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "itemCode",
+                        accessor: "itemCode"
                       },
                       {
                         Header: (
@@ -1547,7 +1548,7 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "itemName",
+                        accessor: "itemName"
                       },
                       {
                         Header: (
@@ -1564,7 +1565,7 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "departmentName",
+                        accessor: "departmentName"
                       },
                       {
                         Header: (
@@ -1581,7 +1582,7 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "itemCategory",
+                        accessor: "itemCategory"
                       },
                       {
                         Header: (
@@ -1598,7 +1599,7 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "itemSubCategory",
+                        accessor: "itemSubCategory"
                       },
                       {
                         Header: (
@@ -1615,8 +1616,8 @@ class ItemMaster extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "itemGroup",
-                      },
+                        accessor: "itemGroup"
+                      }
                     ]}
                     defaultPageSize={10}
                     minRows={2}

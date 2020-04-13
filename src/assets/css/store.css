@@ -197,6 +197,9 @@
   height: 31px;
   padding-left: 12px;
 }
+.raise-ticket-popup label {
+  display: block;
+}
 /* Compaign css End */
 /* Shlok css end */
 /* --------------------------------------------- */

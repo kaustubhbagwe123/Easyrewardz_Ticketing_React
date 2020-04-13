@@ -17,7 +17,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import ReactTable from "react-table";
 import {
   // NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
@@ -107,7 +107,7 @@ class ClaimCategoryMaster extends Component {
       scategoryNameFilterCheckbox: "",
       ssubCategoryNameFilterCheckbox: "",
       sissueTypeNameFilterCheckbox: "",
-      sstatusNameFilterCheckbox: "",
+      sstatusNameFilterCheckbox: ""
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -248,7 +248,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -259,7 +259,7 @@ class ClaimCategoryMaster extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -273,7 +273,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -283,7 +283,7 @@ class ClaimCategoryMaster extends Component {
           sstatusNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -297,7 +297,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -307,7 +307,7 @@ class ClaimCategoryMaster extends Component {
           sstatusNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -321,7 +321,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -331,7 +331,7 @@ class ClaimCategoryMaster extends Component {
           sbrandNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -345,7 +345,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -355,18 +355,25 @@ class ClaimCategoryMaster extends Component {
           sissueTypeNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
   }
   StatusCloseModel() {
+    this.setState({
+      sortFilterBrandName: this.state.sortBrandName,
+      sortFilterCategory: this.state.sortCategory,
+      sortFilterSubCategory: this.state.sortSubCategory,
+      sortFilterIssueType: this.state.sortIssueType,
+      sortFilterStatus: this.state.sortStatus
+    });
     if (this.state.tempcategoryGridData.length > 0) {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
         categoryGridData: this.state.tempcategoryGridData,
-        sFilterCheckbox: "",
+        sFilterCheckbox: ""
       });
       if (this.state.sortColumn === "brandName") {
         if (this.state.sbrandNameFilterCheckbox === "") {
@@ -375,7 +382,7 @@ class ClaimCategoryMaster extends Component {
             scategoryNameFilterCheckbox: "",
             ssubCategoryNameFilterCheckbox: "",
             sissueTypeNameFilterCheckbox: "",
-            sstatusNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
           });
         }
       }
@@ -386,7 +393,7 @@ class ClaimCategoryMaster extends Component {
             sbrandNameFilterCheckbox: "",
             ssubCategoryNameFilterCheckbox: "",
             sissueTypeNameFilterCheckbox: "",
-            sstatusNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
           });
         }
       }
@@ -397,7 +404,7 @@ class ClaimCategoryMaster extends Component {
             sbrandNameFilterCheckbox: "",
             scategoryNameFilterCheckbox: "",
             sissueTypeNameFilterCheckbox: "",
-            sstatusNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
           });
         }
       }
@@ -408,7 +415,7 @@ class ClaimCategoryMaster extends Component {
             sbrandNameFilterCheckbox: "",
             scategoryNameFilterCheckbox: "",
             ssubCategoryNameFilterCheckbox: "",
-            sstatusNameFilterCheckbox: "",
+            sstatusNameFilterCheckbox: ""
           });
         }
       }
@@ -419,7 +426,7 @@ class ClaimCategoryMaster extends Component {
             sbrandNameFilterCheckbox: "",
             scategoryNameFilterCheckbox: "",
             ssubCategoryNameFilterCheckbox: "",
-            sissueTypeNameFilterCheckbox: "",
+            sissueTypeNameFilterCheckbox: ""
           });
         }
       }
@@ -428,7 +435,7 @@ class ClaimCategoryMaster extends Component {
         StatusModel: false,
         filterTxtValue: "",
         categoryGridData: this.state.sortAllData,
-        sFilterCheckbox: "",
+        sFilterCheckbox: ""
       });
     }
   }
@@ -610,7 +617,7 @@ class ClaimCategoryMaster extends Component {
       scategoryNameFilterCheckbox,
       ssubCategoryNameFilterCheckbox,
       sissueTypeNameFilterCheckbox,
-      sstatusNameFilterCheckbox,
+      sstatusNameFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -619,9 +626,7 @@ class ClaimCategoryMaster extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.brandName === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -631,7 +636,7 @@ class ClaimCategoryMaster extends Component {
         }
       }
       this.setState({
-        brandColor: "sort-column",
+        brandColor: "sort-column"
       });
     } else if (column === "categoryName") {
       var sItems = scategoryNameFilterCheckbox.split(",");
@@ -639,7 +644,7 @@ class ClaimCategoryMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.categoryName === sItems[i]
+              a => a.categoryName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -650,7 +655,7 @@ class ClaimCategoryMaster extends Component {
         }
       }
       this.setState({
-        categoryColor: "sort-column",
+        categoryColor: "sort-column"
       });
     } else if (column === "subCategoryName") {
       var sItems = ssubCategoryNameFilterCheckbox.split(",");
@@ -658,7 +663,7 @@ class ClaimCategoryMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.subCategoryName === sItems[i]
+              a => a.subCategoryName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -669,7 +674,7 @@ class ClaimCategoryMaster extends Component {
         }
       }
       this.setState({
-        subCategoryColor: "sort-column",
+        subCategoryColor: "sort-column"
       });
     } else if (column === "issueTypeName") {
       var sItems = sissueTypeNameFilterCheckbox.split(",");
@@ -677,7 +682,7 @@ class ClaimCategoryMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.issueTypeName === sItems[i]
+              a => a.issueTypeName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -688,7 +693,7 @@ class ClaimCategoryMaster extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column",
+        issueColor: "sort-column"
       });
     } else if (column === "statusName") {
       var sItems = sstatusNameFilterCheckbox.split(",");
@@ -696,7 +701,7 @@ class ClaimCategoryMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.statusName === sItems[i]
+              a => a.statusName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -707,12 +712,12 @@ class ClaimCategoryMaster extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column",
+        statusColor: "sort-column"
       });
     }
 
     this.setState({
-      tempcategoryGridData: itemsArray,
+      tempcategoryGridData: itemsArray
     });
     // this.StatusCloseModel();
   };
@@ -723,9 +728,9 @@ class ClaimCategoryMaster extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetClaimCategoryList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
 
         var data = res.data;
@@ -769,7 +774,7 @@ class ClaimCategoryMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
             self.state.sortFilterSubCategory.push({
-              subCategoryName: distinct[i],
+              subCategoryName: distinct[i]
             });
           }
 
@@ -803,16 +808,16 @@ class ClaimCategoryMaster extends Component {
         if (data.length > 0) {
           self.setState({
             categoryGridData: data,
-            loading: false,
+            loading: false
           });
         } else {
           self.setState({
             categoryGridData: [],
-            loading: false,
+            loading: false
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -821,9 +826,9 @@ class ClaimCategoryMaster extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -833,7 +838,7 @@ class ClaimCategoryMaster extends Component {
           self.setState({ brandData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -855,20 +860,20 @@ class ClaimCategoryMaster extends Component {
       url: config.apiUrl + "/Category/GetClaimCategoryListByBrandID",
       headers: authHeader(),
       params: {
-        BrandID: braindID,
-      },
+        BrandID: braindID
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let data = res.data;
         self.setState({ categoryDropData: data });
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   };
 
-  handleGetSubCategoryList = async (id) => {
+  handleGetSubCategoryList = async id => {
     debugger;
     let self = this;
     var Category_Id = "";
@@ -882,15 +887,15 @@ class ClaimCategoryMaster extends Component {
       url: config.apiUrl + "/Category/GetClaimSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: Category_Id,
-      },
+        CategoryID: Category_Id
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let data = res.data.responseData;
         self.setState({ SubCategoryDropData: data });
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   };
@@ -909,10 +914,10 @@ class ClaimCategoryMaster extends Component {
       url: config.apiUrl + "/Category/GetClaimIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: SubCat_Id,
-      },
+        SubCategoryID: SubCat_Id
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -922,7 +927,7 @@ class ClaimCategoryMaster extends Component {
           self.setState({ ListOfIssueData: [] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -935,10 +940,10 @@ class ClaimCategoryMaster extends Component {
       url: config.apiUrl + "/Category/DeleteClaimCategory",
       headers: authHeader(),
       params: {
-        CategoryID: category_Id,
-      },
+        CategoryID: category_Id
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -946,7 +951,7 @@ class ClaimCategoryMaster extends Component {
           NotificationManager.success("Category deleted successfully.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -966,10 +971,10 @@ class ClaimCategoryMaster extends Component {
       headers: authHeader(),
       params: {
         CategoryName: value,
-        BrandID: brand_Id,
-      },
+        BrandID: brand_Id
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -986,12 +991,12 @@ class ClaimCategoryMaster extends Component {
             self.setState({
               editCategory,
               ListOfIssueData: [],
-              SubCategoryDropData: [],
+              SubCategoryDropData: []
             });
             self.handleGetCategoryList(data, "edit");
           } else {
             self.setState({
-              category_Id: data,
+              category_Id: data
               // inputValue: "",
               // list1Value: ""
             });
@@ -1001,7 +1006,7 @@ class ClaimCategoryMaster extends Component {
           NotificationManager.error("Category not added.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1025,10 +1030,10 @@ class ClaimCategoryMaster extends Component {
       headers: authHeader(),
       params: {
         CategoryID: finalId,
-        SubcategoryName: value,
-      },
+        SubcategoryName: value
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1042,13 +1047,13 @@ class ClaimCategoryMaster extends Component {
 
             self.setState({
               ListOfIssueData: [],
-              editCategory,
+              editCategory
             });
 
             self.handleGetSubCategoryList("edit");
           } else {
             self.setState({
-              subCategory_Id: data,
+              subCategory_Id: data
             });
             self.handleGetSubCategoryList();
           }
@@ -1057,7 +1062,7 @@ class ClaimCategoryMaster extends Component {
           NotificationManager.error("SubCategory not added.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1079,10 +1084,10 @@ class ClaimCategoryMaster extends Component {
       headers: authHeader(),
       params: {
         SubcategoryID: finalId,
-        IssuetypeName: value,
-      },
+        IssuetypeName: value
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1096,7 +1101,7 @@ class ClaimCategoryMaster extends Component {
             self.handleGetIssueTypeList("edit");
           } else {
             self.setState({
-              issueType_Id: data,
+              issueType_Id: data
             });
             self.handleGetIssueTypeList();
           }
@@ -1104,7 +1109,7 @@ class ClaimCategoryMaster extends Component {
           NotificationManager.error("Issue Type not added.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -1157,10 +1162,10 @@ class ClaimCategoryMaster extends Component {
           CategoryID: categorydata,
           SubCategoryID: subCategoryData,
           IssueTypeID: IssueData,
-          Status: activeStatus,
-        },
+          Status: activeStatus
+        }
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -1176,7 +1181,7 @@ class ClaimCategoryMaster extends Component {
               categoryCompulsion: "",
               subcategoryCompulsion: "",
               issueCompulsion: "",
-              statusCompulsion: "",
+              statusCompulsion: ""
             });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.");
@@ -1184,7 +1189,7 @@ class ClaimCategoryMaster extends Component {
             NotificationManager.error(status);
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
@@ -1193,7 +1198,7 @@ class ClaimCategoryMaster extends Component {
         categoryCompulsion: "Please Select category",
         subcategoryCompulsion: "Please Select SubCategory",
         issueCompulsion: "Please Select IssueType",
-        statusCompulsion: "Please Select Status",
+        statusCompulsion: "Please Select Status"
       });
     }
   }
@@ -1234,10 +1239,10 @@ class ClaimCategoryMaster extends Component {
           SubCategoryID: subCategoryData,
           IssueTypeID: IssueData,
           Status: activeStatus,
-          Deleteflag: 0,
-        },
+          Deleteflag: 0
+        }
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -1255,7 +1260,7 @@ class ClaimCategoryMaster extends Component {
               editIssueCompulsory: "",
               editStatusCompulsory: "",
               editmodel: false,
-              editSaveLoading: false,
+              editSaveLoading: false
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ editmodel: false, editSaveLoading: false });
@@ -1265,7 +1270,7 @@ class ClaimCategoryMaster extends Component {
             self.setState({ editmodel: false, editSaveLoading: false });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           self.setState({ editmodel: false, editSaveLoading: false });
           console.log(data);
         });
@@ -1275,7 +1280,7 @@ class ClaimCategoryMaster extends Component {
         editCategoryCompulsory: "Please Select Category.",
         editSubCatCompulsory: "Please Select SubCategory.",
         editIssueCompulsory: "Please Select Issue type",
-        editStatusCompulsory: "Please Select Status",
+        editStatusCompulsory: "Please Select Status"
       });
     }
   }
@@ -1283,7 +1288,7 @@ class ClaimCategoryMaster extends Component {
   HandleMultiSelect() {
     this.setState({ catmulti: true });
   }
-  fileUpload = (e) => {
+  fileUpload = e => {
     debugger;
     var allFiles = [];
     var selectedFiles = e;
@@ -1295,11 +1300,11 @@ class ClaimCategoryMaster extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: "",
+        bulkuploadCompulsion: ""
       });
     }
   };
-  handleCategoryChange = (value) => {
+  handleCategoryChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
       this.setState({ list1Value: value, SubCategoryDropData: [] });
@@ -1313,7 +1318,7 @@ class ClaimCategoryMaster extends Component {
     }
   };
 
-  handleSubCatOnChange = (value) => {
+  handleSubCatOnChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
       this.setState({ ListOfSubCate: value });
@@ -1326,7 +1331,7 @@ class ClaimCategoryMaster extends Component {
       this.setState({ ShowSubCate: true });
     }
   };
-  handleIssueOnChange = (value) => {
+  handleIssueOnChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
       this.setState({ ListOfIssue: value });
@@ -1334,14 +1339,14 @@ class ClaimCategoryMaster extends Component {
       this.setState({ ShowIssuetype: true });
     }
   };
-  handleBrandChange = (e) => {
+  handleBrandChange = e => {
     debugger;
     let value = e.target.value;
     this.setState({
       selectBrand: value,
       categoryDropData: [],
       SubCategoryDropData: [],
-      ListOfIssueData: [],
+      ListOfIssueData: []
     });
     setTimeout(() => {
       if (this.state.selectBrand) {
@@ -1349,20 +1354,20 @@ class ClaimCategoryMaster extends Component {
       }
     }, 1);
   };
-  handleEditDropDownChange = (e) => {
+  handleEditDropDownChange = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({ name: value });
   };
   ////handle status change drop-down
-  handleStatusChange = (e) => {
+  handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
 
   ////handle table row edit button click to set value in modal
-  hanldeEditCategory = async (rowData) => {
+  hanldeEditCategory = async rowData => {
     debugger;
     var editCategory = {};
     editCategory.brandCategoryMappingID = rowData.brandCategoryMappingID;
@@ -1394,11 +1399,11 @@ class ClaimCategoryMaster extends Component {
       editmodel: false,
       categoryDropData: [],
       SubCategoryDropData: [],
-      ListOfIssueData: [],
+      ListOfIssueData: []
     });
   }
   ////handle modal pop brand change
-  handleModalBrandChange = (e) => {
+  handleModalBrandChange = e => {
     debugger;
     let value = e.target.value;
     var editCategory = {};
@@ -1409,7 +1414,7 @@ class ClaimCategoryMaster extends Component {
         editCategory,
         categoryDropData: [],
         SubCategoryDropData: [],
-        ListOfIssueData: [],
+        ListOfIssueData: []
       });
     } else {
       editCategory[e.target.name] = value;
@@ -1418,7 +1423,7 @@ class ClaimCategoryMaster extends Component {
         editBrandCompulsory: "",
         categoryDropData: [],
         SubCategoryDropData: [],
-        ListOfIssueData: [],
+        ListOfIssueData: []
       });
     }
     setTimeout(() => {
@@ -1428,12 +1433,12 @@ class ClaimCategoryMaster extends Component {
     }, 1);
   };
   ////handle edit modal pop category change
-  handleModalCategoryChange = (value) => {
+  handleModalCategoryChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       var categoryName = this.state.categoryDropData.filter(
-        (x) => x.categoryID === value
+        x => x.categoryID === value
       )[0].categoryName;
       editCategory["categoryID"] = value;
       editCategory["categoryName"] = categoryName;
@@ -1446,7 +1451,7 @@ class ClaimCategoryMaster extends Component {
         editCategory,
         editCategoryCompulsory: "",
         SubCategoryDropData: [],
-        ListOfIssueData: [],
+        ListOfIssueData: []
       });
       setTimeout(() => {
         if (value) {
@@ -1458,7 +1463,7 @@ class ClaimCategoryMaster extends Component {
     }
   };
   ////handle edit modal pop sub category change
-  handleModalSubCatOnChange = async (value) => {
+  handleModalSubCatOnChange = async value => {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
@@ -1470,7 +1475,7 @@ class ClaimCategoryMaster extends Component {
       this.setState({
         editCategory,
         ListOfIssueData: [],
-        editSubCatCompulsory: "",
+        editSubCatCompulsory: ""
       });
 
       setTimeout(() => {
@@ -1483,7 +1488,7 @@ class ClaimCategoryMaster extends Component {
     }
   };
   ////handle modal issue type change
-  handleModalIssueOnChange = (value) => {
+  handleModalIssueOnChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
@@ -1494,7 +1499,7 @@ class ClaimCategoryMaster extends Component {
     }
   };
   ////handle model status change
-  handleModalStatusChange = (e) => {
+  handleModalStatusChange = e => {
     debugger;
     const { name, value } = e.target;
     var editCategory = this.state.editCategory;
@@ -1517,7 +1522,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterBrandName });
       } else {
         this.setState({
-          sortFilterBrandName: this.state.sortBrandName,
+          sortFilterBrandName: this.state.sortBrandName
         });
       }
     }
@@ -1531,7 +1536,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterCategory });
       } else {
         this.setState({
-          sortFilterCategory: this.state.sortCategory,
+          sortFilterCategory: this.state.sortCategory
         });
       }
     }
@@ -1545,7 +1550,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterSubCategory });
       } else {
         this.setState({
-          sortFilterSubCategory: this.state.sortSubCategory,
+          sortFilterSubCategory: this.state.sortSubCategory
         });
       }
     }
@@ -1554,14 +1559,14 @@ class ClaimCategoryMaster extends Component {
         this.state.sortIssueType,
         e.target.value,
         {
-          keys: ["issueTypeName"],
+          keys: ["issueTypeName"]
         }
       );
       if (sortFilterIssueType.length > 0) {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueType,
+          sortFilterIssueType: this.state.sortIssueType
         });
       }
     }
@@ -1570,21 +1575,21 @@ class ClaimCategoryMaster extends Component {
         this.state.sortStatus,
         e.target.value,
         {
-          keys: ["statusName"],
+          keys: ["statusName"]
         }
       );
       if (sortFilterStatus.length > 0) {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: this.state.sortStatus
         });
       }
     }
   }
 
   ////handle delete selected file of bulk upload
-  handleDeleteBulkupload = (e) => {
+  handleDeleteBulkupload = e => {
     debugger;
     this.setState({
       fileN: [],
@@ -1614,9 +1619,9 @@ class ClaimCategoryMaster extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        },
+        }
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           let data = res.data.responseData;
@@ -1628,12 +1633,12 @@ class ClaimCategoryMaster extends Component {
             self.setState({
               showProgress: false,
               isFileUploadFail: true,
-              progressValue: 0,
+              progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch((data) => {
+        .catch(data => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -1642,7 +1647,7 @@ class ClaimCategoryMaster extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file.",
+        bulkuploadCompulsion: "Please select file."
       });
     }
   }
@@ -1929,7 +1934,7 @@ class ClaimCategoryMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "brandName",
+                          accessor: "brandName"
                         },
                         {
                           Header: (
@@ -1946,7 +1951,7 @@ class ClaimCategoryMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "categoryName",
+                          accessor: "categoryName"
                         },
                         {
                           Header: (
@@ -1963,7 +1968,7 @@ class ClaimCategoryMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "subCategoryName",
+                          accessor: "subCategoryName"
                         },
                         {
                           Header: (
@@ -1980,7 +1985,7 @@ class ClaimCategoryMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "issueTypeName",
+                          accessor: "issueTypeName"
                         },
                         {
                           Header: (
@@ -1997,13 +2002,13 @@ class ClaimCategoryMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "statusName",
+                          accessor: "statusName"
                         },
                         {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
                           sortable: false,
-                          Cell: (row) => {
+                          Cell: row => {
                             var ids = row.original["brandCategoryMappingID"];
                             return (
                               <>
@@ -2064,8 +2069,8 @@ class ClaimCategoryMaster extends Component {
                                 </span>
                               </>
                             );
-                          },
-                        },
+                          }
+                        }
                       ]}
                       minRows={1}
                       resizable={false}
@@ -2142,7 +2147,7 @@ class ClaimCategoryMaster extends Component {
                           inputPlaceholder="Enter Category Name"
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
-                          onConfirm={(inputValue) => {
+                          onConfirm={inputValue => {
                             debugger;
                             inputValue = inputValue.trim();
                             if (
@@ -2152,13 +2157,13 @@ class ClaimCategoryMaster extends Component {
                               if (inputValue !== "") {
                                 this.setState({
                                   showList1: false,
-                                  list1Value: inputValue,
+                                  list1Value: inputValue
                                 });
                                 this.handleAddCategory(inputValue);
                               } else {
                                 this.setState({
                                   showList1: false,
-                                  list1Value: inputValue,
+                                  list1Value: inputValue
                                 });
                               }
                             }
@@ -2209,19 +2214,19 @@ class ClaimCategoryMaster extends Component {
                           inputPlaceholder="Enter Category Name"
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
-                          onConfirm={(inputValue) => {
+                          onConfirm={inputValue => {
                             debugger;
                             inputValue = inputValue.trim();
                             if (inputValue !== "") {
                               this.setState({
                                 ShowSubCate: false,
-                                ListOfSubCate: inputValue,
+                                ListOfSubCate: inputValue
                               });
                               this.handleAddSubCategory(inputValue);
                             } else {
                               this.setState({
                                 ShowSubCate: false,
-                                ListOfSubCate: inputValue,
+                                ListOfSubCate: inputValue
                               });
                             }
                           }}
@@ -2268,18 +2273,18 @@ class ClaimCategoryMaster extends Component {
                           inputPlaceholder="Enter Issue Type"
                           animation="slide-from-top"
                           validationMsg="Please Enter Issue Type!"
-                          onConfirm={(inputValue) => {
+                          onConfirm={inputValue => {
                             inputValue = inputValue.trim();
                             if (inputValue !== "") {
                               this.setState({
                                 ShowIssuetype: false,
-                                ListOfIssue: inputValue,
+                                ListOfIssue: inputValue
                               });
                               this.handleAddIssueType(inputValue);
                             } else {
                               this.setState({
                                 ShowIssuetype: false,
-                                ListOfIssue: inputValue,
+                                ListOfIssue: inputValue
                               });
                             }
                           }}
@@ -2526,20 +2531,20 @@ class ClaimCategoryMaster extends Component {
                       inputPlaceholder="Enter Category Name"
                       animation="slide-from-top"
                       validationMsg="Please enter a category!"
-                      onConfirm={(inputValue) => {
+                      onConfirm={inputValue => {
                         debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.state.editCategory["categoryName"] = inputValue;
                           this.setState({
                             editshowList1: false,
-                            editCategory: this.state.editCategory,
+                            editCategory: this.state.editCategory
                           });
                           this.handleAddCategory(inputValue, "edit");
                         } else {
                           this.setState({
                             editshowList1: false,
-                            list1Value: inputValue,
+                            list1Value: inputValue
                           });
                         }
                       }}
@@ -2587,7 +2592,7 @@ class ClaimCategoryMaster extends Component {
                       inputPlaceholder="Enter Category Name"
                       animation="slide-from-top"
                       validationMsg="Please enter a category!"
-                      onConfirm={(inputValue) => {
+                      onConfirm={inputValue => {
                         debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
@@ -2596,7 +2601,7 @@ class ClaimCategoryMaster extends Component {
                           ] = inputValue;
                           this.setState({
                             editShowSubCate: false,
-                            editCategory: this.state.editCategory,
+                            editCategory: this.state.editCategory
                           });
                           this.handleAddSubCategory(inputValue, "edit");
                         } else {
@@ -2606,7 +2611,7 @@ class ClaimCategoryMaster extends Component {
                           this.setState({
                             editShowSubCate: false,
                             editCategory: this.state.editCategory,
-                            ListOfSubCate: inputValue,
+                            ListOfSubCate: inputValue
                           });
                         }
                       }}
@@ -2653,20 +2658,20 @@ class ClaimCategoryMaster extends Component {
                       inputPlaceholder="Enter Issue Type"
                       animation="slide-from-top"
                       validationMsg="Please Enter Issue Type!"
-                      onConfirm={(inputValue) => {
+                      onConfirm={inputValue => {
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.state.editCategory["issueTypeName"] = inputValue;
                           this.setState({
                             editShowIssuetype: false,
-                            editCategory: this.state.editCategory,
+                            editCategory: this.state.editCategory
                           });
                           this.handleAddIssueType(inputValue, "edit");
                         } else {
                           this.state.editCategory["issueTypeName"] = inputValue;
                           this.setState({
                             editShowIssuetype: false,
-                            editCategory: this.state.editCategory,
+                            editCategory: this.state.editCategory
                           });
                         }
                       }}

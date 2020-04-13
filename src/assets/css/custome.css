@@ -3592,6 +3592,87 @@ table tr th:last-child {
   background: transparent !important;
   border-bottom: 0;
 }
+.custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
+  background: #e5e9ed !important;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+.custom-antd-table.antd-table-campaign .ant-table-thead > tr > th:last-child {
+  text-align: left;
+  float: none;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-thead
+  > tr
+  > th {
+  color: #989898;
+  background: #f0f0f0 !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  background: #fcfcfc !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:first-child
+  > td {
+  padding-top: 15px !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:last-child
+  > td {
+  padding-bottom: 15px !important;
+}
+.antd-table-campaign tr.ant-table-expanded-row td > .ant-table-wrapper {
+  margin: 0;
+}
+.custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+.custom-antd-table.antd-table-campaign table {
+  padding: 0;
+}
+.antd-table-campaign .ant-table-row-collapsed::after {
+  content: "";
+  background: url("./../Images/collapsedown.png") no-repeat center center;
+  background-size: 24px 24px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0px, -50%);
+}
+.antd-table-campaign .ant-table-row-expanded::after {
+  content: "";
+  background: url("./../Images/collapseUp.png") no-repeat center center;
+  background-size: 24px 24px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0px, -50%);
+}
+.antd-table-campaign
+  .ant-table
+  .ant-table-row-indent
+  + .ant-table-row-expand-icon {
+  margin-right: 0;
+  position: relative;
+  border: 0;
+}
+.antd-table-campaign .ant-table-tbody > tr > td {
+  border-color: #f1f1f1;
+}
 .custom-react-table .rt-thead .rt-th span {
   padding: 0 !important;
   font-size: 12px;
@@ -3617,6 +3698,12 @@ table tr th:last-child {
 }
 .custom-antd-table .ant-table-expanded-row > td:first-child {
   display: none;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  > td:first-child {
+  display: table-cell;
+  padding: 0 !important;
 }
 .custom-antd-table .ant-table-expanded-row,
 .inner-custom-react-table .ReactTable {
