@@ -1322,8 +1322,7 @@ class TicketSystemOrder extends Component {
                             id={"all" + data.invoiceNumber}
                             name="AllOrder"
                             checked={
-                              this.state.selectedInvoiceNo ===
-                              data.invoiceNumber
+                              this.state.selectedInvoiceNo.includes(data.invoiceNumber) 
                             }
                             onChange={this.handleGetOderItemData.bind(
                               this,
@@ -1394,10 +1393,9 @@ class TicketSystemOrder extends Component {
                             className="d-none"
                             id={"all" + data.invoiceNumber}
                             name="AllOrder"
-                            checked={
-                              this.state.selectedInvoiceNo ===
-                              data.invoiceNumber
-                            }
+                             checked={
+                                this.state.selectedInvoiceNo.includes(data.invoiceNumber) 
+                              }
                             onChange={this.handleGetOderItemData.bind(
                               this,
                               data.invoiceNumber,

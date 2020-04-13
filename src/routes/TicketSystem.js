@@ -1092,7 +1092,7 @@ class TicketSystem extends Component {
         TicketMailBody: this.state.editorTemplateDetails,
         IsWantToVisitedStore: this.state.custVisit,
         IsAlreadyVisitedStore: this.state.AlreadycustVisit,
-        TicketSourceID: 1,
+        TicketSourceID:1,
         OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
         StoreID: selectedStore.substring(",", selectedStore.length - 1),
         ticketingMailerQues: mailData,
@@ -1112,7 +1112,7 @@ class TicketSystem extends Component {
           StoreCode: order_data.storeCode,
           TransactionDate: order_data.invoiceDate,
           ModeOfPaymentID: 1,
-          TicketSourceID: 30
+          TicketSourceID: this.state.selectedChannelOfPurchase
         };
       }else{
         var OrderData = null
