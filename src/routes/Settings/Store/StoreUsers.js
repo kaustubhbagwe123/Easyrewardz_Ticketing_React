@@ -40,8 +40,6 @@ class StoreUsers extends Component {
       selectStore: 0,
       brandCompulsory: "",
       storeCodeCompulsory: "",
-      checkPersonalDetailTab: "",
-      checkProfileDetailTab: "",
       userName: "",
       mobile_no: "",
       email_Id: "",
@@ -55,7 +53,6 @@ class StoreUsers extends Component {
       reportDesignationCompulsory: "",
       reportToCompulsory: "",
       emailCompulsory: "",
-      mobileValidation: "",
       emailValidation: "",
       selectDepartment: 0,
       selectDesignation: 0,
@@ -69,7 +66,6 @@ class StoreUsers extends Component {
       selectedClaimCategory: [],
       selectedClaimSubCategory: [],
       selectedClaimIssueType: [],
-      checkMappedClaimCategoryTab: "",
       mappedBrandCompulsory: "",
       mappedCategoryCompulsory: "",
       mappedSubCategoryCompulsory: "",
@@ -87,6 +83,9 @@ class StoreUsers extends Component {
       StoreReadOnly: false,
       personalReadOnly: false,
       profileReadOnly: false,
+      buttonStoreToggle: false,
+      btnPersonalToggle: false,
+      btnProfileToggle: false,
       user_ID: 0,
       StoreUserData: [],
       sortAllData: [],
@@ -126,7 +125,24 @@ class StoreUsers extends Component {
       departmentColor: "",
       functionColor: "",
       userNameColor: "",
-      userEditData: {}
+      userEditData: {},
+      userEdit: {},
+      finaluser_id: 0,
+      EditphoneFlag: true,
+      EditemailFlag: true,
+      editUserNameCompulsory: "",
+      editMobilenumberCompulsory: "",
+      EditBrandCompulsory: "",
+      EditstoreCodeCompulsory: "",
+      EditDepartmentCompulsory: "",
+      editFuncation: [],
+      editBrand: [],
+      editCategory: [],
+      editSubCategory: [],
+      editIssueType: [],
+      editFunctionCompulsion: "",
+      EditDesignationCompulsory: "",
+      EditReportDesignationCompulsory: ""
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -183,6 +199,26 @@ class StoreUsers extends Component {
     e.preventDefault();
   };
 
+  editStoreMethod() {
+    this.setState({
+      StoreReadOnly: false,
+      buttonStoreToggle: true
+    });
+  }
+
+  editPersonalMethod(){
+    this.setState({
+      personalReadOnly: false,
+      btnPersonalToggle: true
+    });
+  }
+
+  editProfileMethod(){
+    this.setState({
+      profileReadOnly: false,
+      btnProfileToggle: true
+    });
+  }
   /// drop down on change
   handleBrandAndStoreChange = e => {
     debugger;
@@ -385,6 +421,186 @@ class StoreUsers extends Component {
     }
   }
 
+  handleEditOnchange = e => {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+    var userEdit = this.state.userEdit;
+
+    if (name === "mobileNo") {
+      var reg = /^[0-9\b]+$/;
+
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        var userEdit = this.state.userEdit;
+        userEdit[name] = value;
+        this.setState({
+          userEdit
+        });
+      } else {
+        e.target.value = "";
+      }
+      if (e.target.value.length === 10 || e.target.value.length === 0) {
+        this.setState({
+          EditphoneFlag: true
+        });
+      } else {
+        this.setState({
+          EditphoneFlag: false
+        });
+      }
+    } else if (name === "emailID") {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (e.target.value === "") {
+        this.setState({
+          EditemailFlag: true
+        });
+      } else if (reg.test(e.target.value) === false) {
+        this.setState({
+          EditemailFlag: false
+        });
+      } else {
+        this.setState({
+          EditemailFlag: true
+        });
+      }
+
+      userEdit[name] = value;
+
+      this.setState({
+        userEdit
+      });
+    } else {
+      userEdit[name] = value;
+
+      this.setState({
+        userEdit,
+        editFuncation: [],
+        functionData: []
+      });
+    }
+
+    setTimeout(() => {
+      if (this.state.userEdit.brandID && this.state.userEdit.storeID) {
+        var brandId = this.state.userEdit.brandID;
+        var storeId = this.state.userEdit.storeID;
+        this.handleGetDepartmentData(brandId, storeId);
+      }
+    }, 1);
+  };
+  ////handle edit department dropdown onchange
+  handleEditDepartmentOnchange(data, e) {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+    var userEdit = this.state.userEdit;
+    userEdit[name] = value;
+
+    this.setState({
+      userEdit,
+      editFuncation: [],
+      functionData: []
+    });
+    setTimeout(() => {
+      if (this.state.userEdit.departmentID) {
+        this.handleGetFunctionData(data);
+      }
+    }, 1);
+  }
+  ///handle edit User desiagnation onchage
+  handleEditUserDesignationChange(data, e) {
+    var name = e.target.name;
+    var value = e.target.value;
+    var userEdit = this.state.userEdit;
+    userEdit[name] = value;
+
+    this.setState({
+      userEdit,
+      reportDesignation: [],
+      reportToData: []
+    });
+    setTimeout(() => {
+      if (this.state.userEdit.designationID) {
+        this.handleGetRepoteeDesignationData(data);
+      }
+    }, 1);
+  }
+  ///hanlde edit Report designation onchange
+  handleEditReporteeDesigOnChange(data, e) {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+    var userEdit = this.state.userEdit;
+    userEdit[name] = value;
+
+    this.setState({
+      userEdit,
+      // reportDesignation: [],
+      reportToData: []
+    });
+    setTimeout(() => {
+      if (this.state.userEdit.reporteeDesignationID) {
+        this.handleGetReportToData(data);
+      }
+    }, 1);
+  }
+  /// hanlde edit Report drop down change
+  handleEditReportOnchange = e => {
+    var name = e.target.name;
+    var value = e.target.value;
+    var userEdit = this.state.userEdit;
+    userEdit[name] = value;
+
+    this.setState({
+      userEdit
+    });
+  };
+  /// hanlde edit Multi select Brand onchange
+  handleMultiEditBrandonChange(e) {
+    if (e === null) {
+      e = [];
+      this.setState({
+        editBrand: e,
+        editCategory: [],
+        editSubCategory: [],
+        editIssueType: []
+      });
+    } else {
+      this.setState({ editBrand: e });
+      setTimeout(() => {
+        if (this.state.editBrand) {
+          this.handleGetClaimCategoryData("edit");
+        }
+      }, 1);
+    }
+  }
+  /// hanlde edit Multi select Category onchange
+  handleMultiEditCategoryonChange(e) {
+    if (e === null) {
+      e = [];
+      this.setState({
+        editCategory: e,
+        editSubCategory: [],
+        editIssueType: []
+      });
+    } else {
+      this.setState({ editCategory: e });
+      setTimeout(() => {
+        if (this.state.editCategory) {
+          this.handleGetClaimSubCategoryData("edit");
+        }
+      }, 1);
+    }
+  }
+  ////handle edit Function on change
+  handleEditFunctionOnChange(e) {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({ editFuncation: e });
+    } else {
+      this.setState({ editFuncation: e });
+    }
+  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
@@ -1325,9 +1541,84 @@ class StoreUsers extends Component {
     }
   }
   EditStoreUserData = data => {
+    debugger;
+    var userEdit = {};
+    var funcation = [];
+    var brand = [];
+    var category = [];
+    userEdit.brandID = data.brandID;
+    userEdit.brandName = data.brandName;
+    userEdit.storeID = data.storeID;
+    userEdit.storeCode = data.storeCode;
+    userEdit.storeName = data.storeName;
+    userEdit.userName = data.userName;
+    userEdit.mobileNo = data.mobileNo;
+    userEdit.emailID = data.emailID;
+    userEdit.functionIDs = data.functionIDs;
+    userEdit.mappedFunctions = data.mappedFunctions;
+    userEdit.roleID = data.roleID;
+    userEdit.roleName = data.roleName;
+    userEdit.brandIDs = data.brandIDs;
+    userEdit.mappedBrand = data.mappedBrand;
+    userEdit.categoryIDs = data.categoryIDs;
+    userEdit.mappedCategory = data.mappedCategory;
+    userEdit.subCategoryIDs = data.subCategoryIDs;
+    userEdit.mappedSubCategory = data.mappedSubCategory;
+    userEdit.issueTypeIDs = data.issueTypeIDs;
+    userEdit.mappedIssuetype = data.mappedIssuetype;
+    userEdit.designationID = data.designationID;
+    userEdit.designationName = data.designationName;
+    userEdit.reporteeID = data.reporteeID;
+    userEdit.reporteeName = data.reporteeName;
+    userEdit.reporteeDesignationID = data.reporteeDesignationID;
+    userEdit.reporteeDesignation = data.reporteeDesignation;
+    userEdit.departmentID = data.departmentID;
+    userEdit.departmentName = data.departmentName;
+    userEdit.isActive = data.isActive;
+    userEdit.isClaimApprover = data.isClaimApprover;
+
+    ////for Multi function binding drop down
+    var fName = userEdit.mappedFunctions.split(",");
+    var fId = userEdit.functionIDs.split(",").map(Number);
+    if (userEdit.functionIDs !== "") {
+      for (let i = 0; i < fId.length; i++) {
+        funcation.push({ functionID: fId[i], funcationName: fName[i] });
+      }
+    }
+    ////for Multi brand binding drop down
+    var bName = userEdit.mappedBrand.split(",");
+    var bId = userEdit.brandIDs.split(",").map(Number);
+    if (userEdit.brandIDs !== null) {
+      for (let j = 0; j < bId.length; j++) {
+        brand.push({ brandID: bId[j], brandName: bName[j] });
+      }
+    }
+
+    var cName = userEdit.mappedCategory.split(",");
+    var cId = userEdit.categoryIDs.split(",").map(Number);
+    if (userEdit.categoryIDs !== null) {
+      for (let k = 0; k < bId.length; k++) {
+        category.push({ categoryID: cId[k], categoryName: cName[k] });
+      }
+    }
+    ////for Multi category binding drop down
+
     this.setState({
+      userEdit,
+      finaluser_id: data.userID,
+      editFuncation: funcation,
+      editBrand: brand,
+      editCategory: category,
       UserEditmodel: true
     });
+
+    this.handleGetDepartmentData(userEdit.brandID, userEdit.storeID);
+    this.handleGetFunctionData("edit");
+    this.handleGetUserDesignationData();
+    this.handleGetRepoteeDesignationData("edit");
+    this.handleGetReportToData("edit");
+    this.handleGetBrandData();
+    this.handleGetClaimCategoryData("edit");
   };
   // -------------------API Start------------------------
   ///Show Store User Grid data
@@ -1535,15 +1826,21 @@ class StoreUsers extends Component {
       });
   }
   /// handle Get Function data by department id for drop down list
-  handleGetFunctionData() {
+  handleGetFunctionData(check) {
     debugger;
+    var department_id = 0;
+    if (check === "edit") {
+      department_id = this.state.userEdit.departmentID;
+    } else {
+      department_id = this.state.selectDepartment;
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectDepartment
+        DepartmentId: department_id
       }
     })
       .then(function(res) {
@@ -1584,15 +1881,21 @@ class StoreUsers extends Component {
       });
   }
   /// handle get Repotee designation by Designation id for dropdown
-  handleGetRepoteeDesignationData() {
+  handleGetRepoteeDesignationData(check) {
     debugger;
+    var designation_id = 0;
+    if (check === "edit") {
+      designation_id = this.state.userEdit.designationID;
+    } else {
+      designation_id = this.state.selectDesignation;
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreReporteeDesignation",
       headers: authHeader(),
       params: {
-        DesignationID: this.state.selectDesignation
+        DesignationID: designation_id
       }
     })
       .then(function(res) {
@@ -1610,15 +1913,21 @@ class StoreUsers extends Component {
       });
   }
   /// handle get Report to data by designation id and isStoreUser for dropdown list
-  handleGetReportToData() {
+  handleGetReportToData(check) {
     debugger;
     let self = this;
+    var designation_id = 0;
+    if (check === "edit") {
+      designation_id = this.state.userEdit.reporteeDesignationID;
+    } else {
+      designation_id = this.state.selectReportDesignation;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreReportToUser",
       headers: authHeader(),
       params: {
-        DesignationID: this.state.selectReportDesignation,
+        DesignationID: designation_id,
         IsStoreUser: true
       }
     })
@@ -1637,15 +1946,24 @@ class StoreUsers extends Component {
       });
   }
   //// handle get Claim category data by BrandIds for dropdown
-  handleGetClaimCategoryData() {
+  handleGetClaimCategoryData(check) {
     debugger;
     let self = this;
     let finalBrandIds = "";
-    if (this.state.selectedClaimBrand !== null) {
-      for (let i = 0; i < this.state.selectedClaimBrand.length; i++) {
-        finalBrandIds += this.state.selectedClaimBrand[i].brandID + ",";
+    if (check === "edit") {
+      if (this.state.editBrand !== null) {
+        for (let j = 0; j < this.state.editBrand.length; j++) {
+          finalBrandIds += this.state.editBrand[j].brandID + ",";
+        }
+      }
+    } else {
+      if (this.state.selectedClaimBrand !== null) {
+        for (let i = 0; i < this.state.selectedClaimBrand.length; i++) {
+          finalBrandIds += this.state.selectedClaimBrand[i].brandID + ",";
+        }
       }
     }
+
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
@@ -1816,10 +2134,73 @@ class StoreUsers extends Component {
   handleSaveStoreDetails() {
     debugger;
     if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
-      alert("Store Details");
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/AddUserBrandStore",
+        headers: authHeader(),
+        params: {
+          brandID: this.state.selectBrand,
+          storeID: this.state.selectStore
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("Record Saved Successfully.");
+            self.setState({
+              user_ID: data,
+              StoreReadOnly: true
+            });
+          } else {
+            NotificationManager.error("Record Not Save.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
       this.setState({
-        checkPersonalDetailTab: "#personal-details"
+        brandCompulsory: "Please Select Brand.",
+        storeCodeCompulsory: "Please Select Store Code."
       });
+    }
+  }
+
+  //// handle Update Store details
+  handleUpdateStoreDetails() {
+    debugger;
+    if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/UpdateUserBrandStore",
+        headers: authHeader(),
+        params: {
+          brandID: this.state.selectBrand,
+          storeID: this.state.selectStore,
+          UserID: this.state.user_ID
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          // let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("Record Updated Successfully.");
+            self.setState({
+              // user_ID: data,
+              StoreReadOnly: true
+            });
+          } else {
+            NotificationManager.error("Record Not Updated.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       this.setState({
         brandCompulsory: "Please Select Brand.",
@@ -1838,37 +2219,96 @@ class StoreUsers extends Component {
       this.state.emailFlag === true &&
       this.state.phoneFlag === true
     ) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreUser/AddStoreUserPersonalDetail",
-        headers: authHeader(),
-        data: {
-          UserName: this.state.userName.trim(),
-          MobileNo: this.state.mobile_no,
-          EmailID: this.state.email_Id.trim(),
-          FirstName: "",
-          LastName: "",
-          IsStoreUser: true
-        }
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            NotificationManager.success("Record Saved Successfully.");
-            self.setState({
-              user_ID: data,
-              personalReadOnly: true,
-              checkProfileDetailTab: "#profile-Details"
-            });
-          } else {
-            NotificationManager.error("Record Not Save.");
+      if (this.state.user_ID) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreUser/AddStoreUserPersonalDetail",
+          headers: authHeader(),
+          data: {
+            UserID: this.state.user_ID,
+            UserName: this.state.userName.trim(),
+            MobileNo: this.state.mobile_no,
+            EmailID: this.state.email_Id.trim(),
+            FirstName: "",
+            LastName: "",
+            IsStoreUser: true
           }
         })
-        .catch(data => {
-          console.log(data);
-        });
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            // let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success("Record Saved Successfully.");
+              self.setState({
+                // user_ID: data,
+                personalReadOnly: true
+              });
+            } else {
+              NotificationManager.error("Record Not Save.");
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Enter Store Details.");
+      }
+    } else {
+      this.setState({
+        userNameCompulsory: "Please Enter User Name.",
+        mobilenumberCompulsory: "Please Enter Mobile No.",
+        emailCompulsory: "Please Enter Email Id."
+      });
+    }
+  }
+
+  //// update Personal details 
+  handleUpdatePersonalDetails(){
+    debugger;
+    let self = this;
+    if (
+      this.state.userName.length > 0 &&
+      this.state.mobile_no.length > 0 &&
+      this.state.email_Id.length > 0 &&
+      this.state.emailFlag === true &&
+      this.state.phoneFlag === true
+    ) {
+      if (this.state.user_ID) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreUser/AddStoreUserPersonalDetail",
+          headers: authHeader(),
+          data: {
+            UserID: this.state.user_ID,
+            UserName: this.state.userName.trim(),
+            MobileNo: this.state.mobile_no,
+            EmailID: this.state.email_Id.trim(),
+            FirstName: "",
+            LastName: "",
+            IsStoreUser: true
+          }
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            // let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success("Record Updated Successfully.");
+              self.setState({
+                // user_ID: data,
+                personalReadOnly: true
+              });
+            } else {
+              NotificationManager.error("Record Not Update.");
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Enter Store Details.");
+      }
     } else {
       this.setState({
         userNameCompulsory: "Please Enter User Name.",
@@ -1888,47 +2328,98 @@ class StoreUsers extends Component {
       this.state.selectReportDesignation > 0 &&
       this.state.selectReportTo > 0
     ) {
-      if (this.state.user_ID) {
-        var function_ids = "";
-        if (this.state.selectedFunction !== null) {
-          for (let i = 0; i < this.state.selectedFunction.length; i++) {
-            function_ids += this.state.selectedFunction[i].functionID + ",";
-          }
+      var function_ids = "";
+      if (this.state.selectedFunction !== null) {
+        for (let i = 0; i < this.state.selectedFunction.length; i++) {
+          function_ids += this.state.selectedFunction[i].functionID + ",";
         }
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreUser/AddStoreUserProfileDetail",
-          headers: authHeader(),
-          params: {
-            userID: this.state.user_ID,
-            BrandID: this.state.selectBrand,
-            storeID: this.state.selectStore,
-            departmentId: this.state.selectDepartment,
-            functionIDs: function_ids.substring(",", function_ids.length - 1),
-            designationID: this.state.selectDesignation,
-            reporteeID: this.state.selectReportTo
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/AddStoreUserProfileDetail",
+        headers: authHeader(),
+        params: {
+          userID: this.state.user_ID,
+          BrandID: this.state.selectBrand,
+          storeID: this.state.selectStore,
+          departmentId: this.state.selectDepartment,
+          functionIDs: function_ids.substring(",", function_ids.length - 1),
+          designationID: this.state.selectDesignation,
+          reporteeID: this.state.selectReportTo
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          // let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("Record Saved Successfully.");
+            self.setState({
+              profileReadOnly: true
+            });
+          } else {
+            NotificationManager.error("Record Not Saved.");
           }
         })
-          .then(function(res) {
-            debugger;
-            let status = res.data.message;
-            // let data = res.data.responseData;
-            if (status === "Success") {
-              NotificationManager.success("Record Saved Successfully.");
-              self.setState({
-                checkMappedClaimCategoryTab: "#mapped-category",
-                profileReadOnly: true
-              });
-            } else {
-              NotificationManager.error("Record Not Saved.");
-            }
-          })
-          .catch(data => {
-            console.log(data);
-          });
-      } else {
-        NotificationManager.error("Please Enter Personal Details.");
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        departmentCompulsory: "Please Select Department.",
+        functionCompulsory: "Please Select Function.",
+        designationCompulsory: "Please Select User Designation.",
+        reportDesignationCompulsory: "Please Select Reportee Designation.",
+        reportToCompulsory: "Please Select Report To."
+      });
+    }
+  }
+/// handle update Profile details 
+  handleUpdateProfileDetails(){
+    debugger;
+    let self = this;
+    if (
+      this.state.selectDepartment > 0 &&
+      this.state.selectedFunction.length > 0 &&
+      this.state.selectDesignation > 0 &&
+      this.state.selectReportDesignation > 0 &&
+      this.state.selectReportTo > 0
+    ) {
+      var function_ids = "";
+      if (this.state.selectedFunction !== null) {
+        for (let i = 0; i < this.state.selectedFunction.length; i++) {
+          function_ids += this.state.selectedFunction[i].functionID + ",";
+        }
       }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/AddStoreUserProfileDetail",
+        headers: authHeader(),
+        params: {
+          userID: this.state.user_ID,
+          BrandID: this.state.selectBrand,
+          storeID: this.state.selectStore,
+          departmentId: this.state.selectDepartment,
+          functionIDs: function_ids.substring(",", function_ids.length - 1),
+          designationID: this.state.selectDesignation,
+          reporteeID: this.state.selectReportTo
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Record Updated Successfully.");
+            self.setState({
+              profileReadOnly: true
+            });
+          } else {
+            NotificationManager.error("Record Not Update.");
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
     } else {
       this.setState({
         departmentCompulsory: "Please Select Department.",
@@ -2008,7 +2499,7 @@ class StoreUsers extends Component {
             isClaimApprover: claimStatus,
             CRMRoleID: this.state.selectCrmRole,
             isActive: isActive,
-            IsStoreUser: true
+            IsStoreUser: 1
           }
         })
           .then(function(res) {
@@ -2038,6 +2529,40 @@ class StoreUsers extends Component {
         ClaimApproverCompulsory: "Please Select Claim Approver.",
         CrmRoleCompulsory: "Please Select Crm Role.",
         statusCompulsory: "Please Select Status."
+      });
+    }
+  }
+
+  //// hanlde check Edit Store details
+  HandlecheckStoreDetails() {
+    debugger;
+    if (this.state.userEdit.brandID > 0 && this.state.userEdit.storeID > 0) {
+      this.setState({
+        selTab: "Personal Details"
+      });
+    } else {
+      this.setState({
+        EditBrandCompulsory: "Please Select Brand.",
+        EditstoreCodeCompulsory: "Please Select Store Code."
+      });
+    }
+  }
+  /// handle Check edit personal details
+  handleCheckPersonalDetails() {
+    debugger;
+    if (
+      this.state.userEdit.userName.length > 0 &&
+      this.state.userEdit.mobileNo.length > 0 &&
+      this.state.userEdit.emailID.length > 0
+    ) {
+      this.setState({
+        selTab: "Profile Details"
+      });
+    } else {
+      this.setState({
+        editUserNameCompulsory: "Please Enter User Name.",
+        editMobilenumberCompulsory: "Please Enter Mobile No.",
+        EditEmailCompulsory: "Please Enter Email Id."
       });
     }
   }
@@ -2504,7 +3029,7 @@ class StoreUsers extends Component {
                           return (
                             <div>
                               <span>
-                                Naman
+                                {row.original.reporteeName}
                                 <Popover
                                   content={
                                     <div>
@@ -2695,11 +3220,11 @@ class StoreUsers extends Component {
                         <label>Brand</label>
                         <select
                           className={
-                            this.state.profileReadOnly
+                            this.state.StoreReadOnly
                               ? "disabled-input store-create-select"
                               : "store-create-select"
                           }
-                          disabled={this.state.profileReadOnly}
+                          disabled={this.state.StoreReadOnly}
                           name="brandName"
                           value={this.state.selectBrand}
                           onChange={this.handleBrandAndStoreChange}
@@ -2726,11 +3251,11 @@ class StoreUsers extends Component {
                         <label>Store Code</label>
                         <select
                           className={
-                            this.state.profileReadOnly
+                            this.state.StoreReadOnly
                               ? "disabled-input store-create-select"
                               : "store-create-select"
                           }
-                          disabled={this.state.profileReadOnly}
+                          disabled={this.state.StoreReadOnly}
                           name="storeCode"
                           value={this.state.selectStore}
                           onChange={this.handleBrandAndStoreChange}
@@ -2753,16 +3278,36 @@ class StoreUsers extends Component {
                           </p>
                         )}
                       </div>
-                      <div className="btn-coll">
-                        <button
-                          data-target={this.state.checkPersonalDetailTab}
-                          data-toggle="collapse"
-                          className="butn"
-                          onClick={this.handleSaveStoreDetails.bind(this)}
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div>
+                      {this.state.StoreReadOnly === true ? (
+                        <div className="btn-coll">
+                          <button
+                            className="butn"
+                            onClick={this.editStoreMethod.bind(this)}
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      ) : this.state.buttonStoreToggle === true ? (
+                        <div className="btn-coll">
+                          <button
+                            data-target="#personal-details"
+                            data-toggle="collapse"
+                            className="butn"
+                            onClick={this.handleUpdateStoreDetails.bind(this)}
+                          >
+                            Update &amp;Next
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="btn-coll">
+                          <button
+                            className="butn"
+                            onClick={this.handleSaveStoreDetails.bind(this)}
+                          >
+                            SAVE &amp; NEXT
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -2826,9 +3371,6 @@ class StoreUsers extends Component {
                             {this.state.mobilenumberCompulsory}
                           </p>
                         )}
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.mobileValidation}
-                        </p>
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
@@ -2859,16 +3401,38 @@ class StoreUsers extends Component {
                           {this.state.emailValidation}
                         </p>
                       </div>
-                      <div className="btn-coll">
-                        <button
-                          data-target={this.state.checkProfileDetailTab}
-                          data-toggle="collapse"
-                          className="butn"
-                          onClick={this.handleSavePersonalDetails.bind(this)}
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div>
+
+                      {this.state.personalReadOnly === true ? (
+                        <div className="btn-coll">
+                          <button
+                            className="butn"
+                            onClick={this.editPersonalMethod.bind(this)}
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      ) : this.state.btnPersonalToggle === true ? (
+                        <div className="btn-coll">
+                          <button
+                            data-target="#profile-Details"
+                            data-toggle="collapse"
+                            className="butn"
+                            onClick={this.handleUpdatePersonalDetails.bind(this)}
+                          >
+                            Update &amp;Next
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="btn-coll">
+                          <button
+                            className="butn"
+                            onClick={this.handleSavePersonalDetails.bind(this)}
+                          >
+                            SAVE &amp; NEXT
+                          </button>
+                        </div>
+                      )}
+                      
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -3030,16 +3594,46 @@ class StoreUsers extends Component {
                           </p>
                         )}
                       </div>
-                      <div className="btn-coll">
+                      {this.state.profileReadOnly === true ? (
+                        <div className="btn-coll">
+                          <button
+                            className="butn"
+                            onClick={this.editProfileMethod.bind(this)}
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      ) : this.state.btnProfileToggle === true ? (
+                        <div className="btn-coll">
+                          <button
+                           data-target="#mapped-category"
+                           data-toggle="collapse"
+                            className="butn"
+                            onClick={this.handleUpdateProfileDetails.bind(this)}
+                          >
+                            Update &amp;Next
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="btn-coll">
+                          <button
+                            className="butn"
+                            onClick={this.handleSaveProfileDetails.bind(this)}
+                          >
+                            SAVE &amp; NEXT
+                          </button>
+                        </div>
+                      )}
+                      {/* <div className="btn-coll">
                         <button
-                          data-target={this.state.checkMappedClaimCategoryTab}
+                          data-target="#mapped-category"
                           data-toggle="collapse"
                           className="butn"
                           onClick={this.handleSaveProfileDetails.bind(this)}
                         >
                           SAVE &amp; NEXT
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -3329,26 +3923,58 @@ class StoreUsers extends Component {
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr">
                           <label className="edit-label-1">Brand</label>
-                          <select className="store-create-select">
-                            <option>Bata</option>
+                          <select
+                            className="store-create-select"
+                            name="brandID"
+                            value={this.state.userEdit.brandID}
+                            onChange={this.handleEditOnchange}
+                          >
+                            <option value="0">Select</option>
+                            {this.state.brandData !== null &&
+                              this.state.brandData.map((item, i) => (
+                                <option
+                                  key={i}
+                                  value={item.brandID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.brandName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.userEdit.brandID === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditBrandCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">Store Code</label>
-                          <select className="store-create-select">
-                            <option>Store</option>
+                          <select
+                            className="store-create-select"
+                            name="storeID"
+                            value={this.state.userEdit.storeID}
+                            onChange={this.handleEditOnchange}
+                          >
+                            <option value="0">Select</option>
+                            {this.state.storeCodeData !== null &&
+                              this.state.storeCodeData.map((item, s) => (
+                                <option
+                                  key={s}
+                                  value={item.storeID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.storeCode}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.userEdit.storeID === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditstoreCodeCompulsory}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      {/* <div className="btn-coll">
-                        <button
-                          data-target="#profile-details"
-                          data-toggle="collapse"
-                          className="butn"
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div> */}
+
                       <div
                         style={{
                           textAlign: "center",
@@ -3357,14 +3983,13 @@ class StoreUsers extends Component {
                       >
                         <a
                           className="pop-over-cancle canblue"
-                          // onClick={this.closeEditModal.bind(this)}
-                          href="#!"
+                          onClick={this.closeEditModals.bind(this)}
                         >
                           CANCEL
                         </a>
                         <button
                           className="Save-Use"
-                          // onClick={this.handleChangePersonalTab}
+                          onClick={this.HandlecheckStoreDetails.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
                           NEXT
@@ -3382,7 +4007,16 @@ class StoreUsers extends Component {
                             type="text"
                             placeholder="Enter User Name"
                             maxLength={25}
+                            autoComplete="off"
+                            name="userName"
+                            value={this.state.userEdit.userName}
+                            onChange={this.handleEditOnchange}
                           />
+                          {this.state.userEdit.userName === "" && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.editUserNameCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">Mobile Number</label>
@@ -3390,7 +4024,21 @@ class StoreUsers extends Component {
                             type="text"
                             placeholder="Enter Mobile Number"
                             maxLength={10}
+                            name="mobileNo"
+                            value={this.state.userEdit.mobileNo}
+                            onChange={this.handleEditOnchange}
+                            autoComplete="off"
                           />
+                          {this.state.EditphoneFlag === false && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              Please enter valid Mobile Number.
+                            </p>
+                          )}
+                          {this.state.userEdit.mobileNo === "" && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.editMobilenumberCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">Email ID</label>
@@ -3398,18 +4046,24 @@ class StoreUsers extends Component {
                             type="text"
                             placeholder="Enter Email ID"
                             maxLength={100}
+                            name="emailID"
+                            value={this.state.userEdit.emailID}
+                            onChange={this.handleEditOnchange}
+                            autoComplete="off"
                           />
+                          {this.state.EditemailFlag === false && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              Please enter valid Email Id.
+                            </p>
+                          )}
+                          {this.state.userEdit.emailID === "" && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditEmailCompulsory}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      {/* <div className="btn-coll">
-                        <button
-                          data-target="#mapped-category"
-                          data-toggle="collapse"
-                          className="butn"
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div> */}
+
                       <div
                         style={{
                           textAlign: "center",
@@ -3418,14 +4072,13 @@ class StoreUsers extends Component {
                       >
                         <a
                           className="pop-over-cancle canblue"
-                          // onClick={this.closeEditModal.bind(this)}
-                          href="#!"
+                          onClick={this.closeEditModals.bind(this)}
                         >
                           CANCEL
                         </a>
                         <button
                           className="Save-Use"
-                          // onClick={this.handleChangePersonalTab}
+                          onClick={this.handleCheckPersonalDetails.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
                           NEXT
@@ -3439,9 +4092,32 @@ class StoreUsers extends Component {
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr">
                           <label className="edit-label-1">Department</label>
-                          <select>
-                            <option>Admin</option>
+                          <select
+                            className="store-create-select"
+                            name="departmentID"
+                            value={this.state.userEdit.departmentID}
+                            onChange={this.handleEditDepartmentOnchange.bind(
+                              this,
+                              "edit"
+                            )}
+                          >
+                            <option value="0">Select</option>
+                            {this.state.departmentData !== null &&
+                              this.state.departmentData.map((item, d) => (
+                                <option
+                                  key={d}
+                                  value={item.departmentID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.departmentName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.userEdit.departmentID === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditDepartmentCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Function</label>
@@ -3451,39 +4127,109 @@ class StoreUsers extends Component {
                             options={this.state.functionData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
-                            name="selectedFunction"
-                            onChange={this.handleFunctionOnChange.bind(this)}
-                            value={this.state.selectedFunction}
+                            name="editFuncation"
+                            onChange={this.handleEditFunctionOnChange.bind(
+                              this
+                            )}
+                            value={this.state.editFuncation}
                             isMulti
-                            isDisabled={this.state.profileReadOnly}
                           />
+                          {this.state.editFuncation.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.editFunctionCompulsion}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
                             User Designation
                           </label>
-                          <select>
-                            <option>Manager</option>
+                          <select
+                            className="store-create-select"
+                            name="designationID"
+                            value={this.state.userEdit.designationID}
+                            onChange={this.handleEditUserDesignationChange.bind(
+                              this,
+                              "edit"
+                            )}
+                          >
+                            <option value="0">Select</option>
+                            {this.state.userDesignationData !== null &&
+                              this.state.userDesignationData.map((item, d) => (
+                                <option
+                                  key={d}
+                                  value={item.designationID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.designationName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.userEdit.designationID === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditDesignationCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
                             Reportee Designation
                           </label>
-                          <select>
-                            <option>HOD</option>
+                          <select
+                            className="store-create-select"
+                            name="reporteeDesignationID"
+                            value={this.state.userEdit.reporteeDesignationID}
+                            onChange={this.handleEditReporteeDesigOnChange.bind(
+                              this,
+                              "edit"
+                            )}
+                          >
+                            <option value="0">Select</option>
+                            {this.state.reportDesignation !== null &&
+                              this.state.reportDesignation.map((item, d) => (
+                                <option
+                                  key={d}
+                                  value={item.designationID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.designationName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.userEdit.reporteeDesignationID === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditReportDesignationCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">Report To</label>
-                          <select>
-                            <option>HOD</option>
+                          <select
+                            className="store-create-select"
+                            name="reporteeID"
+                            value={this.state.userEdit.reporteeID}
+                            onChange={this.handleEditReportOnchange}
+                          >
+                            <option value="0">Select</option>
+                            {this.state.reportToData !== null &&
+                              this.state.reportToData.map((item, d) => (
+                                <option
+                                  key={d}
+                                  value={item.user_ID}
+                                  className="select-category-placeholder"
+                                >
+                                  {item.agentName}
+                                </option>
+                              ))}
                           </select>
+                          {this.state.userEdit.reporteeID === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.reportToCompulsory}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      {/* <div className="btn-coll">
-                        <button className="butn">SAVE & NEXT</button>
-                      </div> */}
+
                       <div
                         style={{
                           textAlign: "center",
@@ -3493,7 +4239,6 @@ class StoreUsers extends Component {
                         <a
                           className="pop-over-cancle canblue"
                           // onClick={this.closeEditModal.bind(this)}
-                          href="#!"
                         >
                           CANCEL
                         </a>
@@ -3521,25 +4266,40 @@ class StoreUsers extends Component {
                             options={this.state.brandData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
-                            name="selectedClaimBrand"
-                            onChange={this.handleMultiBrandonChange.bind(this)}
-                            value={this.state.selectedClaimBrand}
+                            name="editBrand"
+                            onChange={this.handleMultiEditBrandonChange.bind(
+                              this
+                            )}
+                            value={this.state.editBrand}
                             isMulti
                           />
+
+                          {this.state.selectedClaimCategory.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.mappedCategoryCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Categories</label>
                           <Select
-                            getOptionLabel={option => option.brandName}
-                            getOptionValue={option => option.brandID}
-                            options={this.state.brandData}
+                            getOptionLabel={option => option.categoryName}
+                            getOptionValue={option => option.categoryID}
+                            options={this.state.claimCategoryData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
-                            name="selectedClaimBrand"
-                            onChange={this.handleMultiBrandonChange.bind(this)}
-                            value={this.state.selectedClaimBrand}
+                            name="editCategory"
+                            value={this.state.editCategory}
+                            onChange={this.handleMultiEditCategoryonChange.bind(
+                              this
+                            )}
                             isMulti
                           />
+                          {this.state.editCategory.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.mappedCategoryCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Sub Categories</label>

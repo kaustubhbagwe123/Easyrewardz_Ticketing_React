@@ -913,7 +913,7 @@ class Users extends Component {
     data[name] = value;
 
     this.setState({
-      EditTemp: data
+      EditTemp: data 
     });
 
     setTimeout(() => {

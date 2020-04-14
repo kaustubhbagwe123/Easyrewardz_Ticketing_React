@@ -697,7 +697,7 @@ class StoreFileUploadLogs extends Component {
         Header: <span>Error File</span>,
         accessor: "Erroor",
         Cell: (row) =>
-          row.original.fileUploadStatus == "Completed" && (
+          row.original.fileUploadStatus === "Completed" && (
             <div>
               <button
                 className="downloadBtn"
@@ -716,7 +716,7 @@ class StoreFileUploadLogs extends Component {
         Header: <span>Success File</span>,
         accessor: "success",
         Cell: (row) =>
-          row.original.fileUploadStatus == "Completed" && (
+          row.original.fileUploadStatus === "Completed" && (
             <div>
               <button
                 className="downloadBtn"
