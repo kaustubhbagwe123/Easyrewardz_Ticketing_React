@@ -11520,7 +11520,7 @@ table tr th:last-child {
   color: rgba(0, 0, 0, 0.45);
   white-space: nowrap;
   text-align: left;
-  float: left;
+  /* float: left; */
   vertical-align: top;
   pointer-events: none;
 }
@@ -11591,4 +11591,7 @@ table tr th:last-child {
 }
 .storeTdetail .ReactTable .rt-thead .rt-tr{
   text-align: left;
+}
+.autopriority {
+  display: none;
 }

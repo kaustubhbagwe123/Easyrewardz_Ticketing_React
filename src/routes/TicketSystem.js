@@ -1907,7 +1907,7 @@ class TicketSystem extends Component {
                                 htmlFor={item.priortyName}
                                 className={
                                   item.priortyName === "Auto"
-                                    ? "disabled-link"
+                                    ? "autopriority"
                                     : null
                                 }
                               >

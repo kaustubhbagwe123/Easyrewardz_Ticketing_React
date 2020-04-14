@@ -206,7 +206,8 @@ class MyTicket extends Component {
       notiCountFreeCmnt: 0,
       notiCurPosiFreeCmnt: 0,
       isKB: false,
-      selectedInvoiceNo: ""
+      selectedInvoiceNo: "",
+      isSystemGenerated: false
     };
     // this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -587,7 +588,11 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
+
+          var isSystemGenerated =
+            data[0].msgDetails[0].latestMessageDetails.isSystemGenerated;
           self.setState({
+            isSystemGenerated,
             messageDetails: data,
             hasAttachmentFile: data
           });
@@ -3872,11 +3877,30 @@ class MyTicket extends Component {
                             >
                               <option>Priority</option>
                               {this.state.TicketPriorityData !== null &&
-                                this.state.TicketPriorityData.map((item, i) => (
-                                  <option key={i} value={item.priorityID}>
-                                    {item.priortyName}
-                                  </option>
-                                ))}
+                                this.state.TicketPriorityData.map((item, i) => {
+                                  debugger;
+                                  if (
+                                    this.state.isSystemGenerated == false &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return null;
+                                  } else if (
+                                    this.state.isSystemGenerated == true &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  }
+                                })}
                             </select>
                           </div>
                         </div>
