@@ -21,8 +21,6 @@ class Campaign extends Component {
       TwoCollapse: false,
       campaignGridData: [],
       rowExpandedCount: 0,
-      statusData: [],
-      responseData: [],
       raisedTicketModal: false,
       brandData: [],
       categoryData: [],
@@ -37,14 +35,12 @@ class Campaign extends Component {
       isSubCategory: "",
       isIssueType: "",
       isTiketTitle: "",
-      isTiketDetails: ""
+      isTiketDetails: "",
+      loading: false
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
     this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
-    this.handleCampaignStatusResponseList = this.handleCampaignStatusResponseList.bind(
-      this
-    );
     this.onRowExpand = this.onRowExpand.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
     this.handleRaisedTicketModalClose = this.handleRaisedTicketModalClose.bind(
@@ -57,7 +53,6 @@ class Campaign extends Component {
 
   componentDidMount() {
     this.handleCampaignGridData();
-    this.handleCampaignStatusResponseList();
     this.handleGetBrand();
   }
 
@@ -120,6 +115,9 @@ class Campaign extends Component {
   handleCampaignGridData() {
     debugger;
     let self = this;
+    this.setState({
+      loading: true
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
@@ -134,31 +132,9 @@ class Campaign extends Component {
             campaignGridData: data
           });
         }
-      })
-      .catch(data => {
-        console.log(data);
-      });
-  }
-
-  handleCampaignStatusResponseList() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreTask/GetCampaignStatusResponse",
-      headers: authHeader()
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let statusData = res.data.responseData.campaignStatusList;
-        let responseData = res.data.responseData.campaignResponseList;
-        if (status === "Success" && statusData && responseData) {
-          self.setState({
-            statusData,
-            responseData
-          });
-        }
+        self.setState({
+          loading: false
+        });
       })
       .catch(data => {
         console.log(data);
@@ -176,11 +152,17 @@ class Campaign extends Component {
     let self = this,
       calculatedCallReScheduledTo;
 
+    this.setState({
+      loading: true
+    });
+
     if (campaignStatus === 102) {
       calculatedCallReScheduledTo = callReScheduledTo;
     } else {
       calculatedCallReScheduledTo = "";
     }
+
+    // update campaign
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/UpdateCampaignStatusResponse",
@@ -198,6 +180,10 @@ class Campaign extends Component {
         if (status === "Success") {
           NotificationManager.success("Record saved successFully.");
           self.handleCampaignGridData();
+        } else {
+          self.setState({
+            loading: false
+          });
         }
       })
       .catch(data => {
@@ -208,6 +194,9 @@ class Campaign extends Component {
   handleCloseCampaign(campaignTypeID, e) {
     debugger;
     let self = this;
+    this.setState({
+      loading: true
+    });
 
     axios({
       method: "post",
@@ -224,6 +213,10 @@ class Campaign extends Component {
         if (status === "Success") {
           NotificationManager.success("Campaign closed successFully.");
           self.handleCampaignGridData();
+        } else {
+          self.setState({
+            loading: false
+          });
         }
       })
       .catch(data => {
@@ -238,6 +231,126 @@ class Campaign extends Component {
     this.setState(state => ({ TwoCollapse: !state.TwoCollapse }));
   }
 
+  handleCreateTicket() {
+    debugger;
+    if (this.state.modalData.tiketTitle == "") {
+      this.setState({ isTiketTitle: "Please Enter Ticket Title." });
+    } else {
+      this.setState({ isTiketTitle: "" });
+    }
+    if (this.state.modalData.tiketDetails == "") {
+      this.setState({ isTiketDetails: "Please Enter Ticket Details." });
+    } else {
+      this.setState({ isTiketDetails: "" });
+    }
+    if (this.state.modalData.brandId == "") {
+      this.setState({ isBrand: "Please select Brand." });
+    } else {
+      this.setState({ isBrand: "" });
+    }
+    if (this.state.modalData.cateogryId == "") {
+      this.setState({ isCategory: "Please select Category." });
+    } else {
+      this.setState({ isCategory: "" });
+    }
+    if (this.state.modalData.subCategoryId == "") {
+      this.setState({ isSubCategory: "Please select Sub Category." });
+    } else {
+      this.setState({ isSubCategory: "" });
+    }
+    if (this.state.modalData.issueTypeId == "") {
+      this.setState({ isIssueType: "Please select Issue Type." });
+    } else {
+      this.setState({ isIssueType: "" });
+    }
+    // if (
+    //   this.state.modalData.tiketTitle !== "" &&
+    //   this.state.modalData.tiketDetails.length > 0 &&
+    //   this.state.modalData.brandId.length > 0 &&
+    //   this.state.modalData.cateogryId.length > 0 &&
+    //   this.state.modalData.subCategoryId.length > 0 &&
+    //   this.state.modalData.issueTypeId.length > 0
+    // ) {
+    setTimeout(() => {
+      if (
+        this.state.isTiketTitle == "" &&
+        this.state.isTiketDetails == "" &&
+        this.state.isBrand == "" &&
+        this.state.isCategory == "" &&
+        this.state.isSubCategory == "" &&
+        this.state.isIssueType == ""
+      ) {
+        let self = this;
+
+        const formData = new FormData();
+
+        var paramData = {
+          TicketTitle: this.state.modalData.tiketTitle,
+          Ticketdescription: this.state.modalData.tiketDetails,
+          CustomerID: this.state.modalData.customerId,
+          BrandID: this.state.modalData.brandId,
+          CategoryID: this.state.modalData.cateogryId,
+          SubCategoryID: this.state.modalData.subCategoryId,
+          IssueTypeID: this.state.modalData.issueTypeId,
+          PriorityID: 73,
+          ChannelOfPurchaseID: 29,
+          Ticketnotes: "",
+          taskMasters: [],
+          StatusID: 101,
+          TicketActionID: 201,
+          IsInstantEscalateToHighLevel: 0,
+          IsWantToAttachOrder: 1,
+          TicketTemplateID: 0,
+          TicketMailBody: "",
+          IsWantToVisitedStore: 0,
+          IsAlreadyVisitedStore: 0,
+          TicketSourceID: 1,
+          OrderItemID: "",
+          StoreID: "",
+          ticketingMailerQues: []
+        };
+        formData.append("ticketingDetails", JSON.stringify(paramData));
+        formData.append("Filedata", []);
+        formData.append("orderDetails", null);
+        formData.append("orderItemDetails", null);
+
+        // create ticket
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/createTicket",
+          headers: authHeader(),
+          data: formData
+        })
+          .then(function(res) {
+            debugger;
+            let Msg = res.data.status;
+            let TID = res.data.responseData;
+            if (Msg) {
+              NotificationManager.success(res.data.message);
+            } else {
+              NotificationManager.error(res.data.message);
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+      }
+    }, 10);
+
+    // } else {
+    //   this.setState({
+    //     isTiketTitle: "Ticket Title field is compulsory.",
+    //     isTiketDetails: "Ticket Details field is compulsory.",
+    //     isBrand: "Brand field is compulsory.",
+    //     isCategory: "Category field is compulsory.",
+    //     isSubCategory: "Sub Category field is compulsory.",
+    //     isIssueType: "Issue Type field is compulsory."
+    //   });
+    // }
+
+    // Don't remove this function
+  }
+
   ////handle raised ticket modal close
   handleRaisedTicketModalClose() {
     this.setState({
@@ -249,19 +362,29 @@ class Campaign extends Component {
     debugger;
     var modalData = {};
     modalData.name = row.customerName;
+    modalData.customerId = row.customerID;
     modalData.mobile = row.customerPhoneNumber;
     modalData.email = row.customerEmailId;
-    modalData.dateofbirth = "";
-    modalData.brandId = 0;
-    modalData.cateogryId = 0;
-    modalData.subCategoryId = 0;
-    modalData.issueTypeId = 0;
-    modalData.ticketTitle = "";
-    modalData.ticketDetails = "";
+    modalData.dateofbrith = row.dob;
+    modalData.brandId = "";
+    modalData.cateogryId = "";
+    modalData.subCategoryId = "";
+    modalData.issueTypeId = "";
+    modalData.tiketTitle = "";
+    modalData.tiketDetails = "";
 
     this.setState({
       modalData,
-      raisedTicketModal: true
+      raisedTicketModal: true,
+      categoryData: [],
+      subCategoryData: [],
+      issueTypeData: [],
+      isBrand: "",
+      isCategory: "",
+      isSubCategory: "",
+      isIssueType: "",
+      isTiketTitle: "",
+      isTiketDetails: ""
     });
   }
 
@@ -291,7 +414,8 @@ class Campaign extends Component {
   ////handle get category by brand id list
   handleGetCateogory() {
     let self = this;
-    var brandID = this.state.modalData.brandID;
+    debugger;
+    var brandID = this.state.modalData.brandId;
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
@@ -299,12 +423,12 @@ class Campaign extends Component {
       params: { BrandID: Number(brandID) }
     })
       .then(function(response) {
-        var message = response.data.message;
-        var categoryData = response.data.responseData;
-        if (message == "Success" && categoryData.length > 0) {
+        debugger;
+        var categoryData = response.data;
+        if (categoryData.length > 0) {
           self.setState({ categoryData });
         } else {
-          self.setState({ categoryData });
+          self.setState({ categoryData: [] });
         }
       })
       .catch(response => {
@@ -314,8 +438,9 @@ class Campaign extends Component {
 
   ////handle get sub category by category id list
   handleGetSubCateogory() {
+    debugger;
     let self = this;
-    var categoryID = this.state.categoryID;
+    var categoryID = this.state.modalData.cateogryId;
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
@@ -323,12 +448,13 @@ class Campaign extends Component {
       params: { CategoryID: categoryID }
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
         if (message == "Success" && subCategoryData.length > 0) {
           self.setState({ subCategoryData });
         } else {
-          self.setState({ subCategoryData });
+          self.setState({ subCategoryData: [] });
         }
       })
       .catch(response => {
@@ -338,8 +464,9 @@ class Campaign extends Component {
 
   ////handle get issue type by sub category list
   handleGetIssueType() {
+    debugger;
     let self = this;
-    var subCategoryId = this.state.subCategoryId;
+    var subCategoryId = this.state.modalData.subCategoryId;
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
@@ -347,12 +474,13 @@ class Campaign extends Component {
       params: { SubCategoryID: subCategoryId }
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
         if (message == "Success" && issueTypeData.length > 0) {
           self.setState({ issueTypeData });
         } else {
-          self.setState({ issueTypeData });
+          self.setState({ issueTypeData: [] });
         }
       })
       .catch(response => {
@@ -361,7 +489,7 @@ class Campaign extends Component {
   }
 
   handleOnchange = e => {
-    debugger;
+    // debugger;
     const { name, value } = e.target;
     var modalData = this.state.modalData;
     if (name == "name") {
@@ -405,7 +533,7 @@ class Campaign extends Component {
       }
     }
     if (name == "brand") {
-      if (value !== 0) {
+      if (value !== "") {
         modalData["brandId"] = value;
         this.setState({
           modalData,
@@ -423,7 +551,7 @@ class Campaign extends Component {
       }
     }
     if (name == "category") {
-      if (value !== 0) {
+      if (value !== "") {
         modalData["cateogryId"] = value;
         this.setState({
           modalData,
@@ -440,9 +568,12 @@ class Campaign extends Component {
       }
     }
     if (name == "subCategory") {
-      if (value !== 0) {
+      if (value !== "") {
         modalData["subCategoryId"] = value;
         this.setState({ modalData, isSubCategory: "", issueTypeData: [] });
+        setTimeout(() => {
+          this.handleGetIssueType();
+        }, 10);
       } else {
         modalData["subCategoryId"] = value;
         this.setState({
@@ -452,12 +583,9 @@ class Campaign extends Component {
       }
     }
     if (name == "issueType") {
-      if (value !== 0) {
+      if (value !== "") {
         modalData["issueTypeId"] = value;
         this.setState({ modalData, isIssueType: "" });
-        setTimeout(() => {
-          this.handleGetIssueType();
-        }, 10);
       } else {
         modalData["issueTypeId"] = value;
         this.setState({ modalData, isIssueType: "Please Select issueType." });
@@ -589,7 +717,13 @@ class Campaign extends Component {
                                 Contacted
                               </label>
                             </div>
-                            <div>
+                            <div className="position-relative">
+                              {item.noOfTimesNotContacted !== 0 &&
+                                item.campaignStatus === 101 && (
+                                  <div className="not-contacted-count">
+                                    {item.noOfTimesNotContacted}
+                                  </div>
+                                )}
                               <input
                                 type="radio"
                                 name={
@@ -699,6 +833,7 @@ class Campaign extends Component {
                           >
                             <DatePicker
                               id="startDate"
+                              autoComplete="off"
                               showTimeSelect
                               name="startDate"
                               showMonthDropdown
@@ -814,6 +949,7 @@ class Campaign extends Component {
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
+            loading={this.state.loading}
             dataSource={this.state.campaignGridData}
           />
         </div>
@@ -843,10 +979,11 @@ class Campaign extends Component {
                 <label>Name</label>
                 <input
                   type="text"
-                  className="mobile_no"
+                  className="mobile_no disabled-input"
                   name="name"
                   value={this.state.modalData["name"]}
                   onChange={this.handleOnchange}
+                  disabled
                 />
                 {this.state.isName !== "" && (
                   <p style={{ color: "red", marginBottom: "0px" }}>
@@ -858,10 +995,11 @@ class Campaign extends Component {
                 <label>Mobile</label>
                 <input
                   type="text"
-                  className="mobile_no"
+                  className="mobile_no disabled-input"
                   name="mobile"
                   value={this.state.modalData["mobile"]}
                   onChange={this.handleOnchange}
+                  disabled
                 />
                 {this.state.isMobile !== "" && (
                   <p style={{ color: "red", marginBottom: "0px" }}>
@@ -873,10 +1011,11 @@ class Campaign extends Component {
                 <label>Email</label>
                 <input
                   type="text"
-                  className="mobile_no"
+                  className="mobile_no disabled-input"
                   name="email"
                   value={this.state.modalData["email"]}
                   onChange={this.handleOnchange}
+                  disabled
                 />
                 {this.state.isEmail !== "" && (
                   <p style={{ color: "red", marginBottom: "0px" }}>
@@ -890,9 +1029,11 @@ class Campaign extends Component {
                 <label>Date of birth</label>
                 <input
                   type="text"
+                  className="mobile_no disabled-input"
                   name="dateofbrith"
                   value={this.state.modalData["dateofbrith"]}
                   onChange={this.handleOnchange}
+                  disabled
                 />
                 {/* {this.state.isBrand !== "" && (
                   <p style={{ color: "red", marginBottom: "0px" }}>
@@ -907,7 +1048,7 @@ class Campaign extends Component {
                   value={this.state.modalData["brand"]}
                   onChange={this.handleOnchange}
                 >
-                  <option value={0}>Select</option>
+                  <option value="">Select</option>
                   {this.state.brandData !== null &&
                     this.state.brandData.map((item, i) => (
                       <option
@@ -932,15 +1073,15 @@ class Campaign extends Component {
                   value={this.state.modalData["category"]}
                   onChange={this.handleOnchange}
                 >
-                  <option value={0}>Select</option>
+                  <option value="">Select</option>
                   {this.state.categoryData !== null &&
                     this.state.categoryData.map((item, i) => (
                       <option
                         key={i}
-                        value={item.cateogryId}
+                        value={item.categoryID}
                         className="select-category-placeholder"
                       >
-                        {item.cateogryName}
+                        {item.categoryName}
                       </option>
                     ))}
                 </select>
@@ -959,12 +1100,12 @@ class Campaign extends Component {
                   value={this.state.modalData["subCategoryId"]}
                   onChange={this.handleOnchange}
                 >
-                  <option value={0}>Select</option>
+                  <option value="">Select</option>
                   {this.state.subCategoryData !== null &&
                     this.state.subCategoryData.map((item, i) => (
                       <option
                         key={i}
-                        value={item.subCategoryId}
+                        value={item.subCategoryID}
                         className="select-category-placeholder"
                       >
                         {item.subCategoryName}
@@ -984,12 +1125,12 @@ class Campaign extends Component {
                   value={this.state.modalData["issueTypeId"]}
                   onChange={this.handleOnchange}
                 >
-                  <option value={0}>Select</option>
+                  <option value="">Select</option>
                   {this.state.issueTypeData !== null &&
                     this.state.issueTypeData.map((item, i) => (
                       <option
                         key={i}
-                        value={item.issueTypeId}
+                        value={item.issueTypeID}
                         className="select-category-placeholder"
                       >
                         {item.issueTypeName}
@@ -1006,9 +1147,9 @@ class Campaign extends Component {
                 <label>Ticket Title</label>
                 <input
                   type="text"
-                  name="ticketTitle"
+                  name="tiketTitle"
                   className="email_Id"
-                  value={this.state.modalData["ticketTitle"]}
+                  value={this.state.modalData["tiketTitle"]}
                   onChange={this.handleOnchange}
                 />
                 {this.state.isTiketTitle !== "" && (
@@ -1022,9 +1163,9 @@ class Campaign extends Component {
               <div className="col-md-12 mb-3">
                 <label>Ticket Details</label>
                 <textarea
-                  name="ticketDetails"
+                  name="tiketDetails"
                   className="textarea-store"
-                  value={this.state.modalData["ticketDetails"]}
+                  value={this.state.modalData["tiketDetails"]}
                   onChange={this.handleOnchange}
                 ></textarea>
                 {this.state.isTiketDetails !== "" && (
@@ -1045,7 +1186,7 @@ class Campaign extends Component {
               <button
                 className="butn"
                 type="button"
-                // onClick={this.handleRaisedTicketModalOpen.bind(this, row, item)}
+                onClick={this.handleCreateTicket.bind(this)}
               >
                 CREATE TICKET
               </button>

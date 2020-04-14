@@ -3601,6 +3601,14 @@ table tr th:last-child {
   text-align: left;
   float: none;
 }
+.custom-antd-table.antd-table-campaign .ant-spin-nested-loading,
+.custom-antd-table.antd-table-campaign .ant-spin-container,
+.custom-antd-table.antd-table-campaign .ant-table {
+  position: static;
+}
+.custom-antd-table.antd-table-campaign .react-datepicker__time-list {
+  overflow-x: hidden;
+}
 .custom-antd-table.antd-table-campaign
   .ant-table-expanded-row
   .ant-table-thead
@@ -3614,8 +3622,8 @@ table tr th:last-child {
   .ant-table-tbody
   > tr
   > td {
-  padding-top: 7px !important;
-  padding-bottom: 7px !important;
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
   background: #fcfcfc !important;
 }
 .custom-antd-table.antd-table-campaign
@@ -3733,10 +3741,12 @@ table tr th:last-child {
 .custom-antd-table .ant-table-expanded-row table {
   padding: 0;
 }
-.date-picker-arrows .react-datepicker button {
+.date-picker-arrows .react-datepicker button,
+.antd-table-campaign .react-datepicker button {
   min-width: auto;
 }
-.date-picker-arrows .react-datepicker span {
+.date-picker-arrows .react-datepicker span,
+.antd-table-campaign .react-datepicker span {
   display: inline-block;
 }
 .datepicker-overflow table,

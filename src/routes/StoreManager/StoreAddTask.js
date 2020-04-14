@@ -6,7 +6,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 
 class StoreAddTask extends Component {
@@ -30,7 +30,7 @@ class StoreAddTask extends Component {
       isassignto: "",
       ispriority: "",
       isfuncation: "",
-      isdepartment: "",
+      isdepartment: ""
     };
   }
   componentDidMount() {
@@ -73,51 +73,53 @@ class StoreAddTask extends Component {
       this.setState({ istaskDetails: "" });
     }
 
-    if (
-      this.state.isassignto == "" &&
-      this.state.istaskTitle == "" &&
-      this.state.istaskDetails == "" &&
-      this.state.isfuncation == "" &&
-      this.state.isdepartment == "" &&
-      this.state.ispriority == ""
-    ) {
-      var inputParams = {};
-      inputParams.TaskTitle = this.state.taskTitle.trim();
-      inputParams.TaskDescription = this.state.taskDetails.trim();
-      inputParams.DepartmentId = this.state.departmentID;
-      inputParams.AssignToID = this.state.assignToID;
-      inputParams.PriorityID = this.state.priorityID;
-      inputParams.FunctionID = this.state.funcationID;
-      this.setState({ isAddloading: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreTask/CreateStoreTask",
-        headers: authHeader(),
-        data: inputParams,
-      })
-        .then(function(response) {
-          debugger;
-          var message = response.data.message;
-          var responseData = response.data.responseData;
-          if (responseData === 1 && message === "Success") {
-            NotificationManager.success("Task Created successfully.");
-            self.setState({
-              isAddloading: false,
-              departmentID: 0,
-              funcationID: 0,
-              priorityID: 0,
-              taskDetails: "",
-              taskTitle: "",
-            });
-          } else {
-            NotificationManager.error("Task Not Created successfully.");
-            self.setState({ isAddloading: false });
-          }
+    setTimeout(() => {
+      if (
+        this.state.isassignto == "" &&
+        this.state.istaskTitle == "" &&
+        this.state.istaskDetails == "" &&
+        this.state.isfuncation == "" &&
+        this.state.isdepartment == "" &&
+        this.state.ispriority == ""
+      ) {
+        var inputParams = {};
+        inputParams.TaskTitle = this.state.taskTitle.trim();
+        inputParams.TaskDescription = this.state.taskDetails.trim();
+        inputParams.DepartmentId = this.state.departmentID;
+        inputParams.AssignToID = this.state.assignToID;
+        inputParams.PriorityID = this.state.priorityID;
+        inputParams.FunctionID = this.state.funcationID;
+        this.setState({ isAddloading: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreTask/CreateStoreTask",
+          headers: authHeader(),
+          data: inputParams
         })
-        .catch((response) => {
-          console.log(response, "---handleCreateTask");
-        });
-    }
+          .then(function(response) {
+            debugger;
+            var message = response.data.message;
+            var responseData = response.data.responseData;
+            if (responseData === 1 && message === "Success") {
+              NotificationManager.success("Task Created successfully.");
+              self.setState({
+                isAddloading: false,
+                departmentID: 0,
+                funcationID: 0,
+                priorityID: 0,
+                taskDetails: "",
+                taskTitle: ""
+              });
+            } else {
+              NotificationManager.error("Task Not Created successfully.");
+              self.setState({ isAddloading: false });
+            }
+          })
+          .catch(response => {
+            console.log(response, "---handleCreateTask");
+          });
+      }
+    }, 10);
   }
   ////handle get department list
   handleGetDepartement() {
@@ -126,7 +128,7 @@ class StoreAddTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(response) {
         var message = response.data.message;
@@ -137,7 +139,7 @@ class StoreAddTask extends Component {
           self.setState({ departmentData });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetDepartement");
       });
   }
@@ -149,7 +151,7 @@ class StoreAddTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
-      params: { DepartmentId: DepartmentId },
+      params: { DepartmentId: DepartmentId }
     })
       .then(function(response) {
         var message = response.data.message;
@@ -160,7 +162,7 @@ class StoreAddTask extends Component {
           self.setState({ funcationData });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetFuncationByDepartmentId");
       });
   }
@@ -171,10 +173,10 @@ class StoreAddTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(response) {})
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetAssignTo");
       });
   }
@@ -185,7 +187,7 @@ class StoreAddTask extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(response) {
         var message = response.data.message;
@@ -196,13 +198,13 @@ class StoreAddTask extends Component {
           self.setState({ priorityData });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetPriority");
       });
   }
 
   ///handle input change
-  handleOnchange = (e) => {
+  handleOnchange = e => {
     debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
@@ -211,7 +213,7 @@ class StoreAddTask extends Component {
       } else {
         this.setState({
           taskTitle: value,
-          istaskTitle: "Please Enter Task Title",
+          istaskTitle: "Please Enter Task Title"
         });
       }
     }
@@ -221,7 +223,7 @@ class StoreAddTask extends Component {
           departmentID: value,
           funcationData: [],
           funcationID: 0,
-          isdepartment: "",
+          isdepartment: ""
         });
         setTimeout(() => {
           this.handleGetFuncationByDepartmentId();
@@ -229,7 +231,7 @@ class StoreAddTask extends Component {
       } else {
         this.setState({
           isdepartment: "Please Select Department.",
-          departmentID: value,
+          departmentID: value
         });
       }
     }
@@ -237,12 +239,12 @@ class StoreAddTask extends Component {
       if (value !== 0) {
         this.setState({
           funcationID: value,
-          isfuncation: "",
+          isfuncation: ""
         });
       } else {
         this.setState({
           isfuncation: "Please Select Funcation.",
-          funcationID: value,
+          funcationID: value
         });
       }
     }
@@ -250,12 +252,12 @@ class StoreAddTask extends Component {
       if (value !== 0) {
         this.setState({
           priorityID: value,
-          ispriority: "",
+          ispriority: ""
         });
       } else {
         this.setState({
           ispriority: "Please Select Priority.",
-          priorityID: value,
+          priorityID: value
         });
       }
     }
@@ -263,12 +265,12 @@ class StoreAddTask extends Component {
       if (value !== 0) {
         this.setState({
           assignToID: value,
-          isassignto: "",
+          isassignto: ""
         });
       } else {
         this.setState({
           isassignto: "Please Select Assign To.",
-          assignToID: value,
+          assignToID: value
         });
       }
     }
@@ -276,12 +278,12 @@ class StoreAddTask extends Component {
       if (value !== "") {
         this.setState({
           taskDetails: value,
-          istaskDetails: "",
+          istaskDetails: ""
         });
       } else {
         this.setState({
           istaskDetails: "Please Enter Task Details.",
-          taskDetails: value,
+          taskDetails: value
         });
       }
     }
