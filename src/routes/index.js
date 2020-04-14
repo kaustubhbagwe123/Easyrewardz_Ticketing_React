@@ -43,11 +43,14 @@ import UserProfile from "./UserProfile";
 import BlockedEmail from "./Settings/Ticketing/BlockedEmail";
 import JunkWords from "./Settings/Ticketing/JunkWords";
 import { NotificationContainer } from "react-notifications";
+import { MyProvider, MyContext } from '../context'
 
 export class App extends Component {
   render() {
     const { match } = this.props;
     return (
+      <MyContext.Consumer>
+      {(context) => (
       <Layout>
         <Route exact path={`${match.url}/dashboard`} component={Dashboard} />
         <Route exact path={`${match.url}/myticket`} component={MyTicket} />
@@ -199,6 +202,8 @@ export class App extends Component {
 
         <NotificationContainer />
       </Layout>
+      )}
+</MyContext.Consumer>
     );
   }
 }

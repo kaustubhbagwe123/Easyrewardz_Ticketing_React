@@ -7,6 +7,7 @@ import { Popover,Table } from "antd";
 import config from "../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
+import { MyContext } from '../../context'
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -265,6 +266,7 @@ class TicketSystemTask extends Component {
       "none";
   }
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     const { taskData } = this.state;
     return (
       <Fragment>
@@ -281,7 +283,16 @@ class TicketSystemTask extends Component {
                       aria-expanded="true"
                       aria-controls="collapseOne"
                     >
-                      Created Task
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createdtask
+                      }
+                    else{
+                      return "Created Task"
+                    }
+                    })()
+                  }
                     </label>
                   </h5>
                 </div>
@@ -464,7 +475,17 @@ class TicketSystemTask extends Component {
                           className="createtasksystem createtasksystem-text"
                           onClick={this.handleCreateTask.bind(this)}
                         >
-                          CREATE TASK
+                          
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.createtask
+                      }
+                    else{
+                      return "CREATE TASK"
+                    }
+                    })()
+                  }
                         </button>
                       </div>
                     </div>
@@ -481,7 +502,17 @@ class TicketSystemTask extends Component {
                       aria-expanded="false"
                       aria-controls="collapseTwo"
                     >
-                      {this.state.taskData.length} Task Created
+                      {this.state.taskData.length}&nbsp;
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.taskcreated
+                      }
+                    else{
+                      return "Task Created"
+                    }
+                    })()
+                  }
                     </label>
                   </h5>
                 </div>
@@ -569,5 +600,5 @@ class TicketSystemTask extends Component {
     );
   }
 }
-
+TicketSystemTask.contextType = MyContext;
 export default TicketSystemTask;

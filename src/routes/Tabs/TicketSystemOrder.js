@@ -13,6 +13,7 @@ import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
 import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
+import { MyContext } from './../../context'
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -898,6 +899,7 @@ class TicketSystemOrder extends Component {
   // -------------------------------Check box selected all code end-------------------------------
 
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     const { orderDetailsData } = this.state;
 
     return (
@@ -906,12 +908,31 @@ class TicketSystemOrder extends Component {
           <div className="row storemainrow">
             <div className="col-12 col-lg-7 col-xl-8">
               <label className="systemstordercustomer">
-                Customer Want to attach order
+                
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.customerorder
+                      }
+                    else{
+                      return "Customer Want to Attach Order"
+                    }
+                    })()
+                  }
               </label>
             </div>
             <div className="col-12 col-lg-3 col-xl-3">
               <div style={{ display: "flex", marginTop: "4px" }}>
-                <label className="orderdetailpopup">Yes</label>
+                <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }</label>
                 <div className="switchmargin">
                   <div className="switch switch-primary d-inline m-r-10">
                     <input
@@ -924,7 +945,16 @@ class TicketSystemOrder extends Component {
                     <label htmlFor="editDashboard-p-1" className="cr"></label>
                   </div>
                 </div>
-                <label className="orderdetailpopup">No</label>
+                <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }</label>
               </div>
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
@@ -960,14 +990,36 @@ class TicketSystemOrder extends Component {
                 <div className="row">
                   <div className="col-md-6">
                     <label style={{ marginTop: "7px" }}>
-                      <b>Customer Want to attach order</b>
+                      <b>
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.customerattachorder
+                      }
+                    else{
+                      return "Customer Want to attach order"
+                    }
+                    })()
+                  }
+                      </b>
                     </label>
                   </div>
                   <div className="col-md-6 d-flex justify-content-end">
                     <div
                       style={{ display: "inline-flex", marginRight: "10px" }}
                     >
-                      <label className="orderdetailpopup">Yes</label>
+                      <label className="orderdetailpopup">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }
+                      </label>
                       <div className="switchmargin">
                         <div className="switch switch-primary d-inline m-r-10">
                           <input
@@ -983,7 +1035,18 @@ class TicketSystemOrder extends Component {
                           ></label>
                         </div>
                       </div>
-                      <label className="orderdetailpopup">No</label>
+                      <label className="orderdetailpopup">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }
+                      </label>
                     </div>
 
                     <div
@@ -1008,11 +1071,31 @@ class TicketSystemOrder extends Component {
               style={{ marginLeft: "0", marginRight: "0" }}
             >
               <div className="col-md-6">
-                <label className="orderdetailpopup">Order Details</label>
+                <label className="orderdetailpopup">
+                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.orderdetails
+                      }
+                    else{
+                      return "Order Details"
+                    }
+                    })()
+                  }
+                </label>
               </div>
               <div className="col-md-3">
                 <div style={{ float: "right", display: "flex" }}>
-                  <label className="orderdetailpopup">Order</label>
+                  <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.order
+                      }
+                    else{
+                      return "Order"
+                    }
+                    })()
+                  }</label>
                   <div className="orderswitch orderswitchitem">
                     <div className="switch switch-primary d-inline">
                       <input
@@ -1024,7 +1107,16 @@ class TicketSystemOrder extends Component {
                       <label htmlFor="item-11" className="cr ord"></label>
                     </div>
                   </div>
-                  <label className="orderdetailpopup">Item</label>
+                  <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.item
+                      }
+                    else{
+                      return "Item"
+                    }
+                    })()
+                  }</label>
                 </div>
               </div>
               <div className="col-md-3">
@@ -1343,8 +1435,28 @@ class TicketSystemOrder extends Component {
                     />
                     <br />
                     <label className="lbl-count-foundData">
-                      We couldn't find the order details with
-                      <br /> <span> this order Id</span>
+                      
+
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.wecouldnotfind
+                      }
+                    else{
+                      return "We couldn't find the order details with"
+                    }
+                    })()
+                  }
+                      <br /> <span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.thidorderid
+                      }
+                    else{
+                      return "This order ID"
+                    }
+                    })()
+                  }</span>
                     </label>
                   </div>
                   <div className="addmanualbtn">
@@ -1353,7 +1465,17 @@ class TicketSystemOrder extends Component {
                       className="addmanual"
                       onClick={this.handleChangeToggle.bind(this)}
                     >
-                      Add Manually
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.addmanually
+                      }
+                    else{
+                      return "Add Manually"
+                    }
+                    })()
+                  }
                     </button>
                   </div>
                 </div>
@@ -1365,7 +1487,16 @@ class TicketSystemOrder extends Component {
             <div>
               <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
                 <div className="col-md-6">
-                  <label className="addmanuallytext">Add Manually</label>
+                  <label className="addmanuallytext">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.addmanually
+                      }
+                    else{
+                      return "Add Manually"
+                    }
+                    })()
+                  }</label>
                 </div>
               </div>
               <div className="row m-b-10 m-l-10 m-r-10">
@@ -1679,7 +1810,16 @@ class TicketSystemOrder extends Component {
                     ) : (
                       ""
                     )} */}
-                    SAVE
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.save
+                      }
+                    else{
+                      return "SAVE"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
                 <div className="col-md-3">
@@ -1688,7 +1828,16 @@ class TicketSystemOrder extends Component {
                     className="addmanual m-t-15"
                     onClick={this.handleChangeToggle.bind(this)}
                   >
-                    CANCEL
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </div>
@@ -1975,4 +2124,5 @@ class TicketSystemOrder extends Component {
   }
 }
 
+TicketSystemOrder.contextType = MyContext;
 export default TicketSystemOrder;

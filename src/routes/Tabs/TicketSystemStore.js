@@ -9,6 +9,7 @@ import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import { Table } from "antd";
+import { MyContext } from './../../context'
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -272,6 +273,7 @@ class TicketSystemStore extends Component {
   };
 
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     const { SearchData, selectedStoreData } = this.state;
 
     return (
@@ -292,7 +294,16 @@ class TicketSystemStore extends Component {
               </div>
               <div className="col-12 col-lg-3 col-xl-3">
                 <div style={{ display: "flex", marginTop: "7px" }}>
-                  <label className="orderdetailpopup">Yes</label>
+                  <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }</label>
                   <div className="switchmargin">
                     <div className="switch switch-primary d-inline m-r-10">
                       <input
@@ -307,7 +318,16 @@ class TicketSystemStore extends Component {
                       ></label>
                     </div>
                   </div>
-                  <label className="orderdetailpopup">No</label>
+                  <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }</label>
                 </div>
               </div>
               <div className="col-12 col-lg-2 col-xl-1">
@@ -344,7 +364,16 @@ class TicketSystemStore extends Component {
                       float: "right"
                     }}
                   >
-                    <label className="orderdetailpopup">Yes</label>
+                    <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }</label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
                         <input
@@ -359,7 +388,16 @@ class TicketSystemStore extends Component {
                         ></label>
                       </div>
                     </div>
-                    <label className="orderdetailpopup">No</label>
+                    <label className="orderdetailpopup">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }</label>
                     <div
                       className="storeplusline13"
                       onClick={this.handleOrderStoreTableClose}
@@ -429,7 +467,17 @@ class TicketSystemStore extends Component {
                           aria-controls="storedetail-tab"
                           aria-selected="true"
                         >
-                          Store Details
+                          
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.storedetail
+                      }
+                    else{
+                      return "Store Details"
+                    }
+                    })()
+                  }
                         </a>
                       </li>
                       {this.state.selectedStoreData.length !== 0 ? (
@@ -677,8 +725,29 @@ class TicketSystemStore extends Component {
                     className="lbl-count-foundData"
                     style={{ fontSize: "22px" }}
                   >
-                    We couldn't find the store details with
-                    <br /> <span> this store Id,Search another store</span>
+                    
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.wecouldnotfindstore
+                      }
+                    else{
+                      return "We couldn't find the store details with"
+                    }
+                    })()
+                  }
+                    <br /> <span> 
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.thidorderidsearch
+                      }
+                    else{
+                      return "this store Id, Search another store"
+                    }
+                    })()
+                  }
+                    </span>
                   </label>
                 </div>
               </div>
@@ -703,7 +772,16 @@ class TicketSystemStore extends Component {
                           aria-controls="storeSubdetail-tab"
                           aria-selected="true"
                         >
-                          Store Details
+                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.storedetail
+                      }
+                    else{
+                      return "Store Details"
+                    }
+                    })()
+                  }
                         </a>
                       </li>
                       {this.state.AddSelectDetail === true ? (
@@ -716,7 +794,16 @@ class TicketSystemStore extends Component {
                             aria-controls="selectedSubstore-tab"
                             aria-selected="false"
                           >
-                            Selected Store
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.selectedstore
+                      }
+                    else{
+                      return "Selected Store"
+                    }
+                    })()
+                  }
                           </a>
                         </li>
                       ) : null}
@@ -917,4 +1004,5 @@ class TicketSystemStore extends Component {
   }
 }
 
+TicketSystemStore.contextType = MyContext;
 export default TicketSystemStore;

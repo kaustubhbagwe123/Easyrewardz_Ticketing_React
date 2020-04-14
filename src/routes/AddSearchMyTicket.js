@@ -18,6 +18,7 @@ import {
 } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { MyContext } from './../context'
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -230,6 +231,7 @@ class AddSearchMyTicket extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
@@ -239,7 +241,16 @@ class AddSearchMyTicket extends Component {
             alt="ArrowCircle"
             className="arrowImg-addSearch"
           />
-          <label className="label-addsearch">Source</label>
+          <label className="label-addsearch">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.source
+                      }
+                    else{
+                      return "Source"
+                    }
+                    })()
+                  }</label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
           <CopyToClipboard
@@ -260,9 +271,30 @@ class AddSearchMyTicket extends Component {
               <form name="form" onSubmit={this.handleSearchCustomer}>
                 <div>
                   <label className="label1-AddSearch">
-                    SEARCH CUSTOMER BY
+                    
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.searchcustomerby
+                      }
+                    else{
+                      return "SEARCH CUSTOMER BY"
+                    }
+                    })()
+                  }
                     <label className="label2-AddSearch">
-                      &nbsp;(PHONE NUMBER, EMAIL ID)
+                      &nbsp;(
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.phonenumberemail
+                      }
+                    else{
+                      return "PHONE NUMBER, EMAIL ID"
+                    }
+                    })()
+                  }
+                      )
                       <span className="span-color">*</span>
                     </label>
                   </label>
@@ -487,4 +519,5 @@ class AddSearchMyTicket extends Component {
     );
   }
 }
+AddSearchMyTicket.contextType = MyContext;
 export default AddSearchMyTicket;

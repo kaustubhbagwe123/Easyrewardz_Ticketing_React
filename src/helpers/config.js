@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+  apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
   hierarchyTemplate: [
     ["Designation", "ReportTo", "Status"],
     ["HOD", "Root", "Active"],

@@ -2689,7 +2689,7 @@ table tr th:last-child {
   text-align: right;
   /* width: 60%; */
   position: relative;
-  left: 22px;
+  /* left: 22px; */
   margin-top: 5px;
   white-space: nowrap;
 }
@@ -11570,4 +11570,12 @@ table tr th:last-child {
 .myticket-knowpopup {
   margin-right: auto !important;
   min-width: 30%;
+}
+.language-drp {
+  margin-right: 15px;
+  padding: 0 0 0 5px;
+  font-size: 12px;
+  border-radius: 2px;
+  font-weight: bold;
+  color: #2561a8;
 }

@@ -28,6 +28,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
+import { MyContext } from './../context'
 
 import DatePicker from "react-datepicker";
 import axios from "axios";
@@ -3853,6 +3854,7 @@ class MyTicketList extends Component {
   }
 
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     const { DraftDetails, SearchAssignData } = this.state;
     console.log(this.state.SearchTicketData, "------------SearchTicketData");
     const TitleChange = this.state.collapseSearch
@@ -4147,7 +4149,18 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Escalation");
                   }}
                 >
-                  Escalation:{" "}
+                  
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.escalation
+                      }
+                    else{
+                      return "Escalation"
+                    }
+                    })()
+                  }:
+                  {" "}
                   <span className="myTciket-tab-span">
                     {this.state.byEscalationCount < 9
                       ? "0" + this.state.byEscalationCount
@@ -4168,7 +4181,16 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("New");
                   }}
                 >
-                  New:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.new
+                      }
+                    else{
+                      return "New"
+                    }
+                    })()
+                  }:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byNewCount < 9
                       ? "0" + this.state.byNewCount
@@ -4189,7 +4211,16 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Open");
                   }}
                 >
-                  Open:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.open
+                      }
+                    else{
+                      return "Open"
+                    }
+                    })()
+                  }:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byOpenCount < 9
                       ? "0" + this.state.byOpenCount
@@ -4210,7 +4241,16 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Resolved");
                   }}
                 >
-                  Resolved:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.resolved
+                      }
+                    else{
+                      return "Resolved"
+                    }
+                    })()
+                  }:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
@@ -4232,7 +4272,16 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Closed");
                   }}
                 >
-                  Closed:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.closed
+                      }
+                    else{
+                      return "Closed"
+                    }
+                    })()
+                  }:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byClosedCount < 9
                       ? "0" + this.state.byClosedCount
@@ -4253,7 +4302,16 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("ReOpen");
                   }}
                 >
-                  Reopen:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.reopen
+                      }
+                    else{
+                      return "Reopen"
+                    }
+                    })()
+                  }:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byReOpenCount < 9
                       ? "0" + this.state.byReOpenCount
@@ -4278,7 +4336,18 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Reassigned");
                   }}
                 >
-                  Reassigned by me:
+                  
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.reassigned
+                      }
+                    else{
+                      return "Reassigned by me"
+                    }
+                    })()
+                  }
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byReassignedCount < 9
                       ? "0" + this.state.byReassignedCount
@@ -4299,7 +4368,16 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("All");
                   }}
                 >
-                  All:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.all
+                      }
+                    else{
+                      return "All"
+                    }
+                    })()
+                  }:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byAllCount < 9
                       ? "0" + this.state.byAllCount
@@ -4320,7 +4398,18 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("FollowUp");
                   }}
                 >
-                  Follow Up:
+                  
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.followup
+                      }
+                    else{
+                      return "Follow Up"
+                    }
+                    })()
+                  }
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byFollowUpCount < 9
                       ? "0" + this.state.byFollowUpCount
@@ -4338,7 +4427,16 @@ class MyTicketList extends Component {
                   aria-selected="false"
                   onClick={this.handleGetDraftDetails}
                 >
-                  Draft:
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.draft
+                      }
+                    else{
+                      return "Draft"
+                    }
+                    })()
+                  }:
                   <span className="myTciket-tab-span">
                     {this.state.draftCountStatus < 9
                       ? "0" + this.state.draftCountStatus
@@ -4363,7 +4461,18 @@ class MyTicketList extends Component {
                       className="clrFlwUp"
                       onClick={this.handleSearchClearFollowUp.bind(this)}
                     >
-                      Clear FollowUp
+                      
+
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.clearfollowup
+                      }
+                    else{
+                      return "Clear FollowUp"
+                    }
+                    })()
+                  }
                     </label>
                   ) : null}
                 </div>
@@ -4374,7 +4483,18 @@ class MyTicketList extends Component {
                 type="button"
                 onClick={this.hanleChange}
               >
-                <label className="add-tickets">ADD TICKETS</label>
+                <label className="add-tickets">
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.addtickets
+                      }
+                    else{
+                      return "ADD TICKETS"
+                    }
+                    })()
+                  }
+                </label>
               </button>
             </div>
 
@@ -6362,7 +6482,16 @@ class MyTicketList extends Component {
                                           htmlFor="fil-aball"
                                           className="ticketid"
                                         >
-                                          ID
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.id
+                      }
+                    else{
+                      return "ID"
+                    }
+                    })()
+                  }
                                         </label>
                                       </div>
                                     </div>
@@ -6459,7 +6588,16 @@ class MyTicketList extends Component {
                                       "Status"
                                     )}
                                   >
-                                    Status{" "}
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6527,11 +6665,29 @@ class MyTicketList extends Component {
                                             <div className="dash-task-popup-new">
                                               <div className="d-flex justify-content-between align-items-center">
                                                 <p className="m-b-0">
-                                                  CLAIM:
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.claim
+                      }
+                    else{
+                      return "Claim"
+                    }
+                    })()
+                  }:
                                                   {row.original.claimStatus}
                                                 </p>
                                                 <div className="d-flex align-items-center">
-                                                  2 NEW
+                                                  2 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.new
+                      }
+                    else{
+                      return "New"
+                    }
+                    })()
+                  }
                                                   <div className="nw-chat">
                                                     <img
                                                       src={Chat}
@@ -6592,7 +6748,16 @@ class MyTicketList extends Component {
                                             <div className="dash-task-popup-new">
                                               <div className="d-flex justify-content-between align-items-center">
                                                 <p className="m-b-0">
-                                                  TASK:{row.original.taskStatus}
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.task
+                      }
+                    else{
+                      return "Task:"
+                    }
+                    })()
+                  }{row.original.taskStatus}:{row.original.taskStatus}
                                                 </p>
                                                 {row.original
                                                   .ticketCommentCount > 0 ? (
@@ -6601,7 +6766,16 @@ class MyTicketList extends Component {
                                                       row.original
                                                         .ticketCommentCount
                                                     }
-                                                    NEW
+                                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.new
+                      }
+                    else{
+                      return "New"
+                    }
+                    })()
+                  }
                                                     <div className="nw-chat">
                                                       <img
                                                         src={Chat}
@@ -6633,14 +6807,32 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <label className="ticketid">
-                                    <span>Subject/</span>
+                                    <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.subject
+                      }
+                    else{
+                      return "Subject"
+                    }
+                    })()
+                  }/</span>
                                     <span
                                       style={{
                                         fontWeight: "bold",
                                         fontSize: "11px !important"
                                       }}
                                     >
-                                      Latest Message
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.latestmessage
+                      }
+                    else{
+                      return "Latest Message"
+                    }
+                    })()
+                  }
                                     </span>
                                   </label>
                                 ),
@@ -6667,7 +6859,16 @@ class MyTicketList extends Component {
                                       "Category"
                                     )}
                                   >
-                                    Category
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6684,15 +6885,42 @@ class MyTicketList extends Component {
                                         <div className="dash-creation-popup-cntr">
                                           <ul className="dash-category-popup dashnewpopup">
                                             <li>
-                                              <p>Category</p>
+                                              <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }</p>
                                               <p>{row.original.category}</p>
                                             </li>
                                             <li>
-                                              <p>Sub Category</p>
+                                              <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }</p>
                                               <p>{row.original.subCategory}</p>
                                             </li>
                                             <li>
-                                              <p>Type</p>
+                                              <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.type
+                      }
+                    else{
+                      return "Type"
+                    }
+                    })()
+                  }</p>
                                               <p>{row.original.issueType}</p>
                                             </li>
                                           </ul>
@@ -6719,7 +6947,16 @@ class MyTicketList extends Component {
                                       "Priority"
                                     )}
                                   >
-                                    Priority{" "}
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  }{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6737,7 +6974,16 @@ class MyTicketList extends Component {
                                       "Assign To"
                                     )}
                                   >
-                                    Assignee{" "}
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.assignee
+                      }
+                    else{
+                      return "Assignee"
+                    }
+                    })()
+                  }{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6753,7 +6999,16 @@ class MyTicketList extends Component {
                                       "Creation On"
                                     )}
                                   >
-                                    Creation On{" "}
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.creation
+                      }
+                    else{
+                      return "Creation On"
+                    }
+                    })()
+                  }{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6769,18 +7024,45 @@ class MyTicketList extends Component {
                                           <div className="insertpop1">
                                             <ul className="dash-creation-popup">
                                               <li className="title">
-                                                Creation details
+                                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.li.creationdetails
+                      }
+                    else{
+                      return "Creation Details"
+                    }
+                    })()
+                  }
                                               </li>
                                               <li>
                                                 <p>
                                                   {row.original.createdBy}{" "}
-                                                  Created
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }
                                                 </p>
                                                 <p>{row.original.createdago}</p>
                                               </li>
                                               <li>
                                                 <p>
-                                                  Assigned to{" "}
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.assignedto
+                      }
+                    else{
+                      return "Assigned To"
+                    }
+                    })()
+                  }{" "}
                                                   {row.original.assignedTo}
                                                 </p>
                                                 <p>
@@ -6790,13 +7072,31 @@ class MyTicketList extends Component {
                                               <li>
                                                 <p>
                                                   {row.original.updatedBy}
-                                                  updated
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updatedby
+                      }
+                    else{
+                      return "Updated by"
+                    }
+                    })()
+                  }
                                                 </p>
                                                 <p>{row.original.updatedago}</p>
                                               </li>
                                               <li>
                                                 <p>
-                                                  Response time remaining by
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.responsetimerem
+                      }
+                    else{
+                      return "Response time remaining by"
+                    }
+                    })()
+                  }
                                                 </p>
                                                 <p>
                                                   {
@@ -6807,7 +7107,16 @@ class MyTicketList extends Component {
                                               </li>
 
                                               <li>
-                                                <p>Response overdue by</p>
+                                                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.responseoverdueby
+                      }
+                    else{
+                      return "Response overdue by"
+                    }
+                    })()
+                  }</p>
                                                 <p>
                                                   {
                                                     row.original
@@ -6816,7 +7125,16 @@ class MyTicketList extends Component {
                                                 </p>
                                               </li>
                                               <li>
-                                                <p>Resolution overdue by</p>
+                                                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.resolutionoverdueby
+                      }
+                    else{
+                      return "Resolution overdue by"
+                    }
+                    })()
+                  }</p>
                                                 <p>
                                                   {
                                                     row.original
@@ -6878,5 +7196,5 @@ class MyTicketList extends Component {
     );
   }
 }
-
+MyTicketList.contextType = MyContext;
 export default withRouter(MyTicketList);

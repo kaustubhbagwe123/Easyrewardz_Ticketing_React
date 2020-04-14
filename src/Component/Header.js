@@ -479,12 +479,24 @@ class Header extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const TransferCall = (
       <>
         <div>
           <div className="row tooltiptransfercallrow">
             <div className="col-md-8">
-              <label className="agentidtext-tooltip">Enter Agent ID</label>
+              <label className="agentidtext-tooltip">
+              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.enteragentid
+                      }
+                    else{
+                      return "Enter Agent ID"
+                    }
+                    })()
+                  }
+              </label>
             </div>
           </div>
           <div className="row agenttextrow">
@@ -498,14 +510,22 @@ class Header extends Component {
           </div>
           <div className="row agenttextrow">
             <div className="col-md-12">
-              <button className="loginbtnagent">Connenting</button>
+              <button className="loginbtnagent"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.connecting
+                      }
+                    else{
+                      return "Connecting"
+                    }
+                    })()
+                  }</button>
             </div>
           </div>
         </div>
       </>
     );
 
-    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div
@@ -532,13 +552,40 @@ class Header extends Component {
                 <img src={Hamb} alt="hamburger icon" data-toggle="dropdown" />
                 <ul className="dropdown-menu">
                   <li>
-                    <Link to="dashboard">Dashboards</Link>
+                    <Link to="dashboard">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.li.dashboard
+                      }
+                    else{
+                      return "Dashboard"
+                    }
+                    })()
+                  }</Link>
                   </li>
                   <li>
-                    <Link to="myTicketlist">My Tickets</Link>
+                    <Link to="myTicketlist">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.li.myticket
+                      }
+                    else{
+                      return "My Ticket"
+                    }
+                    })()
+                  }</Link>
                   </li>
                   <li>
-                    <Link to="knowledgebase">Knowledge Base</Link>
+                    <Link to="knowledgebase">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.li.knowledgebase
+                      }
+                    else{
+                      return "Knowledge Base"
+                    }
+                    })()
+                  }</Link>
                   </li>
                 </ul>
               </div>
@@ -605,12 +652,34 @@ class Header extends Component {
               <div className="HeaderheadphoneModal">
                 <div className="row logincenter">
                   <div className="col-md-12">
-                    <label className="logintoivr">Login to IVR</label>
+                    <label className="logintoivr">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.logintoivr
+                      }
+                    else{
+                      return "Login to IVR"
+                    }
+                    })()
+                  }
+                    </label>
                   </div>
                 </div>
                 <div className="row agenttextrow1">
                   <div className="col-md-5">
-                    <label className="agentidtext">Agent ID</label>
+                    <label className="agentidtext">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.agentid
+                      }
+                    else{
+                      return "Agent ID"
+                    }
+                    })()
+                  }
+                    </label>
                   </div>
                 </div>
                 <div className="row agenttextrow">
@@ -624,14 +693,34 @@ class Header extends Component {
                       className="loginbtnagent"
                       onClick={this.handleLoginModalOpen.bind(this)}
                     >
-                      Login
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.login
+                      }
+                    else{
+                      return "Login"
+                    }
+                    })()
+                  }
                     </button>
                   </div>
                 </div>
 
                 <div className="row logincenterimg">
                   <div className="col-md-12">
-                    <span className="poweredby">Powered by</span>
+                    <span className="poweredby">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.poweredby
+                      }
+                    else{
+                      return "Powered by"
+                    }
+                    })()
+                  }
+                    </span>
                     <img
                       src={EasyRewardLogo}
                       alt="logo"
@@ -659,7 +748,18 @@ class Header extends Component {
               </div>
               <div className="row amitsinghcenter">
                 <div className="col-md-12">
-                  <label className="amitsinghtext">Amit Singh</label>
+                  <label className="amitsinghtext">
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.amitsingh
+                      }
+                    else{
+                      return "Amit Singh"
+                    }
+                    })()
+                  }
+                  </label>
                 </div>
               </div>
 
@@ -667,7 +767,18 @@ class Header extends Component {
                 <div>
                   <div className="row amitsinghcenter1">
                     <div className="col-md-7">
-                      <label className="amitsinghtext">Choose Mode:</label>
+                      <label className="amitsinghtext">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.choosemode
+                      }
+                    else{
+                      return "Choose Mode"
+                    }
+                    })()
+                  }
+                      :</label>
                     </div>
                   </div>
                   <div className="row amitsinghcenter2">
@@ -679,12 +790,30 @@ class Header extends Component {
                           className="logout-label1"
                           style={{ marginRight: "25px" }}
                         >
-                          Preview
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.preview
+                      }
+                    else{
+                      return "Preview"
+                    }
+                    })()
+                  }
                         </label>
 
                         <input type="radio" name="logout-status" id="away" />
                         <label htmlFor="away" className="logout-label1">
-                          progressive
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.progressive
+                      }
+                    else{
+                      return "Progressive"
+                    }
+                    })()
+                  }
                         </label>
                       </div>
                     </div>
@@ -695,14 +824,32 @@ class Header extends Component {
                         className="loginbtnagent"
                         onClick={this.handleNextBtnModalOpen.bind(this)}
                       >
-                        Next
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
                   <div className="row amitnextrow">
                     <div className="col-md-12">
                       <img src={LogoutImg} alt="logo" className="logoutImg" />
-                      <span className="logouttamitsingh">Logout</span>
+                      <span className="logouttamitsingh">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.logout
+                      }
+                    else{
+                      return "Logout"
+                    }
+                    })()
+                  }</span>
                     </div>
                   </div>
                 </div>
@@ -717,12 +864,30 @@ class Header extends Component {
                           className="logout-label1"
                           style={{ marginRight: "25px" }}
                         >
-                          Online
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.online
+                      }
+                    else{
+                      return "Online"
+                    }
+                    })()
+                  }
                         </label>
 
                         <input type="radio" name="logout-status" id="away" />
                         <label htmlFor="away" className="logout-label1">
-                          Offline
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.offline
+                      }
+                    else{
+                      return "Offline"
+                    }
+                    })()
+                  }
                         </label>
                       </div>
                     </div>
@@ -733,14 +898,32 @@ class Header extends Component {
                         className="loginbtnagent"
                         onClick={this.handleNextButtonShow.bind(this)}
                       >
-                        Next
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
                   <div className="row amitnextrow">
                     <div className="col-md-12">
                       <img src={LogoutImg} alt="logo" className="logoutImg" />
-                      <span className="logouttamitsingh">Logout</span>
+                      <span className="logouttamitsingh">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.logout
+                      }
+                    else{
+                      return "Logout"
+                    }
+                    })()
+                  }</span>
                     </div>
                   </div>
                 </div>
@@ -765,7 +948,18 @@ class Header extends Component {
               </div>
               <div className="row amitsinghcenter">
                 <div className="col-md-12">
-                  <label className="amitsinghtext">Amit Singh</label>
+                  <label className="amitsinghtext">
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.amitsingh
+                      }
+                    else{
+                      return "Amit Singh"
+                    }
+                    })()
+                  }
+                  </label>
                 </div>
               </div>
 
@@ -775,7 +969,18 @@ class Header extends Component {
                     <div className="row incomingcallrow">
                       <div className="col-md-12">
                         <label className="incomingcalltext">
-                          Incoming Call:
+                          
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.incomingcall
+                      }
+                    else{
+                      return "Incoming Call"
+                    }
+                    })()
+                  }
+                          :
                         </label>
                       </div>
                     </div>
@@ -791,7 +996,16 @@ class Header extends Component {
 
                   <div className="row amitnextbuttonrow">
                     <div className="col-md-12">
-                      <button className="holdbtn">Hold</button>
+                      <button className="holdbtn">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.hold
+                      }
+                    else{
+                      return "Hold"
+                    }
+                    })()
+                  }</button>
                     </div>
                   </div>
                   <div className="row amitnextbuttonrow3">
@@ -801,20 +1015,52 @@ class Header extends Component {
                         placement="bottom"
                         trigger="click"
                       >
-                        <button className="tranferbtn">Transfer Call</button>
+                        <button className="tranferbtn">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.transfercall
+                      }
+                    else{
+                      return "Transfer Call"
+                    }
+                    })()
+                  }
+                        </button>
                       </Popover>
                     </div>
                   </div>
 
                   <div className="row amitnextbuttonrow3">
                     <div className="col-md-12">
-                      <button className="CallwrapBtnwaiting">Call Wrap</button>
+                      <button className="CallwrapBtnwaiting">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.callwrap
+                      }
+                    else{
+                      return "Call Wrap"
+                    }
+                    })()
+                  }
+                      </button>
                     </div>
                   </div>
                   <div className="row amitnextbuttonrow1">
                     <div className="col-md-12">
                       <button className="CallwrapBtnwaiting">
-                        Switch to progressive
+                        
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.switchprogressive
+                      }
+                    else{
+                      return "Switch to progressive"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
@@ -822,7 +1068,18 @@ class Header extends Component {
                     <div className="col-md-12">
                       <div className="takeabreak">
                         <img src={TakeBreak} alt="logo" className="logoutImg" />
-                        <span className="takebreaktext">Take a Breake</span>
+                        <span className="takebreaktext">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.takeabreak
+                      }
+                    else{
+                      return "Take a Break"
+                    }
+                    })()
+                  }
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -830,7 +1087,16 @@ class Header extends Component {
                   <div className="row backtohomelogoutrow">
                     <div className="col-md-12">
                       <img src={LogoutImg} alt="logo" className="logoutImg" />
-                      <span className="logoutbacktohome">Logout</span>
+                      <span className="logoutbacktohome"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.logout
+                      }
+                    else{
+                      return "Logout"
+                    }
+                    })()
+                  }</span>
                     </div>
                   </div>
                 </div>
@@ -847,7 +1113,16 @@ class Header extends Component {
                       <div className="row">
                         <div className="col-md-8">
                           <label className="idletimeamit">
-                            Idle Time: 02:24
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.idletime
+                      }
+                    else{
+                      return "Idle Time"
+                    }
+                    })()
+                  }: 02:24
                           </label>
                         </div>
                       </div>
@@ -856,13 +1131,34 @@ class Header extends Component {
 
                   <div className="row amitnextbuttonrow">
                     <div className="col-md-12">
-                      <button className="CallwrapBtn">Call Wrap</button>
+                      <button className="CallwrapBtn">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.callwrap
+                      }
+                    else{
+                      return "Call Wrap"
+                    }
+                    })()
+                  }
+                      </button>
                     </div>
                   </div>
                   <div className="row amitnextbuttonrow1">
                     <div className="col-md-12">
                       <button className="SwitchToProgBtn">
-                        Switch to progressive
+                        
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.switchprogressive
+                      }
+                    else{
+                      return "Switch to progressive"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
@@ -870,7 +1166,18 @@ class Header extends Component {
                     <div className="col-md-12">
                       <div className="takeabreak">
                         <img src={TakeBreak} alt="logo" className="logoutImg" />
-                        <span className="takebreaktext">Take a Breake</span>
+                        <span className="takebreaktext">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.takeabreak
+                      }
+                    else{
+                      return "Take a Break"
+                    }
+                    })()
+                  }
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -878,14 +1185,33 @@ class Header extends Component {
                   <div className="row backtohomelogoutrow">
                     <div className="col-md-12">
                       <img src={LogoutImg} alt="logo" className="logoutImg" />
-                      <span className="logoutbacktohome">Logout</span>
+                      <span className="logoutbacktohome">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.logout
+                      }
+                    else{
+                      return "Logout"
+                    }
+                    })()
+                  }</span>
                     </div>
                   </div>
 
                   <div className="row backtohomerow">
                     <div className="col-md-12">
                       <a href="#!" className="backtohometext">
-                        >>Back to Home
+                        >>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.backtohome
+                      }
+                    else{
+                      return "Back to Home"
+                    }
+                    })()
+                  }
                       </a>
                     </div>
                   </div>
@@ -919,7 +1245,18 @@ class Header extends Component {
                   <div className="col-lg-12 p-0">
                     <div className="chatbot-left">
                       <div className="chatpadding">
-                        <label className="ongoing">Ongoing Chats (03)</label>
+                        <label className="ongoing">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ongoingchats
+                      }
+                    else{
+                      return "Ongoing Chats"
+                    }
+                    })()
+                  }
+                         (03)</label>
                         <img
                           src={CancelIcon}
                           alt="cancel-icone"
@@ -931,13 +1268,35 @@ class Header extends Component {
                             <div className="d-flex align-items-center">
                               <span className="dark-blue-ini initial">V</span>
                               <div className="name-num ml-2">
-                                <p>Varun Kumar</p>
+                                <p>
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.varunkumar
+                      }
+                    else{
+                      return "Varun Kumar"
+                    }
+                    })()
+                  }
+                                </p>
                                 <p className="num">+91-9873470074</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>2 New Messages</p>
+                                <p>2 
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.newmessages
+                      }
+                    else{
+                      return "New Messages"
+                    }
+                    })()
+                  }
+                                </p>
                                 <p>56s</p>
                               </div>
                             </div>
@@ -949,13 +1308,31 @@ class Header extends Component {
                                   M
                                 </span>
                                 <div className="name-num ml-2">
-                                  <p>Mohit Verma</p>
+                                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.mohitverma
+                      }
+                    else{
+                      return "Mohit Verma"
+                    }
+                    })()
+                  }</p>
                                   <p className="num">Mohit90@gmail.com</p>
                                 </div>
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  <p>1 New Messages</p>
+                                  <p>1 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.newmessages
+                      }
+                    else{
+                      return "New Messages"
+                    }
+                    })()
+                  }</p>
                                   <p>1m:36s</p>
                                 </div>
                               </div>
@@ -965,13 +1342,33 @@ class Header extends Component {
                             <div className="d-flex align-items-center">
                               <span className="yellow-ini initial">A</span>
                               <div className="name-num ml-2">
-                                <p>Ankit Gupta</p>
+                                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.ankitgupta
+                      }
+                    else{
+                      return "Ankit gupta"
+                    }
+                    })()
+                  }</p>
                                 <p className="num">+91-9382838834</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>No New Messages</p>
+                                <p>
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.nonewmessages
+                      }
+                    else{
+                      return "No New Messages"
+                    }
+                    })()
+                  }
+                                </p>
                                 <p>1m:36s</p>
                               </div>
                             </div>
@@ -983,20 +1380,49 @@ class Header extends Component {
                           className="ongoing"
                           style={{ marginTop: "20px" }}
                         >
-                          New Chats (02)
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.newchats
+                      }
+                    else{
+                      return "New Chats"
+                    }
+                    })()
+                  } (02)
                         </label>
                         <div className="chatleftdrawer">
                           <div className="chat-info">
                             <div className="d-flex align-items-center">
                               <span className="green-ini initial">V</span>
                               <div className="name-num ml-2">
-                                <p>Vipin Kumar</p>
+                                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.vipinkumar
+                      }
+                    else{
+                      return "Vipin Kumar"
+                    }
+                    })()
+                  }</p>
                                 <p className="num">+91-9873470074</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>Waiting for reply</p>
+                                <p>
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.waitingforreply
+                      }
+                    else{
+                      return "Waiting for reply"
+                    }
+                    })()
+                  }
+                                </p>
                                 <p>56s</p>
                               </div>
                             </div>
@@ -1005,13 +1431,31 @@ class Header extends Component {
                             <div className="d-flex align-items-center">
                               <span className="orange-ini initial">M</span>
                               <div className="name-num ml-2">
-                                <p>Mohit Kumar</p>
+                                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.mohitkumar
+                      }
+                    else{
+                      return "Mohit Kumar"
+                    }
+                    })()
+                  }</p>
                                 <p className="num">Mohit90@gmail.com</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>Waiting for reply</p>
+                                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.waitingforreply
+                      }
+                    else{
+                      return "Waiting for reply"
+                    }
+                    })()
+                  }</p>
                                 <p>1m:36s</p>
                               </div>
                             </div>
@@ -1020,13 +1464,23 @@ class Header extends Component {
                       </div>
                     </div>
                     <button className="butn-inv hist-btn">
-                      My historical chat
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.myhistoricalchat
+                      }
+                    else{
+                      return "My historical chat"
+                    }
+                    })()
+                  }
                     </button>
                   </div>
                 </div>
               </Drawer>
             </div>
-            <select onClick={this.context.changeLanguage}>
+            <select className="language-drp" onClick={this.context.changeLanguage}>
                 <option value="en">ENGLISH</option>
                 <option value="hindi">HINDI</option>
                 <option value="marathi">MARATHI</option>
@@ -1045,7 +1499,16 @@ class Header extends Component {
                 )}
               </div>
               <span style={{ display: "none" }} className="icon-fullname">
-                Notifications
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.notifications
+                      }
+                    else{
+                      return "Notifications"
+                    }
+                    })()
+                  }
               </span>
             </a>
             <Link to="settings" style={{ display: this.state.settingAccess }}>
@@ -1062,7 +1525,16 @@ class Header extends Component {
                 style={{ display: "none" }}
               />
               <span style={{ display: "none" }} className="icon-fullname">
-                Settings
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.setting
+                      }
+                    else{
+                      return "Setting"
+                    }
+                    })()
+                  }
               </span>
             </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
@@ -1080,7 +1552,16 @@ class Header extends Component {
           <div className="notifi-container">
           {this.state.notiCount === 0 && (
             <p className="m-0 p-2">
-              There are no notifications.
+              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.nonotifications
+                      }
+                    else{
+                      return "There are no notifications"
+                    }
+                    })()
+                  }
             </p>
           )}
             {this.state.notifiMessages.map((item, i) => {
@@ -1101,7 +1582,18 @@ class Header extends Component {
                           {this.state.NotifiTicketIds.map((data, j) => {
                             return (
                               <p key={j}>
-                                Ticket No. :
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.ticketnumber
+                      }
+                    else{
+                      return "Ticket No"
+                    }
+                    })()
+                  }
+                                . :
                                 <Link
                                   to={{
                                     pathname: "myticket",
@@ -1127,7 +1619,16 @@ class Header extends Component {
                         }
                         onClick={this.handleViewTicketModalOpen.bind(this, item)}
                       >
-                        VIEW TICKETS
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.viewtickets
+                      }
+                    else{
+                      return "VIEW TICKETS"
+                    }
+                    })()
+                  }
                       </div>
                     </Popover>
                   </div>
@@ -1215,7 +1716,16 @@ class Header extends Component {
                     className="logout"
                     onClick={this.handleLogoutMethod.bind(this)}
                   >
-                    LOGOUT
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.logout
+                      }
+                    else{
+                      return "LOGOUT"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </div>
@@ -1224,31 +1734,80 @@ class Header extends Component {
                   <div className="logout-status" style={{ marginTop: "10px" }}>
                     <img src={StatusLogo} alt="status" />
                   </div>
-                  <p className="logout-label chat-status">CHAT STATUS :</p>
+                  <p className="logout-label chat-status">
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.chatstatus
+                      }
+                    else{
+                      return "CHAT STATUS :"
+                    }
+                    })()
+                  }
+                  </p>
                 </div>
                 <div className="status-options">
                   <input type="radio" name="logout-status" id="online" />
                   <label htmlFor="online" className="logout-label">
-                    Online
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.online
+                      }
+                    else{
+                      return "Online"
+                    }
+                    })()
+                  }
                   </label>
                 </div>
                 <div className="status-options">
                   <input type="radio" name="logout-status" id="away" />
                   <label htmlFor="away" className="logout-label">
-                    Away
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.away
+                      }
+                    else{
+                      return "Away"
+                    }
+                    })()
+                  }
                   </label>
                 </div>
                 <div className="status-options">
                   <input type="radio" name="logout-status" id="offline" />
                   <label htmlFor="offline" className="logout-label">
-                    Offline
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.offline
+                      }
+                    else{
+                      return "Offline"
+                    }
+                    })()
+                  }
                   </label>
                 </div>
               </div>
               <div className="d-block">
                 <div className="d-flex justify-content-between">
                   <div>
-                    <p className="logout-label">Login Time</p>
+                    <p className="logout-label">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.logintime
+                      }
+                    else{
+                      return "Login Time"
+                    }
+                    })()
+                  }
+                    </p>
                     <p
                       className="font-weight-bold"
                       style={{ fontSize: "16px" }}
@@ -1258,7 +1817,18 @@ class Header extends Component {
                     </p>
                   </div>
                   <div>
-                    <p className="logout-label">Logout Time</p>
+                    <p className="logout-label">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.logouttime
+                      }
+                    else{
+                      return "Logout Time"
+                    }
+                    })()
+                  }
+                    </p>
                     <p
                       className="font-weight-bold"
                       style={{ fontSize: "16px", float: "right" }}
@@ -1284,7 +1854,18 @@ class Header extends Component {
               </div>
               <div>
                 <div>
-                  <p className="logout-label">SLA SCORE</p>
+                  <p className="logout-label">
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.slascore
+                      }
+                    else{
+                      return "SLA SCORE"
+                    }
+                    })()
+                  }
+                  </p>
                   <p className="font-weight-bold">{this.state.SLAScore}</p>
                 </div>
                 {/* <div>
@@ -1292,7 +1873,18 @@ class Header extends Component {
                   <p className="font-weight-bold">{this.state.CSatScore}</p>
                 </div> */}
                 <div>
-                  <p className="logout-label">Avg Response time</p>
+                  <p className="logout-label">
+                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.responsetime
+                      }
+                    else{
+                      return "Avg Response time"
+                    }
+                    })()
+                  }
+                  </p>
                   <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
               </div>

@@ -39,6 +39,7 @@ import { NotificationManager } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
+import { MyContext } from './../context'
 
 class TicketSystem extends Component {
   constructor() {
@@ -1480,6 +1481,7 @@ class TicketSystem extends Component {
   };
 
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
 
@@ -1496,7 +1498,16 @@ class TicketSystem extends Component {
                       alt="arrow-circle-left"
                     />
                   </a>
-                  <label className="source">Source</label>
+                  <label className="source">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.source
+                      }
+                    else{
+                      return "Source"
+                    }
+                    })()
+                  }</label>
                   <img
                     src={RedHeadPhoneIcon}
                     alt="headphone"
@@ -1531,7 +1542,16 @@ class TicketSystem extends Component {
                     className="save-as-a-draft"
                     onClick={this.handleCREATE_TICKET.bind(this, "100")}
                   >
-                    SAVE AS DRAFT
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.saveasdraft
+                      }
+                    else{
+                      return "SAVE AS DRAFT"
+                    }
+                    })()
+                  }
                   </button>
                   <button
                     className="rectanglecreateticket create-ticket"
@@ -1562,7 +1582,18 @@ class TicketSystem extends Component {
                 <div className="paddingsystem">
                   <div className="row m-b-10">
                     <div className="col-md-12">
-                      <label className="category">Ticket Title</label>
+                      <label className="category">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.tickettitle
+                      }
+                    else{
+                      return "Ticket Title"
+                    }
+                    })()
+                  }
+                      </label>
 
                       <div
                         className="custom-ticket-title"
@@ -1609,7 +1640,16 @@ class TicketSystem extends Component {
 
                   <div className="row m-b-10">
                     <div className="col-md-12">
-                      <label className="category">Ticket Details</label>
+                      <label className="category">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ticketdetails
+                      }
+                    else{
+                      return "Ticket Details"
+                    }
+                    })()
+                  }</label>
                       <textarea
                         className="ticket-details-textarea-system"
                         placeholder="Write your title here"
@@ -1628,7 +1668,16 @@ class TicketSystem extends Component {
 
                   <div className="row m-b-10">
                     <div className="col-md-6">
-                      <label className="category">Brand</label>
+                      <label className="category">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  }</label>
                       <select
                         className="category-select-system dropdown-label"
                         value={this.state.selectedBrand}
@@ -1658,7 +1707,16 @@ class TicketSystem extends Component {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label className="sub-category">Category</label>
+                      <label className="sub-category">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }</label>
                       <select
                         value={this.state.selectedCategory}
                         onChange={this.setCategoryValue}
@@ -1691,7 +1749,16 @@ class TicketSystem extends Component {
 
                   <div className="row m-b-10">
                     <div className="col-md-6">
-                      <label className="category">Sub Category</label>
+                      <label className="category">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }</label>
                       <select
                         value={this.state.selectedSubCategory}
                         onChange={this.setSubCategoryValue}
@@ -1721,7 +1788,18 @@ class TicketSystem extends Component {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label className="sub-category">Issue Type</label>
+                      <label className="sub-category">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }
+                      </label>
                       <select
                         value={this.state.selectedIssueType}
                         onChange={this.setIssueTypeValue}
@@ -1754,7 +1832,16 @@ class TicketSystem extends Component {
 
                   <div className="row m-b-10">
                     <div className="col-md-6">
-                      <label className="category">Ticket Priority</label>
+                      <label className="category">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ticketpriority
+                      }
+                    else{
+                      return "Ticket Priority"
+                    }
+                    })()
+                  }</label>
                       <div className="priority-butns-cntr">
                         {this.state.TicketPriorityData !== null &&
                           this.state.TicketPriorityData.map((item, i) => (
@@ -1782,7 +1869,18 @@ class TicketSystem extends Component {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <label className="sub-category">Ticket Action Type</label>
+                      <label className="sub-category">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ticketactiontype
+                      }
+                    else{
+                      return "Ticket Action Type"
+                    }
+                    })()
+                  }
+                      </label>
                       <div className="action-type-butns-cntr">
                         <div className="action-type-butns">
                           <input
@@ -1816,7 +1914,18 @@ class TicketSystem extends Component {
 
                   <div className="row m-b-10">
                     <div className="col-md-6">
-                      <label className="category">Channel Of Purchase</label>
+                      <label className="category">
+                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.channelofpurchase
+                      }
+                    else{
+                      return "Channel Of Purchase"
+                    }
+                    })()
+                  }
+                      </label>
                       <select
                         value={this.state.selectedChannelOfPurchase}
                         onChange={this.setChannelOfPurchaseValue}
@@ -2511,7 +2620,18 @@ class TicketSystem extends Component {
                           htmlFor="add-Notes"
                           style={{ paddingLeft: "25px" }}
                         >
-                          <span className="add-note">Add Note</span>
+                          <span className="add-note">
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.addnote
+                      }
+                    else{
+                      return "Add Note"
+                    }
+                    })()
+                  }
+                          </span>
                         </label>
                       </div>
                     </div>
@@ -2534,7 +2654,17 @@ class TicketSystem extends Component {
                         >
                           <span className="add-note">
                             {/* Instant Escalation to High level */}
-                            Auto Escalate
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.autoescalate
+                      }
+                    else{
+                      return "Auto Escalate"
+                    }
+                    })()
+                  }
                           </span>
                         </label>
                       </div>
@@ -2578,16 +2708,44 @@ class TicketSystem extends Component {
                             <div className="row">
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Customer Name
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.customername
+                      }
+                    else{
+                      return "Customer Name"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Phone Number
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.phonenumber
+                      }
+                    else{
+                      return "Phone Number"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                               <div className="col-md-4">
-                                <label className="category2">Email Id</label>
+                                <label className="category2">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.emailid
+                      }
+                    else{
+                      return "Email Id"
+                    }
+                    })()
+                  }</label>
                               </div>
                             </div>
 
@@ -2614,16 +2772,45 @@ class TicketSystem extends Component {
 
                             <div className="row">
                               <div className="col-md-4">
-                                <label className="category2">Gender</label>
+                                <label className="category2">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.gender
+                      }
+                    else{
+                      return "Gender"
+                    }
+                    })()
+                  }</label>
                               </div>
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Alternate Number
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.alternatenumber
+                      }
+                    else{
+                      return "Alternate Number"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Alternate Email Id
+                                  
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.alternateemailid
+                      }
+                    else{
+                      return "Alternate Email Id"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                             </div>
@@ -2659,7 +2846,16 @@ class TicketSystem extends Component {
                                   "Edit"
                                 )}
                               >
-                                EDIT
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }
                               </button>
                             </div>
                           </div>
@@ -2674,7 +2870,18 @@ class TicketSystem extends Component {
                       overlayId="logout-ovrly"
                     >
                       <div className="pop-upAddSearchPD">
-                        <label className="lbl-popup-title">Edit Customer</label>
+                        <label className="lbl-popup-title">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.editcustomer
+                      }
+                    else{
+                      return "Edit Customer"
+                    }
+                    })()
+                  }
+                        </label>
                         <hr />
                         <div className="row row-margin1">
                           <div className="col-md-6">
@@ -2912,7 +3119,18 @@ class TicketSystem extends Component {
                             />
                           )}
 
-                          <span className="system-tab-span">CUSTOMER</span>
+                          <span className="system-tab-span">
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.customer
+                      }
+                    else{
+                      return "CUSTOMER"
+                    }
+                    })()
+                  }
+                          </span>
                         </a>
                       </li>
 
@@ -2931,7 +3149,16 @@ class TicketSystem extends Component {
                             alt="order-icon"
                             className="order-icon"
                           />
-                          <span className="system-tab-span">ORDER</span>
+                          <span className="system-tab-span">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.order
+                      }
+                    else{
+                      return "OEDER"
+                    }
+                    })()
+                  }</span>
                         </a>
                       </li>
 
@@ -2956,7 +3183,16 @@ class TicketSystem extends Component {
                             className="store-icon"
                             style={{ display: "none" }}
                           />
-                          <span className="system-tab-span">STORE</span>
+                          <span className="system-tab-span">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.store
+                      }
+                    else{
+                      return "STORE"
+                    }
+                    })()
+                  }</span>
                         </a>
                       </li>
 
@@ -2975,7 +3211,16 @@ class TicketSystem extends Component {
                             alt="task-icon"
                             className="task-icon"
                           />
-                          <span className="system-tab-span">TASK</span>
+                          <span className="system-tab-span">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.task
+                      }
+                    else{
+                      return "TASK"
+                    }
+                    })()
+                  }</span>
                         </a>
                       </li>
                     </ul>
@@ -3174,4 +3419,5 @@ class TicketSystem extends Component {
   }
 }
 
+TicketSystem.contextType = MyContext;
 export default TicketSystem;

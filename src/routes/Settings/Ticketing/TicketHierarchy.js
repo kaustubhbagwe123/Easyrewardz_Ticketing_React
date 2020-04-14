@@ -17,6 +17,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import config from "../../../helpers/config";
+import { MyContext } from './../../../context'
 import axios from "axios";
 import {
   NotificationContainer,
@@ -1186,6 +1187,7 @@ class TicketHierarchy extends Component {
   }
 
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     const { hierarchyData } = this.state;
 
     return (
@@ -1211,7 +1213,16 @@ class TicketHierarchy extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  } </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1221,7 +1232,16 @@ class TicketHierarchy extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortztoa
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }     </p>
                 </div>
               </div>
               <a
@@ -1229,10 +1249,29 @@ class TicketHierarchy extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type ">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }   </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1376,15 +1415,45 @@ class TicketHierarchy extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <a href="settings" className="header-path">
-            Ticketing
+            
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }   
           </a>
           <span>&gt;</span>
           <a href={Demo.BLANK_LINK} className="header-path active">
-            Hierarchy
+            
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.hierarchy
+                      }
+                    else{
+                      return "Hierarchy"
+                    }
+                    })()
+                  }   
           </a>
         </div>
         <div className="container-fluid">
@@ -1405,7 +1474,17 @@ class TicketHierarchy extends Component {
                               "Designation"
                             )}
                           >
-                            Designation
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.designation
+                      }
+                    else{
+                      return "Designation"
+                    }
+                    })()
+                  }   
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1422,7 +1501,17 @@ class TicketHierarchy extends Component {
                               "Report To"
                             )}
                           >
-                            Report To
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.reportto
+                      }
+                    else{
+                      return "Report To"
+                    }
+                    })()
+                  }   
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1439,7 +1528,17 @@ class TicketHierarchy extends Component {
                               "Created By"
                             )}
                           >
-                            Created By
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }   
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1457,24 +1556,60 @@ class TicketHierarchy extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By:&nbsp;
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }   :&nbsp;
                                             {row.original["createdbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:&nbsp;
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createddate
+                      }
+                    else{
+                      return "Created Date"
+                    }
+                    })()
+                  }:&nbsp;
                                           {row.original["createdateformat"]}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:&nbsp;
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updatedby
+                      }
+                    else{
+                      return "Updated By"
+                    }
+                    })()
+                  }:&nbsp;
                                             {row.original["updatedbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:&nbsp;
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updateddate
+                      }
+                    else{
+                      return "Updated Date"
+                    }
+                    })()
+                  }:&nbsp;
                                           {row.original["updateddateformat"]}
                                         </p>
                                       </div>
@@ -1511,7 +1646,16 @@ class TicketHierarchy extends Component {
                         accessor: "status",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.action
+                      }
+                    else{
+                      return "Action"
+                    }
+                    })()
+                  }</span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["designationID"];
@@ -1529,11 +1673,30 @@ class TicketHierarchy extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <div className="del-can">
                                           <a
@@ -1542,7 +1705,16 @@ class TicketHierarchy extends Component {
                                               this.hide(this, "samdel" + ids)
                                             }
                                           >
-                                            CANCEL
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
                                           </a>
                                           <button
                                             className="butn"
@@ -1552,7 +1724,16 @@ class TicketHierarchy extends Component {
                                               ids
                                             )}
                                           >
-                                            Delete
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                           </button>
                                         </div>
                                       </div>
@@ -1608,7 +1789,16 @@ class TicketHierarchy extends Component {
                                     EDIT
                                   </button> */}
                                   <label className="Table-action-edit-button-text">
-                                    <MyButton>EDIT</MyButton>
+                                    <MyButton>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.mybutton.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }</MyButton>
                                   </label>
                                 </Popover>
                               </span>
@@ -1629,11 +1819,31 @@ class TicketHierarchy extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
-                      CREATE HIERARCHY
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createhierarchy
+                      }
+                    else{
+                      return "CREATE HIERARCHY"
+                    }
+                    })()
+                  }
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                        Designation Name
+                        
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.designationname
+                      }
+                    else{
+                      return "Designation Name"
+                    }
+                    })()
+                  }
                       </label>
                       <input
                         type="text"
@@ -1652,7 +1862,18 @@ class TicketHierarchy extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Reports To</label>
+                        <label className="reports-to">
+                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.reportto
+                      }
+                    else{
+                      return "Reports To"
+                    }
+                    })()
+                  }
+                        </label>
                         <select
                           className="form-control dropdown-setting"
                           value={this.state.selectReportTo}
@@ -1675,7 +1896,16 @@ class TicketHierarchy extends Component {
                       </div>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectStatus}
@@ -1711,7 +1941,17 @@ class TicketHierarchy extends Component {
                           ) : (
                             ""
                           )}
-                          ADD
+                          
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                         </label>
                       </button>
                     </div>
@@ -1720,9 +1960,29 @@ class TicketHierarchy extends Component {
                 <br />
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h3.bulkuupload
+                      }
+                    else{
+                      return "Bulk Upload"
+                    }
+                    })()
+                  }
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.template
+                      }
+                    else{
+                      return "Template"
+                    }
+                    })()
+                  }</p>
                       <CSVLink
                         filename={"Hierarchy.csv"}
                         data={config.hierarchyTemplate}
@@ -1742,8 +2002,35 @@ class TicketHierarchy extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.addfile
+                      }
+                    else{
+                      return "Add File"
+                    }
+                    })()
+                  }</span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.or
+                      }
+                    else{
+                      return "Or"
+                    }
+                    })()
+                  }
+                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.dropfilehere
+                      }
+                    else{
+                      return "Drop file here"
+                    }
+                    })()
+                  }
                         </div>
                       )}
                     </Dropzone>
@@ -1779,23 +2066,61 @@ class TicketHierarchy extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                  
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                 </p>
                                 <div className="del-can">
                                   <a
                                     className="canblue"
                                     onClick={this.togglePopover}
                                   >
-                                    CANCEL
+                                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
                                   </a>
                                   <button
                                     className="butn"
                                     onClick={this.handleDeleteBulkupload}
                                   >
-                                    Delete
+                                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                   </button>
                                 </div>
                               </div>
@@ -1817,11 +2142,29 @@ class TicketHierarchy extends Component {
                               className="file-retry"
                               onClick={this.hanldeAddBulkUpload.bind(this)}
                             >
-                              Retry
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.retry
+                      }
+                    else{
+                      return "Retry"
+                    }
+                    })()
+                  }
                             </a>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.failed
+                      }
+                    else{
+                      return "Failed"
+                    }
+                    })()
+                  }</span>
                           </div>
                         </div>
                       ) : null}
@@ -1854,7 +2197,16 @@ class TicketHierarchy extends Component {
                     className="butn"
                     onClick={this.hanldeAddBulkUpload.bind(this)}
                   >
-                    ADD
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "Add"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </div>
@@ -1865,5 +2217,5 @@ class TicketHierarchy extends Component {
     );
   }
 }
-
+TicketHierarchy.contextType = MyContext;
 export default TicketHierarchy;

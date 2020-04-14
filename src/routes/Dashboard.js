@@ -50,6 +50,7 @@ import TaskStatus from "./TaskStatus";
 import { CSVLink } from "react-csv";
 import DatePickerComponenet from "./Settings/Ticketing/DatePickerComponent";
 import matchSorter from "match-sorter";
+import { MyContext } from '../context'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -4187,6 +4188,7 @@ class Dashboard extends Component {
     //   "DD-MM-YYYY"
     // )} - ${this.state.end.format("DD-MM-YYYY")}`;
     // let disabled = false;
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
@@ -4210,7 +4212,16 @@ class Dashboard extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  }   </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -4220,11 +4231,29 @@ class Dashboard extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortztoa
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }   </p>
                 </div>
               </div>
               <div className="filter-type ">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }   </p>
 
                 <div className="FTypeScroll">
                   <input
@@ -4251,7 +4280,16 @@ class Dashboard extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.all
+                      }
+                    else{
+                      return "ALL"
+                    }
+                    })()
+                  } </span>
                     </label>
                   </div>
                   {this.state.sortColumnName === "status"
@@ -4392,7 +4430,18 @@ class Dashboard extends Component {
               </div>
 
               <div className="filter-type filter-color">
-                <p>FILTER BY COLOR</p>
+                <p>
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbycolor
+                      }
+                    else{
+                      return "FILTER BY COLOR"
+                    }
+                    })()
+                  }
+                </p>
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -4452,7 +4501,16 @@ class Dashboard extends Component {
           <div className="d-flex dashallbrand1">
             <div>
               <span>
-                Brand :
+              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.text.brand
+                      }
+                    else{
+                      return "Brand :"
+                    }
+                    })()
+                  }   
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -4461,7 +4519,16 @@ class Dashboard extends Component {
                     data-toggle="dropdown"
                   >
                     <span id="spnBrand" className="EMFCText">
-                      All
+                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.all
+                      }
+                    else{
+                      return "ALL"
+                    }
+                    })()
+                  }
                     </span>
                   </button>
                   <ul className="dropdown-menu">
@@ -4475,7 +4542,16 @@ class Dashboard extends Component {
                           checked={this.state.CheckBoxAllBrand}
                           name="allBrand"
                         />
-                        <span className="ch1-text">All</span>
+                        <span className="ch1-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.all
+                      }
+                    else{
+                      return "ALL"
+                    }
+                    })()
+                  }</span>
                       </label>
                     </li>
                     {this.state.BrandData !== null &&
@@ -4500,7 +4576,16 @@ class Dashboard extends Component {
             </div>
             <div>
               <span>
-                Agent :
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.text.agent
+                      }
+                    else{
+                      return "Agent :"
+                    }
+                    })()
+                  }   
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -4509,7 +4594,16 @@ class Dashboard extends Component {
                     data-toggle="dropdown"
                   >
                     <span id="spnAgent" className="EMFCText">
-                      All
+                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.all
+                      }
+                    else{
+                      return "ALL"
+                    }
+                    })()
+                  }
                     </span>
                   </button>
                   <ul style={{ width: "180px" }} className="dropdown-menu">
@@ -4523,7 +4617,16 @@ class Dashboard extends Component {
                           checked={this.state.CheckBoxAllAgent}
                           name="allAgent"
                         />
-                        <span className="ch1-text">All</span>
+                        <span className="ch1-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.all
+                      }
+                    else{
+                      return "ALL"
+                    }
+                    })()
+                  }</span>
                       </label>
                     </li>
                     {this.state.AgentData !== null &&
@@ -4550,7 +4653,17 @@ class Dashboard extends Component {
           <div>
             <div className="row">
               <div className="col-md-6 col-6">
-                <span style={{ float: "right" }}>Date Range : </span>
+                <span style={{ float: "right" }}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.text.daterange
+                      }
+                    else{
+                      return "Date Range :"
+                    }
+                    })()
+                  } </span>
+                  
               </div>
               <div className="col-md-6 col-6 p-0">
                 <div className="DashTimeRange">
@@ -4630,7 +4743,18 @@ class Dashboard extends Component {
                       <div className="row justify-content-center">
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">All</p>
+                            <p className="card-head">
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.all
+                      }
+                    else{
+                      return "All"
+                    }
+                    })()
+                  }
+                            </p>
                             <span className="card-value">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.all !== null &&
@@ -4643,7 +4767,18 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">Open</p>
+                            <p className="card-head">
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.open
+                      }
+                    else{
+                      return "Open"
+                    }
+                    })()
+                  }
+                            </p>
                             <span className="card-value">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.open !==
@@ -4661,7 +4796,16 @@ class Dashboard extends Component {
                               }
                               style={{ marginTop: "-3px" }}
                             >
-                              Resolution : &nbsp;
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.resolution
+                      }
+                    else{
+                      return "Resolution"
+                    }
+                    })()
+                  } : &nbsp;
                               <span style={{ fontWeight: "700" }}>
                                 {this.state.DashboardNumberData.resolutionRate}
                               </span>
@@ -4670,7 +4814,18 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">Due Today</p>
+                            <p className="card-head">
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.duetoday
+                      }
+                    else{
+                      return "Due Today"
+                    }
+                    })()
+                  }
+                            </p>
                             <span className="card-value">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.dueToday !==
@@ -4685,7 +4840,18 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">Over Due</p>
+                            <p className="card-head">
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.overdue
+                      }
+                    else{
+                      return "Over Due"
+                    }
+                    })()
+                  }
+                            </p>
                             <span className="card-value red-clr">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.overDue !==
@@ -4703,10 +4869,31 @@ class Dashboard extends Component {
                             onClick={this.HandleChangeRedict.bind(this)}
                           >
                             <div className="dash-top-cards">
-                              <p className="card-head">Total no of chat</p>
+                              <p className="card-head">
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.totalchat
+                      }
+                    else{
+                      return "Total no of chat"
+                    }
+                    })()
+                  }
+                              </p>
                               <span className="card-value">102</span>
                               <small className="blue-clr">
-                                View More Insights
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.small.moreinsights
+                      }
+                    else{
+                      return "View More Insights"
+                    }
+                    })()
+                  }
                               </small>
                             </div>
                           </div>
@@ -4717,7 +4904,18 @@ class Dashboard extends Component {
                       <div className="row">
                         <div className="col-lg-3 col-md-4">
                           <div className="dash-top-cards prio-pie-cntr">
-                            <p className="card-head mb-0">Open By Priority</p>
+                            <p className="card-head mb-0">
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.openpriority
+                      }
+                    else{
+                      return "Open By Priority"
+                    }
+                    })()
+                  }
+                            </p>
                             <div
                               className="prio-pie-chart"
                               style={{ position: "relative" }}
@@ -4732,7 +4930,16 @@ class Dashboard extends Component {
                                           .openPriorityTicketCount
                                       }
                                     </span>{" "}
-                                    Tickets
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.tickets
+                      }
+                    else{
+                      return "Tickets"
+                    }
+                    })()
+                  }
                                   </p>
                                   <OpenByPriorityPie
                                     data={this.state.DashboardPriorityGraphData}
@@ -4741,7 +4948,18 @@ class Dashboard extends Component {
                               ) : null}
                             </div>
                             {this.state.openByPriorityFlag && (
-                              <p>No Data Available</p>
+                              <p>
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.nodataavailable
+                      }
+                    else{
+                      return "No Data Available"
+                    }
+                    })()
+                  }
+                              </p>
                             )}
                           </div>
                         </div>
@@ -4758,7 +4976,17 @@ class Dashboard extends Component {
                                   aria-selected="true"
                                   onClick={this.handlechangebtntab.bind(this)}
                                 >
-                                  Tickets To Bill Graph
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.billgraph
+                      }
+                    else{
+                      return "Tickets To Bill Graph"
+                    }
+                    })()
+                  }
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -4771,7 +4999,17 @@ class Dashboard extends Component {
                                   aria-selected="false"
                                   onClick={this.handlechangebtntab.bind(this)}
                                 >
-                                  Tickets Generation Source Tab
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.generationsource
+                      }
+                    else{
+                      return "Tickets Generation Source Tab"
+                    }
+                    })()
+                  }
                                 </a>
                               </li>
                             </ul>
@@ -4810,7 +5048,16 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                                 {this.state.ticketToBillBarFlag && (
-                                  <p>No Data Available</p>
+                                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.nodataavailable
+                      }
+                    else{
+                      return "No Data Available"
+                    }
+                    })()
+                  }</p>
                                 )}
                               </div>
                               <div
@@ -4846,7 +5093,16 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                                 {this.state.ticketGenerationSourceFlag && (
-                                  <p>No Data Available</p>
+                                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.nodataavailable
+                      }
+                    else{
+                      return "No Data Available"
+                    }
+                    })()
+                  }</p>
                                 )}
                               </div>
                             </div>
@@ -4864,7 +5120,16 @@ class Dashboard extends Component {
                                 .length > 0 ? (
                                 <div className="resp-success">
                                   <p className="card-head">
-                                    Response{" "}
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.response
+                      }
+                    else{
+                      return "Response"
+                    }
+                    })()
+                  } {" "}
                                     {this.state.DashboardNumberData
                                       .isResponseSuccess === true
                                       ? "Success"
@@ -4885,7 +5150,18 @@ class Dashboard extends Component {
                                       }
                                       style={{ marginTop: "-5px" }}
                                     >
-                                      Avg. Response TAT &nbsp;
+                                      
+                                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.avgresponsetat
+                      }
+                    else{
+                      return "Avg. Response TAT"
+                    }
+                    })()
+                  } 
+                                       &nbsp;
                                       <span style={{ fontWeight: "700" }}>
                                         {
                                           this.state.DashboardNumberData
@@ -4895,7 +5171,16 @@ class Dashboard extends Component {
                                     </span>
                                   </span>
                                   <p className="card-head mt-lg-4 mt-2">
-                                    Resolution{" "}
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.resolution
+                      }
+                    else{
+                      return "Resolution"
+                    }
+                    })()
+                  } {" "}
                                     {this.state.DashboardNumberData
                                       .isResolutionSuccess === true
                                       ? "Success"
@@ -4914,7 +5199,16 @@ class Dashboard extends Component {
                                           : "dash-res dash-res-opac"
                                       }
                                     >
-                                      Avg. Resolution TAT &nbsp;
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.avgresponsetat
+                      }
+                    else{
+                      return "Avg. Response TAT"
+                    }
+                    })()
+                  }  &nbsp;
                                       <span style={{ fontWeight: "700" }}>
                                         {
                                           this.state.DashboardNumberData
@@ -4930,7 +5224,16 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-lg-3 col-sm-6 d-none">
                           <div className="dash-top-cards">
-                            <p className="card-head">Task</p>
+                            <p className="card-head">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.task
+                      }
+                    else{
+                      return "Task"
+                    }
+                    })()
+                  } </p>
                             <div className="aside-cont">
                               <div>
                                 <span className="card-value">
@@ -4942,7 +5245,16 @@ class Dashboard extends Component {
                                       : this.state.DashboardNumberData.taskOpen
                                     : null}
                                 </span>
-                                <small>Open</small>
+                                <small>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.small.open
+                      }
+                    else{
+                      return "Open"
+                    }
+                    })()
+                  }</small>
                               </div>
                               <div>
                                 <span className="card-value">
@@ -4954,7 +5266,16 @@ class Dashboard extends Component {
                                       : this.state.DashboardNumberData.taskClose
                                     : null}
                                 </span>
-                                <small>Closed</small>
+                                <small>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.small.closed
+                      }
+                    else{
+                      return "Closed"
+                    }
+                    })()}
+                  </small>
                               </div>
                             </div>
                           </div>
@@ -4971,7 +5292,16 @@ class Dashboard extends Component {
                                   aria-controls="task-tab"
                                   aria-selected="true"
                                 >
-                                  Ticket to Task
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.tickettotask
+                      }
+                    else{
+                      return "Ticket to Task"
+                    }
+                    })()}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -4983,7 +5313,16 @@ class Dashboard extends Component {
                                   aria-controls="claim-tab"
                                   aria-selected="false"
                                 >
-                                  Ticket to claim
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.tickettoclaim
+                      }
+                    else{
+                      return "Ticket to Claim"
+                    }
+                    })()}
                                 </a>
                               </li>
                             </ul>
@@ -5021,7 +5360,15 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-lg-3 col-sm-6 d-none">
                           <div className="dash-top-cards">
-                            <p className="card-head">Claim</p>
+                            <p className="card-head">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.claim
+                      }
+                    else{
+                      return "Claim"
+                    }
+                    })()}</p>
                             <div className="aside-cont">
                               <div>
                                 <span className="card-value">
@@ -5033,7 +5380,16 @@ class Dashboard extends Component {
                                       : this.state.DashboardNumberData.claimOpen
                                     : null}
                                 </span>
-                                <small>Open</small>
+                                <small>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.small.open
+                      }
+                    else{
+                      return "Open"
+                    }
+                    })()
+                  }</small>
                               </div>
                               <div>
                                 <span className="card-value">
@@ -5047,7 +5403,16 @@ class Dashboard extends Component {
                                           .claimClose
                                     : null}
                                 </span>
-                                <small>Closed</small>
+                                <small>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.small.closed
+                      }
+                    else{
+                      return "Closed"
+                    }
+                    })()
+                  }</small>
                               </div>
                             </div>
                           </div>
@@ -5088,7 +5453,17 @@ class Dashboard extends Component {
                                 aria-selected="true"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Date
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.bydate
+                      }
+                    else{
+                      return "By Date"
+                    }
+                    })()
+                  }
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5101,7 +5476,17 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Customer Type
+                                
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.bycustomertype
+                      }
+                    else{
+                      return "By Customer Type"
+                    }
+                    })()
+                  }
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5114,7 +5499,17 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Ticket Type
+                                
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.bytickettype
+                      }
+                    else{
+                      return "By Ticket Type"
+                    }
+                    })()
+                  }
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5127,7 +5522,17 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Category
+                                
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.bycategory
+                      }
+                    else{
+                      return "By Category"
+                    }
+                    })()
+                  }
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5140,20 +5545,50 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                All
+                                
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.all
+                      }
+                    else{
+                      return "All"
+                    }
+                    })()
+                  }
                               </a>
                             </li>
                           </ul>
                           <div className="save-view-search">
                             <button onClick={this.onOpenModal}>
-                              Save Search
+                              
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.savesearch
+                      }
+                    else{
+                      return "Save Search"
+                    }
+                    })()
+                  }
                             </button>
                             <button
                               type="button"
                               className="btn-inv"
                               onClick={this.ViewSearchData.bind(this, 1)}
                             >
-                              View Search
+                              
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.viewsearch
+                      }
+                    else{
+                      return "View Search"
+                    }
+                    })()
+                  }
                             </button>
                           </div>
                         </div>
@@ -5165,7 +5600,18 @@ class Dashboard extends Component {
                           overlayId="save-search-ovrly"
                         >
                           <div className="save-search">
-                            <p>SAVE SEARCH</p>
+                            <p>
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.savesearch
+                      }
+                    else{
+                      return "SAVE SEARCH"
+                    }
+                    })()
+                  }
+                            </p>
                           </div>
                           <div className="search-name">
                             <input
@@ -5190,13 +5636,42 @@ class Dashboard extends Component {
                               type="button"
                               onClick={this.SaveSearchData.bind(this)}
                             >
-                              Save
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.save
+                      }
+                    else{
+                      return "Save"
+                    }
+                    })()
+                  }
                             </button>
                           </div>
                           <div className="search-names">
                             <div className="names-title">
-                              <p>Search Name</p>
-                              <p className="mar-comp">Action</p>
+                              <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.searchname
+                      }
+                    else{
+                      return "Search Name"
+                    }
+                    })()
+                  }</p>
+                              <p className="mar-comp">
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.action
+                      }
+                    else{
+                      return "Action"
+                    }
+                    })()
+                  }
+                              </p>
                             </div>
                             <ul>
                               {/* <li> */}
@@ -5214,7 +5689,17 @@ class Dashboard extends Component {
                                           item.searchParamID
                                         )}
                                       >
-                                        APPLY
+                                        
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.apply
+                      }
+                    else{
+                      return "APPLY"
+                    }
+                    })()
+                  }
                                       </a>
                                       <a href="#!"
                                         onClick={this.hadleSearchDeleteData.bind(
@@ -6208,13 +6693,33 @@ class Dashboard extends Component {
                                     ? "0" + this.state.resultCount
                                     : this.state.resultCount}
                                 </span>{" "}
-                                Results
+                                
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.results
+                      }
+                    else{
+                      return "Results"
+                    }
+                    })()
+                  }
                               </p>
                               <a href="#!"
                                 className="blue-clr fs-14 a-mar"
                                 onClick={this.clearSearch}
                               >
-                                CLEAR SEARCH
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "CLEAR SEARCH"
+                    }
+                    })()
+                  }
                               </a>
                               &nbsp; &nbsp; &nbsp;
                               <a href="#!"
@@ -6224,7 +6729,17 @@ class Dashboard extends Component {
                                   "all"
                                 )}
                               >
-                                CLEAR FILTER
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearfilter
+                      }
+                    else{
+                      return "CLEAR FILTER"
+                    }
+                    })()
+                  }
                               </a>
                             </div>
                             <div className="col-auto mob-mar-btm">
@@ -6254,7 +6769,17 @@ class Dashboard extends Component {
                                   src={Schedule}
                                   alt="schedule-icon"
                                 />
-                                Schedule
+                                
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.schedule
+                      }
+                    else{
+                      return "Schedule"
+                    }
+                    })()
+                  }
                               </button>
                               <Modal
                                 onClose={this.ScheduleCloseModel}
@@ -6267,7 +6792,18 @@ class Dashboard extends Component {
                               >
                                 <div>
                                   <label>
-                                    <b>Schedule date to</b>
+                                    <b>
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.scheduledateto
+                      }
+                    else{
+                      return "Schedule date to"
+                    }
+                    })()
+                  }
+                                    </b>
                                   </label>
                                   <div>
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -6310,7 +6846,17 @@ class Dashboard extends Component {
                                       <div className="ScheduleDate-to">
                                         <span>
                                           <label className="every1">
-                                            Every
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.every
+                      }
+                    else{
+                      return "Every"
+                    }
+                    })()
+                  }
                                           </label>
                                           <input
                                             type="text"
@@ -6318,7 +6864,16 @@ class Dashboard extends Component {
                                             placeholder="1"
                                             onChange={this.handleDailyDay}
                                           />
-                                          <label className="every1">Day</label>
+                                          <label className="every1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.day
+                      }
+                    else{
+                      return "Day"
+                    }
+                    })()
+                  }</label>
                                         </span>
                                       </div>
                                     ) : null}
@@ -6326,7 +6881,16 @@ class Dashboard extends Component {
                                       <div className="ScheduleDate-to">
                                         <span>
                                           <label className="every1">
-                                            Every
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.every
+                      }
+                    else{
+                      return "Every"
+                    }
+                    })()
+                  }
                                           </label>
                                           <input
                                             type="text"
@@ -6335,7 +6899,17 @@ class Dashboard extends Component {
                                             onChange={this.handleWeekly}
                                           />
                                           <label className="every1">
-                                            Week on
+                                           
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.weekon
+                      }
+                    else{
+                      return "Week on"
+                    }
+                    })()
+                  }
                                           </label>
                                         </span>
                                         <div
@@ -6347,43 +6921,113 @@ class Dashboard extends Component {
                                             onChange={this.handleWeeklyDays}
                                             value="Mon"
                                           >
-                                            Mon
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.mon
+                      }
+                    else{
+                      return "Mon"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Tue"
                                           >
-                                            Tue
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.tue
+                      }
+                    else{
+                      return "Tue"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Wed"
                                           >
-                                            Wed
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.wed
+                      }
+                    else{
+                      return "Wed"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Thu"
                                           >
-                                            Thu
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.thu
+                      }
+                    else{
+                      return "Thu"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Fri"
                                           >
-                                            Fri
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.fri
+                      }
+                    else{
+                      return "Fri"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Sat"
                                           >
-                                            Sat
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.sat
+                      }
+                    else{
+                      return "Sat"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Sun"
                                           >
-                                            Sun
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.checkbox.sun
+                      }
+                    else{
+                      return "Sun"
+                    }
+                    })()
+                  }
                                           </Checkbox>
                                         </div>
                                       </div>
@@ -6391,7 +7035,16 @@ class Dashboard extends Component {
                                     {this.state.selectScheduleDate === "232" ? (
                                       <div className="ScheduleDate-to">
                                         <span>
-                                          <label className="every1">Day</label>
+                                          <label className="every1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.day
+                      }
+                    else{
+                      return "Day"
+                    }
+                    })()
+                  }</label>
                                           <input
                                             type="text"
                                             className="Every"
@@ -6399,7 +7052,17 @@ class Dashboard extends Component {
                                             onChange={this.handleDaysForMonth}
                                           />
                                           <label className="every1">
-                                            of every
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ofevery
+                      }
+                    else{
+                      return "of every"
+                    }
+                    })()
+                  }
                                           </label>
                                           <input
                                             type="text"
@@ -6408,7 +7071,16 @@ class Dashboard extends Component {
                                             onChange={this.handleMonthForMonth}
                                           />
                                           <label className="every1">
-                                            months
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.months
+                      }
+                    else{
+                      return "Months"
+                    }
+                    })()
+                  }
                                           </label>
                                         </span>
                                       </div>
@@ -6417,7 +7089,16 @@ class Dashboard extends Component {
                                       <div className="ScheduleDate-to">
                                         <span>
                                           <label className="every1">
-                                            Every
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.every
+                      }
+                    else{
+                      return "Every"
+                    }
+                    })()
+                  }
                                           </label>
                                           <input
                                             type="text"
@@ -6426,7 +7107,17 @@ class Dashboard extends Component {
                                             onChange={this.handleMonthForWeek}
                                           />
                                           <label className="every1">
-                                            month on the
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.monthonthe
+                      }
+                    else{
+                      return "month on the"
+                    }
+                    })()
+                  }
                                           </label>
                                         </span>
                                         <div className="row mt-3">
@@ -6484,7 +7175,16 @@ class Dashboard extends Component {
                                               lineHeight: "40px"
                                             }}
                                           >
-                                            on
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.on
+                      }
+                    else{
+                      return "on"
+                    }
+                    })()
+                  }
                                           </label>
                                           <div className="col-md-7">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -6532,7 +7232,17 @@ class Dashboard extends Component {
                                                 lineHeight: "40px"
                                               }}
                                             >
-                                              on the
+                                             
+                                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.onthe
+                      }
+                    else{
+                      return "on the"
+                    }
+                    })()
+                  }
                                             </label>
                                             <div className="col-md-7">
                                               <select
@@ -6594,7 +7304,17 @@ class Dashboard extends Component {
                                               lineHeight: "40px"
                                             }}
                                           >
-                                            to
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.to
+                      }
+                    else{
+                      return "to"
+                    }
+                    })()
+                  }
                                           </label>
                                           <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -6669,7 +7389,17 @@ class Dashboard extends Component {
                                         onClick={this.handleSchedulePopup}
                                       >
                                         <label className="addLable">
-                                          SCHEDULE
+                                          
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.schedule
+                      }
+                    else{
+                      return "SCHEDULE"
+                    }
+                    })()
+                  }
                                         </label>
                                       </button>
                                     </div>
@@ -6678,7 +7408,17 @@ class Dashboard extends Component {
                                         type="button"
                                         className="scheduleBtncancel"
                                       >
-                                        CANCEL
+                                        
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
                                       </button>
                                     </div>
                                   </div>
@@ -6701,7 +7441,17 @@ class Dashboard extends Component {
                                   className="assign-icon"
                                   alt="assign-icon"
                                 />
-                                Assign
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.assign
+                      }
+                    else{
+                      return "Assign"
+                    }
+                    })()
+                  }
                               </button>
                               <Modal
                                 onClose={this.handleAssignModalClose.bind(this)}
@@ -6724,7 +7474,17 @@ class Dashboard extends Component {
                                     />
                                   </a>
                                   <label className="claim-details">
-                                    Assign Tickets To
+                                    
+                                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.assignticketsto
+                      }
+                    else{
+                      return "Assign Tickets To"
+                    }
+                    })()
+                  }
                                   </label>
                                   <img
                                     src={SearchBlackImg}
@@ -6786,7 +7546,17 @@ class Dashboard extends Component {
                                       this
                                     )}
                                   >
-                                    SEARCH
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.search
+                      }
+                    else{
+                      return "SEARCH"
+                    }
+                    })()
+                  }
                                   </button>
                                   <a
                                     href="#!"
@@ -6795,7 +7565,17 @@ class Dashboard extends Component {
                                       this
                                     )}
                                   >
-                                    CLEAR
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clear
+                      }
+                    else{
+                      return "CLEAR"
+                    }
+                    })()
+                  }
                                   </a>
                                 </div>
                                 <div className="assign-modal-body">
@@ -6803,7 +7583,16 @@ class Dashboard extends Component {
                                     data={SearchAssignData}
                                     columns={[
                                       {
-                                        Header: <span>Agent</span>,
+                                        Header: <span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.agent
+                      }
+                    else{
+                      return "Agent"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "agent",
                                         Cell: row => {
                                           var ids = row.original["user_ID"];
@@ -6823,11 +7612,29 @@ class Dashboard extends Component {
                                         }
                                       },
                                       {
-                                        Header: <span>Designation</span>,
+                                        Header: <span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.designation
+                      }
+                    else{
+                      return "Designation"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "designation"
                                       },
                                       {
-                                        Header: <span>Email</span>,
+                                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.email
+                      }
+                    else{
+                      return "Email"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "email"
                                       }
                                     ]}
@@ -6861,7 +7668,17 @@ class Dashboard extends Component {
                                     type="button"
                                     onClick={this.handleAssignTickets}
                                   >
-                                    ASSIGN TICKETS
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.assigntickets
+                      }
+                    else{
+                      return "ASSIGN TICKETS"
+                    }
+                    })()
+                  }
                                   </button>
                                 </div>
                               </Modal>
@@ -6898,7 +7715,16 @@ class Dashboard extends Component {
                                   />
                                 ) : null}
                                 <label htmlFor="fil-aball" className="ticketid">
-                                  ID
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.id
+                      }
+                    else{
+                      return "ID"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                             </div>
@@ -6989,7 +7815,16 @@ class Dashboard extends Component {
                             )}
                             className={this.state.statusColor}
                           >
-                            Status <FontAwesomeIcon icon={faCaretDown} />
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  } <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "ticketStatus",
@@ -7040,10 +7875,28 @@ class Dashboard extends Component {
                                     <div className="dash-task-popup-new">
                                       <div className="d-flex justify-content-between align-items-center">
                                         <p className="m-b-0">
-                                          CLAIM:{row.original.claimStatus}
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.claim
+                      }
+                    else{
+                      return "Claim"
+                    }
+                    })()
+                  }:{row.original.claimStatus}
                                         </p>
                                         <div className="d-flex align-items-center">
-                                          2 NEW
+                                          2 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.new
+                      }
+                    else{
+                      return "New"
+                    }
+                    })()
+                  }
                                           <div className="nw-chat">
                                             <img src={Chat} alt="chat" />
                                           </div>
@@ -7091,12 +7944,30 @@ class Dashboard extends Component {
                                     <div className="dash-task-popup-new">
                                       <div className="d-flex justify-content-between align-items-center">
                                         <p className="m-b-0">
-                                          TASK:{row.original.taskStatus}
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.task
+                      }
+                    else{
+                      return "Task:"
+                    }
+                    })()
+                  }{row.original.taskStatus}
                                         </p>
                                         {row.original.ticketCommentCount > 0 ? (
                                           <div className="d-flex align-items-center">
                                             {row.original.ticketCommentCount}{" "}
-                                            NEW
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.new
+                      }
+                    else{
+                      return "New"
+                    }
+                    })()
+                  }
                                             <div className="nw-chat">
                                               <img src={Chat} alt="chat" />
                                             </div>
@@ -7135,9 +8006,27 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <label className="ticketid">
-                            <span>Subject/</span>
+                            <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.subject
+                      }
+                    else{
+                      return "Subject"
+                    }
+                    })()
+                  }/</span>
                             <span style={{ fontSize: "10px !important" }}>
-                              Latest Message
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.latestmessage
+                      }
+                    else{
+                      return "Latest Message"
+                    }
+                    })()
+                  }
                             </span>
                           </label>
                         ),
@@ -7163,7 +8052,16 @@ class Dashboard extends Component {
                               "Category"
                             )}
                           >
-                            Category <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  } <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "category",
@@ -7178,15 +8076,42 @@ class Dashboard extends Component {
                                 <div className="dash-creation-popup-cntr">
                                   <ul className="dash-category-popup dashnewpopup">
                                     <li>
-                                      <p>Category</p>
+                                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }</p>
                                       <p>{row.original.category}</p>
                                     </li>
                                     <li>
-                                      <p>Sub Category</p>
+                                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }</p>
                                       <p>{row.original.subCategory}</p>
                                     </li>
                                     <li>
-                                      <p>Type</p>
+                                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.type
+                      }
+                    else{
+                      return "Type"
+                    }
+                    })()
+                  }</p>
                                       <p>{row.original.issueType}</p>
                                     </li>
                                   </ul>
@@ -7213,7 +8138,16 @@ class Dashboard extends Component {
                               "Priority"
                             )}
                           >
-                            Priority <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  } <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "priority",
@@ -7229,7 +8163,16 @@ class Dashboard extends Component {
                               "Assign To"
                             )}
                           >
-                            Assignee <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.assignee
+                      }
+                    else{
+                      return "Assignee"
+                    }
+                    })()
+                  } <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "assignee"
@@ -7244,7 +8187,16 @@ class Dashboard extends Component {
                               " Creation On"
                             )}
                           >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.creation
+                      }
+                    else{
+                      return "Creation On"
+                    }
+                    })()
+                  } <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "createdOn",
@@ -7258,33 +8210,106 @@ class Dashboard extends Component {
                               content={
                                 <div className="insertpop1">
                                   <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
+                                    <li className="title">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.li.creationdetails
+                      }
+                    else{
+                      return "Creation Details"
+                    }
+                    })()
+                  }</li>
                                     <li>
-                                      <p>Created by {row.original.createdBy}</p>
+                                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  } {row.original.createdBy}</p>
                                       <p>{row.original.createdago}</p>
                                     </li>
                                     <li>
                                       <p>
-                                        Assigned to {row.original.assignedTo}
+                                        
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.assignedto
+                      }
+                    else{
+                      return "Assigned To"
+                    }
+                    })()
+                  }
+                                         {row.original.assignedTo}
                                       </p>
                                       <p>{row.original.assignedago}</p>
                                     </li>
                                     <li>
-                                      <p>Updated by {row.original.updatedBy}</p>
+                                      <p>
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updatedby
+                      }
+                    else{
+                      return "Updated by"
+                    }
+                    })()
+                  }
+                                       {row.original.updatedBy}</p>
                                       <p>{row.original.updatedago}</p>
                                     </li>
                                     <li>
-                                      <p>Response time remaining by</p>
+                                      <p>
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.responsetimerem
+                      }
+                    else{
+                      return "Response time remaining by"
+                    }
+                    })()
+                  }
+                                      </p>
                                       <p>
                                         {row.original.responseTimeRemainingBy}
                                       </p>
                                     </li>
                                     <li>
-                                      <p>Response overdue by</p>
+                                      <p>
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.responseoverdueby
+                      }
+                    else{
+                      return "Response overdue by"
+                    }
+                    })()
+                  }
+                                      </p>
                                       <p>{row.original.responseOverdueBy}</p>
                                     </li>
                                     <li>
-                                      <p>Resolution overdue by</p>
+                                      <p>
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.resolutionoverdueby
+                      }
+                    else{
+                      return "Resolution overdue by"
+                    }
+                    })()
+                  }
+                                      </p>
                                       <p>{row.original.resolutionOverdueBy}</p>
                                     </li>
                                   </ul>
@@ -7356,4 +8381,5 @@ class Dashboard extends Component {
   }
 }
 
+Dashboard.contextType = MyContext;
 export default Dashboard;

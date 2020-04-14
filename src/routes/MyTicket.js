@@ -61,6 +61,7 @@ import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { withRouter } from "react-router";
 import ReactHtmlParser from "react-html-parser";
 import Demo from "../store/Hashtag";
+import { MyContext } from '../context'
 
 class MyTicket extends Component {
   constructor(props) {
@@ -2845,6 +2846,7 @@ class MyTicket extends Component {
   }
 
   render() {
+     const TranslationContext = this.context.state.translateLanguage.default
     const {
       open,
       ticketDetailsData,
@@ -2908,7 +2910,16 @@ class MyTicket extends Component {
                       className="headphone"
                     />
                     <label className="id-abc-1234">
-                      ID - {ticketDetailsData.ticketID}
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.id
+                      }
+                    else{
+                      return "ID"
+                    }
+                    })()
+                  } - {ticketDetailsData.ticketID}
                       <span className="updated-2-d-ago">
                         {ticketDetailsData.updateDate}
                       </span>
@@ -2937,7 +2948,19 @@ class MyTicket extends Component {
                       overlayId="logout-ovrly"
                       classNames={{ modal: "historical-popup" }}
                     >
-                      <label className="lblHistorical">Ticket Historical</label>
+                      <label className="lblHistorical">
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.tickethistorical
+                      }
+                    else{
+                      return "Ticket Historical"
+                    }
+                    })()
+                  } 
+                      </label>
                       <img
                         src={CancelImg}
                         alt="cancelImg"
@@ -2950,16 +2973,52 @@ class MyTicket extends Component {
                           data={historicalDetails}
                           columns={[
                             {
-                              Header: <span>Name</span>,
+                              Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.name
+                      }
+                    else{
+                      return "Name"
+                    }
+                    })()
+                  } </span>,
                               accessor: "name",
                               width: 150,
                             },
                             {
-                              Header: <span>Action</span>,
+                              Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.action
+                      }
+                    else{
+                      return "Action"
+                    }
+                    })()
+                  } </span>,
                               accessor: "action",
                             },
                             {
-                              Header: <span>Time & Date</span>,
+                              Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.time
+                      }
+                    else{
+                      return "Time"
+                    }
+                    })()
+                  }  & {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.date
+                      }
+                    else{
+                      return "Date"
+                    }
+                    })()
+                  }</span>,
                               accessor: "dateandTime",
                               width: 200,
                               Cell: (row) => {
@@ -3007,7 +3066,16 @@ class MyTicket extends Component {
                         className="myticket-submit-solve-button"
                         onClick={this.handleSubmitTicket.bind(this)}
                       >
-                        SUBMIT
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.submit
+                      }
+                    else{
+                      return "SUBMIT"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
@@ -3027,16 +3095,45 @@ class MyTicket extends Component {
                         data={SearchAssignData}
                         columns={[
                           {
-                            Header: <span>Emp Id</span>,
+                            Header: <span>
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.empid
+                      }
+                    else{
+                      return "Emp Id"
+                    }
+                    })()
+                  }
+                            </span>,
                             accessor: "user_ID",
                             width: 80,
                           },
                           {
-                            Header: <span>Name</span>,
+                            Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.name
+                      }
+                    else{
+                      return "name"
+                    }
+                    })()
+                  }</span>,
                             accessor: "agentName",
                           },
                           {
-                            Header: <span>Designation</span>,
+                            Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.designation
+                      }
+                    else{
+                      return "Designation"
+                    }
+                    })()
+                  }</span>,
                             accessor: "designation",
                           },
                         ]}
@@ -3065,7 +3162,16 @@ class MyTicket extends Component {
                           className="btn btn-outline-primary"
                           onClick={this.handleReAssignCommentOpen.bind(this)}
                         >
-                          SELECT
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.select
+                      }
+                    else{
+                      return "SELECT"
+                    }
+                    })()
+                  }
                         </button>
                       </div>
                       <div
@@ -3092,7 +3198,16 @@ class MyTicket extends Component {
               <div className="commenttextborder">
                 <div className="comment-disp">
                   <div className="Commentlabel">
-                    <label className="Commentlabel1">Add Comment</label>
+                    <label className="Commentlabel1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.addcomment
+                      }
+                    else{
+                      return "Add Comment"
+                    }
+                    })()
+                  }</label>
                   </div>
                   <div>
                     <img
@@ -3124,7 +3239,16 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleSkipComment.bind(this)}
                   >
-                    SKIP
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.skip
+                      }
+                    else{
+                      return "SKIP"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
                 <div className="SendCommentBtn">
@@ -3132,7 +3256,16 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleSendMailData.bind(this, 4)}
                   >
-                    ADD
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "Add"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </div>
@@ -3142,7 +3275,18 @@ class MyTicket extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div style={{ padding: "15px" }}>
-                      <label className="mobile-number">Mobile Number</label>
+                      <label className="mobile-number">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.mobilenumber
+                      }
+                    else{
+                      return "Mobile Number"
+                    }
+                    })()
+                  }
+                      </label>
                       <br />
                       <label className="mobile-no">
                         {ticketDetailsData.customerPhoneNumber}
@@ -3176,14 +3320,34 @@ class MyTicket extends Component {
                           </div>
                           <div className="row profilemodalrow">
                             <div className="col-md-6">
-                              <label className="profilemodal-text">Name</label>
+                              <label className="profilemodal-text">
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.name
+                      }
+                    else{
+                      return "Name"
+                    }
+                    })()
+                  }
+                              </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerName}
                               </label>
                             </div>
                             <div className="col-md-6">
                               <label className="profilemodal-text">
-                                Mobile
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.mobile
+                      }
+                    else{
+                      return "Mobile"
+                    }
+                    })()
+                  }
                               </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerPhoneNumber}
@@ -3192,7 +3356,16 @@ class MyTicket extends Component {
                           </div>
                           <div className="row profilemodalrow-1">
                             <div className="col-md-6">
-                              <label className="profilemodal-text">Email</label>
+                              <label className="profilemodal-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.email
+                      }
+                    else{
+                      return "Email"
+                    }
+                    })()
+                  }</label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerEmailId}
                               </label>
@@ -3200,7 +3373,17 @@ class MyTicket extends Component {
 
                             <div className="col-md-6">
                               <label className="profilemodal-text">
-                                Alternate Number
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.alternatenumber
+                      }
+                    else{
+                      return "Alternate Number"
+                    }
+                    })()
+                  }
                               </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.altNumber}
@@ -3212,7 +3395,18 @@ class MyTicket extends Component {
                               <label className="open-tickets-box-text">
                                 {ticketDetailsData.openTicket}
                                 <small className="open-tickets-box-textval">
-                                  Open Tickets
+                                  
+
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.openticket
+                      }
+                    else{
+                      return "Open Tickets"
+                    }
+                    })()
+                  }
                                 </small>
                               </label>
                             </div>
@@ -3220,7 +3414,17 @@ class MyTicket extends Component {
                               <label className="open-tickets-box-text">
                                 {ticketDetailsData.totalticket}
                                 <small className="open-tickets-box-textval">
-                                  Total Tickets
+                                  
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.totalticket
+                      }
+                    else{
+                      return "Total Tickets"
+                    }
+                    })()
+                  }
                                 </small>
                               </label>
                             </div>
@@ -3228,7 +3432,17 @@ class MyTicket extends Component {
                           <div className="row profilemodal-row-3">
                             <img src={CustomerIcon} alt="customer-icon" />
                             <label className="full-profile-view-text">
-                              FULL PROFILE VIEW
+                              
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.fullprofileview
+                      }
+                    else{
+                      return "FULL PROFILE VIEW"
+                    }
+                    })()
+                  }
                             </label>
                           </div>
                         </div>
@@ -3265,19 +3479,50 @@ class MyTicket extends Component {
                                   className="usericon"
                                 />
                                 <label className="customer-text">
-                                  CUSTOMER
+                                  
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.customer
+                      }
+                    else{
+                      return "CUSTOMER"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                               <div className="row">
                                 <div className="col-md-6 namepad">
-                                  <label className="fullna">Full Name</label>
+                                  <label className="fullna">
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.fullname
+                      }
+                    else{
+                      return "Full Name"
+                    }
+                    })()
+                  }
+                                  </label>
                                   <label className="namedi">
                                     {ticketDetailsData.customerName}
                                   </label>
                                 </div>
                                 <div className="col-md-6 namepad">
                                   <label className="fullna">
-                                    Mobile Number
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.mobilenumber
+                      }
+                    else{
+                      return "Mobile Number"
+                    }
+                    })()
+                  }
                                   </label>
                                   <label className="namedi">
                                     {ticketDetailsData.customerPhoneNumber}
@@ -3286,7 +3531,18 @@ class MyTicket extends Component {
                               </div>
                               <div className="row">
                                 <div className="col-md-12 namepad">
-                                  <label className="fullna">Email ID</label>
+                                  <label className="fullna">
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.emailid
+                      }
+                    else{
+                      return "Email ID"
+                    }
+                    })()
+                  }
+                                  </label>
                                   <label className="namedi">
                                     {ticketDetailsData.customerEmailId}
                                   </label>
@@ -3311,7 +3567,17 @@ class MyTicket extends Component {
                                     style={{ marginTop: "-10px" }}
                                   />
                                   <label className="customer-text">
-                                    HISTORICAL ORDER
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.historicalorder
+                      }
+                    else{
+                      return "HISTORICAL ORDER"
+                    }
+                    })()
+                  }
                                   </label>
                                 </div>
 
@@ -3322,7 +3588,17 @@ class MyTicket extends Component {
                                       {
                                         Header: (
                                           <span className="historyTable-header">
-                                            Order Number
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.ordernumber
+                      }
+                    else{
+                      return "Order Number"
+                    }
+                    })()
+                  }
                                           </span>
                                         ),
                                         accessor: "orderNumber",
@@ -3330,7 +3606,18 @@ class MyTicket extends Component {
                                       {
                                         Header: (
                                           <span className="historyTable-header">
-                                            Mobile Number
+                                            
+                                             
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.mobilenumber
+                      }
+                    else{
+                      return "Mobile Number"
+                    }
+                    })()
+                  }
                                           </span>
                                         ),
                                         accessor: "mobileNumber",
@@ -3338,7 +3625,17 @@ class MyTicket extends Component {
                                       {
                                         Header: (
                                           <span className="historyTable-header">
-                                            Amount
+                                            
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.amount
+                      }
+                    else{
+                      return "Amount"
+                    }
+                    })()
+                  }
                                           </span>
                                         ),
                                         // accessor: "itemPrice",
@@ -3347,7 +3644,17 @@ class MyTicket extends Component {
                                       {
                                         Header: (
                                           <span className="historyTable-header">
-                                            Purchase Date
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.purchasedate
+                      }
+                    else{
+                      return "Purchase Date"
+                    }
+                    })()
+                  }
                                           </span>
                                         ),
                                         accessor: "dateFormat",
@@ -3365,7 +3672,18 @@ class MyTicket extends Component {
                       
                       <div className="card-space-1">
                         <label className="target-closure-date">
-                          Target Closure Date &nbsp;
+                          
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.targetcloserdate
+                      }
+                    else{
+                      return "Target Closure Date"
+                    }
+                    })()
+                  }
+                           &nbsp;
                         </label>
                         <label className="Date-target">
                           {ticketDetailsData.targetClosuredate}
@@ -3373,10 +3691,28 @@ class MyTicket extends Component {
                       </div>
                       <div className="mobilenumber-resp">
                         <span className="line-respo"></span>
-                        <label className="respo">Response</label>
+                        <label className="respo">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.response
+                      }
+                    else{
+                      return "Response"
+                    }
+                    })()
+                  }</label>
                         <label className="resol">
                           <span className="line-resol"></span>
-                          Resolution
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.resolution
+                      }
+                    else{
+                      return "Resolution"
+                    }
+                    })()
+                  }
                         </label>
                       </div>
                       {/* <progress
@@ -3451,7 +3787,18 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Status</label>
+                            <label className="label-4">
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }
+                            </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={
@@ -3483,7 +3830,16 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Priority</label>
+                            <label className="label-4">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  }</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={this.state.selectetedParameters.priorityID}
@@ -3512,7 +3868,16 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Brand</label>
+                            <label className="label-4">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  }</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={this.state.selectetedParameters.brandID}
@@ -3547,7 +3912,16 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Category</label>
+                            <label className="label-4">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }</label>
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={this.state.selectetedParameters.categoryID}
@@ -3582,7 +3956,19 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Sub Category</label>
+                            <label className="label-4">
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }
+                            </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={
@@ -3619,7 +4005,18 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Issue Type</label>
+                            <label className="label-4">
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }
+                            </label>
 
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3658,7 +4055,17 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                              Channel Of Purchase
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.channelofpurchase
+                      }
+                    else{
+                      return "Channel Of Purchase"
+                    }
+                    })()
+                  }
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3701,7 +4108,17 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                              Ticket Action Type
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ticketactiontype
+                      }
+                    else{
+                      return "Ticket Action Type"
+                    }
+                    })()
+                  }
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -3737,7 +4154,16 @@ class MyTicket extends Component {
                     <div style={{ padding: "15px 0" }}>
                       <div className="storebox">
                         <div className="form-group">
-                          <label className="label-4 storeSpacing">Store</label>
+                          <label className="label-4 storeSpacing">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.store
+                      }
+                    else{
+                      return "Store"
+                    }
+                    })()
+                  }</label>
                           <a
                             href="#!"
                             className="bata-rajouri-garden d-inline-block"
@@ -3745,7 +4171,17 @@ class MyTicket extends Component {
                           >
                             {this.state.StoreName === "" ? (
                               <label className="label-4 storeSpacing">
-                                No Store Attached
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.nostoreattached
+                      }
+                    else{
+                      return "No Store Attached"
+                    }
+                    })()
+                  }
                               </label>
                             ) : (
                               this.state.StoreName
@@ -3786,7 +4222,16 @@ class MyTicket extends Component {
                                   }}
                                 >
                                   <label className="orderdetailpopup">
-                                    Yes
+                                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }
                                   </label>
                                   <div className="switchmargin">
                                     <div className="switch switch-primary d-inline m-r-10">
@@ -3800,7 +4245,16 @@ class MyTicket extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <label className="orderdetailpopup">No</label>
+                                  <label className="orderdetailpopup"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }</label>
                                   <div
                                     className="storeplusline13"
                                     onClick={this.HandleStoreModalClose.bind(
@@ -3852,7 +4306,17 @@ class MyTicket extends Component {
                                     this
                                   )}
                                 >
-                                  Attach Store
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.attachstore
+                      }
+                    else{
+                      return "Attach Store"
+                    }
+                    })()
+                  }
                                 </button>
                               </div>
                             </div>
@@ -3873,7 +4337,17 @@ class MyTicket extends Component {
                                         aria-controls="storedetail-tab"
                                         aria-selected="true"
                                       >
-                                        Store Details
+                                        
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.storedetail
+                      }
+                    else{
+                      return "Store Details"
+                    }
+                    })()
+                  }
                                       </a>
                                     </li>
                                     {this.state.selectedStoreData.length > 0 ||
@@ -3887,7 +4361,17 @@ class MyTicket extends Component {
                                           aria-controls="selectedstore-tab"
                                           aria-selected="false"
                                         >
-                                          Selected Store
+                                          
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.selectedstore
+                      }
+                    else{
+                      return "Selected Store"
+                    }
+                    })()
+                  }
                                         </a>
                                       </li>
                                     ) : null}
@@ -3943,23 +4427,78 @@ class MyTicket extends Component {
                                         width: 20,
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Name</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storename
+                      }
+                    else{
+                      return "Store Name"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeName",
                                       },
                                       {
-                                        Header: <span>Store Pin Code</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storepincode
+                      }
+                    else{
+                      return "Store Pin Code"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Email ID</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeemailid
+                      }
+                    else{
+                      return "Store Email Id"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeEmailID",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeaddress
+                      }
+                    else{
+                      return "Store Address"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "address",
                                       },
                                     ]}
@@ -4022,7 +4561,18 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Purpose</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.purpose
+                      }
+                    else{
+                      return "Purpose"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "invoiceNumber",
                                         Cell: (row) => (
                                           <div
@@ -4044,27 +4594,93 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Name</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storename
+                      }
+                    else{
+                      return "Store Name"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeName",
                                       },
                                       {
-                                        Header: <span>Store Pin Code</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storepincode
+                      }
+                    else{
+                      return "Store Pin Code"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "pincode",
                                       },
                                       {
-                                        Header: <span>Store Email ID</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeemailid
+                      }
+                    else{
+                      return "Store Email Id"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeEmailID",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeaddress
+                      }
+                    else{
+                      return "Store Address"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "address",
                                       },
                                       {
-                                        Header: <span>Visit Date</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.visitdate
+                      }
+                    else{
+                      return "Visit Date"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeVisitDate",
                                         Cell: (row) => {
                                           return (
@@ -4123,7 +4739,16 @@ class MyTicket extends Component {
                           </Modal>
                         </div>
                         <div className="">
-                          <label className="label-4">Product</label>
+                          <label className="label-4">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.product
+                      }
+                    else{
+                      return "Product"
+                    }
+                    })()
+                  }</label>
                           <a
                             href="#!"
                             className="bata-rajouri-garden d-inline-block"
@@ -4131,7 +4756,17 @@ class MyTicket extends Component {
                           >
                             {this.state.ProductName === "" ? (
                               <label className="label-4">
-                                No Product Attached
+                                
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.noproductattached
+                      }
+                    else{
+                      return "No Product Attached"
+                    }
+                    })()
+                  }
                               </label>
                             ) : (
                               this.state.ProductName
@@ -4162,7 +4797,18 @@ class MyTicket extends Component {
                                 style={{ height: "54px" }}
                               >
                                 <label style={{ marginTop: "7px" }}>
-                                  <b>Customer Want to attach order</b>
+                                  <b>
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.customerattachorder
+                      }
+                    else{
+                      return "Customer Want to attach order"
+                    }
+                    })()
+                  }
+                                  </b>
                                 </label>
                                 <div
                                   className="claimplus"
@@ -4190,7 +4836,17 @@ class MyTicket extends Component {
                             >
                               <div className="col-md-6">
                                 <label className="orderdetailpopup">
-                                  Order Details
+                                 
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.orderdetails
+                      }
+                    else{
+                      return "Order Details"
+                    }
+                    })()
+                  }
                                 </label>
                               </div>
                               <div className="col-md-3">
@@ -4201,7 +4857,16 @@ class MyTicket extends Component {
                                   }}
                                 >
                                   <label className="orderdetailpopup">
-                                    Order
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.order
+                      }
+                    else{
+                      return "Order"
+                    }
+                    })()
+                  }
                                   </label>
                                   <div className="orderswitch orderswitchitem">
                                     <div className="switch switch-primary d-inline">
@@ -4218,7 +4883,16 @@ class MyTicket extends Component {
                                     </div>
                                   </div>
                                   <label className="orderdetailpopup">
-                                    Item
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.item
+                      }
+                    else{
+                      return "Item"
+                    }
+                    })()
+                  }
                                   </label>
                                 </div>
                               </div>
@@ -4270,7 +4944,17 @@ class MyTicket extends Component {
                                         aria-selected="true"
                                         onClick={this.handleSetDataTab}
                                       >
-                                        Product Details
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.productdetails
+                      }
+                    else{
+                      return "Product Details"
+                    }
+                    })()
+                  }
+                                        
                                       </a>
                                     </li>
                                     {this.state.selectedProduct.length > 0 ? (
@@ -4284,7 +4968,17 @@ class MyTicket extends Component {
                                           aria-selected="false"
                                           onClick={this.handleSetDataTab}
                                         >
-                                          Selected Product
+                                          
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.selectedproduct
+                      }
+                    else{
+                      return "Selected Product"
+                    }
+                    })()
+                  }
                                         </a>
                                       </li>
                                     ) : null}
@@ -4298,7 +4992,17 @@ class MyTicket extends Component {
                                         this
                                       )}
                                     >
-                                      Attach Product
+                                      
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.attachproduct
+                      }
+                    else{
+                      return "Attach Product"
+                    }
+                    })()
+                  }
                                     </button>
                                   </div>
                                   {/* ) : null} */}
@@ -4358,35 +5062,121 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicenumber
+                      }
+                    else{
+                      return "Inovice Number"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "invoiceNumber",
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicedate
+                      }
+                    else{
+                      return "Inovice Date"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "dateFormat",
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemcount
+                      }
+                    else{
+                      return "Item Count"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemprice
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pricepaid
+                      }
+                    else{
+                      return "Price paid"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeaddress
+                      }
+                    else{
+                      return "Store Address"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.discount
+                      }
+                    else{
+                      return "Discount"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "discount",
                                       },
                                     ]}
@@ -4462,35 +5252,123 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicenumber
+                      }
+                    else{
+                      return "Invoice Number"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "invoiceNumber",
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: <span>
+                                        
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicedate
+                      }
+                    else{
+                      return "Invoice Date"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "dateFormat",
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemcount
+                      }
+                    else{
+                      return "Item Count"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemprice
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pricepaid
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: <span>
+                                      
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  }
+                                      </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeaddress
+                      }
+                    else{
+                      return "Store Address"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.discount
+                      }
+                    else{
+                      return "Discount"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "discount",
                                       },
                                     ]}
@@ -4558,33 +5436,97 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Number</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.articlenumber
+                      }
+                    else{
+                      return "Article Number"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "articleNumber",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Name</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.articlename
+                      }
+                    else{
+                      return "Article Name"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "articleName",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article MRP</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.articlemrp
+                      }
+                    else{
+                      return "Article MRP"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "itemPrice",
                                               },
                                               {
-                                                Header: <span>Price Paid</span>,
+                                                Header: <span>
+                                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pricepaid
+                      }
+                    else{
+                      return "Price Paid"
+                    }
+                    })()
+                  }
+                                                </span>,
                                                 accessor: "pricePaid",
                                               },
                                               {
-                                                Header: <span>Discount</span>,
+                                                Header: <span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.discount
+                      }
+                    else{
+                      return "Discount"
+                    }
+                    })()
+                  }</span>,
                                                 accessor: "discount",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Required Size</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.reqiuredsize
+                      }
+                    else{
+                      return "Required Size"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: (row) => {
@@ -4697,36 +5639,124 @@ class MyTicket extends Component {
                                           </div>
                                         ),
                                       },
-                                      {
-                                        Header: <span>Invoice Number</span>,
+                                     {
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicenumber
+                      }
+                    else{
+                      return "Invoice Number"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "invoiceNumber",
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: <span>
+                                        
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicedate
+                      }
+                    else{
+                      return "Invoice Date"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "dateFormat",
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemcount
+                      }
+                    else{
+                      return "Item Count"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemprice
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pricepaid
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: <span>
+                                      
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  }
+                                      </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeaddress
+                      }
+                    else{
+                      return "Store Address"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.discount
+                      }
+                    else{
+                      return "Discount"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "discount",
                                       },
                                     ]}
@@ -4803,35 +5833,123 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicenumber
+                      }
+                    else{
+                      return "Invoice Number"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "invoiceNumber",
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: <span>
+                                        
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.invoicedate
+                      }
+                    else{
+                      return "Invoice Date"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "dateFormat",
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: <span>
+                                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemcount
+                      }
+                    else{
+                      return "Item Count"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.itemprice
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pricepiad
+                      }
+                    else{
+                      return "Item Price"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: <span>
+                                      
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  }
+                                      </span>,
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: <span>
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storeaddress
+                      }
+                    else{
+                      return "Store Address"
+                    }
+                    })()
+                  }
+                                        </span>,
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.discount
+                      }
+                    else{
+                      return "Discount"
+                    }
+                    })()
+                  }</span>,
                                         accessor: "discount",
                                       },
                                     ]}
@@ -4895,34 +6013,99 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Number</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.articlenumber
+                      }
+                    else{
+                      return "Article Number"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "orderItemID",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Size</span>
+                                                  <span>
+                                                  
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.articlesize
+                      }
+                    else{
+                      return "Article Size"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "size",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article MRP</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.articlemrp
+                      }
+                    else{
+                      return "Article MRP"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "itemPrice",
                                               },
                                               {
-                                                Header: <span>Price Paid</span>,
+                                                Header: <span>
+                                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pricepaid
+                      }
+                    else{
+                      return "Price Paid"
+                    }
+                    })()
+                  }
+                                                </span>,
                                                 accessor: "pricePaid",
                                               },
                                               {
-                                                Header: <span>Discount</span>,
+                                                Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.discount
+                      }
+                    else{
+                      return "Discount"
+                    }
+                    })()
+                  }</span>,
                                                 accessor: "discount",
                                                 sortable: true,
                                               },
                                               {
                                                 Header: (
-                                                  <span>Required Size</span>
+                                                  <span>
+                                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.requiredsize
+                      }
+                    else{
+                      return "Required Size"
+                    }
+                    })()
+                  }
+                                                  </span>
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: (row) => {
@@ -4977,7 +6160,18 @@ class MyTicket extends Component {
               <div className="rectangle-3 text-editor">
                 <div className="row mt-2">
                   <label className="ticket-title-where mb-0">
-                    Ticket Title:
+                    
+
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.tickettitle
+                      }
+                    else{
+                      return "Ticket Title:"
+                    }
+                    })()
+                  }
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -4987,7 +6181,16 @@ class MyTicket extends Component {
                 </div>
                 <div className="row mt-3">
                   <label className="ticket-title-where mb-0">
-                    Ticket Details:
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.ticketdetails
+                      }
+                    else{
+                      return "Ticket Details:"
+                    }
+                    })()
+                  }
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -5203,7 +6406,16 @@ class MyTicket extends Component {
                         data-toggle="dropdown"
                         onClick={this.handleTemplateBindByIssueType.bind(this)}
                       >
-                        <FontAwesomeIcon icon={faCalculator} /> Template
+                        <FontAwesomeIcon icon={faCalculator} /> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.template
+                      }
+                    else{
+                      return "Template"
+                    }
+                    })()
+                  }
                       </button>
                       <ul className="dropdown-menu">
                         {this.state.CkEditorTemplateData !== null &&
@@ -5300,7 +6512,16 @@ class MyTicket extends Component {
                           <ul className="ck-edit-mar">
                             <li>
                               <label>
-                                To: &nbsp;
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.to
+                      }
+                    else{
+                      return "To"
+                    }
+                    })()
+                  }: &nbsp;
                                 {ticketDetailsData.customerEmailId}
                               </label>
                             </li>
@@ -5308,7 +6529,16 @@ class MyTicket extends Component {
                               <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
-                                    CC:
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.cc
+                      }
+                    else{
+                      return "CC"
+                    }
+                    })()
+                  }:
                                   </span>
                                   <input
                                     type="text"
@@ -5333,7 +6563,16 @@ class MyTicket extends Component {
                               <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
-                                    BCC:
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.bcc
+                      }
+                    else{
+                      return "BCC"
+                    }
+                    })()
+                  }:
                                   </span>
                                   <input
                                     type="text"
@@ -5370,7 +6609,16 @@ class MyTicket extends Component {
                                   htmlFor="fil-open"
                                   style={{ paddingLeft: "25px" }}
                                 >
-                                  <span>Inform Store</span>
+                                  <span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.informstore
+                      }
+                    else{
+                      return "Inform Store"
+                    }
+                    })()
+                  }</span>
                                 </label>
                               </div>
                             </li>
@@ -5407,7 +6655,16 @@ class MyTicket extends Component {
                                 type="button"
                                 onClick={this.handleSendMailData.bind(this, 2)}
                               >
-                                Send
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.send
+                      }
+                    else{
+                      return "Send"
+                    }
+                    })()
+                  }
                               </button>
                             </li>
                           </ul>
@@ -5432,9 +6689,27 @@ class MyTicket extends Component {
                               alt="KnowledgeLogo"
                               className="knoim1"
                             />
-                            KNOWLEGE BASE
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h5.knowledgebase
+                      }
+                    else{
+                      return "KNOWLEDGE BASE"
+                    }
+                    })()
+                  }
                           </h5>
-                          <p>Message</p>
+                          <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.message
+                      }
+                    else{
+                      return "Message"
+                    }
+                    })()
+                  }</p>
 
                           <div id="kb-accordion">
                             {this.state.KbPopupData !== null &&
@@ -5472,7 +6747,16 @@ class MyTicket extends Component {
                                           alt=""
                                           className="copyblue-kb"
                                         />
-                                        Copy
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.copy
+                      }
+                    else{
+                      return "Copy"
+                    }
+                    })()
+                  }
                                       </a>
                                     </CopyToClipboard>
                                     {this.state.copied ? (
@@ -5480,7 +6764,16 @@ class MyTicket extends Component {
                                         className="ml-2"
                                         style={{ color: "red" }}
                                       >
-                                        Copied.
+                                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.copied
+                      }
+                    else{
+                      return "Copied"
+                    }
+                    })()
+                  }.
                                       </span>
                                     ) : null}
                                   </div>
@@ -5497,7 +6790,16 @@ class MyTicket extends Component {
                             className="cancalImg-kb"
                             onClick={this.HandleKbLinkModalClose.bind(this)}
                           />
-                          <h5>KB TEMPLATE</h5>
+                          <h5>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h5.KBtemplate
+                      }
+                    else{
+                      return "KB Template"
+                    }
+                    })()
+                  }</h5>
                           <div className="form-group">
                             <select
                               value={this.state.selectedCategoryKB}
@@ -5548,7 +6850,16 @@ class MyTicket extends Component {
                               onClick={this.handleKbLinkPopupSearch}
                               className="kblink-search"
                             >
-                              SEARCH
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.searchpolicy
+                      }
+                    else{
+                      return "Search Policy"
+                    }
+                    })()
+                  }
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
@@ -5556,7 +6867,16 @@ class MyTicket extends Component {
                               href="#!"
                               className="copyblue-kbtext d-inline-block"
                             >
-                              VIEW POLICY
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.viewpolicy
+                      }
+                    else{
+                      return "VIEW POLICY"
+                    }
+                    })()
+                  }
                               <img
                                 src={ViewBlue}
                                 alt="viewpolicy"
@@ -5638,7 +6958,16 @@ class MyTicket extends Component {
                             aria-controls="Message-tab"
                             aria-selected="true"
                           >
-                            Message:{" "}
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.message
+                      }
+                    else{
+                      return "Message"
+                    }
+                    })()
+                  }:{" "}
                             {this.state.tabCounts.messages < 9
                               ? "0" + this.state.tabCounts.messages
                               : this.state.tabCounts.messages}
@@ -5655,7 +6984,16 @@ class MyTicket extends Component {
                             name="Notes"
                             onClick={this.handleGetTabsName}
                           >
-                            Notes:{" "}
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.notes
+                      }
+                    else{
+                      return "Notes"
+                    }
+                    })()
+                  }:{" "}
                             {this.state.Notesdetails.length < 9
                               ? "0" + this.state.Notesdetails.length
                               : this.state.Notesdetails.length}
@@ -5672,7 +7010,16 @@ class MyTicket extends Component {
                             name="Task"
                             onClick={this.handleGetTabsName}
                           >
-                            Task:{" "}
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.task
+                      }
+                    else{
+                      return "Task"
+                    }
+                    })()
+                  }:{" "}
                             {this.state.tabCounts.task < 9
                               ? "0" + this.state.tabCounts.task
                               : this.state.tabCounts.task}
@@ -5689,7 +7036,16 @@ class MyTicket extends Component {
                             name="Claim"
                             onClick={this.handleGetTabsName}
                           >
-                            Claim:{" "}
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.claim
+                      }
+                    else{
+                      return "Claim"
+                    }
+                    })()
+                  }:{" "}
                             {this.state.tabCounts.claim < 9
                               ? "0" + this.state.tabCounts.claim
                               : this.state.tabCounts.claim}
@@ -5728,13 +7084,40 @@ class MyTicket extends Component {
                   >
                     <div className="row message-header">
                       <div className="col-12 col-xs-12 col-sm-3">
-                        <label className="user-label">User</label>
+                        <label className="user-label">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.user
+                      }
+                    else{
+                      return "User"
+                    }
+                    })()
+                  }</label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-7">
-                        <label className="message-label">Message</label>
+                        <label className="message-label">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.message
+                      }
+                    else{
+                      return "Message"
+                    }
+                    })()
+                  }</label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-2">
-                        <label className="action-label">Action</label>
+                        <label className="action-label">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.action
+                      }
+                    else{
+                      return "Action"
+                    }
+                    })()
+                  }</label>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
@@ -5744,7 +7127,16 @@ class MyTicket extends Component {
                           className="comment-text"
                           onClick={this.handleFreeTextCommentOpen.bind(this)}
                         >
-                          Comment
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.comment
+                      }
+                    else{
+                      return "Comment"
+                    }
+                    })()
+                  }
                         </a>
                       </div>
                     </div>
@@ -5828,7 +7220,18 @@ class MyTicket extends Component {
                                                     marginLeft: "7px",
                                                   }}
                                                 >
-                                                  Reassign to &nbsp;
+                                                  
+                                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.reassignto
+                      }
+                    else{
+                      return "Reassign to"
+                    }
+                    })()
+                  }
+                                                   &nbsp;
                                                   <span className="solved-by-naman-r">
                                                     {
                                                       details
@@ -5982,7 +7385,16 @@ class MyTicket extends Component {
                                                     .mailID
                                                 )}
                                               >
-                                                Reply
+                                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.reply
+                      }
+                    else{
+                      return "Reply"
+                    }
+                    })()
+                  }
                                               </a>
                                             ) : null}
 
@@ -5995,7 +7407,16 @@ class MyTicket extends Component {
                                                   .mailID
                                               )}
                                             >
-                                              Comment
+                                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.comment
+                      }
+                    else{
+                      return "Comment"
+                    }
+                    })()
+                  }
                                             </a>
                                           </div>
                                           <div
@@ -6121,7 +7542,16 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.comment
+                      }
+                    else{
+                      return "Comment"
+                    }
+                    })()
+                  }</label>
                           </div>
                           <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
                             <select
@@ -6179,7 +7609,16 @@ class MyTicket extends Component {
                             className="SendCommentBtn1"
                             onClick={this.handleSendMailData.bind(this, 3)}
                           >
-                            SEND
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.send
+                      }
+                    else{
+                      return "SEND"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       </div>
@@ -6314,7 +7753,16 @@ class MyTicket extends Component {
                                   )}
                                 >
                                   <FontAwesomeIcon icon={faCalculator} />
-                                  Template
+                                   {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.templates
+                      }
+                    else{
+                      return "Template"
+                    }
+                    })()
+                  }
                                 </button>
                                 <ul className="dropdown-menu">
                                   {this.state.ReplyCKEditoertemplat !== null &&
@@ -6396,7 +7844,16 @@ class MyTicket extends Component {
                             <ul style={{ padding: "0 15px" }}>
                               <li>
                                 <label>
-                                  To: &nbsp;
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.to
+                      }
+                    else{
+                      return "To"
+                    }
+                    })()
+                  }: &nbsp;
                                   {ticketDetailsData.customerEmailId}
                                 </label>
                               </li>
@@ -6413,7 +7870,16 @@ class MyTicket extends Component {
                                     htmlFor="custRply"
                                     style={{ paddingLeft: "25px" }}
                                   >
-                                    <span>Inform Store</span>
+                                    <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.informstore
+                      }
+                    else{
+                      return "Inform Store"
+                    }
+                    })()
+                  }</span>
                                   </label>
                                 </div>
                               </li>
@@ -6451,7 +7917,16 @@ class MyTicket extends Component {
                                 <label className="">
                                   <div className="input-group">
                                     <span className="input-group-addon inputcc">
-                                      CC:
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.cc
+                      }
+                    else{
+                      return "CC"
+                    }
+                    })()
+                  }:
                                     </span>
                                     <input
                                       type="text"
@@ -6476,7 +7951,16 @@ class MyTicket extends Component {
                                 <label className="">
                                   <div className="input-group">
                                     <span className="input-group-addon inputcc">
-                                      BCC:
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.bcc
+                      }
+                    else{
+                      return "BCC"
+                    }
+                    })()
+                  }:
                                     </span>
                                     <input
                                       type="text"
@@ -6515,7 +7999,16 @@ class MyTicket extends Component {
                         type="button"
                         onClick={this.handleSendMailData.bind(this, 1)}
                       >
-                        Send
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.send
+                      }
+                    else{
+                      return "Send"
+                    }
+                    })()
+                  }
                       </button>
                     </Modal>
                     <Modal
@@ -6531,7 +8024,16 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.comment
+                      }
+                    else{
+                      return "Comment"
+                    }
+                    })()
+                  }</label>
                           </div>
                           <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
                             <select
@@ -6590,7 +8092,16 @@ class MyTicket extends Component {
                             className="SendCommentBtn1"
                             onClick={this.handleSendMailData.bind(this)}
                           >
-                            SEND
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.send
+                      }
+                    else{
+                      return "SEND"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       </div>
@@ -6707,13 +8218,31 @@ class MyTicket extends Component {
                 </div>
                 <div className="row profilemodalrow">
                   <div className="col-md-6">
-                    <label className="profilemodal-text">Name</label>
+                    <label className="profilemodal-text">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.name
+                      }
+                    else{
+                      return "Name"
+                    }
+                    })()
+                  }</label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.customerName}
                     </label>
                   </div>
                   <div className="col-md-6">
-                    <label className="profilemodal-text">Mobile</label>
+                    <label className="profilemodal-text">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.mobile
+                      }
+                    else{
+                      return "Mobile"
+                    }
+                    })()
+                  }</label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.customerPhoneNumber}
                     </label>
@@ -6721,7 +8250,16 @@ class MyTicket extends Component {
                 </div>
                 <div className="row profilemodalrow-1">
                   <div className="col-md-6">
-                    <label className="profilemodal-text">Email</label>
+                    <label className="profilemodal-text">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.email
+                      }
+                    else{
+                      return "Email"
+                    }
+                    })()
+                  }</label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.customerEmailId}
                     </label>
@@ -6729,7 +8267,17 @@ class MyTicket extends Component {
 
                   <div className="col-md-6">
                     <label className="profilemodal-text">
-                      Alternate Number
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.alternatenumber
+                      }
+                    else{
+                      return "Alternate Number"
+                    }
+                    })()
+                  }
                     </label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.altNumber}
@@ -6741,7 +8289,17 @@ class MyTicket extends Component {
                     <label className="open-tickets-box-text">
                       {ticketDetailsData.openTicket}
                       <small className="open-tickets-box-textval">
-                        Open Tickets
+                        
+                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.openticket
+                      }
+                    else{
+                      return "Open Tickets"
+                    }
+                    })()
+                  }
                       </small>
                     </label>
                   </div>
@@ -6749,7 +8307,17 @@ class MyTicket extends Component {
                     <label className="open-tickets-box-text">
                       {ticketDetailsData.totalticket}
                       <small className="open-tickets-box-textval">
-                        Total Tickets
+                        
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.totalticket
+                      }
+                    else{
+                      return "Total Tickets"
+                    }
+                    })()
+                  }
                       </small>
                     </label>
                   </div>
@@ -6757,7 +8325,18 @@ class MyTicket extends Component {
                 <div className="row profilemodal-row-3">
                   <img src={CustomerIcon} alt="customer-icon" />
                   <label className="full-profile-view-text">
-                    FULL PROFILE VIEW
+                    
+                    
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.fullprofileview
+                      }
+                    else{
+                      return "FULL PROFILE VIEW"
+                    }
+                    })()
+                  }
                   </label>
                 </div>
               </div>
@@ -6774,7 +8353,17 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subjectneedtochange
+                      }
+                    else{
+                      return "Subject: Need to change m..."
+                    }
+                    })()
+                  }
                     </label>
                     <span>
                       <img
@@ -6789,7 +8378,16 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subjectneedtochange
+                      }
+                    else{
+                      return "Subject: Need to change m..."
+                    }
+                    })()
+                  }
                     </label>
                     <span>
                       <img
@@ -6804,7 +8402,16 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subjectneedtochange
+                      }
+                    else{
+                      return "Subject: Need to change m..."
+                    }
+                    })()
+                  }
                     </label>
                     <span>
                       <img
@@ -6819,7 +8426,16 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subjectneedtochange
+                      }
+                    else{
+                      return "Subject: Need to change m..."
+                    }
+                    })()
+                  }
                     </label>
                     <span>
                       <img
@@ -6830,7 +8446,16 @@ class MyTicket extends Component {
                     </span>
                   </li>
                   <li className="SubL">
-                    <label className="More">More</label>
+                    <label className="More">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.more
+                      }
+                    else{
+                      return "More"
+                    }
+                    })()
+                  }</label>
                     <span>
                       <img src={MoreUp} alt="Cancel" className="MoreUp" />
                     </span>
@@ -6855,7 +8480,17 @@ class MyTicket extends Component {
                 </div>
                 <div className="Commentlabel">
                   <p className="Commentlabel1 mb-4 text-center">
-                    Add this ticket in Knowledge Base ?
+                    
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.addthisticket
+                      }
+                    else{
+                      return "Add this ticket in Knowledge Base?"
+                    }
+                    })()
+                  }
                   </p>
                 </div>
                 <div className="SendCommentBtn mb-0" style={{ float: "left" }}>
@@ -6863,7 +8498,16 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleYesNoClick.bind(this, false)}
                   >
-                    No
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
                 <div className="SendCommentBtn mb-0">
@@ -6871,7 +8515,16 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleYesNoClick.bind(this, true)}
                   >
-                    Yes
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </div>
@@ -6883,4 +8536,5 @@ class MyTicket extends Component {
     );
   }
 }
+MyTicket.contextType = MyContext;
 export default withRouter(MyTicket);
