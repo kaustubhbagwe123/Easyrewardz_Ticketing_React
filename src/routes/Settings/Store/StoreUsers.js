@@ -24,6 +24,9 @@ import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
+import { CSVLink } from "react-csv";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -142,7 +145,12 @@ class StoreUsers extends Component {
       editIssueType: [],
       editFunctionCompulsion: "",
       EditDesignationCompulsory: "",
-      EditReportDesignationCompulsory: ""
+      EditReportDesignationCompulsory: "",
+      fileSize: "",
+      file: {},
+      fileValidation: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -185,18 +193,44 @@ class StoreUsers extends Component {
     this.handleGetStoreUserGridData();
   }
 
-  fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+  // fileUpload = e => {
+  //   this.setState({ fileName: e.target.files[0].name });
+  // };
+  // fileDrop = e => {
+  //   this.setState({ fileName: e.dataTransfer.files[0].name });
+  //   e.preventDefault();
+  // };
+  // fileDragOver = e => {
+  //   e.preventDefault();
+  // };
+  // fileDragEnter = e => {
+  //   e.preventDefault();
+  // };
+
+  fileUpload = file => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: ""
+      });
+    }
   };
-  fileDrop = e => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
-    e.preventDefault();
-  };
-  fileDragOver = e => {
-    e.preventDefault();
-  };
-  fileDragEnter = e => {
-    e.preventDefault();
+
+  DeleteBulkUploadFile = () => {
+    debugger;
+    this.setState({
+      file: {},
+      fileName: "",
+      fileSize: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
+    });
+    NotificationManager.success("File deleted successfully.");
   };
 
   editStoreMethod() {
@@ -219,6 +253,47 @@ class StoreUsers extends Component {
       btnProfileToggle: true
     });
   }
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+
+  handleBulkUpload() {
+    let self = this;
+    if (this.state.fileName) {
+      const formData = new FormData();
+      formData.append("file", this.state.file);
+      this.setState({ isShowProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/BulkUploadStoreUser",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        },
+      }).then(response => {
+          var status = response.data.message;
+          var itemData = response.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetStoreUserGridData();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else {
+            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(response => {
+          self.setState({ isErrorBulkUpload: true });
+          console.log(response);
+        });
+    } else {
+      this.setState({ fileValidation: "Please Select File." });
+    }
+  }
+
   /// drop down on change
   handleBrandAndStoreChange = e => {
     debugger;
@@ -3816,28 +3891,36 @@ class StoreUsers extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <a href={Demo.BLANK_LINK}>
-                        <img src={DownExcel} alt="download icon" />
-                      </a>
+                      <CSVLink
+                          filename={"User.csv"}
+                          data={config.storeUserTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
                     </div>
                   </div>
-                  <input
-                    id="file-upload"
-                    className="file-upload d-none"
-                    type="file"
-                    onChange={this.fileUpload}
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
-                  >
-                    <div className="file-icon">
-                      <img src={FileUpload} alt="file-upload" />
-                    </div>
-                    <span>Add File</span> or Drop File here
-                  </label>
+                  <div className="mainfileUpload">
+                    <Dropzone onDrop={this.fileUpload}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input
+                            {...getInputProps()}
+                            className="file-upload d-none"
+                          />
+                          <div className="file-icon">
+                            <img src={FileUpload} alt="file-upload" />
+                          </div>
+                          <span className={"fileupload-span"}>Add File</span> or
+                          Drop File here
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
+                  {this.state.fileValidation ? (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.fileValidation}
+                    </p>
+                  ) : null}
                   {this.state.fileName && (
                     <div className="file-info">
                       <div className="file-cntr">
@@ -3865,45 +3948,62 @@ class StoreUsers extends Component {
                                 </p>
                                 <div className="del-can">
                                   <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                  <button className="butn">Delete</button>
+                                  <button
+                                    className="butn"
+                                    onClick={this.DeleteBulkUploadFile}
+                                  >
+                                    Delete
+                                  </button>
                                 </div>
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
                         <div>
-                          <span className="file-size">122.6kb</span>
+                          <span className="file-size">{this.state.fileSize}</span>
                         </div>
                       </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <a className="file-retry" href={Demo.BLANK_LINK}>
-                            Retry
-                          </a>
+                      {this.state.isErrorBulkUpload ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name">{this.state.fileName}</p>
+                            <span
+                              className="file-retry"
+                              onClick={this.handleBulkUpload.bind(this)}
+                            >
+                              Retry
+                            </span>
+                          </div>
+                          <div>
+                            <span className="file-failed">Failed</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="file-failed">Failed</span>
-                        </div>
-                      </div>
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name pr-0">
-                            {this.state.fileName}
-                          </p>
-                        </div>
-                        <div>
-                          <div className="d-flex align-items-center mt-2">
-                            <ProgressBar className="file-progress" now={60} />
-                            <div className="cancel-upload">
-                              <img src={UploadCancel} alt="upload cancel" />
+                      ) : null}
+                      {this.state.isShowProgress ? (
+                        <div className="file-cntr">
+                          <div className="file-dtls">
+                            <p className="file-name pr-0">
+                              {this.state.fileName}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="d-flex align-items-center mt-2">
+                              <ProgressBar className="file-progress" now={60} />
+                              <div className="cancel-upload">
+                                <img src={UploadCancel} alt="upload cancel" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : null}
                     </div>
                   )}
-                  <button className="butn">ADD</button>
+                  <button
+                    className="butn"
+                    onClick={this.handleBulkUpload.bind(this)}
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             </div>

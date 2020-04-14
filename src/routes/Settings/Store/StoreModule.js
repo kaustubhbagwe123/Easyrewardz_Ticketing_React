@@ -21,6 +21,12 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
+import { CSVLink } from "react-csv";
+import Dropzone from "react-dropzone";
+import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { ProgressBar } from "react-bootstrap";
+import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
 class StoreModule extends Component {
   constructor(props) {
@@ -67,6 +73,11 @@ class StoreModule extends Component {
       tempcampaignScriptData: [],
       StatusModel: false,
       filterTxtValue: "",
+      fileSize: "",
+      file: {},
+      fileValidation: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -78,18 +89,85 @@ class StoreModule extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
   }
-  fileUpload = (e) => {
-    this.setState({ fileName: e.target.files[0].name });
+  // fileUpload = (e) => {
+  //   this.setState({ fileName: e.target.files[0].name });
+  // };
+  // fileDrop = (e) => {
+  //   this.setState({ fileName: e.dataTransfer.files[0].name });
+  //   e.preventDefault();
+  // };
+  // fileDragOver = (e) => {
+  //   e.preventDefault();
+  // };
+  // fileDragEnter = (e) => {
+  //   e.preventDefault();
+  // };
+
+  fileUpload = file => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: ""
+      });
+    }
   };
-  fileDrop = (e) => {
-    this.setState({ fileName: e.dataTransfer.files[0].name });
-    e.preventDefault();
-  };
-  fileDragOver = (e) => {
-    e.preventDefault();
-  };
-  fileDragEnter = (e) => {
-    e.preventDefault();
+
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+
+  handleBulkUpload() {
+    let self = this;
+    if (this.state.fileName) {
+      const formData = new FormData();
+      formData.append("file", this.state.file);
+      this.setState({ isShowProgress: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/ModuleSetting/BulkUploadCampaign",
+        headers: authHeader(),
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        },
+      }).then(response => {
+          var status = response.data.message;
+          var itemData = response.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleCampaignScriptGridData();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else {
+            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            NotificationManager.error("File not uploaded.");
+          }
+        })
+        .catch(response => {
+          self.setState({ isErrorBulkUpload: true });
+          console.log(response);
+        });
+    } else {
+      this.setState({ fileValidation: "Please Select File." });
+    }
+  }
+
+  DeleteBulkUploadFile = () => {
+    debugger;
+    this.setState({
+      file: {},
+      fileName: "",
+      fileSize: "",
+      isErrorBulkUpload: false,
+      isShowProgress: false
+    });
+    NotificationManager.success("File deleted successfully.");
   };
 
   handleEditModal() {
@@ -104,7 +182,7 @@ class StoreModule extends Component {
     let campaignOvrlayShow = !slaOvrlayShowOriginal;
     this.setState({
       campaignShow,
-      campaignOvrlayShow,
+      campaignOvrlayShow
     });
   }
 
@@ -116,8 +194,8 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/DeleteCampaignScript",
       headers: authHeader(),
       params: {
-        CampaignID: deleteId,
-      },
+        CampaignID: deleteId
+      }
     })
       .then(function(res) {
         debugger;
@@ -129,7 +207,7 @@ class StoreModule extends Component {
           NotificationManager.error("Campaign not deleted.");
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -162,7 +240,7 @@ class StoreModule extends Component {
         indiCampaign = values.join(separator);
       }
       await this.setState({
-        indiCampaign,
+        indiCampaign
       });
       document.getElementById("campaignNameValue").textContent =
         this.state.indiCampaign.split(",").length - 1 + " selected";
@@ -177,7 +255,7 @@ class StoreModule extends Component {
         }
       }
       await this.setState({
-        indiCampaign,
+        indiCampaign
       });
       if (this.state.indiCampaign.split(",").length - 1 !== 0) {
         document.getElementById("campaignNameValue").textContent =
@@ -188,7 +266,7 @@ class StoreModule extends Component {
     }
   };
 
-  selectAllCampaign = async (event) => {
+  selectAllCampaign = async event => {
     debugger;
     var indiCampaign = "";
     var checkboxes = document.getElementsByName("allCampaign");
@@ -205,11 +283,11 @@ class StoreModule extends Component {
       }
     }
     await this.setState({
-      indiCampaign,
+      indiCampaign
     });
   };
 
-  selectNoCampaign = async (event) => {
+  selectNoCampaign = async event => {
     debugger;
     var checkboxes = document.getElementsByName("allCampaign");
     document.getElementById("campaignNameValue").textContent = "Select";
@@ -219,7 +297,7 @@ class StoreModule extends Component {
       }
     }
     await this.setState({
-      indiCampaign: "",
+      indiCampaign: ""
     });
   };
 
@@ -229,30 +307,30 @@ class StoreModule extends Component {
     this.handleCampaignScriptGridData();
   }
 
-  setClaimTabData = (e) => {
+  setClaimTabData = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  setScriptDetails = (e) => {
+  setScriptDetails = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  setUpdateCampaign = (e) => {
+  setUpdateCampaign = e => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -262,7 +340,7 @@ class StoreModule extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/ModuleSetting/GetStoreAttachmentSettings",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -271,11 +349,11 @@ class StoreModule extends Component {
         if (status === "Success" && data) {
           self.setState({
             maxAttachSize: data.arrachementSizeList,
-            fileFormat: data.storeAttachmentFileFormatList,
+            fileFormat: data.storeAttachmentFileFormatList
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -286,7 +364,7 @@ class StoreModule extends Component {
       editModal: true,
       updateIndiCampaignId: individualData.campaignNameID,
       updateScriptDetails: individualData.campaignScript,
-      updateCampaignId: individualData.campaignID,
+      updateCampaignId: individualData.campaignID
     });
   }
 
@@ -296,7 +374,7 @@ class StoreModule extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/ModuleSetting/GetCampaignName",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -304,11 +382,11 @@ class StoreModule extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            campaignName: data,
+            campaignName: data
           });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -319,7 +397,7 @@ class StoreModule extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/ModuleSetting/GetCampaignScript",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(res) {
         debugger;
@@ -327,7 +405,7 @@ class StoreModule extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            campaignScriptData: data,
+            campaignScriptData: data
           });
 
           self.state.sortAllData = data;
@@ -342,7 +420,7 @@ class StoreModule extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortcampaignName.push({ campaignName: distinct[i] });
             self.state.sortFiltercampaignName.push({
-              campaignName: distinct[i],
+              campaignName: distinct[i]
             });
           }
 
@@ -373,7 +451,7 @@ class StoreModule extends Component {
           }
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -386,7 +464,7 @@ class StoreModule extends Component {
     ) {
       let self = this;
       this.setState({
-        claimTabLoading: true,
+        claimTabLoading: true
       });
 
       // save attachment settings
@@ -396,8 +474,8 @@ class StoreModule extends Component {
         headers: authHeader(),
         data: {
           AttachmentSize: this.state.selectedMaxAttachSize,
-          FileFomatID: this.state.selectedFileFormat,
-        },
+          FileFomatID: this.state.selectedFileFormat
+        }
       })
         .then(function(res) {
           debugger;
@@ -409,17 +487,17 @@ class StoreModule extends Component {
               selectedFileFormat: "0",
               maxAttachSizeCompulsion: "",
               fileFormatCompulsion: "",
-              claimTabLoading: false,
+              claimTabLoading: false
             });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         maxAttachSizeCompulsion: "Please select max attachment size",
-        fileFormatCompulsion: "Please select file format",
+        fileFormatCompulsion: "Please select file format"
       });
     }
   }
@@ -432,7 +510,7 @@ class StoreModule extends Component {
     ) {
       let self = this;
       this.setState({
-        addCampaignLoading: true,
+        addCampaignLoading: true
       });
 
       // add campaign script
@@ -446,8 +524,8 @@ class StoreModule extends Component {
             this.state.indiCampaign.length - 1
           ),
           CampaignScript: this.state.scriptDetails,
-          Status: true,
-        },
+          Status: true
+        }
       })
         .then(function(res) {
           debugger;
@@ -462,17 +540,17 @@ class StoreModule extends Component {
               scriptDetails: "",
               campaignCompulsion: "",
               scriptDetailsCompulsion: "",
-              addCampaignLoading: false,
+              addCampaignLoading: false
             });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         campaignCompulsion: "Please select campaign name",
-        scriptDetailsCompulsion: "Please enter script details",
+        scriptDetailsCompulsion: "Please enter script details"
       });
     }
   }
@@ -482,7 +560,7 @@ class StoreModule extends Component {
     if (this.state.updateScriptDetails.length != 0) {
       let self = this;
       this.setState({
-        updateCampaignLoading: true,
+        updateCampaignLoading: true
       });
       // update campaign script
       axios({
@@ -493,8 +571,8 @@ class StoreModule extends Component {
           CampaignID: this.state.updateCampaignId,
           CampaignNameID: this.state.updateIndiCampaignId,
           CampaignScript: this.state.updateScriptDetails,
-          Status: true,
-        },
+          Status: true
+        }
       })
         .then(function(res) {
           debugger;
@@ -506,17 +584,17 @@ class StoreModule extends Component {
               // campaignCompulsion: "",
               updateScriptDetailsCompulsion: "",
               updateCampaignLoading: false,
-              editModal: false,
+              editModal: false
             });
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
       this.setState({
         // campaignCompulsion: "Please select campaign name",
-        updateScriptDetailsCompulsion: "Please enter script details",
+        updateScriptDetailsCompulsion: "Please enter script details"
       });
     }
   }
@@ -549,7 +627,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
-      campaignScriptData: itemsArray,
+      campaignScriptData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -585,7 +663,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
-      campaignScriptData: itemsArray,
+      campaignScriptData: itemsArray
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -612,7 +690,7 @@ class StoreModule extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -620,7 +698,7 @@ class StoreModule extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -632,7 +710,7 @@ class StoreModule extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -640,7 +718,7 @@ class StoreModule extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -652,7 +730,7 @@ class StoreModule extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -660,26 +738,30 @@ class StoreModule extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
   }
   StatusCloseModel() {
     debugger;
-
+    this.setState({
+      sortFiltercampaignName: this.state.sortcampaignName,
+      sortFiltercreatedBy: this.state.sortcreatedBy,
+      sortFilteristatus: this.state.sortstatus
+    });
     if (this.state.tempcampaignScriptData.length > 0) {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        campaignScriptData: this.state.tempcampaignScriptData,
+        campaignScriptData: this.state.tempcampaignScriptData
       });
       if (this.state.sortColumn === "campaignName") {
         if (this.state.scampaignNameFilterCheckbox === "") {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -688,7 +770,7 @@ class StoreModule extends Component {
         } else {
           this.setState({
             scampaignNameFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -697,7 +779,7 @@ class StoreModule extends Component {
         } else {
           this.setState({
             scampaignNameFilterCheckbox: "",
-            screatedByFilterCheckbox: "",
+            screatedByFilterCheckbox: ""
           });
         }
       }
@@ -708,7 +790,7 @@ class StoreModule extends Component {
         campaignScriptData: this.state.isortA
           ? this.state.campaignScriptData
           : this.state.sortAllData,
-        sFilterCheckbox: "",
+        sFilterCheckbox: ""
       });
     }
   }
@@ -814,7 +896,7 @@ class StoreModule extends Component {
       sstatusFilterCheckbox,
       issueColor: "",
       createdColor: "",
-      stattusColor: "",
+      stattusColor: ""
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -824,7 +906,7 @@ class StoreModule extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.campaignName === sItems[i]
+              a => a.campaignName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -835,7 +917,7 @@ class StoreModule extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column",
+        issueColor: "sort-column"
       });
     } else if (column === "createdBy") {
       var sItems1 = screatedByFilterCheckbox.split(",");
@@ -843,7 +925,7 @@ class StoreModule extends Component {
         for (let i = 0; i < sItems1.length; i++) {
           if (sItems1[i] !== "") {
             var tempFilterData1 = allData.filter(
-              (a) => a.createdBy === sItems1[i]
+              a => a.createdBy === sItems1[i]
             );
             if (tempFilterData1.length > 0) {
               for (let j = 0; j < tempFilterData1.length; j++) {
@@ -854,16 +936,14 @@ class StoreModule extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column",
+        createdColor: "sort-column"
       });
     } else if (column === "status") {
       var sItems2 = sstatusFilterCheckbox.split(",");
       if (sItems2.length > 0) {
         for (let i = 0; i < sItems2.length; i++) {
           if (sItems2[i] !== "") {
-            var tempFilterData2 = allData.filter(
-              (a) => a.status === sItems2[i]
-            );
+            var tempFilterData2 = allData.filter(a => a.status === sItems2[i]);
             if (tempFilterData2.length > 0) {
               for (let j = 0; j < tempFilterData2.length; j++) {
                 itemsArray.push(tempFilterData2[j]);
@@ -873,12 +953,12 @@ class StoreModule extends Component {
         }
       }
       this.setState({
-        stattusColor: "sort-column",
+        stattusColor: "sort-column"
       });
     }
 
     this.setState({
-      tempcampaignScriptData: itemsArray,
+      tempcampaignScriptData: itemsArray
     });
   };
 
@@ -896,7 +976,7 @@ class StoreModule extends Component {
         this.setState({ sortFiltercampaignName });
       } else {
         this.setState({
-          sortFiltercampaignName: this.state.sortcampaignName,
+          sortFiltercampaignName: this.state.sortcampaignName
         });
       }
     }
@@ -910,7 +990,7 @@ class StoreModule extends Component {
         this.setState({ sortFiltercreatedBy });
       } else {
         this.setState({
-          sortFiltercreatedBy: this.state.sortcreatedBy,
+          sortFiltercreatedBy: this.state.sortcreatedBy
         });
       }
     }
@@ -924,7 +1004,7 @@ class StoreModule extends Component {
         this.setState({ sortFilteristatus });
       } else {
         this.setState({
-          sortFilteristatus: this.state.sortstatus,
+          sortFilteristatus: this.state.sortstatus
         });
       }
     }
@@ -1094,7 +1174,7 @@ class StoreModule extends Component {
           <Link
             to={{
               pathname: "/admin/settings",
-              tabName: "store-tab",
+              tabName: "store-tab"
             }}
             className="header-path"
           >
@@ -1212,14 +1292,14 @@ class StoreModule extends Component {
                                   </span>
                                 ),
                                 sortable: false,
-                                accessor: "campaignName",
+                                accessor: "campaignName"
                               },
                               {
                                 Header: "Campaign Script",
                                 accessor: "campaignScriptLess",
                                 className: "communication-labelHeader",
                                 sortable: false,
-                                Cell: (row) => {
+                                Cell: row => {
                                   var ids = row.original["id"];
                                   return (
                                     <div>
@@ -1247,7 +1327,7 @@ class StoreModule extends Component {
                                       </span>
                                     </div>
                                   );
-                                },
+                                }
                               },
                               {
                                 id: "createdBy",
@@ -1265,7 +1345,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
-                                Cell: (row) => {
+                                Cell: row => {
                                   var ids = row.original["id"];
                                   return (
                                     <div>
@@ -1312,7 +1392,7 @@ class StoreModule extends Component {
                                       </span>
                                     </div>
                                   );
-                                },
+                                }
                                 // accessor: "createdBy"
                               },
                               {
@@ -1331,17 +1411,17 @@ class StoreModule extends Component {
                                 ),
                                 sortable: false,
                                 accessor: "status",
-                                Cell: (row) => {
+                                Cell: row => {
                                   return row.original.status
                                     ? "Active"
                                     : "Inactive";
-                                },
+                                }
                               },
                               {
                                 Header: "Actions",
                                 // accessor: "action",
                                 sortable: false,
-                                Cell: (row) => {
+                                Cell: row => {
                                   var ids = row.original["id"];
                                   return (
                                     <>
@@ -1449,8 +1529,8 @@ class StoreModule extends Component {
                                       </span>
                                     </>
                                   );
-                                },
-                              },
+                                }
+                              }
                             ]}
                             // resizable={false}
                             defaultPageSize={5}
@@ -1478,7 +1558,7 @@ class StoreModule extends Component {
                                 <p
                                   style={{
                                     color: "red",
-                                    marginBottom: "0px",
+                                    marginBottom: "0px"
                                   }}
                                 >
                                   {this.state.issueTypeCompulsion}
@@ -1583,7 +1663,7 @@ class StoreModule extends Component {
                                     </li>
                                     <li
                                       style={{
-                                        float: "right",
+                                        float: "right"
                                       }}
                                     >
                                       <button
@@ -1641,73 +1721,121 @@ class StoreModule extends Component {
                             <h3 className="pb-0">Bulk Upload</h3>
                             <div className="down-excel">
                               <p>Template</p>
-                              <a href={Demo.BLANK_LINK}>
-                                <img
-                                  src={DownExcel}
-                                  alt="download icon"
-                                  className="storeImg-dwn"
-                                />
-                              </a>
+                              <CSVLink
+                                filename={"Campaign.csv"}
+                                data={config.campaignTemplate}
+                              >
+                                <img src={DownExcel} alt="download icon" />
+                              </CSVLink>
                             </div>
                           </div>
-                          <input
-                            id="file-upload"
-                            className="file-upload d-none"
-                            type="file"
-                            onChange={this.fileUpload}
-                          />
-                          <label
-                            htmlFor="file-upload"
-                            onDrop={this.fileDrop}
-                            onDragOver={this.fileDragOver}
-                            onDragEnter={this.fileDragEnter}
-                          >
-                            <div className="file-icon">
-                              <img src={FileUpload} alt="file-upload" />
-                            </div>
-                            <span>Add File</span> or Drop File here
-                          </label>
+                          <div className="mainfileUpload">
+                          <Dropzone onDrop={this.fileUpload}>
+                            {({ getRootProps, getInputProps }) => (
+                              <div {...getRootProps()}>
+                                <input
+                                  {...getInputProps()}
+                                  className="file-upload d-none"
+                                />
+                                <div className="file-icon">
+                                  <img src={FileUpload} alt="file-upload" />
+                                </div>
+                                <span className={"fileupload-span"}>Add File</span> or
+                                Drop File here
+                              </div>
+                            )}
+                          </Dropzone>
+                        </div>
+                          {this.state.fileValidation ? (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.fileValidation}
+                            </p>
+                          ) : null}
                           {this.state.fileName && (
                             <div className="file-info">
                               <div className="file-cntr">
                                 <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
+                                  <p className="file-name">{this.state.fileName}</p>
                                   <div className="del-file" id="del-file-1">
                                     <img src={DelBlack} alt="delete-black" />
                                   </div>
-                                </div>
-                                <div>
-                                  <span className="file-size">122.6kb</span>
-                                </div>
-                              </div>
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
-                                  <a
-                                    className="file-retry"
-                                    href={Demo.BLANK_LINK}
+                                  <UncontrolledPopover
+                                    trigger="legacy"
+                                    placement="auto"
+                                    target="del-file-1"
+                                    className="general-popover delete-popover"
                                   >
-                                    Retry
-                                  </a>
+                                    <PopoverBody className="d-flex">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.DeleteBulkUploadFile}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </PopoverBody>
+                                  </UncontrolledPopover>
                                 </div>
                                 <div>
-                                  <span className="file-failed">Failed</span>
+                                  <span className="file-size">
+                                    {this.state.fileSize}
+                                  </span>
                                 </div>
                               </div>
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name pr-0">
-                                    {this.state.fileName}
-                                  </p>
+                              {this.state.isErrorBulkUpload ? (
+                                <div className="file-cntr">
+                                  <div className="file-dtls">
+                                    <p className="file-name">{this.state.fileName}</p>
+                                    <span
+                                      className="file-retry"
+                                      onClick={this.handleBulkUpload.bind(this)}
+                                    >
+                                      Retry
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <span className="file-failed">Failed</span>
+                                  </div>
                                 </div>
-                              </div>
+                              ) : null}
+                              {this.state.isShowProgress ? (
+                                <div className="file-cntr">
+                                  <div className="file-dtls">
+                                    <p className="file-name pr-0">
+                                      {this.state.fileName}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <div className="d-flex align-items-center mt-2">
+                                      <ProgressBar className="file-progress" now={60} />
+                                      <div className="cancel-upload">
+                                        <img src={UploadCancel} alt="upload cancel" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : null}
                             </div>
                           )}
-                          <button className="butn">ADD</button>
+                          <button
+                            className="butn"
+                            onClick={this.handleBulkUpload.bind(this)}
+                          >
+                            ADD
+                          </button>
                         </div>
                       </div>
                     </div>

@@ -19,12 +19,28 @@ import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
 import config from "../../helpers/config";
 import axios from "axios";
-
+import { Popover } from "antd";
 class Header extends Component {
-  state = {
-    modalIsOpen: false,
-    open: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalIsOpen: false,
+      open: false,
+      notificationModal: false,
+      notificationCount: 0,
+      notificationData: []
+    };
+    this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
+      this
+    );
+    this.handleNotificationModalOpen = this.handleNotificationModalOpen.bind(
+      this
+    );
+  }
+
+  componentDidMount() {
+    this.handleGetNotigfication();
+  }
 
   onOpenModal = () => {
     this.setState({ open: true });
@@ -41,15 +57,28 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-
+  ////handle notification modal open
+  handleNotificationModalOpen() {
+    debugger;
+    if (this.state.notificationData.length > 0) {
+      this.setState({ notificationModal: true });
+    }
+  }
+  ////handle notification modal close
+  handleNotificationModalClose() {
+    debugger;
+    this.setState({ notificationModal: false });
+  }
+  handleNotificationNoClick(typeId, type) {}
+  ////handle logout method
   handleLogoutMethod() {
     // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreAccount/Logout",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then(function (res) {
+      .then(function(res) {
         //
         var status = res.data.status;
         // var Msg=res.data.message
@@ -59,8 +88,65 @@ class Header extends Component {
           window.location.href = "/storeProgramCode";
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
+      });
+  }
+  ////handle get notification
+  handleGetNotigfication() {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          var notificationCount = responseData.notiCount;
+          if (responseData.storeNotificationModel.length > 0) {
+            self.setState({
+              notificationData: responseData,
+              notificationCount
+            });
+          }
+        } else {
+          self.setState({ notificationData:responseData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "---handleGetNotigfication");
+      });
+  }
+  ////handle get read store notification
+  handleGetReadStoreNotification(typeId, type) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreNotification/ReadStoreNotification",
+      headers: authHeader(),
+      params: {
+        NotificatonTypeID: typeId,
+        NotificatonType: type
+      }
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.props.history.push({
+            pathname: "/store/editStoreTask",
+            state: { TaskID: typeId }
+          });
+        } else {
+        }
+      })
+      .catch(response => {
+        console.log(response, "---handleGetNotigfication");
       });
   }
 
@@ -142,11 +228,26 @@ class Header extends Component {
                 style={{ display: "none" }}
               />
             </a>
-            <a href="#!">
-              <img src={NotificationLogo} alt="logo" className="notifi" />
-              <span style={{ display: "none" }} className="icon-fullname">
-                Notifications
-              </span>
+            {/* --notification-- */}
+            <a>
+              <div
+                className="position-relative"
+                // style={{ display: this.state.notificationAccess }}
+                onClick={this.handleNotificationModalOpen.bind(this)}
+              >
+                <img src={NotificationLogo} alt="logo" className="notifi" />
+                <span style={{ display: "none" }} className="icon-fullname">
+                  Notifications
+                </span>
+                {/* {this.state.notiCount > 0 && ( */}
+                <span className="upper-noti-count">
+                  {this.state.notificationCount}
+                </span>
+                {/* } */}
+                <span style={{ display: "none" }} className="icon-fullname">
+                  Notifications
+                </span>
+              </div>
             </a>
             <Link to="/admin/settings">
               <img src={SettingLogo} alt="logo" className="setting" />
@@ -290,7 +391,82 @@ class Header extends Component {
             </div> */}
           </div>
         </Modal>
-        <div></div>
+        {/*----------------- notification modal-------------- */}
+        <Modal
+          onClose={this.handleNotificationModalClose.bind(this)}
+          open={this.state.notificationModal}
+          modalId="Notification-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="notifi-container">
+            {/* {this.state.notiCount === 0 && (
+              <p className="m-0 p-2">There are no notifications.</p>
+            )} */}
+            {this.state.notificationData.length > 0 ? (
+              this.state.notificationData.map((item, i) => {
+                return (
+                  <div className="row rowpadding" key={i}>
+                    <div className="md-2 rectangle-2 lable05 noti-count">
+                      <label className="labledata">
+                        {item.notificationCount}
+                      </label>
+                    </div>
+                    <div className="md-6 new-tickets-assigned tic-noti">
+                      <label>
+                        <span>{item.notificationName}</span>
+                      </label>
+                    </div>
+                    <div className="viewticketspeadding">
+                      <Popover
+                        content={
+                          <div className="notification-popover">
+                            {item.customTaskNotificationModels.map(
+                              (data, j) => {
+                                return (
+                                  <p key={j}>
+                                    {data.notificatonTypeName} No. :
+                                    <span
+                                      style={{ color: "#2561A8" }}
+                                      onClick={this.handleGetReadStoreNotification.bind(
+                                        this,
+                                        data.notificatonTypeID,
+                                        data.notificatonType
+                                      )}
+                                    >
+                                      {" " + data.notificatonTypeID}
+                                    </span>
+                                  </p>
+                                );
+                              }
+                            )}
+                          </div>
+                        }
+                        placement="bottom"
+                        trigger="click"
+                      >
+                        <div
+                          className={
+                            item.alertID !== ""
+                              ? "md-4 view-tickets"
+                              : "text-disabled"
+                          }
+                          // onClick={this.handleViewTicketModalOpen.bind(
+                          //   this,
+                          //   item
+                          // )}
+                        >
+                          VIEW TICKETS
+                        </div>
+                      </Popover>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <span>No Notification Found</span>
+            )}
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }

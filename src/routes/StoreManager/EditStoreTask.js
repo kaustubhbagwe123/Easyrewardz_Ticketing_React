@@ -9,7 +9,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 import LoadingImg from "./../../assets/Images/loading.png";
 import CancelImg from "./../../assets/Images/cancel.png";
@@ -48,6 +48,7 @@ class EditStoreTask extends Component {
       storeAddress: "",
       historyData: [],
       historyModal: false,
+      assignToName: ""
     };
   }
 
@@ -81,7 +82,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetCommentOnTask",
       headers: authHeader(),
-      params: { TaskID: taskId },
+      params: { TaskID: taskId }
     })
       .then(function(response) {
         debugger;
@@ -94,7 +95,7 @@ class EditStoreTask extends Component {
         } else {
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetCommentOnTask");
       });
   }
@@ -106,7 +107,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreTaskByID",
       headers: authHeader(),
-      params: { TaskID: taskId },
+      params: { TaskID: taskId }
     })
       .then(function(response) {
         var message = response.data.message;
@@ -121,6 +122,7 @@ class EditStoreTask extends Component {
         var issueRaisedBy = "";
         var storeName = "";
         var storeAddress = "";
+        var assignToName = "";
 
         debugger;
         if (message == "Success" && data) {
@@ -133,6 +135,7 @@ class EditStoreTask extends Component {
           issueRaisedBy = data.assignToName;
           storeName = data.storeName;
           storeAddress = data.address;
+          assignToName = data.assignToName;
           self.setState({
             departmentID,
             funcationID,
@@ -143,6 +146,7 @@ class EditStoreTask extends Component {
             issueRaisedBy,
             storeName,
             storeAddress,
+            assignToName
           });
           if (funcationID > 0) {
             setTimeout(() => {
@@ -152,7 +156,7 @@ class EditStoreTask extends Component {
         } else {
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleStoreTaskDetialsById");
       });
   }
@@ -164,7 +168,7 @@ class EditStoreTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(response) {
         var message = response.data.message;
@@ -175,7 +179,7 @@ class EditStoreTask extends Component {
           self.setState({ departmentData });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetDepartement");
       });
   }
@@ -187,7 +191,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
-      params: { DepartmentId: DepartmentId },
+      params: { DepartmentId: DepartmentId }
     })
       .then(function(response) {
         var message = response.data.message;
@@ -198,7 +202,7 @@ class EditStoreTask extends Component {
           self.setState({ funcationData });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetFuncationByDepartmentId");
       });
   }
@@ -209,10 +213,10 @@ class EditStoreTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(response) {})
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetAssignTo");
       });
   }
@@ -223,7 +227,7 @@ class EditStoreTask extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader(),
+      headers: authHeader()
     })
       .then(function(response) {
         var message = response.data.message;
@@ -234,7 +238,7 @@ class EditStoreTask extends Component {
           self.setState({ priorityData });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetPriority");
       });
   }
@@ -257,8 +261,8 @@ class EditStoreTask extends Component {
         headers: authHeader(),
         data: {
           TaskID: this.state.taskId,
-          Comment: this.state.comment,
-        },
+          Comment: this.state.comment
+        }
       })
         .then(function(response) {
           var message = response.data.message;
@@ -272,7 +276,7 @@ class EditStoreTask extends Component {
             self.setState({ iscmtLoading: false });
           }
         })
-        .catch((response) => {
+        .catch(response => {
           self.setState({ iscmtLoading: false });
           console.log(response, "---handleAddCommentByTaskId");
         });
@@ -287,8 +291,8 @@ class EditStoreTask extends Component {
       url: config.apiUrl + "/StoreTask/GetTaskHistory",
       headers: authHeader(),
       params: {
-        TaskID: 6,
-      },
+        TaskID: 6
+      }
     })
       .then(function(response) {
         var message = response.data.message;
@@ -299,13 +303,13 @@ class EditStoreTask extends Component {
           self.setState({ historyData, historyModal: false });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         console.log(response, "---handleGetTaskHistory");
       });
   }
 
   ////handle input filed change
-  handleOnchange = (e) => {
+  handleOnchange = e => {
     debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
@@ -314,7 +318,7 @@ class EditStoreTask extends Component {
       } else {
         this.setState({
           taskTitle: value,
-          istaskTitle: "Please Enter Task Title",
+          istaskTitle: "Please Enter Task Title"
         });
       }
     }
@@ -324,7 +328,7 @@ class EditStoreTask extends Component {
           departmentID: value,
           funcationData: [],
           funcationID: 0,
-          isdepartment: "",
+          isdepartment: ""
         });
         setTimeout(() => {
           this.handleGetFuncationByDepartmentId();
@@ -332,7 +336,7 @@ class EditStoreTask extends Component {
       } else {
         this.setState({
           isdepartment: "Please Select Department.",
-          departmentID: value,
+          departmentID: value
         });
       }
     }
@@ -340,12 +344,12 @@ class EditStoreTask extends Component {
       if (value !== 0) {
         this.setState({
           funcationID: value,
-          isfuncation: "",
+          isfuncation: ""
         });
       } else {
         this.setState({
           isfuncation: "Please Select Funcation.",
-          funcationID: value,
+          funcationID: value
         });
       }
     }
@@ -353,12 +357,12 @@ class EditStoreTask extends Component {
       if (value !== 0) {
         this.setState({
           priorityID: value,
-          ispriority: "",
+          ispriority: ""
         });
       } else {
         this.setState({
           ispriority: "Please Select Priority.",
-          priorityID: value,
+          priorityID: value
         });
       }
     }
@@ -366,12 +370,12 @@ class EditStoreTask extends Component {
       if (value !== 0) {
         this.setState({
           assignToID: value,
-          isassignto: "",
+          isassignto: ""
         });
       } else {
         this.setState({
           isassignto: "Please Select Assign To.",
-          assignToID: value,
+          assignToID: value
         });
       }
     }
@@ -379,12 +383,12 @@ class EditStoreTask extends Component {
       if (value !== "") {
         this.setState({
           taskDetails: value,
-          istaskDetails: "",
+          istaskDetails: ""
         });
       } else {
         this.setState({
           istaskDetails: "Please Enter Task Details.",
-          taskDetails: value,
+          taskDetails: value
         });
       }
     }
@@ -392,18 +396,18 @@ class EditStoreTask extends Component {
       if (value !== "") {
         this.setState({
           comment: value,
-          iscomment: "",
+          iscomment: ""
         });
       } else {
         this.setState({
           iscomment: "Please Enter Comment.",
-          comment: value,
+          comment: value
         });
       }
     }
   };
 
-  onCloseModal = (e) => {
+  onCloseModal = e => {
     this.setState({ historyModal: false });
   };
   render() {
@@ -411,12 +415,12 @@ class EditStoreTask extends Component {
       <Fragment>
         <div className="edit-storeTask-header">
           <label className="store-header-lbl">
-            Store ticket id : <span>ABC1234</span>
+            Store ticket id : <span>{this.state.taskId}</span>
           </label>
           <a
             className="loading-rectangle-cntr"
             onClick={this.handleGetTaskHistory.bind(this)}
-            style={{top:"0"}}
+            style={{ top: "0" }}
           >
             <img
               src={LoadingImg}
@@ -429,7 +433,7 @@ class EditStoreTask extends Component {
             <div className="oval-5-1-new-store">
               <img src={storeImg} alt="headphone" className="storeImg-11" />
             </div>
-            <label className="naman-r">{this.state.issueRaisedBy}</label>
+            <label className="naman-r">{this.state.assignToName}</label>
             <button
               type="button"
               className="submitAs-reopen"
@@ -464,7 +468,7 @@ class EditStoreTask extends Component {
         </div>
         <div className="row width">
           <div className="col-md-7">
-            <div className="card store-card-padding">
+            <div className="card store-card-padding h-100">
               <label className="store-Edit-lbl"> Task Title</label>
               <input
                 type="text"
@@ -665,7 +669,7 @@ class EditStoreTask extends Component {
             </div>
           </div>
           <div className="col-md-5" style={{ padding: "0" }}>
-            <div className="card store-card-2">
+            <div className="card store-card-2 h-100">
               <div className="row">
                 <div className="col-md-6">
                   <label className="store-Edit-lbl">Issue Raised By:</label>
@@ -748,17 +752,17 @@ class EditStoreTask extends Component {
                   {
                     Header: <span>Name</span>,
                     accessor: "name",
-                    width: 150,
+                    width: 150
                   },
                   {
                     Header: <span>Action</span>,
-                    accessor: "action",
+                    accessor: "action"
                   },
                   {
                     Header: <span>Time & Date</span>,
                     accessor: "dateandTime",
                     width: 200,
-                    Cell: (row) => {
+                    Cell: row => {
                       var date = row.original["dateandTime"];
                       return (
                         <span>
@@ -766,8 +770,8 @@ class EditStoreTask extends Component {
                           {moment(date).format("HH:mm")}
                         </span>
                       );
-                    },
-                  },
+                    }
+                  }
                 ]}
                 resizable={false}
                 defaultPageSize={5}

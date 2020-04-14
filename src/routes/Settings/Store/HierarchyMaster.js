@@ -274,26 +274,36 @@ class HierarchyMaster extends Component {
       });
     }
   }
-
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
+  }
+  
   handleBulkUpload() {
     let self = this;
-    if (this.state.file) {
+    if (this.state.fileName) {
       const formData = new FormData();
       formData.append("file", this.state.file);
+      this.setState({ isShowProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+        url: config.apiUrl + "/StoreHierarchy/BulkUploadStoreHierarchy",
         headers: authHeader(),
-        data: formData
-      })
-        .then(response => {
-          var status = response.data.status;
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        },
+      }).then(response => {
+          var status = response.data.message;
           var itemData = response.data.responseData;
-          if (status && itemData.lenght > 0) {
-            self.setState(itemData);
-            self.setState({ isErrorBulkUpload: false });
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetItem();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            self.setState({ isErrorBulkUpload: true });
+            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            NotificationManager.error("File not uploaded.");
           }
         })
         .catch(response => {
@@ -570,11 +580,13 @@ class HierarchyMaster extends Component {
     let value = e.target.value;
     this.setState({ selectReportTo: value });
   };
+
   handleStatusChange = e => {
     debugger;
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
+
   fileUpload = file => {
     debugger;
     if (file) {

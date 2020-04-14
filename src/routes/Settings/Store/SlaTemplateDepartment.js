@@ -1063,7 +1063,7 @@ class SlaTemplateDepartment extends Component {
       this.setState({ showProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/SLA/BulkUploadSLA",
+        url: config.apiUrl + "/StoreSLA/BulkUploadStoreSLA",
         headers: authHeader(),
         data: formData,
         onUploadProgress: (ev = ProgressEvent) => {
@@ -1773,7 +1773,7 @@ class SlaTemplateDepartment extends Component {
                     <h3>Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
+                      <CSVLink filename={"SLA.csv"} data={config.storeSlaTemplate}>
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
                     </div>
