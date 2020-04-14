@@ -678,12 +678,11 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
+        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
           const newSelected = Object.assign({}, self.state.CheckOrderID);
-          ////
 
           var OrderSubItem = [];
           var selectedRow = [];
@@ -694,7 +693,7 @@ class MyTicket extends Component {
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckOrderID: data[i].invoiceNumber ? newSelected : false
+                CheckOrderID:data[i].invoiceNumber ? newSelected : false
               });
             }
             if (data[i].invoiceNumber.length > 0) {
@@ -964,14 +963,14 @@ class MyTicket extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Store/searchStoreDetail",
+      url: config.apiUrl + "/Store/SearchStoreDetail",
       headers: authHeader(),
       params: {
         SearchText: this.state.SearchStore
       }
     })
       .then(function(res) {
-        ////
+        debugger;
         let data = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -1671,7 +1670,7 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
-    ////
+    debugger;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1683,30 +1682,99 @@ class MyTicket extends Component {
       } else {
         PurposeID = 2;
       }
+      var visitDate = "";
+      if (
+        this.state.selectedStoreData[j]["storeVisitDate"] === null ||
+        this.state.selectedStoreData[j]["storeVisitDate"] === undefined ||
+        this.state.selectedStoreData[j]["storeVisitDate"] === ""
+      ) {
+        visitDate = "";
+      } else {
+        visitDate = moment(
+          this.state.selectedStoreData[j]["storeVisitDate"]
+        ).format("YYYY-MM-DD");
+      }
 
       selectedStore +=
         this.state.selectedStoreData[j]["storeID"] +
         "|" +
-        moment(this.state.selectedStoreData[j]["storeVisitDate"]).format(
-          "YYYY-MM-DD"
-        ) +
+        visitDate +
         "|" +
         PurposeID +
         ",";
     }
+
+    const formData = new FormData();
+
+    //// -------------------Store attachment Code start---------------
+    var store_Details = [];
+    for (let k = 0; k < this.state.selectedStoreData.length; k++) {
+      var storeData = {};
+
+      ///check purpose id
+      var PurposeID = this.state.selectedStoreData[k]["Purpose_Id"];
+
+      if (PurposeID === "0") {
+        // Send Purpose Id as 1 and 2 from API
+        PurposeID = 1;
+      } else {
+        PurposeID = 2;
+      }
+
+      var visitDate = "";
+      if (
+        this.state.selectedStoreData[k]["storeVisitDate"] === null ||
+        this.state.selectedStoreData[k]["storeVisitDate"] === undefined ||
+        this.state.selectedStoreData[k]["storeVisitDate"] === ""
+      ) {
+        visitDate = "";
+      } else {
+        visitDate = moment(
+          this.state.selectedStoreData[k]["storeVisitDate"]
+        ).format("YYYY-MM-DD");
+      }
+
+      storeData["StoreID"] = this.state.selectedStoreData[k]["storeID"];
+      storeData["BrandID"] = this.state.selectedStoreData[k]["brandID"];
+      storeData["CityID"] = this.state.selectedStoreData[k]["cityID"];
+      storeData["StateID"] = this.state.selectedStoreData[k]["stateID"];
+      storeData["PincodeID"] = this.state.selectedStoreData[k]["pincodeID"];
+      storeData["StoreName"] = this.state.selectedStoreData[k]["storeName"];
+      storeData["Address"] = this.state.selectedStoreData[k]["address"];
+      storeData["StoreCode"] = this.state.selectedStoreData[k]["storeCode"];
+      storeData["RegionID"] = this.state.selectedStoreData[k]["regionID"];
+      storeData["ZoneID"] = this.state.selectedStoreData[k]["zoneID"];
+      storeData["StoreTypeID"] = this.state.selectedStoreData[k]["storeTypeID"];
+      storeData["StoreEmailID"] = this.state.selectedStoreData[k][
+        "storeEmailID"
+      ];
+      storeData["StorePhoneNo"] = this.state.selectedStoreData[k][
+        "storePhoneNo"
+      ];
+      storeData["StoreVisitDate"] = visitDate;
+      storeData["Purpose"] = PurposeID;
+      storeData["Pincode"] = this.state.selectedStoreData[k]["pincode"];
+      storeData["BrandIDs"] = this.state.selectetedParameters.brandID;
+
+      store_Details.push(storeData);
+    }
+    //// -------------------Store attachment Code end-----------------
+    formData.append("storeDetails", JSON.stringify(store_Details));
+    formData.append(
+      "StoreId",
+      selectedStore.substring(",", selectedStore.length - 1)
+    );
+    formData.append("TicketId", this.state.ticket_Id);
+
     axios({
       method: "post",
       url: config.apiUrl + "/Store/attachstore",
       headers: authHeader(),
-      params: {
-        TicketId: this.state.ticket_Id,
-        StoreId: selectedStore.substring(",", selectedStore.length - 1)
-      }
+      data: formData
     })
       .then(function(res) {
-        ////
+        debugger;
         let status = res.data.message;
-        // let details = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Store attached successfully.");
           self.HandleStoreModalClose();
@@ -1721,8 +1789,8 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger
-    // let self = this;
+    debugger;
+    let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       var selectedRow = "";
 
@@ -1759,8 +1827,8 @@ class MyTicket extends Component {
       }
       const formData = new FormData();
 
-       /// For Attached order
-       if(this.state.SelectedAllOrder.length > 0){
+      /// For Attached order
+      if (this.state.SelectedAllOrder.length > 0) {
         var order_data = this.state.SelectedAllOrder[0];
         var OrderData = {
           OrderMasterID: order_data.orderMasterID,
@@ -1775,47 +1843,43 @@ class MyTicket extends Component {
           ModeOfPaymentID: 1,
           TicketSourceID: this.state.selectetedParameters.channelOfPurchaseID
         };
-      }else{
-        var OrderData = null
+      } else {
+        var OrderData = null;
       }
 
-       /// For Attached OrderItem data
-       var order_itemData = [];
-       for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+      /// For Attached OrderItem data
+      var order_itemData = [];
+      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
         var item_data = {};
-         item_data["OrderItemID"] = this.state.SelectedAllItem[i][
-           "orderItemID"
-         ];
-         item_data["OrderMasterID"] = this.state.SelectedAllItem[i][
-           "orderMasterID"
-         ];
-         item_data["ItemName"] = this.state.SelectedAllItem[i]["itemName"];
-         item_data["InvoiceNumber"] = this.state.SelectedAllItem[i][
-           "invoiceNumber"
-         ];
-         item_data["InvoiceDate"] = this.state.SelectedAllItem[i][
-           "invoiceDate"
-         ];
-         item_data["ItemCount"] = this.state.SelectedAllItem[i]["itemCount"];
-         item_data["ItemPrice"] = this.state.SelectedAllItem[i]["itemPrice"];
-         item_data["PricePaid"] = this.state.SelectedAllItem[i]["pricePaid"];
-         item_data["Size"] = this.state.SelectedAllItem[i]["size"];
-         item_data["RequireSize"] = this.state.SelectedAllItem[i][
-           "requireSize"
-         ];
-         item_data["Discount"] = this.state.SelectedAllItem[i]["discount"];
-         item_data["ArticleNumber"] = this.state.SelectedAllItem[i][
-           "articleNumber"
-         ];
-         item_data["ArticleName"] = this.state.SelectedAllItem[i]["itemName"];
- 
-         order_itemData.push(item_data);
-         
-        }
+        item_data["OrderItemID"] = this.state.SelectedAllItem[i]["orderItemID"];
+        item_data["OrderMasterID"] = this.state.SelectedAllItem[i][
+          "orderMasterID"
+        ];
+        item_data["ItemName"] = this.state.SelectedAllItem[i]["itemName"];
+        item_data["InvoiceNumber"] = this.state.SelectedAllItem[i][
+          "invoiceNumber"
+        ];
+        item_data["InvoiceDate"] = this.state.SelectedAllItem[i]["invoiceDate"];
+        item_data["ItemCount"] = this.state.SelectedAllItem[i]["itemCount"];
+        item_data["ItemPrice"] = this.state.SelectedAllItem[i]["itemPrice"];
+        item_data["PricePaid"] = this.state.SelectedAllItem[i]["pricePaid"];
+        item_data["Size"] = this.state.SelectedAllItem[i]["size"];
+        item_data["RequireSize"] = this.state.SelectedAllItem[i]["requireSize"];
+        item_data["Discount"] = this.state.SelectedAllItem[i]["discount"];
+        item_data["ArticleNumber"] = this.state.SelectedAllItem[i][
+          "articleNumber"
+        ];
+        item_data["ArticleName"] = this.state.SelectedAllItem[i]["itemName"];
+
+        order_itemData.push(item_data);
+      }
 
       formData.append("orderDetails", JSON.stringify(OrderData));
       formData.append("orderItemDetails", JSON.stringify(order_itemData));
-      formData.append("OrderID", selectedRow.substring(",", selectedRow.length - 1));
+      formData.append(
+        "OrderID",
+        selectedRow.substring(",", selectedRow.length - 1)
+      );
       formData.append("TicketId", this.state.ticket_Id);
       axios({
         method: "post",
@@ -1829,6 +1893,8 @@ class MyTicket extends Component {
           // let details = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("Product attached successfully.");
+            self.handleOrderTableClose();
+            self.handleGetTicketDetails(self.state.ticket_Id);
           } else {
             NotificationManager.error("Product not attached");
           }
@@ -2562,13 +2628,12 @@ class MyTicket extends Component {
   handleGetOderItemData(invoiceNumber, rowData, e) {
     debugger;
     if (e.target.checked) {
-      var selectproduct=[];
+      var selectproduct = [];
       this.setState({
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
         selectedInvoiceNo: ""
-        
       });
       let self = this;
       axios({
@@ -2686,8 +2751,7 @@ class MyTicket extends Component {
 
             self.setState({
               SelectedAllOrder: selectedRow,
-              SelectedAllItem: CselectedRow,
-              
+              SelectedAllItem: CselectedRow
             });
           } else {
             var selectedInvoiceNo = invoiceNumber;
@@ -3150,7 +3214,6 @@ class MyTicket extends Component {
       historicalDetails,
       SearchAssignData,
       orderDetails,
-      storeDetails,
       selectedStore
     } = this.state;
 
@@ -3651,7 +3714,7 @@ class MyTicket extends Component {
                                         </span>
                                       ),
                                       // accessor: "itemPrice",
-                                      accessor: "ordeItemPrice"
+                                      accessor: "itemPrice"
                                     },
                                     {
                                       Header: (
@@ -4264,37 +4327,42 @@ class MyTicket extends Component {
                               >
                                 <div className="reactstoreselect custom-react-table datePickertable">
                                   <ReactTable
-                                    data={storeDetails}
+                                    data={this.state.storeDetails}
                                     columns={[
                                       {
                                         Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: row => {
+                                          debugger;
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
                                           return (
                                             <div className="filter-checkbox">
                                               <input
                                                 type="checkbox"
-                                                id={"i" + row.original.storeID}
+                                                id={"i" + storeId}
                                                 style={{
                                                   display: "none"
                                                 }}
                                                 name="ticket-store"
                                                 checked={
                                                   this.state.CheckStoreID[
-                                                    row.original.storeID
+                                                    storeId
                                                   ] === true
                                                 }
                                                 onChange={this.handleCheckStoreID.bind(
                                                   this,
-                                                  row.original.storeID,
+                                                  storeId,
                                                   row.original
                                                 )}
                                                 defaultChecked={true}
                                               />
                                               <label
-                                                htmlFor={
-                                                  "i" + row.original.storeID
-                                                }
+                                                htmlFor={"i" + storeId}
                                               ></label>
                                             </div>
                                           );
@@ -4335,7 +4403,7 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="selectedstore-tab"
                               >
-                                <div className="reactstoreselect custom-react-table datePickertable">
+                                <div className="reactstoreselect custom-react-table datePickertable storeTdetail">
                                   {/* {this.state.loading === true ? (
                                     <div className="loader-icon"></div>
                                   ) : ( */}
@@ -4346,43 +4414,50 @@ class MyTicket extends Component {
                                         Header: "",
                                         accessor: "storeID",
                                         width: 20,
-                                        Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                            style={{
-                                              marginLeft: "15px"
-                                            }}
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              id={"i" + row.original.storeID}
+                                        Cell: row => {
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
+                                          return (
+                                            <div
+                                              className="filter-checkbox"
                                               style={{
-                                                display: "none"
+                                                marginLeft: "15px"
                                               }}
-                                              name="ticket-store"
-                                              checked={
-                                                this.state.CheckStoreID[
-                                                  row.original.storeID
-                                                ] === true
-                                              }
-                                              onChange={this.handleCheckStoreID.bind(
-                                                this,
-                                                row.original.storeID,
-                                                row.original
-                                              )}
-                                              defaultChecked={true}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.storeID
-                                              }
-                                            ></label>
-                                          </div>
-                                        )
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                id={"i" + storeId}
+                                                style={{
+                                                  display: "none"
+                                                }}
+                                                name="ticket-store"
+                                                checked={
+                                                  this.state.CheckStoreID[
+                                                    storeId
+                                                  ] === true
+                                                }
+                                                onChange={this.handleCheckStoreID.bind(
+                                                  this,
+                                                  storeId,
+                                                  row.original
+                                                )}
+                                                defaultChecked={true}
+                                              />
+                                              <label
+                                                htmlFor={"i" + storeId}
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
                                       },
                                       {
                                         Header: <span>Purpose</span>,
                                         accessor: "invoiceNumber",
+                                        minWidth: 160,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
@@ -4416,15 +4491,18 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Store Email ID</span>,
-                                        accessor: "storeEmailID"
+                                        accessor: "storeEmailID",
+                                        minWidth: 190
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "address"
+                                        accessor: "address",
+                                        minWidth: 140
                                       },
                                       {
                                         Header: <span>Visit Date</span>,
                                         accessor: "storeVisitDate",
+                                        minWidth: 150,
                                         Cell: row => {
                                           return (
                                             <div className="col-sm-12 p-0">
@@ -4438,12 +4516,6 @@ class MyTicket extends Component {
                                                     : new Date()
                                                 }
                                                 placeholderText="MM/DD/YYYY"
-                                                // placeholderText={
-                                                //   row.original
-                                                //     .storeVisitDate === null
-                                                //     ? "MM/DD/YYYY"
-                                                //     : null
-                                                // }
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
@@ -4471,7 +4543,7 @@ class MyTicket extends Component {
                                         }
                                       }
                                     ]}
-                                    // resizable={false}
+                                    resizable={false}
                                     defaultPageSize={5}
                                     showPagination={false}
                                     minRows={2}
@@ -5253,9 +5325,7 @@ class MyTicket extends Component {
                                                         row.original
                                                           .invoiceNumber
                                                       }
-                                                    >
-                                                     
-                                                    </label>
+                                                    ></label>
                                                   </div>
                                                 )
                                               },

@@ -55,7 +55,7 @@ class TicketSystemStore extends Component {
 
   ////handle Get Store Details
   handleGetStoreData(ID) {
-    //
+    debugger;
     this.props.parentCallBackFuncation("store");
     let self = this;
 
@@ -74,13 +74,13 @@ class TicketSystemStore extends Component {
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
           for (let i = 0; i < data.length; i++) {
-            if (data[i].storeID) {
-              newSelected[data[i].storeID] = !self.state.CheckStoreID[
-                data[i].storeID
+            if (data[i].lpassStoreID) {
+              newSelected[data[i].lpassStoreID] = !self.state.CheckStoreID[
+                data[i].lpassStoreID
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckStoreID: data[i].storeID ? newSelected : false
+                CheckStoreID: data[i].lpassStoreID ? newSelected : false
               });
             }
           }
@@ -109,17 +109,17 @@ class TicketSystemStore extends Component {
     this.setState({ OrderStoreTable: false });
   }
   handleByvisitDate(e, rowData) {
-    //
-    var id = e.storeID;
-    var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
-    this.state.selectedStoreData["VisitedDate"] = rowData;
+    var id = e.lpassStoreID;
+    var index = this.state.selectedStoreData.findIndex(
+      x => x.lpassStoreID === id
+    );
+    this.state.selectedStoreData["StoreVisitDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
-    selectedStoreData[index].VisitedDate = rowData;
+    selectedStoreData[index].StoreVisitDate = rowData;
 
     this.setState({ selectedStoreData });
   }
   handleStoreStatus = e => {
-    //
     this.setState({
       SwitchBtnStatus: e.target.checked,
       SearchData: [],
@@ -133,21 +133,20 @@ class TicketSystemStore extends Component {
     }
   };
   handleSearchStoreDetails(e) {
-    //
     e.preventDefault();
     if (this.state.SwitchBtnStatus === false) {
       let self = this;
       if (this.state.SrchStoreNameCode.length > 0) {
         axios({
           method: "post",
-          url: config.apiUrl + "/Store/searchStoreDetail",
+          url: config.apiUrl + "/Store/SearchStoreDetail",
           headers: authHeader(),
           params: {
             SearchText: this.state.SrchStoreNameCode.trim()
           }
         })
           .then(function(res) {
-            //
+            debugger;
             let data = res.data.responseData;
             let Msg = res.data.message;
             if (Msg === "Success") {
@@ -198,7 +197,7 @@ class TicketSystemStore extends Component {
   };
 
   handleCheckStoreID = (storeMasterID, rowData) => {
-    //
+    debugger;
 
     const newSelected = Object.assign({}, this.state.CheckStoreID);
     newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
@@ -245,7 +244,6 @@ class TicketSystemStore extends Component {
     }
   };
   onFilteredChange(filtered) {
-    //
     if (filtered.length > 1 && this.state.filterAll.length) {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
@@ -257,7 +255,6 @@ class TicketSystemStore extends Component {
   }
 
   filterAll(e) {
-    //
     const { value } = e.target;
     const filterAll = value;
     const filtered = [{ id: "all", value: filterAll }];
@@ -265,7 +262,6 @@ class TicketSystemStore extends Component {
     this.setState({ filterAll, filtered });
   }
   handleCustomerStoreStatus = e => {
-    //
     this.setState({
       CustStoreStatusDrop: e.target.value
     });
@@ -464,32 +460,41 @@ class TicketSystemStore extends Component {
                       columns={[
                         {
                           // title: "",
-                          // dataIndex: "storeID",
+                          // dataIndex: "lpassStoreID",
                           render: (row, data) => {
+                            var storeId=0;
+                            if(data.lpassStoreID > 0){
+                              storeId=data.lpassStoreID
+                            }else{
+                              storeId=data.storeID
+                            }
                             return (
                               <div className="filter-checkbox">
                                 <input
                                   type="checkbox"
                                   className="d-none"
-                                  id={"i" + data.storeID}
+                                  id={"i" + storeId}
                                   name="ticket-store"
                                   checked={
-                                    this.state.CheckStoreID[data.storeID] ===
-                                    true
+                                    this.state.CheckStoreID[
+                                      storeId
+                                    ] === true
                                   }
                                   onChange={this.handleCheckStoreID.bind(
                                     this,
-                                    data.storeID,
+                                    storeId,
                                     data
                                   )}
                                 />
-                                <label htmlFor={"i" + data.storeID}></label>
+                                <label
+                                  htmlFor={"i" + storeId}
+                                ></label>
                               </div>
                             );
                           }
                         },
                         {
-                          title: "Store Code",
+                          title: "Store Codeee",
                           dataIndex: "storeCode"
                         },
                         {
@@ -526,27 +531,34 @@ class TicketSystemStore extends Component {
                       columns={[
                         {
                           // title: "",
-                          // dataIndex: "storeID",
+                          // dataIndex: "lpassStoreID",
                           render: (row, data) => {
+                            var storeId=0;
+                            if(data.lpassStoreID > 0){
+                              storeId=data.lpassStoreID
+                            }else{
+                              storeId=data.storeID
+                            }
                             return (
                               <div className="filter-checkbox">
                                 <input
                                   className="d-none"
                                   type="checkbox"
-                                  id={"selected" + data.storeID}
+                                  id={"selected" + storeId}
                                   name="ticket-store"
                                   checked={
-                                    this.state.CheckStoreID[data.storeID] ===
-                                    true
+                                    this.state.CheckStoreID[
+                                      storeId
+                                    ] === true
                                   }
                                   onChange={this.handleCheckStoreID.bind(
                                     this,
-                                    data.storeID,
+                                    storeId,
                                     data
                                   )}
                                 />
                                 <label
-                                  htmlFor={"selected" + data.storeID}
+                                  htmlFor={"selected" + storeId}
                                 ></label>
                               </div>
                             );
@@ -554,14 +566,14 @@ class TicketSystemStore extends Component {
                         },
                         {
                           title: "Purpose",
-                          // dataIndex: "storeID",
+                          // dataIndex: "lpassStoreID",
                           render: (row, data) => {
                             return (
                               <div
                                 className="filter-checkbox"
                                 style={{ marginLeft: "15px" }}
                               >
-                                <label htmlFor={"selected" + data.storeID}>
+                                <label htmlFor={"selected" + data.lpassStoreID}>
                                   {data.purposeId === "0"
                                     ? "Customer Want to visit store"
                                     : "Customer Already visited store"}
@@ -592,19 +604,19 @@ class TicketSystemStore extends Component {
                         },
                         {
                           title: "Visit Date",
-                          dataIndex: "visitDate",
+                          dataIndex: "storeVisitDate",
                           render: (row, data) => {
                             return (
                               <div className="col-sm-12 p-0">
                                 <DatePicker
-                                  selected={data.VisitedDate}
+                                  selected={data.StoreVisitDate}
                                   placeholderText="DD/MM/YYYY"
                                   showMonthDropdown
                                   showYearDropdown
                                   dateFormat="dd/MM/yyyy"
-                                  id={"visitDate" + data.storeID}
-                                  value={data.VisitedDate}
-                                  name="visitDate"
+                                  id={"storeVisitDate" + data.lpassStoreID}
+                                  value={data.StoreVisitDate}
+                                  name="storeVisitDate"
                                   onChange={this.handleByvisitDate.bind(
                                     this,
                                     data
@@ -739,24 +751,33 @@ class TicketSystemStore extends Component {
                             // title: "",
                             // dataIndex: "",
                             render: (row, data) => {
+                              var storeId=0;
+                              if(data.lpassStoreID > 0){
+                                storeId=data.lpassStoreID
+                              }else{
+                                storeId=data.storeID
+                              }
                               return (
                                 <div className="filter-checkbox">
                                   <input
                                     type="checkbox"
                                     className="d-none"
-                                    id={"i" + data.storeID}
+                                    id={"i" + storeId}
                                     name="ticket-store"
                                     checked={
-                                      this.state.CheckStoreID[data.storeID] ===
-                                      true
+                                      this.state.CheckStoreID[
+                                        storeId
+                                      ] === true
                                     }
                                     onChange={this.handleCheckStoreID.bind(
                                       this,
-                                      data.storeID,
+                                      storeId,
                                       data
                                     )}
                                   />
-                                  <label htmlFor={"i" + data.storeID}></label>
+                                  <label
+                                    htmlFor={"i" + storeId}
+                                  ></label>
                                 </div>
                               );
                             }
@@ -814,26 +835,32 @@ class TicketSystemStore extends Component {
                             // title: "",
                             // dataIndex: "",
                             render: (row, data) => {
-                              // //
+                              var storeId=0;
+                              if(data.lpassStoreID > 0){
+                                storeId=data.lpassStoreID
+                              }else{
+                                storeId=data.storeID
+                              }
                               return (
                                 <div className="filter-checkbox">
                                   <input
                                     className="d-none"
                                     type="checkbox"
-                                    id={"selected" + data.storeID}
+                                    id={"selected" + storeId}
                                     name="ticket-store"
                                     checked={
-                                      this.state.CheckStoreID[data.storeID] ===
-                                      true
+                                      this.state.CheckStoreID[
+                                        storeId
+                                      ] === true
                                     }
                                     onChange={this.handleCheckStoreID.bind(
                                       this,
-                                      data.storeID,
+                                      storeId,
                                       data
                                     )}
                                   />
                                   <label
-                                    htmlFor={"selected" + data.storeID}
+                                    htmlFor={"selected" + storeId}
                                   ></label>
                                 </div>
                               );
@@ -848,7 +875,9 @@ class TicketSystemStore extends Component {
                                   className="filter-checkbox"
                                   style={{ marginLeft: "15px" }}
                                 >
-                                  <label htmlFor={"selected" + data.storeID}>
+                                  <label
+                                    htmlFor={"selected" + data.lpassStoreID}
+                                  >
                                     {data.purposeId === "0"
                                       ? "Customer Want to visit store"
                                       : "Customer Already visited store"}
@@ -879,19 +908,19 @@ class TicketSystemStore extends Component {
                           },
                           {
                             title: "Visit Date",
-                            dataIndex: "visitDate",
+                            dataIndex: "storeVisitDate",
                             render: (row, data) => {
                               return (
                                 <div className="col-sm-12 p-0 position-static">
                                   <DatePicker
-                                    selected={data.VisitedDate}
+                                    selected={data.StoreVisitDate}
                                     placeholderText="DD/MM/YYYY"
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
-                                    id={"visitDate" + data.storeID}
-                                    value={data.VisitedDate}
-                                    name="visitDate"
+                                    id={"storeVisitDate" + data.lpassStoreID}
+                                    value={data.StoreVisitDate}
+                                    name="storeVisitDate"
                                     onChange={this.handleByvisitDate.bind(
                                       this,
                                       data

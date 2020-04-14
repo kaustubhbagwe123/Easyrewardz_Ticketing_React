@@ -152,7 +152,7 @@ class TicketSystem extends Component {
       showTaskData: false,
       fileDummy: [],
       ckCusrsorPosition: 0,
-      ckCusrsorData: "",
+      ckCusrsorData: ""
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -377,6 +377,7 @@ class TicketSystem extends Component {
     });
   };
   handleGetStoreId = selectedStoreData => {
+    debugger;
     this.setState({
       selectedStoreIDs: selectedStoreData
     });
@@ -1008,10 +1009,9 @@ class TicketSystem extends Component {
       this.setState({ loading: true });
       let self = this;
       var selectedRow = "";
-      var order_masterId=0;
-      if(this.state.selectedOrderData.length > 0){
-        order_masterId =this.state.selectedOrderData[0]["orderMasterID"];
-
+      var order_masterId = 0;
+      if (this.state.selectedOrderData.length > 0) {
+        order_masterId = this.state.selectedOrderData[0]["orderMasterID"];
       }
 
       // --------------New Code start---------------
@@ -1042,12 +1042,23 @@ class TicketSystem extends Component {
           PurposeID = 2;
         }
 
+        var visitDate = "";
+        if (
+          this.state.selectedStoreIDs[j]["StoreVisitDate"] === null ||
+          this.state.selectedStoreIDs[j]["StoreVisitDate"] === undefined ||
+          this.state.selectedStoreIDs[j]["StoreVisitDate"] === ""
+        ) {
+          visitDate = "";
+        } else {
+          visitDate = moment(
+            this.state.selectedStoreIDs[j]["StoreVisitDate"]
+          ).format("YYYY-MM-DD");
+        }
+
         selectedStore +=
           this.state.selectedStoreIDs[j]["storeID"] +
           "|" +
-          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format(
-            "YYYY-MM-DD"
-          ) +
+          visitDate +
           "|" +
           PurposeID +
           ",";
@@ -1092,14 +1103,15 @@ class TicketSystem extends Component {
         TicketMailBody: this.state.editorTemplateDetails,
         IsWantToVisitedStore: this.state.custVisit,
         IsAlreadyVisitedStore: this.state.AlreadycustVisit,
-        TicketSourceID:1,
+        TicketSourceID: 1,
         OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
         StoreID: selectedStore.substring(",", selectedStore.length - 1),
         ticketingMailerQues: mailData,
-        OrderMasterID:order_masterId
+        OrderMasterID: order_masterId
       };
+      //// ----------------Order attachment Code Start-----------------
       /// For Attached order
-      if(this.state.selectedOrderData.length > 0){
+      if (this.state.selectedOrderData.length > 0) {
         var order_data = this.state.selectedOrderData[0];
         var OrderData = {
           OrderMasterID: order_data.orderMasterID,
@@ -1114,14 +1126,14 @@ class TicketSystem extends Component {
           ModeOfPaymentID: 1,
           TicketSourceID: this.state.selectedChannelOfPurchase
         };
-      }else{
-        var OrderData = null
+      } else {
+        var OrderData = null;
       }
-      
+
       /// For Attached OrderItem data
-      var item_data = {};
       var order_itemData = [];
       for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+        var item_data = {};
         item_data["OrderItemID"] = this.state.SelectedItemData[i][
           "orderItemID"
         ];
@@ -1149,12 +1161,69 @@ class TicketSystem extends Component {
         item_data["ArticleName"] = this.state.SelectedItemData[i]["itemName"];
 
         order_itemData.push(item_data);
-
       }
+      //// ----------------Order attachment Code End-----------------
+
+      //// ----------------Store attachment Code Start---------------
+      var store_Details = [];
+      for (let k = 0; k < this.state.selectedStoreIDs.length; k++) {
+        var storeData = {};
+
+        ///check purpose id
+        var PurposeID = this.state.selectedStoreIDs[k]["purposeId"];
+
+        if (PurposeID === "0") {
+          // Send Purpose Id as 1 and 2 from API
+          PurposeID = 1;
+        } else {
+          PurposeID = 2;
+        }
+
+        var visitDate = "";
+        if (
+          this.state.selectedStoreIDs[k]["StoreVisitDate"] === null ||
+          this.state.selectedStoreIDs[k]["StoreVisitDate"] === undefined ||
+          this.state.selectedStoreIDs[k]["StoreVisitDate"] === ""
+        ) {
+          visitDate = "";
+        } else {
+          visitDate = moment(
+            this.state.selectedStoreIDs[k]["StoreVisitDate"]
+          ).format("YYYY-MM-DD");
+        }
+
+        storeData["StoreID"] = this.state.selectedStoreIDs[k]["storeID"];
+        storeData["BrandID"] = this.state.selectedStoreIDs[k]["brandID"];
+        storeData["CityID"] = this.state.selectedStoreIDs[k]["cityID"];
+        storeData["StateID"] = this.state.selectedStoreIDs[k]["stateID"];
+        storeData["PincodeID"] = this.state.selectedStoreIDs[k]["pincodeID"];
+        storeData["StoreName"] = this.state.selectedStoreIDs[k]["storeName"];
+        storeData["Address"] = this.state.selectedStoreIDs[k]["address"];
+        storeData["StoreCode"] = this.state.selectedStoreIDs[k]["storeCode"];
+        storeData["RegionID"] = this.state.selectedStoreIDs[k]["regionID"];
+        storeData["ZoneID"] = this.state.selectedStoreIDs[k]["zoneID"];
+        storeData["StoreTypeID"] = this.state.selectedStoreIDs[k][
+          "storeTypeID"
+        ];
+        storeData["StoreEmailID"] = this.state.selectedStoreIDs[k][
+          "storeEmailID"
+        ];
+        storeData["StorePhoneNo"] = this.state.selectedStoreIDs[k][
+          "storePhoneNo"
+        ];
+        storeData["StoreVisitDate"] = visitDate;
+        storeData["Purpose"] = PurposeID;
+        storeData["Pincode"] = this.state.selectedStoreIDs[k]["pincode"];
+        storeData["BrandIDs"] = this.state.selectedBrand;
+
+        store_Details.push(storeData);
+      }
+      //// ----------------Store attachment Code End-----------------
 
       formData.append("ticketingDetails", JSON.stringify(paramData));
       formData.append("orderDetails", JSON.stringify(OrderData));
       formData.append("orderItemDetails", JSON.stringify(order_itemData));
+      formData.append("storeDetails", JSON.stringify(store_Details));
       for (let j = 0; j < this.state.FileData.length; j++) {
         formData.append("Filedata", this.state.FileData[j]);
       }

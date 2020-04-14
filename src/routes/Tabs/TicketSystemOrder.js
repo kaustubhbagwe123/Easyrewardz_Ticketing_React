@@ -169,11 +169,10 @@ class TicketSystemOrder extends Component {
   }
   handleRequireSize(e, rowData) {
     //
-
-    var id = rowData.invoiceNumber;
+    var id = rowData.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var index = this.state.OrderSubItem.findIndex(
-      x => x.invoiceNumber === rowData.invoiceNumber
+      x => x.articleNumber === rowData.articleNumber
     );
 
     var OrderSubItem = this.state.OrderSubItem;
@@ -711,7 +710,7 @@ class TicketSystemOrder extends Component {
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
-        selectedInvoiceNo:""
+        selectedInvoiceNo: ""
       });
       let self = this;
       var CustID = this.props.custDetails;
@@ -754,7 +753,7 @@ class TicketSystemOrder extends Component {
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
                 for (let j = 0; j < Order_Master.length; j++) {
-                  objCheckBoxAllItem[Order_Master[j].invoiceNumber] = true;
+                  objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
 
                   CselectedRow.push(Order_Master[j]);
                 }
@@ -779,7 +778,7 @@ class TicketSystemOrder extends Component {
                       var objCheckBoxAllItem = new Object();
                       for (let j = 0; j < Order_Master.length; j++) {
                         objCheckBoxAllItem[
-                          Order_Master[j].invoiceNumber
+                          Order_Master[j].articleNumber
                         ] = true;
 
                         CselectedRow.push(Order_Master[j]);
@@ -809,7 +808,7 @@ class TicketSystemOrder extends Component {
                       var objCheckBoxAllItem = new Object();
                       for (let j = 0; j < Order_Master.length; j++) {
                         objCheckBoxAllItem[
-                          Order_Master[j].invoiceNumber
+                          Order_Master[j].articleNumber
                         ] = false;
                       }
                       self.setState({
@@ -855,7 +854,7 @@ class TicketSystemOrder extends Component {
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
                 for (let j = 0; j < Order_Master.length; j++) {
-                  objCheckBoxAllItem[Order_Master[j].invoiceNumber] = true;
+                  objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
 
                   CselectedRow.push(Order_Master[j]);
                 }
@@ -880,7 +879,7 @@ class TicketSystemOrder extends Component {
                       var objCheckBoxAllItem = new Object();
                       for (let j = 0; j < Order_Master.length; j++) {
                         objCheckBoxAllItem[
-                          Order_Master[j].invoiceNumber
+                          Order_Master[j].articleNumber
                         ] = true;
 
                         CselectedRow.push(Order_Master[j]);
@@ -910,7 +909,7 @@ class TicketSystemOrder extends Component {
                       var objCheckBoxAllItem = new Object();
                       for (let j = 0; j < Order_Master.length; j++) {
                         objCheckBoxAllItem[
-                          Order_Master[j].invoiceNumber
+                          Order_Master[j].articleNumber
                         ] = false;
                       }
                       self.setState({
@@ -932,13 +931,12 @@ class TicketSystemOrder extends Component {
             {
               self.props.getParentOrderData(selectedRow, CselectedRow);
             }
-           
+
             self.setState({
               CheckBoxAllOrder: newSelected,
               selectedInvoiceNo,
               OrderSubItem: []
             });
-           
           }
         })
         .catch(data => {
@@ -949,7 +947,7 @@ class TicketSystemOrder extends Component {
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
-        selectedInvoiceNo:""
+        selectedInvoiceNo: ""
       });
     }
   }
@@ -1051,12 +1049,12 @@ class TicketSystemOrder extends Component {
   //   }
   // }
 
-  checkIndividualItem(invoiceNumber, rowData) {
+  checkIndividualItem(articleNumber, rowData) {
     debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
-    newSelected[invoiceNumber] = !this.state.CheckBoxAllItem[invoiceNumber];
+    newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
-      CheckBoxAllItem: invoiceNumber ? newSelected : false
+      CheckBoxAllItem: articleNumber ? newSelected : false
     });
     var selectedRow = [];
     if (this.state.SelectedAllItem.length === 0) {
@@ -1065,24 +1063,24 @@ class TicketSystemOrder extends Component {
         SelectedAllItem: selectedRow
       });
     } else {
-      if (newSelected[invoiceNumber] === true) {
+      if (newSelected[articleNumber] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
           selectedRow = this.state.SelectedAllItem;
           selectedRow.push(rowData);
           var Order_Master = this.state.OrderSubItem.filter(
-            x => x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+            x => x.articleNumber === this.state.SelectedAllItem[i].articleNumber
           );
           if (Order_Master.length === selectedRow.length) {
             const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
-            newSelected[Order_Master[0].orderMasterID] = !this.state
-              .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+            newSelected[Order_Master[0].articleNumber] = !this.state
+              .CheckBoxAllOrder[Order_Master[0].articleNumber];
             this.setState({
-              CheckBoxAllOrder: Order_Master[0].orderMasterID
+              CheckBoxAllOrder: Order_Master[0].articleNumber
                 ? newSelected
                 : false
             });
             var data_master = this.state.orderDetailsData.filter(
-              y => y.orderMasterID === Order_Master[0].orderMasterID
+              y => y.articleNumber === Order_Master[0].articleNumber
             );
             if (data_master.length > 0) {
               var MastOrd = this.state.SelectedAllOrder;
@@ -1101,7 +1099,7 @@ class TicketSystemOrder extends Component {
             selectedRow.splice(j, 1);
 
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === rowData.orderMasterID
+              x => x.articleNumber === rowData.articleNumber
             );
 
             if (Order_Master.length !== selectedRow.length) {
@@ -1109,17 +1107,17 @@ class TicketSystemOrder extends Component {
                 {},
                 this.state.CheckBoxAllOrder
               );
-              newSelected[Order_Master[0].orderMasterID] = false;
+              newSelected[Order_Master[0].articleNumber] = false;
               this.setState({
-                CheckBoxAllOrder: Order_Master[0].orderMasterID
+                CheckBoxAllOrder: Order_Master[0].articleNumber
                   ? newSelected
                   : false
               });
               var data_master = this.state.orderDetailsData.filter(
-                y => y.orderMasterID === Order_Master[0].orderMasterID
+                y => y.articleNumber === Order_Master[0].articleNumber
               );
               var GetIndex = this.state.orderDetailsData.findIndex(
-                y => y.orderMasterID === Order_Master[0].orderMasterID
+                y => y.articleNumber === Order_Master[0].articleNumber
               );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
@@ -1321,9 +1319,9 @@ class TicketSystemOrder extends Component {
                             className="d-none"
                             id={"all" + data.invoiceNumber}
                             name="AllOrder"
-                            checked={
-                              this.state.selectedInvoiceNo.includes(data.invoiceNumber) 
-                            }
+                            checked={this.state.selectedInvoiceNo.includes(
+                              data.invoiceNumber
+                            )}
                             onChange={this.handleGetOderItemData.bind(
                               this,
                               data.invoiceNumber,
@@ -1393,9 +1391,9 @@ class TicketSystemOrder extends Component {
                             className="d-none"
                             id={"all" + data.invoiceNumber}
                             name="AllOrder"
-                             checked={
-                                this.state.selectedInvoiceNo.includes(data.invoiceNumber) 
-                              }
+                            checked={this.state.selectedInvoiceNo.includes(
+                              data.invoiceNumber
+                            )}
                             onChange={this.handleGetOderItemData.bind(
                               this,
                               data.invoiceNumber,
@@ -1462,12 +1460,12 @@ class TicketSystemOrder extends Component {
                                   name="AllItem"
                                   checked={
                                     this.state.CheckBoxAllItem[
-                                      item.invoiceNumber
+                                      item.articleNumber
                                     ] === true
                                   }
                                   onChange={this.checkIndividualItem.bind(
                                     this,
-                                    item.invoiceNumber,
+                                    item.articleNumber,
                                     item
                                   )}
                                 />
@@ -1506,7 +1504,7 @@ class TicketSystemOrder extends Component {
                               <div>
                                 <input
                                   type="text"
-                                  id={"requireSizeTxt" + record.invoiceNumber}
+                                  id={"requireSizeTxt" + record.articleNumber}
                                   value={record.requireSize || ""}
                                   name="requiredSize"
                                   className="order-input"
@@ -2001,9 +1999,9 @@ class TicketSystemOrder extends Component {
                               type="checkbox"
                               id={"all" + data.invoiceNumber}
                               name="AllOrder"
-                              checked={
-                                this.state.selectedInvoiceNo.includes(data.invoiceNumber) 
-                              }
+                              checked={this.state.selectedInvoiceNo.includes(
+                                data.invoiceNumber
+                              )}
                               onChange={this.handleGetOderItemData.bind(
                                 this,
                                 data.invoiceNumber,
@@ -2071,9 +2069,9 @@ class TicketSystemOrder extends Component {
                               type="checkbox"
                               id={"all" + data.invoiceNumber}
                               name="AllOrder"
-                              checked={
-                                this.state.selectedInvoiceNo.includes(data.invoiceNumber) 
-                              }
+                              checked={this.state.selectedInvoiceNo.includes(
+                                data.invoiceNumber
+                              )}
                               className="d-none"
                               onChange={this.handleGetOderItemData.bind(
                                 this,
@@ -2140,12 +2138,12 @@ class TicketSystemOrder extends Component {
                                     name="AllItem"
                                     checked={
                                       this.state.CheckBoxAllItem[
-                                        item.invoiceNumber
+                                        item.articleNumber
                                       ] === true
                                     }
                                     onChange={this.checkIndividualItem.bind(
                                       this,
-                                      item.invoiceNumber,
+                                      item.articleNumber,
                                       item
                                     )}
                                   />
@@ -2184,7 +2182,7 @@ class TicketSystemOrder extends Component {
                                 <div>
                                   <input
                                     type="text"
-                                    id={"requireSizeTxt" + record.invoiceNumber}
+                                    id={"requireSizeTxt" + record.articleNumber}
                                     value={record.requireSize || ""}
                                     name="requiredSize"
                                     className="order-input"

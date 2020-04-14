@@ -11589,3 +11589,6 @@ table tr th:last-child {
 .iskbticket {
   pointer-events: none;
 }
+.storeTdetail .ReactTable .rt-thead .rt-tr{
+  text-align: left;
+}
