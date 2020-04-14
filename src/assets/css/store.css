@@ -197,8 +197,31 @@
   height: 31px;
   padding-left: 12px;
 }
+.raise-ticket-popup {
+  padding: 10px 20px;
+}
+.cncl-icn {
+  margin-left: auto;
+  display: block;
+  margin-right: 5px;
+  cursor: pointer;
+}
 .raise-ticket-popup label {
   display: block;
+  color: #9b9b9b;
+}
+.raise-ticket-popup input,
+.raise-ticket-popup textarea,
+.raise-ticket-popup select {
+  background: #f0f0f0;
+  border: 1px solid #d8d0d0;
+  border-radius: 3px;
+  padding: 3px 10px;
+  margin-top: 5px;
+  width: 100%;
+}
+.raise-ticket-popup select {
+  background: #f0f0f0 url("../Images/dropDown.png") no-repeat right 12px center;
 }
 /* Compaign css End */
 /* Shlok css end */

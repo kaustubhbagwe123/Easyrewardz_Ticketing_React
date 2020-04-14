@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import down from "./../../assets/Images/collapsedown.png";
 import collapseUp from "./../../assets/Images/collapseUp.png";
 import { authHeader } from "./../../helpers/authHeader";
+import CancelIcon from "./../../assets/Images/cancel.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table } from "antd";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import { NotificationManager } from "react-notifications";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
@@ -18,7 +20,7 @@ class Campaign extends Component {
       FirstCollapse: false,
       TwoCollapse: false,
       campaignGridData: [],
-      rowExpanded: false,
+      rowExpandedCount: 0,
       statusData: [],
       responseData: [],
       raisedTicketModal: false,
@@ -61,13 +63,16 @@ class Campaign extends Component {
 
   onRowExpand(expanded, record) {
     debugger;
+    let rowExpandedCount;
     if (expanded) {
+      rowExpandedCount = this.state.rowExpandedCount + 1;
       this.setState({
-        rowExpanded: true
+        rowExpandedCount
       });
     } else {
+      rowExpandedCount = this.state.rowExpandedCount - 1;
       this.setState({
-        rowExpanded: false
+        rowExpandedCount
       });
     }
   }
@@ -84,19 +89,12 @@ class Campaign extends Component {
       .storeCampaignCustomerList.filter(
         x => x.campaignCustomerID == campaignCustomerID
       )[0].response = 0;
+    this.state.campaignGridData
+      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .storeCampaignCustomerList.filter(
+        x => x.campaignCustomerID == campaignCustomerID
+      )[0].callReScheduledTo = "";
     this.setState({ campaignGridData: this.state.campaignGridData });
-  }
-
-  // onCampaignSave(campaignTypeID, campaignCustomerID, e) {
-  onCampaignSave(e) {
-    debugger;
-    alert();
-    // this.state.campaignGridData
-    //   .filter(x => x.campaignTypeID == campaignTypeID)[0]
-    //   .storeCampaignCustomerList.filter(
-    //     x => x.campaignCustomerID == campaignCustomerID
-    //   )[0].campaignStatus = parseInt(e.target.value);
-    // this.setState({ campaignGridData: this.state.campaignGridData });
   }
 
   onResponseChange(campaignTypeID, campaignCustomerID, e) {
@@ -160,6 +158,72 @@ class Campaign extends Component {
             statusData,
             responseData
           });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleUpdateCampaignStatusResponse(
+    campaignCustomerID,
+    campaignStatus,
+    response,
+    callReScheduledTo,
+    e
+  ) {
+    debugger;
+    let self = this,
+      calculatedCallReScheduledTo;
+
+    if (campaignStatus === 102) {
+      calculatedCallReScheduledTo = callReScheduledTo;
+    } else {
+      calculatedCallReScheduledTo = "";
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/UpdateCampaignStatusResponse",
+      headers: authHeader(),
+      data: {
+        CampaignCustomerID: campaignCustomerID,
+        StatusNameID: campaignStatus,
+        ResponseID: response,
+        CallReScheduledTo: calculatedCallReScheduledTo
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record saved successFully.");
+          self.handleCampaignGridData();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleCloseCampaign(campaignTypeID, e) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/CloseCampaign",
+      headers: authHeader(),
+      params: {
+        CampaignTypeID: campaignTypeID,
+        IsClosed: 1
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Campaign closed successFully.");
+          self.handleCampaignGridData();
         }
       })
       .catch(data => {
@@ -425,110 +489,9 @@ class Campaign extends Component {
     }
   };
   render() {
-    const ImgChange = this.state.FirstCollapse ? (
-      <img src={collapseUp} alt="collapseUp" />
-    ) : (
-      <img src={down} alt="collapse down" />
-    );
-    const ImgChangeTwo = this.state.TwoCollapse ? (
-      <img src={collapseUp} alt="collapseUp" />
-    ) : (
-      <img src={down} alt="collapse down" />
-    );
-    /**Header Name change**/
-
-    const HeaderNameChange = this.state.FirstCollapse
-      ? "Campaign Type"
-      : "Customer Name";
-
-    /**Hide clode button with header**/
-
-    const HideHeaderChange = this.state.FirstCollapse ? "" : "Campaign Status";
-    const HideCloseButton = this.state.FirstCollapse ? (
-      ""
-    ) : (
-      <button className="closebtn" type="button">
-        <label className="hdrcloselabel">Close</label>
-      </button>
-    );
     return (
       <div>
         <div className="table-cntr store">
-          {/* <table>
-            <thead>
-              <tr>
-                <th>{HeaderNameChange}</th>
-                <th>Contacts</th>
-                <th>Campaign Script</th>
-                <th>Campaign End Date</th>
-                <th>{HideHeaderChange}</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Aniversery</td>
-                <td>10</td>
-                <td>Hello Mr/Mrs ......, Greetings for the day........</td>
-                <td>12-Aug-19</td>
-                <td>{HideCloseButton}</td>
-                <td>
-                  <div onClick={this.firstActionOpenClps}>{ImgChange}</div>
-                </td>
-              </tr>
-              <tr className="table-cntr-card">
-                <td colSpan="6" style={{ padding: "0", paddingLeft: "7px" }}>
-                  <Collapse isOpen={this.state.FirstCollapse}>
-                    <Card>
-                      <CardBody>
-                        <CampaignTable1 />
-                      </CardBody>
-                    </Card>
-                  </Collapse>
-                </td>
-              </tr>
-              <tr>
-                <td>Birthday</td>
-                <td>13</td>
-                <td>Hello Mr/Mrs ......, Greetings for the day........</td>
-                <td>13-Aug-19</td>
-                <td>
-                  <button className="closebtn" type="button">
-                    <label className="hdrcloselabel">Close</label>
-                  </button>
-                </td>
-                <td>
-                  <div onClick={this.twoActionOpenClps}>{ImgChangeTwo}</div>
-                </td>
-              </tr>
-              <tr className="table-cntr-card">
-                <td colSpan="6" style={{ padding: "0", paddingLeft: "7px" }}>
-                  <Collapse isOpen={this.state.TwoCollapse}>
-                    <Card>
-                      <CardBody>
-                        <CampaignTable1 />
-                      </CardBody>
-                    </Card>
-                  </Collapse>
-                </td>
-              </tr>
-              <tr>
-                <td>EOSS</td>
-                <td>20</td>
-                <td>Hello Mr/Mrs ......, Greetings for the day........</td>
-                <td>13-Aug-19</td>
-                <td>
-                  <button className="closebtn" type="button">
-                    <label className="hdrcloselabel">Close</label>
-                  </button>
-                </td>
-                <td>
-                  <img src={down} alt="collapse down" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-         */}
           <Table
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
@@ -550,14 +513,22 @@ class Campaign extends Component {
               },
               {
                 title: "Campaign Status",
-                render: () => {
+                render: row => {
                   return (
-                    <button className="closebtn" type="button">
+                    <button
+                      className="closebtn"
+                      type="button"
+                      onClick={this.handleCloseCampaign.bind(
+                        this,
+                        row.campaignTypeID
+                      )}
+                    >
                       <label className="hdrcloselabel">Close</label>
                     </button>
                   );
                 },
-                className: this.state.rowExpanded ? "d-none" : "d-block"
+                className:
+                  this.state.rowExpandedCount === 0 ? "d-block" : "d-none"
               },
               {
                 title: "Actions"
@@ -678,7 +649,6 @@ class Campaign extends Component {
                     },
                     {
                       title: "Responce",
-                      // dataIndex: "itemPrice"
                       render: (row, item) => {
                         return (
                           <div
@@ -739,7 +709,6 @@ class Campaign extends Component {
                                   : new Date()
                               }
                               dateFormat="MM/dd/yyyy h:mm aa"
-                              // value={item.callReScheduledTo}
                               value={
                                 item.callReScheduledTo !== ""
                                   ? moment(item.callReScheduledTo)
@@ -764,7 +733,6 @@ class Campaign extends Component {
                     },
                     {
                       title: "Actions",
-                      // dataIndex: "discount"
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
@@ -795,10 +763,12 @@ class Campaign extends Component {
                                 }
                                 type="button"
                                 style={{ minWidth: "5px", marginRight: "3px" }}
-                                onClick={this.onCampaignSave.bind(
-                                  this
-                                  // item.campaignTypeID,
-                                  // item.campaignCustomerID
+                                onClick={this.handleUpdateCampaignStatusResponse.bind(
+                                  this,
+                                  item.campaignCustomerID,
+                                  item.campaignStatus,
+                                  item.response,
+                                  item.callReScheduledTo
                                 )}
                               >
                                 <label className="saveLabel">Save</label>
@@ -855,15 +825,21 @@ class Campaign extends Component {
           modalId="Raised-popup"
           overlayId="logout-ovrly"
         >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cncl-icn"
+            onClick={this.handleRaisedTicketModalClose.bind(this)}
+          />
           <div className="raise-ticket-popup">
-            <div className="row">
-              <label>Customer Details</label>
-              <label>
-                Source:<span>Store</span>{" "}
-              </label>
+            <div className="d-flex justify-content-between mb-2">
+              <p className="blak-clr font-weight-bold m-0">Customer Details</p>
+              <p className="m-0">
+                Source:<span>Store</span>
+              </p>
             </div>
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Name</label>
                 <input
                   type="text"
@@ -878,7 +854,7 @@ class Campaign extends Component {
                   </p>
                 )}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Mobile</label>
                 <input
                   type="text"
@@ -893,7 +869,7 @@ class Campaign extends Component {
                   </p>
                 )}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Email</label>
                 <input
                   type="text"
@@ -910,7 +886,7 @@ class Campaign extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Date of birth</label>
                 <input
                   type="text"
@@ -924,10 +900,9 @@ class Campaign extends Component {
                   </p>
                 )} */}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Brand</label>
                 <select
-                  className="store-create-select"
                   name="brand"
                   value={this.state.modalData["brand"]}
                   onChange={this.handleOnchange}
@@ -950,10 +925,9 @@ class Campaign extends Component {
                   </p>
                 )}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Category</label>
                 <select
-                  className="store-create-select"
                   name="category"
                   value={this.state.modalData["category"]}
                   onChange={this.handleOnchange}
@@ -978,10 +952,9 @@ class Campaign extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Sub Category</label>
                 <select
-                  className="store-create-select"
                   name="subCategory"
                   value={this.state.modalData["subCategoryId"]}
                   onChange={this.handleOnchange}
@@ -1004,10 +977,9 @@ class Campaign extends Component {
                   </p>
                 )}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Issue Type</label>
                 <select
-                  className="store-create-select"
                   name="issueType"
                   value={this.state.modalData["issueTypeId"]}
                   onChange={this.handleOnchange}
@@ -1030,7 +1002,7 @@ class Campaign extends Component {
                   </p>
                 )}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 mb-3">
                 <label>Ticket Title</label>
                 <input
                   type="text"
@@ -1047,7 +1019,7 @@ class Campaign extends Component {
               </div>
             </div>
             <div className="row">
-              <div>
+              <div className="col-md-12 mb-3">
                 <label>Ticket Details</label>
                 <textarea
                   name="ticketDetails"
@@ -1061,6 +1033,22 @@ class Campaign extends Component {
                   </p>
                 )}
               </div>
+            </div>
+            <div className="text-right">
+              <a
+                href="#!"
+                onClick={this.handleRaisedTicketModalClose.bind(this)}
+                class="blue-clr mr-4"
+              >
+                CANCEL
+              </a>
+              <button
+                className="butn"
+                type="button"
+                // onClick={this.handleRaisedTicketModalOpen.bind(this, row, item)}
+              >
+                CREATE TICKET
+              </button>
             </div>
           </div>
         </Modal>
