@@ -11589,3 +11589,7 @@ table tr th:last-child {
 .iskbticket {
   pointer-events: none;
 }
+
+.autopriority {
+  display: none;
+}

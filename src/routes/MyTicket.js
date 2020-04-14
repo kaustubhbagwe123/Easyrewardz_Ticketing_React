@@ -206,7 +206,8 @@ class MyTicket extends Component {
       notiCountFreeCmnt: 0,
       notiCurPosiFreeCmnt: 0,
       isKB: false,
-      selectedInvoiceNo: ""
+      selectedInvoiceNo: "",
+      isSystemGenerated: false
     };
     // this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -587,7 +588,11 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
+
+          var isSystemGenerated =
+            data[0].msgDetails[0].latestMessageDetails.isSystemGenerated;
           self.setState({
+            isSystemGenerated,
             messageDetails: data,
             hasAttachmentFile: data
           });
@@ -1721,7 +1726,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger
+    debugger;
     // let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       var selectedRow = "";
@@ -1759,8 +1764,8 @@ class MyTicket extends Component {
       }
       const formData = new FormData();
 
-       /// For Attached order
-       if(this.state.SelectedAllOrder.length > 0){
+      /// For Attached order
+      if (this.state.SelectedAllOrder.length > 0) {
         var order_data = this.state.SelectedAllOrder[0];
         var OrderData = {
           OrderMasterID: order_data.orderMasterID,
@@ -1775,47 +1780,43 @@ class MyTicket extends Component {
           ModeOfPaymentID: 1,
           TicketSourceID: this.state.selectetedParameters.channelOfPurchaseID
         };
-      }else{
-        var OrderData = null
+      } else {
+        var OrderData = null;
       }
 
-       /// For Attached OrderItem data
-       var order_itemData = [];
-       for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+      /// For Attached OrderItem data
+      var order_itemData = [];
+      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
         var item_data = {};
-         item_data["OrderItemID"] = this.state.SelectedAllItem[i][
-           "orderItemID"
-         ];
-         item_data["OrderMasterID"] = this.state.SelectedAllItem[i][
-           "orderMasterID"
-         ];
-         item_data["ItemName"] = this.state.SelectedAllItem[i]["itemName"];
-         item_data["InvoiceNumber"] = this.state.SelectedAllItem[i][
-           "invoiceNumber"
-         ];
-         item_data["InvoiceDate"] = this.state.SelectedAllItem[i][
-           "invoiceDate"
-         ];
-         item_data["ItemCount"] = this.state.SelectedAllItem[i]["itemCount"];
-         item_data["ItemPrice"] = this.state.SelectedAllItem[i]["itemPrice"];
-         item_data["PricePaid"] = this.state.SelectedAllItem[i]["pricePaid"];
-         item_data["Size"] = this.state.SelectedAllItem[i]["size"];
-         item_data["RequireSize"] = this.state.SelectedAllItem[i][
-           "requireSize"
-         ];
-         item_data["Discount"] = this.state.SelectedAllItem[i]["discount"];
-         item_data["ArticleNumber"] = this.state.SelectedAllItem[i][
-           "articleNumber"
-         ];
-         item_data["ArticleName"] = this.state.SelectedAllItem[i]["itemName"];
- 
-         order_itemData.push(item_data);
-         
-        }
+        item_data["OrderItemID"] = this.state.SelectedAllItem[i]["orderItemID"];
+        item_data["OrderMasterID"] = this.state.SelectedAllItem[i][
+          "orderMasterID"
+        ];
+        item_data["ItemName"] = this.state.SelectedAllItem[i]["itemName"];
+        item_data["InvoiceNumber"] = this.state.SelectedAllItem[i][
+          "invoiceNumber"
+        ];
+        item_data["InvoiceDate"] = this.state.SelectedAllItem[i]["invoiceDate"];
+        item_data["ItemCount"] = this.state.SelectedAllItem[i]["itemCount"];
+        item_data["ItemPrice"] = this.state.SelectedAllItem[i]["itemPrice"];
+        item_data["PricePaid"] = this.state.SelectedAllItem[i]["pricePaid"];
+        item_data["Size"] = this.state.SelectedAllItem[i]["size"];
+        item_data["RequireSize"] = this.state.SelectedAllItem[i]["requireSize"];
+        item_data["Discount"] = this.state.SelectedAllItem[i]["discount"];
+        item_data["ArticleNumber"] = this.state.SelectedAllItem[i][
+          "articleNumber"
+        ];
+        item_data["ArticleName"] = this.state.SelectedAllItem[i]["itemName"];
+
+        order_itemData.push(item_data);
+      }
 
       formData.append("orderDetails", JSON.stringify(OrderData));
       formData.append("orderItemDetails", JSON.stringify(order_itemData));
-      formData.append("OrderID", selectedRow.substring(",", selectedRow.length - 1));
+      formData.append(
+        "OrderID",
+        selectedRow.substring(",", selectedRow.length - 1)
+      );
       formData.append("TicketId", this.state.ticket_Id);
       axios({
         method: "post",
@@ -2562,13 +2563,12 @@ class MyTicket extends Component {
   handleGetOderItemData(invoiceNumber, rowData, e) {
     debugger;
     if (e.target.checked) {
-      var selectproduct=[];
+      var selectproduct = [];
       this.setState({
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
         selectedInvoiceNo: ""
-        
       });
       let self = this;
       axios({
@@ -2686,8 +2686,7 @@ class MyTicket extends Component {
 
             self.setState({
               SelectedAllOrder: selectedRow,
-              SelectedAllItem: CselectedRow,
-              
+              SelectedAllItem: CselectedRow
             });
           } else {
             var selectedInvoiceNo = invoiceNumber;
@@ -3809,11 +3808,30 @@ class MyTicket extends Component {
                             >
                               <option>Priority</option>
                               {this.state.TicketPriorityData !== null &&
-                                this.state.TicketPriorityData.map((item, i) => (
-                                  <option key={i} value={item.priorityID}>
-                                    {item.priortyName}
-                                  </option>
-                                ))}
+                                this.state.TicketPriorityData.map((item, i) => {
+                                  debugger;
+                                  if (
+                                    this.state.isSystemGenerated == false &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return null;
+                                  } else if (
+                                    this.state.isSystemGenerated == true &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  }
+                                })}
                             </select>
                           </div>
                         </div>
@@ -5253,9 +5271,7 @@ class MyTicket extends Component {
                                                         row.original
                                                           .invoiceNumber
                                                       }
-                                                    >
-                                                     
-                                                    </label>
+                                                    ></label>
                                                   </div>
                                                 )
                                               },
