@@ -1080,6 +1080,7 @@ class MyTicket extends Component {
     }
   }
   handleRequireSize(e, rowData) {
+    debugger
     var id = rowData.original.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var index = this.state.OrderSubItem.findIndex(
