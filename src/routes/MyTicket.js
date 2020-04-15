@@ -1818,8 +1818,8 @@ class MyTicket extends Component {
     debugger;
     let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
+      
       var selectedRow = "";
-
       if (this.state.SelectedAllOrder.length > 1) {
         if (this.state.SelectedAllItem.length === 0) {
           for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
@@ -5322,11 +5322,7 @@ class MyTicket extends Component {
                                           id="inner-custom-react-table"
                                         >
                                           <ReactTable
-                                          // data={row.original.orderItems.filter(
-                                          //   x =>
-                                          //     x.invoiceNumber ===
-                                          //     row.original.invoiceNumber
-                                          // )}
+                                          
                                             data={this.state.OrderSubItem.filter(
                                               x =>
                                                 x.invoiceNumber ===
