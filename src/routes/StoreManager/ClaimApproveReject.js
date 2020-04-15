@@ -9,6 +9,9 @@ import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import DownImg from "./../../assets/Images/down.png";
 import storeImg from "./../../assets/Images/store.png";
 import ReactTable from "react-table";
+import axios from "axios";
+import config from "../../helpers/config";
+import { authHeader } from "../../helpers/authHeader";
 
 class ClaimApproveReject extends Component {
   constructor(props) {
@@ -19,6 +22,15 @@ class ClaimApproveReject extends Component {
       SearchDetails: true
     };
   }
+
+  componentDidMount() {
+    debugger;
+    if (this.props.location.state) {
+      var claimId = this.props.location.state.ClaimID;
+      this.handleGetClaimByID(claimId);
+    }
+  }
+
   handleToggle() {
     this.setState(state => ({ collapse: !state.collapse }));
   }
@@ -27,6 +39,42 @@ class ClaimApproveReject extends Component {
       SearchDetails: !this.state.SearchDetails
     });
   }
+
+  handleGetClaimByID(claimId) {
+    debugger;
+    this.setState({ isloading: true });
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/GetClaimByID",
+      headers: authHeader(),
+      params: { ClaimID: claimId }
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        // if (message === "Success" && responseData.length > 0) {
+        //   if (tabFor === 1) {
+        //     self.setState({ raisedByMeData: responseData, isloading: false });
+        //   }
+        //   if (tabFor === 2) {
+        //     self.setState({ assignToMeData: responseData, isloading: false });
+        //   }
+        // } else {
+        //   if (tabFor === 1) {
+        //     self.setState({ raisedByMeData: responseData, isloading: false });
+        //   }
+        //   if (tabFor === 2) {
+        //     self.setState({ assignToMeData: responseData, isloading: false });
+        //   }
+        // }
+      }).catch(response => {
+        self.setState({ isloading: false });
+        console.log(response, "---handleGetTaskData");
+      });
+  }
+
   render() {
 
     const dataOrder = [
