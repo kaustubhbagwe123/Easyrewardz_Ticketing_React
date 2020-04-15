@@ -11520,7 +11520,7 @@ table tr th:last-child {
   color: rgba(0, 0, 0, 0.45);
   white-space: nowrap;
   text-align: left;
-  /* float: left; */
+  float: left;
   vertical-align: top;
   pointer-events: none;
 }

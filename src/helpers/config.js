@@ -57,7 +57,7 @@ let config = {
   ],
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
-   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api"
+  //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api"
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    // Client API
 };

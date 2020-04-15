@@ -138,7 +138,7 @@ class MyTicket extends Component {
       loading: false,
       Plus: false,
       selectedStoreData: [],
-      selectedDataRow: [],
+      // selectedDataRow: [],
       CheckStoreID: {},
       CheckOrderID: {},
       notesCommentCompulsion: "",
@@ -672,7 +672,6 @@ class MyTicket extends Component {
 
   ////hanlde get order details
   handleGetProductData() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -687,11 +686,15 @@ class MyTicket extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
+
           const newSelected = Object.assign({}, self.state.CheckOrderID);
 
           var OrderSubItem = [];
           var selectedRow = [];
+         
+          var CselectedRow = [];
           for (let i = 0; i < data.length; i++) {
+            var selectedInvoiceNo = data[i].invoiceNumber;
             if (data[i].invoiceNumber) {
               newSelected[data[i].invoiceNumber] = !self.state.CheckOrderID[
                 data[i].invoiceNumber
@@ -701,16 +704,33 @@ class MyTicket extends Component {
                 CheckOrderID:data[i].invoiceNumber ? newSelected : false
               });
             }
-            if (data[i].invoiceNumber.length > 0) {
-              for (let j = 0; j < data[i].invoiceNumber.length; j++) {
-                OrderSubItem.push(data[i].invoiceNumber[j]);
-              }
+            if (data[i].orderItems.length > 0) {
+              var OrderSubItem=data[i].orderItems
+                self.setState({
+                  OrderSubItem
+                })
+                var Order_Master = self.state.OrderSubItem.filter(
+                  x => x.invoiceNumber === data[i].invoiceNumber
+                );
+                if (Order_Master.length > 0) {
+                  var objCheckBoxAllItem = new Object();
+                  for (let j = 0; j < Order_Master.length; j++) {
+                    objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
+  
+                    CselectedRow.push(Order_Master[j]);
+                  }
+                  self.setState({
+                    CheckBoxAllItem: objCheckBoxAllItem 
+                  });
+                }
             }
+         
           }
+
           self.setState({
-            selectedDataRow: selectedRow,
             SelectedAllOrder: data,
-            OrderSubItem
+            OrderSubItem,
+            selectedInvoiceNo
           });
         } else {
           self.setState({
@@ -2566,8 +2586,9 @@ class MyTicket extends Component {
   }
 
   handleByvisitDate(e, rowData) {
-    var id = e.original.storeID;
-    var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
+    debugger
+    var id = e.original.lpassStoreID;
+    var index = this.state.selectedStoreData.findIndex(x => x.lpassStoreID === id);
     // this.state.selectedStoreData["VisitedDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
     selectedStoreData[index].storeVisitDate = rowData;
@@ -2575,8 +2596,6 @@ class MyTicket extends Component {
     this.setState({ selectedStoreData });
   }
   handleChangeOrderItem = e => {
-    ////
-
     var values = e.target.checked;
     if (!this.state.selectProductOrd) {
       if (values) {
@@ -2614,7 +2633,6 @@ class MyTicket extends Component {
   };
 
   handleRemoveImage(i) {
-    ////
     let file = this.state.file;
     file.splice(i, 1);
     var fileText = file.length;
@@ -2624,7 +2642,6 @@ class MyTicket extends Component {
   }
 
   handleSetDataTab = () => {
-    ////
     this.setState({
       selectProductOrd: !this.state.selectProductOrd
     });
@@ -3878,7 +3895,6 @@ class MyTicket extends Component {
                               <option>Priority</option>
                               {this.state.TicketPriorityData !== null &&
                                 this.state.TicketPriorityData.map((item, i) => {
-                                  debugger;
                                   if (
                                     this.state.isSystemGenerated == false &&
                                     item.priortyName === "Auto"
@@ -4490,9 +4506,7 @@ class MyTicket extends Component {
                                             }}
                                           >
                                             <label
-                                              htmlFor={
-                                                "i" + row.original.storeID
-                                              }
+                                              htmlFor={"i" + row.original.storeID}
                                             >
                                               {row.original.Purpose_Id === 1
                                                 ? "Customer Want to visit store"
@@ -4528,6 +4542,7 @@ class MyTicket extends Component {
                                         accessor: "storeVisitDate",
                                         minWidth: 150,
                                         Cell: row => {
+                                          debugger
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
@@ -4545,7 +4560,7 @@ class MyTicket extends Component {
                                                 dateFormat="MM/DD/YYYY"
                                                 id={
                                                   "visitDate" +
-                                                  row.original.storeID
+                                                  row.original.lpassStoreID
                                                 }
                                                 value={
                                                   row.original
@@ -5306,6 +5321,11 @@ class MyTicket extends Component {
                                           id="inner-custom-react-table"
                                         >
                                           <ReactTable
+                                          // data={row.original.orderItems.filter(
+                                          //   x =>
+                                          //     x.invoiceNumber ===
+                                          //     row.original.invoiceNumber
+                                          // )}
                                             data={this.state.OrderSubItem.filter(
                                               x =>
                                                 x.invoiceNumber ===
@@ -5323,7 +5343,7 @@ class MyTicket extends Component {
                                                       id={
                                                         "item" +
                                                         row.original
-                                                          .invoiceNumber
+                                                          .articleNumber
                                                       }
                                                       style={{
                                                         display: "none"
@@ -5347,7 +5367,7 @@ class MyTicket extends Component {
                                                       htmlFor={
                                                         "item" +
                                                         row.original
-                                                          .invoiceNumber
+                                                          .articleNumber
                                                       }
                                                     ></label>
                                                   </div>

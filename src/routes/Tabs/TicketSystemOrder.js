@@ -758,7 +758,7 @@ class TicketSystemOrder extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem
+                  CheckBoxAllItem: objCheckBoxAllItem 
                 });
               }
               self.setState({
@@ -1450,7 +1450,6 @@ class TicketSystemOrder extends Component {
                           title: "",
                           // dataIndex: "invoiceNumber",
                           render: (row, item) => {
-                            // //
                             return (
                               <div className="filter-checkbox">
                                 <input
