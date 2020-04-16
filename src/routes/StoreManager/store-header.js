@@ -29,6 +29,7 @@ class Header extends Component {
       notificationModal: false,
       notificationCount: 0,
       notificationData: [],
+      TaskID:0
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -36,7 +37,7 @@ class Header extends Component {
     this.handleNotificationModalOpen = this.handleNotificationModalOpen.bind(
       this
     );
-    this.handlreRedirectPage=this.handlreRedirectPage.bind(this)
+    this.handlreRedirectPage = this.handlreRedirectPage.bind(this);
   }
 
   componentDidMount() {
@@ -61,9 +62,9 @@ class Header extends Component {
   ////handle notification modal open
   handleNotificationModalOpen() {
     debugger;
-    if (this.state.notificationCount > 0) {
-      this.setState({ notificationModal: true });
-    }
+    // if (this.state.notificationCount > 0) {
+    this.setState({ notificationModal: true });
+    // }
   }
   ////handle notification modal close
   handleNotificationModalClose() {
@@ -106,16 +107,12 @@ class Header extends Component {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
+        var Noticount = responseData.notiCount;
         if (message === "Success" && responseData) {
-          var notificationCount = responseData.reduce((pre, cur) => {
-            return pre + cur.notificationCount;
-          }, 0);
-          if (responseData.length > 0) {
-            self.setState({
-              notificationData: responseData.storeNotificationModel,
-              notificationCount,
-            });
-          }
+          self.setState({
+            notificationData: responseData.storeNotificationModel,
+            notificationCount: Noticount,
+          });
         } else {
           self.setState({
             notificationData: responseData.storeNotificationModel,
@@ -143,13 +140,18 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.handlreRedirectPage(typeId);
+          // self.handlreRedirectPage(typeId);
           // self.props.history.push({
           //   pathname: "/store/editStoreTask",
           //   state: { TaskID: typeId }
           // });
-        } else {
-        }
+          setTimeout(function() {
+            self.props.history.push({
+              pathname: "/store/editStoreTask",
+              state: self.state
+            });
+          }, 100);
+        } 
       })
       .catch((response) => {
         console.log(response, "---handleGetNotigfication");
@@ -157,10 +159,14 @@ class Header extends Component {
   }
 
   handlreRedirectPage(id) {
-    this.props.history.push({
-      pathname: "/store/editStoreTask",
-      state: { TaskID: id },
-    });
+    debugger;
+
+    setTimeout(function() {
+      this.props.history.push({
+        pathname: "store/editStoreTask",
+        TaskID: id
+      });
+    }, 1000);
   }
 
   render() {
@@ -412,10 +418,10 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           <div className="notifi-container">
-            {/* {this.state.notiCount === 0 && (
-              <p className="m-0 p-2">There are no notifications.</p>
-            )} */}
-            {this.state.notificationData.length > 0 ? (
+            {this.state.notificationCount === 0 ? (
+              <span>No Notification Found</span>
+            ) : (
+              this.state.notificationData !== null &&
               this.state.notificationData.map((item, i) => {
                 return (
                   <div className="row rowpadding" key={i}>
@@ -463,10 +469,6 @@ class Header extends Component {
                               ? "md-4 view-tickets"
                               : "text-disabled"
                           }
-                          // onClick={this.handleViewTicketModalOpen.bind(
-                          //   this,
-                          //   item
-                          // )}
                         >
                           VIEW TICKETS
                         </div>
@@ -475,9 +477,8 @@ class Header extends Component {
                   </div>
                 );
               })
-            ) : (
-              <span>No Notification Found</span>
             )}
+
           </div>
         </Modal>
       </React.Fragment>

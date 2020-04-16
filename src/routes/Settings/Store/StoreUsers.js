@@ -146,11 +146,19 @@ class StoreUsers extends Component {
       editFunctionCompulsion: "",
       EditDesignationCompulsory: "",
       EditReportDesignationCompulsory: "",
+      EditReporteeDesignationCompulsory: "",
       fileSize: "",
       file: {},
       fileValidation: "",
       isErrorBulkUpload: false,
-      isShowProgress: false
+      isShowProgress: false,
+      EditmappedBrandCompulsory: "",
+      EditmappedCategoryCompulsory: "",
+      EditmappedSubCategoryCompulsory: "",
+      EditmappedIssueTypeCompulsory: "",
+      EditmappedisClaimApprover: "",
+      EditmappedcrmRoleID: "",
+      EditmappedisActive: "",
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -207,7 +215,7 @@ class StoreUsers extends Component {
   //   e.preventDefault();
   // };
 
-  fileUpload = file => {
+  fileUpload = (file) => {
     debugger;
     if (file) {
       var fileName = file[0].name;
@@ -216,7 +224,7 @@ class StoreUsers extends Component {
         fileName,
         fileSize,
         file: file[0],
-        fileValidation: ""
+        fileValidation: "",
       });
     }
   };
@@ -228,7 +236,7 @@ class StoreUsers extends Component {
       fileName: "",
       fileSize: "",
       isErrorBulkUpload: false,
-      isShowProgress: false
+      isShowProgress: false,
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -236,21 +244,21 @@ class StoreUsers extends Component {
   editStoreMethod() {
     this.setState({
       StoreReadOnly: false,
-      buttonStoreToggle: true
+      buttonStoreToggle: true,
     });
   }
 
   editPersonalMethod() {
     this.setState({
       personalReadOnly: false,
-      btnPersonalToggle: true
+      btnPersonalToggle: true,
     });
   }
 
   editProfileMethod() {
     this.setState({
       profileReadOnly: false,
-      btnProfileToggle: true
+      btnProfileToggle: true,
     });
   }
   updateUploadProgress(value) {
@@ -271,9 +279,9 @@ class StoreUsers extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        }
+        },
       })
-        .then(response => {
+        .then((response) => {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
@@ -286,7 +294,7 @@ class StoreUsers extends Component {
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(response => {
+        .catch((response) => {
           self.setState({ isErrorBulkUpload: true });
           console.log(response);
         });
@@ -296,7 +304,7 @@ class StoreUsers extends Component {
   }
 
   /// drop down on change
-  handleBrandAndStoreChange = e => {
+  handleBrandAndStoreChange = (e) => {
     debugger;
     let value = e.target.value;
     let name = e.target.name;
@@ -305,14 +313,14 @@ class StoreUsers extends Component {
         selectBrand: value,
         departmentData: [],
         functionData: [],
-        selectedFunction: []
+        selectedFunction: [],
       });
     } else if (name === "storeCode") {
       this.setState({
         selectStore: value,
         departmentData: [],
         functionData: [],
-        selectedFunction: []
+        selectedFunction: [],
       });
     }
     setTimeout(() => {
@@ -324,12 +332,12 @@ class StoreUsers extends Component {
     }, 1);
   };
   /// Department drop down OnChange
-  handleDepartmentOnChange = e => {
+  handleDepartmentOnChange = (e) => {
     let value = e.target.value;
     this.setState({
       selectDepartment: value,
       functionData: [],
-      selectedFunction: []
+      selectedFunction: [],
     });
     setTimeout(() => {
       if (this.state.selectDepartment) {
@@ -338,7 +346,7 @@ class StoreUsers extends Component {
     }, 1);
   };
   /// handle onchange for drop down
-  handleDropDownOnChange = e => {
+  handleDropDownOnChange = (e) => {
     debugger;
     let name = e.target.name;
     let value = e.target.value;
@@ -346,7 +354,7 @@ class StoreUsers extends Component {
       this.setState({
         selectDesignation: value,
         reportDesignation: [],
-        reportToData: []
+        reportToData: [],
       });
       setTimeout(() => {
         if (this.state.selectDesignation) {
@@ -356,7 +364,7 @@ class StoreUsers extends Component {
     } else if (name === "selectReportDesignation") {
       this.setState({
         selectReportDesignation: value,
-        reportToData: []
+        reportToData: [],
       });
       setTimeout(() => {
         if (this.state.selectReportDesignation) {
@@ -365,11 +373,11 @@ class StoreUsers extends Component {
       }, 1);
     } else if (name === "selectReportTo") {
       this.setState({
-        selectReportTo: value
+        selectReportTo: value,
       });
     } else if (name === "selectClaimApprover") {
       this.setState({
-        selectClaimApprover: value
+        selectClaimApprover: value,
       });
     } else if (name === "selectStatus") {
       this.setState({ selectStatus: value });
@@ -378,7 +386,7 @@ class StoreUsers extends Component {
     }
   };
   /// Onchange for Mobile no
-  hanldeMobileNoChange = e => {
+  hanldeMobileNoChange = (e) => {
     debugger;
     var name = e.target.name;
     var reg = /^[0-9\b]+$/;
@@ -390,35 +398,35 @@ class StoreUsers extends Component {
       }
       if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
-          phoneFlag: true
+          phoneFlag: true,
         });
       } else {
         this.setState({
-          phoneFlag: false
+          phoneFlag: false,
         });
       }
     }
   };
   /// Onchange function
-  handleOnChangeUserData = e => {
+  handleOnChangeUserData = (e) => {
     debugger;
     var name = e.target.name;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (name === "email_Id") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value === "") {
         this.setState({
-          emailFlag: true
+          emailFlag: true,
         });
       } else if (reg.test(e.target.value) === false) {
         this.setState({
-          emailFlag: false
+          emailFlag: false,
         });
       } else {
         this.setState({
-          emailFlag: true
+          emailFlag: true,
         });
       }
     }
@@ -441,7 +449,7 @@ class StoreUsers extends Component {
         selectedClaimBrand: e,
         selectedClaimCategory: [],
         selectedClaimSubCategory: [],
-        selectedClaimIssueType: []
+        selectedClaimIssueType: [],
       });
     } else {
       this.setState({ selectedClaimBrand: e });
@@ -459,7 +467,7 @@ class StoreUsers extends Component {
       this.setState({
         selectedClaimCategory: e,
         selectedClaimSubCategory: [],
-        selectedClaimIssueType: []
+        selectedClaimIssueType: [],
       });
     } else {
       this.setState({ selectedClaimCategory: e });
@@ -476,7 +484,7 @@ class StoreUsers extends Component {
       e = [];
       this.setState({
         selectedClaimSubCategory: e,
-        selectedClaimIssueType: []
+        selectedClaimIssueType: [],
       });
     } else {
       this.setState({ selectedClaimSubCategory: e });
@@ -497,7 +505,7 @@ class StoreUsers extends Component {
     }
   }
 
-  handleEditOnchange = e => {
+  handleEditOnchange = (e) => {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
@@ -510,48 +518,49 @@ class StoreUsers extends Component {
         var userEdit = this.state.userEdit;
         userEdit[name] = value;
         this.setState({
-          userEdit
+          userEdit,
         });
       } else {
         e.target.value = "";
       }
       if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
-          EditphoneFlag: true
+          EditphoneFlag: true,
         });
       } else {
         this.setState({
-          EditphoneFlag: false
+          EditphoneFlag: false,
         });
       }
     } else if (name === "emailID") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value === "") {
         this.setState({
-          EditemailFlag: true
+          EditemailFlag: true,
         });
       } else if (reg.test(e.target.value) === false) {
         this.setState({
-          EditemailFlag: false
+          EditemailFlag: false,
         });
       } else {
         this.setState({
-          EditemailFlag: true
+          EditemailFlag: true,
         });
       }
 
       userEdit[name] = value;
 
       this.setState({
-        userEdit
+        userEdit,
       });
     } else {
       userEdit[name] = value;
+      userEdit.departmentID = 0;
 
       this.setState({
         userEdit,
         editFuncation: [],
-        functionData: []
+        functionData: [],
       });
     }
 
@@ -574,7 +583,7 @@ class StoreUsers extends Component {
     this.setState({
       userEdit,
       editFuncation: [],
-      functionData: []
+      functionData: [],
     });
     setTimeout(() => {
       if (this.state.userEdit.departmentID) {
@@ -584,15 +593,19 @@ class StoreUsers extends Component {
   }
   ///handle edit User desiagnation onchage
   handleEditUserDesignationChange(data, e) {
+    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var userEdit = this.state.userEdit;
     userEdit[name] = value;
 
+    userEdit.reporteeDesignationID = 0;
+    userEdit.reporteeID = 0;
+
     this.setState({
       userEdit,
       reportDesignation: [],
-      reportToData: []
+      reportToData: [],
     });
     setTimeout(() => {
       if (this.state.userEdit.designationID) {
@@ -611,7 +624,7 @@ class StoreUsers extends Component {
     this.setState({
       userEdit,
       // reportDesignation: [],
-      reportToData: []
+      reportToData: [],
     });
     setTimeout(() => {
       if (this.state.userEdit.reporteeDesignationID) {
@@ -620,14 +633,14 @@ class StoreUsers extends Component {
     }, 1);
   }
   /// hanlde edit Report drop down change
-  handleEditReportOnchange = e => {
+  handleEditReportOnchange = (e) => {
     var name = e.target.name;
     var value = e.target.value;
     var userEdit = this.state.userEdit;
     userEdit[name] = value;
 
     this.setState({
-      userEdit
+      userEdit,
     });
   };
   /// hanlde edit Multi select Brand onchange
@@ -638,12 +651,15 @@ class StoreUsers extends Component {
       this.setState({
         editBrand: e,
         editCategory: [],
+        claimCategoryData: [],
         editSubCategory: [],
+        claimSubCategoryData: [],
         editIssueType: [],
-        mappedBrandCompulsory: "Please Select Brand"
+        claimIssueTypeData: [],
+        EditmappedBrandCompulsory: "Please Select Brand",
       });
     } else {
-      this.setState({ editBrand: e, mappedBrandCompulsory: "" });
+      this.setState({ editBrand: e, EditmappedBrandCompulsory: "" });
       setTimeout(() => {
         if (this.state.editBrand) {
           this.handleGetClaimCategoryData("edit");
@@ -659,11 +675,13 @@ class StoreUsers extends Component {
       this.setState({
         editCategory: e,
         editSubCategory: [],
+        claimSubCategoryData: [],
+        claimIssueTypeData: [],
         editIssueType: [],
-        mappedCategoryCompulsory: "Please Select Category."
+        EditmappedCategoryCompulsory: "Please Select Category.",
       });
     } else {
-      this.setState({ editCategory: e, mappedCategoryCompulsory: "" });
+      this.setState({ editCategory: e, EditmappedCategoryCompulsory: "" });
       setTimeout(() => {
         if (this.state.editCategory) {
           this.handleGetClaimSubCategoryData("edit");
@@ -680,10 +698,13 @@ class StoreUsers extends Component {
       this.setState({
         editSubCategory: e,
         editIssueType: [],
-        mappedSubCategoryCompulsory: "Please Select Sub Category."
+        EditmappedSubCategoryCompulsory: "Please Select Sub Category.",
       });
     } else {
-      this.setState({ editSubCategory: e, mappedSubCategoryCompulsory: "" });
+      this.setState({
+        editSubCategory: e,
+        EditmappedSubCategoryCompulsory: "",
+      });
       setTimeout(() => {
         if (this.state.editSubCategory) {
           this.handleGetClaimIssueType("edit");
@@ -699,10 +720,10 @@ class StoreUsers extends Component {
       e = [];
       this.setState({
         editIssueType: e,
-        mappedIssueTypeCompulsory: "Please Select Issue Type."
+        EditmappedIssueTypeCompulsory: "Please Select Issue Type.",
       });
     } else {
-      this.setState({ editIssueType: e, mappedIssueTypeCompulsory: "" });
+      this.setState({ editIssueType: e, EditmappedIssueTypeCompulsory: "" });
     }
   }
 
@@ -773,7 +794,7 @@ class StoreUsers extends Component {
     }
     this.setState({
       isortA: true,
-      StoreUserData: itemsArray
+      StoreUserData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -837,7 +858,7 @@ class StoreUsers extends Component {
 
     this.setState({
       isortA: true,
-      StoreUserData: itemsArray
+      StoreUserData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -871,7 +892,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -883,7 +904,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -899,7 +920,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -911,7 +932,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -927,7 +948,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -939,7 +960,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -955,7 +976,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -967,7 +988,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -983,7 +1004,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -995,7 +1016,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -1011,7 +1032,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -1023,7 +1044,7 @@ class StoreUsers extends Component {
           smappedFunctionsFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -1039,7 +1060,7 @@ class StoreUsers extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -1051,7 +1072,7 @@ class StoreUsers extends Component {
           sdesignationNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -1061,7 +1082,7 @@ class StoreUsers extends Component {
       this.setState({
         StatusModel: false,
         StoreUserData: this.state.tempitemData,
-        filterTxtValue: ""
+        filterTxtValue: "",
       });
       if (this.state.sortColumn === "storeCode") {
         if (this.state.sitemCodeFilterCheckbox === "") {
@@ -1072,7 +1093,7 @@ class StoreUsers extends Component {
             sdesignationNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: ""
+            smappedFunctionsFilterCheckbox: "",
           });
         }
       }
@@ -1085,7 +1106,7 @@ class StoreUsers extends Component {
             sdesignationNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: ""
+            smappedFunctionsFilterCheckbox: "",
           });
         }
       }
@@ -1098,7 +1119,7 @@ class StoreUsers extends Component {
             sdesignationNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: ""
+            smappedFunctionsFilterCheckbox: "",
           });
         }
       }
@@ -1111,7 +1132,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: ""
+            smappedFunctionsFilterCheckbox: "",
           });
         }
       }
@@ -1124,7 +1145,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sdesignationNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: ""
+            smappedFunctionsFilterCheckbox: "",
           });
         }
       }
@@ -1137,7 +1158,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdesignationNameFilterCheckbox: "",
-            smappedFunctionsFilterCheckbox: ""
+            smappedFunctionsFilterCheckbox: "",
           });
         }
       }
@@ -1150,7 +1171,7 @@ class StoreUsers extends Component {
             suserNameFilterCheckbox: "",
             sreporteeNameFilterCheckbox: "",
             sdepartmentNameFilterCheckbox: "",
-            sdesignationNameFilterCheckbox: ""
+            sdesignationNameFilterCheckbox: "",
           });
         }
       }
@@ -1160,7 +1181,7 @@ class StoreUsers extends Component {
         StoreUserData: this.state.isortA
           ? this.state.StoreUserData
           : this.state.sortAllData,
-        filterTxtValue: ""
+        filterTxtValue: "",
       });
     }
   }
@@ -1404,7 +1425,7 @@ class StoreUsers extends Component {
       reporteeNameColor: "",
       departmentColor: "",
       functionColor: "",
-      userNameColor: ""
+      userNameColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -1413,7 +1434,9 @@ class StoreUsers extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.storeCode === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.storeCode === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1423,14 +1446,16 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        storeCodeColor: "sort-column"
+        storeCodeColor: "sort-column",
       });
     } else if (column === "brandName") {
       var sItems = sbrandNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.brandName === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1440,14 +1465,16 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        brandNameColor: "sort-column"
+        brandNameColor: "sort-column",
       });
     } else if (column === "userName") {
       var sItems = suserNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.userName === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.userName === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1457,7 +1484,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        userNameColor: "sort-column"
+        userNameColor: "sort-column",
       });
     } else if (column === "designationName") {
       var sItems = sdesignationNameFilterCheckbox.split(",");
@@ -1465,7 +1492,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.designationName === sItems[i]
+              (a) => a.designationName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1476,7 +1503,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        userdesignationColor: "sort-column"
+        userdesignationColor: "sort-column",
       });
     } else if (column === "reporteeName") {
       var sItems = sreporteeNameFilterCheckbox.split(",");
@@ -1484,7 +1511,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.reporteeName === sItems[i]
+              (a) => a.reporteeName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1495,7 +1522,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        reporteeNameColor: "sort-column"
+        reporteeNameColor: "sort-column",
       });
     } else if (column === "departmentName") {
       var sItems = sdepartmentNameFilterCheckbox.split(",");
@@ -1503,7 +1530,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.departmentName === sItems[i]
+              (a) => a.departmentName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1514,7 +1541,7 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        departmentColor: "sort-column"
+        departmentColor: "sort-column",
       });
     } else if (column === "mappedFunctions") {
       var sItems = smappedFunctionsFilterCheckbox.split(",");
@@ -1522,7 +1549,7 @@ class StoreUsers extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.mappedFunctions === sItems[i]
+              (a) => a.mappedFunctions === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1533,12 +1560,12 @@ class StoreUsers extends Component {
         }
       }
       this.setState({
-        functionColor: "sort-column"
+        functionColor: "sort-column",
       });
     }
 
     this.setState({
-      tempitemData: itemsArray
+      tempitemData: itemsArray,
     });
   };
 
@@ -1556,7 +1583,7 @@ class StoreUsers extends Component {
         this.setState({ sortFilteritemCode });
       } else {
         this.setState({
-          sortFilteritemCode: this.state.sortitemCode
+          sortFilteritemCode: this.state.sortitemCode,
         });
       }
     }
@@ -1570,7 +1597,7 @@ class StoreUsers extends Component {
         this.setState({ sortFilterbrandName });
       } else {
         this.setState({
-          sortFilterbrandName: this.state.sortbrandName
+          sortFilterbrandName: this.state.sortbrandName,
         });
       }
     }
@@ -1579,14 +1606,14 @@ class StoreUsers extends Component {
         this.state.sortuserName,
         e.target.value,
         {
-          keys: ["userName"]
+          keys: ["userName"],
         }
       );
       if (sortFilteruserName.length > 0) {
         this.setState({ sortFilteruserName });
       } else {
         this.setState({
-          sortFilteruserName: this.state.sortuserName
+          sortFilteruserName: this.state.sortuserName,
         });
       }
     }
@@ -1595,14 +1622,14 @@ class StoreUsers extends Component {
         this.state.sortdesignationName,
         e.target.value,
         {
-          keys: ["designationName"]
+          keys: ["designationName"],
         }
       );
       if (sortFilterdesignationName.length > 0) {
         this.setState({ sortFilterdesignationName });
       } else {
         this.setState({
-          sortFilterdesignationName: this.state.sortdesignationName
+          sortFilterdesignationName: this.state.sortdesignationName,
         });
       }
     }
@@ -1611,14 +1638,14 @@ class StoreUsers extends Component {
         this.state.sortreporteeName,
         e.target.value,
         {
-          keys: ["reporteeName"]
+          keys: ["reporteeName"],
         }
       );
       if (sortFilterreporteeName.length > 0) {
         this.setState({ sortFilterreporteeName });
       } else {
         this.setState({
-          sortFilterreporteeName: this.state.sortreporteeName
+          sortFilterreporteeName: this.state.sortreporteeName,
         });
       }
     }
@@ -1627,14 +1654,14 @@ class StoreUsers extends Component {
         this.state.sortdepartmentName,
         e.target.value,
         {
-          keys: ["departmentName"]
+          keys: ["departmentName"],
         }
       );
       if (sortFilterdepartmentName.length > 0) {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName
+          sortFilterdepartmentName: this.state.sortdepartmentName,
         });
       }
     }
@@ -1643,19 +1670,19 @@ class StoreUsers extends Component {
         this.state.sortmappedFunctions,
         e.target.value,
         {
-          keys: ["mappedFunctions"]
+          keys: ["mappedFunctions"],
         }
       );
       if (sortFiltermappedFunctions.length > 0) {
         this.setState({ sortFiltermappedFunctions });
       } else {
         this.setState({
-          sortFiltermappedFunctions: this.state.sortmappedFunctions
+          sortFiltermappedFunctions: this.state.sortmappedFunctions,
         });
       }
     }
   }
-  EditStoreUserData = data => {
+  EditStoreUserData = (data) => {
     debugger;
     var userEdit = {};
     var funcation = [];
@@ -1749,7 +1776,7 @@ class StoreUsers extends Component {
       editCategory: category,
       editSubCategory: subCategory,
       editIssueType: issueType,
-      UserEditmodel: true
+      UserEditmodel: true,
     });
 
     this.handleGetDepartmentData(userEdit.brandID, userEdit.storeID);
@@ -1769,9 +1796,9 @@ class StoreUsers extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1828,10 +1855,10 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortdesignationName.push({
-              designationName: distinct[i]
+              designationName: distinct[i],
             });
             self.state.sortFilterdesignationName.push({
-              designationName: distinct[i]
+              designationName: distinct[i],
             });
           }
           var unique = [];
@@ -1845,7 +1872,7 @@ class StoreUsers extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortreporteeName.push({ reporteeName: distinct[i] });
             self.state.sortFilterreporteeName.push({
-              reporteeName: distinct[i]
+              reporteeName: distinct[i],
             });
           }
           var unique = [];
@@ -1861,10 +1888,10 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortdepartmentName.push({
-              departmentName: distinct[i]
+              departmentName: distinct[i],
             });
             self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i]
+              departmentName: distinct[i],
             });
           }
           var unique = [];
@@ -1880,17 +1907,17 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortmappedFunctions.push({
-              mappedFunctions: distinct[i]
+              mappedFunctions: distinct[i],
             });
             self.state.sortFiltermappedFunctions.push({
-              mappedFunctions: distinct[i]
+              mappedFunctions: distinct[i],
             });
           }
         } else {
           self.setState({ StoreUserData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -1901,9 +1928,9 @@ class StoreUsers extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1913,7 +1940,7 @@ class StoreUsers extends Component {
           self.setState({ brandData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -1923,9 +1950,9 @@ class StoreUsers extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Store/StoreList",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1935,7 +1962,7 @@ class StoreUsers extends Component {
           self.setState({ storeCodeData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -1950,10 +1977,10 @@ class StoreUsers extends Component {
       headers: authHeader(),
       params: {
         BrandID: brand_id,
-        storeID: store_id
-      }
+        storeID: store_id,
+      },
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1963,7 +1990,7 @@ class StoreUsers extends Component {
           self.setState({ departmentData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -1982,8 +2009,8 @@ class StoreUsers extends Component {
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: department_id
-      }
+        DepartmentId: department_id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1995,8 +2022,8 @@ class StoreUsers extends Component {
           self.setState({ functionData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
 
@@ -2006,9 +2033,9 @@ class StoreUsers extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreHierarchy/GetStoreDesignationList",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -2018,7 +2045,7 @@ class StoreUsers extends Component {
           self.setState({ userDesignationData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -2037,22 +2064,21 @@ class StoreUsers extends Component {
       url: config.apiUrl + "/StoreUser/BindStoreReporteeDesignation",
       headers: authHeader(),
       params: {
-        DesignationID: designation_id
-      }
+        DesignationID: designation_id,
+      },
     })
       .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          console.log(data);
           self.setState({ reportDesignation: data });
         } else {
           self.setState({ reportDesignation: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
   /// handle get Report to data by designation id and isStoreUser for dropdown list
@@ -2071,8 +2097,8 @@ class StoreUsers extends Component {
       headers: authHeader(),
       params: {
         DesignationID: designation_id,
-        IsStoreUser: true
-      }
+        IsStoreUser: true,
+      },
     })
       .then(function(res) {
         debugger;
@@ -2084,8 +2110,8 @@ class StoreUsers extends Component {
           self.setState({ reportToData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
   //// handle get Claim category data by BrandIds for dropdown
@@ -2112,8 +2138,8 @@ class StoreUsers extends Component {
       url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
       headers: authHeader(),
       params: {
-        BrandIds: finalBrandIds.substring(",", finalBrandIds.length - 1)
-      }
+        BrandIds: finalBrandIds.substring(",", finalBrandIds.length - 1),
+      },
     })
       .then(function(res) {
         debugger;
@@ -2125,8 +2151,8 @@ class StoreUsers extends Component {
           self.setState({ claimCategoryData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
   //// handle get claim Sub category data for dropdown
@@ -2154,8 +2180,8 @@ class StoreUsers extends Component {
         CategoryIDs: finalCategoryIds.substring(
           ",",
           finalCategoryIds.length - 1
-        )
-      }
+        ),
+      },
     })
       .then(function(res) {
         debugger;
@@ -2167,8 +2193,8 @@ class StoreUsers extends Component {
           self.setState({ claimSubCategoryData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
   /// handle get claim Issue Type data for dropdown
@@ -2197,8 +2223,8 @@ class StoreUsers extends Component {
         subCategoryIDs: finalSubCategoryIds.substring(
           ",",
           finalSubCategoryIds.length - 1
-        )
-      }
+        ),
+      },
     })
       .then(function(res) {
         debugger;
@@ -2210,8 +2236,8 @@ class StoreUsers extends Component {
           self.setState({ claimIssueTypeData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
   ////get Crm Role data for dropdown
@@ -2220,9 +2246,9 @@ class StoreUsers extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCRMRole/GetStoreCRMRoleDropdown",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -2232,7 +2258,7 @@ class StoreUsers extends Component {
           self.setState({ CrmRoleData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -2245,8 +2271,8 @@ class StoreUsers extends Component {
       headers: authHeader(),
       params: {
         UserId: Id,
-        IsStoreUser: true
-      }
+        IsStoreUser: true,
+      },
     })
       .then(function(res) {
         debugger;
@@ -2256,7 +2282,7 @@ class StoreUsers extends Component {
           NotificationManager.success("User Deleted Successfully.");
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2268,8 +2294,8 @@ class StoreUsers extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUserDetailsByUserID",
       headers: authHeader(),
       params: {
-        UserID: user_Id
-      }
+        UserID: user_Id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -2282,8 +2308,8 @@ class StoreUsers extends Component {
           self.setState({ userEditData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch((response) => {
+        console.log(response);
       });
   }
   //// handle Save Store Details
@@ -2297,8 +2323,8 @@ class StoreUsers extends Component {
         headers: authHeader(),
         params: {
           brandID: this.state.selectBrand,
-          storeID: this.state.selectStore
-        }
+          storeID: this.state.selectStore,
+        },
       })
         .then(function(res) {
           debugger;
@@ -2308,19 +2334,19 @@ class StoreUsers extends Component {
             NotificationManager.success("Record Saved Successfully.");
             self.setState({
               user_ID: data,
-              StoreReadOnly: true
+              StoreReadOnly: true,
             });
           } else {
             NotificationManager.error("Record Not Save.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
         brandCompulsory: "Please Select Brand.",
-        storeCodeCompulsory: "Please Select Store Code."
+        storeCodeCompulsory: "Please Select Store Code.",
       });
     }
   }
@@ -2337,8 +2363,8 @@ class StoreUsers extends Component {
         params: {
           brandID: this.state.selectBrand,
           storeID: this.state.selectStore,
-          UserID: this.state.user_ID
-        }
+          UserID: this.state.user_ID,
+        },
       })
         .then(function(res) {
           debugger;
@@ -2348,19 +2374,19 @@ class StoreUsers extends Component {
             NotificationManager.success("Record Updated Successfully.");
             self.setState({
               // user_ID: data,
-              StoreReadOnly: true
+              StoreReadOnly: true,
             });
           } else {
             NotificationManager.error("Record Not Updated.");
           }
         })
-        .catch(data => {
-          console.log(data);
+        .catch((response) => {
+          console.log(response);
         });
     } else {
       this.setState({
         brandCompulsory: "Please Select Brand.",
-        storeCodeCompulsory: "Please Select Store Code."
+        storeCodeCompulsory: "Please Select Store Code.",
       });
     }
   }
@@ -2387,8 +2413,8 @@ class StoreUsers extends Component {
             EmailID: this.state.email_Id.trim(),
             FirstName: "",
             LastName: "",
-            IsStoreUser: true
-          }
+            IsStoreUser: true,
+          },
         })
           .then(function(res) {
             debugger;
@@ -2398,14 +2424,14 @@ class StoreUsers extends Component {
               NotificationManager.success("Record Saved Successfully.");
               self.setState({
                 // user_ID: data,
-                personalReadOnly: true
+                personalReadOnly: true,
               });
             } else {
               NotificationManager.error("Record Not Save.");
             }
           })
-          .catch(data => {
-            console.log(data);
+          .catch((response) => {
+            console.log(response);
           });
       } else {
         NotificationManager.error("Please Enter Store Details.");
@@ -2414,7 +2440,7 @@ class StoreUsers extends Component {
       this.setState({
         userNameCompulsory: "Please Enter User Name.",
         mobilenumberCompulsory: "Please Enter Mobile No.",
-        emailCompulsory: "Please Enter Email Id."
+        emailCompulsory: "Please Enter Email Id.",
       });
     }
   }
@@ -2442,8 +2468,8 @@ class StoreUsers extends Component {
             EmailID: this.state.email_Id.trim(),
             FirstName: "",
             LastName: "",
-            IsStoreUser: true
-          }
+            IsStoreUser: true,
+          },
         })
           .then(function(res) {
             debugger;
@@ -2453,14 +2479,14 @@ class StoreUsers extends Component {
               NotificationManager.success("Record Updated Successfully.");
               self.setState({
                 // user_ID: data,
-                personalReadOnly: true
+                personalReadOnly: true,
               });
             } else {
               NotificationManager.error("Record Not Update.");
             }
           })
-          .catch(data => {
-            console.log(data);
+          .catch((response) => {
+            console.log(response);
           });
       } else {
         NotificationManager.error("Please Enter Store Details.");
@@ -2469,7 +2495,7 @@ class StoreUsers extends Component {
       this.setState({
         userNameCompulsory: "Please Enter User Name.",
         mobilenumberCompulsory: "Please Enter Mobile No.",
-        emailCompulsory: "Please Enter Email Id."
+        emailCompulsory: "Please Enter Email Id.",
       });
     }
   }
@@ -2501,8 +2527,8 @@ class StoreUsers extends Component {
           departmentId: this.state.selectDepartment,
           functionIDs: function_ids.substring(",", function_ids.length - 1),
           designationID: this.state.selectDesignation,
-          reporteeID: this.state.selectReportTo
-        }
+          reporteeID: this.state.selectReportTo,
+        },
       })
         .then(function(res) {
           debugger;
@@ -2511,14 +2537,14 @@ class StoreUsers extends Component {
           if (status === "Success") {
             NotificationManager.success("Record Saved Successfully.");
             self.setState({
-              profileReadOnly: true
+              profileReadOnly: true,
             });
           } else {
             NotificationManager.error("Record Not Saved.");
           }
         })
-        .catch(data => {
-          console.log(data);
+        .catch((response) => {
+          console.log(response);
         });
     } else {
       this.setState({
@@ -2526,7 +2552,7 @@ class StoreUsers extends Component {
         functionCompulsory: "Please Select Function.",
         designationCompulsory: "Please Select User Designation.",
         reportDesignationCompulsory: "Please Select Reportee Designation.",
-        reportToCompulsory: "Please Select Report To."
+        reportToCompulsory: "Please Select Report To.",
       });
     }
   }
@@ -2558,8 +2584,8 @@ class StoreUsers extends Component {
           departmentId: this.state.selectDepartment,
           functionIDs: function_ids.substring(",", function_ids.length - 1),
           designationID: this.state.selectDesignation,
-          reporteeID: this.state.selectReportTo
-        }
+          reporteeID: this.state.selectReportTo,
+        },
       })
         .then(function(res) {
           debugger;
@@ -2567,14 +2593,14 @@ class StoreUsers extends Component {
           if (status === "Success") {
             NotificationManager.success("Record Updated Successfully.");
             self.setState({
-              profileReadOnly: true
+              profileReadOnly: true,
             });
           } else {
             NotificationManager.error("Record Not Update.");
           }
         })
-        .catch(data => {
-          console.log(data);
+        .catch((response) => {
+          console.log(response);
         });
     } else {
       this.setState({
@@ -2582,7 +2608,7 @@ class StoreUsers extends Component {
         functionCompulsory: "Please Select Function.",
         designationCompulsory: "Please Select User Designation.",
         reportDesignationCompulsory: "Please Select Reportee Designation.",
-        reportToCompulsory: "Please Select Report To."
+        reportToCompulsory: "Please Select Report To.",
       });
     }
   }
@@ -2655,8 +2681,8 @@ class StoreUsers extends Component {
             isClaimApprover: claimStatus,
             CRMRoleID: this.state.selectCrmRole,
             isActive: isActive,
-            IsStoreUser: 1
-          }
+            IsStoreUser: 1,
+          },
         })
           .then(function(res) {
             debugger;
@@ -2664,14 +2690,14 @@ class StoreUsers extends Component {
             if (status === "Success") {
               NotificationManager.success("Record Saved Successfully.");
               self.setState({
-                profileReadOnly: true
+                profileReadOnly: true,
               });
             } else {
               NotificationManager.error("Record Not Saved.");
             }
           })
-          .catch(data => {
-            console.log(data);
+          .catch((response) => {
+            console.log(response);
           });
       } else {
         NotificationManager.error("Please Enter Personal Details.");
@@ -2684,7 +2710,7 @@ class StoreUsers extends Component {
         mappedIssueTypeCompulsory: "Please Select Issue Type.",
         ClaimApproverCompulsory: "Please Select Claim Approver.",
         CrmRoleCompulsory: "Please Select Crm Role.",
-        statusCompulsory: "Please Select Status."
+        statusCompulsory: "Please Select Status.",
       });
     }
   }
@@ -2694,12 +2720,12 @@ class StoreUsers extends Component {
     debugger;
     if (this.state.userEdit.brandID > 0 && this.state.userEdit.storeID > 0) {
       this.setState({
-        selTab: "Personal Details"
+        selTab: "Personal Details",
       });
     } else {
       this.setState({
         EditBrandCompulsory: "Please Select Brand.",
-        EditstoreCodeCompulsory: "Please Select Store Code."
+        EditstoreCodeCompulsory: "Please Select Store Code.",
       });
     }
   }
@@ -2712,13 +2738,13 @@ class StoreUsers extends Component {
       this.state.userEdit.emailID.length > 0
     ) {
       this.setState({
-        selTab: "Profile Details"
+        selTab: "Profile Details",
       });
     } else {
       this.setState({
         editUserNameCompulsory: "Please Enter User Name.",
         editMobilenumberCompulsory: "Please Enter Mobile No.",
-        EditEmailCompulsory: "Please Enter Email Id."
+        EditEmailCompulsory: "Please Enter Email Id.",
       });
     }
   }
@@ -2728,11 +2754,28 @@ class StoreUsers extends Component {
     var inputParam = {};
 
     if (
+      /// -----------Store Detail Validation-------------------
+      this.state.userEdit.brandID > 0 &&
+      this.state.userEdit.storeID > 0 &&
+      /// -----------Personal Details Validation---------------
+      this.state.userEdit.userName.length > 0 &&
+      this.state.userEdit.mobileNo.length > 0 &&
+      this.state.userEdit.emailID.length > 0 &&
+      /// -----------Profile Details Validation----------------
+      this.state.userEdit.departmentID > 0 &&
+      this.state.editFuncation.length > 0 &&
+      this.state.userEdit.designationID > 0 &&
+      this.state.userEdit.reporteeDesignationID > 0 &&
+      this.state.userEdit.reporteeID > 0 &&
+      /// --------Mapped Claim Category validation------------
       this.state.editBrand.length > 0 &&
       this.state.editCategory.length > 0 &&
       this.state.editFuncation.length > 0 &&
       this.state.editIssueType.length > 0 &&
-      this.state.editSubCategory.length > 0
+      this.state.editSubCategory.length > 0 &&
+      this.state.userEdit.isClaimApprover !== "0" &&
+      this.state.userEdit.isActive !== "0" &&
+      this.state.userEdit.roleID > 0
     ) {
       inputParam.UserID = this.state.userEdit.userID;
 
@@ -2795,7 +2838,7 @@ class StoreUsers extends Component {
         method: "post",
         url: config.apiUrl + "/StoreUser/ModifyStoreUser",
         headers: authHeader(),
-        data: inputParam
+        data: inputParam,
       })
         .then(function(response) {
           debugger;
@@ -2805,51 +2848,75 @@ class StoreUsers extends Component {
           if (message === "Success" && responseData) {
             NotificationManager.success("User Updated Successfully.");
             self.handleGetStoreUserGridData();
+            self.closeEditModals();
           } else {
             NotificationManager.success("User Updated Fail.");
           }
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response, "---handleUpdateUser");
         });
+    } else {
+      this.setState({
+        EditmappedBrandCompulsory: "Please Select Brand.",
+        EditmappedCategoryCompulsory: "Please Select Category.",
+        EditmappedSubCategoryCompulsory: "Please Select Sub Category.",
+        EditmappedIssueTypeCompulsory: "Please Select Issue Type.",
+        EditmappedisClaimApprover: "Please Select Claim Approver.",
+        EditmappedcrmRoleID: "Please Select CRM Role.",
+        EditmappedisActive: "Please Select Status.",
+        EditBrandCompulsory: "Please Select Brand.",
+        EditstoreCodeCompulsory: "Please Select Store Code.",
+        editUserNameCompulsory: "Please Enter User Name.",
+        editMobilenumberCompulsory: "Please Enter Mobile No.",
+        EditEmailCompulsory: "Please Enter Email Id.",
+        mappedBrandCompulsory: "Please Select Brand.",
+        mappedCategoryCompulsory: "Please Select Category.",
+        mappedSubCategoryCompulsory: "Please Select Sub Category.",
+        mappedIssueTypeCompulsory: "Please Select Issue Type.",
+        ClaimApproverCompulsory: "Please Select Claim Approver.",
+        CrmRoleCompulsory: "Please Select Crm Role.",
+        statusCompulsory: "Please Select Status.",
+      });
     }
   }
 
   handleChangeProfileTab() {
     debugger;
-    if (this.state.userEdit.departmentID !== 0) {
+    if (this.state.userEdit.departmentID > 0) {
       this.setState({ EditDepartmentCompulsory: "" });
     } else {
       this.setState({ EditDepartmentCompulsory: "Please Select Department." });
     }
-    if (this.state.userEdit.designationID !== 0) {
+    if (this.state.userEdit.designationID > 0) {
       this.setState({ EditDesignationCompulsory: "" });
     } else {
       this.setState({
-        EditDesignationCompulsory: "please Select Designnation."
+        EditDesignationCompulsory: "Please Select Designnation.",
       });
     }
 
-    if (this.state.userEdit.reporteeID !== 0) {
+    if (this.state.userEdit.reporteeID > 0) {
       this.setState({ EditReportDesignationCompulsory: "" });
     } else {
       this.setState({
-        EditReportDesignationCompulsory: "please Select Report Designation."
+        EditReportDesignationCompulsory: "please Select Report To.",
       });
     }
 
-    if (this.state.userEdit.reporteeDesignationID !== 0) {
-      this.setState({ EditDesignationCompulsory: "" });
+    if (this.state.userEdit.reporteeDesignationID > 0) {
+      this.setState({ EditReporteeDesignationCompulsory: "" });
     } else {
       this.setState({
-        reportToCompulsory: "please Select Report To."
+        EditReporteeDesignationCompulsory:
+          "please Select Reportee Designation.",
       });
     }
     if (this.state.editFuncation.length > 0) {
       this.setState({ editFunctionCompulsion: "" });
     } else {
       this.setState({
-        editFunctionCompulsion: "Please Select Function."
+        editFunctionCompulsion: "Please Select Function.",
       });
     }
     setTimeout(() => {
@@ -2857,11 +2924,11 @@ class StoreUsers extends Component {
         this.state.EditDepartmentCompulsory == "" &&
         this.state.editFunctionCompulsion == "" &&
         this.state.EditReportDesignationCompulsory == "" &&
-        this.state.EditDesignationCompulsory == "" &&
-        this.state.reportToCompulsory == ""
+        this.state.EditReporteeDesignationCompulsory == "" &&
+        this.state.EditDesignationCompulsory == ""
       ) {
         this.setState({
-          selTab: "Mapped Cliam Category"
+          selTab: "Mapped Cliam Category",
         });
       }
     }, 10);
@@ -3151,7 +3218,7 @@ class StoreUsers extends Component {
           <Link
             to={{
               pathname: "/admin/settings",
-              tabName: "store-tab"
+              tabName: "store-tab",
             }}
             className="header-path"
           >
@@ -3185,7 +3252,7 @@ class StoreUsers extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "brandName"
+                        accessor: "brandName",
                       },
                       {
                         Header: (
@@ -3202,7 +3269,7 @@ class StoreUsers extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "storeCode"
+                        accessor: "storeCode",
                       },
                       {
                         Header: (
@@ -3220,7 +3287,7 @@ class StoreUsers extends Component {
                         ),
                         sortable: false,
                         accessor: "userName",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
                             <div>
@@ -3297,7 +3364,7 @@ class StoreUsers extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -3314,7 +3381,7 @@ class StoreUsers extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "designationName"
+                        accessor: "designationName",
                       },
                       {
                         Header: (
@@ -3332,7 +3399,7 @@ class StoreUsers extends Component {
                         ),
                         sortable: false,
                         accessor: "reporteeName",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
                             <div>
@@ -3361,7 +3428,7 @@ class StoreUsers extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -3378,7 +3445,7 @@ class StoreUsers extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "departmentName"
+                        accessor: "departmentName",
                       },
                       {
                         Header: (
@@ -3395,12 +3462,12 @@ class StoreUsers extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "mappedFunctions"
+                        accessor: "mappedFunctions",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "userID",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
                             <>
@@ -3460,8 +3527,8 @@ class StoreUsers extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     defaultPageSize={10}
                     minRows={2}
@@ -3793,8 +3860,8 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Function</label>
                         <Select
-                          getOptionLabel={option => option.funcationName}
-                          getOptionValue={option => option.functionID}
+                          getOptionLabel={(option) => option.funcationName}
+                          getOptionValue={(option) => option.functionID}
                           options={this.state.functionData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3963,8 +4030,8 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Brand</label>
                         <Select
-                          getOptionLabel={option => option.brandName}
-                          getOptionValue={option => option.brandID}
+                          getOptionLabel={(option) => option.brandName}
+                          getOptionValue={(option) => option.brandID}
                           options={this.state.brandData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -3982,8 +4049,8 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Categories</label>
                         <Select
-                          getOptionLabel={option => option.categoryName}
-                          getOptionValue={option => option.categoryID}
+                          getOptionLabel={(option) => option.categoryName}
+                          getOptionValue={(option) => option.categoryID}
                           options={this.state.claimCategoryData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -4001,8 +4068,8 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Sub Categories</label>
                         <Select
-                          getOptionLabel={option => option.subCategoryName}
-                          getOptionValue={option => option.subCategoryID}
+                          getOptionLabel={(option) => option.subCategoryName}
+                          getOptionValue={(option) => option.subCategoryID}
                           options={this.state.claimSubCategoryData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -4022,8 +4089,8 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Issue Type</label>
                         <Select
-                          getOptionLabel={option => option.issueTypeName}
-                          getOptionValue={option => option.issueTypeID}
+                          getOptionLabel={(option) => option.issueTypeName}
+                          getOptionValue={(option) => option.issueTypeID}
                           options={this.state.claimIssueTypeData}
                           placeholder="Select"
                           closeMenuOnSelect={false}
@@ -4277,7 +4344,7 @@ class StoreUsers extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.userEdit.brandID === 0 && (
+                          {this.state.userEdit.brandID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.EditBrandCompulsory}
                             </p>
@@ -4303,7 +4370,7 @@ class StoreUsers extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.userEdit.storeID === 0 && (
+                          {this.state.userEdit.storeID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.EditstoreCodeCompulsory}
                             </p>
@@ -4314,7 +4381,7 @@ class StoreUsers extends Component {
                       <div
                         style={{
                           textAlign: "center",
-                          margin: "20px 0px 0px 0px"
+                          margin: "20px 0px 0px 0px",
                         }}
                       >
                         <a
@@ -4403,7 +4470,7 @@ class StoreUsers extends Component {
                       <div
                         style={{
                           textAlign: "center",
-                          margin: "20px 0px 0px 0px"
+                          margin: "20px 0px 0px 0px",
                         }}
                       >
                         <a
@@ -4449,7 +4516,7 @@ class StoreUsers extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.userEdit.departmentID === 0 && (
+                          {this.state.userEdit.departmentID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.EditDepartmentCompulsory}
                             </p>
@@ -4458,8 +4525,8 @@ class StoreUsers extends Component {
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Function</label>
                           <Select
-                            getOptionLabel={option => option.funcationName}
-                            getOptionValue={option => option.functionID}
+                            getOptionLabel={(option) => option.funcationName}
+                            getOptionValue={(option) => option.functionID}
                             options={this.state.functionData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
@@ -4501,7 +4568,7 @@ class StoreUsers extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.userEdit.designationID === 0 && (
+                          {this.state.userEdit.designationID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
                               {this.state.EditDesignationCompulsory}
                             </p>
@@ -4532,9 +4599,9 @@ class StoreUsers extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.userEdit.reporteeDesignationID === 0 && (
+                          {this.state.userEdit.reporteeDesignationID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.EditReportDesignationCompulsory}
+                              {this.state.EditReporteeDesignationCompulsory}
                             </p>
                           )}
                         </div>
@@ -4558,9 +4625,9 @@ class StoreUsers extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.userEdit.reporteeID === 0 && (
+                          {this.state.userEdit.reporteeID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.reportToCompulsory}
+                              {this.state.EditReportDesignationCompulsory}
                             </p>
                           )}
                         </div>
@@ -4569,7 +4636,7 @@ class StoreUsers extends Component {
                       <div
                         style={{
                           textAlign: "center",
-                          margin: "20px 0px 0px 0px"
+                          margin: "20px 0px 0px 0px",
                         }}
                       >
                         <a
@@ -4597,8 +4664,8 @@ class StoreUsers extends Component {
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Brand</label>
                           <Select
-                            getOptionLabel={option => option.brandName}
-                            getOptionValue={option => option.brandID}
+                            getOptionLabel={(option) => option.brandName}
+                            getOptionValue={(option) => option.brandID}
                             options={this.state.brandData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
@@ -4612,15 +4679,15 @@ class StoreUsers extends Component {
 
                           {this.state.editBrand.length === 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.mappedBrandCompulsory}
+                              {this.state.EditmappedBrandCompulsory}
                             </p>
                           )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Categories</label>
                           <Select
-                            getOptionLabel={option => option.categoryName}
-                            getOptionValue={option => option.categoryID}
+                            getOptionLabel={(option) => option.categoryName}
+                            getOptionValue={(option) => option.categoryID}
                             options={this.state.claimCategoryData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
@@ -4633,15 +4700,15 @@ class StoreUsers extends Component {
                           />
                           {this.state.editCategory.length === 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.mappedCategoryCompulsory}
+                              {this.state.EditmappedCategoryCompulsory}
                             </p>
                           )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Sub Categories</label>
                           <Select
-                            getOptionLabel={option => option.subCategoryName}
-                            getOptionValue={option => option.subCategoryID}
+                            getOptionLabel={(option) => option.subCategoryName}
+                            getOptionValue={(option) => option.subCategoryID}
                             options={this.state.claimSubCategoryData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
@@ -4654,15 +4721,15 @@ class StoreUsers extends Component {
                           />
                           {this.state.editSubCategory.length === 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.mappedSubCategoryCompulsory}
+                              {this.state.EditmappedSubCategoryCompulsory}
                             </p>
                           )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Issue Type</label>
                           <Select
-                            getOptionLabel={option => option.issueTypeName}
-                            getOptionValue={option => option.issueTypeID}
+                            getOptionLabel={(option) => option.issueTypeName}
+                            getOptionValue={(option) => option.issueTypeID}
                             options={this.state.claimIssueTypeData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
@@ -4675,7 +4742,7 @@ class StoreUsers extends Component {
                           />
                           {this.state.editIssueType.length === 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.mappedIssueTypeCompulsory}
+                              {this.state.EditmappedIssueTypeCompulsory}
                             </p>
                           )}
                         </div>
@@ -4690,9 +4757,9 @@ class StoreUsers extends Component {
                             <option value={true}>Yes</option>
                             <option value={false}>No</option>
                           </select>
-                          {this.state.userEdit.isClaimApprover === 0 && (
+                          {this.state.userEdit.isClaimApprover == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.mappedisClaimApprover}
+                              {this.state.EditmappedisClaimApprover}
                             </p>
                           )}
                         </div>
@@ -4716,9 +4783,9 @@ class StoreUsers extends Component {
                                   </option>
                                 ))}
                             </select>
-                            {this.state.userEdit.roleID === 0 && (
+                            {this.state.userEdit.roleID == 0 && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
-                                {this.state.mappedcrmRoleID}
+                                {this.state.EditmappedcrmRoleID}
                               </p>
                             )}
                           </div>
@@ -4737,21 +4804,19 @@ class StoreUsers extends Component {
                                   </option>
                                 ))}
                             </select>
-                            {this.state.userEdit.isActive === 0 && (
+                            {this.state.userEdit.isActive == 0 && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
-                                {this.state.mappedisActive}
+                                {this.state.EditmappedisActive}
                               </p>
                             )}
                           </div>
                         </div>
                       </div>
-                      {/* <div className="btn-coll">
-                        <button className="butn">ADD</button>
-                      </div> */}
+
                       <div
                         style={{
                           textAlign: "center",
-                          margin: "20px 0px 0px 0px"
+                          margin: "20px 0px 0px 0px",
                         }}
                       >
                         <a
