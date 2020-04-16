@@ -489,7 +489,7 @@ class Campaign extends Component {
   }
 
   handleOnchange = e => {
-    // debugger;
+    debugger;
     const { name, value } = e.target;
     var modalData = this.state.modalData;
     if (name == "name") {
