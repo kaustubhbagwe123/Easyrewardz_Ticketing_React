@@ -28,7 +28,7 @@ class Header extends Component {
       open: false,
       notificationModal: false,
       notificationCount: 0,
-      notificationData: []
+      notificationData: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -36,6 +36,7 @@ class Header extends Component {
     this.handleNotificationModalOpen = this.handleNotificationModalOpen.bind(
       this
     );
+    this.handlreRedirectPage=this.handlreRedirectPage.bind(this)
   }
 
   componentDidMount() {
@@ -60,7 +61,7 @@ class Header extends Component {
   ////handle notification modal open
   handleNotificationModalOpen() {
     debugger;
-    if (this.state.notificationData.length > 0) {
+    if (this.state.notificationCount > 0) {
       this.setState({ notificationModal: true });
     }
   }
@@ -76,7 +77,7 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreAccount/Logout",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         //
@@ -88,7 +89,7 @@ class Header extends Component {
           window.location.href = "/storeProgramCode";
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -99,7 +100,7 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
@@ -109,15 +110,17 @@ class Header extends Component {
           var notificationCount = responseData.notiCount;
           if (responseData.storeNotificationModel.length > 0) {
             self.setState({
-              notificationData: responseData,
-              notificationCount
+              notificationData: responseData.storeNotificationModel,
+              notificationCount,
             });
           }
         } else {
-          self.setState({ notificationData:responseData });
+          self.setState({
+            notificationData: responseData.storeNotificationModel,
+          });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetNotigfication");
       });
   }
@@ -130,24 +133,32 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         NotificatonTypeID: typeId,
-        NotificatonType: type
-      }
+        NotificatonType: type,
+      },
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.props.history.push({
-            pathname: "/store/editStoreTask",
-            state: { TaskID: typeId }
-          });
+          self.handlreRedirectPage(typeId);
+          // self.props.history.push({
+          //   pathname: "/store/editStoreTask",
+          //   state: { TaskID: typeId }
+          // });
         } else {
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetNotigfication");
       });
+  }
+
+  handlreRedirectPage(id) {
+    this.props.history.push({
+      pathname: "/store/editStoreTask",
+      state: { TaskID: id },
+    });
   }
 
   render() {
