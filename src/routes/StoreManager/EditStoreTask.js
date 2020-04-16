@@ -61,6 +61,7 @@ class EditStoreTask extends Component {
   }
 
   componentDidMount() {
+    debugger
     if (this.props.location.state) {
       var taskId = this.props.location.state.TaskID;
       this.setState({ taskId });
