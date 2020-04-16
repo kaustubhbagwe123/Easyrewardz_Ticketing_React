@@ -170,12 +170,25 @@ class StoreAddTask extends Component {
   ///handle get assign to
   handleGetAssignTo() {
     let self = this;
+
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
-      headers: authHeader()
+      url: config.apiUrl + "/StoreTask/GetAssignedTo",
+      headers: authHeader(),
+      params: {
+        Function_ID: this.state.funcationID
+      }
     })
-      .then(function(response) {})
+      .then(function(response) {
+        var message = response.data.message;
+        var assignToData = response.data.responseData;
+        console.log(assignToData,"---------assignToData")
+        if (message === "Success" && assignToData.length > 0) {
+          self.setState({ assignToData });
+        } else {
+          self.setState({ assignToData: [] });
+        }
+      })
       .catch(response => {
         console.log(response, "---handleGetAssignTo");
       });
@@ -239,8 +252,13 @@ class StoreAddTask extends Component {
       if (value !== 0) {
         this.setState({
           funcationID: value,
-          isfuncation: ""
+          isfuncation: "",
+          assignToID: 0,
+          assignToData: []
         });
+        setTimeout(() => {
+          this.handleGetAssignTo();
+        }, 10);
       } else {
         this.setState({
           isfuncation: "Please Select Funcation.",
@@ -262,6 +280,7 @@ class StoreAddTask extends Component {
       }
     }
     if (name == "assignto") {
+      debugger;
       if (value !== 0) {
         this.setState({
           assignToID: value,
@@ -404,9 +423,17 @@ class StoreAddTask extends Component {
                     name="assignto"
                     onChange={this.handleOnchange}
                   >
-                    <option>Select</option>
-                    <option>Naman</option>
-                    <option>Rachita</option>
+                    <option value={0}>Select</option>
+                    {this.state.assignToData !== null &&
+                      this.state.assignToData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.userID}
+                          className="select-category-placeholder"
+                        >
+                          {item.userName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.isassignto !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>

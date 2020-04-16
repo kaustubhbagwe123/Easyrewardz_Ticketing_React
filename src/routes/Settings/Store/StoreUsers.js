@@ -240,14 +240,14 @@ class StoreUsers extends Component {
     });
   }
 
-  editPersonalMethod(){
+  editPersonalMethod() {
     this.setState({
       personalReadOnly: false,
       btnPersonalToggle: true
     });
   }
 
-  editProfileMethod(){
+  editProfileMethod() {
     this.setState({
       profileReadOnly: false,
       btnProfileToggle: true
@@ -271,8 +271,9 @@ class StoreUsers extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        },
-      }).then(response => {
+        }
+      })
+        .then(response => {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
@@ -631,16 +632,18 @@ class StoreUsers extends Component {
   };
   /// hanlde edit Multi select Brand onchange
   handleMultiEditBrandonChange(e) {
+    debugger;
     if (e === null) {
       e = [];
       this.setState({
         editBrand: e,
         editCategory: [],
         editSubCategory: [],
-        editIssueType: []
+        editIssueType: [],
+        mappedBrandCompulsory: "Please Select Brand"
       });
     } else {
-      this.setState({ editBrand: e });
+      this.setState({ editBrand: e, mappedBrandCompulsory: "" });
       setTimeout(() => {
         if (this.state.editBrand) {
           this.handleGetClaimCategoryData("edit");
@@ -650,15 +653,17 @@ class StoreUsers extends Component {
   }
   /// hanlde edit Multi select Category onchange
   handleMultiEditCategoryonChange(e) {
+    debugger;
     if (e === null) {
       e = [];
       this.setState({
         editCategory: e,
         editSubCategory: [],
-        editIssueType: []
+        editIssueType: [],
+        mappedCategoryCompulsory: "Please Select Category."
       });
     } else {
-      this.setState({ editCategory: e });
+      this.setState({ editCategory: e, mappedCategoryCompulsory: "" });
       setTimeout(() => {
         if (this.state.editCategory) {
           this.handleGetClaimSubCategoryData("edit");
@@ -666,6 +671,41 @@ class StoreUsers extends Component {
       }, 1);
     }
   }
+
+  /// hanlde edit Multi select sub Category onchange
+  handleMultiEditSubCategoryonChange(e) {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({
+        editSubCategory: e,
+        editIssueType: [],
+        mappedSubCategoryCompulsory: "Please Select Sub Category."
+      });
+    } else {
+      this.setState({ editSubCategory: e, mappedSubCategoryCompulsory: "" });
+      setTimeout(() => {
+        if (this.state.editSubCategory) {
+          this.handleGetClaimIssueType("edit");
+        }
+      }, 1);
+    }
+  }
+
+  /// hanlde edit Multi select issuetype onchange
+  handleMultiEditIssueTypeonChange(e) {
+    debugger;
+    if (e === null) {
+      e = [];
+      this.setState({
+        editIssueType: e,
+        mappedIssueTypeCompulsory: "Please Select Issue Type."
+      });
+    } else {
+      this.setState({ editIssueType: e, mappedIssueTypeCompulsory: "" });
+    }
+  }
+
   ////handle edit Function on change
   handleEditFunctionOnChange(e) {
     debugger;
@@ -1621,6 +1661,9 @@ class StoreUsers extends Component {
     var funcation = [];
     var brand = [];
     var category = [];
+    var subCategory = [];
+    var issueType = [];
+    userEdit.userID = data.userID;
     userEdit.brandID = data.brandID;
     userEdit.brandName = data.brandName;
     userEdit.storeID = data.storeID;
@@ -1651,6 +1694,8 @@ class StoreUsers extends Component {
     userEdit.departmentName = data.departmentName;
     userEdit.isActive = data.isActive;
     userEdit.isClaimApprover = data.isClaimApprover;
+    userEdit.FirstName = data.firstName;
+    userEdit.LastName = data.lastName;
 
     ////for Multi function binding drop down
     var fName = userEdit.mappedFunctions.split(",");
@@ -1669,6 +1714,7 @@ class StoreUsers extends Component {
       }
     }
 
+    ////for Multi category binding drop down
     var cName = userEdit.mappedCategory.split(",");
     var cId = userEdit.categoryIDs.split(",").map(Number);
     if (userEdit.categoryIDs !== null) {
@@ -1676,7 +1722,24 @@ class StoreUsers extends Component {
         category.push({ categoryID: cId[k], categoryName: cName[k] });
       }
     }
-    ////for Multi category binding drop down
+
+    ////for Multi sub-category binding drop down
+    var sName = userEdit.mappedSubCategory.split(",");
+    var sId = userEdit.subCategoryIDs.split(",").map(Number);
+    if (userEdit.subCategoryIDs !== null) {
+      for (let k = 0; k < sId.length; k++) {
+        subCategory.push({ subCategoryID: sId[k], subCategoryName: sName[k] });
+      }
+    }
+
+    ////for Multi issuetype binding drop down
+    var iName = userEdit.mappedIssuetype.split(",");
+    var iId = userEdit.issueTypeIDs.split(",").map(Number);
+    if (userEdit.issueTypeIDs !== null) {
+      for (let k = 0; k < iId.length; k++) {
+        issueType.push({ issueTypeID: iId[k], issueTypeName: iName[k] });
+      }
+    }
 
     this.setState({
       userEdit,
@@ -1684,6 +1747,8 @@ class StoreUsers extends Component {
       editFuncation: funcation,
       editBrand: brand,
       editCategory: category,
+      editSubCategory: subCategory,
+      editIssueType: issueType,
       UserEditmodel: true
     });
 
@@ -1694,6 +1759,8 @@ class StoreUsers extends Component {
     this.handleGetReportToData("edit");
     this.handleGetBrandData();
     this.handleGetClaimCategoryData("edit");
+    this.handleGetClaimSubCategoryData("edit");
+    this.handleGetClaimIssueType("edit");
   };
   // -------------------API Start------------------------
   ///Show Store User Grid data
@@ -1978,6 +2045,7 @@ class StoreUsers extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
+          console.log(data);
           self.setState({ reportDesignation: data });
         } else {
           self.setState({ reportDesignation: [] });
@@ -2062,14 +2130,20 @@ class StoreUsers extends Component {
       });
   }
   //// handle get claim Sub category data for dropdown
-  handleGetClaimSubCategoryData() {
+  handleGetClaimSubCategoryData(check) {
     debugger;
     let self = this;
     let finalCategoryIds = "";
-    if (this.state.selectedClaimCategory !== null) {
-      for (let i = 0; i < this.state.selectedClaimCategory.length; i++) {
-        finalCategoryIds +=
-          this.state.selectedClaimCategory[i].categoryID + ",";
+    if (check == "edit") {
+      for (let i = 0; i < this.state.editCategory.length; i++) {
+        finalCategoryIds += this.state.editCategory[i].categoryID + ",";
+      }
+    } else {
+      if (this.state.selectedClaimCategory !== null) {
+        for (let i = 0; i < this.state.selectedClaimCategory.length; i++) {
+          finalCategoryIds +=
+            this.state.selectedClaimCategory[i].categoryID + ",";
+        }
       }
     }
     axios({
@@ -2098,14 +2172,21 @@ class StoreUsers extends Component {
       });
   }
   /// handle get claim Issue Type data for dropdown
-  handleGetClaimIssueType() {
+  handleGetClaimIssueType(check) {
     debugger;
     let self = this;
     let finalSubCategoryIds = "";
-    if (this.state.selectedClaimSubCategory !== null) {
-      for (let i = 0; i < this.state.selectedClaimSubCategory.length; i++) {
+    if (check == "edit") {
+      for (let i = 0; i < this.state.editSubCategory.length; i++) {
         finalSubCategoryIds +=
-          this.state.selectedClaimSubCategory[i].subCategoryID + ",";
+          this.state.editSubCategory[i].subCategoryID + ",";
+      }
+    } else {
+      if (this.state.selectedClaimSubCategory !== null) {
+        for (let i = 0; i < this.state.selectedClaimSubCategory.length; i++) {
+          finalSubCategoryIds +=
+            this.state.selectedClaimSubCategory[i].subCategoryID + ",";
+        }
       }
     }
     axios({
@@ -2338,8 +2419,8 @@ class StoreUsers extends Component {
     }
   }
 
-  //// update Personal details 
-  handleUpdatePersonalDetails(){
+  //// update Personal details
+  handleUpdatePersonalDetails() {
     debugger;
     let self = this;
     if (
@@ -2449,8 +2530,8 @@ class StoreUsers extends Component {
       });
     }
   }
-/// handle update Profile details 
-  handleUpdateProfileDetails(){
+  /// handle update Profile details
+  handleUpdateProfileDetails() {
     debugger;
     let self = this;
     if (
@@ -2641,6 +2722,158 @@ class StoreUsers extends Component {
       });
     }
   }
+  ////handle update user
+  handleUpdateUser() {
+    debugger;
+    var inputParam = {};
+
+    if (
+      this.state.editBrand.length > 0 &&
+      this.state.editCategory.length > 0 &&
+      this.state.editFuncation.length > 0 &&
+      this.state.editIssueType.length > 0 &&
+      this.state.editSubCategory.length > 0
+    ) {
+      inputParam.UserID = this.state.userEdit.userID;
+
+      var editBrand = "";
+      for (let i = 0; i < this.state.editBrand.length; i++) {
+        editBrand += this.state.editBrand[i].brandID + ",";
+      }
+      var editCategory = "";
+      for (let i = 0; i < this.state.editCategory.length; i++) {
+        editCategory += this.state.editCategory[i].categoryID + ",";
+      }
+      var editFuncation = "";
+      for (let i = 0; i < this.state.editFuncation.length; i++) {
+        editFuncation += this.state.editFuncation[i].functionID + ",";
+      }
+      var editIssueType = "";
+      for (let i = 0; i < this.state.editIssueType.length; i++) {
+        editIssueType += this.state.editIssueType[i].issueTypeID + ",";
+      }
+      var editSubCategory = "";
+      for (let i = 0; i < this.state.editSubCategory.length; i++) {
+        editSubCategory += this.state.editSubCategory[i].subCategoryID + ",";
+      }
+      inputParam.BrandIDs = editBrand.substring(",", editBrand.length - 1);
+      inputParam.CategoryIds = editCategory.substring(
+        ",",
+        editCategory.length - 1
+      );
+      inputParam.SubCategoryIds = editSubCategory.substring(
+        ",",
+        editSubCategory.length - 1
+      );
+      inputParam.IssuetypeIds = editIssueType.substring(
+        ",",
+        editIssueType.length - 1
+      );
+      inputParam.FunctionIDs = editFuncation.substring(
+        ",",
+        editFuncation.length - 1
+      );
+
+      inputParam.isClaimApprover = this.state.userEdit.isClaimApprover;
+      inputParam.CRMRoleID = this.state.userEdit.roleID;
+      inputParam.isActive =
+        this.state.userEdit.isActive == "Active" ? true : false;
+      inputParam.IsStoreUser = 1;
+      inputParam.DepartmentID = this.state.userEdit.departmentID;
+
+      inputParam.DesignationID = this.state.userEdit.reporteeDesignationID;
+      inputParam.ReporteeID = this.state.userEdit.reporteeID;
+      inputParam.UserName = this.state.userEdit.userName;
+      inputParam.EmailID = this.state.userEdit.emailID;
+      inputParam.MobileNo = this.state.userEdit.mobileNo;
+      inputParam.FirstName = this.state.userEdit.FirstName || "";
+      inputParam.LastName = this.state.userEdit.LastName || "";
+      inputParam.BrandID = this.state.userEdit.brandID;
+      inputParam.StoreID = this.state.userEdit.storeID;
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/ModifyStoreUser",
+        headers: authHeader(),
+        data: inputParam
+      })
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+
+          if (message === "Success" && responseData) {
+            NotificationManager.success("User Updated Successfully.");
+            self.handleGetStoreUserGridData();
+          } else {
+            NotificationManager.success("User Updated Fail.");
+          }
+        })
+        .catch(response => {
+          console.log(response, "---handleUpdateUser");
+        });
+    }
+  }
+
+  handleChangeProfileTab() {
+    debugger;
+    if (this.state.userEdit.departmentID !== 0) {
+      this.setState({ EditDepartmentCompulsory: "" });
+    } else {
+      this.setState({ EditDepartmentCompulsory: "Please Select Department." });
+    }
+    if (this.state.userEdit.designationID !== 0) {
+      this.setState({ EditDesignationCompulsory: "" });
+    } else {
+      this.setState({
+        EditDesignationCompulsory: "please Select Designnation."
+      });
+    }
+
+    if (this.state.userEdit.reporteeID !== 0) {
+      this.setState({ EditReportDesignationCompulsory: "" });
+    } else {
+      this.setState({
+        EditReportDesignationCompulsory: "please Select Report Designation."
+      });
+    }
+
+    if (this.state.userEdit.reporteeDesignationID !== 0) {
+      this.setState({ EditDesignationCompulsory: "" });
+    } else {
+      this.setState({
+        reportToCompulsory: "please Select Report To."
+      });
+    }
+    if (this.state.editFuncation.length > 0) {
+      this.setState({ editFunctionCompulsion: "" });
+    } else {
+      this.setState({
+        editFunctionCompulsion: "Please Select Function."
+      });
+    }
+    setTimeout(() => {
+      if (
+        this.state.EditDepartmentCompulsory == "" &&
+        this.state.editFunctionCompulsion == "" &&
+        this.state.EditReportDesignationCompulsory == "" &&
+        this.state.EditDesignationCompulsory == "" &&
+        this.state.reportToCompulsory == ""
+      ) {
+        this.setState({
+          selTab: "Mapped Cliam Category"
+        });
+      }
+    }, 10);
+  }
+
+  handleChagenMapping(e) {
+    const { name, value } = e.target;
+    var userEdit = this.state.userEdit;
+    userEdit[name] = value;
+    this.setState({ userEdit });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -3492,7 +3725,9 @@ class StoreUsers extends Component {
                             data-target="#profile-Details"
                             data-toggle="collapse"
                             className="butn"
-                            onClick={this.handleUpdatePersonalDetails.bind(this)}
+                            onClick={this.handleUpdatePersonalDetails.bind(
+                              this
+                            )}
                           >
                             Update &amp;Next
                           </button>
@@ -3507,7 +3742,6 @@ class StoreUsers extends Component {
                           </button>
                         </div>
                       )}
-                      
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -3681,8 +3915,8 @@ class StoreUsers extends Component {
                       ) : this.state.btnProfileToggle === true ? (
                         <div className="btn-coll">
                           <button
-                           data-target="#mapped-category"
-                           data-toggle="collapse"
+                            data-target="#mapped-category"
+                            data-toggle="collapse"
                             className="butn"
                             onClick={this.handleUpdateProfileDetails.bind(this)}
                           >
@@ -3892,11 +4126,11 @@ class StoreUsers extends Component {
                     <div className="down-excel">
                       <p>Template</p>
                       <CSVLink
-                          filename={"User.csv"}
-                          data={config.storeUserTemplate}
-                        >
-                          <img src={DownExcel} alt="download icon" />
-                        </CSVLink>
+                        filename={"User.csv"}
+                        data={config.storeUserTemplate}
+                      >
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                   </div>
                   <div className="mainfileUpload">
@@ -3960,7 +4194,9 @@ class StoreUsers extends Component {
                           </UncontrolledPopover>
                         </div>
                         <div>
-                          <span className="file-size">{this.state.fileSize}</span>
+                          <span className="file-size">
+                            {this.state.fileSize}
+                          </span>
                         </div>
                       </div>
                       {this.state.isErrorBulkUpload ? (
@@ -4009,7 +4245,7 @@ class StoreUsers extends Component {
             </div>
             <Modal
               open={this.state.UserEditmodel}
-              onClose={this.closeEditModals}
+              onClose={this.closeEditModals.bind(this)}
               modalId="UsEdit-popup"
             >
               <div>
@@ -4338,13 +4574,13 @@ class StoreUsers extends Component {
                       >
                         <a
                           className="pop-over-cancle canblue"
-                          // onClick={this.closeEditModal.bind(this)}
+                          onClick={this.closeEditModals.bind(this)}
                         >
                           CANCEL
                         </a>
                         <button
                           className="Save-Use"
-                          // onClick={this.handleChangePersonalTab}
+                          onClick={this.handleChangeProfileTab.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
                           NEXT
@@ -4374,9 +4610,9 @@ class StoreUsers extends Component {
                             isMulti
                           />
 
-                          {this.state.selectedClaimCategory.length === 0 && (
+                          {this.state.editBrand.length === 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.mappedCategoryCompulsory}
+                              {this.state.mappedBrandCompulsory}
                             </p>
                           )}
                         </div>
@@ -4404,49 +4640,108 @@ class StoreUsers extends Component {
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Sub Categories</label>
                           <Select
-                            getOptionLabel={option => option.brandName}
-                            getOptionValue={option => option.brandID}
-                            options={this.state.brandData}
+                            getOptionLabel={option => option.subCategoryName}
+                            getOptionValue={option => option.subCategoryID}
+                            options={this.state.claimSubCategoryData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
-                            name="selectedClaimBrand"
-                            onChange={this.handleMultiBrandonChange.bind(this)}
-                            value={this.state.selectedClaimBrand}
+                            name="editsubcategory"
+                            onChange={this.handleMultiEditSubCategoryonChange.bind(
+                              this
+                            )}
+                            value={this.state.editSubCategory}
                             isMulti
                           />
+                          {this.state.editSubCategory.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.mappedSubCategoryCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">Issue Type</label>
                           <Select
-                            getOptionLabel={option => option.brandName}
-                            getOptionValue={option => option.brandID}
-                            options={this.state.brandData}
+                            getOptionLabel={option => option.issueTypeName}
+                            getOptionValue={option => option.issueTypeID}
+                            options={this.state.claimIssueTypeData}
                             placeholder="Select"
                             closeMenuOnSelect={false}
-                            name="selectedClaimBrand"
-                            onChange={this.handleMultiBrandonChange.bind(this)}
-                            value={this.state.selectedClaimBrand}
+                            name="editissuetype"
+                            onChange={this.handleMultiEditIssueTypeonChange.bind(
+                              this
+                            )}
+                            value={this.state.editIssueType}
                             isMulti
                           />
+                          {this.state.editIssueType.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.mappedIssueTypeCompulsory}
+                            </p>
+                          )}
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">Claim Approver</label>
-                          <select>
-                            <option>No</option>
+                          <select
+                            value={this.state.userEdit.isClaimApprover}
+                            name="isClaimApprover"
+                            onChange={this.handleChagenMapping.bind(this)}
+                          >
+                            <option value={0}>Select</option>
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
                           </select>
+                          {this.state.userEdit.isClaimApprover === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.mappedisClaimApprover}
+                            </p>
+                          )}
                         </div>
                         <div className="mapped-cate-extra">
                           <div className="div-cntr">
                             <label className="edit-label-1">CRM Role</label>
-                            <select>
-                              <option>Manager</option>
+                            <select
+                              value={this.state.userEdit.roleID}
+                              name="roleID"
+                              onChange={this.handleChagenMapping.bind(this)}
+                            >
+                              <option value={0}>Select</option>
+                              {this.state.CrmRoleData !== null &&
+                                this.state.CrmRoleData.map((item, d) => (
+                                  <option
+                                    key={d}
+                                    value={item.crmRoleID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.roleName}
+                                  </option>
+                                ))}
                             </select>
+                            {this.state.userEdit.roleID === 0 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.mappedcrmRoleID}
+                              </p>
+                            )}
                           </div>
                           <div className="div-cntr">
                             <label className="edit-label-1">Status</label>
-                            <select>
-                              <option>Inactive</option>
+                            <select
+                              value={this.state.userEdit.isActive}
+                              name="isActive"
+                              onChange={this.handleChagenMapping.bind(this)}
+                            >
+                              <option value={0}>Select</option>
+                              {this.state.activeData !== null &&
+                                this.state.activeData.map((item, j) => (
+                                  <option key={j} value={item.ActiveID}>
+                                    {item.ActiveName}
+                                  </option>
+                                ))}
                             </select>
+                            {this.state.userEdit.isActive === 0 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.mappedisActive}
+                              </p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -4461,14 +4756,13 @@ class StoreUsers extends Component {
                       >
                         <a
                           className="pop-over-cancle canblue"
-                          // onClick={this.closeEditModal.bind(this)}
-                          href="#!"
+                          onClick={this.closeEditModals.bind(this)}
                         >
                           CANCEL
                         </a>
                         <button
                           className="Save-Use"
-                          // onClick={this.handleChangePersonalTab}
+                          onClick={this.handleUpdateUser.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
                           SAVE

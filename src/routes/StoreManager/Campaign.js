@@ -535,6 +535,9 @@ class Campaign extends Component {
     if (name == "brand") {
       if (value !== "") {
         modalData["brandId"] = value;
+        modalData["cateogryId"] = 0;
+        modalData["subCategoryId"] = 0;
+        modalData["issueTypeId"] = 0;
         this.setState({
           modalData,
           isBrand: "",
@@ -553,6 +556,8 @@ class Campaign extends Component {
     if (name == "category") {
       if (value !== "") {
         modalData["cateogryId"] = value;
+        modalData["subCategoryId"] = 0;
+        modalData["issueTypeId"] = 0;
         this.setState({
           modalData,
           isCategory: "",
@@ -570,6 +575,7 @@ class Campaign extends Component {
     if (name == "subCategory") {
       if (value !== "") {
         modalData["subCategoryId"] = value;
+        modalData["issueTypeId"] = 0;
         this.setState({ modalData, isSubCategory: "", issueTypeData: [] });
         setTimeout(() => {
           this.handleGetIssueType();
