@@ -15,6 +15,8 @@ import LoadingImg from "./../../assets/Images/loading.png";
 import CancelImg from "./../../assets/Images/cancel.png";
 import ReactTable from "react-table";
 import moment from "moment";
+import DownImg from "./../../assets/Images/down.png";
+
 class EditStoreTask extends Component {
   constructor(props) {
     super(props);
@@ -48,21 +50,25 @@ class EditStoreTask extends Component {
       storeAddress: "",
       historyData: [],
       historyModal: false,
-      assignToName: ""
+      assignToName: "",
+      userData: [],
+      userModel: false,
+      agentId: 0
     };
+    this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
+    this.handleUserModelClose = this.handleUserModelClose.bind(this);
   }
 
   componentDidMount() {
-    debugger;
     if (this.props.location.state) {
       var taskId = this.props.location.state.TaskID;
       this.setState({ taskId });
       this.handleGetDepartement();
       // this.handleGetAssignTo()
       this.handleGetPriority();
-
       this.handleStoreTaskDetialsById(taskId);
       this.handleGetCommentOnTask(taskId);
+      this.handleGetUserDropdown(taskId);
     } else {
       this.props.history.push("/store/StoreTask");
     }
@@ -291,7 +297,7 @@ class EditStoreTask extends Component {
       url: config.apiUrl + "/StoreTask/GetTaskHistory",
       headers: authHeader(),
       params: {
-        TaskID: 6
+        TaskID: this.state.taskId
       }
     })
       .then(function(response) {
@@ -306,6 +312,121 @@ class EditStoreTask extends Component {
       .catch(response => {
         console.log(response, "---handleGetTaskHistory");
       });
+  }
+  ////handle get user dropdown
+  handleGetUserDropdown(taskId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/UserDropdown",
+      headers: authHeader(),
+      params: {
+        TaskID: taskId
+      }
+    })
+      .then(function(response) {
+        var userData = response.data.responseData;
+        var message = response.data.message;
+        if (message === "Success" && userData.length > 0) {
+          self.setState({
+            userData
+          });
+        } else {
+          self.setState({ userData });
+        }
+      })
+      .catch(response => {
+        console.log(response, "---handleGetUserDropdown");
+      });
+  }
+  ////handle assign task
+  handleAssignTask() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/AssignTask",
+      headers: authHeader(),
+      params: {
+        TaskID: this.state.taskId,
+        AgentID: this.state.agentId
+      }
+    })
+      .then(function(response) {
+        debugger;
+        var responseData = response.data.responseData;
+        var message = response.data.message;
+        if (message === "Success" && responseData) {
+          self.setState({ userModel: false });
+          NotificationManager.success("Task Assign Successfully.");
+          self.componentDidMount();
+        } else {
+          NotificationManager.error("Task Assign Fail.");
+          self.setState({ userModel: false });
+        }
+      })
+      .catch(response => {
+        console.log(response, "---handleAssignTask");
+      });
+  }
+
+  ////handle Update Task
+  handleUpdateTask() {
+    let self = this;
+
+    if (this.state.departmentID == 0) {
+      this.setState({ isdepartment: "Please Select Department." });
+    } else {
+      this.setState({ isdepartment: "" });
+    }
+
+    if (this.state.funcationID == 0) {
+      this.setState({ isfuncation: "Please Select Function." });
+    } else {
+      this.setState({ isfuncation: "" });
+    }
+    if (this.state.priorityID == 0) {
+      this.setState({ ispriority: "Please Select Priority." });
+    } else {
+      this.setState({ ispriority: "" });
+    }
+
+    setTimeout(() => {
+      if (
+        this.state.isfuncation == "" &&
+        this.state.isdepartment == "" &&
+        this.state.ispriority == ""
+      ) {
+        var inputParam = {};
+
+        inputParam.DepartmentId = this.state.departmentID;
+        inputParam.FunctionID = this.state.funcationID;
+        inputParam.PriorityID = this.state.priorityID;
+        inputParam.TaskID = this.state.taskId;
+        inputParam.TaskStatusId = 101;
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
+          headers: authHeader(),
+          data: inputParam
+        })
+          .then(function(response) {
+            debugger;
+            
+            var message = response.data.message;
+            if (message === "Success") {
+              setTimeout(() => {
+                NotificationManager.success("Task Submited Successfully.");
+                self.props.history.push("/store/StoreTask");
+              }, 2000);
+            } else {
+              NotificationManager.error("Task Submited Failed.");
+            }
+          })
+          .catch(response => {
+            console.log(response, "---handleUpdateTask");
+          });
+      }
+    }, 10);
   }
 
   ////handle input filed change
@@ -406,10 +527,18 @@ class EditStoreTask extends Component {
       }
     }
   };
-
+  ////handle on close history model
   onCloseModal = e => {
     this.setState({ historyModal: false });
   };
+  ////handle user model open
+  handleUserModelOpen() {
+    this.setState({ userModel: true });
+  }
+  ////handle user model close
+  handleUserModelClose() {
+    this.setState({ userModel: false });
+  }
   render() {
     return (
       <Fragment>
@@ -430,19 +559,34 @@ class EditStoreTask extends Component {
             />
           </a>
           <div className="btnstore-last">
-            <div className="oval-5-1-new-store">
+            {/* <div className="oval-5-1-new-store">
               <img src={storeImg} alt="headphone" className="storeImg-11" />
-            </div>
-            <label className="naman-r">{this.state.assignToName}</label>
+            </div> */}
+            <a
+              className="d-inline-block"
+              onClick={this.handleUserModelOpen.bind(this)}
+            >
+              <div className="oval-5-1-new-store">
+                <img src={storeImg} alt="headphone" className="storeImg-11" />
+              </div>
+              <label className="naman-r">{this.state.assignToName}</label>
+              <img src={DownImg} alt="down" className="down-header" />
+            </a>
+            {/* <label className="naman-r">{this.state.assignToName}</label> */}
             <button
               type="button"
               className="submitAs-reopen"
-              onClick={this.handleSubmitReopnModalOpen.bind(this)}
+              onClick={this.handleUpdateTask.bind(this)}
+              // onClick={this.handleSubmitReopnModalOpen.bind(this)}
             >
-              <label className="myticket-submit-solve-button-text">
-                SUBMIT AS REOPEN
+              <label
+                className="myticket-submit-solve-button-text"
+                style={{ marginLeft: "0" }}
+              >
+                {/* SUBMIT AS REOPEN */}
+                SUBMIT
               </label>
-              <img src={DownWhiteImg} alt="headphone" className="down-white" />
+              {/* <img src={DownWhiteImg} alt="headphone" className="down-white" /> */}
             </button>
           </div>
           <Modal
@@ -728,6 +872,7 @@ class EditStoreTask extends Component {
             </div>
           </div>
         </div>
+        {/* --------------------------History Model -----------------*/}
         <div className="historical-model">
           <Modal
             open={this.state.historyModal}
@@ -780,6 +925,69 @@ class EditStoreTask extends Component {
             </div>
           </Modal>
         </div>
+        {/* --------------------------User Modal--------------------  */}
+        <Modal
+          open={this.state.userModel}
+          onClose={this.handleUserModelClose.bind(this)}
+          closeIconId="close"
+          modalId="labelmodel-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="myTicket-table remov agentlist" id="tic-det-assign">
+            <ReactTable
+              className="limit-react-table-body"
+              data={this.state.userData}
+              columns={[
+                {
+                  Header: <span>Emp Id</span>,
+                  accessor: "user_ID",
+                  width: 80
+                },
+                {
+                  Header: <span>Name</span>,
+                  accessor: "userName"
+                }
+                // {
+                //   Header: <span>Designation</span>,
+                //   accessor: "designation"
+                // }
+              ]}
+              minRows={2}
+              showPagination={false}
+              resizable={false}
+              getTrProps={(rowInfo, column) => {
+                // ////
+                const index = column ? column.index : -1;
+                return {
+                  onClick: e => {
+                    ////
+                    this.selectedRow = index;
+                    var agentId = column.original["user_ID"];
+                    this.setState({ agentId });
+                  },
+                  style: {
+                    background: this.selectedRow === index ? "#ECF2F4" : null
+                  }
+                };
+              }}
+            />
+            <div className="button-margin">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={this.handleAssignTask.bind(this)}
+              >
+                SELECT
+              </button>
+            </div>
+            <div
+              className="cancel-assign"
+              onClick={this.handleUserModelClose.bind(this)}
+            >
+              <img src={CancelImg} alt="cancel" />
+            </div>
+          </div>
+        </Modal>
       </Fragment>
     );
   }

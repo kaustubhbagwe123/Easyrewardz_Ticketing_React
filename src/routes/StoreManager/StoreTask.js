@@ -19,8 +19,7 @@ class StoreTask extends Component {
       assignToMeData: [],
       taskByTicketData: [],
       campaignData: [],
-      isloading: false,
-      
+      isloading: false
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
   }
@@ -363,7 +362,40 @@ class StoreTask extends Component {
           <span>
             <label>12 March 2018</label>
 
-            <Popover content={InsertPlaceholder} placement="left">
+            <Popover
+              content={
+                <div className="insertpop1">
+                  <ul className="dash-creation-popup">
+                    <li className="title">Creation details</li>
+                    <li>
+                      <p>Naman Created</p>
+                      <p>2 Hrs ago</p>
+                    </li>
+                    <li>
+                      <p>Assigned to Vikas</p>
+                      <p>1.5 Hrs ago</p>
+                    </li>
+                    <li>
+                      <p>Vikas updated</p>
+                      <p>1 Hr ago</p>
+                    </li>
+                    <li>
+                      <p>Response time remaining by</p>
+                      <p>30 mins</p>
+                    </li>
+                    <li>
+                      <p>Response overdue by</p>
+                      <p>1 Hr</p>
+                    </li>
+                    <li>
+                      <p>Resolution overdue by</p>
+                      <p>2 Hrs</p>
+                    </li>
+                  </ul>
+                </div>
+              }
+              placement="left"
+            >
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -384,37 +416,7 @@ class StoreTask extends Component {
         )
       }
     ];
-    const InsertPlaceholder = (
-      <div className="insertpop1">
-        <ul className="dash-creation-popup">
-          <li className="title">Creation details</li>
-          <li>
-            <p>Naman Created</p>
-            <p>2 Hrs ago</p>
-          </li>
-          <li>
-            <p>Assigned to Vikas</p>
-            <p>1.5 Hrs ago</p>
-          </li>
-          <li>
-            <p>Vikas updated</p>
-            <p>1 Hr ago</p>
-          </li>
-          <li>
-            <p>Response time remaining by</p>
-            <p>30 mins</p>
-          </li>
-          <li>
-            <p>Response overdue by</p>
-            <p>1 Hr</p>
-          </li>
-          <li>
-            <p>Resolution overdue by</p>
-            <p>2 Hrs</p>
-          </li>
-        </ul>
-      </div>
-    );
+
     return (
       <React.Fragment>
         <div className="store-task-tabs">
@@ -579,7 +581,44 @@ class StoreTask extends Component {
                         <span>
                           <label>{row.original.creationOn}</label>
 
-                          <Popover content={InsertPlaceholder} placement="left">
+                          <Popover
+                            content={
+                              <div className="insertpop1">
+                                <ul className="dash-creation-popup">
+                                  <li className="title">Creation details</li>
+                                  <li>
+                                    <p>{row.original.createdBy + " Created"}</p>
+                                    <p>{row.original.createdago}</p>
+                                  </li>
+                                  <li>
+                                    <p>
+                                      Assigned to {" " + row.original.assignto}
+                                    </p>
+                                    <p>{row.original.assignedago}</p>
+                                  </li>
+                                  <li>
+                                    <p>
+                                      {row.original.updatedBy + " "} updated
+                                    </p>
+                                    <p>{row.original.updatedago}</p>
+                                  </li>
+                                  <li>
+                                    <p>Response time remaining by</p>
+                                    <p>30 mins</p>
+                                  </li>
+                                  <li>
+                                    <p>Response overdue by</p>
+                                    <p>1 Hr</p>
+                                  </li>
+                                  <li>
+                                    <p>Resolution overdue by</p>
+                                    <p>2 Hrs</p>
+                                  </li>
+                                </ul>
+                              </div>
+                            }
+                            placement="left"
+                          >
                             <img
                               className="info-icon"
                               src={InfoIcon}
@@ -746,7 +785,46 @@ class StoreTask extends Component {
                               <label>{row.original.creationOn}</label>
 
                               <Popover
-                                content={InsertPlaceholder}
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {row.original.createdBy + " Created"}
+                                        </p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {row.original.updatedBy + " "} updated
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>30 mins</p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>2 Hrs</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
                                 placement="left"
                               >
                                 <img
