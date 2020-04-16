@@ -12,6 +12,11 @@ import ReactTable from "react-table";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
+import { Select, Table } from "antd";
+import { NotificationManager } from "react-notifications";
+
+const { Option } = Select;
+const NEW_ITEM = "NEW_ITEM";
 
 class ClaimApproveReject extends Component {
   constructor(props) {
@@ -19,16 +24,47 @@ class ClaimApproveReject extends Component {
 
     this.state = {
       collapse: false,
-      SearchDetails: true
+      SearchDetails: true,
+      claimID:0,
+      brandData: [],
+      categoryDropData: [],
+      SubCategoryDropData: [],
+      ListOfIssueData: [],
+      selectBrand: 0,
+      list1Value: "",
+      ListOfSubCate: "",
+      ListOfIssue: "",
+      claimPercentage:"",
+      orderDetailsData: [],
+      customerData: {},
+      OrderSubItem: [],
+      customerName: "",
+      customerPhoneNumber: "",
+      customerAlternateNumber: "",
+      emailID: "",
+      alternateEmailID: "",
+      gender: "",
+      commentData: [],
+      finalClaimPercentage: "",
+      errFinalClaimPercent: ""
     };
+
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
     debugger;
+    
     if (this.props.location.state) {
       var claimId = this.props.location.state.ClaimID;
       this.handleGetClaimByID(claimId);
+      this.setState({
+        claimID: claimId
+      })
+      this.handleGetStoreClaimComments(claimId);
+      this.handleGetBrandList();
     }
+    
   }
 
   handleToggle() {
@@ -39,6 +75,171 @@ class ClaimApproveReject extends Component {
       SearchDetails: !this.state.SearchDetails
     });
   }
+
+  handleGetBrandList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ brandData: data });
+        } else {
+          self.setState({ brandData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  // handleBrandChange = e => {
+  //   debugger;
+  //   let value = e.target.value;
+  //   this.setState({
+  //     selectBrand: value,
+  //     categoryDropData: [],
+  //     SubCategoryDropData: [],
+  //     ListOfIssueData: [],
+  //     claimComments:""
+  //   });
+  //   setTimeout(() => {
+  //     if (this.state.selectBrand) {
+  //       this.handleGetCategoryList();
+  //     }
+  //   }, 1);
+  // };
+
+  // handleGetCategoryList = async (id, type) => {
+  //   let self = this;
+  //   var braindID;
+  //   if (type == "edit") {
+  //     braindID = id;
+  //   } else {
+  //     if (id) {
+  //       braindID = id;
+  //     } else {
+  //       braindID = this.state.selectBrand;
+  //     }
+  //   }
+  //   await axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Category/GetClaimCategoryListByBrandID",
+  //     headers: authHeader(),
+  //     params: {
+  //       BrandID: braindID
+  //     }
+  //   })
+  //     .then(function(res) {
+  //       debugger;
+  //       let data = res.data;
+  //       self.setState({ categoryDropData: data });
+  //     })
+  //     .catch(data => {
+  //       console.log(data);
+  //     });
+  // };
+
+  // handleCategoryChange = value => {
+  //   debugger;
+  //   if (value !== NEW_ITEM) {
+  //     this.setState({ list1Value: value, SubCategoryDropData: [] });
+  //     setTimeout(() => {
+  //       if (this.state.list1Value) {
+  //         this.handleGetSubCategoryList(value);
+  //       }
+  //     }, 10);
+  //   } else {
+  //     this.setState({ showList1: true });
+  //   }
+  // };
+
+  // handleGetSubCategoryList = async (id, type) => {
+  //   debugger;
+  //   let self = this;
+  //   var Category_Id = "";
+  //   if (type === "edit") {
+  //     Category_Id = id;
+  //   } else {
+  //     Category_Id = this.state.list1Value;
+  //   }
+  //   await axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Category/GetClaimSubCategoryByCategoryID",
+  //     headers: authHeader(),
+  //     params: {
+  //       CategoryID: Category_Id
+  //     }
+  //   })
+  //     .then(function(res) {
+  //       debugger;
+  //       let data = res.data.responseData;
+  //       self.setState({ SubCategoryDropData: data });
+  //     })
+  //     .catch(data => {
+  //       console.log(data);
+  //     });
+  // };
+
+  // handleSubCatOnChange = value => {
+  //   debugger;
+  //   if (value !== NEW_ITEM) {
+  //     this.setState({ ListOfSubCate: value });
+  //     setTimeout(() => {
+  //       if (this.state.ListOfSubCate) {
+  //         this.handleGetIssueTypeList();
+  //       }
+  //     }, 1);
+  //   } else {
+  //     this.setState({ ShowSubCate: true });
+  //   }
+  // };
+
+  // handleGetIssueTypeList(id) {
+  //   debugger;
+  //   let self = this;
+  //   var SubCat_Id = 0;
+  //   if (id === "edit") {
+  //     SubCat_Id = this.state.editCategory.subCategoryID;
+  //   } else {
+  //     SubCat_Id = this.state.ListOfSubCate;
+  //   }
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Category/GetClaimIssueTypeList",
+  //     headers: authHeader(),
+  //     params: {
+  //       SubCategoryID: SubCat_Id
+  //     }
+  //   })
+  //     .then(function(res) {
+  //       debugger;
+  //       let status = res.data.message;
+  //       let data = res.data.responseData;
+  //       if (status === "Success") {
+  //         self.setState({ ListOfIssueData: data });
+  //       } else {
+  //         self.setState({ ListOfIssueData: [] });
+  //       }
+  //     })
+  //     .catch(data => {
+  //       console.log(data);
+  //     });
+  // }
+
+  // handleIssueOnChange = value => {
+  //   debugger;
+  //   if (value !== NEW_ITEM) {
+  //     this.setState({ ListOfIssue: value });
+  //   } else {
+  //     this.setState({ ShowIssuetype: true });
+  //   }
+  // };
 
   handleGetClaimByID(claimId) {
     debugger;
@@ -54,6 +255,28 @@ class ClaimApproveReject extends Component {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
+        if (message == "Success" && responseData) {
+         var orderDetails = [];
+         orderDetails.push(responseData.customOrderMaster)
+          // self.handleGetCategoryList(responseData.brandID, "edit");
+          // self.handleGetSubCategoryList(responseData.categoryID, "edit");
+          
+          self.setState({
+            selectBrand: responseData.brandID,
+            list1Value: responseData.categoryName,
+            ListOfSubCate: responseData.subCategoryName,
+            ListOfIssue: responseData.issueTypeName,
+            claimPercentage: responseData.claimAskFor,
+            customerName: responseData.customerName,
+            customerPhoneNumber: responseData.customerPhoneNumber,
+            customerAlternateNumber: responseData.customerAlternateNumber,
+            emailID: responseData.emailID,
+            alternateEmailID: responseData.alternateEmailID,
+            gender: responseData.gender,
+            orderDetailsData: orderDetails,  
+            OrderSubItem: responseData.customOrderMaster.orderItems
+          })
+        }
         // if (message === "Success" && responseData.length > 0) {
         //   if (tabFor === 1) {
         //     self.setState({ raisedByMeData: responseData, isloading: false });
@@ -75,7 +298,111 @@ class ClaimApproveReject extends Component {
       });
   }
 
+  handleAddStoreClaimComments() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/AddStoreClaimComment",
+      params: { ClaimID: this.state.claimID, Comment: this.state.claimComments},
+      headers: authHeader()
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          NotificationManager.success("Record saved successfully");
+          self.handleGetStoreClaimComments(self.state.claimID);
+        } else {
+          NotificationManager.error(res.data.message);
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleOnChange(e) {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  }
+
+  handleGetStoreClaimComments(claimId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/GetClaimCommentByClaimID",
+      headers: authHeader(),
+      params: { ClaimID: claimId }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ commentData: data });
+        } else {
+          self.setState({ commentData: [] });
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+
+  handleApproveRejectClaim(IsApprove, e) {
+    let self = this;
+    if(this.state.finalClaimPercentage!=="")
+    {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/IsClaimApprove",
+      headers: authHeader(),
+      params: { claimID: this.state.claimID, finalClaimAsked: this.state.finalClaimPercentage, IsApprove: IsApprove}
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          if (IsApprove== true) {
+            NotificationManager.success("Record approved successfully");
+          }else{
+            NotificationManager.success("Record rejected successfully");
+          }        
+        } else {
+          NotificationManager.error(res.data.message);
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    }else{
+      this.setState({
+        errFinalClaimPercent: "Please enter final claim percentage"
+      });
+    }
+  }
+
   render() {
+
+    const { orderDetailsData } = this.state;
+
+    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
+      <Option key={o} value={item.categoryID}>
+        {item.categoryName}
+      </Option>
+    ));
+
+    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
+      <Option key={o} value={item.subCategoryID}>
+        {item.subCategoryName}
+      </Option>
+    ));
+
+    const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
+      <Option key={i} value={item.issueTypeID}>
+        {item.issueTypeName}
+      </Option>
+    ));
 
     const dataOrder = [
       {
@@ -193,10 +520,14 @@ class ClaimApproveReject extends Component {
             <label className="naman-R">Naman.R</label>
             <img src={DownImg} alt="down" className="down-header" />
             <div className="btn-approrej">
-              <button type="button" className="btn-approrej1">
+              <button type="button" className="btn-approrej1"
+              onClick={this.handleApproveRejectClaim.bind(this, true)}
+              >
                 APPROVE CLAIM
               </button>
-              <button type="button" className="btn-approrej1">
+              <button type="button" className="btn-approrej1"
+              onClick={this.handleApproveRejectClaim.bind(this, false)}
+              >
                 REJECT CLAIM
               </button>
             </div>
@@ -241,7 +572,7 @@ class ClaimApproveReject extends Component {
                                 Order details
                               </label>
                             </div>
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                               <input
                                 type="text"
                                 className="searchtext"
@@ -255,13 +586,13 @@ class ClaimApproveReject extends Component {
                                   this
                                 )}
                               />
-                            </div>
+                            </div> */}
                             <span className="Searchline"> </span>
                           </div>
                           {this.state.SearchDetails ? (
                             <div style={{ borderTop: "1px solid #EEE", marginTop: "12px" }}>
                               <div className="reacttableordermodal">
-                                <ReactTable
+                                {/* <ReactTable
                                   data={dataOrder}
                                   // columns={columnsOrder}
                                   columns={[
@@ -342,12 +673,88 @@ class ClaimApproveReject extends Component {
                                       </div>
                                     );
                                   }}
+                                /> */}
+                                {orderDetailsData.length>0?(
+                                <Table
+                                  className="components-table-demo-nested custom-antd-table"
+                                  dataSource={orderDetailsData}
+                                  columns={[
+                                    {
+                                      title: "Invoice Number",
+                                      dataIndex: "invoiceNumber"
+                                    },
+                                    {
+                                      title: "Invoice Date",
+                                      dataIndex: "dateFormat"
+                                    },
+                                    {
+                                      title: "Item Count",
+                                      dataIndex: "itemCount"
+                                    },
+                                    {
+                                      title: "Item Price",
+                                      dataIndex: "ordeItemPrice"
+                                    },
+                                    {
+                                      title: "Price Paid",
+                                      dataIndex: "orderPricePaid"
+                                    },
+                                    {
+                                      title: "Store Code",
+                                      dataIndex: "storeCode"
+                                    },
+                                    {
+                                      title: "Store Address",
+                                      dataIndex: "storeAddress"
+                                    },
+                                    {
+                                      title: "Discount",
+                                      dataIndex: "discount"
+                                    }
+                                  ]}
+                                  expandedRowRender={row => {
+                                    return (
+                                      <Table
+                                        // dataSource={this.state.OrderSubItem}
+                                        dataSource={this.state.OrderSubItem.filter(
+                                          x => x.orderMasterID === row.orderMasterID
+                                        )}
+                                        columns={[
+                                          {
+                                            title: "Article Number",
+                                            dataIndex: "articleNumber"
+                                          },
+                                          {
+                                            title: "Article Name",
+                                            dataIndex: "articleName"
+                                          },
+                                          {
+                                            title: "Article MRP",
+                                            dataIndex: "itemPrice"
+                                          },
+                                          {
+                                            title: "Price Paid",
+                                            dataIndex: "pricePaid"
+                                          },
+                                          {
+                                            title: "Discount",
+                                            dataIndex: "discount"
+                                          }
+                                        ]}
+                                        // rowSelection={rowSelection}
+                                        pagination={false}
+                                      />
+                                    );
+                                  }}
+                                  pagination={false}
                                 />
+                                ):null
+                                }
                               </div>
 
 
                             </div>
-                          ) : (
+                            ) : (
                               <div className="uploadsearch">
                                 <div className="row">
                                   <div className="col-md-12 uploadsechmargin">
@@ -412,33 +819,50 @@ class ClaimApproveReject extends Component {
                     </Collapse> */}
                   </div>
                   <div className="row">
-                    <div className="form-group col-md-4">
-                      <label className="label-6">Claim Category</label>
+                  <div className="form-group col-md-4">
+                      <label className="label-6">Brand</label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
+                        value={this.state.selectBrand}
+                        onChange={this.handleBrandChange}
                       >
                         <option>select</option>
+                        {this.state.brandData !== null &&
+                            this.state.brandData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.brandID}
+                                className="select-category-placeholder"
+                              >
+                                {item.brandName}
+                              </option>
+                            ))}
                       </select>
+                    </div>
+                    <div className="form-group col-md-4">
+                      <label className="label-6">Claim Category</label>
+                      <input
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        value={this.state.list1Value}
+                      />
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Sub Category</label>
-                      <select
+                      <input
                         id="inputState"
                         className="form-control dropdown-label"
-                      >
-                        <option>select</option>
-                      </select>
+                        value={this.state.ListOfSubCate}
+                      />
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Type</label>
-                      <select
+                      <input
                         id="inputState"
                         className="form-control dropdown-label"
-
-                      >
-                        <option>select</option>
-                      </select>
+                        value={this.state.ListOfIssue}
+                      />
                     </div>
                   </div>
                   <div className="row">
@@ -448,6 +872,8 @@ class ClaimApproveReject extends Component {
                         type="text"
                         className="form-control textBox"
                         placeholder="Claim Percentage"
+                        name="claimPercentage"
+                        value={this.state.claimPercentage}
                       />
                     </div>
                     <div className="col-md-4" style={{ marginTop: "44px" }}>
@@ -466,53 +892,6 @@ class ClaimApproveReject extends Component {
                   </div>
                   <img src={BataShoes} alt="Bata" className="claim-bataShoes" />
 
-                  <div className="row" style={{ margin: "0" }}>
-                    <label className="label-6">Comments By Store</label>
-                  </div>
-                  <div className="row" style={{ margin: "0" }}>
-                    <div className="col-xs-3">
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 naman"
-                      />
-                    </div>
-                    <div className="col-md-9">
-                      <label className="naman-R">Naman.R</label>
-                    </div>
-                    <div className="col-md-2">
-                      <label className="hr-ago">5 hr ago</label>
-                    </div>
-                  </div>
-                  <div className="row" style={{ margin: "0" }}>
-                    <label className="label-6">Comments:</label>
-                  </div>
-                  <div className="row" style={{ margin: "0" }}>
-                    <div className="">
-                      <label className="claim-comment">
-                        Hi Diwakar, I really appreciate you joining us at
-                        Voucherify! My top priority is that you have a great
-                        experince with us and learn how to easily implement
-                        successful promo campaigns.
-                      </label>
-                      <hr />
-                    </div>
-                  </div>
-                  <div className="row" style={{ margin: "0" }}>
-                    <div className="col-xs-3">
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 naman"
-                      />
-                    </div>
-                    <div className="col-md-9">
-                      <label className="naman-R">Naman.R</label>
-                    </div>
-                    <div className="col-md-2">
-                      <label className="hr-ago">5 hr ago</label>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -520,12 +899,20 @@ class ClaimApproveReject extends Component {
                 <div className="search-customer-padding">
                   <div className="row" style={{ margin: "0" }}>
                     <div className="form-group col-md-4" style={{ padding: "0" }}>
-                      <label className="label-6"> Claim Asked for %</label>
+                      <label className="label-6">Final Claim Asked for %</label>
                       <input
                         type="text"
                         className="form-control textBox"
                         placeholder="Claim Percentage"
+                        name="finalClaimPercentage"
+                        value={this.state.finalClaimPercentage}
+                        onChange={this.handleOnChange}
                       />
+                      {this.state.finalClaimPercentage === "" && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.errFinalClaimPercent}
+                          </p>
+                      )}
                     </div>
                   </div>
 
@@ -538,9 +925,14 @@ class ClaimApproveReject extends Component {
                       <textarea
                         className="ticket-comments-textarea"
                         placeholder="Add your Comment here"
+                        name="claimComments"
+                        value={this.state.claimComments}
+                        onChange={this.handleOnChange}
                       ></textarea>
                       <div className="commentbt">
-                        <button type="button" className="commentbtn">
+                        <button type="button" className="commentbtn"
+                        onClick={this.handleAddStoreClaimComments.bind(this)}
+                        >
                           <label className="txt">ADD COMMENT</label>
                         </button>
                       </div>
@@ -549,10 +941,12 @@ class ClaimApproveReject extends Component {
                   <div className="row" style={{ margin: "0" }}>
                     <div className="">
                       <label className="label-6">
-                        Comments By Approval: 02
+                        Comments By Approval: 0{this.state.commentData.length}
                       </label>
                     </div>
                   </div>
+                  {this.state.commentData.map((value) => (
+                  <div>
                   <div className="row" style={{ margin: "0" }}>
                     <div className="col-xs-3">
                       <img
@@ -562,10 +956,10 @@ class ClaimApproveReject extends Component {
                       />
                     </div>
                     <div className="col-md-9">
-                      <label className="naman-R">Naman.R</label>
+                      <label className="naman-R">{value.name}</label>
                     </div>
                     <div className="col-md-2">
-                      <label className="hr-ago">5 hr ago</label>
+                      <label className="hr-ago">{value.datetime}</label>
                     </div>
                   </div>
                   <div className="row" style={{ margin: "0" }}>
@@ -574,15 +968,15 @@ class ClaimApproveReject extends Component {
                   <div className="row" style={{ margin: "0" }}>
                     <div className="">
                       <label className="claim-comment">
-                        Hi Diwakar, I really appreciate you joining us at
-                        Voucherify! My top priority is that you have a great
-                        experince with us and learn how to easily implement
-                        successful promo campaigns.
+                       {value.comment}
                       </label>
                       <hr />
                     </div>
                   </div>
-                  <div className="row" style={{ margin: "0" }}>
+                  </div>
+                  ))}
+
+                  {/* <div className="row" style={{ margin: "0" }}>
                     <div className="col-xs-3">
                       <img
                         src={Headphone2Img}
@@ -596,7 +990,7 @@ class ClaimApproveReject extends Component {
                     <div className="col-md-2">
                       <label className="hr-ago">5 hr ago</label>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -609,38 +1003,38 @@ class ClaimApproveReject extends Component {
                   </label>
                   <label>
                     <span className="a">A</span>
-                    Alankrit
+                    {this.state.customerName}
                   </label>
                 </div>
                 <div className="alankrit">
                   <label>
                     <b>PHONE NUMBER</b>
                   </label>
-                  <label>+91-98734670074</label>
+                  <label>{this.state.customerPhoneNumber}</label>
                 </div>
                 <div className="alankrit">
                   <label>
                     <b>ALTERNATE NUMBER</b>
                   </label>
-                  <label>+91-98734670074</label>
+                  <label>{this.state.customerAlternateNumber}</label>
                 </div>
                 <div className="alankrit">
                   <label>
                     <b>EMAIL</b>
                   </label>
-                  <label>alankrit@easyrewardz.com</label>
+                  <label>{this.state.emailID}</label>
                 </div>
                 <div className="alankrit">
                   <label>
                     <b>ALTERNATE EMAIL</b>
                   </label>
-                  <label>alankrit@easyrewardz.com</label>
+                  <label>{this.state.alternateEmailID}</label>
                 </div>
                 <div className="alankrit">
                   <label>
                     <b>GENDER</b>
                   </label>
-                  <label>Male</label>
+                  <label>{this.state.gender}</label>
                 </div>
               </div>
             </div>

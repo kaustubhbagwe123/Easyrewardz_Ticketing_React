@@ -27,7 +27,6 @@ class RaiseClaim extends Component {
       ListOfIssueData: [],
       brandData: [],
       SubCategoryDropData: [],
-      ListOfIssueData: [],
       ModalorderNumber: "",
       custAttachOrder: 0,
       orderDetailsData: [],
@@ -45,7 +44,14 @@ class RaiseClaim extends Component {
       SelectedAllOrder: [],
       SelectedAllItem: [],
       selectedOrderData: [],
-      SelectedItemData: []
+      SelectedItemData: [],
+      list1Value: "",
+      ListOfSubCate: "",
+      ListOfIssue: "",
+      issueCompulsion: "",
+      subcategoryCompulsion: "",
+      categoryCompulsion: "",
+      errors: {}
     };
     this.toggle = this.toggle.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -63,7 +69,6 @@ class RaiseClaim extends Component {
 
   componentDidMount() {
     this.handleGetBrandList();
-    this.handleGetStoreClaimComments();
   }
 
   handleBrandChange = e => {
@@ -231,28 +236,6 @@ class RaiseClaim extends Component {
     }
   };
 
-  handleGetBrandList() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          self.setState({ brandData: data });
-        } else {
-          self.setState({ brandData: [] });
-        }
-      })
-      .catch(data => {
-        console.log(data);
-      });
-  }
-
   handleOrderChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -262,7 +245,7 @@ class RaiseClaim extends Component {
   handleOrderSearchData(OrdData, e) {
     debugger;
     let self = this;
-    var CustID = this.props.custDetails;
+    var CustID = this.state.customerId;
 
     if (OrdData === "1") {
       e.preventDefault();
@@ -274,7 +257,7 @@ class RaiseClaim extends Component {
           headers: authHeader(),
           params: {
             OrderNumber: this.state.orderNumber,
-            CustomerID: 244
+            CustomerID: CustID
           }
         })
           .then(function(res) {
@@ -727,54 +710,54 @@ class RaiseClaim extends Component {
     }
   }
 
-  handleAddStoreClaimComments() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreClaim/AddStoreClaimComment?ClaimID=4&Comment="+this.state.claimComments,
-      headers: authHeader()
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success("Record saved successfully");
-        } else {
-          NotificationManager.error(res.data.message);
-        }
-      })
-      .catch(data => {
-        console.log(data);
-      });
-  }
+  // handleAddStoreClaimComments() {
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/StoreClaim/AddStoreClaimComment?ClaimID=4&Comment="+this.state.claimComments,
+  //     headers: authHeader()
+  //   })
+  //     .then(function(res) {
+  //       debugger;
+  //       let status = res.data.message;
+  //       let data = res.data.responseData;
+  //       if (status === "Success") {
+  //         NotificationManager.success("Record saved successfully");
+  //       } else {
+  //         NotificationManager.error(res.data.message);
+  //       }
+  //     })
+  //     .catch(data => {
+  //       console.log(data);
+  //     });
+  // }
 
   handleOnChange(e) {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
 
-  handleGetStoreClaimComments() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreClaim/GetClaimCommentByClaimID",
-      headers: authHeader(),
-      params: { ClaimID: 4 }
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          self.setState({ commentData: data });
-        } else {
-          self.setState({ commentData: [] });
-        }
-      })
-      .catch(data => {
-        console.log(data);
-      });
-  }
+  // handleGetStoreClaimComments() {
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/StoreClaim/GetClaimCommentByClaimID",
+  //     headers: authHeader(),
+  //     params: { ClaimID: 4 }
+  //   })
+  //     .then(function(res) {
+  //       debugger;
+  //       let status = res.data.message;
+  //       let data = res.data.responseData;
+  //       if (status === "Success") {
+  //         self.setState({ commentData: data });
+  //       } else {
+  //         self.setState({ commentData: [] });
+  //       }
+  //     })
+  //     .catch(data => {
+  //       console.log(data);
+  //     });
+  // }
 
   fileUpload(e) {
     debugger;
@@ -787,9 +770,46 @@ class RaiseClaim extends Component {
     });
   }
 
+  handleValidation() {
+    let errors = this.state.errors;
+    let formIsValid = true;
+    if(this.state.selectBrand==0)
+    {
+      formIsValid = false;
+      errors["Brand"] = "Please select Brand";
+    }else{
+      if(!this.state.list1Value)
+      {
+        formIsValid = false;
+        errors["Category"] = "Please select claim category";
+      }
+      else{
+        if(!this.state.ListOfSubCate){
+          formIsValid = false;
+          errors["SubCategory"] = "Please select sub category";
+        }
+        else{
+          if(!this.state.ListOfIssue){
+            formIsValid = false;
+            errors["IssueType"] = "Please select claim type";
+          }
+        }
+      }
+    }
+
+    if(!this.state.claimPercentage){
+      formIsValid = false;
+      errors["ClaimPercent"] = "Please select claim percentage";
+    }
+    return formIsValid;
+
+  }
+
   handleAddStoreClaim() {
+    if (this.handleValidation()) {
     let self = this;
     const formData = new FormData();
+
 
     var paramData = {
       BrandID: this.state.selectBrand,
@@ -877,6 +897,11 @@ class RaiseClaim extends Component {
       .catch(data => {
         console.log(data);
       });
+    }else{
+      this.setState({
+        errors: this.state.errors
+      })
+    }
   }
 
   handleSearchCustomer(e) {
@@ -1453,8 +1478,11 @@ class RaiseClaim extends Component {
                               >
                                 {item.brandName}
                               </option>
-                            ))}
+                        ))}
                       </select>
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.errors["Brand"]}
+                      </p>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Category</label>
@@ -1478,11 +1506,9 @@ class RaiseClaim extends Component {
                             </span>
                           </Option>
                         </Select>
-                        {this.state.list1Value === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.categoryCompulsion}
+                            {this.state.errors["Category"]}
                           </p>
-                        )}
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Sub Category</label>
@@ -1505,15 +1531,13 @@ class RaiseClaim extends Component {
                             </span>
                           </Option>
                         </Select>
-                        {this.state.ListOfSubCate === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.subcategoryCompulsion}
+                            {this.state.errors["SubCategory"]}
                           </p>
-                        )}
                     </div>
                     <div className="form-group col-md-4">
-                      {/* <label className="label-6">Claim Type</label>
-                      <select
+                      <label className="label-6">Claim Type</label>
+                      {/* <select
                         id="inputState"
                         className="form-control dropdown-label"
                       >
@@ -1532,11 +1556,9 @@ class RaiseClaim extends Component {
                             </span>
                           </Option>
                         </Select>
-                        {this.state.ListOfIssue === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.issueCompulsion}
+                            {this.state.errors["IssueType"]}
                           </p>
-                        )}
                     </div>
                   </div>
                   <div className="row">
@@ -1550,6 +1572,9 @@ class RaiseClaim extends Component {
                         value={this.state.claimPercentage}
                         onChange={this.handleOnChange}
                       />
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.errors["ClaimPercent"]}
+                      </p>                 
                     </div>
                     <div className="col-md-4" style={{ marginTop: "44px" }}>
                       {/* <button
@@ -1584,7 +1609,7 @@ class RaiseClaim extends Component {
                   <div className="col-md-12">
                     <img src={BataShoes} alt="Bata" className="batashoes" />
                   </div>
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-12">
                       <label className="label-6">Comments</label>
                       <hr></hr>
@@ -1635,7 +1660,7 @@ class RaiseClaim extends Component {
                     </label>
                     </div>
                     </div>
-                  ))}
+                  ))} */}
                   {/* <div className="row">
                     <div className="col-md-1">
                       <img
