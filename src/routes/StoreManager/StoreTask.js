@@ -19,7 +19,7 @@ class StoreTask extends Component {
       assignToMeData: [],
       taskByTicketData: [],
       campaignData: [],
-      isloading: false
+      isloading: false,
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
   }
@@ -40,10 +40,10 @@ class StoreTask extends Component {
   ////handle row click raised by me table
   handleRowClickRaisedTable = (rowInfo, column) => {
     return {
-      onClick: e => {
+      onClick: (e) => {
         var storeTaskID = column.original["storeTaskID"];
         this.handleRedirectToEditStoreTask(storeTaskID);
-      }
+      },
     };
   };
   ////handle redirect to edit store task
@@ -51,16 +51,26 @@ class StoreTask extends Component {
     debugger;
     this.props.history.push({
       pathname: "editStoreTask",
-      state: { TaskID: storeTaskID }
+      state: { TaskID: storeTaskID },
     });
   }
-  HandleRowTaskByClickPage = () => {
+  HandleRowTaskByClickPage = (rowInfo, column) => {
     return {
-      onClick: e => {
-        this.props.history.push("storeTaskByTicket");
-      }
+      onClick: (e) => {
+        var storeTaskID = column.original["storeTaskID"];
+        var ticketid = column.original["ticketID"];
+        this.handleRedirectToStoreTaskByTicket(storeTaskID,ticketid);
+      },
     };
   };
+   ////handle redirect to store Task By Ticket
+   handleRedirectToStoreTaskByTicket(storeTaskID,ticketid) {
+    debugger;
+    this.props.history.push({
+      pathname: "/store/storeTaskByTicket",
+      state: { TaskID: storeTaskID, TicketID: ticketid },
+    });
+  }
   ////handle get task data by tab click
   handleGetTaskData(tabFor) {
     debugger;
@@ -70,7 +80,7 @@ class StoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreTaskList",
       headers: authHeader(),
-      params: { tabFor: tabFor }
+      params: { tabFor: tabFor },
     })
       .then(function(response) {
         debugger;
@@ -92,331 +102,36 @@ class StoreTask extends Component {
           }
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ isloading: false });
         console.log(response, "---handleGetTaskData");
       });
   }
 
+  handleGetTaskbyTicket() {
+    this.setState({ isloading: true });
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreTaskByTicket",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var taskByTicketData = response.data.responseData;
+        if (message == "Success" && taskByTicketData.length > 0) {
+          self.setState({ isloading: false, taskByTicketData });
+        } else {
+          self.setState({ isloading: false, taskByTicketData });
+        }
+      })
+      .catch((response) => {
+        self.setState({ isloading: false });
+        console.log(response, "---handleGetTaskbyTicket");
+      });
+  }
   render() {
-    const DefArti = (
-      <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup dashnewpopup">
-          <li>
-            <p>Category</p>
-            <p>Defective article</p>
-          </li>
-          <li>
-            <p>Sub Category</p>
-            <p>Customer wants refund</p>
-          </li>
-          <li>
-            <p>Type</p>
-            <p>Delivery</p>
-          </li>
-        </ul>
-      </div>
-    );
-    const DefArti1 = (
-      <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup dashnewpopup">
-          <li>
-            <p>Store Name</p>
-            <p>ABS</p>
-          </li>
-        </ul>
-      </div>
-    );
-
-    const dataTaskByTick = [
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
-        DeptName: (
-          <span>
-            <label>Internet</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>A. Bansal</label>,
-        StoName: (
-          <span>
-            <label>ABS</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Store door are not working</label>,
-        DeptName: (
-          <span>
-            <label>Hardware</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>G. Bansal</label>,
-        StoName: (
-          <span>
-            <label>HHH</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        TaskTitle: <label>Supplies are not coming on time</label>,
-        DeptName: (
-          <span>
-            <label>Supply</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>A. Bansal</label>,
-        StoName: (
-          <span>
-            <label>BATA</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
-        DeptName: (
-          <span>
-            <label>Internet</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>G. Bansal</label>,
-        StoName: (
-          <span>
-            <label>HNM</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Store door are not working</label>,
-        DeptName: (
-          <span>
-            <label>Hardware</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>A. Bansal</label>,
-        StoName: (
-          <span>
-            <label>HHH</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        TaskTitle: <label>Store door are not working</label>,
-        DeptName: (
-          <span>
-            <label>Supply</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>G. Bansal</label>,
-        StoName: (
-          <span>
-            <label>RRT</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        TaskTitle: <label>Supplies are not coming on time</label>,
-        DeptName: (
-          <span>
-            <label>Hardwares</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        cretBy: <label>A. Bansal</label>,
-        StoName: (
-          <span>
-            <label>HGH</label>
-            <Popover content={DefArti1} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      }
-    ];
-
-    const columnsTaskByTick = [
-      {
-        Header: <span>Task ID</span>,
-        accessor: "idClose",
-        Cell: props => <label>ABCD1234</label>
-      },
-      {
-        Header: <span>Ticket ID</span>,
-        accessor: "idClose",
-        Cell: props => <label>ABCD1234</label>
-      },
-      {
-        Header: <span>Status</span>,
-        accessor: "statusNew"
-      },
-      {
-        Header: <span>Task Title</span>,
-        accessor: "TaskTitle"
-      },
-      {
-        Header: (
-          <span>
-            Department <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "DeptName"
-      },
-      {
-        Header: (
-          <span>
-            Created by <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "cretBy"
-      },
-      {
-        Header: (
-          <span>
-            Store Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "StoName"
-      },
-      {
-        Header: (
-          <span>
-            Creation On <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "creationNew",
-        Cell: props => (
-          <span>
-            <label>12 March 2018</label>
-
-            <Popover
-              content={
-                <div className="insertpop1">
-                  <ul className="dash-creation-popup">
-                    <li className="title">Creation details</li>
-                    <li>
-                      <p>Naman Created</p>
-                      <p>2 Hrs ago</p>
-                    </li>
-                    <li>
-                      <p>Assigned to Vikas</p>
-                      <p>1.5 Hrs ago</p>
-                    </li>
-                    <li>
-                      <p>Vikas updated</p>
-                      <p>1 Hr ago</p>
-                    </li>
-                    <li>
-                      <p>Response time remaining by</p>
-                      <p>30 mins</p>
-                    </li>
-                    <li>
-                      <p>Response overdue by</p>
-                      <p>1 Hr</p>
-                    </li>
-                    <li>
-                      <p>Resolution overdue by</p>
-                      <p>2 Hrs</p>
-                    </li>
-                  </ul>
-                </div>
-              }
-              placement="left"
-            >
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        Header: (
-          <span>
-            Assign to
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "assignToNew",
-        Cell: props => (
-          <span>
-            <label>A, Bansal</label>
-          </span>
-        )
-      }
-    ];
-
     return (
       <React.Fragment>
         <div className="store-task-tabs">
@@ -455,6 +170,7 @@ class StoreTask extends Component {
                 role="tab"
                 aria-controls="task-by-tickets-tab"
                 aria-selected="false"
+                onClick={this.handleGetTaskbyTicket.bind(this)}
               >
                 Task By Tickets
               </a>
@@ -500,22 +216,22 @@ class StoreTask extends Component {
                   columns={[
                     {
                       Header: <span>ID</span>,
-                      accessor: "storeTaskID"
+                      accessor: "storeTaskID",
                     },
                     {
                       Header: <span>Status</span>,
                       accessor: "taskStatus",
-                      Cell: row => {
+                      Cell: (row) => {
                         return (
                           <span className="table-btn table-blue-btn">
                             <label>{row.original.taskStatus}</label>
                           </span>
                         );
-                      }
+                      },
                     },
                     {
                       Header: <span>Task Title</span>,
-                      accessor: "taskTitle"
+                      accessor: "taskTitle",
                     },
                     {
                       Header: (
@@ -524,7 +240,7 @@ class StoreTask extends Component {
                         </span>
                       ),
                       accessor: "departmentName",
-                      Cell: row => {
+                      Cell: (row) => {
                         return (
                           <>
                             {row.original.departmentName}
@@ -549,7 +265,7 @@ class StoreTask extends Component {
                             </Popover>
                           </>
                         );
-                      }
+                      },
                     },
                     {
                       Header: (
@@ -557,7 +273,7 @@ class StoreTask extends Component {
                           Store Name <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                      accessor: "storeName"
+                      accessor: "storeName",
                     },
                     {
                       Header: (
@@ -566,9 +282,9 @@ class StoreTask extends Component {
                         </span>
                       ),
                       accessor: "priorityName	",
-                      Cell: row => {
+                      Cell: (row) => {
                         return <span>{row.original.priorityName}</span>;
-                      }
+                      },
                     },
                     {
                       Header: (
@@ -577,7 +293,7 @@ class StoreTask extends Component {
                         </span>
                       ),
                       accessor: "creationOn",
-                      Cell: row => (
+                      Cell: (row) => (
                         <span>
                           <label>{row.original.creationOn}</label>
 
@@ -626,7 +342,7 @@ class StoreTask extends Component {
                             />
                           </Popover>
                         </span>
-                      )
+                      ),
                     },
                     {
                       Header: (
@@ -635,13 +351,13 @@ class StoreTask extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
-                      accessor: "assignto"
+                      accessor: "assignto",
                       // Cell: (props) => (
                       //   <span>
                       //     <label>A, Bansal</label>
                       //   </span>
                       // ),
-                    }
+                    },
                   ]}
                   // resizable={false}
                   defaultPageSize={10}
@@ -670,22 +386,22 @@ class StoreTask extends Component {
                     columns={[
                       {
                         Header: <span>ID</span>,
-                        accessor: "storeTaskID"
+                        accessor: "storeTaskID",
                       },
                       {
                         Header: <span>Status</span>,
                         accessor: "taskStatus",
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
                             <span className="table-btn table-blue-btn">
                               <label>{row.original.taskStatus}</label>
                             </span>
                           );
-                        }
+                        },
                       },
                       {
                         Header: <span>Task Title</span>,
-                        accessor: "taskTitle"
+                        accessor: "taskTitle",
                       },
                       {
                         Header: (
@@ -694,7 +410,7 @@ class StoreTask extends Component {
                           </span>
                         ),
                         accessor: "departmentName",
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
                             <span>
                               <label>{row.original.departmentName}</label>
@@ -719,7 +435,7 @@ class StoreTask extends Component {
                               </Popover>
                             </span>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -727,7 +443,7 @@ class StoreTask extends Component {
                             Created by <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "createdBy"
+                        accessor: "createdBy",
                       },
                       {
                         Header: (
@@ -735,7 +451,7 @@ class StoreTask extends Component {
                             Priority <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "priorityName"
+                        accessor: "priorityName",
                       },
                       {
                         Header: (
@@ -745,7 +461,7 @@ class StoreTask extends Component {
                           </span>
                         ),
                         accessor: "storeName",
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
                             <span>
                               <label>{row.original.storeName}</label>
@@ -770,7 +486,7 @@ class StoreTask extends Component {
                               </Popover>
                             </span>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -779,7 +495,7 @@ class StoreTask extends Component {
                           </span>
                         ),
                         accessor: "creationOn",
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
                             <span>
                               <label>{row.original.creationOn}</label>
@@ -835,8 +551,8 @@ class StoreTask extends Component {
                               </Popover>
                             </span>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     // resizable={false}
                     minRows={2}
@@ -854,18 +570,196 @@ class StoreTask extends Component {
             role="tabpanel"
             aria-labelledby="task-by-tickets-tab"
           >
-            <div>
-              <div className="table-cntr taskByTable">
-                <ReactTable
-                  data={dataTaskByTick}
-                  columns={columnsTaskByTick}
-                  // resizable={false}
-                  defaultPageSize={8}
-                  showPagination={false}
-                  getTrProps={this.HandleRowTaskByClickPage}
-                />
+            {this.state.isloading === true ? (
+              <div className="loader-icon-cntr">
+                <div className="loader-icon"></div>
               </div>
-            </div>
+            ) : (
+              <div>
+                <div className="table-cntr taskByTable">
+                  <ReactTable
+                    data={this.state.taskByTicketData}
+                    columns={[
+                      {
+                        Header: <span>Task ID</span>,
+                        accessor: "storeTaskID",
+                      },
+                      {
+                        Header: <span>Ticket ID</span>,
+                        accessor: "ticketID",
+                      },
+                      {
+                        Header: <span>Status</span>,
+                        accessor: "taskStatus",
+                        Cell: (row) => {
+                          return (
+                            <span className="table-btn table-blue-btn">
+                              <label>{row.original.taskStatus}</label>
+                            </span>
+                          );
+                        },
+                      },
+                      {
+                        Header: <span>Task Title</span>,
+                        accessor: "taskTitle",
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Department <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "departmentName",
+                        Cell: (row) => {
+                          return (
+                            <>
+                              {row.original.departmentName}
+                              <Popover
+                                content={
+                                  <div className="dash-creation-popup-cntr">
+                                    <ul className="dash-category-popup dashnewpopup">
+                                      <li>
+                                        <p>Function</p>
+                                        <p>{row.original.functionName}</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Created by <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdBy",
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Store Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "storeName",
+                        Cell: (row) => {
+                          return (
+                            <span>
+                              <label>{row.original.storeName}</label>
+                              <Popover
+                                content={
+                                  <div className="dash-creation-popup-cntr">
+                                    <ul className="dash-category-popup dashnewpopup">
+                                      <li>
+                                        <p>Store Address</p>
+                                        <p>{row.original.storeAddress}</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "creationOn",
+                        Cell: (row) => (
+                          <span>
+                            <label>{row.original.creationOn}</label>
+
+                            <Popover
+                              content={
+                                <div className="insertpop1">
+                                  <ul className="dash-creation-popup">
+                                    <li className="title">Creation details</li>
+                                    <li>
+                                      <p>
+                                        {row.original.createdBy + " "} Created
+                                      </p>
+                                      <p>{row.original.createdago}</p>
+                                    </li>
+                                    <li>
+                                      <p>
+                                        Assigned to{" "}
+                                        {" " + row.original.assignto}
+                                      </p>
+                                      <p>{row.original.assignedago}</p>
+                                    </li>
+                                    <li>
+                                      <p>
+                                        {row.original.updatedBy + " "} updated
+                                      </p>
+                                      <p>{row.original.updatedago}</p>
+                                    </li>
+                                    <li>
+                                      <p>Response time remaining by</p>
+                                      <p>30 mins</p>
+                                    </li>
+                                    <li>
+                                      <p>Response overdue by</p>
+                                      <p>1 Hr</p>
+                                    </li>
+                                    <li>
+                                      <p>Resolution overdue by</p>
+                                      <p>2 Hrs</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              }
+                              placement="left"
+                            >
+                              <img
+                                className="info-icon"
+                                src={InfoIcon}
+                                alt="info-icon"
+                              />
+                            </Popover>
+                          </span>
+                        ),
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Assign to
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "assignto",
+                      },
+                    ]}
+                    // resizable={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    minRows={2}
+                    getTrProps={this.HandleRowTaskByClickPage}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <div
             className="tab-pane fade"

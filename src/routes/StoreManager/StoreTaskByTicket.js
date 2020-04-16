@@ -3,20 +3,369 @@ import Modal from "react-responsive-modal";
 import storeImg from "./../../assets/Images/store.png";
 import DownWhiteImg from "./../../assets/Images/down-white.png";
 import DownBlueImg from "./../../assets/Images/down.png";
+import CancelImg from "./../../assets/Images/cancel.png";
+import ReactTable from "react-table";
 import NoEditImg from "./../../assets/Images/NoEdit.png";
-
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
+import DownImg from "./../../assets/Images/down.png";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  // NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import { Progress } from "antd";
 class StoreTaskByTicket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      SubmitBtnReopn: false
+      SubmitBtnReopn: false,
+      taskId: 0,
+      ticketId: 0,
+      ticketDetails: {},
+      departmentData: [],
+      funcationData: [],
+      departmentID: 0,
+      functionID: 0,
+      taskTitle: "",
+      taskDetails: "",
+      istaskTitle: "",
+      istaskDetails: "",
+      isfuncation: "",
+      isdepartment: "",
+      commentCount: 0,
+      commentData: [],
+      comment: "",
+      iscomment: "",
+      iscmtLoading: false,
+      isueRaisedBy: "",
+      storeName: "",
+      storeAddress: "",
+      assignToName: "",
+      userData: [],
+      userModel: false,
+      progressData:{}
     };
+    this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
+    this.handleUserModelClose = this.handleUserModelClose.bind(this);
   }
   handleSubmitReopnModalOpen() {
     this.setState({ SubmitBtnReopn: true });
   }
   handleSubmitReopnModalClose() {
     this.setState({ SubmitBtnReopn: false });
+  }
+  componentDidMount() {
+    if (this.props.location.state) {
+      var taskId = this.props.location.state.TaskID;
+      var ticketId = this.props.location.state.TicketID;
+      this.setState({ taskId, ticketId });
+      this.handleGetStoreTicketingTaskByTaskID(taskId);
+      this.handleGetCommentOnTask(taskId);
+      this.handleGetStoreTaskProcressBar(taskId)
+      this.handleGetDepartement();
+    } else {
+      this.props.history.push("/store/StoreTask");
+    }
+  }
+
+  ////handle get store ticket task by task id
+  handleGetStoreTicketingTaskByTaskID(taskId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreTicketingTaskByTaskID",
+      headers: authHeader(),
+      params: { TaskID: taskId },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        var departmentID = 0;
+        var taskTitle = "";
+        var taskDetails = "";
+        var functionID = 0;
+        var isueRaisedBy = "";
+        var storeAddress = "";
+        var storeName = "";
+        var assignToName = "";
+
+        if (message === "Success" && responseData) {
+          debugger;
+          var taskDetailsData = responseData.storeTaskMasterDetails;
+          var ticketDetails = responseData.taskTicketDetails;
+          departmentID = taskDetailsData.departmentId;
+          functionID = taskDetailsData.functionID;
+          taskTitle = taskDetailsData.taskTitle;
+          taskDetails = taskDetailsData.taskDescription;
+          isueRaisedBy = taskDetailsData.createdByName;
+          storeName = taskDetailsData.storeName;
+          storeAddress = taskDetailsData.address;
+          assignToName = taskDetailsData.assignToName;
+          self.setState({
+            assignToName,
+            isueRaisedBy,
+            storeAddress,
+            storeName,
+            ticketDetails,
+            departmentID,
+            functionID,
+            taskTitle,
+            taskDetails,
+          });
+          if (departmentID > 0) {
+            setTimeout(() => {
+              self.handleGetFuncationByDepartmentId();
+            }, 10);
+          }
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreTicketingTaskByTaskID");
+      });
+  }
+  ////handle get department list
+  handleGetDepartement() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var departmentData = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ departmentData });
+        } else {
+          self.setState({ departmentData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetDepartement");
+      });
+  }
+  ///handle get funcation by department id
+  handleGetFuncationByDepartmentId() {
+    let self = this;
+    var DepartmentId = this.state.departmentID;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
+      headers: authHeader(),
+      params: { DepartmentId: DepartmentId },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var funcationData = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ funcationData });
+        } else {
+          self.setState({ funcationData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetFuncationByDepartmentId");
+      });
+  }
+  ////handle get comment on task
+  handleGetCommentOnTask(taskId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetCommentOnTask",
+      headers: authHeader(),
+      params: { TaskID: taskId },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var commentData = response.data.responseData;
+        var commentCount = commentData.length;
+
+        if (message === "Success" && commentData.length > 0) {
+          self.setState({ commentCount, commentData });
+        } else {
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetCommentOnTask");
+      });
+  }
+  ////handle add comment by task id
+  handleAddCommentByTaskId() {
+    debugger;
+    let self = this;
+    if (this.state.comment == "") {
+      this.setState({ iscomment: "Please Enter Comment." });
+    } else {
+      this.setState({ iscomment: "" });
+    }
+
+    if (this.state.comment !== "") {
+      this.setState({ iscmtLoading: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreTask/AddStoreTaskComment",
+        headers: authHeader(),
+        data: {
+          TaskID: this.state.taskId,
+          Comment: this.state.comment,
+        },
+      })
+        .then(function(response) {
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+          if (message == "Success" && responseData > 0) {
+            NotificationManager.success("Comment Added successfully.");
+            self.setState({ iscmtLoading: false });
+            self.handleGetCommentOnTask(self.state.taskId);
+          } else {
+            NotificationManager.error("Comment Not Added successfully.");
+            self.setState({ iscmtLoading: false });
+          }
+        })
+        .catch((response) => {
+          self.setState({ iscmtLoading: false });
+          console.log(response, "---handleAddCommentByTaskId");
+        });
+    }
+  }
+  ////handle assign task
+  handleAssignTask() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/AssignTask",
+      headers: authHeader(),
+      params: {
+        TaskID: this.state.taskId,
+        AgentID: this.state.agentId,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var responseData = response.data.responseData;
+        var message = response.data.message;
+        if (message === "Success" && responseData) {
+          self.setState({ userModel: false });
+          NotificationManager.success("Task Assign Successfully.");
+          self.componentDidMount();
+        } else {
+          NotificationManager.error("Task Assign Fail.");
+          self.setState({ userModel: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleAssignTask");
+      });
+  }
+  ////handle get store task progress bar data
+  handleGetStoreTaskProcressBar(taskId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreTaskProcressBar",
+      headers: authHeader(),
+      params: {
+        TaskID: taskId,
+        TaskBy: 2,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var progressData = response.data.responseData[0];
+        if (message == "Success") {
+          self.setState({ progressData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreTaskProcressBar");
+      });
+  }
+  ////handle input filed change
+  handleOnchange = (e) => {
+    debugger;
+    const { name, value } = e.target;
+    if (name == "tasktitle") {
+      if (value !== "") {
+        this.setState({ taskTitle: value, istaskTitle: "" });
+      } else {
+        this.setState({
+          taskTitle: value,
+          istaskTitle: "Please Enter Task Title",
+        });
+      }
+    }
+    if (name == "department") {
+      if (value !== 0) {
+        this.setState({
+          departmentID: value,
+          funcationData: [],
+          funcationID: 0,
+          isdepartment: "",
+        });
+        setTimeout(() => {
+          this.handleGetFuncationByDepartmentId();
+        }, 10);
+      } else {
+        this.setState({
+          isdepartment: "Please Select Department.",
+          departmentID: value,
+        });
+      }
+    }
+    if (name == "funcation") {
+      if (value !== 0) {
+        this.setState({
+          funcationID: value,
+          isfuncation: "",
+        });
+      } else {
+        this.setState({
+          isfuncation: "Please Select Funcation.",
+          funcationID: value,
+        });
+      }
+    }
+
+    if (name == "taskdetails") {
+      if (value !== "") {
+        this.setState({
+          taskDetails: value,
+          istaskDetails: "",
+        });
+      } else {
+        this.setState({
+          istaskDetails: "Please Enter Task Details.",
+          taskDetails: value,
+        });
+      }
+    }
+    if (name == "comment") {
+      if (value !== "") {
+        this.setState({
+          comment: value,
+          iscomment: "",
+        });
+      } else {
+        this.setState({
+          iscomment: "Please Enter Comment.",
+          comment: value,
+        });
+      }
+    }
+  };
+  ////handle user model open
+  handleUserModelOpen() {
+    this.setState({ userModel: true });
+  }
+  ////handle user model close
+  handleUserModelClose() {
+    this.setState({ userModel: false });
   }
   render() {
     return (
@@ -62,10 +411,20 @@ class StoreTaskByTicket extends Component {
           >
             <div className="headerBtn-store">
               <div className="btnstore-last">
-                <div className="oval-5-1-new-store">
-                  <img src={storeImg} alt="headphone" className="storeImg-11" />
-                </div>
-                <label className="naman-r">Naman.R</label>
+                <a
+                  className="d-inline-block"
+                  onClick={this.handleUserModelOpen.bind(this)}
+                >
+                  <div className="oval-5-1-new-store">
+                    <img
+                      src={storeImg}
+                      alt="headphone"
+                      className="storeImg-11"
+                    />
+                  </div>
+                  <label className="naman-r">{this.state.assignToName}</label>
+                </a>
+
                 <img
                   src={DownBlueImg}
                   alt="headphone"
@@ -118,33 +477,87 @@ class StoreTaskByTicket extends Component {
                     type="text"
                     className="store-edit-txt"
                     placeholder="Enter Task Title"
+                    value={this.state.taskTitle}
+                    name="tasktitle"
+                    onChange={this.handleOnchange.bind(this)}
                   />
+                  {this.state.istaskTitle !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.iscomment}
+                    </p>
+                  )}
                   <div className="row">
                     <div className="col-md-4 store-mrg">
                       <label className="store-Edit-lbl">Department</label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
+                        value={this.state.departmentID}
+                        name="department"
+                        onChange={this.handleOnchange.bind(this)}
                       >
-                        <option>Select</option>
-                        <option>Internet</option>
+                        <option value={0}>Select</option>
+                        {this.state.departmentData !== null &&
+                          this.state.departmentData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.departmentID}
+                              className="select-category-placeholder"
+                            >
+                              {item.departmentName}
+                            </option>
+                          ))}
                       </select>
+                      {this.state.isdepartment !== "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.iscomment}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-4 store-mrg">
                       <label className="store-Edit-lbl">Function</label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
+                        value={this.state.functionID}
+                        name="funcation"
+                        onChange={this.handleOnchange.bind(this)}
                       >
-                        <option>Select</option>
-                        <option>Wifi</option>
+                        {" "}
+                        <option value={0}>Select</option>
+                        {this.state.funcationData !== null &&
+                          this.state.funcationData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.functionID}
+                              className="select-category-placeholder"
+                            >
+                              {item.funcationName}
+                            </option>
+                          ))}
                       </select>
+                      {this.state.isfuncation !== "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.iscomment}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-md-12 store-mrg">
                       <label className="store-Edit-lbl">Task Details</label>
-                      <textarea rows="8" className="textarea-store"></textarea>
+                      <textarea
+                        rows="8"
+                        className="textarea-store"
+                        value={this.state.taskTitle}
+                        name="taskdetails"
+                        onChange={this.handleOnchange.bind(this)}
+                      ></textarea>
+                      {this.state.istaskDetails !== "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.iscomment}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
@@ -154,75 +567,87 @@ class StoreTaskByTicket extends Component {
                         rows="8"
                         className="textarea-store-comments"
                         placeholder="Add your comment here"
+                        value={this.state.comment}
+                        name="comment"
+                        onChange={this.handleOnchange.bind(this)}
                       ></textarea>
+                      {this.state.iscomment !== "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.iscomment}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-md-12 store-mrg">
-                      <label className="store-Edit-lbl">Comments: 02</label>
-                      <button className="butn-store">Add Comment</button>
+                      <label className="store-Edit-lbl">
+                        Comments:{" "}
+                        {this.state.commentCount < 9
+                          ? "0" + this.state.commentCount
+                          : this.state.commentCount}
+                      </label>
+                      <button
+                        disabled={this.iscmtLoading}
+                        className="butn-store"
+                        onClick={this.handleAddCommentByTaskId.bind(this)}
+                      >
+                        {this.state.iscmtLoading ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : (
+                          ""
+                        )}
+                        Add Comment
+                      </button>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-12 store-mrg-1">
-                      <div className="oval-5-1-new-store">
-                        <img
-                          src={storeImg}
-                          alt="headphone"
-                          className="storeImg-11"
-                        />
-                      </div>
-                      <label className="naman-r-store">Naman.R</label>
-                      <label className="store-hrLbl">5 hr ago</label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12" style={{ marginTop: "3px" }}>
-                      <span className="store-comment">Comment :</span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <p className="store-cmt-comment">
-                        Hi Diwakar, I really appreciate you joining us at
-                        Voucherify! My top priority is that you have a great
-                        experience with us and learn how to easily implement
-                        successful promo campaigns.
-                      </p>
-                      <hr />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="oval-5-1-new-store">
-                        <img
-                          src={storeImg}
-                          alt="headphone"
-                          className="storeImg-11"
-                        />
-                      </div>
-                      <label className="naman-r-store">Naman.R</label>
-                      <label className="store-hrLbl">5 hr ago</label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12" style={{ marginTop: "3px" }}>
-                      <span className="store-comment">Comment :</span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <p className="store-cmt-comment">
-                        Hi Diwakar, I really appreciate you joining us at
-                        Voucherify! My top priority is that you have a great
-                        experience with us and learn how to easily implement
-                        successful promo campaigns.
-                      </p>
-                    </div>
-                  </div>
+                  {this.state.commentData !== null
+                    ? this.state.commentData.map((item, i) => {
+                        return (
+                          <div key={i}>
+                            <div className="row">
+                              <div className="col-md-12 store-mrg-1">
+                                <div className="oval-5-1-new-store">
+                                  <img
+                                    src={storeImg}
+                                    alt="headphone"
+                                    className="storeImg-11"
+                                  />
+                                </div>
+                                <label className="naman-r-store">
+                                  {item.commentByName}
+                                </label>
+                                <label className="store-hrLbl">
+                                  {item.commentedDiff}
+                                </label>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div
+                                className="col-md-12"
+                                style={{ marginTop: "3px" }}
+                              >
+                                <span className="store-comment">Comment :</span>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-12">
+                                <p className="store-cmt-comment">
+                                  {item.comment}
+                                </p>
+                                <hr />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : null}
                 </div>
               </div>
-          <div className="col-md-5" style={{padding:"0"}}>
+              <div className="col-md-5" style={{ padding: "0" }}>
                 <div className="card store-card-3">
                   <div className="row">
                     <div className="col-md-6">
@@ -241,11 +666,13 @@ class StoreTaskByTicket extends Component {
                           className="storeImg-11"
                         />
                       </div>
-                      <label className="store-edit-data-1">Naman Rampal </label>
+                      <label className="store-edit-data-1">
+                        {this.state.isueRaisedBy}{" "}
+                      </label>
                     </div>
                     <div className="col-md-6">
                       <label className="store-edit-data">
-                        Bata Store Name{" "}
+                        {this.state.storeName}
                       </label>
                     </div>
                   </div>
@@ -257,8 +684,7 @@ class StoreTaskByTicket extends Component {
                   <div className="row">
                     <div className="col-md-12">
                       <label className="store-edit-data">
-                        Opposite sardar jalebi, Sadar Bazar Rd, Sadar
-                        Bazar,Roshan Pura, Gurugram, Haryana 122007{" "}
+                        {this.state.storeAddress}
                       </label>
                     </div>
                   </div>
@@ -270,14 +696,33 @@ class StoreTaskByTicket extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-md-12">
-                      <label className="store-date">28 March 19 </label>
-                      <progress
-                        className="progressbar-2"
-                        value="60"
-                        max="100"
-                      ></progress>
-                      <p className="progressbar-lbl">2 day</p>
+                    <div className="col-md-12 progress-sect">
+                      <div className="col-md-3" style={{ padding: 0 }}>
+                        <label className="store-date">
+                          {this.state.progressData.closureTaskDate}{" "}
+                        </label>
+                      </div>
+                      <div className="col-md-9" style={{ padding: 0 }}>
+                        <Progress
+                          showInfo={false}
+                          // strokeColor={this.state.progressData.colorCode}
+                          strokeColor={{
+                            '0%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[0]:"",
+                            '100%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[1]:"",
+                          }}
+                          percent={Number(this.state.progressData.progress)}
+                        />
+                        <p
+                          className="progressbar-lbl"
+                          style={{
+                            marginLeft:
+                              this.state.progressData.progress +
+                              this.state.progressData.progressIn,
+                          }}
+                        >
+                          {this.state.progressData.remainingTime}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -298,15 +743,19 @@ class StoreTaskByTicket extends Component {
                     type="text"
                     className="store-edit-txt"
                     placeholder="Enter Ticket Title"
+                    disabled={true}
+                    value={this.state.ticketDetails.ticketTitle}
                   />
                   <img src={NoEditImg} alt="NoEditImg" className="noEditImg" />
                   <div className="row">
                     <div className="col-md-12 store-mrg">
                       <label className="store-Edit-lbl"> Ticket Details</label>
                       <textarea
+                        disabled={true}
                         rows="8"
                         className="textarea-store-comments"
                         placeholder="Add your Ticket Details here"
+                        value={this.state.ticketDetails.ticketdescription}
                       ></textarea>
                       <img
                         src={NoEditImg}
@@ -329,10 +778,14 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data-1">Mayank Arora</label>
+                      <label className="store-edit-data-1">
+                        {this.state.ticketDetails.customerName}
+                      </label>
                     </div>
                     <div className="col-md-6">
-                      <label className="store-edit-data">Male</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.gender}
+                      </label>
                     </div>
                   </div>
                   <div className="row store-mrg-3">
@@ -345,11 +798,13 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data">+91-9888382883</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.customerPhoneNumber}
+                      </label>
                     </div>
                     <div className="col-md-6">
                       <label className="store-edit-data">
-                        naman.kreative@gmail.com
+                        {this.state.ticketDetails.customerEmailId}
                       </label>
                     </div>
                   </div>
@@ -366,10 +821,14 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data-1">Closed</label>
+                      <label className="store-edit-data-1">
+                        {this.state.ticketDetails.status}
+                      </label>
                     </div>
                     <div className="col-md-6">
-                      <label className="store-edit-data">High</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.priortyName}
+                      </label>
                     </div>
                   </div>
                   <div className="row store-mrg-3">
@@ -382,10 +841,14 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data">Offline</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.categoryName}
+                      </label>
                     </div>
                     <div className="col-md-6">
-                      <label className="store-edit-data">Card Issue</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.subCategoryName}
+                      </label>
                     </div>
                   </div>
                   <div className="row store-mrg-3">
@@ -395,7 +858,9 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data">Payment</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.issueTypeName}
+                      </label>
                     </div>
                   </div>
                   <div className="hrMargin">
@@ -408,17 +873,21 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data">Bata Rajouri Garden</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.storeNames}
+                      </label>
                     </div>
                   </div>
-                   <div className="row store-mrg-3">
+                  <div className="row store-mrg-3">
                     <div className="col-md-6">
                       <label className="store-Edit-lbl">Product</label>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-edit-data">Red Tennis Coca Cola White Shoes</label>
+                      <label className="store-edit-data">
+                        {this.state.ticketDetails.productNames}
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -426,6 +895,69 @@ class StoreTaskByTicket extends Component {
             </div>
           </div>
         </div>
+        {/* --------------------------User Modal--------------------  */}
+        <Modal
+          open={this.state.userModel}
+          onClose={this.handleUserModelClose.bind(this)}
+          closeIconId="close"
+          modalId="labelmodel-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="myTicket-table remov agentlist" id="tic-det-assign">
+            <ReactTable
+              className="limit-react-table-body"
+              data={this.state.userData}
+              columns={[
+                {
+                  Header: <span>Emp Id</span>,
+                  accessor: "user_ID",
+                  width: 80,
+                },
+                {
+                  Header: <span>Name</span>,
+                  accessor: "userName",
+                },
+                // {
+                //   Header: <span>Designation</span>,
+                //   accessor: "designation"
+                // }
+              ]}
+              minRows={2}
+              showPagination={false}
+              resizable={false}
+              getTrProps={(rowInfo, column) => {
+                // ////
+                const index = column ? column.index : -1;
+                return {
+                  onClick: (e) => {
+                    ////
+                    this.selectedRow = index;
+                    var agentId = column.original["user_ID"];
+                    this.setState({ agentId });
+                  },
+                  style: {
+                    background: this.selectedRow === index ? "#ECF2F4" : null,
+                  },
+                };
+              }}
+            />
+            <div className="button-margin">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={this.handleAssignTask.bind(this)}
+              >
+                SELECT
+              </button>
+            </div>
+            <div
+              className="cancel-assign"
+              onClick={this.handleUserModelClose.bind(this)}
+            >
+              <img src={CancelImg} alt="cancel" />
+            </div>
+          </div>
+        </Modal>
       </Fragment>
     );
   }

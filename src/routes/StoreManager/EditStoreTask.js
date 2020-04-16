@@ -9,13 +9,14 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import LoadingImg from "./../../assets/Images/loading.png";
 import CancelImg from "./../../assets/Images/cancel.png";
 import ReactTable from "react-table";
 import moment from "moment";
 import DownImg from "./../../assets/Images/down.png";
+import { Progress } from "antd";
 
 class EditStoreTask extends Component {
   constructor(props) {
@@ -30,10 +31,9 @@ class EditStoreTask extends Component {
       departmentID: 0,
       funcationID: 0,
       priorityID: 0,
-      assignToID: 6,
+      assignToID: 0,
       taskTitle: "",
       taskDetails: "",
-      isAddloading: false,
       istaskTitle: "",
       istaskDetails: "",
       isassignto: "",
@@ -53,7 +53,8 @@ class EditStoreTask extends Component {
       assignToName: "",
       userData: [],
       userModel: false,
-      agentId: 0
+      agentId: 0,
+      progressData: {},
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -69,6 +70,7 @@ class EditStoreTask extends Component {
       this.handleStoreTaskDetialsById(taskId);
       this.handleGetCommentOnTask(taskId);
       this.handleGetUserDropdown(taskId);
+      this.handleGetStoreTaskProcressBar(taskId);
     } else {
       this.props.history.push("/store/StoreTask");
     }
@@ -88,7 +90,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetCommentOnTask",
       headers: authHeader(),
-      params: { TaskID: taskId }
+      params: { TaskID: taskId },
     })
       .then(function(response) {
         debugger;
@@ -101,7 +103,7 @@ class EditStoreTask extends Component {
         } else {
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetCommentOnTask");
       });
   }
@@ -113,7 +115,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreTaskByID",
       headers: authHeader(),
-      params: { TaskID: taskId }
+      params: { TaskID: taskId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -138,7 +140,7 @@ class EditStoreTask extends Component {
           assignToID = data.assignToID;
           taskTitle = data.taskTitle;
           taskDetails = data.taskDescription;
-          issueRaisedBy = data.assignToName;
+          issueRaisedBy = data.createdByName;
           storeName = data.storeName;
           storeAddress = data.address;
           assignToName = data.assignToName;
@@ -152,7 +154,7 @@ class EditStoreTask extends Component {
             issueRaisedBy,
             storeName,
             storeAddress,
-            assignToName
+            assignToName,
           });
           if (funcationID > 0) {
             setTimeout(() => {
@@ -162,7 +164,7 @@ class EditStoreTask extends Component {
         } else {
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleStoreTaskDetialsById");
       });
   }
@@ -174,7 +176,7 @@ class EditStoreTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         var message = response.data.message;
@@ -185,7 +187,7 @@ class EditStoreTask extends Component {
           self.setState({ departmentData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetDepartement");
       });
   }
@@ -197,7 +199,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
-      params: { DepartmentId: DepartmentId }
+      params: { DepartmentId: DepartmentId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -208,7 +210,7 @@ class EditStoreTask extends Component {
           self.setState({ funcationData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetFuncationByDepartmentId");
       });
   }
@@ -219,10 +221,10 @@ class EditStoreTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {})
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetAssignTo");
       });
   }
@@ -233,7 +235,7 @@ class EditStoreTask extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         var message = response.data.message;
@@ -244,7 +246,7 @@ class EditStoreTask extends Component {
           self.setState({ priorityData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetPriority");
       });
   }
@@ -267,8 +269,8 @@ class EditStoreTask extends Component {
         headers: authHeader(),
         data: {
           TaskID: this.state.taskId,
-          Comment: this.state.comment
-        }
+          Comment: this.state.comment,
+        },
       })
         .then(function(response) {
           var message = response.data.message;
@@ -282,7 +284,7 @@ class EditStoreTask extends Component {
             self.setState({ iscmtLoading: false });
           }
         })
-        .catch(response => {
+        .catch((response) => {
           self.setState({ iscmtLoading: false });
           console.log(response, "---handleAddCommentByTaskId");
         });
@@ -297,8 +299,8 @@ class EditStoreTask extends Component {
       url: config.apiUrl + "/StoreTask/GetTaskHistory",
       headers: authHeader(),
       params: {
-        TaskID: this.state.taskId
-      }
+        TaskID: this.state.taskId,
+      },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -309,7 +311,7 @@ class EditStoreTask extends Component {
           self.setState({ historyData, historyModal: false });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetTaskHistory");
       });
   }
@@ -321,21 +323,21 @@ class EditStoreTask extends Component {
       url: config.apiUrl + "/StoreTask/UserDropdown",
       headers: authHeader(),
       params: {
-        TaskID: taskId
-      }
+        TaskID: taskId,
+      },
     })
       .then(function(response) {
         var userData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && userData.length > 0) {
           self.setState({
-            userData
+            userData,
           });
         } else {
           self.setState({ userData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetUserDropdown");
       });
   }
@@ -348,8 +350,8 @@ class EditStoreTask extends Component {
       headers: authHeader(),
       params: {
         TaskID: this.state.taskId,
-        AgentID: this.state.agentId
-      }
+        AgentID: this.state.agentId,
+      },
     })
       .then(function(response) {
         debugger;
@@ -364,7 +366,7 @@ class EditStoreTask extends Component {
           self.setState({ userModel: false });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleAssignTask");
       });
   }
@@ -407,11 +409,9 @@ class EditStoreTask extends Component {
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
           headers: authHeader(),
-          data: inputParam
+          data: inputParam,
         })
           .then(function(response) {
-            debugger;
-            
             var message = response.data.message;
             if (message === "Success") {
               setTimeout(() => {
@@ -422,15 +422,39 @@ class EditStoreTask extends Component {
               NotificationManager.error("Task Submited Failed.");
             }
           })
-          .catch(response => {
+          .catch((response) => {
             console.log(response, "---handleUpdateTask");
           });
       }
     }, 10);
   }
 
+  ////handle get store task progress bar data
+  handleGetStoreTaskProcressBar(taskId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreTaskProcressBar",
+      headers: authHeader(),
+      params: {
+        TaskID: taskId,
+        TaskBy: 1,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var progressData = response.data.responseData[0];
+        if (message == "Success") {
+          self.setState({ progressData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreTaskProcressBar");
+      });
+  }
+
   ////handle input filed change
-  handleOnchange = e => {
+  handleOnchange = (e) => {
     debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
@@ -439,7 +463,7 @@ class EditStoreTask extends Component {
       } else {
         this.setState({
           taskTitle: value,
-          istaskTitle: "Please Enter Task Title"
+          istaskTitle: "Please Enter Task Title",
         });
       }
     }
@@ -449,7 +473,7 @@ class EditStoreTask extends Component {
           departmentID: value,
           funcationData: [],
           funcationID: 0,
-          isdepartment: ""
+          isdepartment: "",
         });
         setTimeout(() => {
           this.handleGetFuncationByDepartmentId();
@@ -457,7 +481,7 @@ class EditStoreTask extends Component {
       } else {
         this.setState({
           isdepartment: "Please Select Department.",
-          departmentID: value
+          departmentID: value,
         });
       }
     }
@@ -465,12 +489,12 @@ class EditStoreTask extends Component {
       if (value !== 0) {
         this.setState({
           funcationID: value,
-          isfuncation: ""
+          isfuncation: "",
         });
       } else {
         this.setState({
           isfuncation: "Please Select Funcation.",
-          funcationID: value
+          funcationID: value,
         });
       }
     }
@@ -478,12 +502,12 @@ class EditStoreTask extends Component {
       if (value !== 0) {
         this.setState({
           priorityID: value,
-          ispriority: ""
+          ispriority: "",
         });
       } else {
         this.setState({
           ispriority: "Please Select Priority.",
-          priorityID: value
+          priorityID: value,
         });
       }
     }
@@ -491,12 +515,12 @@ class EditStoreTask extends Component {
       if (value !== 0) {
         this.setState({
           assignToID: value,
-          isassignto: ""
+          isassignto: "",
         });
       } else {
         this.setState({
           isassignto: "Please Select Assign To.",
-          assignToID: value
+          assignToID: value,
         });
       }
     }
@@ -504,12 +528,12 @@ class EditStoreTask extends Component {
       if (value !== "") {
         this.setState({
           taskDetails: value,
-          istaskDetails: ""
+          istaskDetails: "",
         });
       } else {
         this.setState({
           istaskDetails: "Please Enter Task Details.",
-          taskDetails: value
+          taskDetails: value,
         });
       }
     }
@@ -517,18 +541,18 @@ class EditStoreTask extends Component {
       if (value !== "") {
         this.setState({
           comment: value,
-          iscomment: ""
+          iscomment: "",
         });
       } else {
         this.setState({
           iscomment: "Please Enter Comment.",
-          comment: value
+          comment: value,
         });
       }
     }
   };
   ////handle on close history model
-  onCloseModal = e => {
+  onCloseModal = (e) => {
     this.setState({ historyModal: false });
   };
   ////handle user model open
@@ -859,14 +883,33 @@ class EditStoreTask extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-12">
-                  <label className="store-date">28 March 19 </label>
-                  <progress
-                    className="progressbar-2"
-                    value="60"
-                    max="100"
-                  ></progress>
-                  <p className="progressbar-lbl">2 day</p>
+                <div className="col-md-12 progress-sect">
+                  <div className="col-md-3" style={{padding:0}}>
+                    <label className="store-date">
+                      {this.state.progressData.closureTaskDate}{" "}
+                    </label>
+                  </div>
+                  <div className="col-md-9" style={{padding:0}}>
+                    <Progress
+                      showInfo={false}
+                      // strokeColor={this.state.progressData.colorCode}
+                      strokeColor={{
+                        '0%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[0]:"",
+                        '100%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[1]:"",
+                      }}
+                      percent={Number(this.state.progressData.progress)}
+                    />
+                    <p
+                      className="progressbar-lbl"
+                      style={{
+                        marginLeft:
+                          this.state.progressData.progress +
+                          this.state.progressData.progressIn,
+                      }}
+                    >
+                      {this.state.progressData.remainingTime}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -897,17 +940,17 @@ class EditStoreTask extends Component {
                   {
                     Header: <span>Name</span>,
                     accessor: "name",
-                    width: 150
+                    width: 150,
                   },
                   {
                     Header: <span>Action</span>,
-                    accessor: "action"
+                    accessor: "action",
                   },
                   {
                     Header: <span>Time & Date</span>,
                     accessor: "dateandTime",
                     width: 200,
-                    Cell: row => {
+                    Cell: (row) => {
                       var date = row.original["dateandTime"];
                       return (
                         <span>
@@ -915,8 +958,8 @@ class EditStoreTask extends Component {
                           {moment(date).format("HH:mm")}
                         </span>
                       );
-                    }
-                  }
+                    },
+                  },
                 ]}
                 resizable={false}
                 defaultPageSize={5}
@@ -941,12 +984,12 @@ class EditStoreTask extends Component {
                 {
                   Header: <span>Emp Id</span>,
                   accessor: "user_ID",
-                  width: 80
+                  width: 80,
                 },
                 {
                   Header: <span>Name</span>,
-                  accessor: "userName"
-                }
+                  accessor: "userName",
+                },
                 // {
                 //   Header: <span>Designation</span>,
                 //   accessor: "designation"
@@ -959,15 +1002,15 @@ class EditStoreTask extends Component {
                 // ////
                 const index = column ? column.index : -1;
                 return {
-                  onClick: e => {
+                  onClick: (e) => {
                     ////
                     this.selectedRow = index;
                     var agentId = column.original["user_ID"];
                     this.setState({ agentId });
                   },
                   style: {
-                    background: this.selectedRow === index ? "#ECF2F4" : null
-                  }
+                    background: this.selectedRow === index ? "#ECF2F4" : null,
+                  },
                 };
               }}
             />

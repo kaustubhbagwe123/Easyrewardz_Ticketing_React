@@ -313,6 +313,7 @@ class Campaign extends Component {
         formData.append("Filedata", []);
         formData.append("orderDetails", null);
         formData.append("orderItemDetails", null);
+        formData.append("storeDetails", null);
 
         // create ticket
         axios({
