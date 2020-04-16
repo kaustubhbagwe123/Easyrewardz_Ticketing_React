@@ -2877,6 +2877,11 @@ class StoreUsers extends Component {
         ClaimApproverCompulsory: "Please Select Claim Approver.",
         CrmRoleCompulsory: "Please Select Crm Role.",
         statusCompulsory: "Please Select Status.",
+        EditDepartmentCompulsory: "Please Select Department.",
+        editFunctionCompulsion: "Please Select Function.",
+        EditDesignationCompulsory: "Please Select Designnation.",
+        EditReportDesignationCompulsory: "please Select Report To.",
+        EditReporteeDesignationCompulsory:"please Select Reportee Designation.",
       });
     }
   }
