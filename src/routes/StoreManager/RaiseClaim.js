@@ -1500,11 +1500,11 @@ class RaiseClaim extends Component {
                           className="form-control dropdown-label"
                         >
                           {list1SelectOptions}
-                          <Option value={NEW_ITEM}>
+                          {/* <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW
                             </span>
-                          </Option>
+                          </Option> */}
                         </Select>
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.errors["Category"]}
@@ -1525,11 +1525,11 @@ class RaiseClaim extends Component {
                           onChange={this.handleSubCatOnChange}
                         >
                           {listSubCategory}
-                          <Option value={NEW_ITEM}>
+                          {/* <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW
                             </span>
-                          </Option>
+                          </Option> */}
                         </Select>
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.errors["SubCategory"]}
@@ -1550,11 +1550,11 @@ class RaiseClaim extends Component {
                           onChange={this.handleIssueOnChange}
                         >
                           {listOfIssueType}
-                          <Option value={NEW_ITEM}>
+                          {/* <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW
                             </span>
-                          </Option>
+                          </Option> */}
                         </Select>
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.errors["IssueType"]}
