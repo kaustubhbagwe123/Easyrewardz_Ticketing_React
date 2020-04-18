@@ -50,6 +50,7 @@ class StoreTask extends Component {
       isortA: false,
       tempitemData: [],
       tabIndex: 1,
+      showAddTask: true,
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -106,6 +107,15 @@ class StoreTask extends Component {
   ////handle get task data by tab click
   handleGetTaskData(tabFor) {
     debugger;
+    if (tabFor === 4) {
+      this.setState({
+        showAddTask: false,
+      });
+    } else {
+      this.setState({
+        showAddTask: true,
+      });
+    }
     this.setState({
       isloading: true,
       sdepartmentNameFilterCheckbox: "",
@@ -330,6 +340,7 @@ class StoreTask extends Component {
 
   handleGetTaskbyTicket() {
     this.setState({
+      showAddTask: true,
       tabIndex: 3,
       isloading: true,
       sdepartmentNameFilterCheckbox: "",
@@ -1352,17 +1363,20 @@ class StoreTask extends Component {
                 role="tab"
                 aria-controls="campaign-tab"
                 aria-selected="false"
+                onClick={this.handleGetTaskData.bind(this, 4)}
               >
                 Campaign
               </a>
             </li>
           </ul>
-          <button
-            className="butn"
-            onClick={this.handleChagneAddTask.bind(this)}
-          >
-            Add Task
-          </button>
+          {this.state.showAddTask && (
+            <button
+              className="butn"
+              onClick={this.handleChagneAddTask.bind(this)}
+            >
+              Add Task
+            </button>
+          )}
         </div>
         <div
           className="tab-content store-task-tab-cont"
@@ -1619,7 +1633,7 @@ class StoreTask extends Component {
                             Department <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "departmentName",
                         Cell: (row) => {
                           return (
@@ -1731,7 +1745,7 @@ class StoreTask extends Component {
                             Creation On <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "creationOn",
                         Cell: (row) => {
                           return (

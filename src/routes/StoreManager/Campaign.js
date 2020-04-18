@@ -552,7 +552,16 @@ class Campaign extends Component {
         }, 10);
       } else {
         modalData["brandId"] = value;
-        this.setState({ modalData, isBrand: "Please Select Brand." });
+        modalData["cateogryId"] = 0;
+        modalData["subCategoryId"] = 0;
+        modalData["issueTypeId"] = 0;
+        this.setState({
+          modalData,
+          isBrand: "Please Select Brand.",
+          categoryData: [],
+          subCategoryData: [],
+          issueTypeData: [],
+        });
       }
     }
     if (name == "category") {
@@ -571,7 +580,14 @@ class Campaign extends Component {
         }, 10);
       } else {
         modalData["cateogryId"] = value;
-        this.setState({ modalData, isCategory: "Please Select Category." });
+        modalData["subCategoryId"] = 0;
+        modalData["issueTypeId"] = 0;
+        this.setState({
+          modalData,
+          isCategory: "Please Select Category.",
+          subCategoryData: [],
+          issueTypeData: [],
+        });
       }
     }
     if (name == "subCategory") {
@@ -584,9 +600,11 @@ class Campaign extends Component {
         }, 10);
       } else {
         modalData["subCategoryId"] = value;
+        modalData["issueTypeId"] = 0;
         this.setState({
           modalData,
           isSubCategory: "Please Select Sub Category.",
+          issueTypeData: [],
         });
       }
     }
