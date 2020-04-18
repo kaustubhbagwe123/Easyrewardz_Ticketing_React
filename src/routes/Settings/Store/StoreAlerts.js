@@ -184,7 +184,7 @@ class Alerts extends Component {
         AlertID: alertId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -409,7 +409,7 @@ class Alerts extends Component {
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
 
-    itemsArray.sort(function (a, b) {
+    itemsArray.sort(function(a, b) {
       return a.ticketStatus > b.ticketStatus ? 1 : -1;
     });
 
@@ -795,7 +795,7 @@ class Alerts extends Component {
           params: { alertTypeId: e.target.value },
           headers: authHeader(),
         })
-          .then(function (res) {
+          .then(function(res) {
             var data = res.data.responseData;
             var msg = res.data.message;
             var status = res.data.status;
@@ -864,7 +864,7 @@ class Alerts extends Component {
       url: config.apiUrl + "/Alert/BindStoreAlerts",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var data = res.data.responseData;
         var msg = res.data.message;
@@ -1024,7 +1024,7 @@ class Alerts extends Component {
       headers: authHeader(),
       params: { alertId: alertId },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let alert = res.data.responseData;
         var data = res.data.responseData;
@@ -1185,7 +1185,7 @@ class Alerts extends Component {
         AlertID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -1679,7 +1679,7 @@ class Alerts extends Component {
       headers: authHeader(),
       data: json,
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let id = res.data.responseData;
         let Msg = res.data.message;
@@ -1823,7 +1823,7 @@ class Alerts extends Component {
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1940,7 +1940,7 @@ class Alerts extends Component {
           this.updateUploadProgress(Math.round(progress));
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           let data = res.data.responseData;
@@ -2517,7 +2517,7 @@ class Alerts extends Component {
                       value={this.state.selectedStatus}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      <option value="">Select</option>
+                      {/* <option value="">Select</option> */}
                       <option value="true">Active</option>
                       <option value="false">Inactive</option>
                     </select>
@@ -2551,9 +2551,8 @@ class Alerts extends Component {
                             <li className="nav-item">
                               <a
                                 onClick={this.handleTabChange.bind(this, 0)}
-                                className={`nav-link ${
-                                  this.state.tabIndex === 0 && "active"
-                                }`}
+                                className={`nav-link ${this.state.tabIndex ===
+                                  0 && "active"}`}
                                 data-toggle="tab"
                                 href="#email-tab"
                                 role="tab"
@@ -2568,9 +2567,8 @@ class Alerts extends Component {
                             <li className="nav-item">
                               <a
                                 onClick={this.handleTabChange.bind(this, 1)}
-                                className={`nav-link ${
-                                  this.state.tabIndex === 1 && "active"
-                                }`}
+                                className={`nav-link ${this.state.tabIndex ===
+                                  1 && "active"}`}
                                 data-toggle="tab"
                                 href="#sms-tab"
                                 role="tab"
@@ -2585,9 +2583,8 @@ class Alerts extends Component {
                             <li className="nav-item">
                               <a
                                 onClick={this.handleTabChange.bind(this, 2)}
-                                className={`nav-link ${
-                                  this.state.tabIndex === 2 && "active"
-                                }`}
+                                className={`nav-link ${this.state.tabIndex ===
+                                  2 && "active"}`}
                                 data-toggle="tab"
                                 href="#notification-tab"
                                 role="tab"
@@ -2613,9 +2610,8 @@ class Alerts extends Component {
                           this.state.emailInt ||
                           this.state.emailTicketing) && (
                           <div
-                            className={`tab-pane fade ${
-                              this.state.tabIndex === 0 && "show active"
-                            }`}
+                            className={`tab-pane fade ${this.state.tabIndex ===
+                              0 && "show active"}`}
                             id="email-tab"
                             role="tabpanel"
                             aria-labelledby="email-tab"
@@ -2628,10 +2624,8 @@ class Alerts extends Component {
                                 {this.state.emailCust && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${
-                                        this.state.innerTabIndex === 0 &&
-                                        "active"
-                                      }`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 0 && "active"}`}
                                       data-toggle="tab"
                                       href="#customer-tab"
                                       role="tab"
@@ -2645,10 +2639,8 @@ class Alerts extends Component {
                                 {this.state.emailInt && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${
-                                        this.state.innerTabIndex === 1 &&
-                                        "active"
-                                      }`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 1 && "active"}`}
                                       data-toggle="tab"
                                       href="#Internal-tab"
                                       role="tab"
@@ -2662,10 +2654,8 @@ class Alerts extends Component {
                                 {this.state.emailTicketing && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${
-                                        this.state.innerTabIndex === 2 &&
-                                        "active"
-                                      }`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndex === 2 && "active"}`}
                                       data-toggle="tab"
                                       href="#ticket-tab"
                                       role="tab"
@@ -2680,10 +2670,8 @@ class Alerts extends Component {
                             </div>
                             <div className="tab-content p-0 alert-p1">
                               <div
-                                className={`tab-pane fade ${
-                                  this.state.innerTabIndex === 0 &&
-                                  "show active"
-                                }`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 0 && "show active"}`}
                                 id="customer-tab"
                                 role="tabpanel"
                                 aria-labelledby="customer-tab"
@@ -2785,10 +2773,8 @@ class Alerts extends Component {
                                 )}
                               </div>
                               <div
-                                className={`tab-pane fade ${
-                                  this.state.innerTabIndex === 1 &&
-                                  "show active"
-                                }`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 1 && "show active"}`}
                                 id="Internal-tab"
                                 role="tabpanel"
                                 aria-labelledby="Internal-tab"
@@ -2891,10 +2877,8 @@ class Alerts extends Component {
                                 )}
                               </div>
                               <div
-                                className={`tab-pane fade ${
-                                  this.state.innerTabIndex === 2 &&
-                                  "show active"
-                                }`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndex === 2 && "show active"}`}
                                 id="ticket-tab"
                                 role="tabpanel"
                                 aria-labelledby="ticket-tab"
@@ -3011,9 +2995,8 @@ class Alerts extends Component {
                         )}
                         <div
                           id="sms-tab"
-                          className={`tab-pane fade ${
-                            this.state.tabIndex === 1 && "show active"
-                          }`}
+                          className={`tab-pane fade ${this.state.tabIndex ===
+                            1 && "show active"}`}
                         >
                           <div className="sms-mainLabel alert-p1">
                             <label className="alert-main-popuplbl">
@@ -3044,9 +3027,8 @@ class Alerts extends Component {
                         {(this.state.notiInt || this.state.notiTicketing) && (
                           <div
                             id="notification-tab"
-                            className={`tab-pane fade ${
-                              this.state.tabIndex === 2 && "show active"
-                            }`}
+                            className={`tab-pane fade ${this.state.tabIndex ===
+                              2 && "show active"}`}
                           >
                             <div className="position-relative-alert">
                               <ul
@@ -3056,10 +3038,8 @@ class Alerts extends Component {
                                 {this.state.notiInt && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${
-                                        this.state.innerTabIndexNoti === 0 &&
-                                        "active"
-                                      }`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndexNoti === 0 && "active"}`}
                                       data-toggle="tab"
                                       href="#Internal-noti-tab"
                                       role="tab"
@@ -3073,10 +3053,8 @@ class Alerts extends Component {
                                 {this.state.notiTicketing && (
                                   <li className="nav-item">
                                     <a
-                                      className={`nav-link ${
-                                        this.state.innerTabIndexNoti === 1 &&
-                                        "active"
-                                      }`}
+                                      className={`nav-link ${this.state
+                                        .innerTabIndexNoti === 1 && "active"}`}
                                       data-toggle="tab"
                                       href="#ticket-noti-tab"
                                       role="tab"
@@ -3091,10 +3069,8 @@ class Alerts extends Component {
                             </div>
                             <div className="tab-content p-0 alert-p1">
                               <div
-                                className={`tab-pane fade ${
-                                  this.state.innerTabIndexNoti === 0 &&
-                                  "show active"
-                                }`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndexNoti === 0 && "show active"}`}
                                 id="Internal-noti-tab"
                                 role="tabpanel"
                                 aria-labelledby="Internal-noti-tab"
@@ -3158,10 +3134,8 @@ class Alerts extends Component {
                                 </div>
                               </div>
                               <div
-                                className={`tab-pane fade ${
-                                  this.state.innerTabIndexNoti === 1 &&
-                                  "show active"
-                                }`}
+                                className={`tab-pane fade ${this.state
+                                  .innerTabIndexNoti === 1 && "show active"}`}
                                 id="ticket-noti-tab"
                                 role="tabpanel"
                                 aria-labelledby="ticket-noti-tab"
@@ -3493,7 +3467,7 @@ class Alerts extends Component {
                 value={this.state.alertEdit.alertIsActive}
                 onChange={this.editAlertModalData.bind(this)}
               >
-                <option value="">Select</option>
+                {/* <option value="">Select</option> */}
                 <option value={"Active"}>Active</option>
                 <option value={"InActive"}>Inactive</option>
               </select>
