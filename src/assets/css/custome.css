@@ -3325,6 +3325,30 @@ table tr th:last-child {
   background: url("./../Images//table-arr.png") no-repeat right 20px center;
   background-size: 13px;
 }
+.store-report-add .normal-dropdown .css-1hwfws3 {
+  background-color: #ecf2f4;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 4px;
+  padding-left: 14px;
+  padding-right: 40px;
+}
+.store-report-add .normal-dropdown .css-1wa3eu0-placeholder {
+  color: #9b9b9b;
+  font-weight: 700;
+}
+.store-report-add .normal-dropdown .css-yk16xz-control,
+.store-report-add .normal-dropdown .css-1pahdxg-control {
+  min-height: auto;
+}
+.store-report-add .normal-dropdown .css-1n7v3ny-option,
+.store-report-add .normal-dropdown .css-yt9ioa-option,
+.store-report-add .normal-dropdown .css-9gakcf-option {
+  padding: 3px 14px;
+}
+.store-report-add .issuetype-cusdrp .category-box {
+  margin-bottom: 0;
+}
 .common-adv-padd {
   padding: 20px 0;
 }
@@ -3988,7 +4012,16 @@ table tr th:last-child {
 .category-box input {
   display: none;
 }
-#overlaySla {
+#overlaySla,
+#overlayDepartment,
+#overlayFunction,
+#overlayPriority,
+#overlayClaimStatus,
+#overlayClaimCategory,
+#overlayClaimSubCategory,
+#overlayClaimIssueType,
+#overlayCampaignName,
+#overlayCampaignStatus {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -3997,7 +4030,16 @@ table tr th:last-child {
   z-index: 1000;
   display: none;
 }
-#overlaySla.show {
+#overlaySla.show,
+#overlayDepartment.show,
+#overlayFunction.show,
+#overlayPriority.show,
+#overlayClaimStatus.show,
+#overlayClaimCategory.show,
+#overlayClaimSubCategory.show,
+#overlayClaimIssueType.show,
+#overlayCampaignName.show,
+#overlayCampaignStatus.show {
   display: block;
 }
 .dropdown-menu-sla {
@@ -10534,6 +10576,13 @@ table tr th:last-child {
   text-align: left;
   padding: 10px 15px;
 }
+.store-report-add .ticketstrReport select {
+  padding-left: 15px;
+}
+.store-report-add .issuetype-cusdrp .btn {
+  padding: 7px 40px 7px 15px;
+  font-size: 14px;
+}
 .issuetype-cusdrp .dropdown-menu.show {
   margin: 0;
   width: 100%;
@@ -10624,6 +10673,9 @@ table tr th:last-child {
   display: block;
   margin-bottom: 13px;
 }
+.store-report-add .issuetype-cusdrp .category-box li:last-child {
+  margin-bottom: 0;
+}
 .category-scroll {
   max-height: 190px;
   overflow-x: hidden;
@@ -10668,6 +10720,9 @@ table tr th:last-child {
 .issuesladrop {
   background: #fff url("./../Images//table-arr.png") no-repeat right 12px center;
   background-size: 12px;
+}
+.store-report-add .issuesladrop {
+  background-position: right 19px center;
 }
 .issuetype-cusdrp .category-box label img {
   height: auto;
@@ -11683,4 +11738,37 @@ table tr th:last-child {
 .myticket-knowpopup {
   margin-right: auto !important;
   min-width: 30%;
+}
+.plusline1new {
+  border-right: 1px solid #9b9b9b;
+  padding-top: 12px;
+  padding-bottom: 14px;
+}
+
+.campaign-end-date .ant-calendar-picker-input {
+  height: 37px;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
+  border-color: transparent;
+}
+.campaign-end-date
+  .ant-calendar-picker:hover
+  .ant-calendar-picker-input:not(.ant-input-disabled) {
+  border-color: transparent;
+}
+.campaign-end-date .ant-calendar-picker:hover .ant-calendar-picker-clear {
+  opacity: 0;
+  pointer-events: none;
+}
+.campaign-end-date .ant-calendar-picker-icon {
+  display: none;
+}
+.campaign-end-date .ant-calendar-range-picker-input {
+  font-weight: 700;
+  color: #333;
+}
+.campaign-end-date .ant-calendar-range-picker-separator {
+  color: #333;
+  font-weight: 700;
+  vertical-align: middle;
 }

@@ -6,7 +6,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 
 class StoreAddTask extends Component {
@@ -30,7 +30,7 @@ class StoreAddTask extends Component {
       isassignto: "",
       ispriority: "",
       isfuncation: "",
-      isdepartment: ""
+      isdepartment: "",
     };
   }
   componentDidMount() {
@@ -94,7 +94,7 @@ class StoreAddTask extends Component {
           method: "post",
           url: config.apiUrl + "/StoreTask/CreateStoreTask",
           headers: authHeader(),
-          data: inputParams
+          data: inputParams,
         })
           .then(function(response) {
             debugger;
@@ -108,14 +108,15 @@ class StoreAddTask extends Component {
                 funcationID: 0,
                 priorityID: 0,
                 taskDetails: "",
-                taskTitle: ""
+                taskTitle: "",
               });
+              self.props.history.push("/store/StoreTask");
             } else {
               NotificationManager.error("Task Not Created successfully.");
               self.setState({ isAddloading: false });
             }
           })
-          .catch(response => {
+          .catch((response) => {
             console.log(response, "---handleCreateTask");
           });
       }
@@ -128,7 +129,7 @@ class StoreAddTask extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         var message = response.data.message;
@@ -139,7 +140,7 @@ class StoreAddTask extends Component {
           self.setState({ departmentData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetDepartement");
       });
   }
@@ -151,7 +152,7 @@ class StoreAddTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
-      params: { DepartmentId: DepartmentId }
+      params: { DepartmentId: DepartmentId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -162,7 +163,7 @@ class StoreAddTask extends Component {
           self.setState({ funcationData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetFuncationByDepartmentId");
       });
   }
@@ -176,8 +177,8 @@ class StoreAddTask extends Component {
       url: config.apiUrl + "/StoreTask/GetAssignedTo",
       headers: authHeader(),
       params: {
-        Function_ID: this.state.funcationID
-      }
+        Function_ID: this.state.funcationID,
+      },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -188,7 +189,7 @@ class StoreAddTask extends Component {
           self.setState({ assignToData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetAssignTo");
       });
   }
@@ -199,7 +200,7 @@ class StoreAddTask extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         var message = response.data.message;
@@ -210,13 +211,13 @@ class StoreAddTask extends Component {
           self.setState({ priorityData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetPriority");
       });
   }
 
   ///handle input change
-  handleOnchange = e => {
+  handleOnchange = (e) => {
     debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
@@ -225,7 +226,7 @@ class StoreAddTask extends Component {
       } else {
         this.setState({
           taskTitle: value,
-          istaskTitle: "Please Enter Task Title"
+          istaskTitle: "Please Enter Task Title",
         });
       }
     }
@@ -235,7 +236,7 @@ class StoreAddTask extends Component {
           departmentID: value,
           funcationData: [],
           funcationID: 0,
-          isdepartment: ""
+          isdepartment: "",
         });
         setTimeout(() => {
           this.handleGetFuncationByDepartmentId();
@@ -243,7 +244,7 @@ class StoreAddTask extends Component {
       } else {
         this.setState({
           isdepartment: "Please Select Department.",
-          departmentID: value
+          departmentID: value,
         });
       }
     }
@@ -253,7 +254,7 @@ class StoreAddTask extends Component {
           funcationID: value,
           isfuncation: "",
           assignToID: 0,
-          assignToData: []
+          assignToData: [],
         });
         setTimeout(() => {
           this.handleGetAssignTo();
@@ -261,7 +262,7 @@ class StoreAddTask extends Component {
       } else {
         this.setState({
           isfuncation: "Please Select Funcation.",
-          funcationID: value
+          funcationID: value,
         });
       }
     }
@@ -269,12 +270,12 @@ class StoreAddTask extends Component {
       if (value !== 0) {
         this.setState({
           priorityID: value,
-          ispriority: ""
+          ispriority: "",
         });
       } else {
         this.setState({
           ispriority: "Please Select Priority.",
-          priorityID: value
+          priorityID: value,
         });
       }
     }
@@ -283,12 +284,12 @@ class StoreAddTask extends Component {
       if (value !== 0) {
         this.setState({
           assignToID: value,
-          isassignto: ""
+          isassignto: "",
         });
       } else {
         this.setState({
           isassignto: "Please Select Assign To.",
-          assignToID: value
+          assignToID: value,
         });
       }
     }
@@ -296,12 +297,12 @@ class StoreAddTask extends Component {
       if (value !== "") {
         this.setState({
           taskDetails: value,
-          istaskDetails: ""
+          istaskDetails: "",
         });
       } else {
         this.setState({
           istaskDetails: "Please Enter Task Details.",
-          taskDetails: value
+          taskDetails: value,
         });
       }
     }

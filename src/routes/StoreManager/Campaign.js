@@ -36,7 +36,7 @@ class Campaign extends Component {
       isIssueType: "",
       isTiketTitle: "",
       isTiketDetails: "",
-      loading: false
+      loading: false,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -62,12 +62,12 @@ class Campaign extends Component {
     if (expanded) {
       rowExpandedCount = this.state.rowExpandedCount + 1;
       this.setState({
-        rowExpandedCount
+        rowExpandedCount,
       });
     } else {
       rowExpandedCount = this.state.rowExpandedCount - 1;
       this.setState({
-        rowExpandedCount
+        rowExpandedCount,
       });
     }
   }
@@ -75,19 +75,19 @@ class Campaign extends Component {
   onStatusChange(campaignTypeID, campaignCustomerID, e) {
     debugger;
     this.state.campaignGridData
-      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
-        x => x.campaignCustomerID == campaignCustomerID
+        (x) => x.campaignCustomerID == campaignCustomerID
       )[0].campaignStatus = parseInt(e.target.value);
     this.state.campaignGridData
-      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
-        x => x.campaignCustomerID == campaignCustomerID
+        (x) => x.campaignCustomerID == campaignCustomerID
       )[0].response = 0;
     this.state.campaignGridData
-      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
-        x => x.campaignCustomerID == campaignCustomerID
+        (x) => x.campaignCustomerID == campaignCustomerID
       )[0].callReScheduledTo = "";
     this.setState({ campaignGridData: this.state.campaignGridData });
   }
@@ -95,9 +95,9 @@ class Campaign extends Component {
   onResponseChange(campaignTypeID, campaignCustomerID, e) {
     debugger;
     this.state.campaignGridData
-      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
-        x => x.campaignCustomerID == campaignCustomerID
+        (x) => x.campaignCustomerID == campaignCustomerID
       )[0].response = parseInt(e.target.value);
     this.setState({ campaignGridData: this.state.campaignGridData });
   }
@@ -105,9 +105,9 @@ class Campaign extends Component {
   onDateChange(campaignTypeID, campaignCustomerID, e) {
     debugger;
     this.state.campaignGridData
-      .filter(x => x.campaignTypeID == campaignTypeID)[0]
+      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
-        x => x.campaignCustomerID == campaignCustomerID
+        (x) => x.campaignCustomerID == campaignCustomerID
       )[0].callReScheduledTo = e;
     this.setState({ campaignGridData: this.state.campaignGridData });
   }
@@ -116,12 +116,12 @@ class Campaign extends Component {
     debugger;
     let self = this;
     this.setState({
-      loading: true
+      loading: true,
     });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -129,14 +129,14 @@ class Campaign extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            campaignGridData: data
+            campaignGridData: data,
           });
         }
         self.setState({
-          loading: false
+          loading: false,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -153,7 +153,7 @@ class Campaign extends Component {
       calculatedCallReScheduledTo;
 
     this.setState({
-      loading: true
+      loading: true,
     });
 
     if (campaignStatus === 102) {
@@ -171,8 +171,8 @@ class Campaign extends Component {
         CampaignCustomerID: campaignCustomerID,
         StatusNameID: campaignStatus,
         ResponseID: response,
-        CallReScheduledTo: calculatedCallReScheduledTo
-      }
+        CallReScheduledTo: calculatedCallReScheduledTo,
+      },
     })
       .then(function(res) {
         debugger;
@@ -182,11 +182,11 @@ class Campaign extends Component {
           self.handleCampaignGridData();
         } else {
           self.setState({
-            loading: false
+            loading: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -195,7 +195,7 @@ class Campaign extends Component {
     debugger;
     let self = this;
     this.setState({
-      loading: true
+      loading: true,
     });
 
     axios({
@@ -204,8 +204,8 @@ class Campaign extends Component {
       headers: authHeader(),
       params: {
         CampaignTypeID: campaignTypeID,
-        IsClosed: 1
-      }
+        IsClosed: 1,
+      },
     })
       .then(function(res) {
         debugger;
@@ -215,20 +215,20 @@ class Campaign extends Component {
           self.handleCampaignGridData();
         } else {
           self.setState({
-            loading: false
+            loading: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
   firstActionOpenClps() {
-    this.setState(state => ({ FirstCollapse: !state.FirstCollapse }));
+    this.setState((state) => ({ FirstCollapse: !state.FirstCollapse }));
   }
   twoActionOpenClps() {
-    this.setState(state => ({ TwoCollapse: !state.TwoCollapse }));
+    this.setState((state) => ({ TwoCollapse: !state.TwoCollapse }));
   }
 
   handleCreateTicket() {
@@ -307,7 +307,7 @@ class Campaign extends Component {
           TicketSourceID: 1,
           OrderItemID: "",
           StoreID: "",
-          ticketingMailerQues: []
+          ticketingMailerQues: [],
         };
         formData.append("ticketingDetails", JSON.stringify(paramData));
         formData.append("Filedata", []);
@@ -320,7 +320,7 @@ class Campaign extends Component {
           method: "post",
           url: config.apiUrl + "/Ticketing/createTicket",
           headers: authHeader(),
-          data: formData
+          data: formData,
         })
           .then(function(res) {
             debugger;
@@ -328,11 +328,12 @@ class Campaign extends Component {
             let TID = res.data.responseData;
             if (Msg) {
               NotificationManager.success(res.data.message);
+              self.setState({ raisedTicketModal: false });
             } else {
               NotificationManager.error(res.data.message);
             }
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
       }
@@ -355,7 +356,7 @@ class Campaign extends Component {
   ////handle raised ticket modal close
   handleRaisedTicketModalClose() {
     this.setState({
-      raisedTicketModal: false
+      raisedTicketModal: false,
     });
   }
   ////handle raised ticket modal open
@@ -385,7 +386,7 @@ class Campaign extends Component {
       isSubCategory: "",
       isIssueType: "",
       isTiketTitle: "",
-      isTiketDetails: ""
+      isTiketDetails: "",
     });
   }
 
@@ -396,7 +397,7 @@ class Campaign extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
@@ -408,7 +409,7 @@ class Campaign extends Component {
           self.setState({ brandData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetBrand");
       });
   }
@@ -421,7 +422,7 @@ class Campaign extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
-      params: { BrandID: Number(brandID) }
+      params: { BrandID: Number(brandID) },
     })
       .then(function(response) {
         debugger;
@@ -432,7 +433,7 @@ class Campaign extends Component {
           self.setState({ categoryData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetCateogory");
       });
   }
@@ -446,7 +447,7 @@ class Campaign extends Component {
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
-      params: { CategoryID: categoryID }
+      params: { CategoryID: categoryID },
     })
       .then(function(response) {
         debugger;
@@ -458,7 +459,7 @@ class Campaign extends Component {
           self.setState({ subCategoryData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetSubCateogory");
       });
   }
@@ -472,7 +473,7 @@ class Campaign extends Component {
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
-      params: { SubCategoryID: subCategoryId }
+      params: { SubCategoryID: subCategoryId },
     })
       .then(function(response) {
         debugger;
@@ -484,12 +485,12 @@ class Campaign extends Component {
           self.setState({ issueTypeData: [] });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response, "---handleGetSubCateogory");
       });
   }
 
-  handleOnchange = e => {
+  handleOnchange = (e) => {
     debugger;
     const { name, value } = e.target;
     var modalData = this.state.modalData;
@@ -524,12 +525,12 @@ class Campaign extends Component {
       if (value !== 0) {
         this.setState({
           priorityID: value,
-          ispriority: ""
+          ispriority: "",
         });
       } else {
         this.setState({
           ispriority: "Please Select Priority.",
-          priorityID: value
+          priorityID: value,
         });
       }
     }
@@ -544,7 +545,7 @@ class Campaign extends Component {
           isBrand: "",
           categoryData: [],
           subCategoryData: [],
-          issueTypeData: []
+          issueTypeData: [],
         });
         setTimeout(() => {
           this.handleGetCateogory();
@@ -563,7 +564,7 @@ class Campaign extends Component {
           modalData,
           isCategory: "",
           subCategoryData: [],
-          issueTypeData: []
+          issueTypeData: [],
         });
         setTimeout(() => {
           this.handleGetSubCateogory();
@@ -585,7 +586,7 @@ class Campaign extends Component {
         modalData["subCategoryId"] = value;
         this.setState({
           modalData,
-          isSubCategory: "Please Select Sub Category."
+          isSubCategory: "Please Select Sub Category.",
         });
       }
     }
@@ -606,7 +607,7 @@ class Campaign extends Component {
         modalData["tiketTitle"] = value;
         this.setState({
           modalData,
-          isTiketTitle: "Please Enter Ticket Title."
+          isTiketTitle: "Please Enter Ticket Title.",
         });
       }
     }
@@ -618,7 +619,7 @@ class Campaign extends Component {
         modalData["tiketDetails"] = value;
         this.setState({
           modalData,
-          isTiketDetails: "Please Enter Tiket Details."
+          isTiketDetails: "Please Enter Tiket Details.",
         });
       }
     }
@@ -632,23 +633,23 @@ class Campaign extends Component {
             columns={[
               {
                 title: "Campaign Name",
-                dataIndex: "campaignName"
+                dataIndex: "campaignName",
               },
               {
                 title: "Contacts",
-                dataIndex: "contactCount"
+                dataIndex: "contactCount",
               },
               {
                 title: "Campaign Script",
-                dataIndex: "campaignScript"
+                dataIndex: "campaignScript",
               },
               {
                 title: "Campaign End Date",
-                dataIndex: "campaignEndDate"
+                dataIndex: "campaignEndDate",
               },
               {
                 title: "Campaign Status",
-                render: row => {
+                render: (row) => {
                   return (
                     <button
                       className="closebtn"
@@ -663,14 +664,14 @@ class Campaign extends Component {
                   );
                 },
                 className:
-                  this.state.rowExpandedCount === 0 ? "d-block" : "d-none"
+                  this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
               },
               {
-                title: "Actions"
+                title: "Actions",
                 // dataIndex: "orderPricePaid"
-              }
+              },
             ]}
-            expandedRowRender={row => {
+            expandedRowRender={(row) => {
               return (
                 <Table
                   dataSource={row.storeCampaignCustomerList}
@@ -687,11 +688,11 @@ class Campaign extends Component {
                             </span>
                           </>
                         );
-                      }
+                      },
                     },
                     {
                       title: "Date",
-                      dataIndex: "campaignTypeDate"
+                      dataIndex: "campaignTypeDate",
                     },
                     {
                       title: "Status",
@@ -786,7 +787,7 @@ class Campaign extends Component {
                             </div>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
                       title: "Responce",
@@ -814,7 +815,8 @@ class Campaign extends Component {
                               {item.campaignResponseList !== null &&
                                 item.campaignResponseList
                                   .filter(
-                                    x => x.statusNameID === item.campaignStatus
+                                    (x) =>
+                                      x.statusNameID === item.campaignStatus
                                   )
                                   .map((items, i) => (
                                     <option key={i} value={items.responseID}>
@@ -824,7 +826,7 @@ class Campaign extends Component {
                             </select>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
                       title: "Call Recheduled To",
@@ -871,7 +873,7 @@ class Campaign extends Component {
                             />
                           </div>
                         );
-                      }
+                      },
                     },
                     {
                       title: "Actions",
@@ -945,8 +947,8 @@ class Campaign extends Component {
                             </div>
                           </div>
                         );
-                      }
-                    }
+                      },
+                    },
                   ]}
                   pagination={false}
                 />

@@ -29,7 +29,7 @@ class Header extends Component {
       notificationModal: false,
       notificationCount: 0,
       notificationData: [],
-      TaskID:0
+      TaskID: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -140,18 +140,18 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          // self.handlreRedirectPage(typeId);
+          self.handlreRedirectPage(typeId);
           // self.props.history.push({
           //   pathname: "/store/editStoreTask",
           //   state: { TaskID: typeId }
           // });
-          setTimeout(function() {
-            self.props.history.push({
-              pathname: "/store/editStoreTask",
-              state: self.state
-            });
-          }, 100);
-        } 
+          // setTimeout(function() {
+          //   self.props.history.push({
+          //     pathname: "/store/editStoreTask",
+          //     state: self.state
+          //   });
+          // }, 100);
+        }
       })
       .catch((response) => {
         console.log(response, "---handleGetNotigfication");
@@ -160,13 +160,10 @@ class Header extends Component {
 
   handlreRedirectPage(id) {
     debugger;
-
-    setTimeout(function() {
-      this.props.history.push({
-        pathname: "store/editStoreTask",
-        TaskID: id
-      });
-    }, 1000);
+    this.props.router.push({
+      pathname: "editStoreTask",
+      state: { TaskID: id },
+    });
   }
 
   render() {
@@ -446,11 +443,15 @@ class Header extends Component {
                                     {data.notificatonTypeName} No. :
                                     <span
                                       style={{ color: "#2561A8" }}
-                                      onClick={this.handleGetReadStoreNotification.bind(
+                                      onClick={this.handlreRedirectPage.bind(
                                         this,
-                                        data.notificatonTypeID,
-                                        data.notificatonType
+                                        data.notificatonTypeID
                                       )}
+                                      // onClick={this.handleGetReadStoreNotification.bind(
+                                      //   this,
+                                      //   data.notificatonTypeID,
+                                      //   data.notificatonType
+                                      // )}
                                     >
                                       {" " + data.notificatonTypeID}
                                     </span>
@@ -478,7 +479,6 @@ class Header extends Component {
                 );
               })
             )}
-
           </div>
         </Modal>
       </React.Fragment>

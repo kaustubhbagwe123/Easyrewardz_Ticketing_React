@@ -397,19 +397,19 @@ class Claim extends Component {
                                       <b>
                                         <p className="title">Category</p>
                                       </b>
-                                      <p className="sub-title">Defective article</p>
+                                  <p className="sub-title">{row.original.categoryName}</p>
                                     </div>
                                     <div>
                                       <b>
                                         <p className="title">Sub Category</p>
                                       </b>
-                                      <p className="sub-title">Customer wants refund</p>
+                                      <p className="sub-title">{row.original.subCategoryName}</p>
                                     </div>
                                     <div>
                                       <b>
                                         <p className="title">Type</p>
                                       </b>
-                                      <p className="sub-title">Delivery</p>
+                                      <p className="sub-title">{row.original.issueTypeName}</p>
                                     </div>
                                     </div>
                                   }

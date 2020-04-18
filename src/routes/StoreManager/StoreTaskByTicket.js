@@ -46,7 +46,7 @@ class StoreTaskByTicket extends Component {
       assignToName: "",
       userData: [],
       userModel: false,
-      progressData:{}
+      progressData: {},
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -64,7 +64,7 @@ class StoreTaskByTicket extends Component {
       this.setState({ taskId, ticketId });
       this.handleGetStoreTicketingTaskByTaskID(taskId);
       this.handleGetCommentOnTask(taskId);
-      this.handleGetStoreTaskProcressBar(taskId)
+      this.handleGetStoreTaskProcressBar(taskId);
       this.handleGetDepartement();
     } else {
       this.props.history.push("/store/StoreTask");
@@ -367,6 +367,17 @@ class StoreTaskByTicket extends Component {
   handleUserModelClose() {
     this.setState({ userModel: false });
   }
+  //// handle redirect to create claim page
+  handleRedirectToCreateClaim() {
+    debugger;
+    this.props.history.push({
+      pathname: "/store/raiseClaim",
+      state: {
+        taskId: this.state.taskId,
+        ticketId: this.state.ticketId,
+      },
+    });
+  }
   render() {
     return (
       <Fragment>
@@ -431,7 +442,12 @@ class StoreTaskByTicket extends Component {
                   className="ImgBlue-lbl"
                 />
                 <button type="button" className="raisedClaim-storeBtn">
-                  <label className="raisedClaim-lbl">RAISE CLAIM</label>
+                  <label
+                    className="raisedClaim-lbl"
+                    onClick={this.handleRedirectToCreateClaim.bind(this)}
+                  >
+                    RAISE CLAIM
+                  </label>
                 </button>
                 <button
                   type="button"
@@ -707,8 +723,12 @@ class StoreTaskByTicket extends Component {
                           showInfo={false}
                           // strokeColor={this.state.progressData.colorCode}
                           strokeColor={{
-                            '0%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[0]:"",
-                            '100%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[1]:"",
+                            "0%": this.state.progressData.colorCode
+                              ? this.state.progressData.colorCode.split(",")[0]
+                              : "",
+                            "100%": this.state.progressData.colorCode
+                              ? this.state.progressData.colorCode.split(",")[1]
+                              : "",
                           }}
                           percent={Number(this.state.progressData.progress)}
                         />
