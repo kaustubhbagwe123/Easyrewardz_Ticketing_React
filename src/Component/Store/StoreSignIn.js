@@ -37,6 +37,12 @@ class StoreSignIn extends Component {
     });
   }
 
+  handlePasswordChange = (e)=>{
+    this.setState({
+      password: e.target.value,
+    });
+  }
+
   componentDidMount() {
     debugger;
     if (this.props.location.encProgramCode) {
@@ -219,9 +225,7 @@ class StoreSignIn extends Component {
                     type="password"
                     className="program-code-textbox"
                     placeholder="Password*"
-                    name="password"
-                    onChange={this.hanleChange}
-                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
                     autoComplete="off"
                     maxLength={25}
                   />

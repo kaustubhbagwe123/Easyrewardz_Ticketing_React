@@ -37,6 +37,7 @@ class StoreDashboard extends Component {
       StatusModel: false,
       start: start,
       end: end,
+      dashboardGridData: [],
       BrandData: [],
       AgentData: [],
       AgentIds: "",
@@ -48,10 +49,16 @@ class StoreDashboard extends Component {
       assignToData: [],
       selectDepartment: 0,
       selectedFuncation: 0,
+      selectedPriority: 0,
       selectAssignTo: 0,
       priorityData: [],
       graphCount: {},
       loadingAbove: true,
+      task_Id: "",
+      Task_Claim: "",
+      Task_Ticket: "",
+      task_Title: "",
+      task_status: "",
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -69,12 +76,12 @@ class StoreDashboard extends Component {
   componentDidMount() {
     this.handleGetBrandList();
     this.handleGetAgentList();
-    this.handleGetPriorityList();
     this.handleGetDashboardGraphCount();
   }
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
     this.handleGetDepartmentDropdown();
+    this.handleGetPriorityList();
   }
   StatusOpenModel() {
     this.setState({ StatusModel: true });
@@ -82,7 +89,11 @@ class StoreDashboard extends Component {
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
-
+  hanldetoggleOnChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
   applyCallback = async (startDate, endDate) => {
     debugger;
     var startArr = endDate[0].split("-");
@@ -316,6 +327,10 @@ class StoreDashboard extends Component {
       this.setState({
         selectAssignTo: value,
       });
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
     }
   };
 
@@ -328,16 +343,16 @@ class StoreDashboard extends Component {
     var fromdate = moment(this.state.start).format("YYYY-MM-DD");
     var todate = moment(this.state.end).format("YYYY-MM-DD");
 
-    var finalData={}
-        finalData.UserIds= this.state.AgentIds;
-        finalData.DateFrom= fromdate;
-        finalData.DateEnd= todate;
-        finalData.BrandIDs= this.state.BrandIds;
+    var finalData = {};
+    finalData.UserIds = this.state.AgentIds;
+    finalData.DateFrom = fromdate;
+    finalData.DateEnd = todate;
+    finalData.BrandIDs = this.state.BrandIds;
     axios({
       method: "post",
       url: config.apiUrl + "/Graph/GetGraphCountData",
       headers: authHeader(),
-      data:finalData
+      data: finalData,
     })
       .then(function(res) {
         debugger;
@@ -485,12 +500,55 @@ class StoreDashboard extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
+        debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
           self.setState({ priorityData: data });
         } else {
           self.setState({ priorityData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  //// handle Search data in toggle
+  handleViewSearchData() {
+    debugger;
+    let self = this;
+    var taskId = "";
+    if (this.state.task_Id !== "") {
+      taskId = this.state.task_Id;
+    } else {
+      taskId = "0";
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDashboard/getstoreDashboardList",
+      headers: authHeader(),
+      data: {
+        taskid: parseInt(taskId),
+        Department: this.state.selectDepartment,
+        tasktitle: this.state.task_Title,
+        taskstatus: this.state.task_status,
+        ticketID: 0,
+        functionID: this.state.selectedFuncation,
+        AssigntoId: 0,
+        taskwithTicket: this.state.Task_Ticket,
+        taskwithClaim: this.state.Task_Claim,
+        claimID: 0,
+        Priority: 0,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ dashboardGridData: data });
+        } else {
+          self.setState({ dashboardGridData: [] });
         }
       })
       .catch((response) => {
@@ -773,11 +831,15 @@ class StoreDashboard extends Component {
                     <p className="card-head">Task</p>
                     <div className="aside-cont">
                       <div>
-                        <span className="card-value">10</span>
+                        <span className="card-value">
+                          {this.state.graphCount.taskOpen}
+                        </span>
                         <small>Open</small>
                       </div>
                       <div>
-                        <span className="card-value">45</span>
+                        <span className="card-value">
+                          {this.state.graphCount.taskDueToday}
+                        </span>
                         <small>Due Today</small>
                       </div>
                     </div>
@@ -788,7 +850,9 @@ class StoreDashboard extends Component {
                     <p className="card-head">Task</p>
                     <div className="aside-cont">
                       <div>
-                        <span className="card-value red-clr">40</span>
+                        <span className="card-value red-clr">
+                          {this.state.graphCount.taskOverDue}
+                        </span>
                         <small>Over-due</small>
                       </div>
                     </div>
@@ -799,11 +863,15 @@ class StoreDashboard extends Component {
                     <p className="card-head">Claim</p>
                     <div className="aside-cont">
                       <div>
-                        <span className="card-value">10</span>
+                        <span className="card-value">
+                          {this.state.graphCount.claimOpen}
+                        </span>
                         <small>Open</small>
                       </div>
                       <div>
-                        <span className="card-value">45</span>
+                        <span className="card-value">
+                          {this.state.graphCount.claimDueToday}
+                        </span>
                         <small>Due Today</small>
                       </div>
                     </div>
@@ -812,7 +880,9 @@ class StoreDashboard extends Component {
                 <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                   <div className="dash-top-cards">
                     <p className="card-head">Claim</p>
-                    <span className="card-value red-clr">40</span>
+                    <span className="card-value red-clr">
+                      {this.state.graphCount.claimOverDue}
+                    </span>
                     <small>Over-due</small>
                   </div>
                 </div>
@@ -821,7 +891,9 @@ class StoreDashboard extends Component {
                     <p className="card-head">Campaign</p>
                     <div className="aside-cont">
                       <div>
-                        <span className="card-value">60</span>
+                        <span className="card-value">
+                          {this.state.graphCount.campaingnOpen}
+                        </span>
                         <small>Open</small>
                       </div>
                     </div>
@@ -901,12 +973,18 @@ class StoreDashboard extends Component {
                               aria-controls="ticket-tab"
                               aria-selected="false"
                             >
-                              Claim:{" "}
+                              Claim:
                               <span className="myTciket-tab-span">05</span>
                             </a>
                           </li>
                           <div className="save-view-search">
-                            <button className="btn-inv">VIEW SEARCH</button>
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              onClick={this.handleViewSearchData.bind(this)}
+                            >
+                              VIEW SEARCH
+                            </button>
                           </div>
                         </ul>
                         <div className="tab-content p-0">
@@ -919,7 +997,14 @@ class StoreDashboard extends Component {
                             <div className="container-fluid">
                               <div className="row all-row">
                                 <div className="col-md-3">
-                                  <input type="text" placeholder="Task ID" />
+                                  <input
+                                    type="text"
+                                    placeholder="Task ID"
+                                    name="task_Id"
+                                    value={this.state.task_Id}
+                                    onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
                                 </div>
                                 <div className="col-md-3">
                                   <select
@@ -964,12 +1049,25 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Task With Claim (Yes-No)</option>
+                                  <select
+                                    value={this.state.Task_Claim}
+                                    name="Task_Claim"
+                                    onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Claim</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input type="text" placeholder="Task Title" />
+                                  <input
+                                    type="text"
+                                    placeholder="Task Title"
+                                    name="task_Title"
+                                    value={this.state.task_Title}
+                                    onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
                                 </div>
                                 <div className="col-md-3">
                                   <select
@@ -1008,6 +1106,10 @@ class StoreDashboard extends Component {
                                     className="no-bg"
                                     type="text"
                                     placeholder="Task Status"
+                                    name="task_status"
+                                    value={this.state.task_status}
+                                    onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
                                   />
                                 </div>
                                 <div className="col-md-3">
@@ -1016,13 +1118,34 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Task With Ticket (Yes-No)</option>
+                                  <select
+                                    value={this.state.Task_Ticket}
+                                    name="Task_Ticket"
+                                    onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Ticket</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
+                                  <select
+                                    className="store-create-select"
+                                    name="selectedPriority"
+                                    onChange={this.handleDropdownOnchange}
+                                    value={this.state.selectedPriority}
+                                  >
                                     <option>Task Priority</option>
+                                    {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -1107,12 +1230,11 @@ class StoreDashboard extends Component {
                 </Collapse>
                 <div className="table-responsive tickhierpad">
                   <ReactTable
-                    data={dataStDash}
+                    data={this.state.dashboardGridData}
                     columns={[
                       {
                         Header: <span>ID</span>,
-                        accessor: "idClose",
-                        Cell: (props) => <label>ABCD123</label>,
+                        accessor: "taskid",
                       },
                       {
                         Header: (
@@ -1124,7 +1246,7 @@ class StoreDashboard extends Component {
                       },
                       {
                         Header: <span>Task Title</span>,
-                        accessor: "TaskTitle",
+                        accessor: "tasktitle",
                       },
                       {
                         Header: (
@@ -1132,7 +1254,7 @@ class StoreDashboard extends Component {
                             Department <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "DeptName",
+                        accessor: "department",
                       },
                       {
                         Header: (
@@ -1140,7 +1262,7 @@ class StoreDashboard extends Component {
                             Store Name <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "StName",
+                        accessor: "storeName",
                       },
                       {
                         Header: (
@@ -1148,10 +1270,10 @@ class StoreDashboard extends Component {
                             Creation On <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "creationNew",
-                        Cell: (props) => (
+                        accessor: "createdOn",
+                        Cell: (row) => (
                           <span>
-                            <label>12 March 2018</label>
+                            <label>{row.original.createdOn}</label>
 
                             <Popover
                               content={
@@ -1203,12 +1325,7 @@ class StoreDashboard extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "assignToNew",
-                        Cell: (props) => (
-                          <span>
-                            <label>A, Bansal</label>
-                          </span>
-                        ),
+                        accessor: "assigntoId",
                       },
                     ]}
                     // resizable={false}
