@@ -10,7 +10,7 @@ import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
-import { Select, Table } from "antd";
+import { Select, Table, message } from "antd";
 import { NotificationManager } from "react-notifications";
 import { Link } from "react-router-dom";
 import ReactAutocomplete from "react-autocomplete";
@@ -65,6 +65,18 @@ class RaiseClaim extends Component {
       modeData: [],
       purchaseFrmStorName: {},
       StorAddress: {},
+      OrderCreatDate: "",
+      orderId: "",
+      billId: "",
+      productBarCode: "",
+      orderMRP: "",
+      pricePaid: "",
+      discount: "",
+      orderNumber: "",
+      message: "",
+      size: "",
+      requiredSize: "",
+      selectedTicketSource: 0,
     };
     this.toggle = this.toggle.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -93,6 +105,86 @@ class RaiseClaim extends Component {
     this.handleModeOfPaymentDropDown();
     this.handleGetChannelOfPurchaseList();
   }
+
+  ////handle add manullay order
+  hadleAddManuallyOrderData() {
+    debugger;
+    if (this.validator.allValid()) {
+      let self = this;
+      var CustID = this.state.customerId;
+
+      this.setState({ saveLoader: true });
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Order/createOrder",
+        headers: authHeader(),
+        data: {
+          ProductBarCode: this.state.productBarCode,
+          OrderNumber: this.state.orderId,
+          BillID: this.state.billId,
+          TicketSourceID: this.state.selectedTicketSource,
+          ModeOfPaymentID: this.state.modeOfPayment,
+          TransactionDate: this.state.OrderCreatDate, ///createdDate,
+          InvoiceNumber: "",
+          InvoiceDate: this.state.OrderCreatDate, //createdDate,
+          OrderPrice: this.state.orderMRP,
+          PricePaid: this.state.pricePaid,
+          CustomerID: CustID,
+          PurchaseFromStoreId: this.state.purchaseFrmStorID,
+          Discount: this.state.discount,
+          Size: this.state.size,
+          RequireSize: this.state.requiredSize,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+
+          if (status === "Success") {
+            let data = res.data.responseData;
+            NotificationManager.success("New Order added successfully.");
+            // self.handleOrderSearchData(data);
+            
+            self.setState({
+              productBarCode: "",
+              billId: "",
+              orderId: "",
+              selectedTicketSource: 0,
+              modeOfPayment: 0,
+              OrderCreatDate: "",
+              orderMRP: "",
+              pricePaid: "",
+              purchaseFrmStorName: {},
+              discount: "",
+              size: "",
+              requiredSize: "",
+              message: "Success",
+              saveLoader: false,
+            });
+          } else {
+            NotificationManager.error("Order not added.");
+            self.setState({
+              saveLoader: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+      // } else {
+      //   NotificationManager.error("Order not added.");
+      //   self.setState({
+      //     validPurchaseStoreName: "Store name not exist",
+      //     saveLoader: false
+      //   });
+      // }
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
+  }
+
   ////handle select store
   HandleSelectdata(e, field, value, id) {
     //
@@ -216,7 +308,7 @@ class RaiseClaim extends Component {
             SrchEmailPhone,
           });
 
-          self.handleOrderSearchData("1", self);
+          self.handleOrderSearchData(self);
         }
       })
       .catch((response) => {
@@ -426,129 +518,45 @@ class RaiseClaim extends Component {
     });
   }
 
-  handleOrderSearchData(OrdData, e) {
+  handleOrderSearchData(e) {
     let self = this;
     var CustID = this.state.customerId;
     debugger;
-    if (OrdData === "1") {
+    if (CustID > 0) {
       if (this.state.ticketId == 0) {
         e.preventDefault();
       }
-
-      if (this.state.custAttachOrder === 0) {
-        // if (this.state.orderNumber.length > 0) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-          headers: authHeader(),
-          params: {
-            OrderNumber: this.state.orderNumber,
-            CustomerID: CustID,
-          },
-        })
-          .then(function(res) {
-            let Msg = res.data.message;
-            let mainData = res.data.responseData;
-
-            // var OrderSubItem = [];
-
-            // for (let i = 0; i < mainData.length; i++) {
-            //   if (mainData[i].orderItems.length > 0) {
-            //     for (let j = 0; j < mainData[i].orderItems.length; j++) {
-            //       OrderSubItem.push(mainData[i].orderItems[j]);
-            //     }
-            //   }
-            // }
-            self.setState({
-              message: Msg,
-              orderDetailsData: mainData,
-              // OrderSubItem,
-            });
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-        // } else {
-        //   self.setState({
-        //     validOrdernumber: "Please Enter Order Number"
-        //   });
-        // }
-      }
-    } else if (OrdData === "2") {
-      if (this.state.custAttachOrder === 0) {
-        // if (this.state.ModalorderNumber.length > 0) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-          headers: authHeader(),
-          params: {
-            OrderNumber: this.state.ModalorderNumber,
-            CustomerID: CustID,
-          },
-        })
-          .then(function(res) {
-            //
-            let Msg = res.data.message;
-            let mainData = res.data.responseData;
-
-            // var OrderSubItem = [];
-
-            // for (let i = 0; i < mainData.length; i++) {
-            //   if (mainData[i].orderItems.length > 0) {
-            //     for (let j = 0; j < mainData[i].orderItems.length; j++) {
-            //       OrderSubItem.push(mainData[i].orderItems[j]);
-            //     }
-            //   }
-            // }
-            self.setState({
-              message: Msg,
-              orderDetailsData: mainData,
-              // OrderSubItem,
-            });
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-        // } else {
-        //   self.setState({
-        //     validMdlOrdernumber: "Please Enter Order Number",
-        //   });
-        // }
-      }
-    } else {
       axios({
         method: "post",
         url: config.apiUrl + "/Order/getOrderListWithItemDetails",
         headers: authHeader(),
         params: {
-          OrderNumber: OrdData,
+          OrderNumber: this.state.orderNumber,
           CustomerID: CustID,
         },
       })
         .then(function(res) {
-          // let Msg = res.data.message;
+          let message = res.data.message;
           let mainData = res.data.responseData;
-
-          self.handleChangeToggle();
-          // var OrderSubItem = [];
-
-          // for (let i = 0; i < mainData.length; i++) {
-          //   if (mainData[i].orderItems.length > 0) {
-          //     for (let j = 0; j < mainData[i].orderItems.length; j++) {
-          //       OrderSubItem.push(mainData[i].orderItems[j]);
-          //     }
-          //   }
-          // }
-          self.setState({
-            message: "Success",
-            orderDetailsData: mainData,
-            // OrderSubItem,
-            orderNumber: "",
-          });
+          if (message === "Success" && mainData) {
+            self.setState({
+              SearchDetails: true,
+              orderDetailsData: mainData,
+            });
+          } else {
+            self.setState({
+              SearchDetails: false,
+              orderDetailsData: mainData,
+            });
+          }
         })
         .catch((data) => {
           console.log(data);
         });
+    } else {
+      e.preventDefault();
+      this.setState({ searchCompulsion: "Search field is compulsory." });
+      return false;
     }
   }
 
@@ -998,6 +1006,7 @@ class RaiseClaim extends Component {
   }
 
   handleAddStoreClaim() {
+    debugger;
     if (this.handleValidation()) {
       const formData = new FormData();
       var paramData = {
@@ -1030,9 +1039,9 @@ class RaiseClaim extends Component {
         var OrderData = null;
       }
 
-      var item_data = {};
       var order_itemData = [];
       for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+        var item_data = {};
         item_data["OrderItemID"] = this.state.SelectedItemData[i][
           "orderItemID"
         ];
@@ -1115,22 +1124,6 @@ class RaiseClaim extends Component {
             });
             self.handleGetCustomerData(GetCustId);
           }
-          // else {
-          //   var filter = Number(self.state.SrchEmailPhone.trim());
-          //   if (filter) {
-          //     self.setState({
-          //       customerPhoneNumber: self.state.SrchEmailPhone.trim()
-          //     });
-          //   } else {
-          //     self.setState({
-          //       customerEmailId: self.state.SrchEmailPhone.trim()
-          //     });
-          //   }
-          //   self.setState({
-          //     message: res.data.message
-          //   });
-          //   // NotificationManager.error(res.data.message);
-          // }
         })
         .catch((data) => {
           console.log(data);
@@ -1156,13 +1149,6 @@ class RaiseClaim extends Component {
       .then(function(res) {
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
-        // CustData.customerPhone = CustData.customerPhoneNumber;
-        // CustData.customername = CustData.customerName;
-        // CustData.custEmailId = CustData.customerEmailId;
-        // CustData.altNo = CustData.altNumber;
-        // CustData.altEmail = CustData.altEmailID;
-        // CustData.editDOB = CustData.dob;
-
         if (CustMsg === "Success") {
           self.setState({ customerData: customerData, loading: false });
           self.handleEditCustomerClose();
@@ -1183,6 +1169,77 @@ class RaiseClaim extends Component {
   handleAddOrder() {
     this.setState({ showManual: !this.state.showManual });
   }
+  setTicketSourceValue = (e) => {
+    //
+    let value = e.currentTarget.value;
+    this.setState({ selectedTicketSource: value });
+  };
+  handleManuallyOnchange = (e) => {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  };
+  setModePaymentValue = (e) => {
+    let dataValue = e.currentTarget.value;
+    this.setState({ modeOfPayment: dataValue });
+  };
+  handleByDateCreate = (date) => {
+    this.setState({ OrderCreatDate: date });
+  };
+  handleNumberOnchange = (e) => {
+    //
+    var values = e.target.value;
+    var names = e.target.name;
+
+    if (isNaN(values)) {
+      return false;
+    }
+    var splitText = values.split(".");
+    var index = values.indexOf(".");
+    if (index !== -1) {
+      if (splitText) {
+        if (splitText[1].length <= 2) {
+          if (index !== -1 && splitText.length === 2) {
+            if (names === "orderMRP") {
+              this.setState({ orderMRP: values });
+            } else if (names === "pricePaid") {
+              this.setState({ pricePaid: values });
+            } else if (names === "discount") {
+              this.setState({ discount: values });
+            } else if (names === "size") {
+              this.setState({ size: values });
+            } else if (names === "requiredSize") {
+              this.setState({ requiredSize: values });
+            }
+          }
+        } else {
+          return false;
+        }
+      } else {
+        if (names === "orderMRP") {
+          this.setState({ orderMRP: values });
+        } else if (names === "pricePaid") {
+          this.setState({ pricePaid: values });
+        } else if (names === "discount") {
+          this.setState({ discount: values });
+        } else if (names === "size") {
+          this.setState({ size: values });
+        } else if (names === "requiredSize") {
+          this.setState({ requiredSize: values });
+        }
+      }
+    } else {
+      if (names === "orderMRP") {
+        this.setState({ orderMRP: values });
+      } else if (names === "pricePaid") {
+        this.setState({ pricePaid: values });
+      } else if (names === "discount") {
+        this.setState({ discount: values });
+      } else if (names === "size") {
+        this.setState({ size: values });
+      } else if (names === "requiredSize") {
+        this.setState({ requiredSize: values });
+      }
+    }
+  };
   render() {
     const { orderDetailsData, customerData } = this.state;
 
@@ -1209,10 +1266,10 @@ class RaiseClaim extends Component {
         <div className="raiseclaim">
           <div className="row" style={{ background: "#ecf2f4" }}>
             <div className="col-md-8">
-              <label className="claim-ticket">Claim Ticket ID :</label>
+              {/* <label className="claim-ticket">Claim Ticket ID :</label>
               <label className="claim-A22345">
                 <b>{this.state.ticketId}</b>
-              </label>
+              </label> */}
             </div>
             <div className="col-md-4">
               <div
@@ -1323,8 +1380,7 @@ class RaiseClaim extends Component {
                                   <form
                                     name="form"
                                     onSubmit={this.handleOrderSearchData.bind(
-                                      this,
-                                      "1"
+                                      this
                                     )}
                                   >
                                     <div>
@@ -1332,8 +1388,8 @@ class RaiseClaim extends Component {
                                         type="text"
                                         className="searchtext"
                                         placeholder="Search Order"
-                                        name="ModalorderNumber"
-                                        value={this.state.ModalorderNumber}
+                                        name="orderNumber"
+                                        value={this.state.orderNumber}
                                         onChange={this.handleOrderChange.bind(
                                           this
                                         )}
@@ -1342,7 +1398,7 @@ class RaiseClaim extends Component {
                                         src={SearchBlackImg}
                                         alt="Search"
                                         className="searchImg-raise"
-                                        onClick={this.handleShowSearchDetails.bind(
+                                        onClick={this.handleOrderSearchData.bind(
                                           this
                                         )}
                                       />
@@ -1568,19 +1624,6 @@ class RaiseClaim extends Component {
                                     )}
                                   </div>
                                   <div className="col-md-6">
-                                    {/* <select
-                    value={this.state.selectedTicketSource}
-                    onChange={this.setTicketSourceValue}
-                    className="category-select-system dropdown-label"
-                  >
-                    <option>Sources</option>
-                    {this.state.TicketSourceData !== null &&
-                      this.state.TicketSourceData.map((item, i) => (
-                        <option key={i} value={item.ticketSourceId}>
-                          {item.ticketSourceName}
-                        </option>
-                      ))}
-                  </select> */}
                                     <select
                                       value={this.state.selectedTicketSource}
                                       onChange={this.setTicketSourceValue}

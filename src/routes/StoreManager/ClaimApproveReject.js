@@ -1,22 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { Collapse, CardBody, Card } from "reactstrap";
 // import TableDemo from "../TableDemo";
-import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
 import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
-import Headphone2Img from "./../../assets/Images/headphone2.png";
-import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import DownImg from "./../../assets/Images/down.png";
 import storeImg from "./../../assets/Images/store.png";
 import ReactTable from "react-table";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
-import { Select, Table } from "antd";
+import { Table } from "antd";
 import { NotificationManager } from "react-notifications";
-
-const { Option } = Select;
-const NEW_ITEM = "NEW_ITEM";
+import CancelImg from "./../../assets/Images/cancel.png";
+import Modal from "react-responsive-modal";
 
 class ClaimApproveReject extends Component {
   constructor(props) {
@@ -48,10 +44,17 @@ class ClaimApproveReject extends Component {
       finalClaimPercentage: "",
       errFinalClaimPercent: "",
       imageURL: "",
-      ticketID:0,
+      ticketID: 0,
+      ticketingTaskID: 0,
+      assignToName: "",
+      userModel: false,
+      userData: [],
+      assigneeID: 0,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
+    this.handleUserModelClose = this.handleUserModelClose.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +71,70 @@ class ClaimApproveReject extends Component {
     }
   }
 
+  ////handle get user dropdown
+  handleGetUserDropdown() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/ClaimAssignDropdown",
+      headers: authHeader(),
+      params: {
+        assignID: this.state.assigneeID,
+      },
+    })
+      .then(function(response) {
+        var userData = response.data.responseData;
+        var message = response.data.message;
+        if (message === "Success" && userData.length > 0) {
+          self.setState({
+            userModel: true,
+            userData,
+          });
+        } else {
+          self.setState({ userModel: true, userData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetUserDropdown");
+      });
+  }
+  ////handle assign task
+  handleAssignClaim() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/ClaimReAssign",
+      headers: authHeader(),
+      params: {
+        claimID: this.state.claimID,
+        assigneeID: this.state.agentId,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var responseData = response.data.responseData;
+        var message = response.data.message;
+        if (message === "Success") {
+          self.setState({ userModel: false, assigneeID: this.state.agentId });
+          NotificationManager.success("Task Assign Successfully.");
+          self.componentDidMount();
+        } else {
+          NotificationManager.error("Task Assign Fail.");
+          self.setState({ userModel: false, assigneeID: this.state.agentId });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleAssignTask");
+      });
+  }
+  ////handle user model open
+  handleUserModelOpen() {
+    this.setState({ userModel: true });
+  }
+  ////handle user model close
+  handleUserModelClose() {
+    this.setState({ userModel: false });
+  }
   handleToggle() {
     this.setState((state) => ({ collapse: !state.collapse }));
   }
@@ -76,7 +143,7 @@ class ClaimApproveReject extends Component {
       SearchDetails: !this.state.SearchDetails,
     });
   }
-
+  ////handle get brand list
   handleGetBrandList() {
     let self = this;
     axios({
@@ -98,7 +165,7 @@ class ClaimApproveReject extends Component {
         console.log(data);
       });
   }
-
+  ///handle get claim by id
   handleGetClaimByID(claimId) {
     debugger;
     this.setState({ isloading: true });
@@ -117,7 +184,15 @@ class ClaimApproveReject extends Component {
           var orderDetails = [];
           orderDetails.push(responseData.customOrderMaster);
           var imageURL = responseData.attachments[0].attachmentName;
+          var ticketingTaskID = responseData.ticketingTaskID;
+          var ticketID = responseData.ticketID;
+          var assignToName = responseData.assignTo;
+          var assigneeID = responseData.assigneeID;
           self.setState({
+            assigneeID,
+            assignToName,
+            ticketingTaskID,
+            ticketID,
             imageURL,
             selectBrand: responseData.brandID,
             list1Value: responseData.categoryName,
@@ -140,7 +215,7 @@ class ClaimApproveReject extends Component {
         console.log(response, "---handleGetTaskData");
       });
   }
-
+  ////handle add comment on claim
   handleAddStoreClaimComments() {
     let self = this;
     axios({
@@ -171,7 +246,7 @@ class ClaimApproveReject extends Component {
   handleOnChange(e) {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
-
+  ////handle get store claim comment by id
   handleGetStoreClaimComments(claimId) {
     let self = this;
     axios({
@@ -233,48 +308,42 @@ class ClaimApproveReject extends Component {
 
   render() {
     const { orderDetailsData } = this.state;
-
-    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
-      <Option key={o} value={item.categoryID}>
-        {item.categoryName}
-      </Option>
-    ));
-
-    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
-      <Option key={o} value={item.subCategoryID}>
-        {item.subCategoryName}
-      </Option>
-    ));
-
-    const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
-      <Option key={i} value={item.issueTypeID}>
-        {item.issueTypeName}
-      </Option>
-    ));
-
     return (
       <Fragment>
         <div className="row claim-header-card width">
           <div className="col-md-7">
             <label className="claim-title1">Claim Ticket ID :</label>
             <label className="claim-A22345">{this.state.claimID}</label>
-            <label className="claim-title1">Task ID :</label>
-            <label className="claim-A22345">A22345</label>
-            <label className="claim-title1">Ticket ID :</label>
-            <label className="claim-A22345">A22345</label>
+            {this.state.ticketingTaskID > 0 ? (
+              <>
+                <label className="claim-title1">Task ID :</label>
+                <label className="claim-A22345">
+                  {this.state.ticketingTaskID}
+                </label>
+              </>
+            ) : (
+              ""
+            )}
+            {this.state.ticketID > 0 ? (
+              <>
+                <label className="claim-title1">Ticket ID :</label>
+                <label className="claim-A22345">{this.state.ticketID}</label>
+              </>
+            ) : null}
           </div>
           <div className="col-md-5">
-            {/* <div className="oval-approve">
-              <img src={StoreIcon} style={{ padding: "1px",width:"22px",height:"18px" }} alt="store-icon"/>
-              </div> */}
-            <div
-              className="oval-5-1-new-store"
-              style={{ marginLeft: "30px", marginRight: "15px" }}
+            <a
+              style={{ marginTop: "10px" }}
+              className="d-inline-block"
+              onClick={this.handleGetUserDropdown.bind(this)}
             >
-              <img src={storeImg} alt="headphone" className="storeImg-11" />
-            </div>
-            <label className="naman-R">Naman.R</label>
-            <img src={DownImg} alt="down" className="down-header" />
+              <div className="oval-5-1-new-store">
+                <img src={storeImg} alt="headphone" className="storeImg-11" />
+              </div>
+              <label className="naman-r">{this.state.assignToName}</label>
+              <img src={DownImg} alt="down" className="down-header" />
+            </a>
+
             <div className="btn-approrej">
               <button
                 type="button"
@@ -648,7 +717,7 @@ class ClaimApproveReject extends Component {
                     <b>CUSTOMER NAME</b>
                   </label>
                   <label>
-                    {this.state.customerName? (
+                    {this.state.customerName ? (
                       <span className="a">
                         {this.state.customerName.charAt(0).toUpperCase()}
                       </span>
@@ -692,6 +761,69 @@ class ClaimApproveReject extends Component {
             </div>
           </div>
         </div>
+        {/* --------------------------User Modal--------------------  */}
+        <Modal
+          open={this.state.userModel}
+          onClose={this.handleUserModelClose.bind(this)}
+          closeIconId="close"
+          modalId="labelmodel-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="myTicket-table remov agentlist" id="tic-det-assign">
+            <ReactTable
+              className="limit-react-table-body"
+              data={this.state.userData}
+              columns={[
+                {
+                  Header: <span>Emp Id</span>,
+                  accessor: "user_ID",
+                  width: 80,
+                },
+                {
+                  Header: <span>Name</span>,
+                  accessor: "userName",
+                },
+                // {
+                //   Header: <span>Designation</span>,
+                //   accessor: "designation"
+                // }
+              ]}
+              minRows={2}
+              showPagination={false}
+              resizable={false}
+              getTrProps={(rowInfo, column) => {
+                // ////
+                const index = column ? column.index : -1;
+                return {
+                  onClick: (e) => {
+                    ////
+                    this.selectedRow = index;
+                    var agentId = column.original["user_ID"];
+                    this.setState({ agentId });
+                  },
+                  style: {
+                    background: this.selectedRow === index ? "#ECF2F4" : null,
+                  },
+                };
+              }}
+            />
+            <div className="button-margin">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={this.handleAssignClaim.bind(this)}
+              >
+                SELECT
+              </button>
+            </div>
+            <div
+              className="cancel-assign"
+              onClick={this.handleUserModelClose.bind(this)}
+            >
+              <img src={CancelImg} alt="cancel" />
+            </div>
+          </div>
+        </Modal>
       </Fragment>
     );
   }

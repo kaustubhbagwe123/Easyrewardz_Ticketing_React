@@ -61,7 +61,7 @@ class EditStoreTask extends Component {
   }
 
   componentDidMount() {
-    debugger
+    debugger;
     if (this.props.location.state) {
       var taskId = this.props.location.state.TaskID;
       this.setState({ taskId });
@@ -584,9 +584,6 @@ class EditStoreTask extends Component {
             />
           </a>
           <div className="btnstore-last">
-            {/* <div className="oval-5-1-new-store">
-              <img src={storeImg} alt="headphone" className="storeImg-11" />
-            </div> */}
             <a
               className="d-inline-block"
               onClick={this.handleUserModelOpen.bind(this)}
@@ -597,21 +594,18 @@ class EditStoreTask extends Component {
               <label className="naman-r">{this.state.assignToName}</label>
               <img src={DownImg} alt="down" className="down-header" />
             </a>
-            {/* <label className="naman-r">{this.state.assignToName}</label> */}
+
             <button
               type="button"
               className="submitAs-reopen"
               onClick={this.handleUpdateTask.bind(this)}
-              // onClick={this.handleSubmitReopnModalOpen.bind(this)}
             >
               <label
                 className="myticket-submit-solve-button-text"
                 style={{ marginLeft: "0" }}
               >
-                {/* SUBMIT AS REOPEN */}
                 SUBMIT
               </label>
-              {/* <img src={DownWhiteImg} alt="headphone" className="down-white" /> */}
             </button>
           </div>
           <Modal
@@ -885,18 +879,22 @@ class EditStoreTask extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 progress-sect">
-                  <div className="col-md-3" style={{padding:0}}>
+                  <div className="col-md-3" style={{ padding: 0 }}>
                     <label className="store-date">
                       {this.state.progressData.closureTaskDate}{" "}
                     </label>
                   </div>
-                  <div className="col-md-9" style={{padding:0}}>
+                  <div className="col-md-9" style={{ padding: 0 }}>
                     <Progress
                       showInfo={false}
                       // strokeColor={this.state.progressData.colorCode}
                       strokeColor={{
-                        '0%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[0]:"",
-                        '100%': this.state.progressData.colorCode?this.state.progressData.colorCode.split(",")[1]:"",
+                        "0%": this.state.progressData.colorCode
+                          ? this.state.progressData.colorCode.split(",")[0]
+                          : "",
+                        "100%": this.state.progressData.colorCode
+                          ? this.state.progressData.colorCode.split(",")[1]
+                          : "",
                       }}
                       percent={Number(this.state.progressData.progress)}
                     />
