@@ -2689,8 +2689,24 @@ class StoreUsers extends Component {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Saved Successfully.");
+              self.handleGetStoreUserGridData();
               self.setState({
-                profileReadOnly: true,
+                brandData:[],
+                storeCodeData:[],
+                userName:"",
+                mobile_no:"",
+                email_Id:"",
+                departmentData:[],
+                selectedFunction:[],
+                userDesignationData:[],
+                reportDesignation:[],
+                reportToData:[],
+                selectedClaimBrand:[],
+                selectedClaimCategory:[],
+                selectedClaimSubCategory:[],
+                selectedClaimIssueType:[],
+                CrmRoleData:[],
+                activeData:[],
               });
             } else {
               NotificationManager.error("Record Not Saved.");
@@ -2841,7 +2857,6 @@ class StoreUsers extends Component {
         data: inputParam,
       })
         .then(function(response) {
-          debugger;
           var message = response.data.message;
           var responseData = response.data.responseData;
 
@@ -4005,16 +4020,7 @@ class StoreUsers extends Component {
                           </button>
                         </div>
                       )}
-                      {/* <div className="btn-coll">
-                        <button
-                          data-target="#mapped-category"
-                          data-toggle="collapse"
-                          className="butn"
-                          onClick={this.handleSaveProfileDetails.bind(this)}
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div> */}
+                     
                     </div>
                   </div>
                   <div className="collapse-cntr">

@@ -336,7 +336,9 @@ class StoreCRMRole extends Component {
               ModulesEnabled: "",
               ModulesDisabled: "",
               updateModulesEnabled: "",
-              updateModulesDisabled: ""
+              updateModulesDisabled: "",
+              checkRoleName:"",
+              statusCompulsory:""
             });
             self.handleGetCRMGridData();
           } else if (e === "update") {

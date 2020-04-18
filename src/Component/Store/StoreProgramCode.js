@@ -32,17 +32,12 @@ class StoreProgramCode extends Component {
         "https://erbelltkt.dcdev.brainvire.net",
         "enc"
       );
+      // let X_Authorized_Domainname = encryption(
+      //   "http://erbelltktstore.dcdev.brainvire.net",
+      //   "enc"
+      // );
       // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
-      // setTimeout(function() {
-      //   self.props.history.push({
-      //     pathname: "SignIn",
-      //     encProgramCode: encProgramCode
-      //   });
-      // }, 500);
-      // self.setState({
-      //   encProgramCode: {programCode: encProgramCode}
-      // });
 
       // validate program code
       axios({
@@ -105,7 +100,7 @@ class StoreProgramCode extends Component {
                   <input
                     type="text"
                     className="program-code-textbox"
-                    placeholder="Program Code*"
+                    placeholder="Store Program Code*"
                     style={{ border: 0 }}
                     name="programCode"
                     maxLength={10}

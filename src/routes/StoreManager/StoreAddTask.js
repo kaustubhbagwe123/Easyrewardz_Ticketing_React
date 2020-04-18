@@ -182,7 +182,6 @@ class StoreAddTask extends Component {
       .then(function(response) {
         var message = response.data.message;
         var assignToData = response.data.responseData;
-        console.log(assignToData,"---------assignToData")
         if (message === "Success" && assignToData.length > 0) {
           self.setState({ assignToData });
         } else {

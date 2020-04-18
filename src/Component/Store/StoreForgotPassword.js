@@ -114,7 +114,7 @@ class StoreForgotPassword extends Component {
               <div style={{ paddingTop: "10px" }}>
                 <p className="mb-0 text-muted">
                   <Link
-                    to="storeSignIn"
+                    to="/"
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                     TRY LOGIN AGAIN

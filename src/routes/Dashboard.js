@@ -79,7 +79,6 @@ class Dashboard extends Component {
       ScheduleOption: ScheduleDateDropDown(),
       TotalNoOfChatShow: true,
       date: [new Date(), new Date()],
-      range: "",
       CSVDownload: [],
       SearchTicketData: [],
       SearchListData: [],
@@ -1615,8 +1614,8 @@ class Dashboard extends Component {
           });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch(res => {
+        console.log(res);
       });
   }
   handleGetBrandList() {
@@ -1639,8 +1638,8 @@ class Dashboard extends Component {
           self.checkAllBrandStart();
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch(res => {
+        console.log(res);
       });
   }
   handelCheckBoxCheckedChange = async ticketID => {
@@ -1739,9 +1738,7 @@ class Dashboard extends Component {
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
   };
-  handleDateRange(date) {
-    this.setState({ range: date });
-  }
+  
   handleByDateCreate(date) {
     this.setState({ ByDateCreatDate: date });
   }
