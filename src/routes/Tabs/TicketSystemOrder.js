@@ -171,14 +171,19 @@ class TicketSystemOrder extends Component {
     //
     var id = rowData.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
-    var index = this.state.OrderSubItem.findIndex(
-      x => x.articleNumber === rowData.articleNumber
-    );
+    var reg = /^[0-9\b]+$/;
+    if (value === "" || reg.test(value)) {
+      var index = this.state.OrderSubItem.findIndex(
+        x => x.articleNumber === rowData.articleNumber
+      );
 
-    var OrderSubItem = this.state.OrderSubItem;
-    OrderSubItem[index].requireSize = value;
+      var OrderSubItem = this.state.OrderSubItem;
+      OrderSubItem[index].requireSize = value;
 
-    this.setState({ OrderSubItem });
+      this.setState({ OrderSubItem });
+    } else {
+      NotificationManager.error("Only numeric value allow.");
+    }
   }
 
   handleGetChannelOfPurchaseList() {
@@ -758,7 +763,7 @@ class TicketSystemOrder extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem 
+                  CheckBoxAllItem: objCheckBoxAllItem
                 });
               }
               self.setState({
@@ -1127,7 +1132,6 @@ class TicketSystemOrder extends Component {
                 });
               }
             }
-
             break;
           }
         }
@@ -1372,7 +1376,7 @@ class TicketSystemOrder extends Component {
             </div>
             <div
               id="Modalordertable"
-              className="varunoverflow"
+              className="varunoverflow" 
               style={{ display: "none" }}
             >
               <Table
@@ -1383,7 +1387,6 @@ class TicketSystemOrder extends Component {
                     title: "",
                     // dataIndex: "invoiceNumber",
                     render: (row, data) => {
-                      // //
                       return (
                         <div className="filter-checkbox">
                           <input
@@ -1455,7 +1458,7 @@ class TicketSystemOrder extends Component {
                                 <input
                                   type="checkbox"
                                   className="d-none"
-                                  id={"item" + item.invoiceNumber}
+                                  id={"item" + item.articleNumber}
                                   name="AllItem"
                                   checked={
                                     this.state.CheckBoxAllItem[
@@ -1469,7 +1472,7 @@ class TicketSystemOrder extends Component {
                                   )}
                                 />
                                 <label
-                                  htmlFor={"item" + item.invoiceNumber}
+                                  htmlFor={"item" + item.articleNumber}
                                 ></label>
                               </div>
                             );
@@ -1525,7 +1528,6 @@ class TicketSystemOrder extends Component {
                 pagination={false}
               />
             </div>
-            {/* </div> */}
           </Modal>
           {this.state.AddManuallyData === true ? null : (
             <div>
@@ -2133,7 +2135,7 @@ class TicketSystemOrder extends Component {
                                   <input
                                     type="checkbox"
                                     className="d-none"
-                                    id={"item" + item.invoiceNumber}
+                                    id={"item" + item.articleNumber}
                                     name="AllItem"
                                     checked={
                                       this.state.CheckBoxAllItem[
@@ -2147,7 +2149,7 @@ class TicketSystemOrder extends Component {
                                     )}
                                   />
                                   <label
-                                    htmlFor={"item" + item.invoiceNumber}
+                                    htmlFor={"item" + item.articleNumber}
                                   ></label>
                                 </div>
                               );

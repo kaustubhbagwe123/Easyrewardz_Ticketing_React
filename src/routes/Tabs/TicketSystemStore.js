@@ -109,10 +109,26 @@ class TicketSystemStore extends Component {
     this.setState({ OrderStoreTable: false });
   }
   handleByvisitDate(e, rowData) {
-    var id = e.lpassStoreID;
-    var index = this.state.selectedStoreData.findIndex(
-      x => x.lpassStoreID === id
-    );
+    debugger
+    var id=0
+    if(e.lpassStoreID > 0){
+       id = e.lpassStoreID;
+    }else{
+       id = e.storeID;
+    }
+
+    if(e.lpassStoreID > 0){
+       id = e.lpassStoreID;
+      var index = this.state.selectedStoreData.findIndex(
+        x => x.lpassStoreID === id
+      );
+    }else{
+       id = e.storeID;
+      var index = this.state.selectedStoreData.findIndex(
+        x => x.storeID === id
+      );
+    }
+    
     this.state.selectedStoreData["StoreVisitDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
     selectedStoreData[index].StoreVisitDate = rowData;
@@ -606,6 +622,12 @@ class TicketSystemStore extends Component {
                           title: "Visit Date",
                           dataIndex: "storeVisitDate",
                           render: (row, data) => {
+                            var storeId=0;
+                            if(data.lpassStoreID > 0){
+                              storeId=data.lpassStoreID
+                            }else{
+                              storeId=data.storeID
+                            }
                             return (
                               <div className="col-sm-12 p-0">
                                 <DatePicker
@@ -614,7 +636,7 @@ class TicketSystemStore extends Component {
                                   showMonthDropdown
                                   showYearDropdown
                                   dateFormat="dd/MM/yyyy"
-                                  id={"storeVisitDate" + data.lpassStoreID}
+                                  id={"storeVisitDate" + storeId}
                                   value={data.StoreVisitDate}
                                   name="storeVisitDate"
                                   onChange={this.handleByvisitDate.bind(
@@ -910,6 +932,12 @@ class TicketSystemStore extends Component {
                             title: "Visit Date",
                             dataIndex: "storeVisitDate",
                             render: (row, data) => {
+                              var storeId=0;
+                              if(data.lpassStoreID > 0){
+                                storeId=data.lpassStoreID
+                              }else{
+                                storeId=data.storeID
+                              }
                               return (
                                 <div className="col-sm-12 p-0 position-static">
                                   <DatePicker
@@ -918,7 +946,7 @@ class TicketSystemStore extends Component {
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
-                                    id={"storeVisitDate" + data.lpassStoreID}
+                                    id={"storeVisitDate" + storeId}
                                     value={data.StoreVisitDate}
                                     name="storeVisitDate"
                                     onChange={this.handleByvisitDate.bind(
