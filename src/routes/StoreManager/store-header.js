@@ -87,7 +87,7 @@ class Header extends Component {
         if (status === true) {
           //NotificationManager.success(Msg);
           localStorage.clear();
-          window.location.href = "/storeProgramCode";
+          window.location.href = "/";
         }
       })
       .catch((data) => {

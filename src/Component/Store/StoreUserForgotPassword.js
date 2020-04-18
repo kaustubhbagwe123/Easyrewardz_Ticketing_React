@@ -80,7 +80,7 @@ class StoreUserForgotPassword extends Component {
             1500
           );
           setTimeout(function () {
-            self.props.history.push("/storeSignIn");
+            self.props.history.push("/");
           }, 1500);
         } else {
           NotificationManager.error("Password Not Changed.", "", 1500);

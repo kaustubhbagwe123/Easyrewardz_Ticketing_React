@@ -47,8 +47,8 @@ ReactDOM.render(
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />
-    <Route exact path="/" component={ProgramCodeSignIn} />
-    <Route exact path="/storeProgramCode" component={StoreProgramCode} />
+    <Route exact path="/ProgramCodeSignIn" component={ProgramCodeSignIn} />   
+    <Route exact path="/" component={StoreProgramCode} />
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
