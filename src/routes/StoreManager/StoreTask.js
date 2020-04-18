@@ -1796,7 +1796,7 @@ class StoreTask extends Component {
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
-                    getTrProps={this.HandleRowClickPage}
+                    getTrProps={this.handleRowClickRaisedTable}
                   />
                 </div>
               </div>
