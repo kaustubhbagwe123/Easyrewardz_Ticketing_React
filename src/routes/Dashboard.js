@@ -3354,7 +3354,6 @@ class Dashboard extends Component {
       FinalSaveSearchData,
     });
     // ----------------------------------------------------------
-
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
@@ -6263,9 +6262,10 @@ class Dashboard extends Component {
                                 onClose={this.ScheduleCloseModel}
                                 open={this.state.Schedule}
                                 modalId="ScheduleModel"
-                                classNames={{
-                                  modal: "schedule-width",
-                                }}
+                                className="schedule-width"
+                                // className={{
+                                //   modal: "schedule-width"
+                                // }}
                                 overlayId="logout-ovrly"
                               >
                                 <div>
