@@ -1654,9 +1654,8 @@ class CategoryMaster extends Component {
   }
   ////handle category search data
   handleSearchCategoryData(val) {
-    debugger;
     let self = this;
-    if (val.length > 2) {
+    if (val.length > 1) {
       var search_Text = val;
       axios({
         method: "post",
@@ -1668,8 +1667,8 @@ class CategoryMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let data = res.data;
+          console.log(data, "Final Data");
           if (data.length > 0) {
             self.setState({
               categoryDropData: data,
@@ -2182,15 +2181,10 @@ class CategoryMaster extends Component {
                         </label>
                         <Select
                           showSearch={true}
-                          filterOption={true}
                           value={this.state.list1Value}
                           style={{ width: "100%" }}
                           onChange={this.handleCategoryChange}
                           onSearch={this.handleSearchCategoryData.bind(this)}
-                          // optionFilterProp="children"
-                          // filterOption={(input, option) =>
-                          //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                          // }
                         >
                           {/* {list1SelectOptions} */}
                           {this.state.categoryDropData !== null &&
@@ -2199,6 +2193,7 @@ class CategoryMaster extends Component {
                                 {item.categoryName}
                               </Option>
                             ))}
+
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW

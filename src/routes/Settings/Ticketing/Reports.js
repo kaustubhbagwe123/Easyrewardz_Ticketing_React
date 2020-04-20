@@ -2449,7 +2449,6 @@ class Reports extends Component {
   }
   handleGetCategoryList() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
