@@ -209,7 +209,6 @@ class MyTicket extends Component {
       selectedInvoiceNo: "",
       isSystemGenerated: false
     };
-    // this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -284,7 +283,6 @@ class MyTicket extends Component {
     this.wrapperRef = node;
   }
   onAddCKEditorChange = evt => {
-    ////
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
@@ -317,7 +315,6 @@ class MyTicket extends Component {
     });
   };
   onreplyCKEditorChange = evt => {
-    ////
     var newContent = evt.editor.getData();
     this.setState({
       replymailBodyData: newContent
@@ -499,8 +496,6 @@ class MyTicket extends Component {
   handleOnLoadFiles() {
     ////
     for (let i = 0; i < this.state.fileDummy.length; i++) {
-      ////
-
       var objFile = new Object();
       var name = this.state.fileDummy[i].attachmentName;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -524,7 +519,6 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
         let data = res.data.responseData;
         self.setState({
           SearchAssignData: data
@@ -549,7 +543,6 @@ class MyTicket extends Component {
   };
 
   handleUpdateTicketStatus(ticStaId) {
-    ////
     // let self = this;
     axios({
       method: "post",
@@ -1024,7 +1017,6 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1061,7 +1053,6 @@ class MyTicket extends Component {
         }
       })
         .then(function(res) {
-          ////
           let status = res.data.message;
           if (status === "Success") {
             if (self.state.isaddKnowledge) {
@@ -1176,7 +1167,6 @@ class MyTicket extends Component {
   };
 
   hanldeStatusChange(e) {
-    ////
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
@@ -1323,8 +1313,6 @@ class MyTicket extends Component {
       });
   }
   handleGetSubCategoryList() {
-    ////
-
     let self = this;
     axios({
       method: "post",
@@ -1349,7 +1337,6 @@ class MyTicket extends Component {
       });
   }
   handleGetIssueTypeList() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -1395,7 +1382,6 @@ class MyTicket extends Component {
       });
   }
   handleAssignTickets() {
-    ////
     let self = this;
 
     axios({

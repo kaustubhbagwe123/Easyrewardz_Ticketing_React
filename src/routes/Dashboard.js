@@ -329,7 +329,6 @@ class Dashboard extends Component {
       sassignedToFilterCheckbox: ""
     };
     this.applyCallback = this.applyCallback.bind(this);
-    // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -390,15 +389,8 @@ class Dashboard extends Component {
     this.handleWeekly = this.handleWeekly.bind(this);
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
     this.handleAdvanceSearchOption = this.handleAdvanceSearchOption.bind(this);
-    // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
-  // handleApply(event, picker) {
-  //   this.setState({
-  //     startDate: picker.startDate,
-  //     endDate: picker.endDate,
-  //   });
-  // }
-
+ 
   componentDidMount() {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
@@ -1082,12 +1074,7 @@ class Dashboard extends Component {
         let moduleIDMyticket = data[1].moduleID;
         self.handleAdvanceSearchOption(moduleID);
       }
-
-      // if (status === "Success") {
-      //   self.setState({ modulesNames: data, moduleID });
-      // } else {
-      //   self.setState({ modulesNames: [] });
-      // }
+ 
     });
   }
   handleAdvanceSearchOption(id) {
@@ -2608,7 +2595,6 @@ class Dashboard extends Component {
   }
   handleSchedulePopupSuccess() {
     debugger;
-
     let self = this;
 
     var month, day, year, hours, minutes, seconds;
@@ -4195,7 +4181,6 @@ class Dashboard extends Component {
     // let disabled = false;
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -5244,8 +5229,6 @@ class Dashboard extends Component {
                                     </div>
                                   </li>
                                 ))}
-
-                              {/* </li> */}
                             </ul>
                           </div>
                         </Modal>
