@@ -16,12 +16,12 @@ let config = {
       "Copy Escalation",
       "Assign Escalation",
       "Escalation Agent Name",
-      "Status"
-    ]
+      "Status",
+    ],
   ],
   alertTemplate: [["AlertType", "Communication Mode", "Status"]],
   categoryTemplate: [
-    ["BrandName", "Category", "SubCategory", "IssueType", "Status"]
+    ["BrandName", "Category", "SubCategory", "IssueType", "Status"],
   ],
   slaTemplate: [
     [
@@ -32,11 +32,11 @@ let config = {
       "RespondDuration",
       "ResolutionValue",
       "ResolutionDuration",
-      "Status"
-    ]
+      "Status",
+    ],
   ],
   crmRoleTemplate: [
-    ["RoleName", "Status", "EnabledModules", "DisabledModules"]
+    ["RoleName", "Status", "EnabledModules", "DisabledModules"],
   ],
   storeTemplate: [
     [
@@ -52,8 +52,8 @@ let config = {
       "StoreType",
       "StoreEmailID",
       "StorePhoneNo",
-      "Status"
-    ]
+      "Status",
+    ],
   ],
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'

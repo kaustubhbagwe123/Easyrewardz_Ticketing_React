@@ -19,7 +19,7 @@ import axios from "axios";
 import Select from "react-select";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
@@ -132,7 +132,7 @@ class StoreMaster extends Component {
       scityNameFilterCheckbox: "",
       sstateNameFilterCheckbox: "",
       sstrPinCodeFilterCheckbox: "",
-      isortA: false
+      isortA: false,
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -167,7 +167,7 @@ class StoreMaster extends Component {
         method: "post",
         url: config.apiUrl + "/Store/BulkUploadStore",
         headers: authHeader(),
-        data: formData
+        data: formData,
         // onUploadProgress: (ev = ProgressEvent) => {
         //   const progress = (ev.loaded / ev.total) * 100;
         //   this.updateUploadProgress(Math.round(progress));
@@ -190,7 +190,7 @@ class StoreMaster extends Component {
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -199,7 +199,7 @@ class StoreMaster extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
@@ -246,7 +246,7 @@ class StoreMaster extends Component {
     }
     this.setState({
       isortA: true,
-      storeData: itemsArray
+      storeData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -296,7 +296,7 @@ class StoreMaster extends Component {
     }
     this.setState({
       isortA: true,
-      storeData: itemsArray
+      storeData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -327,7 +327,7 @@ class StoreMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -338,7 +338,7 @@ class StoreMaster extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -352,7 +352,7 @@ class StoreMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -362,7 +362,7 @@ class StoreMaster extends Component {
           sstrPinCodeFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -376,7 +376,7 @@ class StoreMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -386,7 +386,7 @@ class StoreMaster extends Component {
           sstrPinCodeFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -400,7 +400,7 @@ class StoreMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -410,7 +410,7 @@ class StoreMaster extends Component {
           sstoreNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -424,7 +424,7 @@ class StoreMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -434,7 +434,7 @@ class StoreMaster extends Component {
           sstateNameFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -450,7 +450,7 @@ class StoreMaster extends Component {
         sortFilterStoreCode: this.state.sortStoreCode,
         sortFilterCity: this.state.sortCity,
         sortFilterState: this.state.sortState,
-        sortFilterPincode: this.state.sortPincode
+        sortFilterPincode: this.state.sortPincode,
       });
       if (this.state.sortColumn === "storeName") {
         if (this.state.sstoreNameFilterCheckbox === "") {
@@ -459,7 +459,7 @@ class StoreMaster extends Component {
             sstoreCodeFilterCheckbox: "",
             scityNameFilterCheckbox: "",
             sstateNameFilterCheckbox: "",
-            sstrPinCodeFilterCheckbox: ""
+            sstrPinCodeFilterCheckbox: "",
           });
         }
       }
@@ -470,7 +470,7 @@ class StoreMaster extends Component {
             sstoreNameFilterCheckbox: "",
             scityNameFilterCheckbox: "",
             sstateNameFilterCheckbox: "",
-            sstrPinCodeFilterCheckbox: ""
+            sstrPinCodeFilterCheckbox: "",
           });
         }
       }
@@ -481,7 +481,7 @@ class StoreMaster extends Component {
             sstoreNameFilterCheckbox: "",
             sstoreCodeFilterCheckbox: "",
             sstateNameFilterCheckbox: "",
-            sstrPinCodeFilterCheckbox: ""
+            sstrPinCodeFilterCheckbox: "",
           });
         }
       }
@@ -492,7 +492,7 @@ class StoreMaster extends Component {
             sstoreNameFilterCheckbox: "",
             sstoreCodeFilterCheckbox: "",
             scityNameFilterCheckbox: "",
-            sstrPinCodeFilterCheckbox: ""
+            sstrPinCodeFilterCheckbox: "",
           });
         }
       }
@@ -503,7 +503,7 @@ class StoreMaster extends Component {
             sstoreNameFilterCheckbox: "",
             sstoreCodeFilterCheckbox: "",
             scityNameFilterCheckbox: "",
-            sstateNameFilterCheckbox: ""
+            sstateNameFilterCheckbox: "",
           });
         }
       }
@@ -517,7 +517,7 @@ class StoreMaster extends Component {
           sortFilterStoreCode: this.state.sortStoreCode,
           sortFilterCity: this.state.sortCity,
           sortFilterState: this.state.sortState,
-          sortFilterPincode: this.state.sortPincode
+          sortFilterPincode: this.state.sortPincode,
         });
       } else {
         this.setState({
@@ -528,7 +528,7 @@ class StoreMaster extends Component {
           sortFilterStoreCode: this.state.sortStoreCode,
           sortFilterCity: this.state.sortCity,
           sortFilterState: this.state.sortState,
-          sortFilterPincode: this.state.sortPincode
+          sortFilterPincode: this.state.sortPincode,
         });
       }
     }
@@ -693,7 +693,7 @@ class StoreMaster extends Component {
       sstoreCodeFilterCheckbox,
       scityNameFilterCheckbox,
       sstateNameFilterCheckbox,
-      sstrPinCodeFilterCheckbox
+      sstrPinCodeFilterCheckbox,
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -702,77 +702,8 @@ class StoreMaster extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.storeName === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        storeNameColor: "sort-column"
-      });
-    } else if (column === "storeCode") {
-      var sItems = sstoreCodeFilterCheckbox.split(",");
-
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.storeCode === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        storeCodecolor: "sort-column"
-      });
-    } else if (column === "cityName") {
-      var sItems = scityNameFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.cityName === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        cityColor: "sort-column"
-      });
-    } else if (column === "stateName") {
-      var sItems = sstateNameFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.stateName === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        stateColor: "sort-column"
-      });
-    } else if (column === "strPinCode") {
-      var sItems = sstrPinCodeFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.strPinCode === sItems[i]
+              (a) => a.storeName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -783,7 +714,84 @@ class StoreMaster extends Component {
         }
       }
       this.setState({
-        pincodeColor: "sort-column"
+        storeNameColor: "sort-column",
+      });
+    } else if (column === "storeCode") {
+      var sItems = sstoreCodeFilterCheckbox.split(",");
+
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.storeCode === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        storeCodecolor: "sort-column",
+      });
+    } else if (column === "cityName") {
+      var sItems = scityNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.cityName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        cityColor: "sort-column",
+      });
+    } else if (column === "stateName") {
+      var sItems = sstateNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.stateName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        stateColor: "sort-column",
+      });
+    } else if (column === "strPinCode") {
+      var sItems = sstrPinCodeFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.strPinCode === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        pincodeColor: "sort-column",
       });
     }
     // else if (column === "brandNames") {
@@ -808,7 +816,7 @@ class StoreMaster extends Component {
     // }
 
     this.setState({
-      tempstoreData: itemsArray
+      tempstoreData: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -820,7 +828,7 @@ class StoreMaster extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Store/StoreList",
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(res) {
       debugger;
       let status = res.data.message;
@@ -912,18 +920,18 @@ class StoreMaster extends Component {
         if (data !== null) {
           self.setState({
             storeData: data,
-            loading: false
+            loading: false,
           });
         } else {
           self.setState({
             storeData: [],
-            loading: false
+            loading: false,
           });
         }
       } else {
         self.setState({
           storeData: [],
-          loading: false
+          loading: false,
         });
       }
     });
@@ -933,7 +941,7 @@ class StoreMaster extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(res) {
       let status = res.data.message;
       let data = res.data.responseData;
@@ -949,7 +957,7 @@ class StoreMaster extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getstatelist",
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(res) {
       let status = res.data.message;
       let data = res.data.responseData;
@@ -973,8 +981,8 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Master/getcitylist",
       headers: authHeader(),
       params: {
-        StateId: stateId
-      }
+        StateId: stateId,
+      },
     }).then(function(res) {
       let status = res.data.message;
       let data = res.data.responseData;
@@ -990,7 +998,7 @@ class StoreMaster extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/Master/getregionlist",
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(res) {
       let status = res.data.message;
       let data = res.data.responseData;
@@ -1006,7 +1014,7 @@ class StoreMaster extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/Master/getstoretypelist",
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(res) {
       let status = res.data.message;
       let data = res.data.responseData;
@@ -1025,8 +1033,8 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Store/deleteStore",
       headers: authHeader(),
       params: {
-        StoreID: store_Id
-      }
+        StoreID: store_Id,
+      },
     }).then(function(res) {
       debugger;
       let status = res.data.message;
@@ -1087,8 +1095,8 @@ class StoreMaster extends Component {
           StoreTypeID: this.state.store_type,
           StoreEmailID: this.state.contact_email.trim(),
           StorePhoneNo: this.state.contact_Phone,
-          IsActive: activeStatus
-        }
+          IsActive: activeStatus,
+        },
       }).then(function(res) {
         debugger;
         let status = res.data.message;
@@ -1122,7 +1130,7 @@ class StoreMaster extends Component {
             CityCompulsion: "",
             brandCompulsion: "",
             statusCompulsion: "",
-            cityData: []
+            cityData: [],
           });
         } else {
           NotificationManager.error("Store Not added.");
@@ -1142,7 +1150,7 @@ class StoreMaster extends Component {
         StateCompulsion: "Please Select State.",
         CityCompulsion: "Please Select City.",
         brandCompulsion: "Please Select Brand.",
-        statusCompulsion: "Please Select Status."
+        statusCompulsion: "Please Select Status.",
       });
     }
   }
@@ -1200,8 +1208,8 @@ class StoreMaster extends Component {
           StoreTypeID: this.state.userEditData.storeType_ID,
           StoreEmailID: this.state.userEditData.email_,
           StorePhoneNo: this.state.userEditData.phoneNumber_,
-          IsActive: activeStatus
-        }
+          IsActive: activeStatus,
+        },
       })
         .then(function(res) {
           let status = res.data.message;
@@ -1234,12 +1242,12 @@ class StoreMaster extends Component {
               editZoneValidation: "",
               editStoreTypeValidation: "",
               editContactEmailValidation: "",
-              editContactPhoneValidation: ""
+              editContactPhoneValidation: "",
               // editStatusValidation: ""
             });
           }
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     } else {
@@ -1255,12 +1263,12 @@ class StoreMaster extends Component {
         editZoneValidation: "Please Select Zone.",
         editStoreTypeValidation: "Please Select Store Type.",
         editContactEmailValidation: "Please Enter EmailID.",
-        editContactPhoneValidation: "Please Enter Phone Number."
+        editContactPhoneValidation: "Please Enter Phone Number.",
         // editStatusValidation: "Please Select Status."
       });
     }
   }
-  fileUpload = e => {
+  fileUpload = (e) => {
     debugger;
     var allFiles = [];
     var selectedFiles = e;
@@ -1272,41 +1280,41 @@ class StoreMaster extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: ""
+        bulkuploadCompulsion: "",
       });
     }
   };
-  fileDrop = e => {
+  fileDrop = (e) => {
     debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
     this.setState({
       fileN: allFiles,
-      fileName: allFiles[0].name
+      fileName: allFiles[0].name,
     });
     // this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
-  handleBrandChange = e => {
+  handleBrandChange = (e) => {
     debugger;
     if (e === null) {
       e = [];
     }
     this.setState({ selectedBrand: e });
   };
-  handleEditBrandChange = e => {
+  handleEditBrandChange = (e) => {
     let value = e.target.value;
     this.setState({ EditBrand: value });
   };
 
-  handleStateChange = e => {
+  handleStateChange = (e) => {
     debugger;
     let value = parseInt(e.target.value);
     this.setState({ selectState: value, cityData: [] });
@@ -1348,7 +1356,7 @@ class StoreMaster extends Component {
     var mBrandData = individualData.brandIDs.split(",");
     var modalSelectedBrand = [];
     for (let i = 0; i < mBrandData.length; i++) {
-      var data = this.state.brandData.filter(x => x.brandID == mBrandData[i]);
+      var data = this.state.brandData.filter((x) => x.brandID == mBrandData[i]);
       if (data.length > 0) {
         modalSelectedBrand.push(data[0]);
       }
@@ -1359,10 +1367,10 @@ class StoreMaster extends Component {
     this.setState({
       editmodel: true,
       userEditData,
-      modalSelectedBrand
+      modalSelectedBrand,
     });
   }
-  handleOnChangeEditData = e => {
+  handleOnChangeEditData = (e) => {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
@@ -1371,7 +1379,7 @@ class StoreMaster extends Component {
     data[name] = value;
 
     this.setState({
-      EditTemp: data
+      EditTemp: data,
     });
     setTimeout(() => {
       if (this.state.userEditData.status_ID) {
@@ -1379,57 +1387,57 @@ class StoreMaster extends Component {
       }
     }, 1);
   };
-  handleCityChange = e => {
+  handleCityChange = (e) => {
     let value = parseInt(e.target.value);
     this.setState({ selectCity: value });
   };
 
-  handleZoneChange = e => {
+  handleZoneChange = (e) => {
     let value = parseInt(e.target.value);
     this.setState({ selectZone: value });
   };
 
-  handleRegionChange = e => {
+  handleRegionChange = (e) => {
     let value = parseInt(e.target.value);
     this.setState({ selectRegion: value });
   };
 
-  handleStoreTypeChange = e => {
+  handleStoreTypeChange = (e) => {
     let value = parseInt(e.target.value);
     this.setState({ store_type: value });
   };
 
-  handleStatusChange = e => {
+  handleStatusChange = (e) => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
 
-  hanldeOnChangeData = e => {
+  hanldeOnChangeData = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
-  hanldeOnEmailChange = e => {
+  hanldeOnEmailChange = (e) => {
     debugger;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     if (e.target.value == "") {
       this.setState({
-        emailFlag: true
+        emailFlag: true,
       });
     } else if (reg.test(e.target.value) == false) {
       this.setState({
-        emailFlag: false
+        emailFlag: false,
       });
     } else {
       this.setState({
-        emailFlag: true
+        emailFlag: true,
       });
     }
   };
-  hanldeOnPhoneChange = e => {
+  hanldeOnPhoneChange = (e) => {
     debugger;
     var name = e.target.name;
     if (name === "phoneNumber_") {
@@ -1444,11 +1452,11 @@ class StoreMaster extends Component {
       }
       if (e.target.value.length == 10 || e.target.value.length == 0) {
         this.setState({
-          phoneFlag: true
+          phoneFlag: true,
         });
       } else {
         this.setState({
-          phoneFlag: false
+          phoneFlag: false,
         });
       }
     } else {
@@ -1460,16 +1468,16 @@ class StoreMaster extends Component {
       }
       if (e.target.value.length == 10 || e.target.value.length == 0) {
         this.setState({
-          phoneFlag: true
+          phoneFlag: true,
         });
       } else {
         this.setState({
-          phoneFlag: false
+          phoneFlag: false,
         });
       }
     }
   };
-  hanldeOnPinCodeChange = e => {
+  hanldeOnPinCodeChange = (e) => {
     debugger;
     var reg = /^[0-9\b]+$/;
     if (e.target.value === "" || reg.test(e.target.value)) {
@@ -1479,11 +1487,11 @@ class StoreMaster extends Component {
     }
     if (e.target.value.length == 6 || e.target.value.length == 0) {
       this.setState({
-        pinCodeFlag: true
+        pinCodeFlag: true,
       });
     } else {
       this.setState({
-        pinCodeFlag: false
+        pinCodeFlag: false,
       });
     }
   };
@@ -1499,7 +1507,7 @@ class StoreMaster extends Component {
     // this.state.rowData = rowData;
   };
 
-  handleModalEditData = e => {
+  handleModalEditData = (e) => {
     debugger;
 
     var name = e.target.name;
@@ -1516,21 +1524,21 @@ class StoreMaster extends Component {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value == "") {
         this.setState({
-          EditEmailFlag: true
+          EditEmailFlag: true,
         });
       } else if (reg.test(e.target.value) == false) {
         this.setState({
-          EditEmailFlag: false
+          EditEmailFlag: false,
         });
       } else {
         this.setState({
-          EditEmailFlag: true
+          EditEmailFlag: true,
         });
       }
     }
   };
 
-  handleModalBrandChange = e => {
+  handleModalBrandChange = (e) => {
     this.setState({ modalSelectedBrand: e });
   };
 
@@ -1548,7 +1556,7 @@ class StoreMaster extends Component {
         this.setState({ sortFilterStoreName });
       } else {
         this.setState({
-          sortFilterStoreName: this.state.sortStoreName
+          sortFilterStoreName: this.state.sortStoreName,
         });
       }
     }
@@ -1562,31 +1570,31 @@ class StoreMaster extends Component {
         this.setState({ sortFilterStoreCode });
       } else {
         this.setState({
-          sortFilterStoreCode: this.state.sortStoreCode
+          sortFilterStoreCode: this.state.sortStoreCode,
         });
       }
     }
     if (this.state.sortColumn === "cityName") {
       var sortFilterCity = matchSorter(this.state.sortCity, e.target.value, {
-        keys: ["cityName"]
+        keys: ["cityName"],
       });
       if (sortFilterCity.length > 0) {
         this.setState({ sortFilterCity });
       } else {
         this.setState({
-          sortFilterCity: this.state.sortCity
+          sortFilterCity: this.state.sortCity,
         });
       }
     }
     if (this.state.sortColumn === "stateName") {
       var sortFilterState = matchSorter(this.state.sortState, e.target.value, {
-        keys: ["stateName"]
+        keys: ["stateName"],
       });
       if (sortFilterState.length > 0) {
         this.setState({ sortFilterState });
       } else {
         this.setState({
-          sortFilterState: this.state.sortState
+          sortFilterState: this.state.sortState,
         });
       }
     }
@@ -1595,14 +1603,14 @@ class StoreMaster extends Component {
         this.state.sortPincode,
         e.target.value,
         {
-          keys: ["strPinCode"]
+          keys: ["strPinCode"],
         }
       );
       if (sortFilterPincode.length > 0) {
         this.setState({ sortFilterPincode });
       } else {
         this.setState({
-          sortFilterPincode: this.state.sortPincode
+          sortFilterPincode: this.state.sortPincode,
         });
       }
     }
@@ -1611,14 +1619,14 @@ class StoreMaster extends Component {
         this.state.sortBrandName,
         e.target.value,
         {
-          keys: ["brandNames"]
+          keys: ["brandNames"],
         }
       );
       if (sortFilterBrandName.length > 0) {
         this.setState({ sortFilterBrandName });
       } else {
         this.setState({
-          sortFilterBrandName: this.state.sortBrandName
+          sortFilterBrandName: this.state.sortBrandName,
         });
       }
     }
@@ -1626,11 +1634,11 @@ class StoreMaster extends Component {
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -1910,7 +1918,7 @@ class StoreMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "storeName"
+                          accessor: "storeName",
                         },
                         {
                           Header: (
@@ -1927,7 +1935,7 @@ class StoreMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "storeCode"
+                          accessor: "storeCode",
                         },
                         {
                           Header: (
@@ -1945,7 +1953,7 @@ class StoreMaster extends Component {
                           ),
                           accessor: "brand_Names",
                           sortable: false,
-                          Cell: row => {
+                          Cell: (row) => {
                             if (isNaN(row.original.brand_Names)) {
                               return (
                                 <div>
@@ -1979,7 +1987,7 @@ class StoreMaster extends Component {
                             } else {
                               return null;
                             }
-                          }
+                          },
                         },
                         {
                           Header: (
@@ -1996,7 +2004,7 @@ class StoreMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "cityName"
+                          accessor: "cityName",
                         },
                         {
                           Header: (
@@ -2012,7 +2020,7 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "stateName"
+                          accessor: "stateName",
                         },
                         {
                           Header: (
@@ -2029,7 +2037,129 @@ class StoreMaster extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "strPinCode"
+                          accessor: "strPinCode",
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Address
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "address",
+                          minWidth: 250,
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Region
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "regionName",
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Zone
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "zone",
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Store Type
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeTypeName",
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Email ID
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "email",
+                          minWidth: 220,
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Phone No
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "phoneNumber",
+                          minWidth: 120,
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Status
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "status",
                         },
                         // {
                         //   Header: (
@@ -2044,7 +2174,8 @@ class StoreMaster extends Component {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
                           sortable: false,
-                          Cell: row => {
+                          minWidth: 120,
+                          Cell: (row) => {
                             var ids = row.original["storeID"];
                             return (
                               <>
@@ -2106,8 +2237,8 @@ class StoreMaster extends Component {
                                 </span>
                               </>
                             );
-                          }
-                        }
+                          },
+                        },
                       ]}
                       resizable={false}
                       minRows={1}
@@ -2163,8 +2294,8 @@ class StoreMaster extends Component {
                     <div className="div-padding-1">
                       <label className="designation-name">Brand</label>
                       <Select
-                        getOptionLabel={option => option.brandName}
-                        getOptionValue={option => option.brandID}
+                        getOptionLabel={(option) => option.brandName}
+                        getOptionValue={(option) => option.brandID}
                         options={this.state.brandData}
                         placeholder="Select"
                         // menuIsOpen={true}
@@ -2589,8 +2720,8 @@ class StoreMaster extends Component {
                   <div className="div-padding-1">
                     <label className="edit-label-1">Brand</label>
                     <Select
-                      getOptionLabel={option => option.brandName}
-                      getOptionValue={option => option.brandID}
+                      getOptionLabel={(option) => option.brandName}
+                      getOptionValue={(option) => option.brandID}
                       options={this.state.brandData}
                       placeholder="Select"
                       // menuIsOpen={true}

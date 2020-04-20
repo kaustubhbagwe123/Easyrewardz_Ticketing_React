@@ -3698,6 +3698,9 @@ table tr th:last-child {
 .ck-exp-width iframe {
   height: calc(100% - 60px) !important;
 }
+.store-date-width {
+  width: 115px;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
@@ -11589,7 +11592,7 @@ table tr th:last-child {
 .iskbticket {
   pointer-events: none;
 }
-.storeTdetail .ReactTable .rt-thead .rt-tr{
+.storeTdetail .ReactTable .rt-thead .rt-tr {
   text-align: left;
 }
 .autopriority {
