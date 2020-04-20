@@ -14,12 +14,13 @@ import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
 import config from "../../helpers/config";
 import axios from "axios";
 import { Popover } from "antd";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -37,10 +38,11 @@ class Header extends Component {
     this.handleNotificationModalOpen = this.handleNotificationModalOpen.bind(
       this
     );
-    this.handlreRedirectPage = this.handlreRedirectPage.bind(this);
+    
   }
 
   componentDidMount() {
+    
     this.handleGetNotigfication();
   }
 
@@ -61,17 +63,18 @@ class Header extends Component {
   };
   ////handle notification modal open
   handleNotificationModalOpen() {
-    debugger;
+    
     // if (this.state.notificationCount > 0) {
     this.setState({ notificationModal: true });
     // }
   }
   ////handle notification modal close
-  handleNotificationModalClose() {
-    debugger;
+  handleNotificationModalClose(typeId, type) {
+    
     this.setState({ notificationModal: false });
+    this.handleGetReadStoreNotification(typeId, type);
   }
-  handleNotificationNoClick(typeId, type) {}
+
   ////handle logout method
   handleLogoutMethod() {
     // let self = this;
@@ -104,7 +107,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
+        
         var message = response.data.message;
         var responseData = response.data.responseData;
         var Noticount = responseData.notiCount;
@@ -124,7 +127,7 @@ class Header extends Component {
       });
   }
   ////handle get read store notification
-  handleGetReadStoreNotification(typeId, type) {
+  handleGetReadStoreNotification = (typeId, type) => {
     let self = this;
     axios({
       method: "post",
@@ -136,35 +139,18 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        debugger;
+        
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.handlreRedirectPage(typeId);
-          // self.props.history.push({
-          //   pathname: "/store/editStoreTask",
-          //   state: { TaskID: typeId }
-          // });
-          // setTimeout(function() {
-          //   self.props.history.push({
-          //     pathname: "/store/editStoreTask",
-          //     state: self.state
-          //   });
-          // }, 100);
+          self.handleGetNotigfication();
         }
       })
       .catch((response) => {
         console.log(response, "---handleGetNotigfication");
       });
-  }
+  };
 
-  handlreRedirectPage(id) {
-    debugger;
-    this.props.router.push({
-      pathname: "editStoreTask",
-      state: { TaskID: id },
-    });
-  }
 
   render() {
     return (
@@ -440,21 +426,48 @@ class Header extends Component {
                               (data, j) => {
                                 return (
                                   <p key={j}>
-                                    {data.notificatonTypeName} No. :
-                                    <span
-                                      style={{ color: "#2561A8" }}
-                                      onClick={this.handlreRedirectPage.bind(
-                                        this,
-                                        data.notificatonTypeID
-                                      )}
-                                      // onClick={this.handleGetReadStoreNotification.bind(
-                                      //   this,
-                                      //   data.notificatonTypeID,
-                                      //   data.notificatonType
-                                      // )}
-                                    >
-                                      {" " + data.notificatonTypeID}
-                                    </span>
+                                    {data.notificatonTypeID == 1 ? (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          to={{
+                                            pathname: "/store/editStoreTask",
+                                            state: {
+                                              TaskID: data.notificatonTypeID,
+                                            },
+                                          }}
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handleNotificationModalClose.bind(
+                                            this,
+                                            data.notificatonTypeID,
+                                            data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    ) : (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          to={{
+                                            pathname:
+                                              "/store/claimApproveReject",
+                                            state: {
+                                              ClaimID: data.notificatonTypeID,
+                                            },
+                                          }}
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handleNotificationModalClose.bind(
+                                            this,
+                                            data.notificatonTypeID,
+                                            data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    )}
                                   </p>
                                 );
                               }

@@ -13,7 +13,7 @@ import { Table } from "antd";
 import { NotificationManager } from "react-notifications";
 import CancelImg from "./../../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
-
+import { withRouter } from "react-router-dom";
 class ClaimApproveReject extends Component {
   constructor(props) {
     super(props);
@@ -50,6 +50,7 @@ class ClaimApproveReject extends Component {
       userModel: false,
       userData: [],
       assigneeID: 0,
+      errors: {},
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -58,16 +59,30 @@ class ClaimApproveReject extends Component {
   }
 
   componentDidMount() {
-    debugger;
-
     if (this.props.location.state) {
       var claimId = this.props.location.state.ClaimID;
-      this.handleGetClaimByID(claimId);
       this.setState({
         claimID: claimId,
       });
+      this.handleGetClaimByID(claimId);
+
       this.handleGetStoreClaimComments(claimId);
       this.handleGetBrandList();
+    }
+  }
+  componentDidUpdate() {
+    
+    if (this.props.location.state) {
+      var claimId = this.props.location.state.ClaimID;
+      if (claimId !== this.state.claimID) {
+        this.setState({
+          claimID: claimId,
+        });
+        this.handleGetClaimByID(claimId);
+
+        this.handleGetStoreClaimComments(claimId);
+        this.handleGetBrandList();
+      }
     }
   }
 
@@ -111,7 +126,6 @@ class ClaimApproveReject extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success") {
@@ -152,7 +166,6 @@ class ClaimApproveReject extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -167,7 +180,6 @@ class ClaimApproveReject extends Component {
   }
   ///handle get claim by id
   handleGetClaimByID(claimId) {
-    debugger;
     this.setState({ isloading: true });
     let self = this;
     axios({
@@ -188,6 +200,13 @@ class ClaimApproveReject extends Component {
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
           var assigneeID = responseData.assigneeID;
+          var orderItems;
+          if (responseData.customOrderMaster.orderItems) {
+            orderItems = responseData.customOrderMaster.orderItems;
+          } else {
+            orderItems = [];
+          }
+
           self.setState({
             assigneeID,
             assignToName,
@@ -195,9 +214,9 @@ class ClaimApproveReject extends Component {
             ticketID,
             imageURL,
             selectBrand: responseData.brandID,
-            list1Value: responseData.categoryName,
-            ListOfSubCate: responseData.subCategoryName,
-            ListOfIssue: responseData.issueTypeName,
+            list1Value: responseData.categoryID,
+            ListOfSubCate: responseData.subCategoryID,
+            ListOfIssue: responseData.issueTypeID,
             claimPercentage: responseData.claimAskFor,
             customerName: responseData.customerName,
             customerPhoneNumber: responseData.customerPhoneNumber,
@@ -206,8 +225,15 @@ class ClaimApproveReject extends Component {
             alternateEmailID: responseData.alternateEmailID,
             gender: responseData.gender,
             orderDetailsData: orderDetails,
-            OrderSubItem: responseData.customOrderMaster.orderItems,
+            OrderSubItem: orderItems,
           });
+          self.handleGetCategoryList(responseData.brandID);
+          setTimeout(() => {
+            self.handleGetSubCategoryList();
+          }, 100);
+          setTimeout(() => {
+            self.handleGetIssueTypeList();
+          }, 100);
         }
       })
       .catch((response) => {
@@ -228,7 +254,6 @@ class ClaimApproveReject extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -256,7 +281,6 @@ class ClaimApproveReject extends Component {
       params: { ClaimID: claimId },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -284,7 +308,6 @@ class ClaimApproveReject extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             if (IsApprove == true) {
@@ -305,9 +328,176 @@ class ClaimApproveReject extends Component {
       });
     }
   }
+  ////handle brand change
+  handleBrandChange = (e) => {
+    let value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["Brand"] = "";
+      this.setState({
+        errors: this.state.errors,
+        selectBrand: value,
+        categoryDropData: [],
+        SubCategoryDropData: [],
+        ListOfIssueData: [],
+        claimComments: "",
+      });
+      setTimeout(() => {
+        if (this.state.selectBrand) {
+          this.handleGetCategoryList();
+        }
+      }, 1);
+    } else {
+      this.state.errors["Brand"] = "Please select Brand";
+      this.setState({
+        errors: this.state.errors,
+        selectBrand: value,
+        categoryDropData: [],
+        SubCategoryDropData: [],
+        ListOfIssueData: [],
+        claimComments: "",
+      });
+    }
+  };
 
+  handleGetCategoryList = async (id, type) => {
+    let self = this;
+    var braindID;
+    if (type == "edit") {
+      braindID = this.state.editCategory.brandID;
+    } else {
+      if (id) {
+        braindID = id;
+      } else {
+        braindID = this.state.selectBrand;
+      }
+    }
+    await axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimCategoryListByBrandID",
+      headers: authHeader(),
+      params: {
+        BrandID: braindID,
+      },
+    })
+      .then(function(res) {
+        let data = res.data;
+        self.setState({ categoryDropData: data });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  };
+
+  handleCategoryChange = (e) => {
+    var value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["Category"] = "";
+      this.setState({
+        list1Value: value,
+        SubCategoryDropData: [],
+        errors: this.state.errors,
+      });
+      setTimeout(() => {
+        if (this.state.list1Value) {
+          this.handleGetSubCategoryList(value);
+        }
+      }, 10);
+    } else {
+      this.state.errors["Category"] = "Please select claim category";
+      this.setState({ showList1: true, errors: this.state.errors });
+    }
+  };
+
+  handleGetSubCategoryList = async (id) => {
+    let self = this;
+    var Category_Id = "";
+    if (id === "edit") {
+      Category_Id = this.state.editCategory.categoryID;
+    } else {
+      Category_Id = this.state.list1Value;
+    }
+    await axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        CategoryID: Category_Id,
+      },
+    })
+      .then(function(res) {
+        let data = res.data.responseData;
+        self.setState({ SubCategoryDropData: data });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  };
+
+  handleSubCatOnChange = (e) => {
+    var value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["SubCategory"] = "";
+      this.setState({ ListOfSubCate: value, errors: this.state.errors });
+      setTimeout(() => {
+        if (this.state.ListOfSubCate) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
+    } else {
+      this.state.errors["SubCategory"] = "Please select sub category";
+      this.setState({ errors: this.state.errors });
+    }
+  };
+
+  handleGetIssueTypeList(id) {
+    let self = this;
+    var SubCat_Id = 0;
+    if (id === "edit") {
+      SubCat_Id = this.state.editCategory.subCategoryID;
+    } else {
+      SubCat_Id = this.state.ListOfSubCate;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimIssueTypeList",
+      headers: authHeader(),
+      params: {
+        SubCategoryID: SubCat_Id,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ ListOfIssueData: data });
+        } else {
+          self.setState({ ListOfIssueData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleIssueOnChange = (e) => {
+    const value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["IssueType"] = "";
+      this.setState({ ListOfIssue: value, errors: this.state.errors });
+    } else {
+      this.state.errors["IssueType"] = "Please select claim type";
+      this.setState({ errors: this.state.errors });
+    }
+  };
+
+  handleOrderChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
   render() {
     const { orderDetailsData } = this.state;
+    console.log(this.state.assignToName, "-----assignToName");
     return (
       <Fragment>
         <div className="row claim-header-card width">
@@ -542,7 +732,6 @@ class ClaimApproveReject extends Component {
                         className="form-control dropdown-label"
                         value={this.state.selectBrand}
                         onChange={this.handleBrandChange}
-                        disabled={true}
                       >
                         <option>select</option>
                         {this.state.brandData !== null &&
@@ -559,30 +748,88 @@ class ClaimApproveReject extends Component {
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Category</label>
-                      <input
+                      {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
                         value={this.state.list1Value}
                         disabled={true}
-                      />
+                      /> */}
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        onChange={this.handleCategoryChange}
+                        value={this.state.list1Value}
+                      >
+                        <option value={0}>select</option>
+                        {this.state.categoryDropData !== null &&
+                          this.state.categoryDropData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.categoryID}
+                              className="select-category-placeholder"
+                            >
+                              {item.categoryName}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.errors["Category"]}
+                      </p>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Sub Category</label>
-                      <input
+                      {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
                         value={this.state.ListOfSubCate}
                         disabled={true}
-                      />
+                      /> */}
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        onChange={this.handleSubCatOnChange}
+                        value={this.state.ListOfSubCate}
+                      >
+                        <option value={0}>select</option>
+                        {this.state.SubCategoryDropData !== null &&
+                          this.state.SubCategoryDropData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.subCategoryID}
+                              className="select-category-placeholder"
+                            >
+                              {item.subCategoryName}
+                            </option>
+                          ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Type</label>
-                      <input
+                      {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
                         value={this.state.ListOfIssue}
                         disabled={true}
-                      />
+                      /> */}
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        onChange={this.handleIssueOnChange}
+                        value={this.state.ListOfIssue}
+                      >
+                        <option value={0}>select</option>
+                        {this.state.ListOfIssueData !== null &&
+                          this.state.ListOfIssueData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.issueTypeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.issueTypeName}
+                            </option>
+                          ))}
+                      </select>
                     </div>
                   </div>
                   <div className="row">
@@ -829,4 +1076,4 @@ class ClaimApproveReject extends Component {
   }
 }
 
-export default ClaimApproveReject;
+export default withRouter(ClaimApproveReject);

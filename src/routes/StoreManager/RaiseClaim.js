@@ -23,6 +23,7 @@ class RaiseClaim extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      value: "",
       collapse: false,
       SearchDetails: true,
       selectBrand: 0,
@@ -77,6 +78,7 @@ class RaiseClaim extends Component {
       size: "",
       requiredSize: "",
       selectedTicketSource: 0,
+      SearchItem: [],
     };
     this.toggle = this.toggle.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -140,12 +142,11 @@ class RaiseClaim extends Component {
         .then(function(res) {
           debugger;
           let status = res.data.message;
-
           if (status === "Success") {
             let data = res.data.responseData;
             NotificationManager.success("New Order added successfully.");
             // self.handleOrderSearchData(data);
-            
+
             self.setState({
               productBarCode: "",
               billId: "",
@@ -187,7 +188,7 @@ class RaiseClaim extends Component {
 
   ////handle select store
   HandleSelectdata(e, field, value, id) {
-    //
+    debugger;
     let SearchData = this.state.SearchData;
     SearchData[field] = value;
 
@@ -204,12 +205,13 @@ class RaiseClaim extends Component {
 
   ////handle get purchase store name
   handlePurchaseStoreName(field, e) {
-    //
+    debugger;
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
 
     if (SearchData[field].length > 3) {
+      this.setState({ SearchData, SearchItem: [] });
       axios({
         method: "post",
         url: config.apiUrl + "/Store/getStores",
@@ -238,6 +240,7 @@ class RaiseClaim extends Component {
     } else {
       self.setState({
         SearchData,
+        SearchItem: [],
       });
     }
   }
@@ -413,8 +416,9 @@ class RaiseClaim extends Component {
       });
   };
 
-  handleCategoryChange = (value) => {
-    if (value !== NEW_ITEM) {
+  handleCategoryChange = (e) => {
+    var value = e.target.value;
+    if (value !== "0") {
       this.state.errors["Category"] = "";
       this.setState({
         list1Value: value,
@@ -457,8 +461,9 @@ class RaiseClaim extends Component {
       });
   };
 
-  handleSubCatOnChange = (value) => {
-    if (value !== NEW_ITEM) {
+  handleSubCatOnChange = (e) => {
+    var value = e.target.value;
+    if (value !== "0") {
       this.state.errors["SubCategory"] = "";
       this.setState({ ListOfSubCate: value, errors: this.state.errors });
       setTimeout(() => {
@@ -502,8 +507,9 @@ class RaiseClaim extends Component {
       });
   }
 
-  handleIssueOnChange = (value) => {
-    if (value !== NEW_ITEM) {
+  handleIssueOnChange = (e) => {
+    const value = e.target.value;
+    if (value !== "0") {
       this.state.errors["IssueType"] = "";
       this.setState({ ListOfIssue: value, errors: this.state.errors });
     } else {
@@ -583,6 +589,7 @@ class RaiseClaim extends Component {
         },
       })
         .then(function(res) {
+          debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
           if (Msg === "Success") {
@@ -608,7 +615,7 @@ class RaiseClaim extends Component {
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
                 for (let j = 0; j < Order_Master.length; j++) {
-                  objCheckBoxAllItem[Order_Master[j].invoiceNumber] = true;
+                  objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
 
                   CselectedRow.push(Order_Master[j]);
                 }
@@ -807,11 +814,12 @@ class RaiseClaim extends Component {
     }
   }
 
-  checkIndividualItem(invoiceNumber, rowData) {
+  checkIndividualItem(articleNumber, rowData) {
+    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
-    newSelected[invoiceNumber] = !this.state.CheckBoxAllItem[invoiceNumber];
+    newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
-      CheckBoxAllItem: invoiceNumber ? newSelected : false,
+      CheckBoxAllItem: newSelected,
     });
     var selectedRow = [];
     if (this.state.SelectedAllItem.length === 0) {
@@ -820,7 +828,7 @@ class RaiseClaim extends Component {
         SelectedAllItem: selectedRow,
       });
     } else {
-      if (newSelected[invoiceNumber] === true) {
+      if (newSelected[articleNumber] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
           selectedRow = this.state.SelectedAllItem;
           selectedRow.push(rowData);
@@ -828,26 +836,26 @@ class RaiseClaim extends Component {
             (x) =>
               x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
           );
-          if (Order_Master.length === selectedRow.length) {
-            const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
-            newSelected[Order_Master[0].orderMasterID] = !this.state
-              .CheckBoxAllOrder[Order_Master[0].orderMasterID];
-            this.setState({
-              CheckBoxAllOrder: Order_Master[0].orderMasterID
-                ? newSelected
-                : false,
-            });
-            var data_master = this.state.orderDetailsData.filter(
-              (y) => y.orderMasterID === Order_Master[0].orderMasterID
-            );
-            if (data_master.length > 0) {
-              var MastOrd = this.state.SelectedAllOrder;
-              MastOrd.push(data_master[0]);
-              this.setState({
-                SelectedAllOrder: MastOrd,
-              });
-            }
-          }
+          // if (Order_Master.length === selectedRow.length) {
+          //   const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+          //   newSelected[Order_Master[0].orderMasterID] = !this.state
+          //     .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+          //   this.setState({
+          //     CheckBoxAllOrder: Order_Master[0].orderMasterID
+          //       ? newSelected
+          //       : false,
+          //   });
+          //   var data_master = this.state.orderDetailsData.filter(
+          //     (y) => y.orderMasterID === Order_Master[0].orderMasterID
+          //   );
+          //   if (data_master.length > 0) {
+          //     var MastOrd = this.state.SelectedAllOrder;
+          //     MastOrd.push(data_master[0]);
+          //     this.setState({
+          //       SelectedAllOrder: MastOrd,
+          //     });
+          //   }
+          // }
           break;
         }
       } else {
@@ -871,19 +879,19 @@ class RaiseClaim extends Component {
                   ? newSelected
                   : false,
               });
-              var data_master = this.state.orderDetailsData.filter(
-                (y) => y.orderMasterID === Order_Master[0].orderMasterID
-              );
-              var GetIndex = this.state.orderDetailsData.findIndex(
-                (y) => y.orderMasterID === Order_Master[0].orderMasterID
-              );
-              if (data_master.length > 0) {
-                var MastOrd = this.state.SelectedAllOrder;
-                MastOrd.splice(GetIndex, 1);
-                this.setState({
-                  SelectedAllOrder: MastOrd,
-                });
-              }
+              // var data_master = this.state.orderDetailsData.filter(
+              //   (y) => y.orderMasterID === Order_Master[0].orderMasterID
+              // );
+              // var GetIndex = this.state.orderDetailsData.findIndex(
+              //   (y) => y.orderMasterID === Order_Master[0].orderMasterID
+              // );
+              // if (data_master.length > 0) {
+              //   var MastOrd = this.state.SelectedAllOrder;
+              //   MastOrd.splice(GetIndex, 1);
+              //   this.setState({
+              //     SelectedAllOrder: MastOrd,
+              //   });
+              // }
             }
 
             break;
@@ -894,9 +902,6 @@ class RaiseClaim extends Component {
     this.setState({
       SelectedAllItem: selectedRow,
     });
-    {
-      this.props.getItemOrderData(selectedRow);
-    }
   }
 
   handleOnChange(e) {
@@ -1151,7 +1156,7 @@ class RaiseClaim extends Component {
         var customerData = res.data.responseData;
         if (CustMsg === "Success") {
           self.setState({ customerData: customerData, loading: false });
-          self.handleEditCustomerClose();
+          // self.handleEditCustomerClose();
         }
       })
       .catch((data) => {
@@ -1175,6 +1180,8 @@ class RaiseClaim extends Component {
     this.setState({ selectedTicketSource: value });
   };
   handleManuallyOnchange = (e) => {
+    debugger;
+    e.preventDefault();
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   setModePaymentValue = (e) => {
@@ -1506,25 +1513,25 @@ class RaiseClaim extends Component {
                                                       className="d-none"
                                                       id={
                                                         "item" +
-                                                        item.invoiceNumber
+                                                        item.articleNumber
                                                       }
                                                       name="AllItem"
                                                       checked={
                                                         this.state
                                                           .CheckBoxAllItem[
-                                                          item.invoiceNumber
+                                                          item.articleNumber
                                                         ] === true
                                                       }
                                                       onChange={this.checkIndividualItem.bind(
                                                         this,
-                                                        item.invoiceNumber,
+                                                        item.articleNumber,
                                                         item
                                                       )}
                                                     />
                                                     <label
                                                       htmlFor={
                                                         "item" +
-                                                        item.invoiceNumber
+                                                        item.articleNumber
                                                       }
                                                     ></label>
                                                   </div>
@@ -1781,7 +1788,6 @@ class RaiseClaim extends Component {
                                       name="requiredSize"
                                       value={this.state.requiredSize}
                                       onChange={this.handleManuallyOnchange}
-                                      autoComplete="off"
                                     />
                                     {this.validator.message(
                                       "RequiredSize",
@@ -1806,7 +1812,7 @@ class RaiseClaim extends Component {
                                           {item.storeName}
                                         </div>
                                       )}
-                                      renderInput={function(props) {
+                                      renderInput={(props) => {
                                         return (
                                           <input
                                             placeholder="Purchase from Store name"
@@ -1866,9 +1872,9 @@ class RaiseClaim extends Component {
                                     <button
                                       type="button"
                                       className="addmanual m-t-15"
-                                      // onClick={this.hadleAddManuallyOrderData.bind(
-                                      //   this
-                                      // )}
+                                      onClick={this.hadleAddManuallyOrderData.bind(
+                                        this
+                                      )}
                                     >
                                       SAVE
                                     </button>
@@ -1900,7 +1906,6 @@ class RaiseClaim extends Component {
                                       className="uploadsearchbtn"
                                     >
                                       <label
-                                        for="file-upload"
                                         className="uploadsearchbtn-text"
                                         onClick={this.handleAddOrder.bind(this)}
                                       >
@@ -1942,16 +1947,25 @@ class RaiseClaim extends Component {
                       </div>
                       <div className="form-group col-md-4">
                         <label className="label-6">Claim Category</label>
-
-                        <Select
-                          showSearch={true}
-                          value={this.state.list1Value}
-                          style={{ width: "100%" }}
-                          onChange={this.handleCategoryChange}
+                        <select
+                          id="inputState"
                           className="form-control dropdown-label"
+                          onChange={this.handleCategoryChange}
+                          value={this.state.list1Value}
                         >
-                          {list1SelectOptions}
-                        </Select>
+                          <option value={0}>select</option>
+                          {this.state.categoryDropData !== null &&
+                            this.state.categoryDropData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.categoryID}
+                                className="select-category-placeholder"
+                              >
+                                {item.categoryName}
+                              </option>
+                            ))}
+                        </select>
+
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.errors["Category"]}
                         </p>
@@ -1959,29 +1973,48 @@ class RaiseClaim extends Component {
                       <div className="form-group col-md-4">
                         <label className="label-6">Sub Category</label>
 
-                        <Select
-                          showSearch={true}
-                          value={this.state.ListOfSubCate}
-                          style={{ width: "100%" }}
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-label"
                           onChange={this.handleSubCatOnChange}
+                          value={this.state.ListOfSubCate}
                         >
-                          {listSubCategory}
-                        </Select>
+                          <option value={0}>select</option>
+                          {this.state.SubCategoryDropData !== null &&
+                            this.state.SubCategoryDropData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.subCategoryID}
+                                className="select-category-placeholder"
+                              >
+                                {item.subCategoryName}
+                              </option>
+                            ))}
+                        </select>
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.errors["SubCategory"]}
                         </p>
                       </div>
                       <div className="form-group col-md-4">
                         <label className="label-6">Claim Type</label>
-
-                        <Select
-                          showSearch={true}
-                          value={this.state.ListOfIssue}
-                          style={{ width: "100%" }}
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-label"
                           onChange={this.handleIssueOnChange}
+                          value={this.state.ListOfIssue}
                         >
-                          {listOfIssueType}
-                        </Select>
+                          <option value={0}>select</option>
+                          {this.state.ListOfIssueData !== null &&
+                            this.state.ListOfIssueData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                                className="select-category-placeholder"
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                        </select>
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.errors["IssueType"]}
                         </p>
