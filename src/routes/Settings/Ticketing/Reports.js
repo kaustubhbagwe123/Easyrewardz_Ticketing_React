@@ -2379,6 +2379,7 @@ class Reports extends Component {
             self.setState({ OpenDefaultModal: false });
           } else {
             window.open(resultArr[0]);
+            self.setState({ OpenDefaultModal: false });
           }
         })
         .catch((data) => {
@@ -2627,6 +2628,7 @@ class Reports extends Component {
                 IsWeeklyForMonth: false,
                 IsDailyForYear: false,
                 IsWeeklyForYear: false,
+                NextPopup: false,
               });
             } else if (status == "duplicate") {
               self.setState({ Schedule_ID: 0 });
