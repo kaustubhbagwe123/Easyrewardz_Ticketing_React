@@ -2612,8 +2612,7 @@ class Dashboard extends Component {
 
     var mySQLDate = [date.getFullYear(), month, day].join("-");
     var mySQLTime = [hours, minutes, seconds].join(":");
-    // this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-    this.setState({ selectedScheduleTime: [mySQLDate, mySQLTime].join(" ") });
+    let selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
 
     axios({
       method: "post",
@@ -2624,7 +2623,7 @@ class Dashboard extends Component {
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
-        ScheduleTime: this.state.selectedScheduleTime,
+        ScheduleTime: selectedScheduleTime,
         IsDaily: this.state.IsDaily,
         IsWeekly: this.state.IsWeekly,
         NoOfWeek: this.state.selectedNoOfWeek,
@@ -2652,11 +2651,11 @@ class Dashboard extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           NotificationManager.success("Scheduled successfully.");
-          // self.ScheduleCloseModel();
-          // self.setState({
-          //   scheduleRequired: "",
-          //   selectedTeamMemberCommaSeperated: ""
-          // });
+          self.ScheduleCloseModel();
+          self.setState({
+            scheduleRequired: "",
+            selectedTeamMemberCommaSeperated: "",
+          });
         }
       })
       .catch((data) => {
