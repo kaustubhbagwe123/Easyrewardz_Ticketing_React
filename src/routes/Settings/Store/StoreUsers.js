@@ -2691,22 +2691,22 @@ class StoreUsers extends Component {
               NotificationManager.success("Record Saved Successfully.");
               self.handleGetStoreUserGridData();
               self.setState({
-                brandData:[],
-                storeCodeData:[],
-                userName:"",
-                mobile_no:"",
-                email_Id:"",
-                departmentData:[],
-                selectedFunction:[],
-                userDesignationData:[],
-                reportDesignation:[],
-                reportToData:[],
-                selectedClaimBrand:[],
-                selectedClaimCategory:[],
-                selectedClaimSubCategory:[],
-                selectedClaimIssueType:[],
-                CrmRoleData:[],
-                activeData:[],
+                brandData: [],
+                storeCodeData: [],
+                userName: "",
+                mobile_no: "",
+                email_Id: "",
+                departmentData: [],
+                selectedFunction: [],
+                userDesignationData: [],
+                reportDesignation: [],
+                reportToData: [],
+                selectedClaimBrand: [],
+                selectedClaimCategory: [],
+                selectedClaimSubCategory: [],
+                selectedClaimIssueType: [],
+                CrmRoleData: [],
+                activeData: [],
               });
             } else {
               NotificationManager.error("Record Not Saved.");
@@ -2896,7 +2896,8 @@ class StoreUsers extends Component {
         editFunctionCompulsion: "Please Select Function.",
         EditDesignationCompulsory: "Please Select Designnation.",
         EditReportDesignationCompulsory: "please Select Report To.",
-        EditReporteeDesignationCompulsory:"please Select Reportee Designation.",
+        EditReporteeDesignationCompulsory:
+          "please Select Reportee Designation.",
       });
     }
   }
@@ -3231,13 +3232,13 @@ class StoreUsers extends Component {
               </div>
             </div>
           </Modal>
-          <Link to="/admin/settings" className="header-path">
+          <Link to="/store/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
           <Link
             to={{
-              pathname: "/admin/settings",
+              pathname: "/store/settings",
               tabName: "store-tab",
             }}
             className="header-path"
@@ -4020,7 +4021,6 @@ class StoreUsers extends Component {
                           </button>
                         </div>
                       )}
-                     
                     </div>
                   </div>
                   <div className="collapse-cntr">

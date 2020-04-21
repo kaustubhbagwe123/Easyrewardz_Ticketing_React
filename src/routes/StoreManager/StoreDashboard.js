@@ -1225,7 +1225,7 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input
+                                  {/* <input
                                     className="no-bg"
                                     type="text"
                                     placeholder="Task Status"
@@ -1233,12 +1233,18 @@ class StoreDashboard extends Component {
                                     value={this.state.task_status}
                                     onChange={this.hanldetoggleOnChange}
                                     autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
+                                  /> */}
                                   <select>
-                                    <option>Creation On</option>
+                                    <option>Task Status</option>
                                   </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  {/* <select>
+                                    <option>Creation On</option>
+                                  </select> */}
+                                  <DatePickerComponenet
+                                    applyCallback={this.applyCallback}
+                                  />
                                 </div>
                                 <div className="col-md-3">
                                   <select

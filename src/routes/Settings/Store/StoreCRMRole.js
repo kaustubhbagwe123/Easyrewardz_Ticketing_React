@@ -42,7 +42,7 @@ class StoreCRMRole extends Component {
         { moduleId: 3, moduleName: "Claim", isActive: true },
         { moduleId: 4, moduleName: "Notification", isActive: true },
         { moduleId: 5, moduleName: "Settings", isActive: true },
-        { moduleId: 6, moduleName: "Reports", isActive: false }
+        { moduleId: 6, moduleName: "Reports", isActive: false },
       ],
       RoleName: "",
       checkRoleName: "",
@@ -78,7 +78,7 @@ class StoreCRMRole extends Component {
       bulkuploadCompulsion: "",
       progressValue: 0,
       statusCompulsory: "",
-      isortA: false
+      isortA: false,
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -89,12 +89,12 @@ class StoreCRMRole extends Component {
   }
   handleTabChange(index) {
     this.setState({
-      tabIndex: index
+      tabIndex: index,
     });
   }
 
   ////hanlde file uploading
-  fileUpload = e => {
+  fileUpload = (e) => {
     debugger;
     var allFiles = [];
     var selectedFiles = e;
@@ -106,7 +106,7 @@ class StoreCRMRole extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: ""
+        bulkuploadCompulsion: "",
       });
     }
   };
@@ -114,17 +114,17 @@ class StoreCRMRole extends Component {
   /// Role name onchange
   handleRoleName(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
   //// Status on change
-  handleRoleisActive = e => {
+  handleRoleisActive = (e) => {
     debugger;
     let RoleisActive = e.currentTarget.value;
     this.setState({ RoleisActive });
   };
   ///handle change Module
-  checkModule = async moduleId => {
+  checkModule = async (moduleId) => {
     debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
@@ -146,7 +146,7 @@ class StoreCRMRole extends Component {
     await this.setState({
       modulesList,
       ModulesEnabled,
-      ModulesDisabled
+      ModulesDisabled,
     });
   };
 
@@ -156,9 +156,9 @@ class StoreCRMRole extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCRMRole/GetStoreCRMRoles",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -209,7 +209,7 @@ class StoreCRMRole extends Component {
           }
         }
       })
-      .catch(res => {
+      .catch((res) => {
         console.log(res);
       });
   }
@@ -230,7 +230,7 @@ class StoreCRMRole extends Component {
     }
     await this.setState({
       ModulesEnabled,
-      ModulesDisabled
+      ModulesDisabled,
     });
   };
   //// delete CRM role
@@ -242,10 +242,10 @@ class StoreCRMRole extends Component {
       url: config.apiUrl + "/StoreCRMRole/DeleteStoreCRMRole",
       headers: authHeader(),
       params: {
-        CRMRoleID: Id
-      }
+        CRMRoleID: Id,
+      },
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
@@ -255,7 +255,7 @@ class StoreCRMRole extends Component {
           self.handleGetCRMGridData();
         }
       })
-      .catch(res => {
+      .catch((res) => {
         console.log(res);
       });
   }
@@ -283,7 +283,10 @@ class StoreCRMRole extends Component {
       }
     }
     if (e === "add") {
-      if (this.state.RoleName.length > 0 && this.state.RoleisActive.length > 0) {
+      if (
+        this.state.RoleName.length > 0 &&
+        this.state.RoleisActive.length > 0
+      ) {
         CRMRoleID = 0;
         RoleName = self.state.RoleName;
         ModulesEnabled = self.state.ModulesEnabled;
@@ -291,7 +294,7 @@ class StoreCRMRole extends Component {
       } else {
         this.setState({
           checkRoleName: "Required",
-          statusCompulsory: "Please select status."
+          statusCompulsory: "Please select status.",
         });
         return false;
       }
@@ -321,10 +324,10 @@ class StoreCRMRole extends Component {
         RoleName: RoleName,
         RoleisActive: RoleisActive,
         ModulesEnabled: ModulesEnabled,
-        ModulesDisabled: ModulesDisabled
-      }
+        ModulesDisabled: ModulesDisabled,
+      },
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -337,15 +340,15 @@ class StoreCRMRole extends Component {
               ModulesDisabled: "",
               updateModulesEnabled: "",
               updateModulesDisabled: "",
-              checkRoleName:"",
-              statusCompulsory:""
+              checkRoleName: "",
+              statusCompulsory: "",
             });
             self.handleGetCRMGridData();
           } else if (e === "update") {
             self.toggleEditModal();
             self.setState({
               editSaveLoading: false,
-              editRoleNameValidMsg: ""
+              editRoleNameValidMsg: "",
             });
             NotificationManager.success("CRM Role updated successfully.");
             self.handleGetCRMGridData();
@@ -363,7 +366,7 @@ class StoreCRMRole extends Component {
           }
         }
       })
-      .catch(res => {
+      .catch((res) => {
         console.log(res);
       });
   }
@@ -385,7 +388,7 @@ class StoreCRMRole extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        }
+        },
       })
         .then(function(res) {
           debugger;
@@ -399,12 +402,12 @@ class StoreCRMRole extends Component {
             self.setState({
               showProgress: false,
               isFileUploadFail: true,
-              progressValue: 0
+              progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -413,19 +416,19 @@ class StoreCRMRole extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
   //// Store CRM data for edit
-  hanldeEditCRM = rowData => {
+  hanldeEditCRM = (rowData) => {
     debugger;
     this.setState({
       modulesData: rowData.modules,
       modulestatus: rowData.isRoleActive,
       editRoleName: rowData.roleName,
       crmRoleID: rowData.crmRoleID,
-      editmodel: true
+      editmodel: true,
     });
   };
 
@@ -532,7 +535,7 @@ class StoreCRMRole extends Component {
       sisRoleActiveFilterCheckbox,
       roleColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -541,42 +544,8 @@ class StoreCRMRole extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.roleName === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        roleColor: "sort-column"
-      });
-    } else if (column === "createdBy") {
-      var sItems = screatedByFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        createdColor: "sort-column"
-      });
-    } else if (column === "isRoleActive") {
-      var sItems = sisRoleActiveFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.isRoleActive === sItems[i]
+              (a) => a.roleName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -587,12 +556,50 @@ class StoreCRMRole extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        roleColor: "sort-column",
+      });
+    } else if (column === "createdBy") {
+      var sItems = screatedByFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdBy === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column",
+      });
+    } else if (column === "isRoleActive") {
+      var sItems = sisRoleActiveFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.isRoleActive === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempcrmRoles: itemsArray
+      tempcrmRoles: itemsArray,
     });
   };
 
@@ -601,7 +608,7 @@ class StoreCRMRole extends Component {
     this.setState({
       editmodel: false,
       editRoleNameValidMsg: "",
-      editCheckRoleName: ""
+      editCheckRoleName: "",
     });
   }
   //// Modal data change
@@ -617,13 +624,13 @@ class StoreCRMRole extends Component {
         this.setState({
           editRoleName: value,
           editRoleNameValidMsg: "",
-          editCheckRoleName: ""
+          editCheckRoleName: "",
         });
       } else {
         this.setState({
           editRoleName: value,
           editRoleNameValidMsg: "The role name field is required.",
-          editCheckRoleName: "Required"
+          editCheckRoleName: "Required",
         });
       }
     }
@@ -646,7 +653,7 @@ class StoreCRMRole extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -654,7 +661,7 @@ class StoreCRMRole extends Component {
           sisRoleActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -666,7 +673,7 @@ class StoreCRMRole extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -674,7 +681,7 @@ class StoreCRMRole extends Component {
           sisRoleActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -686,7 +693,7 @@ class StoreCRMRole extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -694,26 +701,26 @@ class StoreCRMRole extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
   }
 
   /// status close modal
-  StatusCloseModel = e => {
+  StatusCloseModel = (e) => {
     if (this.state.tempcrmRoles.length > 0) {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        crmRoles: this.state.tempcrmRoles
+        crmRoles: this.state.tempcrmRoles,
       });
       if (this.state.sortColumn === "roleName") {
         if (this.state.sroleNameFilterCheckbox === "") {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sisRoleActiveFilterCheckbox: ""
+            sisRoleActiveFilterCheckbox: "",
           });
         }
       }
@@ -722,7 +729,7 @@ class StoreCRMRole extends Component {
         } else {
           this.setState({
             sroleNameFilterCheckbox: "",
-            sisRoleActiveFilterCheckbox: ""
+            sisRoleActiveFilterCheckbox: "",
           });
         }
       }
@@ -731,7 +738,7 @@ class StoreCRMRole extends Component {
         } else {
           this.setState({
             sroleNameFilterCheckbox: "",
-            screatedByFilterCheckbox: ""
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -739,7 +746,7 @@ class StoreCRMRole extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        crmRoles: this.state.sortAllData
+        crmRoles: this.state.sortAllData,
       });
     }
   };
@@ -759,7 +766,7 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterRoleName });
       } else {
         this.setState({
-          sortFilterRoleName: this.state.sortRoleName
+          sortFilterRoleName: this.state.sortRoleName,
         });
       }
     }
@@ -773,7 +780,7 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterCreated });
       } else {
         this.setState({
-          sortFilterCreated: this.state.sortCreated
+          sortFilterCreated: this.state.sortCreated,
         });
       }
     }
@@ -787,7 +794,7 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus
+          sortFilterStatus: this.state.sortStatus,
         });
       }
     }
@@ -822,7 +829,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
-      crmRoles: itemsArray
+      crmRoles: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -858,16 +865,16 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
-      crmRoles: itemsArray
+      crmRoles: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
     }, 10);
   }
   /// Edit Module change
-  handleModuleChange = id => {
+  handleModuleChange = (id) => {
     debugger;
-    var index = this.state.modulesData.findIndex(x => x.moduleID === id);
+    var index = this.state.modulesData.findIndex((x) => x.moduleID === id);
     var modulesData = this.state.modulesData;
     modulesData[index].modulestatus = !modulesData[index].modulestatus;
     this.setState({ modulesData });
@@ -877,11 +884,11 @@ class StoreCRMRole extends Component {
     this.setState({ progressValue: value });
   }
   /// Delete file on bulk uploading
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -889,14 +896,14 @@ class StoreCRMRole extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/admin/settings" className="header-path">
+          <Link to="/store/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
           <Link
             to={{
-              pathname: "/admin/settings",
-              tabName: "store-tab"
+              pathname: "/store/settings",
+              tabName: "store-tab",
             }}
             className="header-path"
           >
@@ -1079,7 +1086,7 @@ class StoreCRMRole extends Component {
                           </span>
                         ),
                         accessor: "roleName",
-                        Cell: row => {
+                        Cell: (row) => {
                           // var ids = row.original["id"];
                           return (
                             <div>
@@ -1114,7 +1121,7 @@ class StoreCRMRole extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -1131,7 +1138,7 @@ class StoreCRMRole extends Component {
                           </span>
                         ),
                         accessor: "createdBy",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <div>
@@ -1177,7 +1184,7 @@ class StoreCRMRole extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -1193,12 +1200,12 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "isRoleActive"
+                        accessor: "isRoleActive",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <>
@@ -1256,8 +1263,8 @@ class StoreCRMRole extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     resizable={false}
                     minRows={2}
@@ -1324,7 +1331,7 @@ class StoreCRMRole extends Component {
                         <p
                           style={{
                             color: "red",
-                            marginBottom: "0px"
+                            marginBottom: "0px",
                           }}
                         >
                           {this.state.checkRoleName}
@@ -1399,9 +1406,13 @@ class StoreCRMRole extends Component {
                   <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
-                     Template 
+                    Template
                     <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
-                      <img src={DownExcel} alt="download icon" style={{marginLeft:"5px"}} />
+                      <img
+                        src={DownExcel}
+                        alt="download icon"
+                        style={{ marginLeft: "5px" }}
+                      />
                     </CSVLink>
                     <div className="mainfileUpload">
                       <Dropzone onDrop={this.fileUpload.bind(this)}>
