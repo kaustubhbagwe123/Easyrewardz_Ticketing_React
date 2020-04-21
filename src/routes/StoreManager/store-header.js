@@ -38,11 +38,9 @@ class Header extends Component {
     this.handleNotificationModalOpen = this.handleNotificationModalOpen.bind(
       this
     );
-    
   }
 
   componentDidMount() {
-    
     this.handleGetNotigfication();
   }
 
@@ -63,14 +61,12 @@ class Header extends Component {
   };
   ////handle notification modal open
   handleNotificationModalOpen() {
-    
     // if (this.state.notificationCount > 0) {
     this.setState({ notificationModal: true });
     // }
   }
   ////handle notification modal close
   handleNotificationModalClose(typeId, type) {
-    
     this.setState({ notificationModal: false });
     this.handleGetReadStoreNotification(typeId, type);
   }
@@ -107,7 +103,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var responseData = response.data.responseData;
         var Noticount = responseData.notiCount;
@@ -139,7 +134,6 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -150,7 +144,6 @@ class Header extends Component {
         console.log(response, "---handleGetNotigfication");
       });
   };
-
 
   render() {
     return (
@@ -424,9 +417,10 @@ class Header extends Component {
                           <div className="notification-popover">
                             {item.customTaskNotificationModels.map(
                               (data, j) => {
+                                debugger;
                                 return (
                                   <p key={j}>
-                                    {data.notificatonTypeID == 1 ? (
+                                    {data.notificatonType == 1 ? (
                                       <>
                                         {data.notificatonTypeName + " No:"}
                                         <Link
@@ -484,7 +478,7 @@ class Header extends Component {
                               : "text-disabled"
                           }
                         >
-                          VIEW TICKETS
+                          VIEW
                         </div>
                       </Popover>
                     </div>

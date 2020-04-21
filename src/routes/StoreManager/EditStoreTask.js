@@ -58,6 +58,9 @@ class EditStoreTask extends Component {
       progressData: {},
       canEdit: false,
       canSubmit: false,
+      canAssignTo: false,
+      taskStatusId: 0,
+      taskStatusName: "",
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -151,6 +154,9 @@ class EditStoreTask extends Component {
         var assignToName = "";
         var canEdit = false;
         var canSubmit = false;
+        var canAssignTo = false;
+        var taskStatusName = "";
+        var taskStatusId = 0;
 
         debugger;
         if (message == "Success" && data) {
@@ -166,8 +172,14 @@ class EditStoreTask extends Component {
           assignToName = data.assignToName;
           canEdit = data.canEdit == 1 ? true : false;
           canSubmit = data.canSubmit == 1 ? true : false;
+          canAssignTo = data.isAssignTo == 1 ? true : false;
+          taskStatusId = data.taskStatusId;
+          taskStatusName = data.taskStatusName;
 
           self.setState({
+            canAssignTo,
+            taskStatusId,
+            taskStatusName,
             canEdit,
             canSubmit,
             departmentID,
@@ -397,7 +409,7 @@ class EditStoreTask extends Component {
   }
 
   ////handle Update Task
-  handleUpdateTask() {
+  handleUpdateTask(statusId) {
     let self = this;
 
     if (this.state.departmentID == 0) {
@@ -429,7 +441,7 @@ class EditStoreTask extends Component {
         inputParam.FunctionID = this.state.funcationID;
         inputParam.PriorityID = this.state.priorityID;
         inputParam.TaskID = this.state.taskId;
-        inputParam.TaskStatusId = 222;
+        inputParam.TaskStatusId = statusId;
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -619,7 +631,7 @@ class EditStoreTask extends Component {
               <img src={DownImg} alt="down" className="down-header" />
             </a>
 
-            <button
+            {/* <button
               type="button"
               className={
                 this.state.canSubmit
@@ -634,6 +646,20 @@ class EditStoreTask extends Component {
               >
                 SUBMIT
               </label>
+            </button> */}
+            <button
+              type="button"
+              className={
+                this.state.canSubmit
+                  ? "btn-store-resolved"
+                  : "btn-store-resolved disabled-link"
+              }
+              onClick={this.handleSubmitReopnModalOpen.bind(this)}
+            >
+              <label className="myticket-submit-solve-button-text">
+                SUBMIT AS RESOLVED
+              </label>
+              <img src={DownWhiteImg} alt="headphone" className="down-white" />
             </button>
           </div>
           <Modal
@@ -644,16 +670,36 @@ class EditStoreTask extends Component {
             overlayId="logout-ovrly"
           >
             <div className="store-hdrtMdal">
-              <div className="row">
-                <label className="modal-lbl">
-                  Submit as <span className="modal-lbl-1">Solved</span>
-                </label>
-              </div>
-              <div className="row" style={{ marginTop: "8px" }}>
-                <label className="modal-lbl">
-                  Submit as <span className="modal-lbl-2">Closed</span>
-                </label>
-              </div>
+              {this.state.taskStatusId === 222 ? (
+                <div className="row">
+                  <label
+                    className="modal-lbl"
+                    onClick={this.handleUpdateTask.bind(this, 222)}
+                  >
+                    Submit as <span className="modal-lbl-1">ReOpen</span>
+                  </label>
+                </div>
+              ) : (
+                <div className="row">
+                  <label
+                    className="modal-lbl"
+                    
+                    onClick={this.handleUpdateTask.bind(this, 222)}
+                  >
+                    Submit as <span className="modal-lbl-1">Solved</span>
+                  </label>
+                </div>
+              )}
+              {this.state.taskStatusId !== 222 ? (
+                <div className="row" style={{ marginTop: "8px" }}>
+                  <label
+                    className="modal-lbl"
+                    onClick={this.handleUpdateTask.bind(this, 223)}
+                  >
+                    Submit as <span className="modal-lbl-2">Closed</span>
+                  </label>
+                </div>
+              ) : null}
             </div>
           </Modal>
         </div>

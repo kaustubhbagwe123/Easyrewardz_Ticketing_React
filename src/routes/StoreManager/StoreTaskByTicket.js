@@ -47,6 +47,11 @@ class StoreTaskByTicket extends Component {
       userData: [],
       userModel: false,
       progressData: {},
+      canEdit: false,
+      canSubmit: false,
+      isAssignTo: false,
+      taskStatusId: 0,
+      taskStatusName: "",
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -91,6 +96,11 @@ class StoreTaskByTicket extends Component {
         var storeAddress = "";
         var storeName = "";
         var assignToName = "";
+        var canEdit = false;
+        var canSubmit = false;
+        var isAssignTo = false;
+        var taskStatusId = 0;
+        var taskStatusName = "";
 
         if (message === "Success" && responseData) {
           debugger;
@@ -104,7 +114,17 @@ class StoreTaskByTicket extends Component {
           storeName = taskDetailsData.storeName;
           storeAddress = taskDetailsData.address;
           assignToName = taskDetailsData.assignToName;
+          canEdit = taskDetailsData.canEdit === 1 ? true : false;
+          canSubmit = taskDetailsData.canSubmit === 1 ? true : false;
+          isAssignTo = taskDetailsData.isAssignTo === 1 ? true : false;
+          taskStatusId = taskDetailsData.taskStatusId;
+          taskStatusName = taskDetailsData.taskStatusName;
           self.setState({
+            canEdit,
+            isAssignTo,
+            canSubmit,
+            taskStatusId,
+            taskStatusName,
             assignToName,
             isueRaisedBy,
             storeAddress,
@@ -491,7 +511,11 @@ class StoreTaskByTicket extends Component {
                   <label className="store-Edit-lbl"> Task Title</label>
                   <input
                     type="text"
-                    className="store-edit-txt"
+                    className={
+                      this.state.canEdit
+                        ? "store-edit-txt"
+                        : "store-edit-txt disabled-link"
+                    }
                     placeholder="Enter Task Title"
                     value={this.state.taskTitle}
                     name="tasktitle"
@@ -507,7 +531,11 @@ class StoreTaskByTicket extends Component {
                       <label className="store-Edit-lbl">Department</label>
                       <select
                         id="inputState"
-                        className="form-control dropdown-label"
+                        className={
+                          this.state.canEdit
+                            ? "form-control dropdown-label"
+                            : "form-control dropdown-label disabled-link"
+                        }
                         value={this.state.departmentID}
                         name="department"
                         onChange={this.handleOnchange.bind(this)}
@@ -534,7 +562,11 @@ class StoreTaskByTicket extends Component {
                       <label className="store-Edit-lbl">Function</label>
                       <select
                         id="inputState"
-                        className="form-control dropdown-label"
+                        className={
+                          this.state.canEdit
+                            ? "form-control dropdown-label"
+                            : "form-control dropdown-label disabled-link"
+                        }
                         value={this.state.functionID}
                         name="funcation"
                         onChange={this.handleOnchange.bind(this)}
@@ -564,7 +596,11 @@ class StoreTaskByTicket extends Component {
                       <label className="store-Edit-lbl">Task Details</label>
                       <textarea
                         rows="8"
-                        className="textarea-store"
+                        className={
+                          this.state.canEdit
+                            ? "textarea-store"
+                            : "textarea-store disabled-link"
+                        }
                         value={this.state.taskTitle}
                         name="taskdetails"
                         onChange={this.handleOnchange.bind(this)}
