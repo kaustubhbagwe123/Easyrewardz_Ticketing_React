@@ -64,7 +64,7 @@ class StoreFileUploadLogs extends Component {
       url: config.apiUrl + "/StoreFile/GetStoreFileUploadLogs",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let fileUploadLog = res.data.responseData;
         if (fileUploadLog !== null) {
@@ -358,7 +358,7 @@ class StoreFileUploadLogs extends Component {
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
 
-    itemsArray.sort(function (a, b) {
+    itemsArray.sort(function(a, b) {
       return a.fileUploadStatus > b.fileUploadStatus ? 1 : -1;
     });
 
@@ -917,13 +917,13 @@ class StoreFileUploadLogs extends Component {
           </Modal>
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/admin/settings" className="header-path">
+          <Link to="/store/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
           <Link
             to={{
-              pathname: "/admin/settings",
+              pathname: "/store/settings",
               tabName: "store-tab",
             }}
             className="header-path"

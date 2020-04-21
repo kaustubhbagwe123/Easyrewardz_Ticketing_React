@@ -59,6 +59,16 @@ class StoreDashboard extends Component {
       Task_Ticket: "",
       task_Title: "",
       task_status: "",
+      claim_Id: "",
+      DashboardOpenTaskDepartmentWise: [],
+      DashboardTaskByPriority: [],
+      DashboardOpenCampaignByType: [],
+      DashboardClaimVsInvoiceArticle: [],
+      DashboardOpenClaimStatus: [],
+      DashboardClaimVsInvoiceAmount: [],
+      FlagClaimVsInvoiceArticle: false,
+      FlagOpenClaimStatus: false,
+      FlagClaimVsInvoiceAmount: false,
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -76,7 +86,7 @@ class StoreDashboard extends Component {
   componentDidMount() {
     this.handleGetBrandList();
     this.handleGetAgentList();
-    this.handleGetDashboardGraphCount();
+    // this.handleGetDashboardGraphCount();
   }
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
@@ -109,14 +119,15 @@ class StoreDashboard extends Component {
     await this.setState({
       start,
       end,
-      // DashboardTaskGraphData: [],
-      // DashboardClaimGraphData: [],
-      // DashboardBillGraphData: [],
-      // DashboardSourceGraphData: [],
-      // DashboardPriorityGraphData: []
+      DashboardOpenTaskDepartmentWise: [],
+      DashboardTaskByPriority: [],
+      DashboardOpenCampaignByType: [],
+      DashboardClaimVsInvoiceArticle: [],
+      DashboardOpenClaimStatus: [],
+      DashboardClaimVsInvoiceAmount: [],
     });
     this.handleGetDashboardGraphCount();
-    // this.handleGetDashboardGraphData();
+    this.handleGetDashboardGraphData();
   };
   checkIndividualAgent = (event) => {
     debugger;
@@ -145,15 +156,16 @@ class StoreDashboard extends Component {
     this.setState(
       {
         AgentIds: strAgentIds,
-        // DashboardTaskGraphData: [],
-        // DashboardClaimGraphData: [],
-        // DashboardBillGraphData: [],
-        // DashboardSourceGraphData: [],
-        // DashboardPriorityGraphData: []
+        DashboardOpenTaskDepartmentWise: [],
+        DashboardTaskByPriority: [],
+        DashboardOpenCampaignByType: [],
+        DashboardClaimVsInvoiceArticle: [],
+        DashboardOpenClaimStatus: [],
+        DashboardClaimVsInvoiceAmount: [],
       },
       () => {
         this.handleGetDashboardGraphCount();
-        // this.handleGetDashboardGraphData();
+        this.handleGetDashboardGraphData();
         // this.ViewSearchData();
       }
     );
@@ -185,15 +197,16 @@ class StoreDashboard extends Component {
     this.setState(
       {
         BrandIds: strBrandIds,
-        // DashboardTaskGraphData: [],
-        // DashboardClaimGraphData: [],
-        // DashboardBillGraphData: [],
-        // DashboardSourceGraphData: [],
-        // DashboardPriorityGraphData: []
+        DashboardOpenTaskDepartmentWise: [],
+        DashboardTaskByPriority: [],
+        DashboardOpenCampaignByType: [],
+        DashboardClaimVsInvoiceArticle: [],
+        DashboardOpenClaimStatus: [],
+        DashboardClaimVsInvoiceAmount: [],
       },
       () => {
         this.handleGetDashboardGraphCount();
-        // this.handleGetDashboardGraphData();
+        this.handleGetDashboardGraphData();
         // this.ViewSearchData();
       }
     );
@@ -226,7 +239,7 @@ class StoreDashboard extends Component {
       AgentIds: strAgentIds,
     });
     this.handleGetDashboardGraphCount();
-    // this.handleGetDashboardGraphData();
+    this.handleGetDashboardGraphData();
     // this.ViewSearchData();
   };
   checkAllAgentStart(event) {
@@ -246,7 +259,7 @@ class StoreDashboard extends Component {
     });
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardGraphCount();
-      // this.handleGetDashboardGraphData();
+      this.handleGetDashboardGraphData();
       // this.handleTicketsOnLoad();
     } else {
       this.setState({ loadingAbove: false });
@@ -279,7 +292,7 @@ class StoreDashboard extends Component {
       BrandIds: strBrandIds,
     });
     this.handleGetDashboardGraphCount();
-    // this.handleGetDashboardGraphData();
+    this.handleGetDashboardGraphData();
     // this.ViewSearchData();
   };
   checkAllBrandStart(event) {
@@ -299,7 +312,7 @@ class StoreDashboard extends Component {
     });
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardGraphCount();
-      // this.handleGetDashboardGraphData();
+      this.handleGetDashboardGraphData();
       // this.handleTicketsOnLoad();
     } else {
       this.setState({ loadingAbove: false });
@@ -340,8 +353,8 @@ class StoreDashboard extends Component {
     debugger;
     let self = this;
     this.setState({ loadingAbove: true });
-    var fromdate = moment(this.state.start).format("YYYY-MM-DD");
-    var todate = moment(this.state.end).format("YYYY-MM-DD");
+    var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
+    var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
 
     var finalData = {};
     finalData.UserIds = this.state.AgentIds;
@@ -361,7 +374,90 @@ class StoreDashboard extends Component {
         if (status === "Success") {
           self.setState({ graphCount: data, loadingAbove: false });
         } else {
-          self.setState({ graphCount: {} });
+          self.setState({ graphCount: {}, loadingAbove: false });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+  /// Get Dashboard graph data
+  handleGetDashboardGraphData() {
+    debugger;
+    let self = this;
+    this.setState({ loadingAbove: true });
+    var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
+    var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
+
+    var finalData = {};
+    finalData.UserIds = this.state.AgentIds;
+    finalData.DateFrom = fromdate;
+    finalData.DateEnd = todate;
+    finalData.BrandIDs = this.state.BrandIds;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Graph/GetGraphData",
+      headers: authHeader(),
+      data: finalData,
+    })
+      .then(function(res) {
+        debugger;
+        var status = res.data.message;
+        var DashboardOpenTaskDepartmentWise =
+          res.data.responseData.openTaskDepartmentWise;
+        var DashboardTaskByPriority = res.data.responseData.taskByPriority;
+        var DashboardOpenCampaignByType =
+          res.data.responseData.openCampaignByType;
+        var DashboardClaimVsInvoiceArticle =
+          res.data.responseData.claimVsInvoiceArticle;
+        var DashboardOpenClaimStatus = res.data.responseData.openClaimStatus;
+        var DashboardClaimVsInvoiceAmount =
+          res.data.responseData.claimVsInvoiceAmount;
+
+        if (DashboardOpenTaskDepartmentWise !== null) {
+          self.setState({
+            DashboardOpenTaskDepartmentWise,
+          });
+        }
+        if (DashboardTaskByPriority !== null) {
+          self.setState({
+            DashboardTaskByPriority,
+          });
+        }
+        if (DashboardOpenCampaignByType !== null) {
+          self.setState({
+            DashboardOpenCampaignByType,
+          });
+        }
+        if (DashboardClaimVsInvoiceArticle !== null) {
+          self.setState({
+            DashboardClaimVsInvoiceArticle,
+            FlagClaimVsInvoiceArticle: false,
+          });
+        } else {
+          self.setState({
+            FlagClaimVsInvoiceArticle: true,
+          });
+        }
+        if (DashboardOpenClaimStatus !== null) {
+          self.setState({
+            DashboardOpenClaimStatus,
+            FlagOpenClaimStatus: false,
+          });
+        } else {
+          self.setState({
+            FlagOpenClaimStatus: true,
+          });
+        }
+        if (DashboardClaimVsInvoiceAmount !== null) {
+          self.setState({
+            DashboardClaimVsInvoiceAmount,
+            FlagClaimVsInvoiceAmount: false,
+          });
+        } else {
+          self.setState({
+            FlagClaimVsInvoiceAmount: true,
+          });
         }
       })
       .catch((res) => {
@@ -500,7 +596,7 @@ class StoreDashboard extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
@@ -907,38 +1003,65 @@ class StoreDashboard extends Component {
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
                   <p className="card-head">Open Task-Department Wise</p>
-                  <TaskDepartment />
+                  {this.state.DashboardOpenTaskDepartmentWise.length > 0 ? (
+                    <TaskDepartment
+                      data={this.state.DashboardOpenTaskDepartmentWise}
+                    />
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
                   <p className="card-head">Task by priority</p>
-                  <TaskByPriority />
+                  {this.state.DashboardTaskByPriority.length > 0 ? (
+                    <TaskByPriority data={this.state.DashboardTaskByPriority} />
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Open Campaign by type</p>
-                  <OpenCompaign />
+                  {this.state.DashboardOpenCampaignByType.length > 0 ? (
+                    <OpenCompaign
+                      data={this.state.DashboardOpenCampaignByType}
+                    />
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
                   <p className="card-head">Claim Vs Invoice &amp; Article</p>
-                  <ClaimVsInvoice />
+                  {this.state.DashboardClaimVsInvoiceArticle.length > 0 ? (
+                    <ClaimVsInvoice
+                      data={this.state.DashboardClaimVsInvoiceArticle}
+                    />
+                  ) : null}
                 </div>
+                {this.state.FlagClaimVsInvoiceArticle && (
+                  <p>No Data Available</p>
+                )}
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Open Claim Stats</p>
-                  <OpenClaim />
+                  {this.state.DashboardOpenClaimStatus.length > 0 ? (
+                    <OpenClaim data={this.state.DashboardOpenClaimStatus} />
+                  ) : null}
                 </div>
+                {this.state.FlagOpenClaimStatus && <p>No Data Available</p>}
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Claim Vs Invoice Amount</p>
-                  <InvoiceAmountPie />
+                  {this.state.DashboardClaimVsInvoiceAmount.length > 0 ? (
+                    <InvoiceAmountPie
+                      data={this.state.DashboardClaimVsInvoiceAmount}
+                    />
+                  ) : null}
                 </div>
+                {this.state.FlagClaimVsInvoiceAmount && (
+                  <p>No Data Available</p>
+                )}
               </div>
             </div>
           </div>
@@ -1102,7 +1225,7 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input
+                                  {/* <input
                                     className="no-bg"
                                     type="text"
                                     placeholder="Task Status"
@@ -1110,12 +1233,18 @@ class StoreDashboard extends Component {
                                     value={this.state.task_status}
                                     onChange={this.hanldetoggleOnChange}
                                     autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
+                                  /> */}
                                   <select>
-                                    <option>Creation On</option>
+                                    <option>Task Status</option>
                                   </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  {/* <select>
+                                    <option>Creation On</option>
+                                  </select> */}
+                                  <DatePickerComponenet
+                                    applyCallback={this.applyCallback}
+                                  />
                                 </div>
                                 <div className="col-md-3">
                                   <select
@@ -1167,11 +1296,24 @@ class StoreDashboard extends Component {
                             <div className="container-fluid">
                               <div className="row all-row">
                                 <div className="col-md-3">
-                                  <input type="text" placeholder="Claim ID" />
+                                  <input
+                                    type="text"
+                                    placeholder="Claim ID"
+                                    name="claim_Id"
+                                    value={this.state.claim_Id}
+                                    onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Ticket Mapped(Yes-No)</option>
+                                  <select
+                                    value={this.state.claimTicket_mapped}
+                                    name="claimTicket_mapped"
+                                    onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Ticket Mapped</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -1242,7 +1384,14 @@ class StoreDashboard extends Component {
                             Status <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "statusNew",
+                        accessor: "taskstatus",
+                        Cell: (row) => {
+                          return (
+                            <span className="table-btn table-blue-btn">
+                              <label>{row.original.taskstatus}</label>
+                            </span>
+                          );
+                        },
                       },
                       {
                         Header: <span>Task Title</span>,
