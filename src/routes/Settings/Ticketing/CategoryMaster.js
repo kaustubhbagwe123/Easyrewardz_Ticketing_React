@@ -884,7 +884,11 @@ class CategoryMaster extends Component {
     let self = this;
     var Category_Id = "";
     if (id === "edit") {
-      Category_Id = this.state.editCategory.categoryID;
+      var data = this.state.categoryDropData.filter(
+        (x) => x.categoryName === this.state.editCategory.categoryName
+      );
+      Category_Id = data[0].categoryID;
+      // Category_Id = this.state.editCategory.categoryID;
     } else {
       var data = this.state.categoryDropData.filter(
         (x) => x.categoryName === this.state.list1Value
@@ -915,12 +919,17 @@ class CategoryMaster extends Component {
     let self = this;
     var SubCat_Id = 0;
     if (id === "edit") {
-      SubCat_Id = this.state.editCategory.subCategoryID;
+      if (this.state.editCategory.subCategoryID !== "") {
+        SubCat_Id = this.state.editCategory.subCategoryID;
+      } else if (isNaN(this.state.editCategory.subCategoryName)) {
+        SubCat_Id = this.state.SubCategoryDropData.filter(
+          (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+        )[0].subCategoryID;
+      }
     } else {
-      var id = this.state.SubCategoryDropData.filter(
+      SubCat_Id = this.state.SubCategoryDropData.filter(
         (x) => x.subCategoryName === this.state.ListOfSubCate
-      );
-      SubCat_Id = id[0].subCategoryID;
+      )[0].subCategoryID;
       // SubCat_Id = this.state.ListOfSubCate;
     }
     axios({
@@ -1151,19 +1160,32 @@ class CategoryMaster extends Component {
       if (isNaN(this.state.list1Value)) {
         categorydata = this.state.category_Id;
       } else {
-        categorydata = this.state.list1Value;
+        var data = this.state.categoryDropData.filter(
+          (x) => x.categoryName === this.state.list1Value
+        );
+        categorydata = data[0].categoryID;
+
+        // categorydata = this.state.list1Value;
       }
 
       if (isNaN(this.state.ListOfSubCate)) {
         subCategoryData = this.state.subCategory_Id;
       } else {
-        subCategoryData = this.state.ListOfSubCate;
+        var id = this.state.SubCategoryDropData.filter(
+          (x) => x.subCategoryName === this.state.ListOfSubCate
+        );
+        subCategoryData = id[0].subCategoryID;
+        // subCategoryData = this.state.ListOfSubCate;
       }
 
       if (isNaN(this.state.ListOfIssue)) {
         IssueData = this.state.issueType_Id;
       } else {
-        IssueData = this.state.ListOfIssue;
+        var id = this.state.ListOfIssueData.filter(
+          (x) => x.issueTypeName === this.state.ListOfIssue
+        );
+        IssueData = id[0].issueTypeID;
+        // IssueData = this.state.ListOfIssue;
       }
 
       axios({
@@ -1222,9 +1244,12 @@ class CategoryMaster extends Component {
     let self = this;
     if (
       this.state.editCategory.brandID !== null &&
-      this.state.editCategory.categoryID > 0 &&
-      this.state.editCategory.subCategoryID > 0 &&
-      this.state.editCategory.issueTypeID > 0
+      (this.state.editCategory.categoryID > 0 ||
+        this.state.editCategory.categoryName.length > 0) &&
+      (this.state.editCategory.subCategoryID > 0 ||
+        this.state.editCategory.subCategoryName.length > 0) &&
+      (this.state.editCategory.issueTypeID > 0 ||
+        this.state.editCategory.issueTypeName.length > 0)
     ) {
       var activeStatus = 0;
       var categorydata = 0;
@@ -1236,9 +1261,27 @@ class CategoryMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      categorydata = this.state.editCategory.categoryID;
-      subCategoryData = this.state.editCategory.subCategoryID;
-      IssueData = this.state.editCategory.issueTypeID;
+      if (isNaN(this.state.editCategory.categoryName)) {
+        categorydata = this.state.categoryDropData.filter(
+          (x) => x.categoryName === this.state.editCategory.categoryName
+        )[0].categoryID;
+      } else {
+        categorydata = this.state.editCategory.categoryID;
+      }
+      if (isNaN(this.state.editCategory.subCategoryName)) {
+        subCategoryData = this.state.SubCategoryDropData.filter(
+          (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+        )[0].subCategoryID;
+      } else {
+        subCategoryData = this.state.editCategory.subCategoryID;
+      }
+      if (isNaN(this.state.editCategory.issueTypeName)) {
+        IssueData = this.state.ListOfIssueData.filter(
+          (x) => x.issueTypeName === this.state.editCategory.issueTypeName
+        )[0].issueTypeID;
+      } else {
+        IssueData = this.state.editCategory.issueTypeID;
+      }
       this.setState({ editSaveLoading: true });
       axios({
         method: "post",
@@ -1390,12 +1433,12 @@ class CategoryMaster extends Component {
     editCategory.categoryID = rowData.categoryID;
     editCategory.categoryName = rowData.categoryName;
 
-    await this.handleModalCategoryChange(rowData.categoryID);
+    await this.handleModalCategoryChange(rowData.categoryName);
 
     editCategory.subCategoryID = rowData.subCategoryID;
     editCategory.subCategoryName = rowData.subCategoryName;
 
-    await this.handleModalSubCatOnChange(rowData.subCategoryID);
+    await this.handleModalSubCatOnChange(rowData.subCategoryName);
 
     editCategory.issueTypeID = rowData.issueTypeID;
     editCategory.issueTypeName = rowData.issueTypeName;
@@ -1429,6 +1472,12 @@ class CategoryMaster extends Component {
       });
     } else {
       editCategory[e.target.name] = value;
+      editCategory.categoryID = 0;
+      editCategory.subCategoryID = 0;
+      editCategory.issueTypeID = 0;
+      editCategory.categoryName = "";
+      editCategory.subCategoryName = "";
+      editCategory.issueTypeName = "";
       this.setState({
         editCategory,
         editBrandCompulsory: "",
@@ -1448,9 +1497,10 @@ class CategoryMaster extends Component {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
-      var categoryName = this.state.categoryDropData.filter(
-        (x) => x.categoryID === value
-      )[0].categoryName;
+      var name = this.state.categoryDropData.filter(
+        (x) => x.categoryName === value
+      );
+      var categoryName = name[0].categoryName;
       editCategory["categoryID"] = value;
       editCategory["categoryName"] = categoryName;
       editCategory["subCategoryID"] = "";
@@ -1478,8 +1528,8 @@ class CategoryMaster extends Component {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
-      editCategory["subCategoryID"] = value;
-      // var subCategoryName=this.state.SubCategoryDropData.filter(x=>x.subCategoryID===value)[0].subCategoryName;
+      editCategory["subCategoryName"] = value;
+      // var subCategoryName=this.state.SubCategoryDropData.filter(x=>x.subCategoryName===value)[0].subCategoryName;
       // editCategory["subCategoryName"] = subCategoryName;
       editCategory["issueTypeID"] = "";
       editCategory["issueTypeName"] = "";
@@ -1503,7 +1553,7 @@ class CategoryMaster extends Component {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
-      editCategory["issueTypeID"] = value;
+      editCategory["issueTypeName"] = value;
       this.setState({ editCategory, editIssueCompulsory: "" });
     } else {
       this.setState({ editShowIssuetype: true });
@@ -1654,62 +1704,31 @@ class CategoryMaster extends Component {
       });
     }
   }
-  ////handle category search data
-  handleSearchCategoryData(val) {
-    let self = this;
-    if (val.length > 1) {
-      var search_Text = val;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Category/GetCategoryOnSearch",
-        headers: authHeader(),
-        params: {
-          brandID: parseInt(this.state.selectBrand),
-          searchText: search_Text,
-        },
-      })
-        .then(function(res) {
-          let data = res.data;
-          console.log(data, "Final Data");
-          if (data.length > 0) {
-            self.setState({
-              categoryDropData: data,
-            });
-          } else {
-            self.setState({
-              categoryDropData: [],
-            });
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    }
-  }
+
   ////set progress value of file upload
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
+ 
   render() {
     const { categoryGridData } = this.state;
-    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
-      <Option key={o} value={item.categoryID}>
-        {item.categoryName}
-      </Option>
-    ));
-    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
-      <Option key={o} value={item.subCategoryID}>
-        {item.subCategoryName}
-      </Option>
-    ));
-    const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
-      <Option key={i} value={item.issueTypeID}>
-        {item.issueTypeName}
-      </Option>
-    ));
+    // const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
+    //   <Option key={o} value={item.categoryID}>
+    //     {item.categoryName}
+    //   </Option>
+    // ));
+    // const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
+    //   <Option key={o} value={item.subCategoryID}>
+    //     {item.subCategoryName}
+    //   </Option>
+    // ));
+    // const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
+    //   <Option key={i} value={item.issueTypeID}>
+    //     {item.issueTypeName}
+    //   </Option>
+    // ));
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -2186,7 +2205,6 @@ class CategoryMaster extends Component {
                           value={this.state.list1Value}
                           style={{ width: "100%" }}
                           onChange={this.handleCategoryChange}
-                          onSearch={this.handleSearchCategoryData.bind(this)}
                         >
                           {/* {list1SelectOptions} */}
                           {this.state.categoryDropData !== null &&
@@ -2591,16 +2609,23 @@ class CategoryMaster extends Component {
                     <label className="edit-label-1">Category</label>
                     <Select
                       showSearch={true}
-                      value={this.state.editCategory.categoryID}
+                      value={this.state.editCategory.categoryName}
                       style={{ width: "100%" }}
                       onChange={this.handleModalCategoryChange}
                     >
-                      {list1SelectOptions}
+                      {/* {list1SelectOptions} */}
+                      {this.state.categoryDropData !== null &&
+                        this.state.categoryDropData.map((item, o) => (
+                          <Option key={o} value={item.categoryName}>
+                            {item.categoryName}
+                          </Option>
+                        ))}
+
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.editCategory.categoryID !== null && (
+                    {this.state.editCategory.categoryName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editCategoryCompulsory}
                       </p>
@@ -2652,16 +2677,22 @@ class CategoryMaster extends Component {
                     <label className="edit-label-1">Sub Category</label>
                     <Select
                       showSearch={true}
-                      value={this.state.editCategory.subCategoryID}
+                      value={this.state.editCategory.subCategoryName}
                       style={{ width: "100%" }}
                       onChange={this.handleModalSubCatOnChange}
                     >
-                      {listSubCategory}
+                      {/* {listSubCategory} */}
+                      {this.state.SubCategoryDropData !== null &&
+                        this.state.SubCategoryDropData.map((item, o) => (
+                          <Option key={o} value={item.subCategoryName}>
+                            {item.subCategoryName}
+                          </Option>
+                        ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.editCategory.subCategoryID !== null && (
+                    {this.state.editCategory.subCategoryName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editSubCatCompulsory}
                       </p>
@@ -2719,16 +2750,22 @@ class CategoryMaster extends Component {
                     <label className="edit-label-1">Issue Type</label>
                     <Select
                       showSearch={true}
-                      value={this.state.editCategory.issueTypeID}
+                      value={this.state.editCategory.issueTypeName}
                       style={{ width: "100%" }}
                       onChange={this.handleModalIssueOnChange}
                     >
-                      {listOfIssueType}
+                      {/* {listOfIssueType} */}
+                      {this.state.ListOfIssueData !== null &&
+                        this.state.ListOfIssueData.map((item, i) => (
+                          <Option key={i} value={item.issueTypeName}>
+                            {item.issueTypeName}
+                          </Option>
+                        ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
-                    {this.state.editCategory.issueTypeID !== null && (
+                    {this.state.editCategory.issueTypeName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editIssueCompulsory}
                       </p>

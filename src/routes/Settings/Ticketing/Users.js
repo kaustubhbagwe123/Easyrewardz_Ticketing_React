@@ -3309,6 +3309,9 @@ class Users extends Component {
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             Agent Name:{" "}
+                                            <b>
+                                              {row.original.assignName}
+                                            </b>
                                           </p>
                                         </div>
                                       </div>
