@@ -107,7 +107,7 @@ class Settings extends Component {
             </ul>
             <div className="tab-content">
               <div
-                className="tab-pane fade show active"
+                className="tab-pane"
                 id="ticketing-tab"
                 role="tabpanel"
                 aria-labelledby="ticketing-tab"
@@ -345,7 +345,7 @@ class Settings extends Component {
                 </div>
               </div>
               <div
-                className="tab-pane fade"
+                className="tab-pane fade show active"
                 id="store-tab"
                 role="tabpanel"
                 aria-labelledby="store-tab"
