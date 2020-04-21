@@ -2612,6 +2612,7 @@ class Reports extends Component {
 
               self.ScheduleCloseModel();
               // this.handleReportList();
+              self.handleReportList();
               self.setState({ Schedule_ID: scheduleId });
               self.setState({ AddReportPopup: false });
               NotificationManager.success("Report saved successfully.");

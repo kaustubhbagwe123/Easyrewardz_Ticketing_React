@@ -2409,15 +2409,17 @@ class CategoryMaster extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
-                    <div className="down-excel">
-                      <p>Template</p>
-                      <CSVLink
-                        filename={"Category.csv"}
-                        data={config.categoryTemplate}
-                      >
-                        <img src={DownExcel} alt="download icon" />
-                      </CSVLink>
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <h3 className="pb-0">Bulk Upload</h3>
+                      <div className="down-excel">
+                        <p>Template</p>
+                        <CSVLink
+                          filename={"Category.csv"}
+                          data={config.categoryTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
+                      </div>
                     </div>
                     <div className="mainfileUpload">
                       <Dropzone onDrop={this.fileUpload.bind(this)}>
