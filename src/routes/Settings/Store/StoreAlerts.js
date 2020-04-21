@@ -1279,7 +1279,7 @@ class Alerts extends Component {
         } else {
           this.setState({ ckStoreCompulsion: "" });
         }
-        if (this.state.selectedSubjectCustomer === "") {
+        if (this.state.selectedSubjectStore === "") {
           this.setState({
             subjectStoreCompulsion: "Please Enter Description.",
           });
@@ -1360,49 +1360,67 @@ class Alerts extends Component {
       } else {
         // return false;
       }
-      this.setState({
-        editSaveLoading: true,
-      });
+      // this.setState({
+      //   editSaveLoading: true,
+      // });
 
       let self = this;
 
       // update alert
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Alert/ModifyStoreAlert",
-        headers: authHeader(),
-        data: {
-          AlertID: this.state.alertEdit.selectedAlertType,
-          AlertTypeName: this.state.alertEdit.AlertTypeName,
-          isAlertActive: AlertisActive,
-          CommunicationModeDetails: CommunicationModeDetails,
-        },
-      })
-        .then((res) => {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success("Alert updated successfully.");
-            self.handleGetAlert();
-            self.setState({
-              AddAlertTabsPopup: false,
-              editSaveLoading: false,
-            });
-          } else {
-            self.setState({
-              editSaveLoading: false,
-              AddAlertTabsPopup: false,
-            });
-            NotificationManager.error("Alert not updated.");
-          }
-        })
-        .catch((data) => {
-          self.setState({
-            editSaveLoading: false,
-            AddAlertTabsPopup: false,
+      setTimeout(() => {
+        if (
+          this.state.subjectCustomerCompulsion === "" &&
+          this.state.ckCustomerCompulsion === "" &&
+          this.state.subjectInternalCompulsion === "" &&
+          this.state.ckInternalCompulsion === "" &&
+          this.state.subjectStoreCompulsion === "" &&
+          this.state.ckStoreCompulsion === "" &&
+          this.state.SMSContentCompulsion === "" &&
+          this.state.NotifContentCompulsion === "" &&
+          this.state.NotifTicketingContentCompulsion === ""
+        ) {
+          this.setState({
+            editSaveLoading: true,
           });
-          console.log(data);
-        });
+
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Alert/ModifyStoreAlert",
+            headers: authHeader(),
+            data: {
+              AlertID: this.state.alertEdit.selectedAlertType,
+              AlertTypeName: this.state.alertEdit.AlertTypeName,
+              isAlertActive: AlertisActive,
+              CommunicationModeDetails: CommunicationModeDetails,
+            },
+          })
+            .then((res) => {
+              debugger;
+              let status = res.data.message;
+              if (status === "Success") {
+                NotificationManager.success("Alert updated successfully.");
+                self.handleGetAlert();
+                self.setState({
+                  AddAlertTabsPopup: false,
+                  editSaveLoading: false,
+                });
+              } else {
+                self.setState({
+                  editSaveLoading: false,
+                  AddAlertTabsPopup: false,
+                });
+                NotificationManager.error("Alert not updated.");
+              }
+            })
+            .catch((data) => {
+              self.setState({
+                editSaveLoading: false,
+                AddAlertTabsPopup: false,
+              });
+              console.log(data);
+            });
+        }
+      }, 10);
     } else {
       NotificationManager.error("Alert not updated.");
       this.setState({
@@ -1484,12 +1502,13 @@ class Alerts extends Component {
       selectedNotifTicketingContent: "",
       NotifContentCompulsion: "",
       NotifTicketingContentCompulsion: "",
-      emailCust: false,
-      emailInt: false,
-      emailTicketing: false,
-      notiTicketing: false,
-      smsCust: false,
-      notiInt: false,
+
+      // emailCust: false,
+      // emailInt: false,
+      // emailTicketing: false,
+      // notiTicketing: false,
+      // smsCust: false,
+      // notiInt: false,
       // viewEmailCustomer: false,
       // viewEmailInternal: false,
       // viewEmailStore: false,
@@ -2121,7 +2140,8 @@ class Alerts extends Component {
                             )}
                             onChange={this.setSortCheckStatus.bind(
                               this,
-                              "isAlertActive"
+                              "isAlertActive",
+                              "value"
                             )}
                           />
                           <label htmlFor={"fil-open" + item.isAlertActive}>

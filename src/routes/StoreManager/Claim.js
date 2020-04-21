@@ -15,7 +15,7 @@ class Claim extends Component {
     super(props);
     this.state = {
       raisedByMeData: [],
-      assignToMeData: []
+      assignToMeData: [],
     };
   }
 
@@ -31,20 +31,20 @@ class Claim extends Component {
   // };
   HandleRowClickPage = (rowInfo, column) => {
     return {
-      onClick: e => {
+      onClick: (e) => {
         var claimID = column.original["claimID"];
-        this.handleRedirectToViewStoreClaim(claimID); 
+        this.handleRedirectToViewStoreClaim(claimID);
         // "/store/claimApproveReject"
-       }
-      }
+      },
     };
+  };
 
   handleRedirectToViewStoreClaim(claimID) {
     debugger;
     this.props.history.push({
       pathname: "claimApproveReject",
-      state: { ClaimID: claimID }
-    })
+      state: { ClaimID: claimID },
+    });
   }
 
   handleGetClaimData(tabFor) {
@@ -55,7 +55,7 @@ class Claim extends Component {
       method: "post",
       url: config.apiUrl + "/StoreClaim/GetClaimList",
       headers: authHeader(),
-      params: { tab_For: tabFor }
+      params: { tab_For: tabFor },
     })
       .then(function(response) {
         debugger;
@@ -77,7 +77,7 @@ class Claim extends Component {
           }
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ isloading: false });
         console.log(response, "---handleGetTaskData");
       });
@@ -343,14 +343,6 @@ class Claim extends Component {
           >
             <div className="main-Claimdiv">
               <div className="table-cntr StoreRaiseReact">
-                {/* <ReactTable
-                  data={dataStoreRaise}
-                  columns={columnsStoreRaise}
-                  // resizable={false}
-                  defaultPageSize={8}
-                  showPagination={false}
-                  getTrProps={this.HandleRowClickPage}
-                /> */}
                 {this.state.isloading === true ? (
                   <div className="loader-icon-cntr">
                     <div className="loader-icon"></div>
@@ -361,23 +353,36 @@ class Claim extends Component {
                       data={this.state.raisedByMeData}
                       columns={[
                         {
-                          Header: <span>ID <FontAwesomeIcon icon={faCaretDown} /></span>,
-                          accessor: "claimID"
+                          Header: (
+                            <span>
+                              ID <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "claimID",
                         },
                         {
-                          Header: <span>Status <FontAwesomeIcon icon={faCaretDown} /></span>,
+                          Header: (
+                            <span>
+                              Status <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
                           accessor: "status",
-                          Cell: row => {
+                          Cell: (row) => {
                             return (
                               <span className="table-btn table-blue-btn">
                                 <label>{row.original.status}</label>
                               </span>
                             );
-                          }
+                          },
                         },
                         {
-                          Header: <span>Claim Issue Type <FontAwesomeIcon icon={faCaretDown} /></span>,
-                          accessor: "issueTypeName"
+                          Header: (
+                            <span>
+                              Claim Issue Type{" "}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "issueTypeName",
                         },
                         {
                           Header: (
@@ -386,7 +391,7 @@ class Claim extends Component {
                             </span>
                           ),
                           accessor: "categoryName",
-                          Cell: row => {
+                          Cell: (row) => {
                             return (
                               <>
                                 {row.original.categoryName}
@@ -394,23 +399,29 @@ class Claim extends Component {
                                   content={
                                     <div className="dash-creation-popup-cntr">
                                       <div>
-                                      <b>
-                                        <p className="title">Category</p>
-                                      </b>
-                                  <p className="sub-title">{row.original.categoryName}</p>
-                                    </div>
-                                    <div>
-                                      <b>
-                                        <p className="title">Sub Category</p>
-                                      </b>
-                                      <p className="sub-title">{row.original.subCategoryName}</p>
-                                    </div>
-                                    <div>
-                                      <b>
-                                        <p className="title">Type</p>
-                                      </b>
-                                      <p className="sub-title">{row.original.issueTypeName}</p>
-                                    </div>
+                                        <b>
+                                          <p className="title">Category</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.categoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">Sub Category</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.subCategoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">Type</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.issueTypeName}
+                                        </p>
+                                      </div>
                                     </div>
                                   }
                                   placement="bottom"
@@ -423,7 +434,7 @@ class Claim extends Component {
                                 </Popover>
                               </>
                             );
-                          }
+                          },
                         },
                         {
                           Header: (
@@ -431,7 +442,7 @@ class Claim extends Component {
                               Raised by <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "raiseBy"
+                          accessor: "raiseBy",
                         },
                         {
                           Header: (
@@ -440,45 +451,63 @@ class Claim extends Component {
                             </span>
                           ),
                           accessor: "creationOn	",
-                          Cell: row =>  {
+                          Cell: (row) => {
                             return (
-                            <div>
-                              <span>
-                               {row.original.creationOn}
-                                <Popover content={<div className="dash-creation-popup-cntr">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
-                                    <li>
-                                      <p>Naman Created</p>
-                                      <p>2 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Assigned to Vikas</p>
-                                      <p>1.5 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Vikas updated</p>
-                                      <p>1 Hr ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Response time remaining by</p>
-                                      <p>30 mins</p>
-                                    </li>
-                                    <li>
-                                      <p>Response overdue by</p>
-                                      <p>1 Hr</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution overdue by</p>
-                                      <p>2 Hrs</p>
-                                    </li>
-                                  </ul>
-                                </div>} placement="bottom">
-                                </Popover>
-                              </span>
-                            </div>
-                          );
-                        }
+                              <div>
+                                <span>
+                                  {row.original.creationOn}
+                                  <Popover
+                                    content={
+                                      <div className="dash-creation-popup-cntr">
+                                        <ul className="dash-creation-popup">
+                                          <li className="title">
+                                            Creation details
+                                          </li>
+                                          <li>
+                                            <p>
+                                              {row.original.raiseBy + " "}{" "}
+                                              Created
+                                            </p>
+                                            <p>2 Hrs ago</p>
+                                          </li>
+                                          <li>
+                                            <p>
+                                              Assigned to{" "}
+                                              {" " + row.original.assignTo}
+                                            </p>
+                                            <p>1.5 Hrs ago</p>
+                                          </li>
+                                          <li>
+                                            <p>Vikas updated</p>
+                                            <p>1 Hr ago</p>
+                                          </li>
+                                          <li>
+                                            <p>Response time remaining by</p>
+                                            <p>30 mins</p>
+                                          </li>
+                                          <li>
+                                            <p>Response overdue by</p>
+                                            <p>1 Hr</p>
+                                          </li>
+                                          <li>
+                                            <p>Resolution overdue by</p>
+                                            <p>2 Hrs</p>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </span>
+                              </div>
+                            );
+                          },
                         },
                         {
                           Header: (
@@ -487,13 +516,13 @@ class Claim extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "assignTo"
+                          accessor: "assignTo",
                           // Cell: (props) => (
                           //   <span>
                           //     <label>A, Bansal</label>
                           //   </span>
                           // ),
-                        }
+                        },
                       ]}
                       // resizable={false}
                       defaultPageSize={10}
@@ -597,59 +626,76 @@ class Claim extends Component {
                       <p>Items per page</p>
                     </div>
                   </div> */}
-                  {this.state.isloading === true ? (
+                {this.state.isloading === true ? (
                   <div className="loader-icon-cntr">
                     <div className="loader-icon"></div>
                   </div>
-                  ) : (
-                    <div className="table-cntr raisereactTable">
-                      <ReactTable
-                        data={this.state.assignToMeData}
-                        columns={[
-                          {
-                            Header: <span>ID <FontAwesomeIcon icon={faCaretDown} /></span>,
-                            accessor: "claimID"
-                          },
-                          {
-                            Header: <span>Status <FontAwesomeIcon icon={faCaretDown} /></span>,
-                            accessor: "status",
-                            Cell: row => {
-                              return (
-                                <span className="table-btn table-blue-btn">
-                                  <label>{row.original.status}</label>
-                                </span>
-                              );
-                            }
-                          },
-                          {
-                            Header: <span>Claim Issue Type <FontAwesomeIcon icon={faCaretDown} /></span>,
-                            accessor: "issueTypeName"
-                          },
-                          {
-                            Header: (
-                              <span>
-                                Category <FontAwesomeIcon icon={faCaretDown} />
+                ) : (
+                  <div className="table-cntr raisereactTable">
+                    <ReactTable
+                      data={this.state.assignToMeData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
+                              ID <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "claimID",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Status <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "status",
+                          Cell: (row) => {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.status}</label>
                               </span>
-                            ),
-                            accessor: "categoryName",
-                            Cell: row => {
-                              return (
-                                <>
-                                  {row.original.categoryName}
-                                  <Popover
-                                    content={
-                                      <div className="dash-creation-popup-cntr">
-                                        <div>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Claim Issue Type{" "}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "issueTypeName",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Category <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "categoryName",
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.categoryName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <div>
                                         <b>
                                           <p className="title">Category</p>
                                         </b>
-                                        <p className="sub-title">Defective article</p>
+                                        <p className="sub-title">
+                                          Defective article
+                                        </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">Sub Category</p>
                                         </b>
-                                        <p className="sub-title">Customer wants refund</p>
+                                        <p className="sub-title">
+                                          Customer wants refund
+                                        </p>
                                       </div>
                                       <div>
                                         <b>
@@ -657,6 +703,78 @@ class Claim extends Component {
                                         </b>
                                         <p className="sub-title">Delivery</p>
                                       </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Raised by <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "raiseBy",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Creation on <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "creationOn	",
+                          Cell: (row) => {
+                            return (
+                              <div>
+                                <span>
+                                  {row.original.creationOn}
+                                  <Popover
+                                    content={
+                                      <div className="dash-creation-popup-cntr">
+                                        <ul className="dash-creation-popup">
+                                          <li className="title">
+                                            Creation details
+                                          </li>
+                                          <li>
+                                            <p>
+                                              {row.original.raiseBy + " "}{" "}
+                                              Created
+                                            </p>
+                                            <p>2 Hrs ago</p>
+                                          </li>
+                                          <li>
+                                            <p>
+                                              Assigned to{" "}
+                                              {" " + row.original.assignTo}
+                                            </p>
+                                            <p>1.5 Hrs ago</p>
+                                          </li>
+                                          <li>
+                                            <p>Vikas updated</p>
+                                            <p>1 Hr ago</p>
+                                          </li>
+                                          <li>
+                                            <p>Response time remaining by</p>
+                                            <p>30 mins</p>
+                                          </li>
+                                          <li>
+                                            <p>Response overdue by</p>
+                                            <p>1 Hr</p>
+                                          </li>
+                                          <li>
+                                            <p>Resolution overdue by</p>
+                                            <p>2 Hrs</p>
+                                          </li>
+                                        </ul>
                                       </div>
                                     }
                                     placement="bottom"
@@ -667,88 +785,34 @@ class Claim extends Component {
                                       alt="info-icon"
                                     />
                                   </Popover>
-                                </>
-                              );
-                            }
-                          },
-                          {
-                            Header: (
-                              <span>
-                                Raised by <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "raiseBy"
-                          },
-                          {
-                            Header: (
-                              <span>
-                                Creation on <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "creationOn	",
-                            Cell: row =>  {
-                              return (
-                              <div>
-                                <span>
-                                {row.original.creationOn}
-                                  <Popover content={<div className="dash-creation-popup-cntr">
-                                    <ul className="dash-creation-popup">
-                                      <li className="title">Creation details</li>
-                                      <li>
-                                        <p>Naman Created</p>
-                                        <p>2 Hrs ago</p>
-                                      </li>
-                                      <li>
-                                        <p>Assigned to Vikas</p>
-                                        <p>1.5 Hrs ago</p>
-                                      </li>
-                                      <li>
-                                        <p>Vikas updated</p>
-                                        <p>1 Hr ago</p>
-                                      </li>
-                                      <li>
-                                        <p>Response time remaining by</p>
-                                        <p>30 mins</p>
-                                      </li>
-                                      <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
-                                      </li>
-                                      <li>
-                                        <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
-                                      </li>
-                                    </ul>
-                                  </div>} placement="bottom">
-                                  </Popover>
                                 </span>
                               </div>
                             );
-                          }
                           },
-                          {
-                            Header: (
-                              <span>
-                                Assign to
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "assignTo"
-                            // Cell: (props) => (
-                            //   <span>
-                            //     <label>A, Bansal</label>
-                            //   </span>
-                            // ),
-                          }
-                        ]}
-                        // resizable={false}
-                        defaultPageSize={10}
-                        minRows={2}
-                        showPagination={true}
-                        getTrProps={this.HandleRowClickPage}
-                      />
-                    </div>
-                  )}
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Assign to
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "assignTo",
+                          // Cell: (props) => (
+                          //   <span>
+                          //     <label>A, Bansal</label>
+                          //   </span>
+                          // ),
+                        },
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={10}
+                      minRows={2}
+                      showPagination={true}
+                      getTrProps={this.HandleRowClickPage}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
