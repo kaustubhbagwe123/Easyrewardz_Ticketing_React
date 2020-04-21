@@ -513,7 +513,7 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <Link to="/admin/settings">
+            <Link to="/store/settings">
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}

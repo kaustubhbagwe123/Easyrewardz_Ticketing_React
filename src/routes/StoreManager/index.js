@@ -10,6 +10,7 @@ import RaiseClaim from "./RaiseClaim";
 import Claim from "./Claim";
 import ClaimApproveReject from "./ClaimApproveReject";
 import StoreAddTask from "./StoreAddTask";
+import Settings from "./../Settings/Settings";
 import HierarchyMaster from "./../Settings/Store/HierarchyMaster";
 import StorePriority from "./../Settings/Store/StorePriority";
 import StoreCRMRole from "./../Settings/Store/StoreCRMRole";
@@ -79,6 +80,7 @@ export class StoreApp extends Component {
           path={`${match.url}/storeCRMRole`}
           component={StoreCRMRole}
         />
+        <Route exact path={`${match.url}/settings`} component={Settings} />
         <Route
           exact
           path={`${match.url}/storeReports`}
