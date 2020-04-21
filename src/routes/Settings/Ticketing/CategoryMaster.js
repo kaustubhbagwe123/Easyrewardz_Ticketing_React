@@ -113,7 +113,7 @@ class CategoryMaster extends Component {
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
-    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    // this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
     this.handleAddSubCategory = this.handleAddSubCategory.bind(this);
     this.handleAddIssueType = this.handleAddIssueType.bind(this);
@@ -121,7 +121,6 @@ class CategoryMaster extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
-    // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
 
   componentDidMount() {
@@ -887,7 +886,11 @@ class CategoryMaster extends Component {
     if (id === "edit") {
       Category_Id = this.state.editCategory.categoryID;
     } else {
-      Category_Id = this.state.list1Value;
+      var data = this.state.categoryDropData.filter(
+        (x) => x.categoryName === this.state.list1Value
+      );
+      Category_Id = data[0].categoryID;
+      // Category_Id = this.state.list1Value;
     }
     await axios({
       method: "post",
@@ -914,7 +917,11 @@ class CategoryMaster extends Component {
     if (id === "edit") {
       SubCat_Id = this.state.editCategory.subCategoryID;
     } else {
-      SubCat_Id = this.state.ListOfSubCate;
+      var id = this.state.SubCategoryDropData.filter(
+        (x) => x.subCategoryName === this.state.ListOfSubCate
+      );
+      SubCat_Id = id[0].subCategoryID;
+      // SubCat_Id = this.state.ListOfSubCate;
     }
     axios({
       method: "post",
@@ -1607,7 +1614,6 @@ class CategoryMaster extends Component {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -1617,10 +1623,6 @@ class CategoryMaster extends Component {
         url: config.apiUrl + "/Category/BulkUploadCategory",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // }
       })
         .then(function(res) {
           debugger;
@@ -2189,7 +2191,7 @@ class CategoryMaster extends Component {
                           {/* {list1SelectOptions} */}
                           {this.state.categoryDropData !== null &&
                             this.state.categoryDropData.map((item, o) => (
-                              <Option key={o} value={item.categoryID}>
+                              <Option key={o} value={item.categoryName}>
                                 {item.categoryName}
                               </Option>
                             ))}
@@ -2256,12 +2258,17 @@ class CategoryMaster extends Component {
                         </label>
                         <Select
                           showSearch={true}
-                          filterOption={true}
                           value={this.state.ListOfSubCate}
                           style={{ width: "100%" }}
                           onChange={this.handleSubCatOnChange}
                         >
-                          {listSubCategory}
+                          {/* {listSubCategory} */}
+                          {this.state.SubCategoryDropData !== null &&
+                            this.state.SubCategoryDropData.map((item, o) => (
+                              <Option key={o} value={item.subCategoryName}>
+                                {item.subCategoryName}
+                              </Option>
+                            ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW
@@ -2321,7 +2328,13 @@ class CategoryMaster extends Component {
                           style={{ width: "100%" }}
                           onChange={this.handleIssueOnChange}
                         >
-                          {listOfIssueType}
+                          {/* {listOfIssueType} */}
+                          {this.state.ListOfIssueData !== null &&
+                            this.state.ListOfIssueData.map((item, i) => (
+                              <Option key={i} value={item.issueTypeName}>
+                                {item.issueTypeName}
+                              </Option>
+                            ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW
