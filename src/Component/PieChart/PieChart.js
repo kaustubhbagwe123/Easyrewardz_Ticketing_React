@@ -11,7 +11,6 @@ class OpenByPriorityPie extends Component {
         values: []
       },
       sort: null
-     
     };
 
     this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
@@ -25,22 +24,10 @@ class OpenByPriorityPie extends Component {
 
   handleGetDashboardGraphData() {
    debugger;
-    // let self = this;
-    // axios({
-    //   method: "post",
-    //   url: config.apiUrl + "/DashBoard/DashBoardGraphData",
-    //   headers: authHeader(),
-    //   params: {
-    //     UserIds: "6,7,8",
-    //     fromdate: "2019-12-26",
-    //     todate: "2020-01-15",
-    //     BrandID: "26, 31"
-    //   }
-    // }).then(function(res) {
+
       debugger;
       var propsData = this.props.data;
       let values = [];
-      // let DashboardBillGraphData = res.data.responseData.priorityChart;
       if (propsData !== null) {
         for (let i = 0; i < propsData.length; i++) {
           let priorityName = propsData[i].priorityName;
@@ -54,7 +41,6 @@ class OpenByPriorityPie extends Component {
           }
         });
       }
-    // });
   }
 
   render() {

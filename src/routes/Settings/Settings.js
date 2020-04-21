@@ -56,7 +56,7 @@ class Settings extends Component {
         <div className="container-fluid">
           <div className="setting-tabs">
             <ul className="nav nav-tabs" role="tablist">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a
                   className="nav-link active"
                   data-toggle="tab"
@@ -67,10 +67,10 @@ class Settings extends Component {
                 >
                   Ticketing
                 </a>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <a
-                  className="nav-link"
+                  className="nav-link active"
                   data-toggle="tab"
                   href="#store-tab"
                   role="tab"
