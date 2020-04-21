@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import DashboardLogo from "./../../assets/Images/storeBlue.png";
+import DashboardLogo from "./../../assets/Images/store-black.png";
 import TicketLogo from "./../../assets/Images/ticket.png";
 import ChatLogo from "./../../assets/Images/chat.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
-import DashboardLogoBlue from "./../../assets/Images/dashboardBlue.png";
+import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
 // import KnowledgeLogoBlue from "./../../assets/Images/knowledge-blue.png";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
@@ -17,9 +17,13 @@ import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import { Link, withRouter } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
+import PencilImg from "./../../assets/Images/pencil.png";
+import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
 import { Popover } from "antd";
+import { ProgressBar } from "react-bootstrap";
+import { transferData } from "./../../helpers/transferData";
 
 class Header extends Component {
   constructor(props) {
@@ -31,6 +35,21 @@ class Header extends Component {
       notificationCount: 0,
       notificationData: [],
       TaskID: 0,
+      Email: "",
+      UserName: "",
+      LoginTime: "",
+      LoggedInDuration: "",
+      SLAScore: "",
+      CSatScore: "",
+      AvgResponse: "",
+      LogoutTime: "",
+      NameTag: "",
+      userProfile: "",
+      percentLog: 0,
+      workTime: 0,
+      workTimeHours: "0H 0M",
+      selectedUserProfilePicture: "",
+      cont: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -38,12 +57,179 @@ class Header extends Component {
     this.handleNotificationModalOpen = this.handleNotificationModalOpen.bind(
       this
     );
-    
+    this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
+    this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
+    this.handleCRMRole = this.handleCRMRole.bind(this);
+    this.setAccessUser = this.setAccessUser.bind(this);
   }
 
   componentDidMount() {
-    
-    this.handleGetNotigfication();
+    this.subscription = transferData.getProfilePic().subscribe((pic) => {
+      if (pic.profilePic) {
+        if (pic.profilePic === "") {
+          this.setState({ selectedUserProfilePicture: "" });
+        } else if (pic.profilePic.length > 0) {
+          this.setState({ selectedUserProfilePicture: pic.profilePic });
+        }
+      } else if (pic.profilePic === "") {
+        this.setState({ selectedUserProfilePicture: "" });
+      }
+    });
+    var _token = window.localStorage.getItem("token");
+    if (_token === null) {
+      window.location.href = "/";
+    } else {
+      this.handleGetUserProfileData();
+      this.handleLoggedInUserDetails();
+
+      let pageName, lastOne, lastValue, arr;
+      arr = [...this.state.cont];
+      setTimeout(
+        function() {
+          pageName = window.location.pathname;
+          lastOne = pageName.split("/");
+          lastValue = lastOne[lastOne.length - 1];
+          arr.forEach((i) => {
+            i.activeClass = "single-menu";
+            if (i.urls === lastValue) i.activeClass = "active single-menu";
+          });
+          this.setState({ cont: arr });
+        }.bind(this),
+        1
+      );
+      this.handleGetNotigfication();
+    }
+  }
+
+  setAccessUser(data) {
+    debugger;
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    var accessdata = [];
+    var dashboard = {
+      data: "Dashboards",
+      urls: "storedashboard",
+      logoBlack: DashboardLogo,
+      logoBlue: DashboardLogoBlue,
+      imgAlt: "dashboard icon",
+      imgClass: "dashboardImg1",
+      activeClass:
+        page === "storedashboard" ? "active single-menu" : "single-menu",
+    };
+    var task = {
+      data: "Task",
+      urls: "StoreTask",
+      logoBlack: TicketLogo,
+      logoBlue: TicketLogoBlue,
+      imgAlt: "ticket icon",
+      imgClass: "myTicket",
+      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+    };
+    var claim = {
+      data: "Claim",
+      urls: "claim",
+      logoBlack: ClaimLogo,
+      logoBlue: ClaimLogoBlue,
+      imgAlt: "claim icon",
+      imgClass: "claim-logo",
+      activeClass: page === "claim" ? "active single-menu" : "single-menu",
+    };
+    if (data !== null) {
+      for (var i = 0; i < data.length; i++) {
+        if (
+          data[i].moduleName === "Dashboard" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(dashboard);
+        } else if (
+          data[i].moduleName === "Tasks" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(task);
+        } else if (
+          data[i].moduleName === "Claim" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(claim);
+        } else if (
+          data[i].moduleName === "Settings" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({
+            settingAccess: "block",
+          });
+        } else if (
+          data[i].moduleName === "Notification" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({
+            notificationAccess: "block",
+          });
+        }
+      }
+    }
+    this.setState({
+      cont: accessdata,
+    });
+  }
+
+  componentWillUnmount() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+  }
+
+  handleCRMRole(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let msg = res.data.message;
+        let data = res.data.responseData.modules;
+        if (msg === "Success") {
+          self.setAccessUser(data);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleGetUserProfileData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUserProfileDetail",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        var status = res.data.message;
+        if (status === "Success") {
+          var id = res.data.responseData[0].userId;
+          var userdata = res.data.responseData[0].profilePicture;
+          var image = userdata.split("/");
+          if (image[image.length - 1] == "") {
+            self.setState({
+              selectedUserProfilePicture: "",
+            });
+          } else {
+            self.setState({
+              selectedUserProfilePicture: userdata,
+            });
+          }
+          self.handleCRMRole(id);
+        } else {
+          self.setState({
+            selectedUserProfilePicture: "",
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   onOpenModal = () => {
@@ -63,17 +249,65 @@ class Header extends Component {
   };
   ////handle notification modal open
   handleNotificationModalOpen() {
-    
     // if (this.state.notificationCount > 0) {
     this.setState({ notificationModal: true });
     // }
   }
   ////handle notification modal close
   handleNotificationModalClose(typeId, type) {
-    
     this.setState({ notificationModal: false });
     this.handleGetReadStoreNotification(typeId, type);
   }
+
+  handleLoggedInUserDetails = () => {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDashboard/StoreLoggedInAccountDetails",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        var data = res.data.responseData;
+        var status = res.data.message;
+        if (status === "Success") {
+          var strTag = data.agentName.split(" ");
+          var nameTag = strTag[0].charAt(0).toUpperCase();
+          if (strTag.length > 0) {
+            nameTag += strTag[1].charAt(0).toUpperCase();
+          }
+          let nume =
+            data.loggedInDurationInHours * 60 + data.loggedInDurationInMinutes;
+          let deno =
+            data.shiftDurationInHour * 60 + data.shiftDurationInMinutes;
+          let percentLog = ((nume / deno) * 100).toFixed(2);
+          var profile = data.profilePicture;
+          var finalPath = profile.substring(
+            profile.lastIndexOf("\\") + 1,
+            profile.length
+          );
+          self.setState({
+            Email: data.agentEmailId,
+            UserName: data.agentName,
+            LoginTime: data.loginTime,
+            LoggedInDuration: data.loggedInDuration,
+            SLAScore: data.slaScore,
+            CSatScore: data.csatScore,
+            AvgResponse: data.avgResponseTime,
+            LogoutTime: data.logoutTime,
+            NameTag: nameTag,
+            userProfile: finalPath,
+            percentLog,
+            workTime: data.workTimeInPercentage,
+            workTimeHours: data.totalWorkingTime,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  };
 
   ////handle logout method
   handleLogoutMethod() {
@@ -107,7 +341,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var responseData = response.data.responseData;
         var Noticount = responseData.notiCount;
@@ -139,7 +372,6 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -151,6 +383,14 @@ class Header extends Component {
       });
   };
 
+  actives = (e) => {
+    const contDummy = [...this.state.cont];
+    contDummy.forEach((i) => {
+      i.activeClass = "single-menu";
+      if (i.data === e.target.textContent) i.activeClass = "active single-menu";
+    });
+    this.setState({ cont: contDummy });
+  };
 
   render() {
     return (
@@ -167,7 +407,29 @@ class Header extends Component {
               <img src={Hamb} alt="hamburger icon" />
             </div>
             <div className="headers-menu">
-              <Link to="storedashboard" className="single-menu">
+              {this.state.cont.map((item) => (
+                <Link
+                  onClick={this.actives}
+                  key={item.data}
+                  to={item.urls}
+                  className={item.activeClass}
+                >
+                  <div className="header-icons-cntr">
+                    <img
+                      src={item.logoBlack}
+                      alt={item.imgAlt}
+                      className={item.imgClass}
+                    />
+                    <img
+                      src={item.logoBlue}
+                      alt={item.imgAlt}
+                      className={item.imgClass}
+                    />
+                  </div>
+                  {item.data}
+                </Link>
+              ))}
+              {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={DashboardLogo}
@@ -216,7 +478,7 @@ class Header extends Component {
                   />
                 </div>
                 Claim
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -277,7 +539,7 @@ class Header extends Component {
         >
           <div className="logout-block">
             <div>
-              {/* <div className="user-img">
+              <div className="user-img">
                 <Link to="userprofile">
                   <img
                     src={
@@ -291,9 +553,9 @@ class Header extends Component {
                     onClick={this.onCloseModal.bind(this)}
                   />
                 </Link>
-              </div> */}
+              </div>
               <div className="logout-flex">
-                {/* <div>
+                <div>
                   <p style={{ fontSize: "16px", fontWeight: "600" }}>
                     {this.state.UserName}
                     &nbsp;
@@ -309,7 +571,7 @@ class Header extends Component {
                   </p>
 
                   <p className="mail-id">{this.state.Email}</p>
-                </div> */}
+                </div>
                 <button
                   type="button"
                   className="logout"
@@ -345,7 +607,7 @@ class Header extends Component {
                 </label>
               </div>
             </div>
-            {/* <div className="d-block">
+            <div className="d-block">
               <div className="d-flex justify-content-between">
                 <div>
                   <p className="logout-label">Login Time</p>
@@ -376,21 +638,21 @@ class Header extends Component {
               >
                 {this.state.workTimeHours}
               </p>
-            </div> */}
-            {/* <div>
+            </div>
+            <div>
               <div>
                 <p className="logout-label">SLA SCORE</p>
                 <p className="font-weight-bold">{this.state.SLAScore}</p>
               </div>
-              // <div>
-                  // <p className="logout-label">CSAT SCORE</p>
-                  // <p className="font-weight-bold">{this.state.CSatScore}</p>
-                // </div>
+              {/* <div>
+                <p className="logout-label">CSAT SCORE</p>
+                <p className="font-weight-bold">{this.state.CSatScore}</p>
+              </div> */}
               <div>
                 <p className="logout-label">Avg Response time</p>
                 <p className="font-weight-bold">{this.state.AvgResponse}</p>
               </div>
-            </div> */}
+            </div>
           </div>
         </Modal>
         {/*----------------- notification modal-------------- */}
