@@ -2075,7 +2075,7 @@ class StoreMaster extends Component {
       var activeStatus = 0;
       var finalBrandId = "";
       var status = this.state.userEditData.status_ID;
-      if (status === true) {
+      if (status === "Active") {
         activeStatus = 1;
       } else {
         activeStatus = 0;
@@ -4006,7 +4006,8 @@ class StoreMaster extends Component {
                       className="form-control dropdown-setting"
                       name="status_ID"
                       value={
-                        this.state.userEditData.status_ID == true
+                        this.state.userEditData.status_ID === "Active" ||
+                        this.state.userEditData.status_ID === true
                           ? "Active"
                           : "Inactive"
                       }

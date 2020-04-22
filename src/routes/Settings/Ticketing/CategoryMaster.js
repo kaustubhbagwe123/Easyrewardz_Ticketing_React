@@ -109,6 +109,13 @@ class CategoryMaster extends Component {
       sissueTypeNameFilterCheckbox: "",
       sstatusNameFilterCheckbox: "",
       isortA: false,
+      showMsgData: false,
+      showMsgSubCategory: false,
+      showMsgIssueType: false,
+      SubCatID: 0,
+      EditshowMsgData: false,
+      EditshowMsgSubCategory: false,
+      EditshowMsgIssueType: false,
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -1003,6 +1010,9 @@ class CategoryMaster extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Category added successfully.");
+          self.setState({
+            showMsgData: false,
+          });
           if (check == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["categoryID"] = data;
@@ -1015,6 +1025,7 @@ class CategoryMaster extends Component {
               editCategory,
               ListOfIssueData: [],
               SubCategoryDropData: [],
+              EditshowMsgData: false,
             });
             self.handleGetCategoryList(data, "edit");
           } else {
@@ -1040,11 +1051,14 @@ class CategoryMaster extends Component {
     if (check === "edit") {
       finalId = this.state.editCategory.categoryID;
     } else {
-      if (this.state.category_Id === 1) {
-        finalId = this.state.list1Value;
-      } else {
-        finalId = this.state.category_Id;
-      }
+      finalId = this.state.categoryDropData.filter(
+        (x) => x.categoryName === this.state.list1Value
+      )[0].categoryID;
+      // if (this.state.category_Id === 1) {
+      //   finalId = this.state.list1Value;
+      // } else {
+      //   finalId = this.state.category_Id;
+      // }
     }
 
     axios({
@@ -1071,15 +1085,20 @@ class CategoryMaster extends Component {
             self.setState({
               ListOfIssueData: [],
               editCategory,
+              EditshowMsgSubCategory: false,
             });
 
             self.handleGetSubCategoryList("edit");
           } else {
             self.setState({
               subCategory_Id: data,
+              SubCatID: finalId,
             });
             self.handleGetSubCategoryList();
           }
+          self.setState({
+            showMsgSubCategory: false,
+          });
           NotificationManager.success("SubCategory added successfully.");
         } else {
           NotificationManager.error("SubCategory not added.");
@@ -1095,7 +1114,11 @@ class CategoryMaster extends Component {
     let self = this;
     var finalId = 0;
     if (this.state.subCategory_Id === 0 && type !== "edit") {
-      finalId = this.state.ListOfSubCate;
+      // finalId = this.state.SubCategoryDropData.filter(
+      //   (x) => x.subCategoryName === this.state.ListOfSubCate
+      // )[0].subCategoryID;
+
+      finalId = this.state.SubCatID;
     } else if (type === "edit") {
       finalId = this.state.editCategory.subCategoryID;
     } else {
@@ -1117,10 +1140,13 @@ class CategoryMaster extends Component {
 
         if (status === "Success") {
           NotificationManager.success("Issue Type added successfully.");
+          self.setState({
+            showMsgIssueType: false,
+          });
           if (type == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["issueTypeID"] = data;
-            self.setState({ editCategory });
+            self.setState({ editCategory, EditshowMsgIssueType: false });
             self.handleGetIssueTypeList("edit");
           } else {
             self.setState({
@@ -1157,36 +1183,42 @@ class CategoryMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      if (isNaN(this.state.list1Value)) {
-        categorydata = this.state.category_Id;
-      } else {
-        var data = this.state.categoryDropData.filter(
-          (x) => x.categoryName === this.state.list1Value
-        );
-        categorydata = data[0].categoryID;
+      // if (isNaN(this.state.list1Value)) {
+      //   categorydata = this.state.category_Id;
+      // } else {
+      //   categorydata = this.state.categoryDropData.filter(
+      //     (x) => x.categoryName === this.state.list1Value
+      //   )[0].categoryID;
+      //   // categorydata = this.state.list1Value;
+      // }
+      categorydata = this.state.categoryDropData.filter(
+        (x) => x.categoryName === this.state.list1Value
+      )[0].categoryID;
 
-        // categorydata = this.state.list1Value;
-      }
+      // if (isNaN(this.state.ListOfSubCate)) {
+      //   subCategoryData = this.state.subCategory_Id;
+      // } else {
+      //   subCategoryData = this.state.SubCategoryDropData.filter(
+      //     (x) => x.subCategoryName === this.state.ListOfSubCate
+      //   )[0].subCategoryID;
+      //   // subCategoryData = this.state.ListOfSubCate;
+      // }
 
-      if (isNaN(this.state.ListOfSubCate)) {
-        subCategoryData = this.state.subCategory_Id;
-      } else {
-        var id = this.state.SubCategoryDropData.filter(
-          (x) => x.subCategoryName === this.state.ListOfSubCate
-        );
-        subCategoryData = id[0].subCategoryID;
-        // subCategoryData = this.state.ListOfSubCate;
-      }
+      subCategoryData = this.state.SubCategoryDropData.filter(
+        (x) => x.subCategoryName === this.state.ListOfSubCate
+      )[0].subCategoryID;
 
-      if (isNaN(this.state.ListOfIssue)) {
-        IssueData = this.state.issueType_Id;
-      } else {
-        var id = this.state.ListOfIssueData.filter(
-          (x) => x.issueTypeName === this.state.ListOfIssue
-        );
-        IssueData = id[0].issueTypeID;
-        // IssueData = this.state.ListOfIssue;
-      }
+      // if (isNaN(this.state.ListOfIssue)) {
+      //   IssueData = this.state.issueType_Id;
+      // } else {
+      //   IssueData = this.state.ListOfIssueData.filter(
+      //     (x) => x.issueTypeName === this.state.ListOfIssue
+      //   )[0].issueTypeID;
+      //   // IssueData = this.state.ListOfIssue;
+      // }
+      IssueData = this.state.ListOfIssueData.filter(
+        (x) => x.issueTypeName === this.state.ListOfIssue
+      )[0].issueTypeID;
 
       axios({
         method: "post",
@@ -1217,6 +1249,9 @@ class CategoryMaster extends Component {
               subcategoryCompulsion: "",
               issueCompulsion: "",
               statusCompulsion: "",
+              showMsgData: false,
+              showMsgSubCategory: false,
+              showMsgIssueType: false,
             });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.");
@@ -1316,6 +1351,9 @@ class CategoryMaster extends Component {
               editStatusCompulsory: "",
               editmodel: false,
               editSaveLoading: false,
+              EditshowMsgData: false,
+              EditshowMsgSubCategory: false,
+              EditshowMsgIssueType: false,
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ editmodel: false, editSaveLoading: false });
@@ -1372,7 +1410,9 @@ class CategoryMaster extends Component {
       this.setState({ showList1: true });
     }
   };
-
+  handleTogglecategoryAdd() {
+    this.setState({ showList1: true });
+  }
   handleSubCatOnChange = (value) => {
     debugger;
     if (value !== NEW_ITEM) {
@@ -1386,6 +1426,9 @@ class CategoryMaster extends Component {
       this.setState({ ShowSubCate: true });
     }
   };
+  handleToggleSubcategoryAdd() {
+    this.setState({ ShowSubCate: true });
+  }
   handleIssueOnChange = (value) => {
     debugger;
     if (value !== NEW_ITEM) {
@@ -1394,6 +1437,9 @@ class CategoryMaster extends Component {
       this.setState({ ShowIssuetype: true });
     }
   };
+  handleToggleIssueAdd() {
+    this.setState({ ShowIssuetype: true });
+  }
   handleBrandChange = (e) => {
     debugger;
     let value = e.target.value;
@@ -1523,6 +1569,9 @@ class CategoryMaster extends Component {
       this.setState({ editshowList1: true });
     }
   };
+  handleToggleEditcategoryAdd() {
+    this.setState({ editshowList1: true });
+  }
   ////handle edit modal pop sub category change
   handleModalSubCatOnChange = async (value) => {
     debugger;
@@ -1548,6 +1597,9 @@ class CategoryMaster extends Component {
       this.setState({ editShowSubCate: true });
     }
   };
+  handleToggleEditSubcategoryAdd() {
+    this.setState({ editShowSubCate: true });
+  }
   ////handle modal issue type change
   handleModalIssueOnChange = (value) => {
     debugger;
@@ -1559,6 +1611,9 @@ class CategoryMaster extends Component {
       this.setState({ editShowIssuetype: true });
     }
   };
+  handleToggleEditIssueAdd() {
+    this.setState({ editShowIssuetype: true });
+  }
   ////handle model status change
   handleModalStatusChange = (e) => {
     debugger;
@@ -1648,7 +1703,10 @@ class CategoryMaster extends Component {
       }
     }
   }
-
+  handleSearchEditCategoryData(data) {
+    debugger;
+    this.handleSearchCategoryData(data, "edit");
+  }
   ////handle delete selected file of bulk upload
   handleDeleteBulkupload = (e) => {
     debugger;
@@ -1658,7 +1716,177 @@ class CategoryMaster extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+  handleSearchCategoryData(data, check) {
+    debugger;
+    if (this.state.selectBrand > 0 || this.state.editCategory.brandID) {
+      let self = this;
+      if (data.length > 2) {
+        var brandId = 0;
+        if (check === "edit") {
+          brandId = this.state.editCategory.brandID;
+        } else {
+          brandId = this.state.selectBrand;
+        }
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Category/GetCategoryOnSearch",
+          headers: authHeader(),
+          params: {
+            brandID: brandId,
+            searchText: data,
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              self.setState({
+                categoryDropData: data,
+              });
+            } else {
+              if (check === "edit") {
+                self.setState({
+                  categoryDropData: [],
+                  EditshowMsgData: true,
+                });
+              } else {
+                self.setState({
+                  categoryDropData: [],
+                  showMsgData: true,
+                });
+              }
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      }
+    } else {
+      NotificationManager.error("Please Select Brand.");
+    }
+  }
+  handleSearchEditSubCategoryData(data) {
+    debugger;
+    this.handleSearchSubCategoryData(data, "edit");
+  }
+  ///handle Search Sub category data
+  handleSearchSubCategoryData(data, check) {
+    debugger;
+    let self = this;
+    if (this.state.categoryDropData.length > 0) {
+      if (data.length > 2) {
+        var categorydata = 0;
+        if (check === "edit") {
+          categorydata = this.state.categoryDropData.filter(
+            (x) => x.categoryName === this.state.editCategory.categoryName
+          )[0].categoryID;
+        } else {
+          categorydata = this.state.categoryDropData.filter(
+            (x) => x.categoryName === this.state.list1Value
+          )[0].categoryID;
+        }
 
+        axios({
+          method: "post",
+          url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryOnSearch",
+          headers: authHeader(),
+          params: {
+            CategoryID: categorydata,
+            searchText: data,
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              self.setState({
+                SubCategoryDropData: data,
+              });
+            } else {
+              if (check === "edit") {
+                self.setState({
+                  SubCategoryDropData: [],
+                  EditshowMsgSubCategory: true,
+                });
+              } else {
+                self.setState({
+                  SubCategoryDropData: [],
+                  showMsgSubCategory: true,
+                });
+              }
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      }
+    } else {
+      NotificationManager.error("Please Select Category.");
+    }
+  }
+  handleSearchEditIssueType(data) {
+    this.handleSearchIssueType(data, "edit");
+  }
+  //// handle Search Issue type data
+  handleSearchIssueType(data, check) {
+    debugger;
+    let self = this;
+    if (this.state.SubCategoryDropData.length > 0) {
+      if (data.length > 2) {
+        var subCategoryData = 0;
+        if (check === "edit") {
+          subCategoryData = this.state.SubCategoryDropData.filter(
+            (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+          )[0].subCategoryID;
+        } else {
+          subCategoryData = this.state.SubCategoryDropData.filter(
+            (x) => x.subCategoryName === this.state.ListOfSubCate
+          )[0].subCategoryID;
+        }
+
+        axios({
+          method: "post",
+          url: config.apiUrl + "/IssueType/GetIssueTypeOnSeach",
+          headers: authHeader(),
+          params: {
+            SubCategoryID: subCategoryData,
+            searchText: data,
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              self.setState({
+                ListOfIssueData: data,
+              });
+            } else {
+              if (check === "edit") {
+                self.setState({
+                  ListOfIssueData: [],
+                  EditshowMsgIssueType: true,
+                  SubCatID: subCategoryData,
+                });
+              } else {
+                self.setState({
+                  ListOfIssueData: [],
+                  showMsgIssueType: true,
+                  SubCatID: subCategoryData,
+                });
+              }
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      }
+    } else {
+      NotificationManager.error("Please Select Sub Category.");
+    }
+  }
   ////handle bulk upload
   hanldeAddBulkUpload() {
     debugger;
@@ -1709,7 +1937,7 @@ class CategoryMaster extends Component {
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
- 
+
   render() {
     const { categoryGridData } = this.state;
     // const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
@@ -2205,6 +2433,8 @@ class CategoryMaster extends Component {
                           value={this.state.list1Value}
                           style={{ width: "100%" }}
                           onChange={this.handleCategoryChange}
+                          onSearch={this.handleSearchCategoryData.bind(this)}
+                          notFoundContent="No Data Found"
                         >
                           {/* {list1SelectOptions} */}
                           {this.state.categoryDropData !== null &&
@@ -2220,6 +2450,15 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.showMsgData === true ? (
+                          <span
+                            className="sweetAlert-inCategory"
+                            style={{ marginTop: "-68px" }}
+                            onClick={this.handleTogglecategoryAdd.bind(this)}
+                          >
+                            + ADD NEW
+                          </span>
+                        ) : null}
                         {this.state.list1Value === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.categoryCompulsion}
@@ -2279,6 +2518,8 @@ class CategoryMaster extends Component {
                           value={this.state.ListOfSubCate}
                           style={{ width: "100%" }}
                           onChange={this.handleSubCatOnChange}
+                          onSearch={this.handleSearchSubCategoryData.bind(this)}
+                          notFoundContent="No Data Found"
                         >
                           {/* {listSubCategory} */}
                           {this.state.SubCategoryDropData !== null &&
@@ -2293,6 +2534,15 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.showMsgSubCategory === true ? (
+                          <span
+                            className="sweetAlert-inCategory"
+                            style={{ marginTop: "-68px" }}
+                            onClick={this.handleToggleSubcategoryAdd.bind(this)}
+                          >
+                            + ADD NEW
+                          </span>
+                        ) : null}
                         {this.state.ListOfSubCate === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.subcategoryCompulsion}
@@ -2310,7 +2560,6 @@ class CategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={(inputValue) => {
-                            debugger;
                             inputValue = inputValue.trim();
                             if (inputValue !== "") {
                               this.setState({
@@ -2345,6 +2594,8 @@ class CategoryMaster extends Component {
                           value={this.state.ListOfIssue}
                           style={{ width: "100%" }}
                           onChange={this.handleIssueOnChange}
+                          onSearch={this.handleSearchIssueType.bind(this)}
+                          notFoundContent="No Data Found"
                         >
                           {/* {listOfIssueType} */}
                           {this.state.ListOfIssueData !== null &&
@@ -2359,6 +2610,15 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.showMsgIssueType === true ? (
+                          <span
+                            className="sweetAlert-inCategory"
+                            style={{ marginTop: "-68px" }}
+                            onClick={this.handleToggleIssueAdd.bind(this)}
+                          >
+                            + ADD NEW
+                          </span>
+                        ) : null}
                         {this.state.ListOfIssue === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.issueCompulsion}
@@ -2612,6 +2872,8 @@ class CategoryMaster extends Component {
                       value={this.state.editCategory.categoryName}
                       style={{ width: "100%" }}
                       onChange={this.handleModalCategoryChange}
+                      onSearch={this.handleSearchEditCategoryData.bind(this)}
+                      notFoundContent="No Data Found"
                     >
                       {/* {list1SelectOptions} */}
                       {this.state.categoryDropData !== null &&
@@ -2625,6 +2887,15 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
+                    {this.state.EditshowMsgData === true ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-55px" }}
+                        onClick={this.handleToggleEditcategoryAdd.bind(this)}
+                      >
+                        + ADD NEW
+                      </span>
+                    ) : null}
                     {this.state.editCategory.categoryName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editCategoryCompulsory}
@@ -2680,6 +2951,8 @@ class CategoryMaster extends Component {
                       value={this.state.editCategory.subCategoryName}
                       style={{ width: "100%" }}
                       onChange={this.handleModalSubCatOnChange}
+                      onSearch={this.handleSearchEditSubCategoryData.bind(this)}
+                      notFoundContent="No Data Found"
                     >
                       {/* {listSubCategory} */}
                       {this.state.SubCategoryDropData !== null &&
@@ -2692,6 +2965,15 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
+                    {this.state.EditshowMsgSubCategory === true ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-55px" }}
+                        onClick={this.handleToggleEditSubcategoryAdd.bind(this)}
+                      >
+                        + ADD NEW
+                      </span>
+                    ) : null}
                     {this.state.editCategory.subCategoryName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editSubCatCompulsory}
@@ -2709,7 +2991,6 @@ class CategoryMaster extends Component {
                       animation="slide-from-top"
                       validationMsg="Please enter a category!"
                       onConfirm={(inputValue) => {
-                        debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.state.editCategory[
@@ -2753,6 +3034,8 @@ class CategoryMaster extends Component {
                       value={this.state.editCategory.issueTypeName}
                       style={{ width: "100%" }}
                       onChange={this.handleModalIssueOnChange}
+                      onSearch={this.handleSearchEditIssueType.bind(this)}
+                      notFoundContent="No Data Found"
                     >
                       {/* {listOfIssueType} */}
                       {this.state.ListOfIssueData !== null &&
@@ -2765,6 +3048,15 @@ class CategoryMaster extends Component {
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
                     </Select>
+                    {this.state.EditshowMsgIssueType === true ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-55px" }}
+                        onClick={this.handleToggleEditIssueAdd.bind(this)}
+                      >
+                        + ADD NEW
+                      </span>
+                    ) : null}
                     {this.state.editCategory.issueTypeName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editIssueCompulsory}
