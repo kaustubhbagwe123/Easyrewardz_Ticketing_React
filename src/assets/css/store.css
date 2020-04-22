@@ -804,6 +804,7 @@
   color: #2561a8;
   font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
 }
 .modal-lbl-1 {
   color: #16cba3;
@@ -1264,3 +1265,15 @@ table tr th:last-child {
   cursor: pointer;
 }
 /* -------Change password btn css end------- */
+
+.creation-date-range .ant-calendar-picker-input {
+  height: 41px !important;
+  background-color: #fff !important;
+}
+.creation-date-range .ant-calendar-range-picker-input,
+.creation-date-range .ant-calendar-range-picker-separator {
+  color: #a7a7a7 !important;
+}
+.creation-date-range div {
+  margin-bottom: 0 !important;
+}

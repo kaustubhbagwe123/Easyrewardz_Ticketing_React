@@ -389,19 +389,11 @@ class Dashboard extends Component {
     this.handleWeekly = this.handleWeekly.bind(this);
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
     this.handleAdvanceSearchOption = this.handleAdvanceSearchOption.bind(this);
-    // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
-  // handleApply(event, picker) {
-  //   this.setState({
-  //     startDate: picker.startDate,
-  //     endDate: picker.endDate,
-  //   });
-  // }
+  
 
   componentDidMount() {
     debugger;
-    // this.handleSearchTicketEscalation();   // this is called for bydefault content
-    // this.handleTicketsOnLoad();
     this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
@@ -1318,16 +1310,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DashBoardGraphData",
       headers: authHeader(),
       params: {
-        // UserIds: "6,7,8",
-        // fromdate: "2019-12-26",
-        // todate: "2020-01-15",
-        // BrandID: "26, 31"
         UserIds: this.state.AgentIds,
-        // fromdate: this.state.start._d,
-        // fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
         fromdate: fromdate,
-        // todate: this.state.end._d,
-        // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         todate: todate,
         BrandID: this.state.BrandIds,
       },
@@ -4734,7 +4718,7 @@ class Dashboard extends Component {
                                   <p className="pie-chart-count">
                                     <span>
                                       {
-                                        this.state.DashboardGraphData
+                                        this.state.DashboardGraphData 
                                           .openPriorityTicketCount
                                       }
                                     </span>{" "}

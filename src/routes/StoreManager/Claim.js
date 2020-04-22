@@ -9,13 +9,15 @@ import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
+import SearchIcon from "../../assets/Images/search-icon.png";
+import { Collapse, CardBody, Card } from "reactstrap";
 
 class Claim extends Component {
   constructor(props) {
     super(props);
     this.state = {
       raisedByMeData: [],
-      assignToMeData: []
+      assignToMeData: [],
     };
   }
 
@@ -31,31 +33,31 @@ class Claim extends Component {
   // };
   HandleRowClickPage = (rowInfo, column) => {
     return {
-      onClick: e => {
+      onClick: (e) => {
         var claimID = column.original["claimID"];
-        this.handleRedirectToViewStoreClaim(claimID); 
+        this.handleRedirectToViewStoreClaim(claimID);
         // "/store/claimApproveReject"
-       }
-      }
+      },
     };
+  };
 
   handleRedirectToViewStoreClaim(claimID) {
     debugger;
     this.props.history.push({
       pathname: "claimApproveReject",
-      state: { ClaimID: claimID }
-    })
+      state: { ClaimID: claimID },
+    });
   }
 
   handleGetClaimData(tabFor) {
     debugger;
-    this.setState({ isloading: true });
+    this.setState({ isloading: true, FilterCollapse: false });
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreClaim/GetClaimList",
       headers: authHeader(),
-      params: { tab_For: tabFor }
+      params: { tab_For: tabFor },
     })
       .then(function(response) {
         debugger;
@@ -77,228 +79,16 @@ class Claim extends Component {
           }
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ isloading: false });
         console.log(response, "---handleGetTaskData");
       });
   }
 
+  handleFilterCollapse() {
+    this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
+  }
   render() {
-    // const dataStoreRaise = [
-    //   {
-    //     id: "Cl1",
-    //     status: <span className="table-btn table-blue-btn">Open</span>,
-    //     claimIsType: <label>Borken shoes in 30 days</label>,
-    //     assignTo: <label>A. Bansal</label>
-    //   },
-    //   {
-    //     id: "Cl2",
-    //     status: <span className="table-btn table-blue-btn">New</span>,
-    //     claimIsType: <label>Wrong Size</label>,
-    //     assignTo: <label>G. Bansal</label>
-    //   },
-    //   {
-    //     id: "Cl3",
-    //     status: <span className="table-btn table-green-btn">Solved</span>,
-    //     claimIsType: <label>Borken shoes in 30 days</label>,
-    //     assignTo: <label>G. Bansal</label>
-    //   },
-    //   {
-    //     id: "Cl4",
-    //     status: <span className="table-btn table-blue-btn">Open</span>,
-    //     claimIsType: (
-    //       <label>
-    //         Need to change my shipping address
-    //         <span className="hope">Hope this help,Please rate us</span>
-    //       </label>
-    //     ),
-    //     assignTo: <label>A. Bansal</label>
-    //   },
-    //   {
-    //     id: "Cl5",
-    //     status: <span className="table-btn table-blue-btn">Open</span>,
-    //     claimIsType: (
-    //       <label>
-    //         Need to change my shipping address
-    //         <span className="hope">Hope this help,Please rate us</span>
-    //       </label>
-    //     ),
-    //     assignTo: <label>G. Bansal</label>
-    //   },
-    //   {
-    //     id: "Cl5",
-    //     status: <span className="table-btn table-green-btn">New</span>,
-    //     claimIsType: (
-    //       <label>
-    //         Need to change my shipping address
-    //         <span className="hope">Hope this help,Please rate us</span>
-    //       </label>
-    //     ),
-    //     assignTo: <label>G. Bansal</label>
-    //   },
-    //   {
-    //     id: "Cl5",
-    //     status: <span className="table-btn table-green-btn">Solved</span>,
-    //     claimIsType: (
-    //       <label>
-    //         Need to change my shipping address
-    //         <span className="hope">Hope this help,Please rate us</span>
-    //       </label>
-    //     ),
-    //     assignTo: <label>G. Bansal</label>
-    //   }
-    // ];
-
-    // const columnsStoreRaise = [
-    //   {
-    //     Header: <span>ID</span>,
-    //     accessor: "id",
-    //     Cell: row => (
-    //       <span>
-    //         <img src={HeadphoneImg} alt="HeadPhone" className="headPhone3" />
-    //         <label>ABC1234</label>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     Header: <span>Status</span>,
-    //     accessor: "status"
-    //   },
-    //   {
-    //     Header: <span>Claim Issue Type</span>,
-    //     accessor: "claimIsType"
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Category
-    //         <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "Cate",
-    //     Cell: row => {
-    //       var ids = row.original["id"];
-    //       return (
-    //         <div>
-    //           <span>
-    //             Defective article
-    //             <Popover content={popoverData} placement="bottom">
-    //               <img
-    //                 className="info-icon"
-    //                 src={InfoIcon}
-    //                 alt="info-icon"
-    //                 id={ids}
-    //               />
-    //             </Popover>
-    //           </span>
-    //         </div>
-    //       );
-    //     }
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Raised by
-    //         <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "raiseBy",
-    //     Cell: row => <span>N Rampal</span>
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Creation on
-    //         <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "creaOn",
-    //     Cell: row => {
-    //       var ids = row.original["id"];
-    //       return (
-    //         <div>
-    //           <span>
-    //             12 March 2019
-    //             <Popover content={popoverDataDate} placement="bottom">
-    //               <img
-    //                 className="info-icon"
-    //                 src={InfoIcon}
-    //                 alt="info-icon"
-    //                 id={ids}
-    //               />
-    //             </Popover>
-    //           </span>
-    //         </div>
-    //       );
-    //     }
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Assign to
-    //         <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "assignTo"
-    //   }
-    // ];
-
-    // const popoverData = (
-    //   <>
-    //     <div>
-    //       <b>
-    //         <p className="title">Category</p>
-    //       </b>
-    //       <p className="sub-title">Defective article</p>
-    //     </div>
-    //     <div>
-    //       <b>
-    //         <p className="title">Sub Category</p>
-    //       </b>
-    //       <p className="sub-title">Customer wants refund</p>
-    //     </div>
-    //     <div>
-    //       <b>
-    //         <p className="title">Type</p>
-    //       </b>
-    //       <p className="sub-title">Delivery</p>
-    //     </div>
-    //   </>
-    // );
-    // const popoverDataDate = (
-    //   <>
-    //     <div className="dash-creation-popup-cntr">
-    //       <ul className="dash-creation-popup">
-    //         <li className="title">Creation details</li>
-    //         <li>
-    //           <p>Naman Created</p>
-    //           <p>2 Hrs ago</p>
-    //         </li>
-    //         <li>
-    //           <p>Assigned to Vikas</p>
-    //           <p>1.5 Hrs ago</p>
-    //         </li>
-    //         <li>
-    //           <p>Vikas updated</p>
-    //           <p>1 Hr ago</p>
-    //         </li>
-    //         <li>
-    //           <p>Response time remaining by</p>
-    //           <p>30 mins</p>
-    //         </li>
-    //         <li>
-    //           <p>Response overdue by</p>
-    //           <p>1 Hr</p>
-    //         </li>
-    //         <li>
-    //           <p>Resolution overdue by</p>
-    //           <p>2 Hrs</p>
-    //         </li>
-    //       </ul>
-    //     </div>
-    //   </>
-    // );
-
     return (
       <Fragment>
         <div className="store-task-tabs">
@@ -343,287 +133,142 @@ class Claim extends Component {
           >
             <div className="main-Claimdiv">
               <div className="table-cntr StoreRaiseReact">
-                {/* <ReactTable
-                  data={dataStoreRaise}
-                  columns={columnsStoreRaise}
-                  // resizable={false}
-                  defaultPageSize={8}
-                  showPagination={false}
-                  getTrProps={this.HandleRowClickPage}
-                /> */}
                 {this.state.isloading === true ? (
                   <div className="loader-icon-cntr">
                     <div className="loader-icon"></div>
                   </div>
                 ) : (
-                  <div className="table-cntr raisereactTable">
-                    <ReactTable
-                      data={this.state.raisedByMeData}
-                      columns={[
-                        {
-                          Header: <span>ID <FontAwesomeIcon icon={faCaretDown} /></span>,
-                          accessor: "claimID"
-                        },
-                        {
-                          Header: <span>Status <FontAwesomeIcon icon={faCaretDown} /></span>,
-                          accessor: "status",
-                          Cell: row => {
-                            return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.status}</label>
-                              </span>
-                            );
-                          }
-                        },
-                        {
-                          Header: <span>Claim Issue Type <FontAwesomeIcon icon={faCaretDown} /></span>,
-                          accessor: "issueTypeName"
-                        },
-                        {
-                          Header: (
-                            <span>
-                              Category <FontAwesomeIcon icon={faCaretDown} />
-                            </span>
-                          ),
-                          accessor: "categoryName",
-                          Cell: row => {
-                            return (
-                              <>
-                                {row.original.categoryName}
-                                <Popover
-                                  content={
-                                    <div className="dash-creation-popup-cntr">
-                                      <div>
-                                      <b>
-                                        <p className="title">Category</p>
-                                      </b>
-                                  <p className="sub-title">{row.original.categoryName}</p>
-                                    </div>
-                                    <div>
-                                      <b>
-                                        <p className="title">Sub Category</p>
-                                      </b>
-                                      <p className="sub-title">{row.original.subCategoryName}</p>
-                                    </div>
-                                    <div>
-                                      <b>
-                                        <p className="title">Type</p>
-                                      </b>
-                                      <p className="sub-title">{row.original.issueTypeName}</p>
-                                    </div>
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon"
-                                    src={InfoIcon}
-                                    alt="info-icon"
-                                  />
-                                </Popover>
-                              </>
-                            );
-                          }
-                        },
-                        {
-                          Header: (
-                            <span>
-                              Raised by <FontAwesomeIcon icon={faCaretDown} />
-                            </span>
-                          ),
-                          accessor: "raiseBy"
-                        },
-                        {
-                          Header: (
-                            <span>
-                              Creation on <FontAwesomeIcon icon={faCaretDown} />
-                            </span>
-                          ),
-                          accessor: "creationOn	",
-                          Cell: row =>  {
-                            return (
-                            <div>
-                              <span>
-                               {row.original.creationOn}
-                                <Popover content={<div className="dash-creation-popup-cntr">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
-                                    <li>
-                                      <p>Naman Created</p>
-                                      <p>2 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Assigned to Vikas</p>
-                                      <p>1.5 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Vikas updated</p>
-                                      <p>1 Hr ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Response time remaining by</p>
-                                      <p>30 mins</p>
-                                    </li>
-                                    <li>
-                                      <p>Response overdue by</p>
-                                      <p>1 Hr</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution overdue by</p>
-                                      <p>2 Hrs</p>
-                                    </li>
-                                  </ul>
-                                </div>} placement="bottom">
-                                </Popover>
-                              </span>
+                  <div>
+                    <Collapse isOpen={this.state.FilterCollapse}>
+                      <Card>
+                        <CardBody>
+                          <div className="table-expandable-sctn1">
+                            <div className="tab-content p-0">
+                              <ul className="nav nav-tabs" role="tablist">
+                                <div className="tasksearchdiv">
+                                  <button
+                                    className="btn-inv"
+                                    type="button"
+                                    style={{ margin: "10px", width: "180px" }}
+                                    // onClick={this.handleViewSearchData.bind(this)}
+                                  >
+                                    VIEW SEARCH
+                                  </button>
+                                </div>
+                              </ul>
+
+                              <div className="container-fluid">
+                                <div className="row all-row">
+                                  <div className="col-md-3">
+                                    <input type="text" placeholder="Claim ID" />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Ticket Mapped(Yes-No)</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Category</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Status</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input type="text" placeholder="Title ID" />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Sub Category</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Raised On</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Task Mapped(Yes-No)</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Issue Type</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Assign To</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input type="text" placeholder="Task ID" />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Raised By</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          );
-                        }
-                        },
-                        {
-                          Header: (
-                            <span>
-                              Assign to
-                              <FontAwesomeIcon icon={faCaretDown} />
-                            </span>
-                          ),
-                          accessor: "assignTo"
-                          // Cell: (props) => (
-                          //   <span>
-                          //     <label>A, Bansal</label>
-                          //   </span>
-                          // ),
-                        }
-                      ]}
-                      // resizable={false}
-                      defaultPageSize={10}
-                      minRows={2}
-                      showPagination={true}
-                      getTrProps={this.HandleRowClickPage}
-                    />
-                  </div>
-                )}
-                {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
+                    <div
+                      className="float-search"
+                      onClick={this.handleFilterCollapse.bind(this)}
+                    >
+                      <small>
+                        {this.state.FilterCollapse ? "Close Search" : "Search"}
+                      </small>
+                      <img
+                        className="search-icon"
+                        src={SearchIcon}
+                        alt="search-icon"
+                      />
                     </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
-              </div>
-            </div>
-          </div>
-          <div
-            className="tab-pane fade"
-            id="assigned-to-me-tab"
-            role="tabpanel"
-            aria-labelledby="assigned-to-me-tab"
-          >
-            <div className="main-Claimdiv">
-              <div className="table-cntr StoreRaiseReact">
-                {/* <ReactTable
-                  data={dataStoreRaise}
-                  columns={columnsStoreRaise}
-                  // resizable={false}
-                  defaultPageSize={8}
-                  showPagination={false}
-                />
-                 <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
-                  {this.state.isloading === true ? (
-                  <div className="loader-icon-cntr">
-                    <div className="loader-icon"></div>
-                  </div>
-                  ) : (
+
                     <div className="table-cntr raisereactTable">
                       <ReactTable
-                        data={this.state.assignToMeData}
+                        data={this.state.raisedByMeData}
                         columns={[
                           {
-                            Header: <span>ID <FontAwesomeIcon icon={faCaretDown} /></span>,
-                            accessor: "claimID"
+                            Header: (
+                              <span>
+                                ID <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "claimID",
                           },
                           {
-                            Header: <span>Status <FontAwesomeIcon icon={faCaretDown} /></span>,
+                            Header: (
+                              <span>
+                                Status <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
                             accessor: "status",
-                            Cell: row => {
+                            Cell: (row) => {
                               return (
                                 <span className="table-btn table-blue-btn">
                                   <label>{row.original.status}</label>
                                 </span>
                               );
-                            }
+                            },
                           },
                           {
-                            Header: <span>Claim Issue Type <FontAwesomeIcon icon={faCaretDown} /></span>,
-                            accessor: "issueTypeName"
+                            Header: (
+                              <span>
+                                Claim Issue Type{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "issueTypeName",
                           },
                           {
                             Header: (
@@ -632,7 +277,7 @@ class Claim extends Component {
                               </span>
                             ),
                             accessor: "categoryName",
-                            Cell: row => {
+                            Cell: (row) => {
                               return (
                                 <>
                                   {row.original.categoryName}
@@ -640,23 +285,31 @@ class Claim extends Component {
                                     content={
                                       <div className="dash-creation-popup-cntr">
                                         <div>
-                                        <b>
-                                          <p className="title">Category</p>
-                                        </b>
-                                        <p className="sub-title">Defective article</p>
-                                      </div>
-                                      <div>
-                                        <b>
-                                          <p className="title">Sub Category</p>
-                                        </b>
-                                        <p className="sub-title">Customer wants refund</p>
-                                      </div>
-                                      <div>
-                                        <b>
-                                          <p className="title">Type</p>
-                                        </b>
-                                        <p className="sub-title">Delivery</p>
-                                      </div>
+                                          <b>
+                                            <p className="title">Category</p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {row.original.categoryName}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              Sub Category
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {row.original.subCategoryName}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">Type</p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {row.original.issueTypeName}
+                                          </p>
+                                        </div>
                                       </div>
                                     }
                                     placement="bottom"
@@ -669,7 +322,7 @@ class Claim extends Component {
                                   </Popover>
                                 </>
                               );
-                            }
+                            },
                           },
                           {
                             Header: (
@@ -677,54 +330,73 @@ class Claim extends Component {
                                 Raised by <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
-                            accessor: "raiseBy"
+                            accessor: "raiseBy",
                           },
                           {
                             Header: (
                               <span>
-                                Creation on <FontAwesomeIcon icon={faCaretDown} />
+                                Creation on{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "creationOn	",
-                            Cell: row =>  {
+                            Cell: (row) => {
                               return (
-                              <div>
-                                <span>
-                                {row.original.creationOn}
-                                  <Popover content={<div className="dash-creation-popup-cntr">
-                                    <ul className="dash-creation-popup">
-                                      <li className="title">Creation details</li>
-                                      <li>
-                                        <p>Naman Created</p>
-                                        <p>2 Hrs ago</p>
-                                      </li>
-                                      <li>
-                                        <p>Assigned to Vikas</p>
-                                        <p>1.5 Hrs ago</p>
-                                      </li>
-                                      <li>
-                                        <p>Vikas updated</p>
-                                        <p>1 Hr ago</p>
-                                      </li>
-                                      <li>
-                                        <p>Response time remaining by</p>
-                                        <p>30 mins</p>
-                                      </li>
-                                      <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
-                                      </li>
-                                      <li>
-                                        <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
-                                      </li>
-                                    </ul>
-                                  </div>} placement="bottom">
-                                  </Popover>
-                                </span>
-                              </div>
-                            );
-                          }
+                                <div>
+                                  <span>
+                                    {row.original.creationOn}
+                                    <Popover
+                                      content={
+                                        <div className="dash-creation-popup-cntr">
+                                          <ul className="dash-creation-popup">
+                                            <li className="title">
+                                              Creation details
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {row.original.raiseBy + " "}{" "}
+                                                Created
+                                              </p>
+                                              <p>2 Hrs ago</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                Assigned to{" "}
+                                                {" " + row.original.assignTo}
+                                              </p>
+                                              <p>1.5 Hrs ago</p>
+                                            </li>
+                                            <li>
+                                              <p>Vikas updated</p>
+                                              <p>1 Hr ago</p>
+                                            </li>
+                                            <li>
+                                              <p>Response time remaining by</p>
+                                              <p>30 mins</p>
+                                            </li>
+                                            <li>
+                                              <p>Response overdue by</p>
+                                              <p>1 Hr</p>
+                                            </li>
+                                            <li>
+                                              <p>Resolution overdue by</p>
+                                              <p>2 Hrs</p>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      }
+                                      placement="bottom"
+                                    >
+                                      <img
+                                        className="info-icon"
+                                        src={InfoIcon}
+                                        alt="info-icon"
+                                      />
+                                    </Popover>
+                                  </span>
+                                </div>
+                              );
+                            },
                           },
                           {
                             Header: (
@@ -733,13 +405,13 @@ class Claim extends Component {
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
-                            accessor: "assignTo"
+                            accessor: "assignTo",
                             // Cell: (props) => (
                             //   <span>
                             //     <label>A, Bansal</label>
                             //   </span>
                             // ),
-                          }
+                          },
                         ]}
                         // resizable={false}
                         defaultPageSize={10}
@@ -748,7 +420,304 @@ class Claim extends Component {
                         getTrProps={this.HandleRowClickPage}
                       />
                     </div>
-                  )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div
+            className="tab-pane fade"
+            id="assigned-to-me-tab"
+            role="tabpanel"
+            aria-labelledby="assigned-to-me-tab"
+          >
+            <div className="main-Claimdiv">
+              <div className="table-cntr StoreRaiseReact">
+                {this.state.isloading === true ? (
+                  <div className="loader-icon-cntr">
+                    <div className="loader-icon"></div>
+                  </div>
+                ) : (
+                  <div>
+                    <Collapse isOpen={this.state.FilterCollapse}>
+                      <Card>
+                        <CardBody>
+                          <div className="table-expandable-sctn1">
+                            <div className="tab-content p-0">
+                              <ul className="nav nav-tabs" role="tablist">
+                                <div className="tasksearchdiv">
+                                  <button
+                                    className="btn-inv"
+                                    type="button"
+                                    style={{ margin: "10px", width: "180px" }}
+                                    // onClick={this.handleViewSearchData.bind(this)}
+                                  >
+                                    VIEW SEARCH
+                                  </button>
+                                </div>
+                              </ul>
+
+                              <div className="container-fluid">
+                                <div className="row all-row">
+                                  <div className="col-md-3">
+                                    <input type="text" placeholder="Claim ID" />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Ticket Mapped(Yes-No)</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Category</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Status</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input type="text" placeholder="Title ID" />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Sub Category</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Raised On</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Task Mapped(Yes-No)</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Claim Issue Type</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Assign To</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input type="text" placeholder="Task ID" />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select>
+                                      <option>Raised By</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
+                    <div
+                      className="float-search"
+                      onClick={this.handleFilterCollapse.bind(this)}
+                    >
+                      <small>Search</small>
+                      <img
+                        className="search-icon"
+                        src={SearchIcon}
+                        alt="search-icon"
+                      />
+                    </div>
+
+                    <div className="table-cntr raisereactTable">
+                      <ReactTable
+                        data={this.state.assignToMeData}
+                        columns={[
+                          {
+                            Header: (
+                              <span>
+                                ID <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "claimID",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                Status <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "status",
+                            Cell: (row) => {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.status}</label>
+                                </span>
+                              );
+                            },
+                          },
+                          {
+                            Header: (
+                              <span>
+                                Claim Issue Type{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "issueTypeName",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                Category <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "categoryName",
+                            Cell: (row) => {
+                              return (
+                                <>
+                                  {row.original.categoryName}
+                                  <Popover
+                                    content={
+                                      <div className="dash-creation-popup-cntr">
+                                        <div>
+                                          <b>
+                                            <p className="title">Category</p>
+                                          </b>
+                                          <p className="sub-title">
+                                            Defective article
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              Sub Category
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            Customer wants refund
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">Type</p>
+                                          </b>
+                                          <p className="sub-title">Delivery</p>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </>
+                              );
+                            },
+                          },
+                          {
+                            Header: (
+                              <span>
+                                Raised by <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "raiseBy",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                Creation on{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "creationOn	",
+                            Cell: (row) => {
+                              return (
+                                <div>
+                                  <span>
+                                    {row.original.creationOn}
+                                    <Popover
+                                      content={
+                                        <div className="dash-creation-popup-cntr">
+                                          <ul className="dash-creation-popup">
+                                            <li className="title">
+                                              Creation details
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {row.original.raiseBy + " "}{" "}
+                                                Created
+                                              </p>
+                                              <p>2 Hrs ago</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                Assigned to{" "}
+                                                {" " + row.original.assignTo}
+                                              </p>
+                                              <p>1.5 Hrs ago</p>
+                                            </li>
+                                            <li>
+                                              <p>Vikas updated</p>
+                                              <p>1 Hr ago</p>
+                                            </li>
+                                            <li>
+                                              <p>Response time remaining by</p>
+                                              <p>30 mins</p>
+                                            </li>
+                                            <li>
+                                              <p>Response overdue by</p>
+                                              <p>1 Hr</p>
+                                            </li>
+                                            <li>
+                                              <p>Resolution overdue by</p>
+                                              <p>2 Hrs</p>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      }
+                                      placement="bottom"
+                                    >
+                                      <img
+                                        className="info-icon"
+                                        src={InfoIcon}
+                                        alt="info-icon"
+                                      />
+                                    </Popover>
+                                  </span>
+                                </div>
+                              );
+                            },
+                          },
+                          {
+                            Header: (
+                              <span>
+                                Assign to
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "assignTo",
+                            // Cell: (props) => (
+                            //   <span>
+                            //     <label>A, Bansal</label>
+                            //   </span>
+                            // ),
+                          },
+                        ]}
+                        // resizable={false}
+                        defaultPageSize={10}
+                        minRows={2}
+                        showPagination={true}
+                        getTrProps={this.HandleRowClickPage}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

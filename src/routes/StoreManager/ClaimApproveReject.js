@@ -13,7 +13,7 @@ import { Table } from "antd";
 import { NotificationManager } from "react-notifications";
 import CancelImg from "./../../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
-
+import { withRouter } from "react-router-dom";
 class ClaimApproveReject extends Component {
   constructor(props) {
     super(props);
@@ -50,24 +50,47 @@ class ClaimApproveReject extends Component {
       userModel: false,
       userData: [],
       assigneeID: 0,
+      errors: {},
+      rejectModal: false,
+      rejectComment: "",
+      isrejectComment: "",
+      status: "",
+      assginToModal: false,
+      assignComment: "",
+      isAssignComment: "",
+      claimComments: "",
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
+    this.handleAssignClaim = this.handleAssignClaim.bind(this);
   }
 
   componentDidMount() {
-    debugger;
-
     if (this.props.location.state) {
       var claimId = this.props.location.state.ClaimID;
-      this.handleGetClaimByID(claimId);
       this.setState({
         claimID: claimId,
       });
+      this.handleGetClaimByID(claimId);
+
       this.handleGetStoreClaimComments(claimId);
       this.handleGetBrandList();
+    }
+  }
+  componentDidUpdate() {
+    if (this.props.location.state) {
+      var claimId = this.props.location.state.ClaimID;
+      if (claimId !== this.state.claimID) {
+        this.setState({
+          claimID: claimId,
+        });
+        this.handleGetClaimByID(claimId);
+
+        this.handleGetStoreClaimComments(claimId);
+        this.handleGetBrandList();
+      }
     }
   }
 
@@ -100,6 +123,8 @@ class ClaimApproveReject extends Component {
   }
   ////handle assign task
   handleAssignClaim() {
+    debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -115,9 +140,15 @@ class ClaimApproveReject extends Component {
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success") {
-          self.setState({ userModel: false, assigneeID: this.state.agentId });
+          self.setState({
+            assigneeID: self.state.agentId,
+          });
           NotificationManager.success("Task Assign Successfully.");
-          self.componentDidMount();
+          self.handleAssginToModalClose();
+          self.handleUserModelClose();
+          setTimeout(() => {
+            self.componentDidMount();
+          }, 100);
         } else {
           NotificationManager.error("Task Assign Fail.");
           self.setState({ userModel: false, assigneeID: this.state.agentId });
@@ -152,7 +183,6 @@ class ClaimApproveReject extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -167,7 +197,6 @@ class ClaimApproveReject extends Component {
   }
   ///handle get claim by id
   handleGetClaimByID(claimId) {
-    debugger;
     this.setState({ isloading: true });
     let self = this;
     axios({
@@ -188,16 +217,25 @@ class ClaimApproveReject extends Component {
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
           var assigneeID = responseData.assigneeID;
+          var status = responseData.status;
+          var orderItems;
+          if (responseData.customOrderMaster.orderItems) {
+            orderItems = responseData.customOrderMaster.orderItems;
+          } else {
+            orderItems = [];
+          }
+
           self.setState({
+            status,
             assigneeID,
             assignToName,
             ticketingTaskID,
             ticketID,
             imageURL,
             selectBrand: responseData.brandID,
-            list1Value: responseData.categoryName,
-            ListOfSubCate: responseData.subCategoryName,
-            ListOfIssue: responseData.issueTypeName,
+            list1Value: responseData.categoryID,
+            ListOfSubCate: responseData.subCategoryID,
+            ListOfIssue: responseData.issueTypeID,
             claimPercentage: responseData.claimAskFor,
             customerName: responseData.customerName,
             customerPhoneNumber: responseData.customerPhoneNumber,
@@ -206,8 +244,15 @@ class ClaimApproveReject extends Component {
             alternateEmailID: responseData.alternateEmailID,
             gender: responseData.gender,
             orderDetailsData: orderDetails,
-            OrderSubItem: responseData.customOrderMaster.orderItems,
+            OrderSubItem: orderItems,
           });
+          self.handleGetCategoryList(responseData.brandID);
+          setTimeout(() => {
+            self.handleGetSubCategoryList();
+          }, 100);
+          setTimeout(() => {
+            self.handleGetIssueTypeList();
+          }, 100);
         }
       })
       .catch((response) => {
@@ -217,22 +262,29 @@ class ClaimApproveReject extends Component {
   }
   ////handle add comment on claim
   handleAddStoreClaimComments() {
+    debugger;
+    var comment = "";
+    if (this.state.claimComments !== "") {
+      comment = this.state.claimComments;
+    } else {
+      comment = this.state.assignComment;
+    }
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreClaim/AddStoreClaimComment",
+      url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
       params: {
         ClaimID: this.state.claimID,
-        Comment: this.state.claimComments,
+        Comment: comment,
       },
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Record saved successfully");
+          self.setState({claimComments:"",assignComment:""})
           self.handleGetStoreClaimComments(self.state.claimID);
         } else {
           NotificationManager.error(res.data.message);
@@ -251,12 +303,11 @@ class ClaimApproveReject extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreClaim/GetClaimCommentByClaimID",
+      url: config.apiUrl + "/StoreClaim/GetClaimCommentForApprovel",
       headers: authHeader(),
       params: { ClaimID: claimId },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -284,7 +335,6 @@ class ClaimApproveReject extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             if (IsApprove == true) {
@@ -305,9 +355,223 @@ class ClaimApproveReject extends Component {
       });
     }
   }
+  ////handle brand change
+  handleBrandChange = (e) => {
+    let value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["Brand"] = "";
+      this.setState({
+        errors: this.state.errors,
+        selectBrand: value,
+        categoryDropData: [],
+        SubCategoryDropData: [],
+        ListOfIssueData: [],
+        claimComments: "",
+      });
+      setTimeout(() => {
+        if (this.state.selectBrand) {
+          this.handleGetCategoryList();
+        }
+      }, 1);
+    } else {
+      this.state.errors["Brand"] = "Please select Brand";
+      this.setState({
+        errors: this.state.errors,
+        selectBrand: value,
+        categoryDropData: [],
+        SubCategoryDropData: [],
+        ListOfIssueData: [],
+        claimComments: "",
+      });
+    }
+  };
 
+  handleGetCategoryList = async (id, type) => {
+    let self = this;
+    var braindID;
+    if (type == "edit") {
+      braindID = this.state.editCategory.brandID;
+    } else {
+      if (id) {
+        braindID = id;
+      } else {
+        braindID = this.state.selectBrand;
+      }
+    }
+    await axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimCategoryListByBrandID",
+      headers: authHeader(),
+      params: {
+        BrandID: braindID,
+      },
+    })
+      .then(function(res) {
+        let data = res.data;
+        self.setState({ categoryDropData: data });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  };
+
+  handleCategoryChange = (e) => {
+    var value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["Category"] = "";
+      this.setState({
+        list1Value: value,
+        SubCategoryDropData: [],
+        errors: this.state.errors,
+      });
+      setTimeout(() => {
+        if (this.state.list1Value) {
+          this.handleGetSubCategoryList(value);
+        }
+      }, 10);
+    } else {
+      this.state.errors["Category"] = "Please select claim category";
+      this.setState({ showList1: true, errors: this.state.errors });
+    }
+  };
+
+  handleGetSubCategoryList = async (id) => {
+    let self = this;
+    var Category_Id = "";
+    if (id === "edit") {
+      Category_Id = this.state.editCategory.categoryID;
+    } else {
+      Category_Id = this.state.list1Value;
+    }
+    await axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        CategoryID: Category_Id,
+      },
+    })
+      .then(function(res) {
+        let data = res.data.responseData;
+        self.setState({ SubCategoryDropData: data });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  };
+
+  handleSubCatOnChange = (e) => {
+    var value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["SubCategory"] = "";
+      this.setState({ ListOfSubCate: value, errors: this.state.errors });
+      setTimeout(() => {
+        if (this.state.ListOfSubCate) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
+    } else {
+      this.state.errors["SubCategory"] = "Please select sub category";
+      this.setState({ errors: this.state.errors });
+    }
+  };
+
+  handleGetIssueTypeList(id) {
+    let self = this;
+    var SubCat_Id = 0;
+    if (id === "edit") {
+      SubCat_Id = this.state.editCategory.subCategoryID;
+    } else {
+      SubCat_Id = this.state.ListOfSubCate;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetClaimIssueTypeList",
+      headers: authHeader(),
+      params: {
+        SubCategoryID: SubCat_Id,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ ListOfIssueData: data });
+        } else {
+          self.setState({ ListOfIssueData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleIssueOnChange = (e) => {
+    const value = e.target.value;
+    if (value !== "0") {
+      this.state.errors["IssueType"] = "";
+      this.setState({ ListOfIssue: value, errors: this.state.errors });
+    } else {
+      this.state.errors["IssueType"] = "Please select claim type";
+      this.setState({ errors: this.state.errors });
+    }
+  };
+
+  handleOrderChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
+  ////handle reject comment modal open
+  handleRejectModalOpen() {
+    this.setState({ rejectModal: true });
+  }
+  ////handle reject comment modal close
+  handleRejectModalClose() {
+    this.setState({ rejectModal: false });
+  }
+  ////handle change reject comment
+  handleRejectCommentChange(e) {
+    if (e.target.value !== "") {
+      this.setState({ rejectComment: e.target.value, isrejectComment: "" });
+    } else {
+      this.setState({
+        rejectComment: e.target.value,
+        isrejectComment: "Please enter valid remarks in comment.",
+      });
+    }
+  }
+  ////handle assgin to modal open
+  handleAssginToModalOpen() {
+    this.setState({ assginToModal: true });
+  }
+  ///handle assgin to modal close
+  handleAssginToModalClose() {
+    this.setState({ assginToModal: false });
+  }
+  ////handle assign to with comment
+  handleAssigntoWithComment() {
+    if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
+      this.handleAssignClaim();
+      this.handleAddStoreClaimComments();
+    } else {
+      this.setState({ isAssignComment: "Please enter comment." });
+    }
+  }
+  ////handel
+  handleAssignCommentChange(e) {
+    if (e.target.value !== "") {
+      this.setState({ assignComment: e.target.value, isAssignComment: "" });
+    } else {
+      this.setState({
+        assignComment: e.target.value,
+        isAssignComment: "Please enter comment.",
+      });
+    }
+  }
   render() {
     const { orderDetailsData } = this.state;
+
     return (
       <Fragment>
         <div className="row claim-header-card width">
@@ -355,7 +619,8 @@ class ClaimApproveReject extends Component {
               <button
                 type="button"
                 className="btn-approrej1"
-                onClick={this.handleApproveRejectClaim.bind(this, false)}
+                onClick={this.handleRejectModalOpen.bind(this)}
+                // onClick={this.handleApproveRejectClaim.bind(this, false)}
               >
                 REJECT CLAIM
               </button>
@@ -372,11 +637,14 @@ class ClaimApproveReject extends Component {
                 >
                   <div
                     className=""
-                    style={{ border: "1px solid #EEE", borderRadius: "5px" }}
+                    style={{
+                      border: "1px solid #EEE",
+                      borderRadius: "5px",
+                    }}
                   >
                     <div className="claim-status-card">
                       <label>
-                        <b>Claim Status: Open</b>
+                        <b>Claim Status: {this.state.status}</b>
                       </label>
                       <div className="claimplus">
                         <span className="plusline1new"></span>
@@ -542,7 +810,6 @@ class ClaimApproveReject extends Component {
                         className="form-control dropdown-label"
                         value={this.state.selectBrand}
                         onChange={this.handleBrandChange}
-                        disabled={true}
                       >
                         <option>select</option>
                         {this.state.brandData !== null &&
@@ -559,30 +826,88 @@ class ClaimApproveReject extends Component {
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Category</label>
-                      <input
+                      {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
                         value={this.state.list1Value}
                         disabled={true}
-                      />
+                      /> */}
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        onChange={this.handleCategoryChange}
+                        value={this.state.list1Value}
+                      >
+                        <option value={0}>select</option>
+                        {this.state.categoryDropData !== null &&
+                          this.state.categoryDropData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.categoryID}
+                              className="select-category-placeholder"
+                            >
+                              {item.categoryName}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.errors["Category"]}
+                      </p>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Sub Category</label>
-                      <input
+                      {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
                         value={this.state.ListOfSubCate}
                         disabled={true}
-                      />
+                      /> */}
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        onChange={this.handleSubCatOnChange}
+                        value={this.state.ListOfSubCate}
+                      >
+                        <option value={0}>select</option>
+                        {this.state.SubCategoryDropData !== null &&
+                          this.state.SubCategoryDropData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.subCategoryID}
+                              className="select-category-placeholder"
+                            >
+                              {item.subCategoryName}
+                            </option>
+                          ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Type</label>
-                      <input
+                      {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
                         value={this.state.ListOfIssue}
                         disabled={true}
-                      />
+                      /> */}
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                        onChange={this.handleIssueOnChange}
+                        value={this.state.ListOfIssue}
+                      >
+                        <option value={0}>select</option>
+                        {this.state.ListOfIssueData !== null &&
+                          this.state.ListOfIssueData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.issueTypeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.issueTypeName}
+                            </option>
+                          ))}
+                      </select>
                     </div>
                   </div>
                   <div className="row">
@@ -668,14 +993,14 @@ class ClaimApproveReject extends Component {
                     <div className="">
                       <label className="label-6">
                         Comments By Approval:{" "}
-                        {this.state.commentData.length < 0
+                        {this.state.commentData.length < 9
                           ? "0" + this.state.commentData.length
                           : this.state.commentData.length}
                       </label>
                     </div>
                   </div>
-                  {this.state.commentData.map((value) => (
-                    <div>
+                  {this.state.commentData.map((value, i) => (
+                    <div key={i}>
                       <div className="row" style={{ margin: "0" }}>
                         <div className="col-xs-3">
                           <img
@@ -688,7 +1013,7 @@ class ClaimApproveReject extends Component {
                           <label className="naman-R">{value.name}</label>
                         </div>
                         <div className="col-md-2">
-                          <label className="hr-ago">{value.datetime}</label>
+                          <label className="hr-ago">{value.commentDate}</label>
                         </div>
                       </div>
                       <div className="row" style={{ margin: "0" }}>
@@ -811,7 +1136,8 @@ class ClaimApproveReject extends Component {
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={this.handleAssignClaim.bind(this)}
+                // onClick={this.handleAssignClaim.bind(this)}
+                onClick={this.handleAssginToModalOpen.bind(this)}
               >
                 SELECT
               </button>
@@ -824,9 +1150,126 @@ class ClaimApproveReject extends Component {
             </div>
           </div>
         </Modal>
+        {/* -------------------------reject modal------------------------ */}
+        <Modal
+          open={this.state.rejectModal}
+          onClose={this.handleRejectModalClose.bind(this)}
+          closeIconId="sdsg"
+          modalId="Historical-popup"
+          overlayId="logout-ovrly"
+          classNames={{
+            modal: "rejectmodal-popup",
+          }}
+        >
+          <div className="commenttextborder">
+            <div className="comment-disp">
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Comment for Rejection</label>
+              </div>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handleRejectModalClose.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="commenttextmessage">
+              <textarea
+                cols="31"
+                rows="3"
+                className="ticketMSGCmt-textarea"
+                maxLength={300}
+                value={this.state.rejectComment}
+                onChange={this.handleRejectCommentChange.bind(this)}
+              ></textarea>
+            </div>
+            {this.state.isrejectComment !== "" && (
+              <p style={{ color: "red", marginTop: "0px" }}>
+                {this.state.isrejectComment}
+              </p>
+            )}
+            {/* <div className="SendCommentBtn" style={{ float: "left" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleSkipComment.bind(this)}
+              >
+                SKIP
+              </button>
+            </div> */}
+            <div className="SendCommentBtn" style={{ margin: "0" }}>
+              <button
+                className="SendCommentBtn1"
+                // onClick={this..bind(this, 4)}
+              >
+                SUBMIT
+              </button>
+            </div>
+          </div>
+        </Modal>
+        {/* -------------------------assign to modal------------------------ */}
+        <Modal
+          open={this.state.assginToModal}
+          onClose={this.handleAssginToModalClose.bind(this)}
+          closeIconId="sdsg"
+          modalId="Historical-popup"
+          overlayId="logout-ovrly"
+          classNames={{
+            modal: "rejectmodal-popup",
+          }}
+        >
+          <div className="commenttextborder">
+            <div className="comment-disp">
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Add Comment</label>
+              </div>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handleAssginToModalClose.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="commenttextmessage">
+              <textarea
+                cols="31"
+                rows="3"
+                className="ticketMSGCmt-textarea"
+                maxLength={300}
+                value={this.state.assignComment}
+                onChange={this.handleAssignCommentChange.bind(this)}
+              ></textarea>
+            </div>
+            {this.state.isAssignComment !== "" && (
+              <p style={{ color: "red", marginTop: "0px" }}>
+                {this.state.isAssignComment}
+              </p>
+            )}
+            <div className="SendCommentBtn" style={{ float: "left" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleAssignClaim.bind(this)}
+              >
+                SKIP
+              </button>
+            </div>
+            <div className="SendCommentBtn" style={{ margin: "0" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleAssigntoWithComment.bind(this)}
+                // onClick={this..bind(this, 4)}
+              >
+                ADD
+              </button>
+            </div>
+          </div>
+        </Modal>
       </Fragment>
     );
   }
 }
 
-export default ClaimApproveReject;
+export default withRouter(ClaimApproveReject);

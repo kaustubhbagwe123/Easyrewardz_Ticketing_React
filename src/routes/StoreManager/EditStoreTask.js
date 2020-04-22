@@ -17,6 +17,7 @@ import ReactTable from "react-table";
 import moment from "moment";
 import DownImg from "./../../assets/Images/down.png";
 import { Progress } from "antd";
+import { withRouter } from "react-router-dom";
 
 class EditStoreTask extends Component {
   constructor(props) {
@@ -55,6 +56,11 @@ class EditStoreTask extends Component {
       userModel: false,
       agentId: 0,
       progressData: {},
+      canEdit: false,
+      canSubmit: false,
+      canAssignTo: false,
+      taskStatusId: 0,
+      taskStatusName: "",
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -66,7 +72,6 @@ class EditStoreTask extends Component {
       var taskId = this.props.location.state.TaskID;
       this.setState({ taskId });
       this.handleGetDepartement();
-      // this.handleGetAssignTo()
       this.handleGetPriority();
       this.handleStoreTaskDetialsById(taskId);
       this.handleGetCommentOnTask(taskId);
@@ -77,6 +82,21 @@ class EditStoreTask extends Component {
     }
   }
 
+  componentDidUpdate() {
+    debugger;
+    if (this.props.location.state) {
+      if (this.state.taskId !== this.props.location.state.TaskID) {
+        var taskId = this.props.location.state.TaskID;
+        this.setState({ taskId });
+        this.handleGetDepartement();
+        this.handleGetPriority();
+        this.handleStoreTaskDetialsById(taskId);
+        this.handleGetCommentOnTask(taskId);
+        this.handleGetUserDropdown(taskId);
+        this.handleGetStoreTaskProcressBar(taskId);
+      }
+    }
+  }
   handleSubmitReopnModalOpen() {
     this.setState({ SubmitBtnReopn: true });
   }
@@ -132,6 +152,11 @@ class EditStoreTask extends Component {
         var storeName = "";
         var storeAddress = "";
         var assignToName = "";
+        var canEdit = false;
+        var canSubmit = false;
+        var canAssignTo = false;
+        var taskStatusName = "";
+        var taskStatusId = 0;
 
         debugger;
         if (message == "Success" && data) {
@@ -145,7 +170,18 @@ class EditStoreTask extends Component {
           storeName = data.storeName;
           storeAddress = data.address;
           assignToName = data.assignToName;
+          canEdit = data.canEdit == 1 ? true : false;
+          canSubmit = data.canSubmit == 1 ? true : false;
+          canAssignTo = data.isAssignTo == 1 ? true : false;
+          taskStatusId = data.taskStatusId;
+          taskStatusName = data.taskStatusName;
+
           self.setState({
+            canAssignTo,
+            taskStatusId,
+            taskStatusName,
+            canEdit,
+            canSubmit,
             departmentID,
             funcationID,
             priorityID,
@@ -373,7 +409,7 @@ class EditStoreTask extends Component {
   }
 
   ////handle Update Task
-  handleUpdateTask() {
+  handleUpdateTask(statusId) {
     let self = this;
 
     if (this.state.departmentID == 0) {
@@ -405,7 +441,7 @@ class EditStoreTask extends Component {
         inputParam.FunctionID = this.state.funcationID;
         inputParam.PriorityID = this.state.priorityID;
         inputParam.TaskID = this.state.taskId;
-        inputParam.TaskStatusId = 101;
+        inputParam.TaskStatusId = statusId;
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -595,9 +631,13 @@ class EditStoreTask extends Component {
               <img src={DownImg} alt="down" className="down-header" />
             </a>
 
-            <button
+            {/* <button
               type="button"
-              className="submitAs-reopen"
+              className={
+                this.state.canSubmit
+                  ? "submitAs-reopen"
+                  : "submitAs-reopen disabled-link"
+              }
               onClick={this.handleUpdateTask.bind(this)}
             >
               <label
@@ -606,6 +646,20 @@ class EditStoreTask extends Component {
               >
                 SUBMIT
               </label>
+            </button> */}
+            <button
+              type="button"
+              className={
+                this.state.canSubmit
+                  ? "btn-store-resolved"
+                  : "btn-store-resolved disabled-link"
+              }
+              onClick={this.handleSubmitReopnModalOpen.bind(this)}
+            >
+              <label className="myticket-submit-solve-button-text">
+                SUBMIT AS RESOLVED
+              </label>
+              <img src={DownWhiteImg} alt="headphone" className="down-white" />
             </button>
           </div>
           <Modal
@@ -616,16 +670,36 @@ class EditStoreTask extends Component {
             overlayId="logout-ovrly"
           >
             <div className="store-hdrtMdal">
-              <div className="row">
-                <label className="modal-lbl">
-                  Submit as <span className="modal-lbl-1">Solved</span>
-                </label>
-              </div>
-              <div className="row" style={{ marginTop: "8px" }}>
-                <label className="modal-lbl">
-                  Submit as <span className="modal-lbl-2">Closed</span>
-                </label>
-              </div>
+              {this.state.taskStatusId === 222 ? (
+                <div className="row">
+                  <label
+                    className="modal-lbl"
+                    onClick={this.handleUpdateTask.bind(this, 222)}
+                  >
+                    Submit as <span className="modal-lbl-1">ReOpen</span>
+                  </label>
+                </div>
+              ) : (
+                <div className="row">
+                  <label
+                    className="modal-lbl"
+                    
+                    onClick={this.handleUpdateTask.bind(this, 222)}
+                  >
+                    Submit as <span className="modal-lbl-1">Solved</span>
+                  </label>
+                </div>
+              )}
+              {this.state.taskStatusId !== 222 ? (
+                <div className="row" style={{ marginTop: "8px" }}>
+                  <label
+                    className="modal-lbl"
+                    onClick={this.handleUpdateTask.bind(this, 223)}
+                  >
+                    Submit as <span className="modal-lbl-2">Closed</span>
+                  </label>
+                </div>
+              ) : null}
             </div>
           </Modal>
         </div>
@@ -635,7 +709,11 @@ class EditStoreTask extends Component {
               <label className="store-Edit-lbl"> Task Title</label>
               <input
                 type="text"
-                className="store-edit-txt"
+                className={
+                  this.state.canEdit
+                    ? "store-edit-txt"
+                    : "disabled-link store-edit-txt"
+                }
                 placeholder="Enter Task Title"
                 value={this.state.taskTitle}
                 name="tasktitle"
@@ -651,7 +729,11 @@ class EditStoreTask extends Component {
                   <label className="store-Edit-lbl">Department</label>
                   <select
                     id="inputState"
-                    className="form-control dropdown-label"
+                    className={
+                      this.state.canEdit
+                        ? "form-control dropdown-label"
+                        : "disabled-link form-control dropdown-label"
+                    }
                     value={this.state.departmentID}
                     onChange={this.handleOnchange}
                     name="department"
@@ -678,7 +760,11 @@ class EditStoreTask extends Component {
                   <label className="store-Edit-lbl">Function</label>
                   <select
                     id="inputState"
-                    className="form-control dropdown-label"
+                    className={
+                      this.state.canEdit
+                        ? "form-control dropdown-label"
+                        : "disabled-link form-control dropdown-label"
+                    }
                     value={this.state.funcationID}
                     name="funcation"
                     onChange={this.handleOnchange}
@@ -705,7 +791,11 @@ class EditStoreTask extends Component {
                   <label className="store-Edit-lbl">Priority</label>
                   <select
                     id="inputState"
-                    className="form-control dropdown-label"
+                    className={
+                      this.state.canEdit
+                        ? "form-control dropdown-label"
+                        : "disabled-link form-control dropdown-label"
+                    }
                     value={this.state.priorityID}
                     name="priority"
                     onChange={this.handleOnchange}
@@ -734,7 +824,11 @@ class EditStoreTask extends Component {
                   <label className="store-Edit-lbl">Task Details</label>
                   <textarea
                     rows="8"
-                    className="textarea-store"
+                    className={
+                      this.state.canEdit
+                        ? "textarea-store"
+                        : "disabled-link textarea-store"
+                    }
                     onChange={this.handleOnchange}
                     value={this.state.taskDetails}
                     name="taskdetails"
@@ -1035,4 +1129,4 @@ class EditStoreTask extends Component {
   }
 }
 
-export default EditStoreTask;
+export default withRouter(EditStoreTask);

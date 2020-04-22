@@ -12,6 +12,8 @@ import config from "./../../helpers/config";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
+import { Collapse, CardBody, Card } from "reactstrap";
+import SearchIcon from "../../assets/Images/search-icon.png";
 class StoreTask extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,12 @@ class StoreTask extends Component {
       tempitemData: [],
       tabIndex: 1,
       showAddTask: true,
+      FilterCollapse: false,
+
+      priorityData: [],
+      assignToData: [],
+      funcationData: [],
+      departmentData: [],
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -59,6 +67,8 @@ class StoreTask extends Component {
 
   componentDidMount() {
     this.handleGetTaskData(1);
+    this.handleGetDepartment();
+    this.handleGetPriorityList();
   }
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
@@ -343,6 +353,7 @@ class StoreTask extends Component {
       showAddTask: true,
       tabIndex: 3,
       isloading: true,
+      FilterCollapse:false,
       sdepartmentNameFilterCheckbox: "",
       sstoreNameFilterCheckbox: "",
       spriorityNameFilterCheckbox: "",
@@ -473,6 +484,101 @@ class StoreTask extends Component {
       });
   }
 
+  ///handle Get Department list
+  handleGetDepartment() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            departmentData: data,
+          });
+        } else {
+          self.setState({
+            departmentData: [],
+          });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+  /// Get Funcation list by Department Id for dropdown
+  handleGetFuncationByDepartmentId() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
+      headers: authHeader(),
+      params: { DepartmentId: this.state.selectDepartment },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ funcationData: data });
+        } else {
+          self.setState({ funcationData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetFuncationByDepartmentId");
+      });
+  }
+  //// Get Assign to list by funcation id
+  handleGetAssignTobyFuncationId() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetAssignedTo",
+      headers: authHeader(),
+      params: {
+        Function_ID: this.state.selectedFuncation,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ assignToData: data });
+        } else {
+          self.setState({ assignToData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetAssignTobyFuncationId");
+      });
+  }
+  ///handle get priority list for dropdown
+  handleGetPriorityList() {
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/StorePriority/GetPriorityList",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ priorityData: data });
+        } else {
+          self.setState({ priorityData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetPriorityList");
+      });
+  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
@@ -1311,6 +1417,9 @@ class StoreTask extends Component {
       }
     }
   }
+  handleFilterCollapse() {
+    this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
+  }
   render() {
     return (
       <React.Fragment>
@@ -1393,59 +1502,366 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-              <div className="table-cntr raisereactTable">
-                <ReactTable
-                  data={this.state.raisedByMeData}
-                  columns={[
-                    {
-                      Header: <span>ID</span>,
-                      accessor: "storeTaskID",
-                    },
-                    {
-                      Header: <span>Status</span>,
-                      accessor: "taskStatus",
-                      Cell: (row) => {
-                        return (
-                          <span className="table-btn table-blue-btn">
-                            <label>{row.original.taskStatus}</label>
-                          </span>
-                        );
+              <div>
+                <Collapse isOpen={this.state.FilterCollapse}>
+                  <Card>
+                    <CardBody>
+                      <div className="table-expandable-sctn1">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <div className="tasksearchdiv">
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              style={{ margin: "10px", width: "180px" }}
+                              // onClick={this.handleViewSearchData.bind(this)}
+                            >
+                              VIEW SEARCH
+                            </button>
+                          </div>
+                        </ul>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task ID"
+                                    name="task_Id"
+                                    value={this.state.task_Id}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="departmentName"
+                                    // value={this.state.selectDepartment}
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Department</option>
+                                    {this.state.departmentData !== null &&
+                                      this.state.departmentData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.departmentID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.departmentName}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="selectAssignTo"
+                                    // value={this.state.selectAssignTo}
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Assign To</option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    value={this.state.Task_Claim}
+                                    name="Task_Claim"
+                                    onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Claim</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task Title"
+                                    name="task_Title"
+                                    // value={this.state.task_Title}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    // value={this.state.selectedFuncation}
+                                    name="selectedFuncation"
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Funcation</option>
+                                    {this.state.funcationData !== null &&
+                                      this.state.funcationData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.functionID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.funcationName}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Task Created By</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim ID</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="no-bg"
+                                    type="text"
+                                    placeholder="Task Status"
+                                    name="task_status"
+                                    // value={this.state.task_status}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Creation On</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    // value={this.state.Task_Ticket}
+                                    name="Task_Ticket"
+                                    // onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Ticket</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="selectedPriority"
+                                    // onChange={this.handleDropdownOnchange}
+                                    // value={this.state.selectedPriority}
+                                  >
+                                    <option value={0}>Task Priority</option>
+                                    {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="no-bg"
+                                    type="text"
+                                    placeholder="Ticket ID"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+                <div
+                  className="float-search"
+                  style={{ top: "18%" }}
+                  onClick={this.handleFilterCollapse.bind(this)}
+                >
+                  <small>{this.state.FilterCollapse?"Close Search":"Search"}</small>
+                  <img
+                    className="search-icon"
+                    src={SearchIcon}
+                    alt="search-icon"
+                  />
+                </div>
+                <div className="table-cntr raisereactTable">
+                  <ReactTable
+                    data={this.state.raisedByMeData}
+                    columns={[
+                      {
+                        Header: <span>ID</span>,
+                        accessor: "storeTaskID",
                       },
-                    },
-                    {
-                      Header: <span>Task Title</span>,
-                      accessor: "taskTitle",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "departmentName",
-                            "Department"
-                          )}
-                        >
-                          Department <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "departmentName",
-                      Cell: (row) => {
-                        return (
-                          <>
-                            {row.original.departmentName}
+                      {
+                        Header: <span>Status</span>,
+                        accessor: "taskStatus",
+                        Cell: (row) => {
+                          return (
+                            <span className="table-btn table-blue-btn">
+                              <label>{row.original.taskStatus}</label>
+                            </span>
+                          );
+                        },
+                      },
+                      {
+                        Header: <span>Task Title</span>,
+                        accessor: "taskTitle",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "departmentName",
+                              "Department"
+                            )}
+                          >
+                            Department <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "departmentName",
+                        Cell: (row) => {
+                          return (
+                            <>
+                              {row.original.departmentName}
+                              <Popover
+                                content={
+                                  <div className="dash-creation-popup-cntr">
+                                    <ul className="dash-category-popup dashnewpopup">
+                                      <li>
+                                        <p>Function</p>
+                                        <p>{row.original.functionName}</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "storeName",
+                              "Store Name"
+                            )}
+                          >
+                            Store Name <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "storeName",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "priorityName",
+                              "Priority"
+                            )}
+                          >
+                            Priority <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "priorityName	",
+                        Cell: (row) => {
+                          return <span>{row.original.priorityName}</span>;
+                        },
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "creationOn",
+                              "Creation On"
+                            )}
+                          >
+                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "creationOn",
+                        sortable: false,
+                        Cell: (row) => (
+                          <span>
+                            <label>{row.original.creationOn}</label>
+
                             <Popover
                               content={
-                                <div className="dash-creation-popup-cntr">
-                                  <ul className="dash-category-popup dashnewpopup">
+                                <div className="insertpop1">
+                                  <ul className="dash-creation-popup">
+                                    <li className="title">Creation details</li>
                                     <li>
-                                      <p>Function</p>
-                                      <p>{row.original.functionName}</p>
+                                      <p>
+                                        {row.original.createdBy + " Created"}
+                                      </p>
+                                      <p>{row.original.createdago}</p>
+                                    </li>
+                                    <li>
+                                      <p>
+                                        Assigned to{" "}
+                                        {" " + row.original.assignto}
+                                      </p>
+                                      <p>{row.original.assignedago}</p>
+                                    </li>
+                                    <li>
+                                      <p>
+                                        {row.original.updatedBy + " "} updated
+                                      </p>
+                                      <p>{row.original.updatedago}</p>
+                                    </li>
+                                    <li>
+                                      <p>Response time remaining by</p>
+                                      <p>30 mins</p>
+                                    </li>
+                                    <li>
+                                      <p>Response overdue by</p>
+                                      <p>1 Hr</p>
+                                    </li>
+                                    <li>
+                                      <p>Resolution overdue by</p>
+                                      <p>2 Hrs</p>
                                     </li>
                                   </ul>
                                 </div>
                               }
-                              placement="bottom"
+                              placement="left"
                             >
                               <img
                                 className="info-icon"
@@ -1453,136 +1869,38 @@ class StoreTask extends Component {
                                 alt="info-icon"
                               />
                             </Popover>
-                          </>
-                        );
+                          </span>
+                        ),
                       },
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "storeName",
-                            "Store Name"
-                          )}
-                        >
-                          Store Name <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "storeName",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "priorityName",
-                            "Priority"
-                          )}
-                        >
-                          Priority <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "priorityName	",
-                      Cell: (row) => {
-                        return <span>{row.original.priorityName}</span>;
-                      },
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "creationOn",
-                            "Creation On"
-                          )}
-                        >
-                          Creation On <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "creationOn",
-                      sortable: false,
-                      Cell: (row) => (
-                        <span>
-                          <label>{row.original.creationOn}</label>
-
-                          <Popover
-                            content={
-                              <div className="insertpop1">
-                                <ul className="dash-creation-popup">
-                                  <li className="title">Creation details</li>
-                                  <li>
-                                    <p>{row.original.createdBy + " Created"}</p>
-                                    <p>{row.original.createdago}</p>
-                                  </li>
-                                  <li>
-                                    <p>
-                                      Assigned to {" " + row.original.assignto}
-                                    </p>
-                                    <p>{row.original.assignedago}</p>
-                                  </li>
-                                  <li>
-                                    <p>
-                                      {row.original.updatedBy + " "} updated
-                                    </p>
-                                    <p>{row.original.updatedago}</p>
-                                  </li>
-                                  <li>
-                                    <p>Response time remaining by</p>
-                                    <p>30 mins</p>
-                                  </li>
-                                  <li>
-                                    <p>Response overdue by</p>
-                                    <p>1 Hr</p>
-                                  </li>
-                                  <li>
-                                    <p>Resolution overdue by</p>
-                                    <p>2 Hrs</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            }
-                            placement="left"
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "assignto",
+                              "Assign to"
+                            )}
                           >
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </Popover>
-                        </span>
-                      ),
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "assignto",
-                            "Assign to"
-                          )}
-                        >
-                          Assign to
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "assignto",
-                      // Cell: (props) => (
-                      //   <span>
-                      //     <label>A, Bansal</label>
-                      //   </span>
-                      // ),
-                    },
-                  ]}
-                  // resizable={false}
-                  defaultPageSize={10}
-                  minRows={2}
-                  showPagination={true}
-                  getTrProps={this.handleRowClickRaisedTable}
-                />
+                            Assign to
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "assignto",
+                        // Cell: (props) => (
+                        //   <span>
+                        //     <label>A, Bansal</label>
+                        //   </span>
+                        // ),
+                      },
+                    ]}
+                    // resizable={false}
+                    defaultPageSize={10}
+                    minRows={2}
+                    showPagination={true}
+                    getTrProps={this.handleRowClickRaisedTable}
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -1598,6 +1916,210 @@ class StoreTask extends Component {
               </div>
             ) : (
               <div>
+                <Collapse isOpen={this.state.FilterCollapse}>
+                  <Card>
+                    <CardBody>
+                      <div className="table-expandable-sctn1">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <div className="tasksearchdiv">
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              style={{ margin: "10px", width: "180px" }}
+                              // onClick={this.handleViewSearchData.bind(this)}
+                            >
+                              VIEW SEARCH
+                            </button>
+                          </div>
+                        </ul>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task ID"
+                                    name="task_Id"
+                                    value={this.state.task_Id}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="departmentName"
+                                    // value={this.state.selectDepartment}
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Department</option>
+                                    {/* {this.state.departmentData !== null &&
+                                      this.state.departmentData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.departmentID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.departmentName}
+                                          </option>
+                                        )
+                                      )} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="selectAssignTo"
+                                    value={this.state.selectAssignTo}
+                                    onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Assign To</option>
+                                    {/* {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    value={this.state.Task_Claim}
+                                    name="Task_Claim"
+                                    onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Claim</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task Title"
+                                    name="task_Title"
+                                    // value={this.state.task_Title}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    // value={this.state.selectedFuncation}
+                                    name="selectedFuncation"
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Funcation</option>
+                                    {/* {this.state.funcationData !== null &&
+                                      this.state.funcationData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.functionID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.funcationName}
+                                          </option>
+                                        )
+                                      )} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Task Created By</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim ID</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="no-bg"
+                                    type="text"
+                                    placeholder="Task Status"
+                                    name="task_status"
+                                    // value={this.state.task_status}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Creation On</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    // value={this.state.Task_Ticket}
+                                    name="Task_Ticket"
+                                    // onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Ticket</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="selectedPriority"
+                                    // onChange={this.handleDropdownOnchange}
+                                    // value={this.state.selectedPriority}
+                                  >
+                                    <option>Task Priority</option>
+                                    {/* {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="no-bg"
+                                    type="text"
+                                    placeholder="Ticket ID"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+                <div
+                  className="float-search"
+                  style={{ top: "18%" }}
+                  onClick={this.handleFilterCollapse.bind(this)}
+                >
+                  <small>{this.state.FilterCollapse?"Close Search":"Search"}</small>
+                  <img
+                    className="search-icon"
+                    src={SearchIcon}
+                    alt="search-icon"
+                  />
+                </div>
                 <div className="table-cntr">
                   <ReactTable
                     data={this.state.assignToMeData}
@@ -1828,6 +2350,210 @@ class StoreTask extends Component {
               </div>
             ) : (
               <div>
+                <Collapse isOpen={this.state.FilterCollapse}>
+                  <Card>
+                    <CardBody>
+                      <div className="table-expandable-sctn1">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <div className="tasksearchdiv">
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              style={{ margin: "10px", width: "180px" }}
+                              // onClick={this.handleViewSearchData.bind(this)}
+                            >
+                              VIEW SEARCH
+                            </button>
+                          </div>
+                        </ul>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task ID"
+                                    name="task_Id"
+                                    value={this.state.task_Id}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="departmentName"
+                                    // value={this.state.selectDepartment}
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Department</option>
+                                    {/* {this.state.departmentData !== null &&
+                                      this.state.departmentData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.departmentID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.departmentName}
+                                          </option>
+                                        )
+                                      )} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="selectAssignTo"
+                                    value={this.state.selectAssignTo}
+                                    onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Assign To</option>
+                                    {/* {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    value={this.state.Task_Claim}
+                                    name="Task_Claim"
+                                    onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Claim</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task Title"
+                                    name="task_Title"
+                                    // value={this.state.task_Title}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    // value={this.state.selectedFuncation}
+                                    name="selectedFuncation"
+                                    // onChange={this.handleDropdownOnchange}
+                                  >
+                                    <option>Funcation</option>
+                                    {/* {this.state.funcationData !== null &&
+                                      this.state.funcationData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.functionID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.funcationName}
+                                          </option>
+                                        )
+                                      )} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Task Created By</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim ID</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="no-bg"
+                                    type="text"
+                                    placeholder="Task Status"
+                                    name="task_status"
+                                    // value={this.state.task_status}
+                                    // onChange={this.hanldetoggleOnChange}
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Creation On</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    // value={this.state.Task_Ticket}
+                                    name="Task_Ticket"
+                                    // onChange={this.hanldetoggleOnChange}
+                                  >
+                                    <option value="">Task With Ticket</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="selectedPriority"
+                                    // onChange={this.handleDropdownOnchange}
+                                    // value={this.state.selectedPriority}
+                                  >
+                                    <option>Task Priority</option>
+                                    {/* {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))} */}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="no-bg"
+                                    type="text"
+                                    placeholder="Ticket ID"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+                <div
+                  className="float-search"
+                  style={{ top: "18%" }}
+                  onClick={this.handleFilterCollapse.bind(this)}
+                >
+                  <small>{this.state.FilterCollapse?"Close Search":"Search"}</small>
+                  <img
+                    className="search-icon"
+                    src={SearchIcon}
+                    alt="search-icon"
+                  />
+                </div>
                 <div className="table-cntr taskByTable">
                   <ReactTable
                     data={this.state.taskByTicketData}

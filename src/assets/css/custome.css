@@ -11772,3 +11772,12 @@ table tr th:last-child {
   font-weight: 700;
   vertical-align: middle;
 }
+
+.tasksearchdiv{
+text-align: right;
+  width: 100%;
+}
+.rejectmodal-popup {
+  margin-right: auto !important;
+  min-width: 40%;
+}

@@ -41,14 +41,16 @@ import StoreProgramCode from "./Component/Store/StoreProgramCode";
 import StoreSignIn from "./Component/Store/StoreSignIn";
 import StoreForgotPassword from "./Component/Store/StoreForgotPassword";
 import StoreUserForgotPassword from "./Component/Store/StoreUserForgotPassword";
+import ModualSection from "./Component/ModualSection";
 
 ReactDOM.render(
   <Router>
+    <Route exact path="/" component={ModualSection} />
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />
-    <Route exact path="/ProgramCodeSignIn" component={ProgramCodeSignIn} />   
-    <Route exact path="/" component={StoreProgramCode} />
+    <Route path="/TicketProgramCode" component={ProgramCodeSignIn} />
+    <Route path="/StoreProgramCode" component={StoreProgramCode} />
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />

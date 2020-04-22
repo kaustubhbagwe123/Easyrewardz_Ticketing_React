@@ -194,7 +194,7 @@ class StoreAddTask extends Component {
       });
   }
 
-  ///handle get priority
+  ////handle get priority
   handleGetPriority() {
     let self = this;
     axios({

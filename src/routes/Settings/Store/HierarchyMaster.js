@@ -1284,13 +1284,13 @@ class HierarchyMaster extends Component {
           </Modal>
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/admin/settings" className="header-path">
+          <Link to="/store/settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
           <Link
             to={{
-              pathname: "/admin/settings",
+              pathname: "/store/settings",
               tabName: "store-tab",
             }}
             className="header-path"
