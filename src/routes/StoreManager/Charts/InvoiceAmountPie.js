@@ -11,9 +11,7 @@ class InvoiceAmountPie extends Component {
     super(props);
   
     this.state = {
-      data: {
-        values: []
-      },
+      values:[],
       sort: null
     };
 
@@ -27,21 +25,18 @@ class InvoiceAmountPie extends Component {
 
   handleGetDashboardGraphData() {
    debugger;
-
-      debugger;
       var propsData = this.props.data;
-      let values = [];
       if (propsData !== null) {
+        let values = [];
         for (let i = 0; i < propsData.length; i++) {
+          var obj={}
           let name = propsData[i].name;
           let value = propsData[i].value;
-          let obj = {x: `${name}, ${value}`, y: value};
+           obj = {key: `${name}`, y: value};
           values.push(obj);
         }
         this.setState({
-          data: {
-              values
-          }
+          values
         });
       }
   }
@@ -54,7 +49,7 @@ class InvoiceAmountPie extends Component {
         height={250}
         width={215}
         type="pieChart"
-        datum={this.state.data}
+        datum={this.state.values}
         donut
         donutRatio="0"
       />

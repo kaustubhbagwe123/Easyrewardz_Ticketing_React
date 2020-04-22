@@ -26,7 +26,7 @@ class ProgramCodeSignIn extends Component {
     // debugger
     let self=this;
     if (this.validator.allValid()) {
-      const{programCode}=this.state;
+      const{programCode}=this.state; 
       var encProgramCode=encryption(programCode, "enc");
       // let X_Authorized_Domainname = encryption('http://erbelltktstore.dcdev.brainvire.net', "enc");
       let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");

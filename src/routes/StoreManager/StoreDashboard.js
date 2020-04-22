@@ -32,11 +32,17 @@ class StoreDashboard extends Component {
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     ).subtract(30, "days");
     let end = moment(start).add(30, "days");
+    let creationStart = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    ).subtract(30, "days");
+    let creationEnd = moment(creationStart).add(30, "days");
     this.state = {
       FilterCollapse: false,
       StatusModel: false,
       start: start,
       end: end,
+      creationStart: creationStart,
+      creationEnd: creationEnd,
       dashboardGridData: [],
       BrandData: [],
       AgentData: [],
@@ -56,6 +62,7 @@ class StoreDashboard extends Component {
       loadingAbove: true,
       task_Id: "",
       Task_Claim: "",
+      Task_ClaimId: "",
       Task_Ticket: "",
       task_Title: "",
       task_status: "",
@@ -128,6 +135,23 @@ class StoreDashboard extends Component {
     });
     this.handleGetDashboardGraphCount();
     this.handleGetDashboardGraphData();
+  };
+  SearchCreationOn = async (startDate, endDate) => {
+    debugger;
+    var startArr = endDate[0].split("-");
+    var dummyStart = startArr[0];
+    startArr[0] = startArr[1];
+    startArr[1] = dummyStart;
+    var creationStart = startArr.join("-");
+    var endArr = endDate[1].split("-");
+    var dummyEnd = endArr[0];
+    endArr[0] = endArr[1];
+    endArr[1] = dummyEnd;
+    var creationEnd = endArr.join("-");
+    await this.setState({
+      creationStart,
+      creationEnd,
+    });
   };
   checkIndividualAgent = (event) => {
     debugger;
@@ -633,7 +657,7 @@ class StoreDashboard extends Component {
         AssigntoId: 0,
         taskwithTicket: this.state.Task_Ticket,
         taskwithClaim: this.state.Task_Claim,
-        claimID: 0,
+        claimID: this.state.Task_ClaimId,
         Priority: 0,
       },
     })
@@ -1219,11 +1243,19 @@ class StoreDashboard extends Component {
                                     <option>Task Created By</option>
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
-                                  </select>
-                                </div>
+                                {this.state.Task_Claim === "true" ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Claim ID"
+                                      name="Task_ClaimId"
+                                      value={this.state.Task_ClaimId}
+                                      onChange={this.hanldetoggleOnChange}
+                                      autoComplete="off"
+                                    />
+                                  </div>
+                                ) : null}
+
                                 <div className="col-md-3">
                                   {/* <input
                                     className="no-bg"
@@ -1239,11 +1271,8 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3 campaign-end-date creation-date-range">
-                                  {/* <select>
-                                    <option>Creation On</option>
-                                  </select> */}
                                   <DatePickerComponenet
-                                    applyCallback={this.applyCallback}
+                                    applyCallback={this.SearchCreationOn}
                                   />
                                 </div>
                                 <div className="col-md-3">
@@ -1277,13 +1306,15 @@ class StoreDashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Ticket ID"
-                                  />
-                                </div>
+                                {this.state.Task_Ticket === "true" ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      className="no-bg"
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                    />
+                                  </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>

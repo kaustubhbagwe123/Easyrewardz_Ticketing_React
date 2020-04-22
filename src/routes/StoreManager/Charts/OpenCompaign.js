@@ -55,9 +55,6 @@ export class OpenCompaign extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
-
-      debugger;
       var propsData = this.props.data;
       let values = [];
       if (propsData !== null) {

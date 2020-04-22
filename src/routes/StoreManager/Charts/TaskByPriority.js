@@ -70,7 +70,6 @@ export class TaskByPriority extends Component {
     this.handleGetDashboardGraphData();
   }
   handleGetDashboardGraphData() {
-    debugger;
     var taskData = this.props.data;
     var category=[];
     var data=[];

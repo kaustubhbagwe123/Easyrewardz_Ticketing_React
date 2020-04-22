@@ -102,7 +102,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    debugger;
+    //debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -205,7 +205,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;
@@ -260,7 +260,7 @@ class Header extends Component {
   }
 
   handleLoggedInUserDetails = () => {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -268,7 +268,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -686,7 +686,7 @@ class Header extends Component {
                           <div className="notification-popover">
                             {item.customTaskNotificationModels.map(
                               (data, j) => {
-                                debugger;
+                                //debugger;
                                 return (
                                   <p key={j}>
                                     {data.notificatonType == 1 ? (
