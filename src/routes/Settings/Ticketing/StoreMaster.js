@@ -3386,7 +3386,7 @@ class StoreMaster extends Component {
                         },
                       ]}
                       resizable={false}
-                      minRows={1}
+                      minRows={2}
                       defaultPageSize={10}
                       showPagination={true}
                     />
