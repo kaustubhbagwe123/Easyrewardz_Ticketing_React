@@ -13,9 +13,19 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import Correct from "./../../../assets/Images/correct.png";
 import Select from "react-select";
-import TicketActionType from "./../../TicketActionType";
+import StoreTaskStatus from "./../../StoreTaskStatus";
 import DatePickerComponenet from "./../Ticketing/DatePickerComponent";
 import DatePicker from "react-datepicker";
+import axios from "axios";
+import config from "../../../helpers/config";
+import { authHeader } from "../../../helpers/authHeader";
+import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
+import { Checkbox } from "antd";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import moment from "moment";
 
 class StoreReports extends Component {
   constructor(props) {
@@ -25,8 +35,8 @@ class StoreReports extends Component {
       NextPopup: false,
       taskCreateDate: "",
       claimCreateDate: "",
-      tabIndex: 0,
-      taskStatusList: TicketActionType(),
+      tabIndex: 1,
+      taskStatusList: StoreTaskStatus(),
       taskStatus: [],
       taskIdTitle: "",
       taskLinkedTicketId: "",
@@ -52,34 +62,16 @@ class StoreReports extends Component {
       claimIssueTypeShow: false,
       campaignNameShow: false,
       campaignStatusShow: false,
-      departmentName: [
-        { campaignNameID: 1, campaignName: "Department 1" },
-        { campaignNameID: 2, campaignName: "Department 2" },
-      ],
-      functionName: [
-        { campaignNameID: 3, campaignName: "Function 1" },
-        { campaignNameID: 4, campaignName: "Function 2" },
-      ],
-      priorityName: [
-        { campaignNameID: 5, campaignName: "Priority 1" },
-        { campaignNameID: 6, campaignName: "Priority 2" },
-      ],
+      departmentName: [],
+      functionName: [],
+      priorityName: [],
       claimStatusName: [
         { campaignNameID: 7, campaignName: "Claim Status 1" },
         { campaignNameID: 8, campaignName: "Claim Status 2" },
       ],
-      claimCategoryName: [
-        { campaignNameID: 9, campaignName: "Claim Category 1" },
-        { campaignNameID: 10, campaignName: "Claim Category 2" },
-      ],
-      claimSubCategoryName: [
-        { campaignNameID: 11, campaignName: "Claim Sub Category 1" },
-        { campaignNameID: 12, campaignName: "Claim Sub Category 2" },
-      ],
-      claimIssueTypeName: [
-        { campaignNameID: 13, campaignName: "Claim Issue Type 1" },
-        { campaignNameID: 14, campaignName: "Claim Issue Type 2" },
-      ],
+      claimCategoryName: [],
+      claimSubCategoryName: [],
+      claimIssueTypeName: [],
       campaignName: [
         { campaignNameID: 15, campaignName: "Campaign Name 1" },
         { campaignNameID: 16, campaignName: "Campaign Name 2" },
@@ -88,6 +80,8 @@ class StoreReports extends Component {
         { campaignNameID: 17, campaignName: "Campaign Status 1" },
         { campaignNameID: 18, campaignName: "Campaign Status 2" },
       ],
+      userData:[],
+      selectedTeamMember: [],
       departmentOvrlayShow: false,
       functionOvrlayShow: false,
       priorityOvrlayShow: false,
@@ -108,11 +102,76 @@ class StoreReports extends Component {
       indiCampaignStatus: "",
       campaignEndDateFrom: "",
       campaignEndDateTo: "",
+      totalResult: 0,
+      storeReportData: [],
+      ScheduleOption: ScheduleDateDropDown(),
+      IsDaily: false,
+      IsWeekly: false,
+      IsDailyForMonth: false,
+      IsDailyForYear: false,
+      IsWeeklyForMonth: false,
+      IsWeeklyForYear: false,
+      selectedNoOfWeek: 0,
+      selectedWeeklyDays: "",
+      Mon: "",
+      Tue: "",
+      Wed: "",
+      Thu: "",
+      Fri: "",
+      Sat: "",
+      Sun: "",
+      selectedNoOfDaysForMonth: 0,
+      selectedNoOfMonthForMonth: 0,
+      selectedNoOfMonthForWeek: 0,
+      selectedNoOfWeekForWeek: 0,
+      selectedNoOfDayForDailyYear: 0,
+      selectedNoOfWeekForYear: 0,
+      selectedNameOfMonthForDailyYear: "",
+      selectScheduleDate: "",
+      selectedNameOfDayForWeek: [],
+      selectedNameOfMonthForYear: [],
+      selectedNameOfMonthForDailyYear: [],
+      selectedReportName:"",
+      ReportParams: {},
+      Schedule_ID: 0,
+      selectedNoOfDay: 0,
+      NameOfDayForWeek: [
+        {
+          days: "Sunday",
+        },
+        {
+          days: "Monday",
+        },
+      ],
+      NameOfMonthForYear: [
+        {
+          month: "September",
+        },
+        {
+          month: "October",
+        },
+      ],
+      NameOfDayForYear: [
+        {
+          days: "Sunday",
+        },
+        {
+          days: "Monday",
+        },
+      ],
+      NameOfMonthForDailyYear: [
+        {
+          month: "September",
+        },
+        {
+          month: "October",
+        },
+      ]
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
     this.handleAddReportClose = this.handleAddReportClose.bind(this);
-    this.handleNextPopupOpen = this.handleNextPopupOpen.bind(this);
+    // this.handleNextPopupOpen = this.handleNextPopupOpen.bind(this);
     this.handleNextPopupClose = this.handleNextPopupClose.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
     this.handleOnChangeData = this.handleOnChangeData.bind(this);
@@ -131,6 +190,16 @@ class StoreReports extends Component {
     this.handleCampaignStatusButton = this.handleCampaignStatusButton.bind(
       this
     );
+    this.handleSave = this.handleSave.bind(this);
+
+  }
+
+  componentDidMount() {
+    this.handleGetDepartment();
+    this.handleGetPriority();
+    this.handleGetClaimCategory();
+    this.handleGetStoreReports();
+    this.handleGetUser();
   }
 
   applyCallback = async (startDate, endDate) => {
@@ -193,6 +262,7 @@ class StoreReports extends Component {
     await this.setState({
       indiDepartment,
     });
+    this.handleGetFunction();
   };
   selectNoDepartment = async (event) => {
     debugger;
@@ -240,6 +310,7 @@ class StoreReports extends Component {
         document.getElementById("departmentNameValue").textContent = "Select";
       }
     }
+    this.handleGetFunction();
   };
 
   handleClaimIssueTypeButton() {
@@ -354,6 +425,8 @@ class StoreReports extends Component {
     await this.setState({
       indiClaimSubCategory,
     });
+
+    this.handleGetClaimIssueType();
   };
   selectNoClaimSubCategory = async (event) => {
     debugger;
@@ -402,6 +475,8 @@ class StoreReports extends Component {
           "Select";
       }
     }
+
+    this.handleGetClaimIssueType();
   };
 
   handleClaimCategoryButton() {
@@ -483,6 +558,7 @@ class StoreReports extends Component {
           "Select";
       }
     }
+    this.handleGetClaimSubCategory();
   };
 
   handleClaimStatusButton() {
@@ -884,13 +960,14 @@ class StoreReports extends Component {
   };
 
   handleAddReportOpen() {
-    this.setState({ AddReportPopup: true, tabIndex: 0 });
+    this.setState({ AddReportPopup: true });
   }
   handleAddReportClose() {
     this.setState({ AddReportPopup: false });
   }
-  handleNextPopupOpen() {
-    this.handleAddReportClose();
+  handleNextPopupOpen(activeTabId) {
+    //this.handleAddReportClose();
+    this.handleGetStoreReportSearch(activeTabId);
     this.setState({ NextPopup: true });
   }
   handleNextPopupClose() {
@@ -905,34 +982,1127 @@ class StoreReports extends Component {
       tabIndex: index,
     });
   }
+
+  handleGetDepartment() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({departmentName: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetFunction() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByMultipleDepartmentIds",
+      params: { DepartmentIds: this.state.indiDepartment },
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({functionName: responseData});
+        }
+      })
+      .catch(response => {
+        self.setState({ isloading: false });
+        console.log(response, "---handleGetTaskData");
+      });
+  }
+
+  handleGetPriority() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/StorePriority/GetPriorityList",
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({priorityName: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetClaimCategory() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
+      params: { BrandIds: "" },
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({claimCategoryName: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetClaimSubCategory() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimSubCategory",
+      params: { CategoryIDs: this.state.indiClaimCategory },
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({claimSubCategoryName: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetClaimIssueType() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimIssueType",
+      params: { subCategoryIDs: this.state.indiClaimSubCategory },
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({claimIssueTypeName: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetUser() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({userData: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+ 
+  handleGetStoreReportSearch(activeTabId) {
+    debugger; 
+    let self = this;
+    var taskStatus = "";
+    var paramData ={};
+    for(var a=0; a<this.state.taskStatus; a++){
+      taskStatus+=this.state.taskStatus[a].ticketActionTypeName
+    }
+   if(activeTabId === 1)
+   {
+    paramData ={
+      ActiveTabId: activeTabId,
+      TaskTitle: this.state.taskIdTitle,
+      TaskStatus: taskStatus,
+      IsTaskWithTicket: this.state.taskWithTickets==="no"?false:true,
+      TaskTicketID: this.state.taskLinkedTicketId,
+      DepartmentIds: this.state.indiDepartment,
+      FunctionIds: this.state.indiFunction,
+      PriorityIds: this.state.indiPriority,
+      IsTaskWithClaim: this.state.taskWithClaim==="no"?false:true,
+      TaskClaimID: this.state.taskClaimId,
+      TaskCreatedDate: this.state.taskCreateDate,
+      TaskCreatedBy: 1,
+      TaskAssignedId: 1
+    }
+   }
+   if (activeTabId === 2) {
+    paramData ={
+      ActiveTabId: activeTabId,
+      ClaimID: this.state.taskClaimId===""?0:parseInt(this.state.taskClaimId),
+      ClaimStatus: this.state.indiClaimStatus,
+      IsClaimWithTicket: false,
+      ClaimTicketID: this.state.claimLinkedTicketId===""?0:parseInt(this.state.claimLinkedTicketId),
+      ClaimCategoryIds: this.state.indiClaimCategory,
+      ClaimSubCategoryIds: this.state.indiClaimSubCategory,
+      ClaimIssuetypeIds: this.state.indiClaimIssueType,
+      IsClaimWithTask: this.state.claimWithTask === "no"?false:true,
+      ClaimTaskID: this.state.linkedTaskId===""?0:parseInt(this.state.linkedTaskId),
+      ClaimCreatedDate: this.state.claimCreateDate,
+      ClaimCreatedBy: 1,
+      ClaimAssignedId: 1
+    }
+   }
+   if (activeTabId === 3) {
+    paramData ={
+      ActiveTabId: activeTabId,
+      CampaignName: this.state.indiCampaignName,
+      CampaignAssignedIds: this.state.campaignAssignedTo,
+      CampaignStartDate: this.state.campaignEndDateFrom,
+      CampaignEndDate: this.state.campaignEndDateTo,
+      CampaignStatusids: this.state.indiCampaignStatus
+    }
+   }
+   this.setState({ ReportParams: paramData });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/StoreReportSearch",
+      data: paramData,
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        if (message === "Success") {
+          self.setState({totalResult: response.data.responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetStoreReports() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/GetStoreReports",
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({storeReportData: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  
+  ScheduleOpenModel = () => {
+    debugger;
+    if (this.state.selectedReportName == "") {
+      NotificationManager.error("Please enter report name");
+    } else {
+      if (this.state.selectedTeamMemberCommaSeperated) {
+        var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
+        var selectedTeamMember = this.state.selectedTeamMember;
+        for (let j = 0; j < tData.length; j++) {
+          var data = this.state.userData.filter(
+            (x) => x.userID == tData[j]
+          );
+          selectedTeamMember.push(data[0]);
+        }
+        this.setState({ Schedule: true, selectedTeamMember });
+        setTimeout(() => {
+          for (let j = 0; j < this.state.dayIdsArray.length - 1; j++) {
+            document.getElementById(this.state.dayIdsArray[j]).click();
+          }
+        }, 100);
+      } else {
+        this.setState({ Schedule: true, selectedTeamMember: [] });
+      }
+    }
+  };
+  ScheduleCloseModel = () => {
+    this.setState({ Schedule: false, selectedTeamMember: [] });
+  };
+
+  handleScheduleDateChange = (e) => {
+    debugger;
+    let SelectData = e.currentTarget.value;
+    if (SelectData === "230") {
+      this.setState({
+        IsDaily: true,
+        IsWeekly: false,
+        IsDailyForMonth: false,
+        IsDailyForYear: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
+        selectedNoOfWeek: 0,
+        selectedNoOfDaysForMonth: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForWeekCommaSeperated: "",
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNameOfMonthForDailyYearCommaSeperated: "",
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: "",
+      });
+    } else if (SelectData === "231") {
+      this.setState({
+        IsWeekly: true,
+        IsDaily: false,
+        selectedNoOfDay: 0,
+        IsDailyForMonth: false,
+        IsDailyForYear: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
+        selectedNoOfDaysForMonth: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForWeekCommaSeperated: "",
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNameOfMonthForDailyYearCommaSeperated: "",
+        selectedNameOfDayForYearCommaSeperated: "",
+      });
+    } else if (SelectData === "232") {
+      this.setState({
+        IsDailyForMonth: true,
+        IsDaily: false,
+        IsDailyForYear: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: false,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForWeekCommaSeperated: "",
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNameOfMonthForDailyYearCommaSeperated: "",
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: "",
+      });
+    } else if (SelectData === "233") {
+      this.setState({
+        IsWeeklyForMonth: true,
+        IsDaily: false,
+        IsDailyForMonth: false,
+        IsWeeklyForYear: false,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: false,
+        IsDailyForYear: false,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: "",
+        selectedNoOfDaysForMonth: 0,
+        selectedNameOfMonthForYearCommaSeperated: "",
+      });
+    } else if (SelectData === "234") {
+      this.setState({
+        IsDailyForYear: true,
+        IsDaily: false,
+        IsDailyForMonth: false,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: "",
+        selectedNoOfDaysForMonth: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNameOfDayForWeekCommaSeperated: "",
+      });
+    } else if (SelectData === "235") {
+      this.setState({
+        IsWeeklyForYear: true,
+        IsDaily: false,
+        IsDailyForMonth: false,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: false,
+        IsWeeklyForMonth: false,
+        IsDailyForYear: false,
+        selectedWeeklyDays: "",
+        selectedNoOfDaysForMonth: 0,
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNameOfDayForWeekCommaSeperated: "",
+      });
+    }
+    this.setState({
+      selectScheduleDate: SelectData,
+    });
+  };
+
+  handleWeekly = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfWeek: e.target.value,
+    });
+    // this.setState({
+    //   selectedNoOfWeek: e.currentTarget.value
+    // });
+  };
+
+  handleWeeklyDays = async (e) => {
+    debugger;
+    let check = e.target.checked;
+    let val = e.target.value;
+    let finalWeekList = "";
+    if (val === "Mon") {
+      if (check === true) {
+        await this.setState({
+          Mon: val,
+        });
+      } else {
+        await this.setState({
+          Mon: "",
+        });
+      }
+    } else if (val === "Tue") {
+      if (check === true) {
+        await this.setState({
+          Tue: val,
+        });
+      } else {
+        await this.setState({
+          Tue: "",
+        });
+      }
+    } else if (val === "Wed") {
+      if (check === true) {
+        await this.setState({
+          Wed: val,
+        });
+      } else {
+        await this.setState({
+          Wed: "",
+        });
+      }
+    } else if (val === "Thu") {
+      if (check === true) {
+        await this.setState({
+          Thu: val,
+        });
+      } else {
+        await this.setState({
+          Thu: "",
+        });
+      }
+    } else if (val === "Fri") {
+      if (check === true) {
+        await this.setState({
+          Fri: val,
+        });
+      } else {
+        await this.setState({
+          Fri: "",
+        });
+      }
+    } else if (val === "Sat") {
+      if (check === true) {
+        await this.setState({
+          Sat: val,
+        });
+      } else {
+        await this.setState({
+          Sat: "",
+        });
+      }
+    } else if (val === "Sun") {
+      if (check === true) {
+        await this.setState({
+          Sun: val,
+        });
+      } else {
+        await this.setState({
+          Sun: "",
+        });
+      }
+    }
+    if (!(this.state.Mon === "")) {
+      finalWeekList += this.state.Mon + ",";
+    }
+    if (!(this.state.Tue === "")) {
+      finalWeekList += this.state.Tue + ",";
+    }
+    if (!(this.state.Wed === "")) {
+      finalWeekList += this.state.Wed + ",";
+    }
+    if (!(this.state.Thu === "")) {
+      finalWeekList += this.state.Thu + ",";
+    }
+    if (!(this.state.Fri === "")) {
+      finalWeekList += this.state.Fri + ",";
+    }
+    if (!(this.state.Sat === "")) {
+      finalWeekList += this.state.Sat + ",";
+    }
+    if (!(this.state.Sun === "")) {
+      finalWeekList += this.state.Sun + ",";
+    }
+    this.setState({
+      selectedWeeklyDays: finalWeekList,
+    });
+  };
+
+  handleDaysForMonth = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfDaysForMonth: e.currentTarget.value,
+    });
+  };
+
+  handleMonthForMonth = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfMonthForMonth: e.currentTarget.value,
+    });
+  };
+
+  handleMonthForWeek = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfMonthForWeek: e.currentTarget.value,
+    });
+  };
+
+  handleDayForYear = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfDayForDailyYear: e.currentTarget.value,
+    });
+  };
+
+  handleWeekForWeek = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfWeekForWeek: e.currentTarget.value,
+    });
+  };
+  
+  handleWeekForYear = (e) => {
+    debugger;
+    this.setState({
+      selectedNoOfWeekForYear: e.currentTarget.value,
+    });
+  };
+
+  setTeamMember = (e) => {
+    debugger;
+    if (e !== null) {
+      var selectedTeamMemberCommaSeperated = Array.prototype.map
+        .call(e, (s) => s.userID)
+        .toString();
+    }
+    this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
+  };
+
+  handleScheduleTime = (e) => {
+    debugger;
+    this.setState({
+      selectedScheduleTime: e,
+    });
+  };
+
+  setNameOfDayForWeek = (e) => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
+        .call(e, (s) => s.days)
+        .toString();
+    }
+    this.setState({
+      selectedNameOfDayForWeek: e,
+      selectedNameOfDayForWeekCommaSeperated,
+    });
+  };
+
+  setNameOfDayForYear = (e) => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
+        .call(e, (s) => s.days)
+        .toString();
+    }
+    this.setState({
+      selectedNameOfDayForYear: e,
+      selectedNameOfDayForYearCommaSeperated,
+    });
+  };
+
+  setNameOfMonthForDailyYear = (e) => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
+        .call(e, (s) => s.month)
+        .toString();
+    }
+    this.setState({
+      selectedNameOfMonthForDailyYear: e,
+      selectedNameOfMonthForDailyYearCommaSeperated,
+    });
+  };
+  
+  handleInsertReport() {
+    let self = this;
+    var SearchParams = {};
+
+    var month, day, year, hours, minutes, seconds;
+    var date = new Date(this.state.selectedScheduleTime),
+      month = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    hours = ("0" + date.getHours()).slice(-2);
+    minutes = ("0" + date.getMinutes()).slice(-2);
+    seconds = ("0" + date.getSeconds()).slice(-2);
+
+    var mySQLDate = [date.getFullYear(), month, day].join("-");
+    var mySQLTime = [hours, minutes, seconds].join(":");
+    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
+
+    SearchParams = JSON.stringify(this.state.ReportParams);
+    if (this.state.selectedReportName == "") {
+      NotificationManager.error("Please add report name.");
+      return;
+    }
+    debugger;
+    if (this.state.selectedTeamMemberCommaSeperated == undefined) {
+      NotificationManager.error("Please add team name for schedule.");
+      return;
+    }
+    if (this.state.selectScheduleDate == "") {
+      NotificationManager.error("Please select schedule type.");
+      return;
+    }
+    if (this.state.selectedScheduleTime == "") {
+      NotificationManager.error("Please select schedule time.");
+      return;
+    }
+    if (SearchParams != "") {
+      debugger;
+      self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
+        headers: authHeader(),
+        data: {
+          PrimaryScheduleID: this.state.Schedule_ID,
+          ReportName: this.state.selectedReportName,
+          SearchInputParams: SearchParams,
+          ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+          ScheduleType: this.state.selectScheduleDate,
+          NoOfDay: this.state.selectedNoOfDay,
+          ScheduleTime: this.state.selectedScheduleTime,
+          IsDaily: this.state.IsDaily,
+          IsWeekly: this.state.IsWeekly,
+          NoOfWeek: this.state.selectedNoOfWeek,
+          DayIds: this.state.selectedWeeklyDays,
+          IsDailyForMonth: this.state.IsDailyForMonth,
+          NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+          NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+          IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+          NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+          NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+          ScheduleFrom: 3,
+          NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+          IsDailyForYear: this.state.IsDailyForYear,
+          NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+          NameOfMonthForDailyYear: this.state
+            .selectedNameOfMonthForYearCommaSeperated,
+          IsWeeklyForYear: this.state.IsWeeklyForYear,
+          NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+          NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+          NameOfMonthForYear: this.state
+            .selectedNameOfMonthForDailyYearCommaSeperated,
+        },
+      })
+        .then(function(res) {
+          debugger;
+
+          let status = res.data.message;
+          let scheduleId = res.data.responseData;
+          if (status === "Success") {
+            self.state.selectedTeamMember = "";
+            self.state.selectedTeamMemberCommaSeperated = undefined;
+            self.state.selectScheduleDate = "";
+            self.state.selectedScheduleTime = "";
+
+            self.ScheduleCloseModel();
+            // this.handleReportList();
+            self.setState({ Schedule_ID: scheduleId });
+            self.setState({ AddReportPopup: false });
+            NotificationManager.success("Scheduler created successfully.");
+            self.setState({
+              selectedScheduleTime: "",
+              // selectedTeamMemberCommaSeperated="",
+              // selectScheduleDate="",
+              // selectedScheduleTime="",
+              IsDaily: false,
+              IsDailyForMonth: false,
+              IsWeekly: false,
+              IsWeeklyForMonth: false,
+              IsDailyForYear: false,
+              IsWeeklyForYear: false,
+            });
+          } else if (status == "duplicate") {
+            self.setState({ Schedule_ID: 0 });
+            NotificationManager.error("Report name already exist.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Please add report for create scheduler.");
+    }
+  }
+
+  setNameOfMonthForYear = (e) => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
+        .call(e, (s) => s.month)
+        .toString();
+    }
+    this.setState({
+      selectedNameOfMonthForYear: e,
+      selectedNameOfMonthForYearCommaSeperated,
+    });
+  };
+
+  handleSave() {
+    debugger;
+    let self = this;
+    var SearchParams = {};
+
+    SearchParams = JSON.stringify(this.state.ReportParams);
+    if (self.state.selectedReportName == "") {
+      NotificationManager.error("Please enter report name");
+      return;
+    }
+    self = this;
+    if (this.state.selectScheduleDate == "") {
+      self.setState({ selectScheduleDate: 0 });
+    }
+    setTimeout(() => {
+      debugger;
+      if (this.state.Schedule_ID > 0) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreReport/SaveStoreReport",
+          headers: authHeader(),
+          data: {
+            ReportID: 0,
+            ReportName: self.state.selectedReportName,
+            ScheduleID: this.state.Schedule_ID,
+            StoreReportSearchParams: SearchParams
+          },
+        })
+          .then(function(res) {
+            // this.handleReportList();
+            self.setState({ Schedule_ID: 0 });
+            self.handleGetStoreReports();
+            self.handleNextPopupClose();
+            NotificationManager.success(
+              "Report saved successfully for download."
+            );
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
+          headers: authHeader(),
+          data: {
+            PrimaryScheduleID: this.state.Schedule_ID,
+            ReportName: this.state.selectedReportName,
+            SearchInputParams: SearchParams,
+            ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+            ScheduleType: this.state.selectScheduleDate,
+            NoOfDay: this.state.selectedNoOfDay,
+            ScheduleTime: this.state.selectedScheduleTime,
+            IsDaily: this.state.IsDaily,
+            IsWeekly: this.state.IsWeekly,
+            NoOfWeek: this.state.selectedNoOfWeek,
+            DayIds: this.state.selectedWeeklyDays,
+            IsDailyForMonth: this.state.IsDailyForMonth,
+            NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+            NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+            IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+            NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+            NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+            ScheduleFrom: 4,
+            NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+            IsDailyForYear: this.state.IsDailyForYear,
+            NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+            NameOfMonthForDailyYear: this.state
+              .selectedNameOfMonthForYearCommaSeperated,
+            IsWeeklyForYear: this.state.IsWeeklyForYear,
+            NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+            NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+            NameOfMonthForYear: this.state
+              .selectedNameOfMonthForDailyYearCommaSeperated,
+          },
+        })
+          .then(function(res) {
+            debugger;
+
+            let status = res.data.message;
+            let scheduleId = res.data.responseData;
+            if (status === "Success") {
+              self.state.selectedTeamMember = "";
+              self.state.selectedTeamMemberCommaSeperated = undefined;
+              self.state.selectScheduleDate = "";
+              self.state.selectedScheduleTime = "";
+
+              self.ScheduleCloseModel();
+              // this.handleReportList();
+              self.handleGetStoreReports();
+              self.setState({ Schedule_ID: scheduleId });
+              self.setState({ AddReportPopup: false });
+              NotificationManager.success("Report saved successfully.");
+              self.setState({
+                ReportParams: {},
+                selectedScheduleTime: "",
+                // selectedTeamMemberCommaSeperated="",
+                // selectScheduleDate="",
+                // selectedScheduleTime="",
+                IsDaily: false,
+                IsDailyForMonth: false,
+                IsWeekly: false,
+                IsWeeklyForMonth: false,
+                IsDailyForYear: false,
+                IsWeeklyForYear: false,
+                NextPopup: false,
+              });
+            } else if (status == "duplicate") {
+              self.setState({ Schedule_ID: 0 });
+              NotificationManager.error("Report name already exist.");
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      }
+    }, 10);
+
+    // else{
+    //   NotificationManager.error("Please create scheduler");
+    // }
+  }
+
+  handleEditReport = (rowData) => {
+    debugger;
+    let allTab = JSON.parse(rowData.reportSearchParams);
+    this.setState({ Schedule_ID: rowData.scheduleID });
+    let withClaim = 0;
+    let withTask = 0;
+    // allTab=objEdit;
+    this.state.tabIndex = allTab["ActiveTabId"];
+    this.state.taskIdTitle = allTab["TaskTitle"];
+    this.state.taskLinkedTicketId = allTab["TaskTicketID"];
+    this.state.taskAssignedTo = allTab["TaskAssignedId"];
+    this.state.taskWithTickets = allTab["IsTaskWithTicket"] === true?"yes":"no";
+    this.state.taskWithClaim = allTab["IsTaskWithClaim"] === true?"yes":"no";
+    this.state.taskClaimId = allTab["TaskClaimID"];
+
+    this.state.claimClaimId = allTab["ClaimTaskID"];
+    this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
+    this.state.claimAssignedTo = allTab["ClaimAssignedId"];
+    this.state.claimWithTickets = allTab["IsClaimWithTicket"] === true?"yes":"no";
+    this.state.claimWithTask = allTab["IsClaimWithTask"] === true?"yes":"no";
+
+    this.state.selectedReportName = rowData.reportName;
+
+   
+    // withClaim = allTab["HaveClaim"];
+    // withTask = allTab["HaveTask"];
+    // this.state.selectBrand = allTab["BrandID"];
+    // this.state.selectedIssueType = allTab["IssueType"];
+    // this.state.selectedTaskPriority = allTab["TaskPriority"];
+    // this.state.selectedWithClaim = allTab["HaveClaim"] === 0 ? "no" : "yes";
+    // this.state.selectedWithTaskAll = allTab["HaveTask"] === 0 ? "no" : "yes";
+    // if (this.state.selectedWithClaim === "yes") {
+    //   withClaim = 1;
+    // }
+    // if (this.state.selectedWithTaskAll === "yes") {
+    //   withTask = 1;
+    // }
+    // // this.state.ReportCreateDate="04/02/2020";
+    // //this.state.ReportCreateDate=moment(allTab["CreatedDate"]).format("DD/MM/YYYY");
+
+    // // this.state.ReportLastDate=allTab["ModifiedDate"];
+    // // // --------------------Check null date----------------------------------
+    // // if (
+    // //   this.state.ReportCreateDate === null ||
+    // //   this.state.ReportCreateDate === undefined ||
+    // //   this.state.ReportCreateDate === ""
+    // // ) {
+    // //   allTab["CreatedDate"] = "";
+    // // } else {
+    // //   allTab["CreatedDate"] = moment(this.state.ReportCreateDate).format(
+    // //     "YYYY-MM-DD"
+    // //   );
+    // // }
+    // // // --------------------Check null date----------------------------------
+    // // if (
+    // //   this.state.ReportLastDate === null ||
+    // //   this.state.ReportLastDate === undefined ||
+    // //   this.state.ReportLastDate === ""
+    // // ) {
+    // //   allTab["ModifiedDate"] = "";
+    // // } else {
+    // //   allTab["ModifiedDate"] = moment(this.state.ReportLastDate).format(
+    // //     "YYYY-MM-DD"
+    // //   );
+    // // }
+    // this.state.selectedReportName = rowData.reportName;
+    // var scheduledIds = rowData.scheduleFor;
+    // var scheduledIdsArray = scheduledIds.split(",");
+    // // this.state.AssignToData.filter(x => x.userID == )
+
+    // // this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
+    // this.state.selectBrand = allTab["BrandID"];
+    // this.state.selectedIssueType = allTab["IssueType"];
+    // this.state.selectedTaskPriority = allTab["TaskPriority"];
+    // // this.state.selectedCategory=allTab["CategoryId"];
+    // this.setState(
+    //   {
+    //     selectedCategory: allTab["CategoryId"],
+    //   },
+    //   () => {
+    //     this.handleGetSubCategoryList();
+    //   }
+    // );
+    // //this.handleGetSubCategoryList();
+    // // this.state.selectedSubCategory=allTab["SubCategoryId"];
+    // this.setState(
+    //   {
+    //     selectedSubCategory: allTab["SubCategoryId"],
+    //   },
+    //   () => {
+    //     this.handleGetIssueTypeList();
+    //   }
+    // );
+    // this.state.selectedIssueType = allTab["IssueTypeId"];
+    // this.state.selectedTicketSource = allTab["TicketSourceTypeID"];
+    // this.state.selectedTicketID = allTab["TicketIdORTitle"];
+    // this.state.selectedPriority = allTab["PriorityId"];
+    // this.state.selectedTicketStatus = allTab["TicketSatutsID"];
+    // this.state.selectedSLAStatus = allTab["SLAStatus"];
+    // this.state.selectedClaimID = allTab["ClaimId"];
+    // this.state.selectedInvoiceNo = allTab["InvoiceNumberORSubOrderNo"];
+    // this.state.selectedItemID = allTab["OrderItemId"];
+    // this.state.selectedVisitStore = allTab["IsVisitStore"];
+    // this.state.selectedWantVisitStore = allTab["IsWantVistingStore"];
+    // this.state.selectedEmailID = allTab["CustomerEmailID"];
+    // this.state.selectedMobileNo = allTab["CustomerMobileNo"];
+    // this.state.selectedAssignedTo = allTab["AssignTo"];
+    // this.state.selectedWantVisitStore = allTab["StoreCodeORAddress"];
+    // this.state.selectedVisitStoreAddress = allTab["WantToStoreCodeORAddress"];
+
+    // this.state.selectedClaimStatus = allTab["ClaimStatusId"];
+    // // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
+    // this.setState(
+    //   {
+    //     selectedClaimCategory: allTab["ClaimCategoryId"],
+    //   },
+    //   () => {
+    //     this.handleGetSubCategoryList();
+    //   }
+    // );
+    // // this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
+    // this.setState(
+    //   {
+    //     selectedClaimSubCategory: allTab["ClaimSubCategoryId"],
+    //   },
+    //   () => {
+    //     this.handleGetIssueTypeList();
+    //   }
+    // );
+    // this.state.selectedClaimIssueType = allTab["ClaimIssueTypeId"];
+
+    // this.state.selectedTaskStatus = allTab["TaskStatusId"];
+    // // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
+    // this.setState(
+    //   {
+    //     selectedDepartment: allTab["TaskDepartment_Id"],
+    //   },
+    //   () => {
+    //     this.handleGetFunctionList();
+    //   }
+    // );
+    // this.state.selectedFunction = allTab["TaskFunction_Id"];
+
+    // //////////////////Scheduler/////////////////////////
+    this.state.IsDaily = rowData.isDaily;
+    this.state.selectScheduleDate = rowData.scheduleType;
+    this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
+    this.state.selectedNoOfDay = rowData.noOfDay;
+    var responseTime = rowData.scheduleTime;
+    var splittedResponseTime = responseTime.split("T");
+    var date = splittedResponseTime[0];
+    var splittedDate = date.split("-");
+    var time = splittedResponseTime[1];
+    var splittedTime = time.split(":");
+    var finalTime = new Date(
+      splittedDate[0],
+      splittedDate[1] - 1,
+      splittedDate[2],
+      splittedTime[0],
+      splittedTime[1],
+      splittedTime[2]
+    );
+
+    this.state.selectedScheduleTime = finalTime;
+    // this.state.selectedScheduleTime=rowData.scheduleTime;
+    this.state.selectedNoOfWeek = rowData.noOfWeek;
+    this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
+    var dayIds = rowData.dayIds.slice(0, -1);
+    var splittedDayIds = dayIds.split(",");
+    this.setState({
+      dayIdsArray: splittedDayIds,
+    });
+    for (let i = 0; i < splittedDayIds.length; i++) {
+      var ele = splittedDayIds[i];
+      if (ele === "Mon") {
+        this.setState({
+          Mon: ele,
+        });
+      } else if (ele === "Tue") {
+        this.setState({
+          Tue: ele,
+        });
+      } else if (ele === "Wed") {
+        this.setState({
+          Wed: ele,
+        });
+      } else if (ele === "Thu") {
+        this.setState({
+          Thu: ele,
+        });
+      } else if (ele === "Fri") {
+        this.setState({
+          Fri: ele,
+        });
+      } else if (ele === "Sat") {
+        this.setState({
+          Sat: ele,
+        });
+      } else if (ele === "Sun") {
+        this.setState({
+          Sun: ele,
+        });
+      }
+    }
+    this.setState({
+      selectedNoOfDaysForMonth: rowData.noOfDaysForMonth,
+      selectedNoOfMonthForMonth: rowData.noOfMonthForMonth,
+      selectedNoOfMonthForWeek: rowData.noOfMonthForWeek,
+      selectedNoOfWeekForWeek: rowData.noOfWeekForWeek,
+    });
+    var dayForWeek = rowData.nameOfDayForWeek.split(",");
+    var selectedNameOfDayForWeek = [];
+    for (let j = 0; j < dayForWeek.length; j++) {
+      var data = this.state.NameOfDayForWeek.filter(
+        (x) => x.days == dayForWeek[j]
+      );
+      selectedNameOfDayForWeek.push(data[0]);
+    }
+    this.setState({
+      selectedNameOfDayForWeek: selectedNameOfDayForWeek,
+    });
+    var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
+    var selectedNameOfMonthForYear = [];
+    for (let j = 0; j < dayForYear.length; j++) {
+      var data = this.state.NameOfMonthForYear.filter(
+        (x) => x.month == dayForYear[j]
+      );
+      selectedNameOfMonthForYear.push(data[0]);
+    }
+    this.setState({
+      selectedNameOfMonthForYear: selectedNameOfMonthForYear,
+      selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear,
+    });
+    var dayForYear = rowData.nameOfDayForYear.split(",");
+    var selectedNameOfDayForYear = [];
+    for (let j = 0; j < dayForYear.length; j++) {
+      var data = this.state.NameOfDayForYear.filter(
+        (x) => x.days == dayForYear[j]
+      );
+      selectedNameOfDayForYear.push(data[0]);
+    }
+    var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
+    var selectedNameOfMonthForDailyYear = [];
+    for (let j = 0; j < monthForDailyYear.length; j++) {
+      var data = this.state.NameOfMonthForDailyYear.filter(
+        (x) => x.month == monthForDailyYear[j]
+      );
+      selectedNameOfMonthForDailyYear.push(data[0]);
+    }
+    this.setState({
+      selectedNameOfDayForYear: selectedNameOfDayForYear,
+      selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear,
+      selectedNoOfWeekForYear: rowData.noOfWeekForYear,
+    });
+
+    ///////////////////////////////////////////////////
+    this.handleAddReportOpen();
+  };
+
   render() {
-    const datareport = [
-      {
-        nameReport: "Open Tickets",
-        scheduleReport: "Daily",
-        statusReport: "Active",
-      },
-      {
-        nameReport: "Escalated Tickets",
-        scheduleReport: "Weekly",
-        statusReport: "Inactive",
-      },
-      {
-        nameReport: "Resolved Tickets",
-        scheduleReport: "Monthly",
-        statusReport: "Active",
-      },
-      {
-        nameReport: "Tickets with task",
-        scheduleReport: "Daily",
-        statusReport: "Inactive",
-      },
-      {
-        nameReport: "Categorywise open tickets",
-        scheduleReport: "Weekly",
-        statusReport: "Active",
-      },
-    ];
+    const datareport = this.state.storeReportData;
 
     const columnsreport = [
       {
@@ -942,7 +2112,7 @@ class StoreReports extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "nameReport",
+        accessor: "reportName",
       },
       {
         Header: (
@@ -951,7 +2121,7 @@ class StoreReports extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "scheduleReport",
+        accessor: "scheduleStatus",
       },
       {
         Header: (
@@ -960,7 +2130,7 @@ class StoreReports extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "createdReport",
+        accessor: "createdBy",
         Cell: (row) => {
           var ids = row.original["id"];
           return (
@@ -987,7 +2157,7 @@ class StoreReports extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "statusReport",
+        accessor: "reportStatus",
       },
       {
         Header: <span>Actions</span>,
@@ -1002,7 +2172,12 @@ class StoreReports extends Component {
             <Popover content={ActionDelete} placement="bottom" trigger="click">
               <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
             </Popover>
-            <button className="react-tabel-button editre" id="p-edit-pop-2">
+            <button className="react-tabel-button editre" id="p-edit-pop-2"
+            onClick={this.handleEditReport.bind(
+              this,
+              row.original
+            )}
+            >
               EDIT
             </button>
           </span>
@@ -1128,23 +2303,23 @@ class StoreReports extends Component {
             />
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
-                <li className="nav-item">
+                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 1)}>
                   <a
-                    className={`nav-link ${this.state.tabIndex === 0 &&
+                    className={`nav-link ${this.state.tabIndex === 1 &&
                       "active"} `}
                     data-toggle="tab"
                     href="#task-tab"
                     role="tab"
                     aria-controls="task-tab"
-                    aria-selected="true"
+                    aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
                     Task
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 2)}>
                   <a
-                    className={`nav-link ${this.state.tabIndex === 1 &&
+                    className={`nav-link ${this.state.tabIndex === 2 &&
                       "active"} `}
                     data-toggle="tab"
                     href="#claim-tab"
@@ -1156,9 +2331,9 @@ class StoreReports extends Component {
                     Claim
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 3)}>
                   <a
-                    className={`nav-link ${this.state.tabIndex === 2 &&
+                    className={`nav-link ${this.state.tabIndex === 3 &&
                       "active"} `}
                     data-toggle="tab"
                     href="#campaign-tab"
@@ -1180,7 +2355,7 @@ class StoreReports extends Component {
             </div>
             <div className="tab-content store-report-add">
               <div
-                className={`tab-pane fade ${this.state.tabIndex === 0 &&
+                className={`tab-pane fade ${this.state.tabIndex === 1 &&
                   "show active"}`}
                 id="task-tab"
                 role="tabpanel"
@@ -1257,17 +2432,17 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.campaignNameID}
+                                        id={"i" + item.departmentID}
                                         name="allDepartment"
                                         onChange={this.selectIndividualDepartment.bind(
                                           this,
-                                          item.campaignNameID
+                                          item.departmentID
                                         )}
                                       />
                                       <label
-                                        htmlFor={"i" + item.campaignNameID}
+                                        htmlFor={"i" + item.departmentID}
                                       >
-                                        {item.campaignName}
+                                        {item.departmentName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
                                         </div>
@@ -1293,6 +2468,7 @@ class StoreReports extends Component {
                           placeholderText="Creation Date"
                           showMonthDropdown
                           showYearDropdown
+                          dateFormat="dd/MM/yyyy"
                         />
                       </div>
                     </div>
@@ -1303,9 +2479,9 @@ class StoreReports extends Component {
                       <div className="normal-dropdown">
                         <Select
                           getOptionLabel={(option) =>
-                            option.ticketActionTypeName
+                            option.taskStatusName
                           }
-                          getOptionValue={(option) => option.ticketActionTypeID}
+                          getOptionValue={(option) => option.taskStatusID}
                           options={this.state.taskStatusList}
                           closeMenuOnSelect={false}
                           onChange={this.setMultiSelectDropdown.bind(this)}
@@ -1371,17 +2547,17 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.campaignNameID}
+                                        id={"i" + item.functionID}
                                         name="allFunction"
                                         onChange={this.selectIndividualFunction.bind(
                                           this,
-                                          item.campaignNameID
+                                          item.functionID
                                         )}
                                       />
                                       <label
-                                        htmlFor={"i" + item.campaignNameID}
+                                        htmlFor={"i" + item.functionID}
                                       >
-                                        {item.campaignName}
+                                        {item.funcationName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
                                         </div>
@@ -1401,8 +2577,12 @@ class StoreReports extends Component {
                         value={this.state.taskCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="1">Aman</option>
-                        <option value="2">Arjun</option>
+                        {this.state.userData !== null &&
+                          this.state.userData.map((item, i) => (
+                            <option value={item.userID}>{item.userName}</option>
+                        ))}
+                        {/* <option value="1">Aman</option>
+                        <option value="2">Arjun</option> */}
                       </select>
                     </div>
                   </div>
@@ -1474,17 +2654,17 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.campaignNameID}
+                                        id={"i" + item.priorityID}
                                         name="allPriority"
                                         onChange={this.selectIndividualPriority.bind(
                                           this,
-                                          item.campaignNameID
+                                          item.priorityID
                                         )}
                                       />
                                       <label
-                                        htmlFor={"i" + item.campaignNameID}
+                                        htmlFor={"i" + item.priorityID}
                                       >
-                                        {item.campaignName}
+                                        {item.priortyName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
                                         </div>
@@ -1504,8 +2684,12 @@ class StoreReports extends Component {
                         value={this.state.taskAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="1">Aman</option>
-                        <option value="2">Arjun</option>
+                        {this.state.userData !== null &&
+                          this.state.userData.map((item, i) => (
+                            <option value={item.userID}>{item.userName}</option>
+                        ))}
+                        {/* <option value="1">Aman</option>
+                        <option value="2">Arjun</option> */}
                       </select>
                     </div>
                   </div>
@@ -1550,7 +2734,7 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        onClick={this.handleChangeTab.bind(this, 1)}
+                        onClick={this.handleNextPopupOpen.bind(this,1)}
                       >
                         NEXT
                       </button>
@@ -1559,7 +2743,7 @@ class StoreReports extends Component {
                 </div>
               </div>
               <div
-                className={`tab-pane fade ${this.state.tabIndex === 1 &&
+                className={`tab-pane fade ${this.state.tabIndex === 2 &&
                   "show active"}`}
                 id="claim-tab"
                 role="tabpanel"
@@ -1639,17 +2823,17 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.campaignNameID}
+                                          id={"i" + item.categoryID}
                                           name="allClaimCategory"
                                           onChange={this.selectIndividualClaimCategory.bind(
                                             this,
-                                            item.campaignNameID
+                                            item.categoryID
                                           )}
                                         />
                                         <label
-                                          htmlFor={"i" + item.campaignNameID}
+                                          htmlFor={"i" + item.categoryID}
                                         >
-                                          {item.campaignName}
+                                          {item.categoryName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
                                           </div>
@@ -1823,17 +3007,17 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.campaignNameID}
+                                          id={"s" + item.subCategoryID}
                                           name="allClaimSubCategory"
                                           onChange={this.selectIndividualClaimSubCategory.bind(
                                             this,
-                                            item.campaignNameID
+                                            item.subCategoryID
                                           )}
                                         />
                                         <label
-                                          htmlFor={"i" + item.campaignNameID}
+                                          htmlFor={"s" + item.subCategoryID}
                                         >
-                                          {item.campaignName}
+                                          {item.subCategoryName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
                                           </div>
@@ -1854,8 +3038,10 @@ class StoreReports extends Component {
                         value={this.state.claimCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="1">Aman</option>
-                        <option value="2">Arjun</option>
+                        {this.state.userData !== null &&
+                          this.state.userData.map((item, i) => (
+                            <option value={item.userID}>{item.userName}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -1933,7 +3119,7 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.campaignNameID}
+                                          id={"t" + item.issueTypeID}
                                           name="allClaimIssueType"
                                           onChange={this.selectIndividualClaimIssueType.bind(
                                             this,
@@ -1941,9 +3127,9 @@ class StoreReports extends Component {
                                           )}
                                         />
                                         <label
-                                          htmlFor={"i" + item.campaignNameID}
+                                          htmlFor={"t" + item.issueTypeID}
                                         >
-                                          {item.campaignName}
+                                          {item.issueTypeName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
                                           </div>
@@ -1964,8 +3150,12 @@ class StoreReports extends Component {
                         value={this.state.claimAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="1">Aman</option>
-                        <option value="2">Arjun</option>
+                        {this.state.userData !== null &&
+                          this.state.userData.map((item, i) => (
+                            <option value={item.userID}>{item.userName}</option>
+                        ))}
+                        {/* <option value="1">Aman</option>
+                        <option value="2">Arjun</option> */}
                       </select>
                     </div>
                   </div>
@@ -2011,7 +3201,7 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         // onClick={this.handleNextPopupOpen}
-                        onClick={this.handleChangeTab.bind(this, 2)}
+                        onClick={this.handleNextPopupOpen.bind(this,2)}
                       >
                         NEXT
                       </button>
@@ -2020,7 +3210,7 @@ class StoreReports extends Component {
                 </div>
               </div>
               <div
-                className={`tab-pane fade ${this.state.tabIndex === 2 &&
+                className={`tab-pane fade ${this.state.tabIndex === 3 &&
                   "show active"}`}
                 id="campaign-tab"
                 role="tabpanel"
@@ -2117,8 +3307,10 @@ class StoreReports extends Component {
                         value={this.state.campaignAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="1">Aman</option>
-                        <option value="2">Arjun</option>
+                        {this.state.userData !== null &&
+                          this.state.userData.map((item, i) => (
+                            <option value={item.userID}>{item.userName}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="col-md-4">
@@ -2224,7 +3416,7 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        onClick={this.handleNextPopupOpen}
+                        onClick={this.handleNextPopupOpen.bind(this,3)}
                         // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         NEXT
@@ -2256,7 +3448,7 @@ class StoreReports extends Component {
                 <div className="col-md-6">
                   <div className="store-totalresultcircle">
                     <label className="totalresult">Total Result</label>
-                    <span className="totalresultnumber">1242</span>
+                      <span className="totalresultnumber">{this.state.totalResult}</span>
                   </div>
                 </div>
                 <div className="col-md-6 rname">
@@ -2265,17 +3457,22 @@ class StoreReports extends Component {
                     <input
                       className="no-bg"
                       type="text"
-                      placeholder="Open Tickets"
+                      placeholder="Report Name"
                       maxLength={25}
+                      name="selectedReportName"
+                      value={this.state.selectedReportName}
+                      onChange={this.handleOnChangeData}
                     />
                   </div>
                   <div className="buttonschdulesave">
-                    <button className="Schedulenext">SCHEDULE</button>
+                    <button className="Schedulenext"
+                    onClick={this.ScheduleOpenModel}
+                    >SCHEDULE</button>
                   </div>
                   <div className="buttonschdulesave1">
                     <button
                       className="Schedulenext1"
-                      onClick={this.handleNextPopupClose}
+                      onClick={this.handleSave}
                     >
                       SAVE
                     </button>
@@ -2284,6 +3481,371 @@ class StoreReports extends Component {
               </div>
             </div>
           </Modal>
+          <Modal
+                    onClose={this.ScheduleCloseModel}
+                    open={this.state.Schedule}
+                    modalId="ScheduleModel"
+                    classNames={{
+                      modal: "schedule-width",
+                    }}
+                    overlayId="logout-ovrly"
+                  >
+                    <div>
+                      <label>
+                        <b>Schedule date to</b>
+                      </label>
+                      <div>
+                        <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.userName}
+                            getOptionValue={
+                              (option) => option.userID //id
+                            }
+                            options={this.state.userData}
+                            placeholder="Team Member"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setTeamMember.bind(this)}
+                            value={this.state.selectedTeamMember}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-setting1 ScheduleDate-to"
+                          value={this.state.selectScheduleDate}
+                          onChange={this.handleScheduleDateChange}
+                        >
+                          {this.state.ScheduleOption !== null &&
+                            this.state.ScheduleOption.map((item, i) => (
+                              <option key={i} value={item.scheduleID}>
+                                {item.scheduleName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectScheduleDate === "230" ||
+                        this.state.selectScheduleDate === 230 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                name="selectedNoOfDay"
+                                value={this.state.selectedNoOfDay}
+                                onChange={this.handleOnChangeData}
+                              />
+                              <label className="every1">Day</label>
+                            </span>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "231" ||
+                        this.state.selectScheduleDate === 231 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfWeek}
+                                onChange={this.handleWeekly}
+                              />
+                              <label className="every1">Week on</label>
+                            </span>
+                            <div
+                              style={{
+                                marginTop: "10px",
+                              }}
+                            >
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Mon"
+                                id="Mon"
+                              >
+                                Mon
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Tue"
+                                id="Tue"
+                              >
+                                Tue
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Wed"
+                              >
+                                Wed
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Thu"
+                              >
+                                Thu
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Fri"
+                              >
+                                Fri
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Sat"
+                              >
+                                Sat
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Sun"
+                              >
+                                Sun
+                              </Checkbox>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "232" ||
+                        this.state.selectScheduleDate === 232 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Day</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="9"
+                                value={this.state.selectedNoOfDaysForMonth}
+                                onChange={this.handleDaysForMonth}
+                              />
+                              <label className="every1">of every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfMonthForMonth}
+                                onChange={this.handleMonthForMonth}
+                              />
+                              <label className="every1">months</label>
+                            </span>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "233" ||
+                        this.state.selectScheduleDate === 233 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                onChange={this.handleMonthForWeek}
+                                value={this.state.selectedNoOfMonthForWeek}
+                              />
+                              <label className="every1">month on the</label>
+                            </span>
+                            <div className="row mt-3">
+                              <div className="col-md-6">
+                                <select
+                                  id="inputState"
+                                  className="form-control dropdown-setting1"
+                                  onChange={this.handleWeekForWeek}
+                                  value={this.state.selectedNoOfWeekForWeek}
+                                >
+                                  <option value="0">Select</option>
+                                  <option value="2">Second</option>
+                                  <option value="4">Four</option>
+                                </select>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.days}
+                                    getOptionValue={
+                                      (option) => option.days //id
+                                    }
+                                    options={this.state.NameOfDayForWeek}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfDayForWeek.bind(
+                                      this
+                                    )}
+                                    value={this.state.selectedNameOfDayForWeek}
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "234" ||
+                        this.state.selectScheduleDate === 234 ? (
+                          <div className="ScheduleDate-to">
+                            <div className="row m-0">
+                              <label
+                                className="every1"
+                                style={{
+                                  lineHeight: "40px",
+                                }}
+                              >
+                                on
+                              </label>
+                              <div className="col-md-7">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.month}
+                                    getOptionValue={
+                                      (option) => option.month //id
+                                    }
+                                    options={this.state.NameOfMonthForYear}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfMonthForYear.bind(
+                                      this
+                                    )}
+                                    value={
+                                      this.state.selectedNameOfMonthForYear
+                                    }
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfDayForDailyYear}
+                                onChange={this.handleDayForYear}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "235" ||
+                        this.state.selectScheduleDate === 235 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <div className="row m-0">
+                                <label
+                                  className="every1"
+                                  style={{
+                                    lineHeight: "40px",
+                                  }}
+                                >
+                                  on the
+                                </label>
+                                <div className="col-md-7">
+                                  <select
+                                    id="inputState"
+                                    className="form-control dropdown-setting1"
+                                    onChange={this.handleWeekForYear}
+                                    value={this.state.selectedNoOfWeekForYear}
+                                  >
+                                    <option value="0">Select</option>
+                                    <option value="2">Second</option>
+                                    <option value="4">Four</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </span>
+                            <div className="row mt-3">
+                              <div className="col-md-5">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.days}
+                                    getOptionValue={
+                                      (option) => option.days //id
+                                    }
+                                    options={this.state.NameOfDayForYear}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfDayForYear.bind(
+                                      this
+                                    )}
+                                    value={this.state.selectedNameOfDayForYear}
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                              <label
+                                className="every1"
+                                style={{
+                                  lineHeight: "40px",
+                                  marginLeft: "14px",
+                                }}
+                              >
+                                to
+                              </label>
+                              <div className="col-md-5">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.month}
+                                    getOptionValue={
+                                      (option) => option.month //id
+                                    }
+                                    options={this.state.NameOfMonthForDailyYear}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfMonthForDailyYear.bind(
+                                      this
+                                    )}
+                                    value={
+                                      this.state.selectedNameOfMonthForDailyYear
+                                    }
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+
+                        {/* <input
+                                      type="text"
+                                      className="txt-1 txt1Place txt1Time"
+                                      placeholder="11AM"
+                                      onChange={this.handleScheduleTime}
+                                    /> */}
+                        <div className="dash-timepicker">
+                          <DatePicker
+                            selected={this.state.selectedScheduleTime}
+                            onChange={this.handleScheduleTime.bind(this)}
+                            placeholderText="11 AM"
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={60}
+                            timeCaption="Select Time"
+                            dateFormat="h:mm aa"
+                            className="txt-1 txt1Place txt1Time"
+                            value={this.state.selectedScheduleTime}
+                          />
+                        </div>
+
+                        <div>
+                          <button
+                            className="scheduleBtn"
+                            onClick={this.handleInsertReport.bind(this)}
+                          >
+                            <label className="addLable">SCHEDULE</label>
+                          </button>
+                        </div>
+                        <div onClick={this.ScheduleCloseModel}>
+                          <button type="button" className="scheduleBtncancel">
+                            CANCEL
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+
           {/* </div> */}
         </div>
         <div className="container-fluid">
@@ -2293,8 +3855,9 @@ class StoreReports extends Component {
                 data={datareport}
                 columns={columnsreport}
                 // resizable={false}
+                minRows={1}
                 defaultPageSize={5}
-                showPagination={false}
+                showPagination={true}
               />
             </div>
           </div>

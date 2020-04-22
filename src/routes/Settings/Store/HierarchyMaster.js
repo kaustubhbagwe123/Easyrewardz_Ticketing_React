@@ -1657,7 +1657,7 @@ class HierarchyMaster extends Component {
                     <div className="down-excel">
                       <p>Template</p>
                       <CSVLink
-                        filename={"Hierarchy.csv"}
+                        filename={"Hierarchy.xlsx"}
                         data={config.hierarchyTemplate}
                       >
                         <img src={DownExcel} alt="download icon" />
