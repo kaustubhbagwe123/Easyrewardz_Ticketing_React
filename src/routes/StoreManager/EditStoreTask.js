@@ -361,6 +361,7 @@ class EditStoreTask extends Component {
       headers: authHeader(),
       params: {
         TaskID: taskId,
+        TaskFor:1,
       },
     })
       .then(function(response) {

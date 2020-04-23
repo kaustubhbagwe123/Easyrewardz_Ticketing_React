@@ -70,12 +70,39 @@ class StoreTaskByTicket extends Component {
       this.handleGetStoreTicketingTaskByTaskID(taskId);
       this.handleGetCommentOnTask(taskId);
       this.handleGetStoreTaskProcressBar(taskId);
+      this.handleGetUserDropdown(taskId);
       this.handleGetDepartement();
     } else {
       this.props.history.push("/store/StoreTask");
     }
   }
-
+  handleGetUserDropdown() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/UserDropdown",
+      headers: authHeader(),
+      params: {
+        TaskID: this.state.taskId,
+        TaskFor: 2,
+      },
+    })
+      .then(function(response) {
+        var userData = response.data.responseData;
+        var message = response.data.message;
+        if (message === "Success" && userData.length > 0) {
+          self.setState({
+            userData,
+            userModel:true
+          });
+        } else {
+          self.setState({ userData,userModel:true });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetUserDropdown");
+      });
+  }
   ////handle get store ticket task by task id
   handleGetStoreTicketingTaskByTaskID(taskId) {
     let self = this;
@@ -381,7 +408,8 @@ class StoreTaskByTicket extends Component {
   };
   ////handle user model open
   handleUserModelOpen() {
-    this.setState({ userModel: true });
+    // this.setState({ userModel: true });
+    this.handleGetUserDropdown();
   }
   ////handle user model close
   handleUserModelClose() {
