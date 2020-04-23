@@ -36,7 +36,6 @@ class AddSearchMyTicket extends Component {
       loading: false,
       SrchEmailPhone: "",
       message: "",
-      createdBy: 6,
       SearchData: [],
       value: "",
       copied: false,
@@ -184,9 +183,8 @@ class AddSearchMyTicket extends Component {
         AltEmailID: this.state.altEmailID.trim(),
         DateOfBirth: dob,
         IsActive: 1,
-        CreatedBy: this.state.createdBy,
-        ModifyBy: 1,
-        ModifiedDate: "2019-12-17"
+        // ModifyBy: 1,
+        // ModifiedDate: "2019-12-17"
       }
     })
       .then(function(res) {

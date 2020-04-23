@@ -258,6 +258,9 @@ class TicketCRMRole extends Component {
         StatusModel: false,
         filterTxtValue: "",
         crmRoles: this.state.tempcrmRoles,
+        sortFilterRoleName: this.state.sortRoleName,
+        sortFilterCreated: this.state.sortCreated,
+        sortFilterStatus: this.state.sortStatus,
       });
       if (this.state.sortColumn === "roleName") {
         if (this.state.sroleNameFilterCheckbox === "") {
@@ -290,6 +293,9 @@ class TicketCRMRole extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortFilterRoleName: this.state.sortRoleName,
+        sortFilterCreated: this.state.sortCreated,
+        sortFilterStatus: this.state.sortStatus,
         crmRoles: this.state.isortA
           ? this.state.crmRoles
           : this.state.sortAllData,
@@ -776,7 +782,7 @@ class TicketCRMRole extends Component {
   fileUpload = (e) => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -911,7 +917,7 @@ class TicketCRMRole extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
@@ -933,7 +939,7 @@ class TicketCRMRole extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
+              // isFileUploadFail: true,
               progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");

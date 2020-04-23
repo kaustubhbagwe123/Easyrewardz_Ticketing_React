@@ -22,7 +22,7 @@ import config from "./../../../helpers/config";
 import { MyContext } from './../../../context'
 import {
   // NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
@@ -68,6 +68,7 @@ class CreateSLA extends Component {
       sortHeader: "",
       issueTypeName: "",
       createdBy: "",
+      brandName: "",
       categoryName: "",
       subCategoryName: "",
       SLAId: 0,
@@ -88,7 +89,7 @@ class CreateSLA extends Component {
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       sisSLAActiveFilterCheckbox: "",
-      isortA: false
+      isortA: false,
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -134,7 +135,7 @@ class CreateSLA extends Component {
 
     this.setState({
       isortA: true,
-      sla: itemsArray
+      sla: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -170,7 +171,7 @@ class CreateSLA extends Component {
 
     this.setState({
       isortA: true,
-      sla: itemsArray
+      sla: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -197,7 +198,7 @@ class CreateSLA extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -205,7 +206,7 @@ class CreateSLA extends Component {
           sisSLAActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -217,7 +218,7 @@ class CreateSLA extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -225,7 +226,7 @@ class CreateSLA extends Component {
           sisSLAActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -237,7 +238,7 @@ class CreateSLA extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -245,7 +246,7 @@ class CreateSLA extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -256,14 +257,17 @@ class CreateSLA extends Component {
         StatusModel: false,
         filterTxtValue: "",
         sla: this.state.tempsla,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
       });
       if (this.state.sortColumn === "issueTpeName") {
         if (this.state.sissueTpeNameFilterCheckbox === "") {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sisSLAActiveFilterCheckbox: ""
+            sisSLAActiveFilterCheckbox: "",
           });
         }
       }
@@ -272,7 +276,7 @@ class CreateSLA extends Component {
         } else {
           this.setState({
             sissueTpeNameFilterCheckbox: "",
-            sisSLAActiveFilterCheckbox: ""
+            sisSLAActiveFilterCheckbox: "",
           });
         }
       }
@@ -281,7 +285,7 @@ class CreateSLA extends Component {
         } else {
           this.setState({
             sissueTpeNameFilterCheckbox: "",
-            screatedByFilterCheckbox: ""
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -290,7 +294,10 @@ class CreateSLA extends Component {
         StatusModel: false,
         filterTxtValue: "",
         sla: this.state.isortA ? this.state.sla : this.state.sortAllData,
-        sFilterCheckbox: ""
+        sFilterCheckbox: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
       });
     }
   }
@@ -403,7 +410,7 @@ class CreateSLA extends Component {
       sisSLAActiveFilterCheckbox,
       issueColor: "",
       createdColor: "",
-      stattusColor: ""
+      stattusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -413,7 +420,7 @@ class CreateSLA extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.issueTpeName === sItems[i]
+              (a) => a.issueTpeName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -424,7 +431,7 @@ class CreateSLA extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column"
+        issueColor: "sort-column",
       });
     } else if (column === "createdBy") {
       var sItems1 = screatedByFilterCheckbox.split(",");
@@ -432,7 +439,7 @@ class CreateSLA extends Component {
         for (let i = 0; i < sItems1.length; i++) {
           if (sItems1[i] !== "") {
             var tempFilterData1 = allData.filter(
-              a => a.createdBy === sItems1[i]
+              (a) => a.createdBy === sItems1[i]
             );
             if (tempFilterData1.length > 0) {
               for (let j = 0; j < tempFilterData1.length; j++) {
@@ -443,7 +450,7 @@ class CreateSLA extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     } else if (column === "isSLAActive") {
       var sItems2 = sisSLAActiveFilterCheckbox.split(",");
@@ -451,7 +458,7 @@ class CreateSLA extends Component {
         for (let i = 0; i < sItems2.length; i++) {
           if (sItems2[i] !== "") {
             var tempFilterData2 = allData.filter(
-              a => a.isSLAActive === sItems2[i]
+              (a) => a.isSLAActive === sItems2[i]
             );
             if (tempFilterData2.length > 0) {
               for (let j = 0; j < tempFilterData2.length; j++) {
@@ -462,12 +469,12 @@ class CreateSLA extends Component {
         }
       }
       this.setState({
-        stattusColor: "sort-column"
+        stattusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempsla: itemsArray
+      tempsla: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -485,7 +492,7 @@ class CreateSLA extends Component {
         indiSla = values.join(separator);
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       document.getElementById("issueTypeValue").textContent =
         this.state.indiSla.split(",").length - 1 + " selected";
@@ -500,7 +507,7 @@ class CreateSLA extends Component {
         }
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       if (this.state.indiSla.split(",").length - 1 !== 0) {
         document.getElementById("issueTypeValue").textContent =
@@ -523,7 +530,7 @@ class CreateSLA extends Component {
         indiSla = values.join(separator);
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       document.getElementById("issueTypeValue").textContent =
         this.state.indiSla.split(",").length - 1 + " selected";
@@ -538,7 +545,7 @@ class CreateSLA extends Component {
         }
       }
       await this.setState({
-        indiSla
+        indiSla,
       });
       if (this.state.indiSla.split(",").length - 1 !== 0) {
         document.getElementById("issueTypeValue").textContent =
@@ -549,7 +556,7 @@ class CreateSLA extends Component {
     }
   };
 
-  selectAllSLA = async event => {
+  selectAllSLA = async (event) => {
     debugger;
     var indiSla = "";
     var checkboxes = document.getElementsByName("allSla");
@@ -566,11 +573,11 @@ class CreateSLA extends Component {
       }
     }
     await this.setState({
-      indiSla
+      indiSla,
     });
   };
 
-  selectNoSLA = async event => {
+  selectNoSLA = async (event) => {
     debugger;
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent = "Select";
@@ -580,10 +587,10 @@ class CreateSLA extends Component {
       }
     }
     await this.setState({
-      indiSla: ""
+      indiSla: "",
     });
   };
-  selectNoAboveSLA = async event => {
+  selectNoAboveSLA = async (event) => {
     debugger;
     var checkboxes = document.getElementsByName("searchedSla");
     for (var i in checkboxes) {
@@ -605,12 +612,12 @@ class CreateSLA extends Component {
     ) {
       finalEditData[i] = {
         ...finalEditData[i],
-        [name]: parseFloat(value)
+        [name]: parseFloat(value),
       };
     } else {
       finalEditData[i] = {
         ...finalEditData[i],
-        [name]: value
+        [name]: value,
       };
     }
 
@@ -623,7 +630,7 @@ class CreateSLA extends Component {
     let finalData = [...this.state.finalData];
     finalData[i] = {
       ...finalData[i],
-      [name]: value
+      [name]: value,
     };
     this.setState({ finalData });
   };
@@ -631,7 +638,7 @@ class CreateSLA extends Component {
     debugger;
 
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -643,8 +650,8 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/SLA/GetIssueType",
       headers: authHeader(),
       params: {
-        SearchText: this.state.SearchText
-      }
+        SearchText: this.state.SearchText,
+      },
     })
       .then(function(res) {
         debugger;
@@ -660,7 +667,7 @@ class CreateSLA extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -670,12 +677,12 @@ class CreateSLA extends Component {
 
     let newOption = {
       issueTypeName,
-      issueTypeID: slaIssueType.length + 1
+      issueTypeID: slaIssueType.length + 1,
     };
 
     this.setState({
       value: newOption, // select new option
-      slaIssueType: [...slaIssueType, newOption] // add new option to our dataset
+      slaIssueType: [...slaIssueType, newOption], // add new option to our dataset
     });
   }
   handleGetSLA() {
@@ -686,8 +693,8 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/SLA/GetSLA",
       headers: authHeader(),
       params: {
-        SLAFor: 1
-      }
+        SLAFor: 1,
+      },
     })
       .then(function(res) {
         debugger;
@@ -742,7 +749,7 @@ class CreateSLA extends Component {
           self.setState({ sla: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -752,7 +759,7 @@ class CreateSLA extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -779,26 +786,26 @@ class CreateSLA extends Component {
           self.setState({ PriorityData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  handleUpdateSlaIssueType = e => {
+  handleUpdateSlaIssueType = (e) => {
     let updateSlaIssueType = e.currentTarget.value;
     this.setState({ updateIssueTypeId: updateSlaIssueType });
   };
-  handleUpdateSlaisActive = e => {
+  handleUpdateSlaisActive = (e) => {
     let updateSlaisActive = e.currentTarget.value;
     this.setState({ updateSlaisActive });
   };
-  handleSlaIsActive = e => {
+  handleSlaIsActive = (e) => {
     let SlaIsActive = e.currentTarget.value;
     this.setState({ SlaIsActive });
   };
 
   ////handle change edit
-  handleEditSlaIsActive = e => {
+  handleEditSlaIsActive = (e) => {
     let isActive = e.currentTarget.value;
     this.setState({ isActive });
   };
@@ -813,8 +820,8 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/SLA/GetSLADetail",
       headers: authHeader(),
       params: {
-        SLAId: SLAId
-      }
+        SLAId: SLAId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -823,7 +830,7 @@ class CreateSLA extends Component {
         if (message === "Success" && statusCode === 200) {
           var data = res.data.responseData;
           var issueTypeName = data.issueTypeName;
-          var createdBy = data.createdBy;
+          var brandName = data.brandName;
           var categoryName = data.categoryName;
           var subCategoryName = data.subCategoryName;
           var isActive = data.isActive;
@@ -846,17 +853,17 @@ class CreateSLA extends Component {
           }
           self.setState({
             issueTypeName,
-            createdBy,
+            brandName,
             categoryName,
             subCategoryName,
             isActive,
             SLAId,
             finalEditData: tempFinalData,
-            editmodel: true
+            editmodel: true,
           });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -910,8 +917,8 @@ class CreateSLA extends Component {
           IssueTypeID: commaSeperatedSla,
           isSLAActive: SlaIsActive,
           SLATarget: paramData,
-          SLAFor: 1
-        }
+          SLAFor: 1,
+        },
       })
         .then(function(res) {
           debugger;
@@ -923,23 +930,23 @@ class CreateSLA extends Component {
               SlaIsActive: "true",
               SearchText: "",
               issueTypeCompulsion: "",
-              slaTargetCompulsion: ""
+              slaTargetCompulsion: "",
             });
             self.handleGetSLA();
             self.handleGetPriorityList();
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error("SLA not added.");
+            NotificationManager.error(status);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
         issueTypeCompulsion: "Please select issuetype.",
-        slaTargetCompulsion: "Required."
+        slaTargetCompulsion: "Required.",
       });
     }
   }
@@ -952,8 +959,8 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/SLA/DeleteSLA",
       headers: authHeader(),
       params: {
-        SLAID: deleteId
-      }
+        SLAID: deleteId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -965,15 +972,15 @@ class CreateSLA extends Component {
           NotificationManager.error("SLA not deleted.");
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  fileUpload = e => {
+  fileUpload = (e) => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -982,28 +989,28 @@ class CreateSLA extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: ""
+        bulkuploadCompulsion: "",
       });
     }
   };
-  handleSearchSla = async e => {
+  handleSearchSla = async (e) => {
     debugger;
     if (e.target.value.length > 3) {
       await this.setState({
-        SearchText: e.target.value
+        SearchText: e.target.value,
       });
       this.handleGetSLAIssueType();
     } else {
       await this.setState({
-        SearchText: ""
+        SearchText: "",
       });
       this.handleGetSLAIssueType();
     }
   };
-  handleClearSearchSla = async e => {
+  handleClearSearchSla = async (e) => {
     debugger;
     await this.setState({
-      SearchText: ""
+      SearchText: "",
     });
     document.getElementById("SlaInput").value = "";
     this.handleGetSLAIssueType();
@@ -1015,7 +1022,7 @@ class CreateSLA extends Component {
     let slaOvrlayShow = !slaOvrlayShowOriginal;
     this.setState({
       slaShow,
-      slaOvrlayShow
+      slaOvrlayShow,
     });
   }
 
@@ -1073,7 +1080,7 @@ class CreateSLA extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/UpdareSLADetails",
       headers: authHeader(),
-      data: inputParamter
+      data: inputParamter,
     })
       .then(function(res) {
         debugger;
@@ -1088,7 +1095,7 @@ class CreateSLA extends Component {
           NotificationManager.success("SLA Not Updated");
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ editSaveLoading: false, editmodel: false });
         NotificationManager.success("SLA Not Updated");
         console.log(response);
@@ -1112,7 +1119,7 @@ class CreateSLA extends Component {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueType
+          sortFilterIssueType: this.state.sortIssueType,
         });
       }
     }
@@ -1126,7 +1133,7 @@ class CreateSLA extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy
+          sortFilterCreatedBy: this.state.sortCreatedBy,
         });
       }
     }
@@ -1140,7 +1147,7 @@ class CreateSLA extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus
+          sortFilterStatus: this.state.sortStatus,
         });
       }
     }
@@ -1154,16 +1161,16 @@ class CreateSLA extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/SLA/BulkUploadSLA",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        }
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -1176,13 +1183,13 @@ class CreateSLA extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0
+              // isFileUploadFail: true,
+              progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -1191,7 +1198,7 @@ class CreateSLA extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
@@ -1199,11 +1206,11 @@ class CreateSLA extends Component {
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -1476,7 +1483,7 @@ class CreateSLA extends Component {
                         ),
                         sortable: false,
                         accessor: "issueTpeName",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <div>
@@ -1497,7 +1504,7 @@ class CreateSLA extends Component {
                     }
                     })()
                   }: </b>
-                                          {row.original.createdBy}
+                                          {row.original.brandName}
                                         </p>
 
                                         <p className="sub-title">
@@ -1543,7 +1550,7 @@ class CreateSLA extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -1564,7 +1571,7 @@ class CreateSLA extends Component {
                         ),
                         sortable: false,
                         accessor: "slaTarget",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           let slaTarget = row.original.slaTarget,
                             priorityNameComma = "",
@@ -1683,7 +1690,7 @@ class CreateSLA extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -1710,7 +1717,7 @@ class CreateSLA extends Component {
                         ),
                         sortable: false,
                         accessor: "createdBy",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <div>
@@ -1792,7 +1799,7 @@ class CreateSLA extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
 
                       {
@@ -1819,7 +1826,7 @@ class CreateSLA extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "isSLAActive"
+                        accessor: "isSLAActive",
                       },
                       {
                         Header: <span>{
@@ -1834,7 +1841,7 @@ class CreateSLA extends Component {
                   }</span>,
                         accessor: "actiondept",
                         sortable: false,
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <>
@@ -1938,8 +1945,8 @@ class CreateSLA extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     resizable={false}
                     minRows={2}
@@ -2084,7 +2091,7 @@ class CreateSLA extends Component {
                                             <img src={Correct} alt="Checked" />
                                           </div>
                                         </label>
-                                        <span>{item.createdBy}</span>
+                                        <span>{item.brandName}</span>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
@@ -2348,7 +2355,8 @@ class CreateSLA extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>{
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <h3 className="pb-0">{
                     (() => {
                       if (TranslationContext!==undefined) {
                       return TranslationContext.h3.bulkupload
@@ -2358,8 +2366,8 @@ class CreateSLA extends Component {
                     }
                     })()
                   }</h3>
-                    <div className="down-excel">
-                      <p>{
+                      <div className="down-excel">
+                        <p>{
                     (() => {
                       if (TranslationContext!==undefined) {
                       return TranslationContext.p.template
@@ -2369,9 +2377,10 @@ class CreateSLA extends Component {
                     }
                     })()
                   }</p>
-                      <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
-                        <img src={DownExcel} alt="download icon" />
-                      </CSVLink>
+                        <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
+                      </div>
                     </div>
                     <div className="mainfileUpload">
                       <Dropzone onDrop={this.fileUpload.bind(this)}>
@@ -2614,7 +2623,7 @@ class CreateSLA extends Component {
                     })()
                   }: </label>
                 <label className="createhead-text-1">
-                  {this.state.createdBy}
+                  {this.state.brandName}
                 </label>
               </div>
               <div className="col-md-6">

@@ -395,7 +395,11 @@ class Users extends Component {
       this.setState({
         StatusModel: false,
         userData: this.state.tempuserData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterDesignation: this.state.sortDesignation,
+        sortFilterUsername: this.state.sortUsername,
+        sortFilterMobile: this.state.sortMobile,
+        sortFilterEmail: this.state.sortEmail
       });
       if (this.state.sortColumn === "designation") {
         if (this.state.sdesignationFilterCheckbox === "") {
@@ -438,11 +442,27 @@ class Users extends Component {
         }
       }
     } else {
-      this.setState({
-        StatusModel: false,
-        userData: this.state.sortAllData,
-        filterTxtValue: ""
-      });
+      if (this.state.isortA) {
+        this.setState({
+          StatusModel: false,
+          userData: this.state.userData,
+          filterTxtValue: "",
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterUsername: this.state.sortUsername,
+          sortFilterMobile: this.state.sortMobile,
+          sortFilterEmail: this.state.sortEmail
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          userData: this.state.sortAllData,
+          filterTxtValue: "",
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterUsername: this.state.sortUsername,
+          sortFilterMobile: this.state.sortMobile,
+          sortFilterEmail: this.state.sortEmail
+        });
+      }
     }
   }
 
@@ -2311,7 +2331,7 @@ class Users extends Component {
   fileUpload = e => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -2397,7 +2417,8 @@ class Users extends Component {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
+      isOpen: false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -2409,16 +2430,16 @@ class Users extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/User/BulkUploadUser",
         headers: authHeader(),
-        data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        }
+        data: formData
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -2430,9 +2451,9 @@ class Users extends Component {
             self.handleGetUserList();
           } else {
             self.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0
+              showProgress: false
+              // isFileUploadFail: true,
+              // progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }
@@ -2870,7 +2891,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     {
                     (() => {
@@ -3022,7 +3042,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     {
                     (() => {
@@ -3409,7 +3428,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     {
                     (() => {
@@ -4057,7 +4075,6 @@ class Users extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                
                 </div>
               </div>
               <div className="col-md-4 cus-drp">

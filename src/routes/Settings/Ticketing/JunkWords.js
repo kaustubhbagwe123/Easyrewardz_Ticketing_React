@@ -510,8 +510,11 @@ class JunkWords extends Component {
       this.setState({
         StatusModel: false,
         JunkWordsData: this.state.tempJunkWordsData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterjunkKeyword: this.state.sortjunkKeyword,
+        sortFilterreason: this.state.sortreason,
+        sortFilterenteredDate: this.state.sortenteredBy,
+        sortFilterenteredBy: this.state.sortenteredBy
       });
       if (this.state.sortColumn === "junkKeyword") {
         if (this.state.sjunkKeywordFilterCheckbox === "") {
@@ -559,8 +562,11 @@ class JunkWords extends Component {
         JunkWordsData: this.state.isortA
           ? this.state.JunkWordsData
           : this.state.sortAllData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterjunkKeyword: this.state.sortjunkKeyword,
+        sortFilterreason: this.state.sortreason,
+        sortFilterenteredDate: this.state.sortenteredBy,
+        sortFilterenteredBy: this.state.sortenteredBy
       });
     }
   }
@@ -1238,6 +1244,7 @@ class JunkWords extends Component {
                                   }
                                 })()
                               }
+                              {row.original.enteredBy}
                               <Popover
                                 content={
                                   <>
@@ -1254,7 +1261,7 @@ class JunkWords extends Component {
                                               }
                                             })()
                                           }
-                                          {row.original.modifiedBy}
+                                          {row.original.modifyBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
@@ -1269,7 +1276,7 @@ class JunkWords extends Component {
                                           })()
                                         }
                                         {" "}
-                                        {row.original.modifiedDate}
+                                        {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>

@@ -362,7 +362,7 @@ class MyTicketList extends Component {
     this.handleGetCategoryList();
     this.handleGetSlaStatusList();
     this.handleGetAssignTo();
-    this.handleGetDraftDetails();
+    
     this.handleGetDepartmentList();
     this.handleGetModulesNames();
   }
@@ -1241,7 +1241,8 @@ class MyTicketList extends Component {
           SubCategoryAllData: [],
           IssueTypeAllData: [],
           ClaimSubCategoryData: [],
-          ClaimIssueTypeData: []
+          ClaimIssueTypeData: [],
+          isDraftClick: false
         },
         () => {
           this.ViewSearchData(1);
@@ -1300,24 +1301,8 @@ class MyTicketList extends Component {
     }
   }
   handleGetDraftDetails() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/GetDraftDetails",
-      headers: authHeader()
-    })
-      .then(function(res) {
-        let details = res.data.responseData;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.setState({ DraftDetails: details });
-        } else {
-          self.setState({ DraftDetails: [] });
-        }
-      })
-      .catch(data => {
-        console.log(data);
-      });
+    
+    this.setState({ isDraftClick: true });
   }
   handleGetDepartmentList() {
     let self = this;
@@ -2619,9 +2604,23 @@ class MyTicketList extends Component {
           });
         }
       }
+      this.setState({
+        sortFilterTicketData: this.state.sortTicketData,
+        sortFilterCategoryData: this.state.sortCategoryData,
+        sortFilterPriorityData: this.state.sortPriorityData,
+        sortFiltercreatedOnData: this.state.sortcreatedOnData,
+        sortFilterAssigneeData: this.state.sortAssigneeData
+      });
     } else {
       var tempSearchTicketData = [];
       debugger;
+      this.setState({
+        sortFilterTicketData: this.state.sortTicketData,
+        sortFilterCategoryData: this.state.sortCategoryData,
+        sortFilterPriorityData: this.state.sortPriorityData,
+        sortFiltercreatedOnData: this.state.sortcreatedOnData,
+        sortFilterAssigneeData: this.state.sortAssigneeData
+      });
       if (this.state.isortA) {
         tempSearchTicketData = this.state.SearchTicketData;
       } else {
@@ -3856,7 +3855,6 @@ class MyTicketList extends Component {
   render() {
      const TranslationContext = this.context.state.translateLanguage.default
     const { DraftDetails, SearchAssignData } = this.state;
-    console.log(this.state.SearchTicketData, "------------SearchTicketData");
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -7182,11 +7180,11 @@ class MyTicketList extends Component {
                 id="Draft-tab"
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
+                onClick={this.handleGetDraftDetails}
               >
-                <MyTicketDraft
-                  draftData={DraftDetails}
-                  history={this.props.history}
-                />
+                {this.state.isDraftClick ? (
+                  <MyTicketDraft history={this.props.history} />
+                ) : null}
               </div>
             </div>
           </div>

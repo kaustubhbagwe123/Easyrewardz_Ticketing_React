@@ -122,17 +122,17 @@ class Dashboard extends Component {
       AssignToData: [],
       TeamMemberData: [
         {
-          department: "Team Member 1"
+          department: "Team Member 1",
         },
         {
-          department: "Team Member 2"
+          department: "Team Member 2",
         },
         {
-          department: "Team Member 3"
+          department: "Team Member 3",
         },
         {
-          department: "Team Member 4"
-        }
+          department: "Team Member 4",
+        },
       ],
       selectedTicketStatusAll: 0,
       selectedDesignation: 0,
@@ -234,35 +234,35 @@ class Dashboard extends Component {
       selectedNameOfDayForYear: [],
       NameOfDayForWeek: [
         {
-          days: "Sunday"
+          days: "Sunday",
         },
         {
-          days: "Monday"
-        }
+          days: "Monday",
+        },
       ],
       NameOfMonthForYear: [
         {
-          month: "September"
+          month: "September",
         },
         {
-          month: "October"
-        }
+          month: "October",
+        },
       ],
       NameOfDayForYear: [
         {
-          days: "Sunday"
+          days: "Sunday",
         },
         {
-          days: "Monday"
-        }
+          days: "Monday",
+        },
       ],
       NameOfMonthForDailyYear: [
         {
-          month: "September"
+          month: "September",
         },
         {
-          month: "October"
-        }
+          month: "October",
+        },
       ],
       resultCount: 0,
       loading: false,
@@ -327,10 +327,9 @@ class Dashboard extends Component {
       scategoryFilterCheckbox: "",
       spriorityFilterCheckbox: "",
       screatedOnFilterCheckbox: "",
-      sassignedToFilterCheckbox: ""
+      sassignedToFilterCheckbox: "",
     };
     this.applyCallback = this.applyCallback.bind(this);
-    // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -391,14 +390,7 @@ class Dashboard extends Component {
     this.handleWeekly = this.handleWeekly.bind(this);
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
     this.handleAdvanceSearchOption = this.handleAdvanceSearchOption.bind(this);
-    // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
-  // handleApply(event, picker) {
-  //   this.setState({
-  //     startDate: picker.startDate,
-  //     endDate: picker.endDate,
-  //   });
-  // }
 
   componentDidMount() {
     debugger;
@@ -602,7 +594,7 @@ class Dashboard extends Component {
 
     var FinalSaveSearchData = JSON.stringify(ShowDataparam);
     this.setState({
-      FinalSaveSearchData
+      FinalSaveSearchData,
     });
     // ----------------------------------------------------------
 
@@ -618,8 +610,8 @@ class Dashboard extends Component {
         searchDataByCustomerType: customerType,
         searchDataByTicketType: ticketType,
         searchDataByCategoryType: categoryType,
-        searchDataByAll: allTab
-      }
+        searchDataByAll: allTab,
+      },
     })
       .then(function(res) {
         debugger;
@@ -636,7 +628,7 @@ class Dashboard extends Component {
 
             resultCount: count,
             loading: false,
-            cSelectedRow: {}
+            cSelectedRow: {},
           });
           for (let i = 0; i < CSVData.length; i++) {
             delete CSVData[i].totalpages;
@@ -651,11 +643,11 @@ class Dashboard extends Component {
             SearchTicketData: [],
 
             resultCount: 0,
-            loading: false
+            loading: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -664,7 +656,7 @@ class Dashboard extends Component {
     evt.stopPropagation();
   }
 
-  handleWeeklyDays = async e => {
+  handleWeeklyDays = async (e) => {
     debugger;
     let check = e.target.checked;
     let val = e.target.value;
@@ -672,71 +664,71 @@ class Dashboard extends Component {
     if (val === "Mon") {
       if (check === true) {
         await this.setState({
-          Mon: val
+          Mon: val,
         });
       } else {
         await this.setState({
-          Mon: ""
+          Mon: "",
         });
       }
     } else if (val === "Tue") {
       if (check === true) {
         await this.setState({
-          Tue: val
+          Tue: val,
         });
       } else {
         await this.setState({
-          Tue: ""
+          Tue: "",
         });
       }
     } else if (val === "Wed") {
       if (check === true) {
         await this.setState({
-          Wed: val
+          Wed: val,
         });
       } else {
         await this.setState({
-          Wed: ""
+          Wed: "",
         });
       }
     } else if (val === "Thu") {
       if (check === true) {
         await this.setState({
-          Thu: val
+          Thu: val,
         });
       } else {
         await this.setState({
-          Thu: ""
+          Thu: "",
         });
       }
     } else if (val === "Fri") {
       if (check === true) {
         await this.setState({
-          Fri: val
+          Fri: val,
         });
       } else {
         await this.setState({
-          Fri: ""
+          Fri: "",
         });
       }
     } else if (val === "Sat") {
       if (check === true) {
         await this.setState({
-          Sat: val
+          Sat: val,
         });
       } else {
         await this.setState({
-          Sat: ""
+          Sat: "",
         });
       }
     } else if (val === "Sun") {
       if (check === true) {
         await this.setState({
-          Sun: val
+          Sun: val,
         });
       } else {
         await this.setState({
-          Sun: ""
+          Sun: "",
         });
       }
     }
@@ -762,7 +754,7 @@ class Dashboard extends Component {
       finalWeekList += this.state.Sun + ",";
     }
     this.setState({
-      selectedWeeklyDays: finalWeekList
+      selectedWeeklyDays: finalWeekList,
     });
   };
 
@@ -937,7 +929,6 @@ class Dashboard extends Component {
       priorityColor: "",
       assignColor: "",
       creationColor: "",
-      
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -947,7 +938,7 @@ class Dashboard extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.ticketStatus === sItems[i]
+              (a) => a.ticketStatus === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -959,14 +950,16 @@ class Dashboard extends Component {
       }
 
       this.setState({
-        statusColor: "sort-column"
+        statusColor: "sort-column",
       });
     } else if (column === "category") {
       var sItems = scategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.category === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.category === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -976,14 +969,16 @@ class Dashboard extends Component {
         }
       }
       this.setState({
-        categoryColor: ""
+        categoryColor: "",
       });
     } else if (column === "priority") {
       var sItems = spriorityFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.priority === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.priority === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -993,7 +988,7 @@ class Dashboard extends Component {
         }
       }
       this.setState({
-        priorityColor: "sort-column"
+        priorityColor: "sort-column",
       });
     } else if (column === "assignedTo") {
       var sItems = sassignedToFilterCheckbox.split(",");
@@ -1001,7 +996,7 @@ class Dashboard extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.assignedTo === sItems[i]
+              (a) => a.assignedTo === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -1012,14 +1007,16 @@ class Dashboard extends Component {
         }
       }
       this.setState({
-        assignColor: "sort-column"
+        assignColor: "sort-column",
       });
     } else if (column === "createdOn") {
       var sItems = screatedOnFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.createdOn === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.createdOn === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -1029,14 +1026,14 @@ class Dashboard extends Component {
         }
       }
       this.setState({
-        creationColor: "sort-column"
+        creationColor: "sort-column",
       });
     }
 
     debugger;
 
     this.setState({
-      tempSearchTicketData: itemsArray
+      tempSearchTicketData: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -1051,7 +1048,7 @@ class Dashboard extends Component {
     });
 
     this.setState({
-      SearchTicketData: itemsArray
+      SearchTicketData: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -1063,7 +1060,7 @@ class Dashboard extends Component {
       return a.ticketStatus < b.ticketStatus;
     });
     this.setState({
-      SearchTicketData: itemsArray
+      SearchTicketData: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -1073,7 +1070,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModules",
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(res) {
       debugger;
       let status = res.data.message;
@@ -1084,12 +1081,6 @@ class Dashboard extends Component {
         let moduleIDMyticket = data[1].moduleID;
         self.handleAdvanceSearchOption(moduleID);
       }
-
-      // if (status === "Success") {
-      //   self.setState({ modulesNames: data, moduleID });
-      // } else {
-      //   self.setState({ modulesNames: [] });
-      // }
     });
   }
   handleAdvanceSearchOption(id) {
@@ -1100,8 +1091,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/Module/GetModulesItems",
       headers: authHeader(),
       params: {
-        ModuleID: id
-      }
+        ModuleID: id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1114,7 +1105,7 @@ class Dashboard extends Component {
           self.setState({ modulesItems: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1279,9 +1270,9 @@ class Dashboard extends Component {
         // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         // todate: this.state.end._d,
         // todate: "2020-01-15",
-        BrandID: this.state.BrandIds
+        BrandID: this.state.BrandIds,
         // BrandID: "26, 31"
-      }
+      },
     })
       .then(function(res) {
         debugger;
@@ -1299,7 +1290,7 @@ class Dashboard extends Component {
           self.setState({ DashboardNumberData: {} });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1326,8 +1317,8 @@ class Dashboard extends Component {
         // todate: this.state.end._d,
         // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         todate: todate,
-        BrandID: this.state.BrandIds
-      }
+        BrandID: this.state.BrandIds,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1342,46 +1333,46 @@ class Dashboard extends Component {
             res.data.responseData.tickettoClaimGraph;
           if (DashboardTaskGraphData !== null) {
             self.setState({
-              DashboardTaskGraphData
+              DashboardTaskGraphData,
             });
           }
           if (DashboardClaimGraphData !== null) {
             self.setState({
-              DashboardClaimGraphData
+              DashboardClaimGraphData,
             });
           }
           if (DashboardBillGraphData !== null) {
             self.setState({
               DashboardBillGraphData,
-              ticketToBillBarFlag: false
+              ticketToBillBarFlag: false,
             });
           } else {
             self.setState({
-              ticketToBillBarFlag: true
+              ticketToBillBarFlag: true,
             });
           }
           if (DashboardSourceGraphData !== null) {
             self.setState({
               DashboardSourceGraphData,
-              ticketGenerationSourceFlag: false
+              ticketGenerationSourceFlag: false,
             });
           } else {
             self.setState({
-              ticketGenerationSourceFlag: true
+              ticketGenerationSourceFlag: true,
             });
           }
           if (DashboardPriorityGraphData !== null) {
             self.setState({
               DashboardPriorityGraphData,
-              openByPriorityFlag: false
+              openByPriorityFlag: false,
             });
           } else {
             self.setState({
-              openByPriorityFlag: true
+              openByPriorityFlag: true,
             });
           }
           self.setState({
-            DashboardGraphData: DashboardGraphData
+            DashboardGraphData: DashboardGraphData,
           });
           if (
             Object.keys(self.state.DashboardGraphData).length > 0 &&
@@ -1391,7 +1382,7 @@ class Dashboard extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1410,7 +1401,7 @@ class Dashboard extends Component {
       }
     }
     this.setState({
-      AgentIds: strAgentIds
+      AgentIds: strAgentIds,
     });
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
@@ -1434,7 +1425,7 @@ class Dashboard extends Component {
       }
     }
     this.setState({
-      BrandIds: strBrandIds
+      BrandIds: strBrandIds,
     });
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
@@ -1444,7 +1435,7 @@ class Dashboard extends Component {
       this.setState({ loadingAbove: false });
     }
   }
-  checkIndividualAgent = event => {
+  checkIndividualAgent = (event) => {
     debugger;
     var agentcount = 0;
     var checkboxes = document.getElementsByName("allAgent");
@@ -1475,7 +1466,7 @@ class Dashboard extends Component {
         DashboardClaimGraphData: [],
         DashboardBillGraphData: [],
         DashboardSourceGraphData: [],
-        DashboardPriorityGraphData: []
+        DashboardPriorityGraphData: [],
       },
       () => {
         this.handleGetDashboardNumberData();
@@ -1484,7 +1475,7 @@ class Dashboard extends Component {
       }
     );
   };
-  checkIndividualBrand = event => {
+  checkIndividualBrand = (event) => {
     debugger;
     var brandcount = 0;
     var checkboxes = document.getElementsByName("allBrand");
@@ -1517,7 +1508,7 @@ class Dashboard extends Component {
         DashboardClaimGraphData: [],
         DashboardBillGraphData: [],
         DashboardSourceGraphData: [],
-        DashboardPriorityGraphData: []
+        DashboardPriorityGraphData: [],
       },
       () => {
         this.handleGetDashboardNumberData();
@@ -1526,9 +1517,9 @@ class Dashboard extends Component {
       }
     );
   };
-  checkAllAgent = async event => {
+  checkAllAgent = async (event) => {
     debugger;
-    this.setState(state => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
+    this.setState((state) => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
     var strAgentIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allAgent");
@@ -1551,16 +1542,16 @@ class Dashboard extends Component {
       strAgentIds = "";
     }
     await this.setState({
-      AgentIds: strAgentIds
+      AgentIds: strAgentIds,
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
     this.ViewSearchData();
   };
-  checkAllBrand = async event => {
+  checkAllBrand = async (event) => {
     debugger;
 
-    this.setState(state => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strBrandIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allBrand");
@@ -1583,7 +1574,7 @@ class Dashboard extends Component {
       strBrandIds = "";
     }
     await this.setState({
-      BrandIds: strBrandIds
+      BrandIds: strBrandIds,
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
@@ -1595,7 +1586,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1605,18 +1596,18 @@ class Dashboard extends Component {
           self.setState({
             AgentData: data,
             AssignToData: data,
-            TeamMemberData: data
+            TeamMemberData: data,
           });
           self.checkAllAgentStart();
         } else {
           self.setState({
             AgentData: [],
             AssignToData: [],
-            TeamMemberData: []
+            TeamMemberData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1626,7 +1617,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1640,11 +1631,11 @@ class Dashboard extends Component {
           self.checkAllBrandStart();
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  handelCheckBoxCheckedChange = async ticketID => {
+  handelCheckBoxCheckedChange = async (ticketID) => {
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     var strIds = "";
@@ -1664,55 +1655,55 @@ class Dashboard extends Component {
 
     await this.setState({
       cSelectedRow: ticketID ? newSelected : false,
-      ticketIds: strIds
+      ticketIds: strIds,
     });
   };
   handleTicketDetails = (rowInfo, column) => {
     const index = column ? column.index : -1;
     return {
-      onClick: e => {
+      onClick: (e) => {
         debugger;
         this.selectedRow = index;
         var agentId = column.original["user_ID"];
         this.setState({ agentId, agentSelection: "" });
       },
       style: {
-        background: this.selectedRow === index ? "#ECF2F4" : null
-      }
+        background: this.selectedRow === index ? "#ECF2F4" : null,
+      },
     };
   };
-  setAssignedToValue = e => {
+  setAssignedToValue = (e) => {
     let assign = e.currentTarget.value;
     this.setState({ selectedAssignedTo: assign });
   };
 
-  setScheduleFor = e => {
+  setScheduleFor = (e) => {
     let scheduleForValue = e.currentTarget.value;
     this.setState({ selectedScheduleFor: scheduleForValue });
   };
-  setIssueTypeValue = e => {
+  setIssueTypeValue = (e) => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
   };
-  setSlaStatusValue = e => {
+  setSlaStatusValue = (e) => {
     let slaStatusValue = e.currentTarget.value;
     this.setState({ selectedSlaStatus: slaStatusValue });
   };
-  handleVisitStoreCodeAddressAll = e => {
+  handleVisitStoreCodeAddressAll = (e) => {
     let visitStoreCodeAddressAllValue = e.currentTarget.value;
     this.setState({
-      selectedVisitStoreCodeAddressAll: visitStoreCodeAddressAllValue
+      selectedVisitStoreCodeAddressAll: visitStoreCodeAddressAllValue,
     });
   };
-  handleTicketStatusByCustomer = e => {
+  handleTicketStatusByCustomer = (e) => {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByCustomer: ticketStatusValue });
   };
-  handleTicketStatusByTicket = e => {
+  handleTicketStatusByTicket = (e) => {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByTicket: ticketStatusValue });
   };
-  handleTicketStatusByCategory = e => {
+  handleTicketStatusByCategory = (e) => {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
@@ -1735,7 +1726,7 @@ class Dashboard extends Component {
       DashboardClaimGraphData: [],
       DashboardBillGraphData: [],
       DashboardSourceGraphData: [],
-      DashboardPriorityGraphData: []
+      DashboardPriorityGraphData: [],
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
@@ -1756,37 +1747,37 @@ class Dashboard extends Component {
     this.setState({ ByAllLastDate: date });
   }
   toggle() {
-    this.setState(state => ({ collapse: !state.collapse }));
+    this.setState((state) => ({ collapse: !state.collapse }));
   }
   toggleSearch() {
     this.handleGetSaveSearchList();
-    this.setState(state => ({
+    this.setState((state) => ({
       collapseSearch: !state.collapseSearch,
-      ShowGridCheckBox: false
+      ShowGridCheckBox: false,
     }));
   }
   onOpenModal = () => {
     this.setState({ open: true });
   };
 
-  handleTicketStatusByDate = e => {
+  handleTicketStatusByDate = (e) => {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByDate: ticketStatusValue });
   };
-  handleWantToVisitStoreAll = e => {
+  handleWantToVisitStoreAll = (e) => {
     let wantToVisitStoreAllValue = e.currentTarget.value;
     this.setState({ selectedWantToVisitStoreAll: wantToVisitStoreAllValue });
   };
   handleScheduleTime(e) {
     debugger;
     this.setState({
-      selectedScheduleTime: e
+      selectedScheduleTime: e,
     });
   }
   handleAssignRemark(e) {
     debugger;
     this.setState({
-      agentRemark: e.currentTarget.value
+      agentRemark: e.currentTarget.value,
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -1794,7 +1785,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1806,13 +1797,13 @@ class Dashboard extends Component {
           self.setState({ ChannelOfPurchaseData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   handelOnchangeData(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
   handleGetFunctionList() {
@@ -1826,15 +1817,15 @@ class Dashboard extends Component {
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectedDepartment
-      }
+        DepartmentId: this.state.selectedDepartment,
+      },
     })
       .then(function(res) {
         debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1844,7 +1835,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1856,11 +1847,11 @@ class Dashboard extends Component {
           self.setState({ DepartmentData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  handleWithTaskAll = e => {
+  handleWithTaskAll = (e) => {
     let withTaskAllValue = e.currentTarget.value;
     this.setState({ selectedWithTaskAll: withTaskAllValue });
   };
@@ -1874,7 +1865,7 @@ class Dashboard extends Component {
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
         allFlag: 0,
-        ActiveTabId: 1
+        ActiveTabId: 1,
       });
     } else if (currentActive === "By Customer Type") {
       this.setState({
@@ -1883,7 +1874,7 @@ class Dashboard extends Component {
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
         allFlag: 0,
-        ActiveTabId: 2
+        ActiveTabId: 2,
       });
     } else if (currentActive === "By Ticket Type") {
       this.setState({
@@ -1892,7 +1883,7 @@ class Dashboard extends Component {
         byTicketTypeFlag: 3,
         byCategoryFlag: 0,
         allFlag: 0,
-        ActiveTabId: 3
+        ActiveTabId: 3,
       });
     } else if (currentActive === "By Category") {
       this.setState({
@@ -1901,7 +1892,7 @@ class Dashboard extends Component {
         byTicketTypeFlag: 0,
         byCategoryFlag: 4,
         allFlag: 0,
-        ActiveTabId: 4
+        ActiveTabId: 4,
       });
     } else if (currentActive === "All") {
       this.setState({
@@ -1910,7 +1901,7 @@ class Dashboard extends Component {
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
         allFlag: 5,
-        ActiveTabId: 5
+        ActiveTabId: 5,
       });
     }
   }
@@ -1925,8 +1916,8 @@ class Dashboard extends Component {
         FirstName: this.state.assignFirstName.trim(),
         LastName: this.state.assignLastName.trim(),
         Email: this.state.assignEmail.trim(),
-        DesignationID: this.state.selectedDesignation
-      }
+        DesignationID: this.state.selectedDesignation,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1935,11 +1926,11 @@ class Dashboard extends Component {
           SearchAssignData: SearchAssignData,
           assignFirstName: "",
           assignLastName: "",
-          assignEmail: ""
+          assignEmail: "",
           // selectedDesignation: 0
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1949,10 +1940,10 @@ class Dashboard extends Component {
       assignFirstName: "",
       assignLastName: "",
       assignEmail: "",
-      selectedDesignation: 0
+      selectedDesignation: 0,
     });
   }
-  setFunctionValue = e => {
+  setFunctionValue = (e) => {
     let functionValue = e.currentTarget.value;
     this.setState({ selectedFunction: functionValue });
   };
@@ -1962,7 +1953,7 @@ class Dashboard extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1974,11 +1965,11 @@ class Dashboard extends Component {
           self.setState({ TicketPriorityData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  handleTicketStatusAll = e => {
+  handleTicketStatusAll = (e) => {
     let ticketStatusAllValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusAll: ticketStatusAllValue });
   };
@@ -1990,7 +1981,7 @@ class Dashboard extends Component {
     this.setState({ Schedule: true });
   };
 
-  setDesignationValue = e => {
+  setDesignationValue = (e) => {
     let designationValue = e.currentTarget.value;
     this.setState({ selectedDesignation: designationValue });
   };
@@ -2015,18 +2006,25 @@ class Dashboard extends Component {
     this.setState({
       StatusModel: true,
       sortColumnName: data,
-      sortHeader: header
+      sortHeader: header,
     });
   }
   StatusCloseModel() {
     debugger;
+    this.setState({
+      sortFilterTicketData: this.state.sortTicketData,
+      sortFilterCategoryData: this.state.sortCategoryData,
+      sortFilterPriorityData: this.state.sortPriorityData,
+      sortFiltercreatedOnData: this.state.sortcreatedOnData,
+      sortFilterAssigneeData: this.state.sortAssigneeData,
+    });
     var tempFinalSearchTicketData = [];
     if (this.state.tempSearchTicketData.length > 0) {
       var tempSearchTicketData = this.state.tempSearchTicketData;
       var tempColor = [];
       if (this.state.isRed) {
         var tempFilterData = tempSearchTicketData.filter(
-          a => a.isEscalation === 1
+          (a) => a.isEscalation === 1
         );
         if (tempFilterData.length > 0) {
           for (let i = 0; i < tempFilterData.length; i++) {
@@ -2036,7 +2034,7 @@ class Dashboard extends Component {
       }
       if (this.state.isWhite) {
         var tempFilterData = tempSearchTicketData.filter(
-          a =>
+          (a) =>
             a.isEscalation === 0 &&
             a.isSLANearBreach === false &&
             a.isReassigned === false
@@ -2049,7 +2047,7 @@ class Dashboard extends Component {
       }
       if (this.state.isYellow) {
         var tempFilterData = tempSearchTicketData.filter(
-          a => a.isSLANearBreach === true
+          (a) => a.isSLANearBreach === true
         );
         if (tempFilterData.length > 0) {
           for (let i = 0; i < tempFilterData.length; i++) {
@@ -2059,7 +2057,7 @@ class Dashboard extends Component {
       }
       if (this.state.isGreen) {
         var tempFilterData = tempSearchTicketData.filter(
-          a => a.isReassigned === true && a.isEscalation === 0
+          (a) => a.isReassigned === true && a.isEscalation === 0
         );
         if (tempFilterData.length > 0) {
           for (let i = 0; i < tempFilterData.length; i++) {
@@ -2079,7 +2077,7 @@ class Dashboard extends Component {
             scategoryFilterCheckbox: "",
             spriorityFilterCheckbox: "",
             screatedOnFilterCheckbox: "",
-            sassignedToFilterCheckbox: ""
+            sassignedToFilterCheckbox: "",
           });
         }
       }
@@ -2090,7 +2088,7 @@ class Dashboard extends Component {
             sticketStatusFilterCheckbox: "",
             spriorityFilterCheckbox: "",
             screatedOnFilterCheckbox: "",
-            sassignedToFilterCheckbox: ""
+            sassignedToFilterCheckbox: "",
           });
         }
       }
@@ -2101,7 +2099,7 @@ class Dashboard extends Component {
             sticketStatusFilterCheckbox: "",
             scategoryFilterCheckbox: "",
             screatedOnFilterCheckbox: "",
-            sassignedToFilterCheckbox: ""
+            sassignedToFilterCheckbox: "",
           });
         }
       }
@@ -2112,7 +2110,7 @@ class Dashboard extends Component {
             sticketStatusFilterCheckbox: "",
             scategoryFilterCheckbox: "",
             spriorityFilterCheckbox: "",
-            sassignedToFilterCheckbox: ""
+            sassignedToFilterCheckbox: "",
           });
         }
       }
@@ -2123,7 +2121,7 @@ class Dashboard extends Component {
             sticketStatusFilterCheckbox: "",
             scategoryFilterCheckbox: "",
             spriorityFilterCheckbox: "",
-            screatedOnFilterCheckbox: ""
+            screatedOnFilterCheckbox: "",
           });
         }
       }
@@ -2132,7 +2130,7 @@ class Dashboard extends Component {
       var tempColor = [];
       if (this.state.isRed) {
         var tempFilterData = tempSearchTicketData.filter(
-          a => a.isEscalation === 1
+          (a) => a.isEscalation === 1
         );
         if (tempFilterData.length > 0) {
           for (let i = 0; i < tempFilterData.length; i++) {
@@ -2142,7 +2140,7 @@ class Dashboard extends Component {
       }
       if (this.state.isWhite) {
         var tempFilterData = tempSearchTicketData.filter(
-          a =>
+          (a) =>
             a.isEscalation === 0 &&
             a.isSLANearBreach === false &&
             a.isReassigned === false
@@ -2155,7 +2153,7 @@ class Dashboard extends Component {
       }
       if (this.state.isYellow) {
         var tempFilterData = tempSearchTicketData.filter(
-          a => a.isSLANearBreach === true
+          (a) => a.isSLANearBreach === true
         );
         if (tempFilterData.length > 0) {
           for (let i = 0; i < tempFilterData.length; i++) {
@@ -2165,7 +2163,7 @@ class Dashboard extends Component {
       }
       if (this.state.isGreen) {
         var tempFilterData = tempSearchTicketData.filter(
-          a => a.isReassigned === true && a.isEscalation === 0
+          (a) => a.isReassigned === true && a.isEscalation === 0
         );
         if (tempFilterData.length > 0) {
           for (let i = 0; i < tempFilterData.length; i++) {
@@ -2187,7 +2185,7 @@ class Dashboard extends Component {
       isWhite: false,
       isYellow: false,
       isGreen: false,
-      SearchTicketData: tempFinalSearchTicketData
+      SearchTicketData: tempFinalSearchTicketData,
     });
   }
   HandleChangeRedict() {
@@ -2197,9 +2195,9 @@ class Dashboard extends Component {
     var idIndex = e.target.className;
     this.setState({ TicketTabIndex: idIndex });
   }
-  onChange = date => this.setState({ date });
+  onChange = (date) => this.setState({ date });
 
-  checkAllCheckbox = async event => {
+  checkAllCheckbox = async (event) => {
     debugger;
     var obj = this.state.cSelectedRow;
     var strIds = "";
@@ -2228,16 +2226,16 @@ class Dashboard extends Component {
       strIds = "";
     }
     this.setState({
-      cSelectedRow: obj
+      cSelectedRow: obj,
     });
     await this.setState({
-      ticketIds: strIds
+      ticketIds: strIds,
     });
   };
   handleMouseHover() {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
-  handleScheduleDateChange = e => {
+  handleScheduleDateChange = (e) => {
     debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
@@ -2259,7 +2257,7 @@ class Dashboard extends Component {
         selectedNameOfMonthForYearCommaSeperated: "",
         selectedNameOfMonthForDailyYearCommaSeperated: "",
         selectedNameOfDayForYearCommaSeperated: "",
-        selectedWeeklyDays: ""
+        selectedWeeklyDays: "",
       });
     } else if (SelectData === "231") {
       this.setState({
@@ -2279,7 +2277,7 @@ class Dashboard extends Component {
         selectedNameOfDayForWeekCommaSeperated: "",
         selectedNameOfMonthForYearCommaSeperated: "",
         selectedNameOfMonthForDailyYearCommaSeperated: "",
-        selectedNameOfDayForYearCommaSeperated: ""
+        selectedNameOfDayForYearCommaSeperated: "",
       });
     } else if (SelectData === "232") {
       this.setState({
@@ -2299,7 +2297,7 @@ class Dashboard extends Component {
         selectedNameOfMonthForYearCommaSeperated: "",
         selectedNameOfMonthForDailyYearCommaSeperated: "",
         selectedNameOfDayForYearCommaSeperated: "",
-        selectedWeeklyDays: ""
+        selectedWeeklyDays: "",
       });
     } else if (SelectData === "233") {
       this.setState({
@@ -2316,7 +2314,7 @@ class Dashboard extends Component {
         selectedNameOfDayForYearCommaSeperated: "",
         selectedWeeklyDays: "",
         selectedNoOfDaysForMonth: 0,
-        selectedNameOfMonthForYearCommaSeperated: ""
+        selectedNameOfMonthForYearCommaSeperated: "",
       });
     } else if (SelectData === "234") {
       this.setState({
@@ -2335,7 +2333,7 @@ class Dashboard extends Component {
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
-        selectedNameOfDayForWeekCommaSeperated: ""
+        selectedNameOfDayForWeekCommaSeperated: "",
       });
     } else if (SelectData === "235") {
       this.setState({
@@ -2354,55 +2352,55 @@ class Dashboard extends Component {
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
-        selectedNameOfDayForWeekCommaSeperated: ""
+        selectedNameOfDayForWeekCommaSeperated: "",
       });
     }
     this.setState({
-      selectScheduleDate: SelectData
+      selectScheduleDate: SelectData,
     });
   };
 
-  setNameOfDayForWeek = e => {
+  setNameOfDayForWeek = (e) => {
     debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
-        .call(e, s => s.days)
+        .call(e, (s) => s.days)
         .toString();
     }
     this.setState({
       selectedNameOfDayForWeek: e,
-      selectedNameOfDayForWeekCommaSeperated
+      selectedNameOfDayForWeekCommaSeperated,
     });
   };
   handleDaysForMonth(e) {
     debugger;
     this.setState({
-      selectedNoOfDaysForMonth: e.currentTarget.value
+      selectedNoOfDaysForMonth: e.currentTarget.value,
     });
   }
 
   handleWeekly(e) {
     debugger;
     this.setState({
-      selectedNoOfWeek: e.currentTarget.value
+      selectedNoOfWeek: e.currentTarget.value,
     });
   }
 
-  setPriorityValue = e => {
+  setPriorityValue = (e) => {
     let priorityValue = e.currentTarget.value;
     this.setState({ selectedPriority: priorityValue });
   };
-  setPriorityAllValue = e => {
+  setPriorityAllValue = (e) => {
     let priorityAllValue = e.currentTarget.value;
     this.setState({ selectedPriorityAll: priorityAllValue });
   };
   handleDailyDay(e) {
     debugger;
     this.setState({
-      selectedNoOfDay: e.currentTarget.value
+      selectedNoOfDay: e.currentTarget.value,
     });
   }
-  setClaimCategoryValue = e => {
+  setClaimCategoryValue = (e) => {
     let claimCategoryValue = e.currentTarget.value;
     this.setState({ selectedClaimCategory: claimCategoryValue });
     setTimeout(() => {
@@ -2412,7 +2410,7 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setDepartmentValue = e => {
+  setDepartmentValue = (e) => {
     let departmentValue = e.currentTarget.value;
     this.setState({ selectedDepartment: departmentValue });
 
@@ -2422,13 +2420,13 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setChannelOfPurchaseValue = e => {
+  setChannelOfPurchaseValue = (e) => {
     this.setState({ selectedChannelOfPurchase: e });
   };
-  setTicketActionTypeValue = e => {
+  setTicketActionTypeValue = (e) => {
     this.setState({ selectedTicketActionType: e });
   };
-  setCategoryValue = e => {
+  setCategoryValue = (e) => {
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -2437,7 +2435,7 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setCategoryAllValue = e => {
+  setCategoryAllValue = (e) => {
     let categoryAllValue = e.currentTarget.value;
     this.setState({ selectedCategoryAll: categoryAllValue });
     setTimeout(() => {
@@ -2446,7 +2444,7 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setSubCategoryValue = e => {
+  setSubCategoryValue = (e) => {
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
 
@@ -2456,7 +2454,7 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setSubCategoryAllValue = e => {
+  setSubCategoryAllValue = (e) => {
     let subCategoryAllValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryAll: subCategoryAllValue });
 
@@ -2466,7 +2464,7 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setClaimSubCategoryValue = e => {
+  setClaimSubCategoryValue = (e) => {
     let claimSubCategoryValue = e.currentTarget.value;
     this.setState({ selectedClaimSubCategory: claimSubCategoryValue });
 
@@ -2477,12 +2475,12 @@ class Dashboard extends Component {
       }
     }, 1);
   };
-  setTicketSourceValue = e => {
+  setTicketSourceValue = (e) => {
     let ticketSourceValue = e.currentTarget.value;
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
 
-  handleVisitStoreAll = e => {
+  handleVisitStoreAll = (e) => {
     let visitStoreAllValue = e.currentTarget.value;
     this.setState({ selectedVisitStoreAll: visitStoreAllValue });
   };
@@ -2492,7 +2490,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -2504,7 +2502,7 @@ class Dashboard extends Component {
           self.setState({ DesignationData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2518,7 +2516,7 @@ class Dashboard extends Component {
       this.state.selectScheduleDate === "100"
     ) {
       this.setState({
-        scheduleRequired: "All fields are required"
+        scheduleRequired: "All fields are required",
       });
     } else if (this.state.selectScheduleDate === "230") {
       if (
@@ -2527,7 +2525,7 @@ class Dashboard extends Component {
         this.state.selectedNoOfDay === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required"
+          scheduleRequired: "All fields are required",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2540,7 +2538,7 @@ class Dashboard extends Component {
         this.state.selectedWeeklyDays === ""
       ) {
         this.setState({
-          scheduleRequired: "All fields are required"
+          scheduleRequired: "All fields are required",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2553,7 +2551,7 @@ class Dashboard extends Component {
         this.state.selectedNoOfMonthForMonth === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required"
+          scheduleRequired: "All fields are required",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2567,7 +2565,7 @@ class Dashboard extends Component {
         this.state.selectedNameOfDayForWeek.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required"
+          scheduleRequired: "All fields are required",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2580,7 +2578,7 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required"
+          scheduleRequired: "All fields are required",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2594,7 +2592,7 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForDailyYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required"
+          scheduleRequired: "All fields are required",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2603,7 +2601,6 @@ class Dashboard extends Component {
   }
   handleSchedulePopupSuccess() {
     debugger;
-
     let self = this;
 
     var month, day, year, hours, minutes, seconds;
@@ -2616,7 +2613,7 @@ class Dashboard extends Component {
 
     var mySQLDate = [date.getFullYear(), month, day].join("-");
     var mySQLTime = [hours, minutes, seconds].join(":");
-    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
+    let selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
 
     axios({
       method: "post",
@@ -2627,7 +2624,7 @@ class Dashboard extends Component {
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
-        ScheduleTime: this.state.selectedScheduleTime,
+        ScheduleTime: selectedScheduleTime,
         IsDaily: this.state.IsDaily,
         IsWeekly: this.state.IsWeekly,
         NoOfWeek: this.state.selectedNoOfWeek,
@@ -2647,48 +2644,48 @@ class Dashboard extends Component {
         NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
         NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
         NameOfMonthForYear: this.state
-          .selectedNameOfMonthForDailyYearCommaSeperated
-      }
+          .selectedNameOfMonthForDailyYearCommaSeperated,
+      },
     })
       .then(function(res) {
         debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
-          self.ScheduleCloseModel();
           NotificationManager.success("Scheduled successfully.");
+          self.ScheduleCloseModel();
           self.setState({
             scheduleRequired: "",
-            selectedTeamMemberCommaSeperated: ""
+            selectedTeamMemberCommaSeperated: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   handleWeekForYear(e) {
     debugger;
     this.setState({
-      selectedNoOfWeekForYear: e.currentTarget.value
+      selectedNoOfWeekForYear: e.currentTarget.value,
     });
   }
-  setNameOfMonthForDailyYear = e => {
+  setNameOfMonthForDailyYear = (e) => {
     debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
-        .call(e, s => s.month)
+        .call(e, (s) => s.month)
         .toString();
     }
     this.setState({
       selectedNameOfMonthForDailyYear: e,
-      selectedNameOfMonthForDailyYearCommaSeperated
+      selectedNameOfMonthForDailyYearCommaSeperated,
     });
   };
-  setTeamMember = e => {
+  setTeamMember = (e) => {
     debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
-        .call(e, s => s.department)
+        .call(e, (s) => s.userID)
         .toString();
     }
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
@@ -2696,43 +2693,43 @@ class Dashboard extends Component {
   handleWeekForWeek(e) {
     debugger;
     this.setState({
-      selectedNoOfWeekForWeek: e.currentTarget.value
+      selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   }
-  setNameOfDayForYear = e => {
+  setNameOfDayForYear = (e) => {
     debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
-        .call(e, s => s.days)
+        .call(e, (s) => s.days)
         .toString();
     }
     this.setState({
       selectedNameOfDayForYear: e,
-      selectedNameOfDayForYearCommaSeperated
+      selectedNameOfDayForYearCommaSeperated,
     });
   };
   handleMonthForWeek(e) {
     debugger;
     this.setState({
-      selectedNoOfMonthForWeek: e.currentTarget.value
+      selectedNoOfMonthForWeek: e.currentTarget.value,
     });
   }
   handleDayForYear(e) {
     debugger;
     this.setState({
-      selectedNoOfDayForDailyYear: e.currentTarget.value
+      selectedNoOfDayForDailyYear: e.currentTarget.value,
     });
   }
-  setNameOfMonthForYear = e => {
+  setNameOfMonthForYear = (e) => {
     debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
-        .call(e, s => s.month)
+        .call(e, (s) => s.month)
         .toString();
     }
     this.setState({
       selectedNameOfMonthForYear: e,
-      selectedNameOfMonthForYearCommaSeperated
+      selectedNameOfMonthForYearCommaSeperated,
     });
   };
   handleAssignTickets() {
@@ -2748,8 +2745,8 @@ class Dashboard extends Component {
         params: {
           TicketID: ticketIds,
           AgentID: this.state.agentId,
-          Remark: this.state.agentRemark
-        }
+          Remark: this.state.agentRemark,
+        },
       })
         .then(function(res) {
           debugger;
@@ -2761,12 +2758,12 @@ class Dashboard extends Component {
             self.ViewSearchData();
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
-        agentSelection: "Agent Selection is required"
+        agentSelection: "Agent Selection is required",
       });
     }
   }
@@ -2777,7 +2774,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetSLAStatusList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -2785,15 +2782,15 @@ class Dashboard extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            SlaStatusData: data
+            SlaStatusData: data,
           });
         } else {
           self.setState({
-            SlaStatusData: []
+            SlaStatusData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2804,7 +2801,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -2812,15 +2809,15 @@ class Dashboard extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            TicketSourceData: data
+            TicketSourceData: data,
           });
         } else {
           self.setState({
-            TicketSourceData: []
+            TicketSourceData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2828,7 +2825,7 @@ class Dashboard extends Component {
     let self = this;
     self.setState({
       ClaimIssueTypeData: [],
-      selectedClaimIssueType: 0
+      selectedClaimIssueType: 0,
     });
 
     axios({
@@ -2836,15 +2833,15 @@ class Dashboard extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: this.state.selectedClaimSubCategory
-      }
+        SubCategoryID: this.state.selectedClaimSubCategory,
+      },
     })
       .then(function(res) {
         debugger;
         let ClaimIssueTypeData = res.data.responseData;
         self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2859,17 +2856,17 @@ class Dashboard extends Component {
     if (param === "categoryTab") {
       self.setState({
         IssueTypeData: [],
-        selectedIssueType: 0
+        selectedIssueType: 0,
       });
     } else if (param === "allTab") {
       self.setState({
         IssueTypeAllData: [],
-        selectedIssueTypeAll: 0
+        selectedIssueTypeAll: 0,
       });
     } else if (param === "allClaimTab") {
       self.setState({
         ClaimIssueTypeData: [],
-        selectedClaimIssueType: 0
+        selectedClaimIssueType: 0,
       });
     }
     // let subCateId =
@@ -2890,8 +2887,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: subCateId
-      }
+        SubCategoryID: subCateId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -2909,21 +2906,21 @@ class Dashboard extends Component {
         if (param === "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
-            IssueTypeData: IssueTypeData
+            IssueTypeData: IssueTypeData,
           });
         } else if (param === "allTab") {
           var IssueTypeAllData = res.data.responseData;
           self.setState({
-            IssueTypeAllData: IssueTypeAllData
+            IssueTypeAllData: IssueTypeAllData,
           });
         } else if (param === "allClaimTab") {
           var ClaimIssueTypeData = res.data.responseData;
           self.setState({
-            ClaimIssueTypeData: ClaimIssueTypeData
+            ClaimIssueTypeData: ClaimIssueTypeData,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2934,18 +2931,18 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         let CategoryData = res.data;
         // let CategoryDataAll = res.data;
         self.setState({
-          CategoryData: CategoryData
+          CategoryData: CategoryData,
           // CategoryDataAll: CategoryDataAll
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2956,7 +2953,7 @@ class Dashboard extends Component {
       ClaimSubCategoryData: [],
       selectedClaimSubCategory: 0,
       ClaimIssueTypeData: [],
-      selectedClaimIssueType: 0
+      selectedClaimIssueType: 0,
     });
 
     axios({
@@ -2964,17 +2961,17 @@ class Dashboard extends Component {
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: this.state.selectedClaimCategory
-      }
+        CategoryID: this.state.selectedClaimCategory,
+      },
     })
       .then(function(res) {
         debugger;
         let ClaimSubCategoryData = res.data.responseData;
         self.setState({
-          ClaimSubCategoryData: ClaimSubCategoryData
+          ClaimSubCategoryData: ClaimSubCategoryData,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2996,21 +2993,21 @@ class Dashboard extends Component {
         SubCategoryData: [],
         IssueTypeData: [],
         selectedSubCategory: 0,
-        selectedIssueType: 0
+        selectedIssueType: 0,
       });
     } else if (param == "allTab") {
       this.setState({
         SubCategoryAllData: [],
         IssueTypeAllData: [],
         selectedSubCategoryAll: 0,
-        selectedIssueTypeAll: 0
+        selectedIssueTypeAll: 0,
       });
     } else if (param == "allClaimTab") {
       this.setState({
         ClaimSubCategoryData: [],
         selectedClaimSubCategory: 0,
         ClaimIssueTypeData: [],
-        selectedClaimIssueType: 0
+        selectedClaimIssueType: 0,
       });
     }
     // let cateId =
@@ -3031,8 +3028,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: cateId
-      }
+        CategoryID: cateId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -3050,21 +3047,21 @@ class Dashboard extends Component {
         if (param === "categoryTab") {
           var SubCategoryData = res.data.responseData;
           self.setState({
-            SubCategoryData: SubCategoryData
+            SubCategoryData: SubCategoryData,
           });
         } else if (param === "allTab") {
           var SubCategoryAllData = res.data.responseData;
           self.setState({
-            SubCategoryAllData: SubCategoryAllData
+            SubCategoryAllData: SubCategoryAllData,
           });
         } else if (param === "allClaimTab") {
           var ClaimSubCategoryData = res.data.responseData;
           self.setState({
-            ClaimSubCategoryData: ClaimSubCategoryData
+            ClaimSubCategoryData: ClaimSubCategoryData,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -3077,7 +3074,7 @@ class Dashboard extends Component {
           ByDateSelectDate: "",
           selectedSlaDueByDate: 0,
           selectedTicketStatusByDate: 0,
-          resultCount: 0
+          resultCount: 0,
         },
         () => {
           // this.handleSearchTicketEscalation();
@@ -3091,7 +3088,7 @@ class Dashboard extends Component {
           EmailIdByCustType: "",
           TicketIdByCustType: "",
           selectedTicketStatusByCustomer: 0,
-          resultCount: 0
+          resultCount: 0,
         },
         () => {
           // this.handleSearchTicketEscalation();
@@ -3105,7 +3102,7 @@ class Dashboard extends Component {
           selectedTicketStatusByTicket: 0,
           selectedChannelOfPurchase: [],
           selectedTicketActionType: [],
-          resultCount: 0
+          resultCount: 0,
         },
         () => {
           // this.handleSearchTicketEscalation();
@@ -3121,7 +3118,7 @@ class Dashboard extends Component {
           selectedTicketStatusByCategory: 0,
           resultCount: 0,
           SubCategoryData: [],
-          IssueTypeData: []
+          IssueTypeData: [],
         },
         () => {
           // this.handleSearchTicketEscalation();
@@ -3166,7 +3163,7 @@ class Dashboard extends Component {
           SubCategoryAllData: [],
           IssueTypeAllData: [],
           ClaimSubCategoryData: [],
-          ClaimIssueTypeData: []
+          ClaimIssueTypeData: [],
         },
         () => {
           // this.handleSearchTicketEscalation();
@@ -3355,10 +3352,9 @@ class Dashboard extends Component {
 
     var FinalSaveSearchData = JSON.stringify(ShowDataparam);
     this.setState({
-      FinalSaveSearchData
+      FinalSaveSearchData,
     });
     // ----------------------------------------------------------
-
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
@@ -3371,8 +3367,8 @@ class Dashboard extends Component {
         searchDataByCustomerType: customerType,
         searchDataByTicketType: ticketType,
         searchDataByCategoryType: categoryType,
-        searchDataByAll: allTab
-      }
+        searchDataByAll: allTab,
+      },
     })
       .then(function(res) {
         debugger;
@@ -3398,7 +3394,7 @@ class Dashboard extends Component {
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortTicketData.push({ ticketStatus: distinct[i] });
               self.state.sortFilterTicketData.push({
-                ticketStatus: distinct[i]
+                ticketStatus: distinct[i],
               });
             }
 
@@ -3439,7 +3435,7 @@ class Dashboard extends Component {
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
               self.state.sortFiltercreatedOnData.push({
-                createdOn: distinct[i]
+                createdOn: distinct[i],
               });
             }
 
@@ -3454,7 +3450,7 @@ class Dashboard extends Component {
             for (let i = 0; i < distinct.length; i++) {
               self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
               self.state.sortFilterAssigneeData.push({
-                assignedTo: distinct[i]
+                assignedTo: distinct[i],
               });
             }
           }
@@ -3463,13 +3459,13 @@ class Dashboard extends Component {
         if (status === "Success") {
           if (Shwcheck === 1) {
             self.setState({
-              ShowGridCheckBox: true
+              ShowGridCheckBox: true,
             });
           }
           self.setState({
             SearchTicketData: data,
             resultCount: count,
-            loading: false
+            loading: false,
           });
           // else {
           //   self.setState({
@@ -3493,11 +3489,11 @@ class Dashboard extends Component {
             SearchTicketData: [],
 
             resultCount: 0,
-            loading: false
+            loading: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -3511,8 +3507,8 @@ class Dashboard extends Component {
         headers: authHeader(),
         params: {
           SearchSaveName: this.state.SearchName,
-          parameter: this.state.FinalSaveSearchData
-        }
+          parameter: this.state.FinalSaveSearchData,
+        },
       })
         .then(function(res) {
           debugger;
@@ -3521,16 +3517,16 @@ class Dashboard extends Component {
             NotificationManager.success("Save Search parameter successfully.");
             self.handleGetSaveSearchList();
             self.setState({
-              SearchName: ""
+              SearchName: "",
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       self.setState({
-        SearchNameCompulsory: "Please Enter Search Name."
+        SearchNameCompulsory: "Please Enter Search Name.",
       });
     }
   }
@@ -3538,17 +3534,17 @@ class Dashboard extends Component {
   HandleRowClickPage = (rowInfo, column) => {
     if ((rowInfo, column)) {
       return {
-        onClick: e => {
+        onClick: (e) => {
           debugger;
           let Id = column.original["ticketID"];
           let self = this;
           self.setState({
-            ticketDetailID: Id
+            ticketDetailID: Id,
           });
           setTimeout(function() {
             self.props.history.push({
               pathname: "myticket",
-              ticketDetailID: Id
+              ticketDetailID: Id,
             });
           }, 100);
         },
@@ -3560,8 +3556,8 @@ class Dashboard extends Component {
               ? "#FFF3DF"
               : column.original["isReassigned"] === true
               ? "#DEF3FF"
-              : "white"
-        }
+              : "white",
+        },
       };
     }
     return {};
@@ -3573,7 +3569,7 @@ class Dashboard extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/GetDashBoardSavedSearch",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -3585,7 +3581,7 @@ class Dashboard extends Component {
           self.setState({ SearchListData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -3601,9 +3597,9 @@ class Dashboard extends Component {
         isByStatus: this.state.isByStatus,
         pageSize: this.state.advPageSize,
         pageNo: this.state.advPageNo,
-        isEscalation: 1
+        isEscalation: 1,
         // ticketStatus: ticketStatus
-      }
+      },
     })
       .then(function(res) {
         debugger;
@@ -3618,14 +3614,14 @@ class Dashboard extends Component {
           self.setState({
             SearchTicketData: [],
             loading: false,
-            resultCount: 0
+            resultCount: 0,
           });
         } else if (data !== null) {
           self.setState({
             SearchTicketData: data,
             sortTicketData: data,
             loading: false,
-            resultCount: count
+            resultCount: count,
           });
           for (let i = 0; i < CSVData.length; i++) {
             delete CSVData[i].totalpages;
@@ -3637,30 +3633,30 @@ class Dashboard extends Component {
           self.setState({ CSVDownload: CSVData });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  handlePurchaseStoreCodeAddressAll = e => {
+  handlePurchaseStoreCodeAddressAll = (e) => {
     let purchaseStoreCodeAddressAllValue = e.currentTarget.value;
     this.setState({
-      selectedPurchaseStoreCodeAddressAll: purchaseStoreCodeAddressAllValue
+      selectedPurchaseStoreCodeAddressAll: purchaseStoreCodeAddressAllValue,
     });
   };
-  handleClaimStatus = e => {
+  handleClaimStatus = (e) => {
     debugger;
     let claimStatusValue = e.currentTarget.value;
     this.setState({ selectedClaimStatus: claimStatusValue });
   };
-  handleTaskStatus = e => {
+  handleTaskStatus = (e) => {
     let taskStatusValue = e.currentTarget.value;
     this.setState({ selectedTaskStatus: taskStatusValue });
   };
-  handleAssignedToAll = e => {
+  handleAssignedToAll = (e) => {
     let assignedToAllValue = e.currentTarget.value;
     this.setState({ selectedAssignedToAll: assignedToAllValue });
   };
-  handleWithClaimAll = e => {
+  handleWithClaimAll = (e) => {
     let withClaimAllValue = e.currentTarget.value;
     this.setState({ selectedWithClaimAll: withClaimAllValue });
   };
@@ -3672,8 +3668,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DeleteDashBoardSavedSearch",
       headers: authHeader(),
       params: {
-        SearchParamID: searchDeletId
-      }
+        SearchParamID: searchDeletId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -3685,25 +3681,25 @@ class Dashboard extends Component {
           self.handleGetSaveSearchList();
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  handleSlaDueByDate = e => {
+  handleSlaDueByDate = (e) => {
     let slaDueValue = e.currentTarget.value;
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
   handleMonthForMonth(e) {
     debugger;
     this.setState({
-      selectedNoOfMonthForMonth: e.currentTarget.value
+      selectedNoOfMonthForMonth: e.currentTarget.value,
     });
   }
-  setClaimIssueTypeValue = e => {
+  setClaimIssueTypeValue = (e) => {
     let claimIssueTypeValue = e.currentTarget.value;
     this.setState({ selectedClaimIssueType: claimIssueTypeValue });
   };
-  setIssueTypeAllValue = e => {
+  setIssueTypeAllValue = (e) => {
     let issueTypeAllValue = e.currentTarget.value;
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
@@ -3718,8 +3714,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/GetDashBoardTicketsOnSavedSearch",
       headers: authHeader(),
       params: {
-        SearchParamID: paramsID
-      }
+        SearchParamID: paramsID,
+      },
     })
       .then(function(res) {
         debugger;
@@ -3734,7 +3730,7 @@ class Dashboard extends Component {
           self.setState({
             SearchTicketData: data,
             resultCount: count,
-            loading: false
+            loading: false,
           });
           // self.onCloseModal();
 
@@ -3763,7 +3759,7 @@ class Dashboard extends Component {
               ByDateCreatDate: "",
               ByDateSelectDate: "",
               selectedSlaDueByDate: 0,
-              selectedTicketStatusByDate: 0
+              selectedTicketStatusByDate: 0,
             });
           } else {
             debugger;
@@ -3792,7 +3788,7 @@ class Dashboard extends Component {
               selectedTicketStatusByDate:
                 dataSearch.searchDataByDate.Ticket_StatusID,
               byCategoryFlag: 0,
-              allFlag: 0
+              allFlag: 0,
             });
           }
 
@@ -3801,7 +3797,7 @@ class Dashboard extends Component {
               MobileNoByCustType: "",
               EmailIdByCustType: "",
               TicketIdByCustType: "",
-              selectedTicketStatusByCustomer: 0
+              selectedTicketStatusByCustomer: 0,
             });
           } else {
             self.setState({
@@ -3813,7 +3809,7 @@ class Dashboard extends Component {
               selectedTicketStatusByCustomer:
                 dataSearch.searchDataByCustomerType.TicketStatusID,
               byCategoryFlag: 0,
-              allFlag: 0
+              allFlag: 0,
             });
           }
 
@@ -3822,7 +3818,7 @@ class Dashboard extends Component {
               selectedPriority: 0,
               selectedTicketStatusByTicket: 0,
               selectedChannelOfPurchase: [],
-              selectedTicketActionType: []
+              selectedTicketActionType: [],
             });
           } else {
             let purchaseArr = [];
@@ -3869,7 +3865,7 @@ class Dashboard extends Component {
               selectedChannelOfPurchase: purchaseArr,
               selectedTicketActionType: actionArr,
               byCategoryFlag: 0,
-              allFlag: 0
+              allFlag: 0,
             });
           }
 
@@ -3878,7 +3874,7 @@ class Dashboard extends Component {
               selectedCategory: 0,
               selectedSubCategory: 0,
               selectedIssueType: 0,
-              selectedTicketStatusByCategory: 0
+              selectedTicketStatusByCategory: 0,
             });
           } else {
             // self.setState({
@@ -3894,7 +3890,7 @@ class Dashboard extends Component {
                 byCategoryFlag: 4,
                 allFlag: 0,
                 selectedTicketStatusByCategory:
-                  dataSearch.searchDataByCategoryType.TicketStatusID
+                  dataSearch.searchDataByCategoryType.TicketStatusID,
               },
               () => {
                 self.handleGetSubCategoryList("categoryTab");
@@ -3903,14 +3899,15 @@ class Dashboard extends Component {
             self.setState(
               {
                 selectedSubCategory:
-                  dataSearch.searchDataByCategoryType.SubCategoryId
+                  dataSearch.searchDataByCategoryType.SubCategoryId,
               },
               () => {
                 self.handleGetIssueTypeList("categoryTab");
               }
             );
             self.setState({
-              selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
+              selectedIssueType:
+                dataSearch.searchDataByCategoryType.IssueTypeId,
             });
           }
 
@@ -3945,7 +3942,7 @@ class Dashboard extends Component {
               selectedWithTaskAll: "no",
               selectedTaskStatus: 0,
               selectedDepartment: 0,
-              selectedFunction: 0
+              selectedFunction: 0,
             });
           } else {
             if (dataSearch.searchDataByAll.CreatedDate !== "") {
@@ -4002,7 +3999,7 @@ class Dashboard extends Component {
               // selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId,
               selectedWithTaskAll:
                 dataSearch.searchDataByAll.HaveTask === 0 ? "no" : "yes",
-              selectedTaskStatus: dataSearch.searchDataByAll.TaskStatusId
+              selectedTaskStatus: dataSearch.searchDataByAll.TaskStatusId,
               // selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id,
               // selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
             });
@@ -4010,7 +4007,7 @@ class Dashboard extends Component {
               {
                 selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
                 byCategoryFlag: 0,
-                allFlag: 5
+                allFlag: 5,
               },
               () => {
                 self.handleGetSubCategoryList("allTab");
@@ -4018,30 +4015,32 @@ class Dashboard extends Component {
             );
             self.setState(
               {
-                selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId
+                selectedSubCategoryAll:
+                  dataSearch.searchDataByAll.SubCategoryId,
               },
               () => {
                 self.handleGetIssueTypeList("allTab");
               }
             );
             self.setState({
-              selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId
+              selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId,
             });
             self.setState(
               {
-                selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id
+                selectedDepartment:
+                  dataSearch.searchDataByAll.TaskDepartment_Id,
               },
               () => {
                 self.handleGetFunctionList();
               }
             );
             self.setState({
-              selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
+              selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id,
             });
             self.setState(
               {
                 selectedClaimCategory:
-                  dataSearch.searchDataByAll.ClaimCategoryId
+                  dataSearch.searchDataByAll.ClaimCategoryId,
               },
               () => {
                 // self.handleGetClaimSubCategoryList();
@@ -4051,7 +4050,7 @@ class Dashboard extends Component {
             self.setState(
               {
                 selectedClaimSubCategory:
-                  dataSearch.searchDataByAll.ClaimSubCategoryId
+                  dataSearch.searchDataByAll.ClaimSubCategoryId,
               },
               () => {
                 // self.handleGetClaimIssueTypeList();
@@ -4060,14 +4059,14 @@ class Dashboard extends Component {
             );
             self.setState({
               selectedClaimIssueType:
-                dataSearch.searchDataByAll.ClaimIssueTypeId
+                dataSearch.searchDataByAll.ClaimIssueTypeId,
             });
           }
         } else {
           self.setState({ SearchTicketData: [], loading: false });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -4098,7 +4097,7 @@ class Dashboard extends Component {
         this.setState({ sortFilterCategoryData });
       } else {
         this.setState({
-          sortFilterCategoryData: this.state.sortCategoryData
+          sortFilterCategoryData: this.state.sortCategoryData,
         });
       }
     }
@@ -4112,7 +4111,7 @@ class Dashboard extends Component {
         this.setState({ sortFilterPriorityData });
       } else {
         this.setState({
-          sortFilterPriorityData: this.state.sortPriorityData
+          sortFilterPriorityData: this.state.sortPriorityData,
         });
       }
     }
@@ -4127,7 +4126,7 @@ class Dashboard extends Component {
         this.setState({ sortFiltercreatedOnData });
       } else {
         this.setState({
-          sortFiltercreatedOnData: this.state.sortcreatedOnData
+          sortFiltercreatedOnData: this.state.sortcreatedOnData,
         });
       }
     }
@@ -4141,14 +4140,14 @@ class Dashboard extends Component {
         this.setState({ sortFilterAssigneeData });
       } else {
         this.setState({
-          sortFilterAssigneeData: this.state.sortAssigneeData
+          sortFilterAssigneeData: this.state.sortAssigneeData,
         });
       }
     }
     // }
   }
   //// handle change filtre by check box
-  setColorSortCheckStatus = e => {
+  setColorSortCheckStatus = (e) => {
     const { name } = e.target;
     this.setState({ [name]: e.target.checked });
   };
@@ -4191,7 +4190,6 @@ class Dashboard extends Component {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -4712,7 +4710,8 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <a href="#!"
+          <a
+            href="#!"
             className={
               this.state.collapse
                 ? "dashboard-collapse-icon"
@@ -5625,7 +5624,7 @@ class Dashboard extends Component {
                               <p
                                 style={{
                                   color: "red",
-                                  marginBottom: "0px"
+                                  marginBottom: "0px",
                                 }}
                               >
                                 {this.state.SearchNameCompulsory}
@@ -5682,7 +5681,8 @@ class Dashboard extends Component {
                                       {item.searchName}
                                     </label>
                                     <div>
-                                      <a href="#!"
+                                      <a
+                                        href="#!"
                                         className="applySearch"
                                         onClick={this.handleApplySearch.bind(
                                           this,
@@ -5701,7 +5701,8 @@ class Dashboard extends Component {
                     })()
                   }
                                       </a>
-                                      <a href="#!"
+                                      <a
+                                        href="#!"
                                         onClick={this.hadleSearchDeleteData.bind(
                                           this,
                                           item.searchParamID
@@ -5720,8 +5721,6 @@ class Dashboard extends Component {
                                     </div>
                                   </li>
                                 ))}
-
-                              {/* </li> */}
                             </ul>
                           </div>
                         </Modal>
@@ -5737,7 +5736,7 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6"
                                   style={{
-                                    display: this.state.CreateDateShowRecord
+                                    display: this.state.CreateDateShowRecord,
                                   }}
                                 >
                                   <DatePicker
@@ -5757,7 +5756,7 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6"
                                   style={{
-                                    display: this.state.LastUpdatedDate
+                                    display: this.state.LastUpdatedDate,
                                   }}
                                 >
                                   <DatePicker
@@ -5945,10 +5944,10 @@ class Dashboard extends Component {
                                 <div className="col-md-3 col-sm-6">
                                   <div className="normal-dropdown">
                                     <Select
-                                      getOptionLabel={option =>
+                                      getOptionLabel={(option) =>
                                         option.nameOfChannel
                                       }
-                                      getOptionValue={option =>
+                                      getOptionValue={(option) =>
                                         option.channelOfPurchaseID
                                       }
                                       options={this.state.ChannelOfPurchaseData}
@@ -5969,10 +5968,10 @@ class Dashboard extends Component {
                                 <div className="col-md-3 col-sm-6">
                                   <div className="normal-dropdown">
                                     <Select
-                                      getOptionLabel={option =>
+                                      getOptionLabel={(option) =>
                                         option.ticketActionTypeName
                                       }
-                                      getOptionValue={option =>
+                                      getOptionValue={(option) =>
                                         option.ticketActionTypeID
                                       }
                                       options={this.state.TicketActionTypeData}
@@ -6100,7 +6099,7 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6 allspc"
                                   style={{
-                                    display: this.state.CreateDateShowRecord
+                                    display: this.state.CreateDateShowRecord,
                                   }}
                                 >
                                   <DatePicker
@@ -6167,7 +6166,7 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6 allspc"
                                   style={{
-                                    display: this.state.LastUpdatedDate
+                                    display: this.state.LastUpdatedDate,
                                   }}
                                 >
                                   <DatePicker
@@ -6197,7 +6196,7 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6"
                                   style={{
-                                    display: this.state.InvoiceNoSubOrderNo
+                                    display: this.state.InvoiceNoSubOrderNo,
                                   }}
                                 >
                                   <input
@@ -6362,7 +6361,8 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6"
                                   style={{
-                                    display: this.state.PurchaseStoreCodeAddress
+                                    display: this.state
+                                      .PurchaseStoreCodeAddress,
                                   }}
                                 >
                                   <input
@@ -6423,7 +6423,7 @@ class Dashboard extends Component {
                                 <div
                                   className="col-md-3 col-sm-6"
                                   style={{
-                                    display: this.state.Wanttovisitstore
+                                    display: this.state.Wanttovisitstore,
                                   }}
                                 >
                                   <select
@@ -6705,7 +6705,8 @@ class Dashboard extends Component {
                     })()
                   }
                               </p>
-                              <a href="#!"
+                              <a
+                                href="#!"
                                 className="blue-clr fs-14 a-mar"
                                 onClick={this.clearSearch}
                               >
@@ -6722,7 +6723,8 @@ class Dashboard extends Component {
                   }
                               </a>
                               &nbsp; &nbsp; &nbsp;
-                              <a href="#!"
+                              <a
+                                href="#!"
                                 className="blue-clr fs-14 a-mar"
                                 onClick={this.setSortCheckStatus.bind(
                                   this,
@@ -6785,9 +6787,10 @@ class Dashboard extends Component {
                                 onClose={this.ScheduleCloseModel}
                                 open={this.state.Schedule}
                                 modalId="ScheduleModel"
-                                classNames={{
-                                  modal: "schedule-width"
-                                }}
+                                className="schedule-width"
+                                // className={{
+                                //   modal: "schedule-width"
+                                // }}
                                 overlayId="logout-ovrly"
                               >
                                 <div>
@@ -6808,11 +6811,11 @@ class Dashboard extends Component {
                                   <div>
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                       <Select
-                                        getOptionLabel={option =>
+                                        getOptionLabel={(option) =>
                                           option.fullName
                                         }
                                         getOptionValue={
-                                          option => option.userID //id
+                                          (option) => option.userID //id
                                         }
                                         options={this.state.TeamMemberData}
                                         placeholder="Team Member"
@@ -6914,7 +6917,7 @@ class Dashboard extends Component {
                                         </span>
                                         <div
                                           style={{
-                                            marginTop: "10px"
+                                            marginTop: "10px",
                                           }}
                                         >
                                           <Checkbox
@@ -7139,11 +7142,11 @@ class Dashboard extends Component {
                                           <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
-                                                getOptionLabel={option =>
+                                                getOptionLabel={(option) =>
                                                   option.days
                                                 }
                                                 getOptionValue={
-                                                  option => option.days //id
+                                                  (option) => option.days //id
                                                 }
                                                 options={
                                                   this.state.NameOfDayForWeek
@@ -7172,7 +7175,7 @@ class Dashboard extends Component {
                                           <label
                                             className="every1"
                                             style={{
-                                              lineHeight: "40px"
+                                              lineHeight: "40px",
                                             }}
                                           >
                                             {
@@ -7189,11 +7192,11 @@ class Dashboard extends Component {
                                           <div className="col-md-7">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
-                                                getOptionLabel={option =>
+                                                getOptionLabel={(option) =>
                                                   option.month
                                                 }
                                                 getOptionValue={
-                                                  option => option.month //id
+                                                  (option) => option.month //id
                                                 }
                                                 options={
                                                   this.state.NameOfMonthForYear
@@ -7229,7 +7232,7 @@ class Dashboard extends Component {
                                             <label
                                               className="every1"
                                               style={{
-                                                lineHeight: "40px"
+                                                lineHeight: "40px",
                                               }}
                                             >
                                              
@@ -7274,11 +7277,11 @@ class Dashboard extends Component {
                                           <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
-                                                getOptionLabel={option =>
+                                                getOptionLabel={(option) =>
                                                   option.days
                                                 }
                                                 getOptionValue={
-                                                  option => option.days //id
+                                                  (option) => option.days //id
                                                 }
                                                 options={
                                                   this.state.NameOfDayForYear
@@ -7301,7 +7304,7 @@ class Dashboard extends Component {
                                           <label
                                             className="every1 last-to"
                                             style={{
-                                              lineHeight: "40px"
+                                              lineHeight: "40px",
                                             }}
                                           >
                                             
@@ -7319,11 +7322,11 @@ class Dashboard extends Component {
                                           <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
-                                                getOptionLabel={option =>
+                                                getOptionLabel={(option) =>
                                                   option.month
                                                 }
                                                 getOptionValue={
-                                                  option => option.month //id
+                                                  (option) => option.month //id
                                                 }
                                                 options={
                                                   this.state
@@ -7377,7 +7380,7 @@ class Dashboard extends Component {
                                       style={{
                                         color: "red",
                                         marginBottom: "0",
-                                        textAlign: "center"
+                                        textAlign: "center",
                                       }}
                                     >
                                       {this.state.scheduleRequired}
@@ -7459,7 +7462,8 @@ class Dashboard extends Component {
                                 modalId="AssignPop-up"
                               >
                                 <div className="assign-modal-headerDashboard">
-                                  <a href="#!"
+                                  <a
+                                    href="#!"
                                     onClick={this.handleAssignModalClose.bind(
                                       this
                                     )}
@@ -7594,7 +7598,7 @@ class Dashboard extends Component {
                     })()
                   }</span>,
                                         accessor: "agent",
-                                        Cell: row => {
+                                        Cell: (row) => {
                                           var ids = row.original["user_ID"];
                                           return (
                                             <div>
@@ -7609,7 +7613,7 @@ class Dashboard extends Component {
                                               </span>
                                             </div>
                                           );
-                                        }
+                                        },
                                       },
                                       {
                                         Header: <span> {
@@ -7653,7 +7657,7 @@ class Dashboard extends Component {
                                           : "10px",
                                       color: "red",
                                       marginBottom: "0",
-                                      textAlign: "center"
+                                      textAlign: "center",
                                     }}
                                   >
                                     {this.state.agentSelection}
@@ -7731,9 +7735,9 @@ class Dashboard extends Component {
                           </span>
                         ),
                         accessor: "ticketID",
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
-                            <span onClick={e => this.clickCheckbox(e)}>
+                            <span onClick={(e) => this.clickCheckbox(e)}>
                               <div className="filter-type pink1 pinkmyticket">
                                 <div className="filter-checkbox pink2 pinkmargin">
                                   {this.state.ShowGridCheckBox === true ? (
@@ -7803,7 +7807,7 @@ class Dashboard extends Component {
                               </div>
                             </span>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -7828,7 +7832,7 @@ class Dashboard extends Component {
                           </span>
                         ),
                         accessor: "ticketStatus",
-                        Cell: row => {
+                        Cell: (row) => {
                           if (row.original.ticketStatus === "Open") {
                             return (
                               <span className="table-b table-blue-btn">
@@ -7860,13 +7864,13 @@ class Dashboard extends Component {
                               </span>
                             );
                           }
-                        }
+                        },
                       },
                       {
                         Header: <span></span>,
                         accessor: "taskStatus",
                         width: 45,
-                        Cell: row => {
+                        Cell: (row) => {
                           if (row.original.claimStatus !== "0/0") {
                             return (
                               <div>
@@ -7929,13 +7933,13 @@ class Dashboard extends Component {
                               </div>
                             );
                           }
-                        }
+                        },
                       },
                       {
                         Header: <span></span>,
                         accessor: "taskStatus",
                         width: 45,
-                        Cell: row => {
+                        Cell: (row) => {
                           if (row.original.taskStatus !== "0/0") {
                             return (
                               <div>
@@ -8001,7 +8005,7 @@ class Dashboard extends Component {
                               </div>
                             );
                           }
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -8031,7 +8035,7 @@ class Dashboard extends Component {
                           </label>
                         ),
                         accessor: "message",
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
                             <div>
                               {row.original.message.split("-")[0]}/
@@ -8040,7 +8044,7 @@ class Dashboard extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -8065,7 +8069,7 @@ class Dashboard extends Component {
                           </span>
                         ),
                         accessor: "category",
-                        Cell: row => (
+                        Cell: (row) => (
                           <span className="one-line-outer">
                             <label className="one-line">
                               {row.original.category}{" "}
@@ -8126,7 +8130,7 @@ class Dashboard extends Component {
                               />
                             </Popover>
                           </span>
-                        )
+                        ),
                       },
                       {
                         Header: (
@@ -8151,7 +8155,7 @@ class Dashboard extends Component {
                           </span>
                         ),
                         accessor: "priority",
-                        minWidth: 50
+                        minWidth: 50,
                       },
                       {
                         Header: (
@@ -8175,7 +8179,7 @@ class Dashboard extends Component {
                   } <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "assignee"
+                        accessor: "assignee",
                       },
                       {
                         Header: (
@@ -8200,7 +8204,7 @@ class Dashboard extends Component {
                           </span>
                         ),
                         accessor: "createdOn",
-                        Cell: row => (
+                        Cell: (row) => (
                           <span className="one-line-outer">
                             <label className="one-line">
                               {row.original.createdOn}
@@ -8324,8 +8328,8 @@ class Dashboard extends Component {
                               />
                             </Popover>
                           </span>
-                        )
-                      }
+                        ),
+                      },
                     ]}
                     resizable={false}
                     defaultPageSize={10}

@@ -117,7 +117,7 @@ class ChangePassword extends Component {
     var emailIDsystem="";
     let email=this.state.ProfileData[0].emailId;
     var url = window.location.href;
-    if(url.indexOf('?' + field + ':') != -1){
+    if(url.indexOf('?' + field + ':') !== -1){
      
         changePasswordType="mail";
         emailIDsystem=emaiId;

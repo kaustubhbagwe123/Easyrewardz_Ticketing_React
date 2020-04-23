@@ -365,6 +365,7 @@ class TicketSystem extends Component {
     });
   }
   handleGetOrderId = (selectParentData, selectChildData) => {
+    debugger;
     this.setState({
       selectedOrderData: selectParentData,
       SelectedItemData: selectChildData
@@ -377,6 +378,7 @@ class TicketSystem extends Component {
     });
   };
   handleGetStoreId = selectedStoreData => {
+    debugger;
     this.setState({
       selectedStoreIDs: selectedStoreData
     });
@@ -477,7 +479,6 @@ class TicketSystem extends Component {
           AltEmailID: this.state.CustData.altEmail,
           CreatedBy: this.state.createdBy,
           // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
-          // DateOfBirth: Dob,
           IsActive: 1
         }
       })
@@ -485,14 +486,12 @@ class TicketSystem extends Component {
           let Message = res.data.message;
           if (Message === "Success") {
             NotificationManager.success("Record updated Successfull.");
-
             self.componentDidMount();
-
             self.handleEditCustomerClose.bind(this);
           }
         })
-        .catch(data => {
-          console.log(data);
+        .catch(res => {
+          console.log(res);
         });
     } else {
       this.validator.showMessages();
@@ -518,8 +517,8 @@ class TicketSystem extends Component {
           self.setState({ TicketTitleData: [] });
         }
       })
-      .catch(data => {
-        console.log(data);
+      .catch(res => {
+        console.log(res);
       });
   }
   handleCkEditorTemplate() {
@@ -755,6 +754,7 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
+        debugger
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
         var CustData = res.data.responseData;
@@ -906,7 +906,6 @@ class TicketSystem extends Component {
   };
 
   handleAppendTicketSuggestion = e => {
-    ////
     this.setState({ toggleTitle: true });
     var startPoint = document.getElementById("titleSuggestion").selectionStart;
     var textLength = document.getElementById("titleSuggestion").value.length;
@@ -996,112 +995,94 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    if (
-      this.state.titleSuggValue.length > 0 &&
-      this.state.ticketDetails.length > 0 &&
-      this.state.selectedBrand > 0 &&
-      this.state.selectedCategory > 0 &&
-      this.state.selectedSubCategory > 0 &&
-      this.state.selectedIssueType > 0 &&
-      this.state.selectedChannelOfPurchase.length > 0
-    ) {
-      this.setState({ loading: true });
-      let self = this;
-      // var OID = this.state.selectedTicketPriority;
-      var selectedRow = "";
-
-      // --------------New Code start---------------
-      if (this.state.SelectedItemData.length === 0) {
-        for (let j = 0; j < this.state.selectedOrderData.length; j++) {
-          selectedRow +=
-            this.state.selectedOrderData[j]["orderMasterID"] + "|0|1,";
+    if(this.state.selectedTicketPriority > 0){
+      if (
+        this.state.titleSuggValue.length > 0 &&
+        this.state.ticketDetails.length > 0 &&
+        this.state.selectedBrand > 0 &&
+        this.state.selectedCategory > 0 &&
+        this.state.selectedSubCategory > 0 &&
+        this.state.selectedIssueType > 0 &&
+        this.state.selectedChannelOfPurchase > 0
+      ) {
+        this.setState({ loading: true });
+        let self = this;
+        var selectedRow = "";
+        var order_masterId = 0;
+        if (this.state.selectedOrderData.length > 0) {
+          order_masterId = this.state.selectedOrderData[0]["orderMasterID"];
         }
-      } else {
-        for (let i = 0; i < this.state.SelectedItemData.length; i++) {
-          selectedRow +=
-            this.state.SelectedItemData[i]["orderItemID"] +
-            "|" +
-            this.state.SelectedItemData[i]["requireSize"] +
-            "|0,";
-        }
-      }
-      // --------------New Code end-----------------
-
-      var selectedStore = "";
-      for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
-        var PurposeID = this.state.selectedStoreIDs[j]["purposeId"];
-
-        if (PurposeID === "0") {
-          // Send Id as 1 and 2 from API
-          PurposeID = 1;
+  
+        // --------------New Code start---------------
+        if (this.state.SelectedItemData.length === 0) {
+          for (let j = 0; j < this.state.selectedOrderData.length; j++) {
+            selectedRow +=
+              this.state.selectedOrderData[j]["orderMasterID"] + "|0|1,";
+          }
         } else {
-          PurposeID = 2;
+          for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+            selectedRow +=
+              this.state.SelectedItemData[i]["orderItemID"] +
+              "|" +
+              this.state.SelectedItemData[i]["requireSize"] +
+              "|0,";
+          }
         }
-
-        selectedStore +=
-          this.state.selectedStoreIDs[j]["storeID"] +
-          "|" +
-          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format(
-            "YYYY-MM-DD"
-          ) +
-          "|" +
-          PurposeID +
-          ",";
-      }
-      var actionStatusId = 0;
-      if (StatusID === "200") {
-        actionStatusId = 103;
-      } else if (StatusID === "201") {
-        actionStatusId = 101;
-      } else {
-        actionStatusId = 100;
-      }
-
-      var mailData = [];
-      mailData = this.state.mailData;
-      this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
-      this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
-      this.state.mailFiled["TicketMailBody"] = this.state.editorTemplateDetails;
-      this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
-      this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
-      mailData.push(this.state.mailFiled);
-
-      const formData = new FormData();
-
-      var paramData = {
-        TicketTitle: this.state.titleSuggValue,
-        Ticketdescription: this.state.ticketDetails,
-        CustomerID: this.state.customer_Id,
-        BrandID: this.state.selectedBrand,
-        CategoryID: this.state.selectedCategory,
-        SubCategoryID: this.state.selectedSubCategory,
-        IssueTypeID: this.state.selectedIssueType,
-        PriorityID: this.state.selectedTicketPriority,
-        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
-        Ticketnotes: this.state.ticketNote,
-        taskMasters: this.state.taskMaster,
-        StatusID: actionStatusId,
-        TicketActionID: this.state.selectedTicketActionType,
-        IsInstantEscalateToHighLevel: this.state.escalationLevel,
-        IsWantToAttachOrder: this.state.customerAttachOrder,
-        TicketTemplateID: this.state.selectTicketTemplateId,
-        TicketMailBody: this.state.editorTemplateDetails,
-        IsWantToVisitedStore: this.state.custVisit,
-        IsAlreadyVisitedStore: this.state.AlreadycustVisit,
-        TicketSourceID: 1,
-        OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
-        StoreID: selectedStore.substring(",", selectedStore.length - 1),
-        ticketingMailerQues: mailData
-      };
-      formData.append("ticketingDetails", JSON.stringify(paramData));
-      for (let j = 0; j < this.state.FileData.length; j++) {
-        formData.append("Filedata", this.state.FileData[j]);
-      }
-      //// For DRAFT UPDATE CONDTION
-      if (this.state.ticketDetailID) {
-        const DRAFTFromData = new FormData();
+        // --------------New Code end-----------------
+  
+        var selectedStore = "";
+        for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
+          var PurposeID = this.state.selectedStoreIDs[j]["purposeId"];
+  
+          if (PurposeID === "0") {
+            // Send Id as 1 and 2 from API
+            PurposeID = 1;
+          } else {
+            PurposeID = 2;
+          }
+  
+          var visitDate = "";
+          if (
+            this.state.selectedStoreIDs[j]["StoreVisitDate"] === null ||
+            this.state.selectedStoreIDs[j]["StoreVisitDate"] === undefined ||
+            this.state.selectedStoreIDs[j]["StoreVisitDate"] === ""
+          ) {
+            visitDate = "";
+          } else {
+            visitDate = moment(
+              this.state.selectedStoreIDs[j]["StoreVisitDate"]
+            ).format("YYYY-MM-DD");
+          }
+  
+          selectedStore +=
+            this.state.selectedStoreIDs[j]["storeID"] +
+            "|" +
+            visitDate +
+            "|" +
+            PurposeID +
+            ",";
+        }
+        var actionStatusId = 0;
+        if (StatusID === "200") {
+          actionStatusId = 103;
+        } else if (StatusID === "201") {
+          actionStatusId = 101;
+        } else {
+          actionStatusId = 100;
+        }
+  
+        var mailData = [];
+        mailData = this.state.mailData;
+        this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
+        this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
+        this.state.mailFiled["TicketMailBody"] = this.state.editorTemplateDetails;
+        this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
+        this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
+        mailData.push(this.state.mailFiled);
+  
+        const formData = new FormData();
+  
         var paramData = {
-          TicketID: this.state.ticketDetailID,
           TicketTitle: this.state.titleSuggValue,
           Ticketdescription: this.state.ticketDetails,
           CustomerID: this.state.customer_Id,
@@ -1124,77 +1105,229 @@ class TicketSystem extends Component {
           TicketSourceID: 1,
           OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
           StoreID: selectedStore.substring(",", selectedStore.length - 1),
-          ticketingMailerQues: mailData
+          ticketingMailerQues: mailData,
+          OrderMasterID: order_masterId
         };
-        DRAFTFromData.append("ticketingDetails", JSON.stringify(paramData));
-        for (let j = 0; j < this.state.FileData.length; j++) {
-          DRAFTFromData.append("Filedata", this.state.FileData[j]);
+        //// ----------------Order attachment Code Start-----------------
+        /// For Attached order
+        if (this.state.selectedOrderData.length > 0) {
+          var order_data = this.state.selectedOrderData[0];
+          var OrderData = {
+            OrderMasterID: order_data.orderMasterID,
+            OrderNumber: order_data.invoiceNumber,
+            InvoiceDate: order_data.invoiceDate,
+            OrderPrice: order_data.ordeItemPrice,
+            PricePaid: order_data.orderPricePaid,
+            CustomerID: this.state.customer_Id,
+            Discount: order_data.discount,
+            StoreCode: order_data.storeCode,
+            TransactionDate: order_data.invoiceDate,
+            ModeOfPaymentID: 1,
+            TicketSourceID: this.state.selectedChannelOfPurchase
+          };
+        } else {
+          var OrderData = null;
         }
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Ticketing/UpdateDraftTicket",
-          headers: authHeader(),
-          data: DRAFTFromData
-        })
-          .then(function(res) {
-            debugger;
-            let Msg = res.data.status;
-            let TID = res.data.responseData;
-            self.setState({ loading: false });
-            if (Msg) {
-              NotificationManager.success(res.data.message, "", 2000);
-              if (self.state.followUpIds !== "") {
-                self.handleTicketAssignFollowUp(TID);
-              }
-              setTimeout(function() {
-                self.props.history.push("myTicketlist");
-              }, 1000);
-            } else {
-              NotificationManager.error(res.data.message, "", 2000);
-            }
+  
+        /// For Attached OrderItem data
+        var order_itemData = [];
+        for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+          var item_data = {};
+          item_data["OrderItemID"] = this.state.SelectedItemData[i][
+            "orderItemID"
+          ];
+          item_data["OrderMasterID"] = this.state.SelectedItemData[i][
+            "orderMasterID"
+          ];
+          item_data["ItemName"] = this.state.SelectedItemData[i]["itemName"];
+          item_data["InvoiceNumber"] = this.state.SelectedItemData[i][
+            "invoiceNumber"
+          ];
+          item_data["InvoiceDate"] = this.state.SelectedItemData[i][
+            "invoiceDate"
+          ];
+          item_data["ItemCount"] = this.state.SelectedItemData[i]["itemCount"];
+          item_data["ItemPrice"] = this.state.SelectedItemData[i]["itemPrice"];
+          item_data["PricePaid"] = this.state.SelectedItemData[i]["pricePaid"];
+          item_data["Size"] = this.state.SelectedItemData[i]["size"];
+          item_data["RequireSize"] = this.state.SelectedItemData[i][
+            "requireSize"
+          ];
+          item_data["Discount"] = this.state.SelectedItemData[i]["discount"];
+          item_data["ArticleNumber"] = this.state.SelectedItemData[i][
+            "articleNumber"
+          ];
+          item_data["ArticleName"] = this.state.SelectedItemData[i]["itemName"];
+  
+          order_itemData.push(item_data);
+        }
+        //// ----------------Order attachment Code End-----------------
+  
+        //// ----------------Store attachment Code Start---------------
+        var store_Details = [];
+        for (let k = 0; k < this.state.selectedStoreIDs.length; k++) {
+          var storeData = {};
+  
+          ///check purpose id
+          var PurposeID = this.state.selectedStoreIDs[k]["purposeId"];
+  
+          if (PurposeID === "0") {
+            // Send Purpose Id as 1 and 2 from API
+            PurposeID = 1;
+          } else {
+            PurposeID = 2;
+          }
+  
+          var visitDate = "";
+          if (
+            this.state.selectedStoreIDs[k]["StoreVisitDate"] === null ||
+            this.state.selectedStoreIDs[k]["StoreVisitDate"] === undefined ||
+            this.state.selectedStoreIDs[k]["StoreVisitDate"] === ""
+          ) {
+            visitDate = "";
+          } else {
+            visitDate = moment(
+              this.state.selectedStoreIDs[k]["StoreVisitDate"]
+            ).format("YYYY-MM-DD");
+          }
+  
+          storeData["StoreID"] = this.state.selectedStoreIDs[k]["storeID"];
+          storeData["BrandID"] = this.state.selectedStoreIDs[k]["brandID"];
+          storeData["CityID"] = this.state.selectedStoreIDs[k]["cityID"];
+          storeData["StateID"] = this.state.selectedStoreIDs[k]["stateID"];
+          storeData["PincodeID"] = this.state.selectedStoreIDs[k]["pincodeID"];
+          storeData["StoreName"] = this.state.selectedStoreIDs[k]["storeName"];
+          storeData["Address"] = this.state.selectedStoreIDs[k]["address"];
+          storeData["StoreCode"] = this.state.selectedStoreIDs[k]["storeCode"];
+          storeData["RegionID"] = this.state.selectedStoreIDs[k]["regionID"];
+          storeData["ZoneID"] = this.state.selectedStoreIDs[k]["zoneID"];
+          storeData["StoreTypeID"] = this.state.selectedStoreIDs[k][
+            "storeTypeID"
+          ];
+          storeData["StoreEmailID"] = this.state.selectedStoreIDs[k][
+            "storeEmailID"
+          ];
+          storeData["StorePhoneNo"] = this.state.selectedStoreIDs[k][
+            "storePhoneNo"
+          ];
+          storeData["StoreVisitDate"] = visitDate;
+          storeData["Purpose"] = PurposeID;
+          storeData["Pincode"] = this.state.selectedStoreIDs[k]["pincode"];
+          storeData["BrandIDs"] = this.state.selectedBrand;
+  
+          store_Details.push(storeData);
+        }
+        //// ----------------Store attachment Code End-----------------
+  
+        formData.append("ticketingDetails", JSON.stringify(paramData));
+        formData.append("orderDetails", JSON.stringify(OrderData));
+        formData.append("orderItemDetails", JSON.stringify(order_itemData));
+        formData.append("storeDetails", JSON.stringify(store_Details));
+        for (let j = 0; j < this.state.FileData.length; j++) {
+          formData.append("Filedata", this.state.FileData[j]);
+        }
+        //// For DRAFT UPDATE CONDTION
+        if (this.state.ticketDetailID) {
+          const DRAFTFromData = new FormData();
+          var paramData = {
+            TicketID: this.state.ticketDetailID,
+            TicketTitle: this.state.titleSuggValue,
+            Ticketdescription: this.state.ticketDetails,
+            CustomerID: this.state.customer_Id,
+            BrandID: this.state.selectedBrand,
+            CategoryID: this.state.selectedCategory,
+            SubCategoryID: this.state.selectedSubCategory,
+            IssueTypeID: this.state.selectedIssueType,
+            PriorityID: this.state.selectedTicketPriority,
+            ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
+            Ticketnotes: this.state.ticketNote,
+            taskMasters: this.state.taskMaster,
+            StatusID: actionStatusId,
+            TicketActionID: this.state.selectedTicketActionType,
+            IsInstantEscalateToHighLevel: this.state.escalationLevel,
+            IsWantToAttachOrder: this.state.customerAttachOrder,
+            TicketTemplateID: this.state.selectTicketTemplateId,
+            TicketMailBody: this.state.editorTemplateDetails,
+            IsWantToVisitedStore: this.state.custVisit,
+            IsAlreadyVisitedStore: this.state.AlreadycustVisit,
+            TicketSourceID: 1,
+            OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
+            StoreID: selectedStore.substring(",", selectedStore.length - 1),
+            ticketingMailerQues: mailData
+          };
+          DRAFTFromData.append("ticketingDetails", JSON.stringify(paramData));
+          for (let j = 0; j < this.state.FileData.length; j++) {
+            DRAFTFromData.append("Filedata", this.state.FileData[j]);
+          }
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Ticketing/UpdateDraftTicket",
+            headers: authHeader(),
+            data: DRAFTFromData
           })
-          .catch(data => {
-            console.log(data);
-          });
+            .then(function(res) {
+              debugger;
+              let Msg = res.data.status;
+              let TID = res.data.responseData;
+              self.setState({ loading: false });
+              if (Msg) {
+                NotificationManager.success(res.data.message, "", 2000);
+                if (self.state.followUpIds !== "") {
+                  self.handleTicketAssignFollowUp(TID);
+                }
+                setTimeout(function() {
+                  self.props.history.push("myTicketlist");
+                }, 1000);
+              } else {
+                NotificationManager.error(res.data.message, "", 2000);
+              }
+            })
+            .catch(data => {
+              console.log(data);
+            });
+        } else {
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Ticketing/createTicket",
+            headers: authHeader(),
+            data: formData
+          })
+            .then(function(res) {
+              debugger;
+              let Msg = res.data.status;
+              let TID = res.data.responseData;
+              self.setState({ loading: false });
+              if (Msg) {
+                NotificationManager.success(res.data.message, "", 2000);
+                if (self.state.followUpIds !== "") {
+                  self.handleTicketAssignFollowUp(TID);
+                }
+                setTimeout(function() {
+                  self.props.history.push("myTicketlist");
+                }, 1000);
+              } else {
+                NotificationManager.error(res.data.message, "", 2000);
+              }
+            })
+            .catch(data => {
+              console.log(data);
+            });
+        }
       } else {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Ticketing/createTicket",
-          headers: authHeader(),
-          data: formData
-        })
-          .then(function(res) {
-            debugger;
-            let Msg = res.data.status;
-            let TID = res.data.responseData;
-            self.setState({ loading: false });
-            if (Msg) {
-              NotificationManager.success(res.data.message, "", 2000);
-              if (self.state.followUpIds !== "") {
-                self.handleTicketAssignFollowUp(TID);
-              }
-              setTimeout(function() {
-                self.props.history.push("myTicketlist");
-              }, 1000);
-            } else {
-              NotificationManager.error(res.data.message, "", 2000);
-            }
-          })
-          .catch(data => {
-            console.log(data);
-          });
+        this.setState({
+          ticketTitleCompulsion: "Ticket Title field is compulsory.",
+          ticketDetailsCompulsion: "Ticket Details field is compulsory.",
+          ticketBrandCompulsion: "Brand field is compulsory.",
+          ticketCategoryCompulsion: "Category field is compulsory.",
+          ticketSubCategoryCompulsion: "Sub Category field is compulsory.",
+          ticketIssueTypeCompulsion: "Issue Type field is compulsory.",
+          channelPurchaseCompulsion: "Channel of Purchase field is compulsory."
+        });
       }
-    } else {
-      this.setState({
-        ticketTitleCompulsion: "Ticket Title field is compulsory.",
-        ticketDetailsCompulsion: "Ticket Details field is compulsory.",
-        ticketBrandCompulsion: "Brand field is compulsory.",
-        ticketCategoryCompulsion: "Category field is compulsory.",
-        ticketSubCategoryCompulsion: "Sub Category field is compulsory.",
-        ticketIssueTypeCompulsion: "Issue Type field is compulsory.",
-        channelPurchaseCompulsion: "Channel of Purchase field is compulsory."
-      });
+    }else{
+      NotificationManager.error("Please Select Ticket Priority.", "", 2000);
     }
+    
 
     // Don't remove this function
   }
@@ -1259,7 +1392,6 @@ class TicketSystem extends Component {
     this.setState({ selectedTicketPriority: Number(value) });
   };
   setTicketActionTypeValue = e => {
-    ////
     let value = e.currentTarget.value;
     this.setState({ selectedTicketActionType: value });
   };
@@ -1326,7 +1458,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setChannelOfPurchaseValue = e => {
-    ////
+    debugger
     let value = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: value });
   };
@@ -1344,21 +1476,21 @@ class TicketSystem extends Component {
       }
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           var Ticket_title = data.ticketTitle;
           var Ticket_details = data.ticketdescription;
           var brand_Id = data.brandID;
-          var selectedTicketPriority=data.priortyID
+          var selectedTicketPriority = data.priortyID;
           var category_Id = parseInt(data.categoryID);
           var subCategory_Id = parseInt(data.subCategoryID);
           var issue_type = parseInt(data.issueTypeID);
           var purchase_Id = data.channelOfPurchaseID;
           var ticketAction_Id = data.ticketActionTypeID;
           var attachementDetails = data.attachment;
-          
+
           var checkALert = data.ticketingMailerQue.alertID;
           var CheckCustomerCmt = data.ticketingMailerQue.isCustomerComment;
           var storeCheck = data.stores;
@@ -1393,9 +1525,9 @@ class TicketSystem extends Component {
           ////Check Task data
 
           if (TaskData > 0) {
-          self.setState({
-            showTaskData: true
-          });
+            self.setState({
+              showTaskData: true
+            });
           }
           self.setState({
             selectedTicketPriority,
@@ -1492,11 +1624,12 @@ class TicketSystem extends Component {
             <tbody>
               <tr>
                 <td className="tdicon">
-                  <a href="#!" className="bitmapback" onClick={this.handlebackprev.bind(this)}>
-                    <img
-                      src={ArrowLeftCircleBlue}
-                      alt="arrow-circle-left"
-                    />
+                  <a
+                    href="#!"
+                    className="bitmapback"
+                    onClick={this.handlebackprev.bind(this)}
+                  >
+                    <img src={ArrowLeftCircleBlue} alt="arrow-circle-left" />
                   </a>
                   <label className="source">{
                     (() => {
@@ -1518,12 +1651,13 @@ class TicketSystem extends Component {
                     text={CustNumber}
                     onCopy={() => this.setState({ copiedNumber: true })}
                   >
-                    <a href="#!" className="bitmapheadpone d-inline-block p-0 ml-2" style={{ width: '20px' }} onClick={this.handleCopyToaster}>
-                      <img
-                        src={CopyIcon}
-                        alt="Copy-Icon"
-                        className="w-100"
-                      />
+                    <a
+                      href="#!"
+                      className="bitmapheadpone d-inline-block p-0 ml-2"
+                      style={{ width: "20px" }}
+                      onClick={this.handleCopyToaster}
+                    >
+                      <img src={CopyIcon} alt="Copy-Icon" className="w-100" />
                     </a>
                   </CopyToClipboard>
                   {/* {this.state.copiedNumber ? (
@@ -1852,13 +1986,16 @@ class TicketSystem extends Component {
                                 id={item.priortyName}
                                 value={item.priorityID}
                                 onChange={this.setTicketPriorityValue}
-                                checked={item.priorityID===this.state.selectedTicketPriority}
+                                checked={
+                                  item.priorityID ===
+                                  this.state.selectedTicketPriority
+                                }
                               />
                               <label
                                 htmlFor={item.priortyName}
                                 className={
                                   item.priortyName === "Auto"
-                                    ? "disabled-link"
+                                    ? "autopriority"
                                     : null
                                 }
                               >
@@ -1948,7 +2085,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedChannelOfPurchase.length === 0 && (
+                      {this.state.selectedChannelOfPurchase === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.channelPurchaseCompulsion}
                         </p>
@@ -2286,7 +2423,11 @@ class TicketSystem extends Component {
                             Please select Brand
                           </label>
                         ) : ( */}
-                        <a href="#!" className="kblink1" onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                        <a
+                          href="#!"
+                          className="kblink1"
+                          onClick={this.HandleKbLinkModalOpen.bind(this)}
+                        >
                           <img
                             src={KnowledgeLogo}
                             alt="KnowledgeLogo"
@@ -2294,7 +2435,7 @@ class TicketSystem extends Component {
                             // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           />
                           <label
-                            // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                          // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           >
                             KB
                           </label>
@@ -2382,15 +2523,19 @@ class TicketSystem extends Component {
                         Please select Brand
                       </label>
                     ) : ( */}
-                    <a href="#!" className="kblink1" onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                    <a
+                      href="#!"
+                      className="kblink1"
+                      onClick={this.HandleKbLinkModalOpen.bind(this)}
+                    >
                       <img
                         src={KnowledgeLogo}
                         alt="KnowledgeLogo"
                         className="knoim"
                         // onClick={this.HandleKbLinkModalOpen.bind(this)}
                       />
-                      <label 
-                        // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                      <label
+                      // onClick={this.HandleKbLinkModalOpen.bind(this)}
                       >
                         KB
                       </label>
@@ -2958,11 +3103,11 @@ class TicketSystem extends Component {
                               value={this.state.CustData.editDOB}
                               onChange={this.handleChange}
                             />
-                            {this.validator.message(
+                            {/* {this.validator.message(
                               "Date of Birth",
                               this.state.CustData.editDOB,
                               "required"
-                            )}
+                            )} */}
                           </div>
                         </div>
                         <hr />
@@ -2977,11 +3122,11 @@ class TicketSystem extends Component {
                               value={this.state.CustData.altNo}
                               onChange={this.handleOnChangeData}
                             />
-                            {this.validator.message(
+                            {/* {this.validator.message(
                               "Alternate Number",
                               this.state.CustData.altNo,
                               "integer|size:10"
-                            )}
+                            )} */}
                           </div>
                           <div className="col-md-6">
                             <input
@@ -2992,11 +3137,11 @@ class TicketSystem extends Component {
                               value={this.state.CustData.altEmail}
                               onChange={this.handleOnChangeData}
                             />
-                            {this.validator.message(
+                            {/* {this.validator.message(
                               "Alternate Email Id",
                               this.state.CustData.altEmail,
                               "email"
-                            )}
+                            )} */}
                           </div>
                         </div>
                         <div className="btn-float">
@@ -3371,8 +3516,14 @@ class TicketSystem extends Component {
                           )}
                         </div>
                         <div>
-                          <span onClick={this.handleviewPolicyModelOpen} style={{ float: 'left' }}>
-                            <a href="#!" className="copyblue-kbtext d-inline-block">
+                          <span
+                            onClick={this.handleviewPolicyModelOpen}
+                            style={{ float: "left" }}
+                          >
+                            <a
+                              href="#!"
+                              className="copyblue-kbtext d-inline-block"
+                            >
                               VIEW POLICY
                               <img
                                 src={ViewBlue}

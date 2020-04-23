@@ -230,8 +230,11 @@ class FileUploadLogs extends Component {
       this.setState({
         StatusModel: false,
         fileUploadLog: this.state.tempfileUploadLog,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterFileType: this.state.sortFileType,
+        sortFilterFileName: this.state.sortFileName,
+        sortFilterCreatedDate: this.state.sortCreatedDate,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "fileType") {
         if (this.state.sfileTypeFilterCheckbox === "") {
@@ -279,8 +282,11 @@ class FileUploadLogs extends Component {
         fileUploadLog: this.state.isortA
           ? this.state.fileUploadLog
           : this.state.sortAllData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterFileType: this.state.sortFileType,
+        sortFilterFileName: this.state.sortFileName,
+        sortFilterCreatedDate: this.state.sortCreatedDate,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   }

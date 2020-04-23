@@ -1319,7 +1319,7 @@ class BlockEmail extends Component {
                                           })()
                                         }
                                         {" "}
-                                        {row.original.modifiedDate}
+                                        {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>
