@@ -11,6 +11,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "../../../helpers/authHeader";
+import { MyContext } from './../../../context'
 import axios from "axios";
 import config from "../../../helpers/config";
 import { NotificationManager } from "react-notifications";
@@ -731,6 +732,7 @@ class JunkWords extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const datajunkwords = this.state.JunkWordsData;
     return (
       <Fragment>
@@ -755,7 +757,18 @@ class JunkWords extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -765,7 +778,18 @@ class JunkWords extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                    </p>
                   </div>
                 </div>
                 <a
@@ -773,10 +797,30 @@ class JunkWords extends Component {
                   style={{ margin: "0 25px", textDecoration: "underline" }}
                   onClick={this.setSortCheckStatus.bind(this, "all")}
                 >
-                  clear search
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.a.clearsearch
+                      }
+                      else {
+                        return "clear search"
+                      }
+                    })()
+                  }
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.filterbytype
+                        }
+                        else {
+                          return "FILTER BY TYPE"
+                        }
+                      })()
+                    }
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -919,15 +963,42 @@ class JunkWords extends Component {
             </Modal>
           </div>
           <Link to="settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.ticketing
+                }
+                else {
+                  return "Ticketing"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active header-path">
-            Junk Words
+          <Link to={Demo.BLANK_LINK} className="active header-path"> 
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.junkwords
+                }
+                else {
+                  return "Junk Words"
+                }
+              })()
+            }
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -936,7 +1007,16 @@ class JunkWords extends Component {
                 className="addplusbtnReport"
                 onClick={this.AddNewJunkWords}
               >
-                + Add New
+                 {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.addnew
+                    }
+                    else {
+                      return "+ Add New"
+                    }
+                  })()
+                }
               </button>
             </div>
           </div>
@@ -947,8 +1027,17 @@ class JunkWords extends Component {
             overlayId="logout-ovrly"
           >
             <div className="setting-tabs alert-tabs">
-              <label style={{ marginLeft: "227px", fontSize: "large" }}>
-                Add New Junk Words
+              <label style={{ marginLeft: "227px", fontSize: "large" }}> 
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.addnewjunkwords
+                    }
+                    else {
+                      return "Add New Junk Words"
+                    }
+                  })()
+                }
               </label>
               <img
                 src={CancelImg}
@@ -999,7 +1088,16 @@ class JunkWords extends Component {
                     }
                     disabled={this.state.loading}
                   >
-                    SAVE
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.save
+                        }
+                        else {
+                          return "SAVE"
+                        }
+                      })()
+                    }
                     {/* {this.state.loading ? (
                             <FontAwesomeIcon
                               className="circular-loader"
@@ -1035,7 +1133,16 @@ class JunkWords extends Component {
                             "Junk Words"
                           )}
                         >
-                          Junk Words
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.junkwords
+                              }
+                              else {
+                                return "Junk Words"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1051,7 +1158,16 @@ class JunkWords extends Component {
                             "Reason"
                           )}
                         >
-                          Reason
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.reason
+                              }
+                              else {
+                                return "Reason"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1067,7 +1183,16 @@ class JunkWords extends Component {
                             "Entered Date"
                           )}
                         >
-                          Entered Date
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.entereddate
+                              }
+                              else {
+                                return "Entered Date"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1083,7 +1208,16 @@ class JunkWords extends Component {
                             "Entered By"
                           )}
                         >
-                          Entered By
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.enteredby
+                              }
+                              else {
+                                return "Entered By"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1094,18 +1228,47 @@ class JunkWords extends Component {
                         return (
                           <div>
                             <span>
-                              Admin
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.admin
+                                  }
+                                  else {
+                                    return "Admin"
+                                  }
+                                })()
+                              }
                               <Popover
                                 content={
                                   <>
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifiedBy}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.updatedby
+                                              }
+                                              else {
+                                                return "Updated By:"
+                                              }
+                                            })()
+                                          }
+                                          {row.original.modifiedBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Updated Date:{" "}
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.updateddate
+                                            }
+                                            else {
+                                              return "Updated Date:"
+                                            }
+                                          })()
+                                        }
+                                        {" "}
                                         {row.original.modifiedDate}
                                       </p>
                                     </div>
@@ -1126,7 +1289,18 @@ class JunkWords extends Component {
                       }
                     },
                     {
-                      Header: <span>Actions</span>,
+                      Header: <span> 
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.action
+                          }
+                          else {
+                            return "Actions"
+                          }
+                        })()
+                      }
+                      </span>,
                       sortable: false,
                       accessor: "actionReport",
                       Cell: row => (
@@ -1140,14 +1314,42 @@ class JunkWords extends Component {
                                   </div>
                                   <div>
                                     <p className="font-weight-bold blak-clr">
-                                      Delete record?
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.p.deleterecord
+                                          }
+                                          else {
+                                            return "Delete record?"
+                                          }
+                                        })()
+                                      }
                                     </p>
                                     <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this
-                                      record?
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.p.areyousurewanttodeletethisrecord
+                                          }
+                                          else {
+                                            return "Are you sure you want to delete this record?"
+                                          }
+                                        })()
+                                      }
                                     </p>
                                     <div className="del-can">
-                                      <a>CANCEL</a>
+                                      <a>  
+                                      {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.a.cancel
+                                            }
+                                            else {
+                                              return "CANCEL"
+                                            }
+                                          })()
+                                        }
+                                        </a>
                                       <button
                                         className="butn"
                                         onClick={this.handleDeleteJunkWords.bind(
@@ -1155,7 +1357,16 @@ class JunkWords extends Component {
                                           row.original.junkKeywordID
                                         )}
                                       >
-                                        Delete
+                                         {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.button.delete
+                                            }
+                                            else {
+                                              return "Delete"
+                                            }
+                                          })()
+                                        }
                                       </button>
                                     </div>
                                   </div>
@@ -1180,7 +1391,16 @@ class JunkWords extends Component {
                                 row.original
                               )}
                             >
-                              EDIT
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.edit
+                                  }
+                                  else {
+                                    return "EDIT"
+                                  }
+                                })()
+                              }
                             </button>
                           </div>
                         </div>
@@ -1200,5 +1420,5 @@ class JunkWords extends Component {
     );
   }
 }
-
+JunkWords.contextType = MyContext;
 export default JunkWords;

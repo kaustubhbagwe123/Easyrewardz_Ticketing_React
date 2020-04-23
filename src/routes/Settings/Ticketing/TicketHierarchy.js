@@ -1549,7 +1549,16 @@ class TicketHierarchy extends Component {
                           return (
                             <div>
                               <span>
-                                Admin
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.admin
+                      }
+                    else{
+                      return "Admin"
+                    }
+                    })()
+                  }
                                 <Popover
                                   content={
                                     <div>
@@ -1964,7 +1973,7 @@ class TicketHierarchy extends Component {
                      {
                     (() => {
                       if (TranslationContext!==undefined) {
-                      return TranslationContext.h3.bulkuupload
+                      return TranslationContext.h3.bulkupload
                       }
                     else{
                       return "Bulk Upload"

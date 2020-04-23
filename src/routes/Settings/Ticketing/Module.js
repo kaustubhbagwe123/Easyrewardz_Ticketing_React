@@ -15,6 +15,7 @@ import "react-rangeslider/lib/index.css";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
+import { MyContext } from './../../../context'
 import {
   NotificationContainer,
   NotificationManager
@@ -258,20 +259,48 @@ class Module extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.ticketing
+                }
+                else {
+                  return "Ticketing"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Modules
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.modules
+                }
+                else {
+                  return "Modules"
+                }
+              })()
+            }
           </Link>
         </div>
 
@@ -289,10 +318,28 @@ class Module extends Component {
                       <Tab label={name.moduleName} key={i}>
                         <div className="switch switch-primary">
                           <label className="moduleswitchtext-main">
-                            Field Name
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.filedname
+                              }
+                              else {
+                                return "Field Name"
+                              }
+                            })()
+                          }
                           </label>
-                          <label className="moduleswitchtext-main1">
-                            Show/Hide
+                          <label className="moduleswitchtext-main1"> 
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.showhide
+                              }
+                              else {
+                                return "Show/Hide"
+                              }
+                            })()
+                          }
                           </label>
                         </div>
 
@@ -885,5 +932,5 @@ class Module extends Component {
     );
   }
 }
-
+Module.contextType = MyContext;
 export default Module;

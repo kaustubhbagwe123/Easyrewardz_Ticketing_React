@@ -16,6 +16,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
 import CKEditor from "react-ckeditor-component";
 import Modal from "react-bootstrap/Modal";
+import { MyContext } from './../../../context'
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
@@ -1268,6 +1269,7 @@ class Templates extends Component {
     }
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1292,7 +1294,18 @@ class Templates extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1302,7 +1315,18 @@ class Templates extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -1310,10 +1334,30 @@ class Templates extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                 {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.a.clearsearch
+                      }
+                      else {
+                        return "clear search"
+                      }
+                    })()
+                  }
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1337,7 +1381,18 @@ class Templates extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                      {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.all
+                            }
+                            else {
+                              return "ALL"
+                            }
+                          })()
+                        }
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "issueTypeName"
@@ -1452,15 +1507,42 @@ class Templates extends Component {
 
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.ticketing
+                }
+                else {
+                  return "Ticketing"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Templates
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.templates
+                }
+                else {
+                  return "Templates"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="container-fluid">
@@ -1482,7 +1564,16 @@ class Templates extends Component {
                               "Template Name"
                             )}
                           >
-                            Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.name
+                                }
+                                else {
+                                  return "Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1499,7 +1590,16 @@ class Templates extends Component {
                             //   "IssueType"
                             // )}
                           >
-                            Issue Type
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.issuetype
+                                }
+                                else {
+                                  return "Issue Type"
+                                }
+                              })()
+                            }
                             {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                           </span>
                         ),
@@ -1533,7 +1633,16 @@ class Templates extends Component {
                               "Created By"
                             )}
                           >
-                            Created by
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created by"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1554,19 +1663,49 @@ class Templates extends Component {
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.createddate
+                                              }
+                                              else {
+                                                return "Created Date:"
+                                              }
+                                            })()
+                                          }
+                                          {" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.updatedby
+                                                }
+                                                else {
+                                                  return "Updated By:"
+                                                }
+                                              })()
+                                            }
+                                            {" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.updateddate
+                                              }
+                                              else {
+                                                return "Updated Date:"
+                                              }
+                                            })()
+                                          }
+                                          {" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1597,7 +1736,16 @@ class Templates extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1620,11 +1768,28 @@ class Templates extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.deletefile
+                                              }
+                                              else {
+                                                return "Delete file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.areyousuredeletefile
+                                              }
+                                              else {
+                                                return "Are you sure you want to delete this file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>CANCEL</a>
@@ -1635,7 +1800,16 @@ class Templates extends Component {
                                               row.original.templateID
                                             )}
                                           >
-                                            Delete
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.button.delete
+                                                }
+                                                else {
+                                                  return "Delete"
+                                                }
+                                              })()
+                                            }
                                           </button>
                                         </div>
                                       </div>
@@ -1660,7 +1834,16 @@ class Templates extends Component {
                                     row.original
                                   )}
                                 >
-                                  EDIT
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.edit
+                                      }
+                                      else {
+                                        return "EDIT"
+                                      }
+                                    })()
+                                  }
                                 </button>
                               </span>
                             </>
@@ -1677,8 +1860,17 @@ class Templates extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">
-                      CREATE TEMPLATES
+                    <label className="create-department">  
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.createtemlate
+                          }
+                          else {
+                            return "CREATE TEMPLATES"
+                          }
+                        })()
+                      }
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">Name</label>
@@ -1707,7 +1899,16 @@ class Templates extends Component {
                               id="issueTypeValue"
                               onClick={this.handleSlaButton}
                             >
-                              Select
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.select
+                                  }
+                                  else {
+                                    return "Select"
+                                  }
+                                })()
+                              }
                               <span className="caret"></span>
                             </button>
                             {this.state.indiSla === "" && (
@@ -1747,14 +1948,32 @@ class Templates extends Component {
                                       <label
                                         onClick={this.selectAllSLA.bind(this)}
                                       >
-                                        Select All
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.label.selectall
+                                            }
+                                            else {
+                                              return "Select All"
+                                            }
+                                          })()
+                                        }
                                       </label>
                                     </li>
                                     <li>
                                       <label
                                         onClick={this.selectNoSLA.bind(this)}
                                       >
-                                        Clear
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.label.clear
+                                            }
+                                            else {
+                                              return "Clear"
+                                            }
+                                          })()
+                                        }
                                       </label>
                                     </li>
                                   </ul>
@@ -1799,7 +2018,16 @@ class Templates extends Component {
                                       className="cancel"
                                       onClick={this.handleSlaButton}
                                     >
-                                      Cancel
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.button.cancel
+                                          }
+                                          else {
+                                            return "Cancel"
+                                          }
+                                        })()
+                                      }
                                     </button>
                                   </li>
                                   <li style={{ float: "right" }}>
@@ -1807,7 +2035,16 @@ class Templates extends Component {
                                       className="done"
                                       onClick={this.handleSlaButton}
                                     >
-                                      Done
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.button.done
+                                          }
+                                          else {
+                                            return "done"
+                                          }
+                                        })()
+                                      }
                                     </button>
                                   </li>
                                 </ul>
@@ -1861,7 +2098,16 @@ class Templates extends Component {
                         className="CreateADDBtn"
                         onClick={this.handleConfigureTabsOpen.bind(this)}
                       >
-                        CONFIGURE TEMPLATE
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.button.configuretemplate
+                            }
+                            else {
+                              return "CONFIGURE TEMPLATE"
+                            }
+                          })()
+                        }
                         {/* <label className="addLable">CONFIGURE TEMPLATE</label> */}
                       </button>
                       <Modal
@@ -1874,7 +2120,16 @@ class Templates extends Component {
                           <div className="row config-tab">
                             <div className="col-md-9 templateName">
                               <label className="template-text">
-                                TEMPLATE NAME : COMPLAINT STATUS
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.label.templatenamecomplaintstatus
+                                    }
+                                    else {
+                                      return "TEMPLATE NAME : COMPLAINT STATUS"
+                                    }
+                                  })()
+                                }
                               </label>
                             </div>
                             <div className="col-md-3">
@@ -1891,7 +2146,16 @@ class Templates extends Component {
                         </Modal.Header>
                         <div className="temp-sub">
                           <label className="designation-name">
-                            Template Subject
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.label.templatesubject
+                                }
+                                else {
+                                  return "Template Subject"
+                                }
+                              })()
+                            }
                           </label>
                           <input
                             type="text"
@@ -1974,7 +2238,16 @@ class Templates extends Component {
                               ) : (
                                 ""
                               )}
-                              SAVE & NEXT
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.saveandnext
+                                  }
+                                  else {
+                                    return "SAVE & NEXT"
+                                  }
+                                })()
+                              }
                             </button>
                           </div>
                         </Modal.Body>
@@ -1993,10 +2266,32 @@ class Templates extends Component {
             >
               <div className="edtpadding">
                 <div className="">
-                  <label className="popover-header-text">EDIT TEMPLATES</label>
+                  <label className="popover-header-text">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.edittemplate
+                        }
+                        else {
+                          return "EDIT TEMPLATES"
+                        }
+                      })()
+                    }
+                  </label>
                 </div>
                 <div className="pop-over-div">
-                  <label className="edit-label-1">Name</label>
+                  <label className="edit-label-1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.name
+                        }
+                        else {
+                          return "Name"
+                        }
+                      })()
+                    }
+                  </label>
                   <input
                     type="text"
                     className="txt-edit-popover"
@@ -2013,7 +2308,18 @@ class Templates extends Component {
                   </p>
                 )}
                 <div className="pop-over-div">
-                  <label className="edit-label-1">Issue Type</label>
+                  <label className="edit-label-1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.issuetype
+                        }
+                        else {
+                          return "Issue Type"
+                        }
+                      })()
+                    }
+                  </label>
                   <Select
                     getOptionLabel={option => option.issueTypeName}
                     getOptionValue={
@@ -2033,7 +2339,18 @@ class Templates extends Component {
                   </p>
                 )}
                 <div className="pop-over-div">
-                  <label className="edit-label-1">Status</label>
+                  <label className="edit-label-1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.status
+                        }
+                        else {
+                          return "Status"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputStatus"
                     className="edit-dropDwon dropdown-setting"
@@ -2048,14 +2365,32 @@ class Templates extends Component {
                 <br />
                 <div className="text-center">
                   <a className="pop-over-cancle" onClick={this.toggleEditModal}>
-                    CANCEL
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.cancel
+                        }
+                        else {
+                          return "CANCEL"
+                        }
+                      })()
+                    }
                   </a>
                   <button className="pop-over-button FlNone">
                     <label
                       className="pop-over-btnsave-text"
                       onClick={this.handleEditSave}
                     >
-                      SAVE
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.save
+                          }
+                          else {
+                            return "SAVE"
+                          }
+                        })()
+                      }
                     </label>
                   </button>
                 </div>
@@ -2068,5 +2403,5 @@ class Templates extends Component {
     );
   }
 }
-
+Templates.contextType = MyContext;
 export default Templates;

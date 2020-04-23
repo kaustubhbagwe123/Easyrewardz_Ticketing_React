@@ -12,6 +12,7 @@ import config from "./../helpers/config";
 import { Link } from "react-router-dom";
 import { authHeader } from "../helpers/authHeader";
 import activeStatus from "./activeStatus";
+import { MyContext } from './../context'
 import {
   NotificationContainer,
   NotificationManager
@@ -983,6 +984,7 @@ class CreatePriority extends Component {
   }
 
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         {/* <NotificationContainer /> */}
@@ -1006,7 +1008,16 @@ class CreatePriority extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  }</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1016,7 +1027,16 @@ class CreatePriority extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortztoa
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }  </p>
                 </div>
               </div>
               <a
@@ -1024,10 +1044,28 @@ class CreatePriority extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1167,15 +1205,43 @@ class CreatePriority extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Priority
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.Priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  }   
           </Link>
         </div>
         <div className="container-fluid">
@@ -1226,7 +1292,17 @@ class CreatePriority extends Component {
                         {
                           title: (filters, sortOrder) => (
                             <span>
-                              Priority Name
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.priorityname
+                      }
+                    else{
+                      return "Priority Name"
+                    }
+                    })()
+                  }   
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1271,7 +1347,17 @@ class CreatePriority extends Component {
                         {
                           title: (filters, sortOrder) => (
                             <span>
-                              Created By
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }   
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1323,22 +1409,58 @@ class CreatePriority extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {record.createdByName}
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }   : {record.createdByName}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createddate
+                      }
+                    else{
+                      return "Created Date"
+                    }
+                    })()
+                  }:{" "}
                                           {record.createdDateFormated}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By: {record.modifiedByName}
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updatedby
+                      }
+                    else{
+                      return "Updated By"
+                    }
+                    })()
+                  }: {record.modifiedByName}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updateddate
+                      }
+                    else{
+                      return "Updated Date"
+                    }
+                    })()
+                  }:{" "}
                                           {record.modifiedDateFormated}
                                         </p>
                                       </div>
@@ -1392,7 +1514,16 @@ class CreatePriority extends Component {
 
                           title: (filters, sortOrder) => (
                             <span>
-                              Created Date
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.createddate
+                      }
+                    else{
+                      return "Created Date"
+                    }
+                    })()
+                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1443,7 +1574,16 @@ class CreatePriority extends Component {
 
                           title: (filters, sortOrder) => (
                             <span>
-                              Status
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1474,14 +1614,40 @@ class CreatePriority extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }</a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteData.bind(
@@ -1489,7 +1655,16 @@ class CreatePriority extends Component {
                                               record.priorityID
                                             )}
                                           >
-                                            Delete
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                           </button>
                                         </div>
                                       </div>
@@ -1512,7 +1687,16 @@ class CreatePriority extends Component {
                                     record
                                   )}
                                 >
-                                  EDIT
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }
                                 </button>
                               </span>
                             );
@@ -1536,9 +1720,31 @@ class CreatePriority extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">CREATE PRORITY</label>
+                    <label className="create-department">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createpriority
+                      }
+                    else{
+                      return "CREATE PRORITY"
+                    }
+                    })()
+                  }
+                    </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Priority Name</label>
+                      <label className="designation-name">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.priorityname
+                      }
+                    else{
+                      return "Priority Name"
+                    }
+                    })()
+                  }
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -1555,7 +1761,16 @@ class CreatePriority extends Component {
                       )}
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectedActiveStatus}
@@ -1592,7 +1807,16 @@ class CreatePriority extends Component {
                         ) : (
                           ""
                         )}
-                        ADD
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
@@ -1607,9 +1831,29 @@ class CreatePriority extends Component {
           Id="tampleteEditModal"
         >
           <div className="edtpadding">
-            <label className="popover-header-text">EDIT PRORITY</label>
+            <label className="popover-header-text">
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.editpriority
+                      }
+                    else{
+                      return "EDIT PRORITY"
+                    }
+                    })()
+                  }
+            </label>
             <div className=" pop-over-div">
-              <label className="pop-over-lbl-text">Priority Name</label>
+              <label className="pop-over-lbl-text">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.priorityname
+                      }
+                    else{
+                      return "Priority Name"
+                    }
+                    })()
+                  }</label>
 
               <input
                 type="text"
@@ -1632,7 +1876,16 @@ class CreatePriority extends Component {
               )}
             </div>
             <div className=" pop-over-div">
-              <label className="pop-over-lbl-text">Status</label>
+              <label className="pop-over-lbl-text">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
               <select
                 className="form-control dropdown-setting"
                 name="isActive"
@@ -1666,7 +1919,16 @@ class CreatePriority extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -1683,7 +1945,16 @@ class CreatePriority extends Component {
                 ) : (
                   ""
                 )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                <label className="pop-over-btnsave-text">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.save
+                      }
+                    else{
+                      return "Save"
+                    }
+                    })()
+                  }</label>
               </button>
             </div>
           </div>
@@ -1693,4 +1964,5 @@ class CreatePriority extends Component {
   }
 }
 
+CreatePriority.contextType = MyContext;
 export default CreatePriority;

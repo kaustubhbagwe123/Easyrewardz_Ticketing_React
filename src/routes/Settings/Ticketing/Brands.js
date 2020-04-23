@@ -11,6 +11,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import config from "../../../helpers/config";
 import axios from "axios";
 import { authHeader } from "../../../helpers/authHeader";
+import { MyContext } from '../../../context'
 import {
   // NotificationContainer,
   NotificationManager
@@ -973,6 +974,7 @@ class Brands extends Component {
   }
 
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     const { brandData } = this.state;
     return (
       <React.Fragment>
@@ -997,7 +999,16 @@ class Brands extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  }</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1007,7 +1018,18 @@ class Brands extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }
+                  </p>
                 </div>
               </div>
               <a
@@ -1015,10 +1037,28 @@ class Brands extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1158,15 +1198,42 @@ class Brands extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }  
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Brands
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.brands
+                      }
+                    else{
+                      return "Brands"
+                    }
+                    })()
+                  }  
           </Link>
         </div>
         <div className="container-fluid">
@@ -1191,7 +1258,17 @@ class Brands extends Component {
                                 "Brand Code"
                               )}
                             >
-                              Brand Code
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.brandcode
+                      }
+                    else{
+                      return "Brand Code"
+                    }
+                    })()
+                  }  
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1208,7 +1285,17 @@ class Brands extends Component {
                                 "Brand Name"
                               )}
                             >
-                              Brand Name
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  }  
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1225,7 +1312,17 @@ class Brands extends Component {
                                 "Created By"
                               )}
                             >
-                              Brand Added By
+                              
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.brandaddedby
+                      }
+                    else{
+                      return "Brand Added By"
+                    }
+                    })()
+                  }  
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1243,24 +1340,60 @@ class Brands extends Component {
                                         <div>
                                           <b>
                                             <p className="title">
-                                              Created By:{" "}
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }:{" "}
                                               {row.original["created_By"]}
                                             </p>
                                           </b>
                                           <p className="sub-title">
-                                            Created Date:{" "}
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createddate
+                      }
+                    else{
+                      return "Created Date"
+                    }
+                    })()
+                  }:{" "}
                                             {row.original["createdDateFormat"]}
                                           </p>
                                         </div>
                                         <div>
                                           <b>
                                             <p className="title">
-                                              Updated By:{" "}
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updatedby
+                      }
+                    else{
+                      return "Updated By"
+                    }
+                    })()
+                  }:{" "}
                                               {row.original["modify_By"]}
                                             </p>
                                           </b>
                                           <p className="sub-title">
-                                            Updated Date:{" "}
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.upadateddate
+                      }
+                    else{
+                      return "Updated Date"
+                    }
+                    })()
+                  }:{" "}
                                             {row.original["modifyDateFormat"]}
                                           </p>
                                         </div>
@@ -1289,7 +1422,16 @@ class Brands extends Component {
                                 "Status"
                               )}
                             >
-                              Status
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1297,7 +1439,16 @@ class Brands extends Component {
                           accessor: "status"
                         },
                         {
-                          Header: <span>Actions</span>,
+                          Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.actions
+                      }
+                    else{
+                      return "Actions"
+                    }
+                    })()
+                  }</span>,
                           accessor: "actiondept",
                           sortable: false,
                           Cell: row => {
@@ -1319,11 +1470,28 @@ class Brands extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                            Delete file?
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                           </p>
                                           <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                           </p>
                                           <div className="del-can">
                                             <a
@@ -1336,7 +1504,16 @@ class Brands extends Component {
                                                 )
                                               }
                                             >
-                                              CANCEL
+                                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
                                             </a>
                                             <button
                                               className="butn"
@@ -1346,7 +1523,16 @@ class Brands extends Component {
                                                 brand_ID
                                               )}
                                             >
-                                              Delete
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                             </button>
                                           </div>
                                         </div>
@@ -1388,7 +1574,16 @@ class Brands extends Component {
                                     trigger="click"
                                   >
                                     <label className="Table-action-edit-button-text">
-                                      <MyButton>EDIT</MyButton>
+                                      <MyButton> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.mybutton.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }</MyButton>
                                     </label>
                                   </Popover>
                                 </span>
@@ -1407,9 +1602,29 @@ class Brands extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">CREATE BRAND</label>
+                    <label className="create-department"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createbrand
+                      }
+                    else{
+                      return "CREATE BRAND"
+                    }
+                    })()
+                  }</label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Brand Code</label>
+                      <label className="designation-name">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brandcode
+                      }
+                    else{
+                      return "Brand Code"
+                    }
+                    })()
+                  }
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -1427,7 +1642,18 @@ class Brands extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Brand Name</label>
+                        <label className="reports-to">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  }
+                        </label>
                         <input
                           type="text"
                           className="txt-1"
@@ -1445,7 +1671,16 @@ class Brands extends Component {
                       </div>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                       <select
                         className="form-control dropdown-setting"
                         name="selectedStatus"
@@ -1482,7 +1717,16 @@ class Brands extends Component {
                         ) : (
                           ""
                         )}
-                        ADD
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
@@ -1496,4 +1740,5 @@ class Brands extends Component {
   }
 }
 
+Brands.contextType = MyContext;
 export default Brands;

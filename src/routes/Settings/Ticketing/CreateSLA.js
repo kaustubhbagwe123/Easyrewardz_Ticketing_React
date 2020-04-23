@@ -19,6 +19,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
+import { MyContext } from './../../../context'
 import {
   // NotificationContainer,
   NotificationManager
@@ -1208,6 +1209,7 @@ class CreateSLA extends Component {
   };
 
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1230,7 +1232,16 @@ class CreateSLA extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  }</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1240,7 +1251,16 @@ class CreateSLA extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }</p>
                 </div>
               </div>
               <a
@@ -1248,10 +1268,28 @@ class CreateSLA extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                 <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1365,15 +1403,42 @@ class CreateSLA extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            SLA
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.sla
+                      }
+                    else{
+                      return "SLA"
+                    }
+                    })()
+                  }
           </Link>
         </div>
         <div className="container-fluid">
@@ -1395,7 +1460,17 @@ class CreateSLA extends Component {
                               "IssueType"
                             )}
                           >
-                            Issue Type
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1412,18 +1487,45 @@ class CreateSLA extends Component {
                                     <>
                                       <div>
                                         <p className="title">
-                                          <b> Brand: </b>
+                                          <b> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  }: </b>
                                           {row.original.createdBy}
                                         </p>
 
                                         <p className="sub-title">
-                                          <b>Category: </b>
+                                          <b>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }: </b>
                                           {row.original.categoryName}
                                         </p>
                                       </div>
                                       <div>
                                         <p className="sub-title">
-                                          <b> Sub Category:</b>
+                                          <b>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }:</b>
                                           {row.original.subCategoryName}
                                         </p>
                                       </div>
@@ -1446,7 +1548,17 @@ class CreateSLA extends Component {
                       {
                         Header: (
                           <span>
-                            SLA by Priority
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.slabypriority
+                      }
+                    else{
+                      return "SLA by Priority"
+                    }
+                    })()
+                  }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1475,21 +1587,66 @@ class CreateSLA extends Component {
                                       <div className="general-popover created-popover">
                                         <div>
                                           <label className="slatargettext-1">
-                                            SLA TARGETS
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.slatargets
+                      }
+                    else{
+                      return "SLA TARGETS"
+                    }
+                    })()
+                  }
                                           </label>
                                         </div>
                                         <div>
                                           <label className="createhead-text-1">
-                                            Priority
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  }
                                           </label>
                                           <label className="createhead-text-1">
-                                            %SLA
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.persla
+                      }
+                    else{
+                      return "%SLA"
+                    }
+                    })()
+                  }
                                           </label>
                                           <label className="createhead-text-1">
-                                            Respond
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.respond
+                      }
+                    else{
+                      return "Respond"
+                    }
+                    })()
+                  }
                                           </label>
                                           <label className="createhead-text-1">
-                                            Resolve
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.resolve
+                      }
+                    else{
+                      return "Resolve"
+                    }
+                    })()
+                  }
                                           </label>
                                         </div>
                                         {slaTarget !== null &&
@@ -1538,7 +1695,16 @@ class CreateSLA extends Component {
                               "Created By"
                             )}
                           >
-                            Created By
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1556,23 +1722,59 @@ class CreateSLA extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }: {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.createddate
+                      }
+                    else{
+                      return "Created Date"
+                    }
+                    })()
+                  }:{" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.updatedby
+                      }
+                    else{
+                      return "Updated By"
+                    }
+                    })()
+                  }:{" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.updateddate
+                      }
+                    else{
+                      return "Updated Date"
+                    }
+                    })()
+                  }:{" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1603,7 +1805,16 @@ class CreateSLA extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1611,7 +1822,16 @@ class CreateSLA extends Component {
                         accessor: "isSLAActive"
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.actions
+                      }
+                    else{
+                      return "Actions"
+                    }
+                    })()
+                  }</span>,
                         accessor: "actiondept",
                         sortable: false,
                         Cell: row => {
@@ -1627,14 +1847,41 @@ class CreateSLA extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }</a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteSLA.bind(
@@ -1642,7 +1889,16 @@ class CreateSLA extends Component {
                                               row.original.slaid
                                             )}
                                           >
-                                            Delete
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                           </button>
                                         </div>
                                       </div>
@@ -1667,7 +1923,16 @@ class CreateSLA extends Component {
                                   )}
                                 >
                                   <label className="Table-action-edit-button-text">
-                                    EDIT
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.edit
+                      }
+                    else{
+                      return "Edit"
+                    }
+                    })()
+                  }
                                   </label>
                                 </button>
                               </span>
@@ -1686,10 +1951,30 @@ class CreateSLA extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="Create-store-text">CREATE SLA</label>
+                    <label className="Create-store-text">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createsla
+                      }
+                    else{
+                      return "CREATE SLA"
+                    }
+                    })()
+                  }
+                    </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }</label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"
@@ -1698,7 +1983,16 @@ class CreateSLA extends Component {
                             id="issueTypeValue"
                             onClick={this.handleSlaButton}
                           >
-                            Select
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.select
+                      }
+                    else{
+                      return "Select"
+                    }
+                    })()
+                  }
                             <span className="caret"></span>
                           </button>
                           {this.state.indiSla === "" && (
@@ -1738,14 +2032,34 @@ class CreateSLA extends Component {
                                     <label
                                       onClick={this.selectAllSLA.bind(this)}
                                     >
-                                      Select All
+                                      
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.selectall
+                      }
+                    else{
+                      return "Select All"
+                    }
+                    })()
+                  }
                                     </label>
                                   </li>
                                   <li>
                                     <label
                                       onClick={this.selectNoSLA.bind(this)}
                                     >
-                                      Clear
+                                      
+                                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.clear
+                      }
+                    else{
+                      return "Clear"
+                    }
+                    })()
+                  }
                                     </label>
                                   </li>
                                 </ul>
@@ -1785,7 +2099,16 @@ class CreateSLA extends Component {
                                     className="cancel"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Cancel
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
                                   </button>
                                 </li>
                                 <li style={{ float: "right" }}>
@@ -1793,7 +2116,16 @@ class CreateSLA extends Component {
                                     className="done"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Done
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.done
+                      }
+                    else{
+                      return "Done"
+                    }
+                    })()
+                  }
                                   </button>
                                 </li>
                               </ul>
@@ -1803,17 +2135,73 @@ class CreateSLA extends Component {
                       </div>
                     </div>
                     <div className="slatargetRow">
-                      <label className="slatargettext">SLA Targets</label>
+                      <label className="slatargettext">
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.slatargets
+                      }
+                    else{
+                      return "SLA Targets"
+                    }
+                    })()
+                  }
+                      </label>
                     </div>
                     <div className="slatargetRow-1">
                       <label className="createhead-text-new  createhead-cus">
-                        Priority
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  }
                       </label>
                       <label className="createhead-text">
-                        %SLA <br /> Breach
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.persla
+                      }
+                    else{
+                      return "%SLA"
+                    }
+                    })()
+                  } <br />  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.breach
+                      }
+                    else{
+                      return "Breach"
+                    }
+                    })()
+                  }
                       </label>
-                      <label className="createhead-text">Respond</label>
-                      <label className="createhead-text">Resolve</label>
+                      <label className="createhead-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.respond
+                      }
+                    else{
+                      return "Respond"
+                    }
+                    })()
+                  }</label>
+                      <label className="createhead-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.resolve
+                      }
+                    else{
+                      return "Resolve"
+                    }
+                    })()
+                  }</label>
                     </div>
                     {this.state.finalData !== null &&
                       this.state.finalData.map((item, i) => (
@@ -1916,7 +2304,16 @@ class CreateSLA extends Component {
 
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                         <select
                           className="store-create-select"
                           value={this.state.SlaIsActive}
@@ -1933,7 +2330,16 @@ class CreateSLA extends Component {
                         type="button"
                         onClick={this.createSla.bind(this)}
                       >
-                        ADD
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                   </div>
@@ -1942,9 +2348,27 @@ class CreateSLA extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
+                    <h3>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h3.bulkupload
+                      }
+                    else{
+                      return "Bulk Upload"
+                    }
+                    })()
+                  }</h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.template
+                      }
+                    else{
+                      return "Template"
+                    }
+                    })()
+                  }</p>
                       <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
@@ -1960,8 +2384,27 @@ class CreateSLA extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>{" "}
-                            or Drop File here
+                            <span className={"fileupload-span"}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.addfile
+                      }
+                    else{
+                      return "Add File"
+                    }
+                    })()
+                  }</span>{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.dropfilehere
+                      }
+                    else{
+                      return "or Drop File here"
+                    }
+                    })()
+                  }
+                            
                           </div>
                         )}
                       </Dropzone>
@@ -1991,18 +2434,56 @@ class CreateSLA extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }</a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                     </button>
                                   </div>
                                 </div>
@@ -2024,11 +2505,29 @@ class CreateSLA extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                Retry
+                                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.retry
+                      }
+                    else{
+                      return "Retry"
+                    }
+                    })()
+                  }
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-failed">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.failed
+                      }
+                    else{
+                      return "Failed"
+                    }
+                    })()
+                  }</span>
                             </div>
                           </div>
                         ) : null}
@@ -2058,7 +2557,16 @@ class CreateSLA extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                     </button>
                     <br />
                   </div>
@@ -2082,17 +2590,44 @@ class CreateSLA extends Component {
         >
           <div className="edtpadding">
             <label className="Create-store-text" style={{ paddingTop: "0" }}>
-              EDIT SLA
+               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.editsla
+                      }
+                    else{
+                      return "EDIT SLA"
+                    }
+                    })()
+                  }
             </label>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Brand Name: </label>
+                <label className="createhead-text-new">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  }: </label>
                 <label className="createhead-text-1">
                   {this.state.createdBy}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Category Name: </label>
+                <label className="createhead-text-new">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.categoryname
+                      }
+                    else{
+                      return "Category Name"
+                    }
+                    })()
+                  }: </label>
                 <label className="createhead-text-1">
                   {this.state.categoryName}
                 </label>
@@ -2101,14 +2636,32 @@ class CreateSLA extends Component {
             <div className="row">
               <div className="col-md-6">
                 <label className="createhead-text-new">
-                  Sub Category Name:{" "}
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategoryname
+                      }
+                    else{
+                      return "Sub Category Name"
+                    }
+                    })()
+                  }:{" "}
                 </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Issue Type: </label>
+                <label className="createhead-text-new">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }: </label>
                 <label className="createhead-text-1">
                   {this.state.issueTypeName}
                 </label>
@@ -2116,17 +2669,72 @@ class CreateSLA extends Component {
             </div>
             <br />
             <div className="slatargetRow">
-              <label className="slatargettext">SLA Targets</label>
+              <label className="slatargettext">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.slatargets
+                      }
+                    else{
+                      return "SLA Targets"
+                    }
+                    })()
+                  }</label>
             </div>
             <div className="slatargetRow-1">
               <label className="createhead-text-new createhead-cus">
-                Priority
+                
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.priority
+                      }
+                    else{
+                      return "Priority"
+                    }
+                    })()
+                  }
               </label>
               <label className="createhead-text">
-                %SLA <br /> Breach
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.persla
+                      }
+                    else{
+                      return "%SLA"
+                    }
+                    })()
+                  } <br />  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.breach
+                      }
+                    else{
+                      return "Breach"
+                    }
+                    })()
+                  } 
               </label>
-              <label className="createhead-text">Respond</label>
-              <label className="createhead-text">Resolve</label>
+              <label className="createhead-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.respond
+                      }
+                    else{
+                      return "Respond"
+                    }
+                    })()
+                  } </label>
+              <label className="createhead-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.resolve
+                      }
+                    else{
+                      return "Resolve"
+                    }
+                    })()
+                  } </label>
             </div>
             {this.state.finalEditData !== null &&
               this.state.finalEditData.map((item, i) => (
@@ -2229,7 +2837,16 @@ class CreateSLA extends Component {
 
             <div className="divSpace-3">
               <div className="dropDrownSpace">
-                <label className="reports-to">Status</label>
+                <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                 <select
                   className="store-create-select"
                   value={this.state.isActive}
@@ -2245,7 +2862,16 @@ class CreateSLA extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2262,7 +2888,16 @@ class CreateSLA extends Component {
                 ) : (
                   ""
                 )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                <label className="pop-over-btnsave-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.save
+                      }
+                    else{
+                      return "Save"
+                    }
+                    })()
+                  }</label>
               </button>
             </div>
           </div>
@@ -2271,4 +2906,5 @@ class CreateSLA extends Component {
     );
   }
 }
+CreateSLA.contextType = MyContext;
 export default CreateSLA;

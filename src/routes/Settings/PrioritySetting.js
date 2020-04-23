@@ -9,9 +9,11 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import TaskIconBlue from "./../../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../../assets/Images/task-icon-gray.png";
 import CliamIconBlue from "./../../assets/Images/cliam-icon-blue.png";
+import { MyContext } from './../../context'
 
 class PrioritySettings extends Component {
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -249,4 +251,5 @@ class PrioritySettings extends Component {
   }
 }
 
+PrioritySettings.contextType = MyContext;
 export default PrioritySettings;

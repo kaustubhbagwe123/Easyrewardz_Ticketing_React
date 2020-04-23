@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import DownExcel from "./../../../assets/Images/csv.png";
 import ReactTable from "react-table";
+import { MyContext } from './../../../context'
 import {
   // NotificationContainer,
   NotificationManager
@@ -1646,6 +1647,7 @@ class CategoryMaster extends Component {
     this.setState({ progressValue: value });
   }
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     const { categoryGridData } = this.state;
     const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
       <Option key={o} value={item.categoryID}>
@@ -1685,7 +1687,16 @@ class CategoryMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  }</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1695,7 +1706,16 @@ class CategoryMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }</p>
                 </div>
               </div>
               <a
@@ -1703,10 +1723,28 @@ class CategoryMaster extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1880,15 +1918,42 @@ class CategoryMaster extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Category Master
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.categorymaster
+                      }
+                    else{
+                      return "Category Master"
+                    }
+                    })()
+                  }  
           </Link>
         </div>
         <div className="container-fluid">
@@ -1912,7 +1977,17 @@ class CategoryMaster extends Component {
                                 "Brand"
                               )}
                             >
-                              Brand Name
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1929,7 +2004,16 @@ class CategoryMaster extends Component {
                                 "Category"
                               )}
                             >
-                              Category
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1946,7 +2030,17 @@ class CategoryMaster extends Component {
                                 "SubCategory"
                               )}
                             >
-                              Sub Cat
+                               
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1963,7 +2057,18 @@ class CategoryMaster extends Component {
                                 "IssueType"
                               )}
                             >
-                              Issue Type
+                              
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1980,7 +2085,16 @@ class CategoryMaster extends Component {
                                 "Status"
                               )}
                             >
-                              Status
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1988,7 +2102,16 @@ class CategoryMaster extends Component {
                           accessor: "statusName"
                         },
                         {
-                          Header: <span>Actions</span>,
+                          Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.actions
+                      }
+                    else{
+                      return "Actions"
+                    }
+                    })()
+                  } </span>,
                           accessor: "actiondept",
                           Cell: row => {
                             var ids = row.original["brandCategoryMappingID"];
@@ -2006,14 +2129,40 @@ class CategoryMaster extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                            Delete file?
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                           </p>
                                           <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                           </p>
                                           <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <a href={Demo.BLANK_LINK}> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }</a>
                                             <button
                                               className="butn"
                                               type="button"
@@ -2022,7 +2171,16 @@ class CategoryMaster extends Component {
                                                 ids
                                               )}
                                             >
-                                              Delete
+                                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                             </button>
                                           </div>
                                         </div>
@@ -2046,7 +2204,16 @@ class CategoryMaster extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }
                                   </button>
                                 </span>
                               </>
@@ -2103,10 +2270,30 @@ class CategoryMaster extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace cus-cs">
-                    <label className="Create-store-text">CREATE CATEGORY</label>
+                    <label className="Create-store-text">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createcategory
+                      }
+                    else{
+                      return "CREATE CATEGORY"
+                    }
+                    })()
+                  }
+                    </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Brand Name</label>
+                        <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  }</label>
                         <select
                           className="store-create-select"
                           value={this.state.selectBrand}
@@ -2134,7 +2321,16 @@ class CategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
-                          Category
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }
                         </label>
                         <Select
                           showSearch={true}
@@ -2201,7 +2397,17 @@ class CategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
-                          Sub Category
+                          
+                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }
                         </label>
                         <Select
                           showSearch={true}
@@ -2262,7 +2468,17 @@ class CategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to">
+                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }</label>
                         <Select
                           showSearch={true}
                           value={this.state.ListOfIssue}
@@ -2320,7 +2536,16 @@ class CategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                         <select
                           className="form-control dropdown-setting"
                           value={this.state.selectStatus}
@@ -2347,7 +2572,16 @@ class CategoryMaster extends Component {
                         type="button"
                         onClick={this.handleSubmitData.bind(this)}
                       >
-                        ADD
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                       </button>
                     </div>
                     <br />
@@ -2357,9 +2591,27 @@ class CategoryMaster extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
+                    <h3> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h3.bulkupload
+                      }
+                    else{
+                      return "Bulk Upload"
+                    }
+                    })()
+                  }</h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.template
+                      }
+                    else{
+                      return "Template"
+                    }
+                    })()
+                  }</p>
                       <CSVLink
                         filename={"Category.csv"}
                         data={config.categoryTemplate}
@@ -2378,8 +2630,27 @@ class CategoryMaster extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>{" "}
-                            or Drop File here
+                            <span className={"fileupload-span"}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.addfile
+                      }
+                    else{
+                      return "Add file"
+                    }
+                    })()
+                  }</span>{" "}
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.dropfilehere
+                      }
+                    else{
+                      return "or Drop File here"
+                    }
+                    })()
+                  }
                           </div>
                         )}
                       </Dropzone>
@@ -2409,18 +2680,54 @@ class CategoryMaster extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }</a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                     </button>
                                   </div>
                                 </div>
@@ -2442,11 +2749,29 @@ class CategoryMaster extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                Retry
+                                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.retry
+                      }
+                    else{
+                      return "Retry"
+                    }
+                    })()
+                  }
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-failed"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.failed
+                      }
+                    else{
+                      return "Failed"
+                    }
+                    })()
+                  }</span>
                             </div>
                           </div>
                         ) : null}
@@ -2476,7 +2801,16 @@ class CategoryMaster extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                     </button>
                     <br />
                   </div>
@@ -2490,9 +2824,29 @@ class CategoryMaster extends Component {
             modalId="categoryEditModal"
           >
             <div className="edtpadding">
-              <label className="popover-header-text">EDIT CATEGORY</label>
+              <label className="popover-header-text">
+              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.editcategory
+                      }
+                    else{
+                      return "EDIT CATEGORY"
+                    }
+                    })()
+                  }
+              </label>
               <div className="pop-over-div">
-                <label className="edit-label-1">Brand Name</label>
+                <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  }</label>
                 <select
                   className="store-create-select"
                   value={this.state.editCategory.brandID}
@@ -2521,7 +2875,16 @@ class CategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Category</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }</label>
                     <Select
                       showSearch={true}
                       value={this.state.editCategory.categoryID}
@@ -2582,7 +2945,16 @@ class CategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Sub Category</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }</label>
                     <Select
                       showSearch={true}
                       value={this.state.editCategory.subCategoryID}
@@ -2649,7 +3021,16 @@ class CategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Issue Type</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }</label>
                     <Select
                       showSearch={true}
                       value={this.state.editCategory.issueTypeID}
@@ -2707,7 +3088,16 @@ class CategoryMaster extends Component {
                 </div>
               </div>
               <div className="pop-over-div">
-                <label className="edit-label-1">Status</label>
+                <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                 <select
                   id="inputStatus"
                   className="edit-dropDwon dropdown-setting"
@@ -2722,7 +3112,16 @@ class CategoryMaster extends Component {
               <br />
               <div className="text-center">
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
-                  CANCEL
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
                 </a>
 
                 <button
@@ -2740,7 +3139,16 @@ class CategoryMaster extends Component {
                     ) : (
                       ""
                     )}
-                    SAVE
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.save
+                      }
+                    else{
+                      return "SAVE"
+                    }
+                    })()
+                  }
                   </label>
                 </button>
               </div>
@@ -2752,4 +3160,5 @@ class CategoryMaster extends Component {
   }
 }
 
+CategoryMaster.contextType = MyContext;
 export default CategoryMaster;

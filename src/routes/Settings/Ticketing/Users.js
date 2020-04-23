@@ -18,6 +18,7 @@ import Modal from "react-responsive-modal";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
+import { MyContext } from './../../../context'
 import {
   // NotificationContainer,
   NotificationManager
@@ -2453,6 +2454,7 @@ class Users extends Component {
     this.setState({ progressValue: value });
   }
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     const { userData } = this.state;
 
     return (
@@ -2478,7 +2480,16 @@ class Users extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  }</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2488,7 +2499,16 @@ class Users extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortztoa
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  }</p>
                 </div>
               </div>
               <a
@@ -2496,10 +2516,28 @@ class Users extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -2652,9 +2690,27 @@ class Users extends Component {
             >
               <Tab label="Personal Details">
                 <div>
-                  <h4 style={{ textAlign: "center" }}>Personal Details</h4>
+                  <h4 style={{ textAlign: "center" }}>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h4.personaldetails
+                      }
+                    else{
+                      return "Personal Details"
+                    }
+                    })()
+                  }</h4>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">User Name</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.username
+                      }
+                    else{
+                      return "User Name"
+                    }
+                    })()
+                  }</label>
                     <input
                       type="text"
                       className="txt-edit-popover"
@@ -2671,7 +2727,16 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">First Name</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.firstname
+                      }
+                    else{
+                      return "First Name"
+                    }
+                    })()
+                  }</label>
                     <input
                       type="text"
                       className="txt-edit-popover"
@@ -2688,7 +2753,17 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Last Name</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.lastname
+                      }
+                    else{
+                      return "Last Name"
+                    }
+                    })()
+                  }
+                   </label>
                     <input
                       type="text"
                       className="txt-edit-popover"
@@ -2705,7 +2780,16 @@ class Users extends Component {
                     )} */}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Mobile Number</label>
+                    <label className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.mobilenumber
+                      }
+                    else{
+                      return "Mobile Number"
+                    }
+                    })()
+                  }</label>
                     <input
                       type="text"
                       className="txt-edit-popover"
@@ -2717,7 +2801,17 @@ class Users extends Component {
                     />
                     {this.state.EditPhoneFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Mobile Number.
+                        
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.validmobilenumber
+                      }
+                    else{
+                      return "Please enter valid Mobile Number."
+                    }
+                    })()
+                  }
                       </p>
                     )}
                     {this.state.userEditData.mobile_Number === "" && (
@@ -2727,7 +2821,18 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Email ID</label>
+                    <label className="edit-label-1">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.emailid
+                      }
+                    else{
+                      return "Email ID"
+                    }
+                    })()
+                  }
+                    </label>
                     <input
                       type="text"
                       className="txt-edit-popover"
@@ -2739,7 +2844,17 @@ class Users extends Component {
                     />
                     {this.state.editEmailFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Email Id.
+                        
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.validemail
+                      }
+                    else{
+                      return "Please enter valid Email Id."
+                    }
+                    })()
+                  }
                       </p>
                     )}
                     {this.state.userEditData.email_ID === "" && (
@@ -2757,22 +2872,60 @@ class Users extends Component {
                     onClick={this.closeEditModal.bind(this)}
                     href="#!"
                   >
-                    CANCEL
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
                   </a>
                   <button
                     className="Save-Use"
                     onClick={this.handleChangePersonalTab}
                     style={{ marginLeft: "30px" }}
                   >
-                    NEXT
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "NEXT"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </Tab>
               <Tab label="Profile Details">
                 <div>
-                  <h4 style={{ textAlign: "center" }}>Profile Details</h4>
+                  <h4 style={{ textAlign: "center" }}> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h4.profiledetails
+                      }
+                    else{
+                      return "Profile Details"
+                    }
+                    })()
+                  }</h4>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">User Designation</label>
+                    <label className="edit-label-1">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.userdesignation
+                      }
+                    else{
+                      return "User Designation"
+                    }
+                    })()
+                  }
+                    </label>
                     <select
                       className="add-select-category"
                       name="designation_ID"
@@ -2794,7 +2947,18 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Reportee Designation</label>
+                    <label className="edit-label-1">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.reporteedesignation
+                      }
+                    else{
+                      return "Reportee Designation"
+                    }
+                    })()
+                  }
+                    </label>
                     <select
                       className="add-select-category"
                       name="reporteeDesignation_ID"
@@ -2819,7 +2983,18 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Report To</label>
+                    <label className="edit-label-1">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.reportto
+                      }
+                    else{
+                      return "Report To"
+                    }
+                    })()
+                  }
+                    </label>
                     <select
                       className="add-select-category"
                       name="reportee_ID"
@@ -2849,7 +3024,16 @@ class Users extends Component {
                     onClick={this.closeEditModal.bind(this)}
                     href="#!"
                   >
-                    CANCEL
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
                   </a>
                   <button
                     className="Save-Use"
@@ -2857,15 +3041,44 @@ class Users extends Component {
                     onClick={this.handleChangeProfileTab}
                     style={{ marginLeft: "30px" }}
                   >
-                    NEXT
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </Tab>
               <Tab label="Mapped Category">
                 <div>
-                  <h4 style={{ textAlign: "center" }}>Mapped Category</h4>
+                  <h4 style={{ textAlign: "center" }}>
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h4.mappedcategory
+                      }
+                    else{
+                      return "Mapped Category"
+                    }
+                    })()
+                  }
+                  </h4>
                   <div className="pop-over-div">
-                    <label>Brand</label>
+                    <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  }</label>
                     {
                       <Select
                         getOptionLabel={option => option.brandName}
@@ -2886,7 +3099,16 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label>Categories</label>
+                    <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.categories
+                      }
+                    else{
+                      return "Categories"
+                    }
+                    })()
+                  }</label>
 
                     <Select
                       getOptionLabel={option => option.categoryName}
@@ -2911,7 +3133,18 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label>Sub Categories</label>
+                    <label>
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategories
+                      }
+                    else{
+                      return "Sub Categories"
+                    }
+                    })()
+                  }
+                    </label>
 
                     <Select
                       getOptionLabel={option => option.subCategoryName}
@@ -2936,7 +3169,18 @@ class Users extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label>Issue Type</label>
+                    <label>
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }
+                    </label>
 
                     <Select
                       getOptionLabel={option => option.issueTypeName}
@@ -2959,7 +3203,18 @@ class Users extends Component {
                   </div>
                   <div className="mapped-cate-extra">
                     <div className="pop-over-div">
-                      <label>CRM Role</label>
+                      <label>
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.crmroles
+                      }
+                    else{
+                      return "CRM Role"
+                    }
+                    })()
+                  }
+                      </label>
                       <select
                         className="add-select-category"
                         name="role_ID"
@@ -2990,7 +3245,18 @@ class Users extends Component {
                           value={this.state.userEditData.is_Copy_Escalation}
                           onChange={this.editsetEscn}
                         />
-                        <label htmlFor="copy-esc1">Copy Escalation</label>
+                        <label htmlFor="copy-esc1">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.copyescalation
+                      }
+                    else{
+                      return "Copy Escalation"
+                    }
+                    })()
+                  }
+                        </label>
                       </div>
                       {this.state.userEditData.is_Copy_Escalation === false && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3007,7 +3273,18 @@ class Users extends Component {
                           value={this.state.userEditData.is_Assign_Escalation}
                           onChange={this.editsetEscn}
                         />
-                        <label htmlFor="assign-esc1">Assign Escalation</label>
+                        <label htmlFor="assign-esc1">
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.assignescalation
+                      }
+                    else{
+                      return "Assign Escalation"
+                    }
+                    })()
+                  }
+                        </label>
                       </div>
                       {this.state.userEditData.is_Assign_Escalation ===
                         false && (
@@ -3030,7 +3307,17 @@ class Users extends Component {
                               htmlFor="supervisor1"
                               className="logout-label"
                             >
-                              Supervisor
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.supervisor
+                      }
+                    else{
+                      return "Supervisor"
+                    }
+                    })()
+                  }
                             </label>
                           </div>
                           <div className="status-options">
@@ -3043,7 +3330,16 @@ class Users extends Component {
                               onChange={this.editAgentValue.bind(this, "edit")}
                             />
                             <label htmlFor="agent1" className="logout-label">
-                              Agent
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.agent
+                      }
+                    else{
+                      return "Agent"
+                    }
+                    })()
+                  }
                             </label>
                           </div>
                         </div>
@@ -3052,7 +3348,16 @@ class Users extends Component {
                     {this.state.editAgentRadio === true &&
                     this.state.userEditData.is_Assign_Escalation === true ? (
                       <div className="pop-over-div">
-                        <label>Select Agent</label>
+                        <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.selectagent
+                      }
+                    else{
+                      return "Select Agent"
+                    }
+                    })()
+                  }</label>
                         <select
                           className="add-select-category"
                           name="assign_ID"
@@ -3076,7 +3381,16 @@ class Users extends Component {
                     ) : null}
 
                     <div className="pop-over-div">
-                      <label>Status</label>
+                      <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                       <select
                         className="txt-edit-popover"
                         name="is_Active"
@@ -3097,14 +3411,32 @@ class Users extends Component {
                     onClick={this.closeEditModal.bind(this)}
                     href="#!"
                   >
-                    CANCEL
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  }
                   </a>
                   <button
                     className="Save-Use"
                     onClick={this.handleUpdateUser.bind(this)}
                     style={{ marginLeft: "30px" }}
                   >
-                    SAVE
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.save
+                      }
+                    else{
+                      return "SAVE"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </Tab>
@@ -3115,15 +3447,42 @@ class Users extends Component {
         {/* ----------------------------------end------------------------------------ */}
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }  
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Users
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.users
+                      }
+                    else{
+                      return "Users"
+                    }
+                    })()
+                  }  
           </Link>
         </div>
         <div className="container-fluid">
@@ -3145,7 +3504,17 @@ class Users extends Component {
                               "User Name"
                             )}
                           >
-                            User Name
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.username
+                      }
+                    else{
+                      return "User Name"
+                    }
+                    })()
+                  }  
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -3163,7 +3532,17 @@ class Users extends Component {
                               "Mobile Number"
                             )}
                           >
-                            Mobile No.
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.mobilenumber
+                      }
+                    else{
+                      return "Mobile No"
+                    }
+                    })()
+                  }.
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -3181,7 +3560,17 @@ class Users extends Component {
                               "EmailID"
                             )}
                           >
-                            Email ID
+                            
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.emailid
+                      }
+                    else{
+                      return "Email ID"
+                    }
+                    })()
+                  }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -3199,7 +3588,16 @@ class Users extends Component {
                               "Designation"
                             )}
                           >
-                            Designation
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.designation
+                      }
+                    else{
+                      return "Designation"
+                    }
+                    })()
+                  }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -3217,12 +3615,43 @@ class Users extends Component {
                                       <div className=" row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Reportee Designation: <b>Admin</b>
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.reporteedesignation
+                      }
+                    else{
+                      return "Reportee Designation"
+                    }
+                    })()
+                  }
+                                            : <b>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.admin
+                      }
+                    else{
+                      return "Admin"
+                    }
+                    })()
+                  }</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
-                                            Issue Type:{" "}
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.issueTypeNames}</b>
                                           </p>
                                         </div>
@@ -3231,13 +3660,35 @@ class Users extends Component {
                                       <div className="row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Report To:{" "}
+                                            
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.reportto
+                      }
+                    else{
+                      return "Report To"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.reportTo}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
-                                            CRM Role:{" "}
+                                            
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.crmroles
+                      }
+                    else{
+                      return "CRM Role"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.crmRoleName}</b>
                                           </p>
                                         </div>
@@ -3246,7 +3697,16 @@ class Users extends Component {
                                       <div className="row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Brand:{" "}
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  }:{" "}
                                             <b>{row.original.brandNames}</b>
                                           </p>
                                         </div>
@@ -3254,11 +3714,50 @@ class Users extends Component {
                                           {row.original.isCopyEscalation ===
                                           "Yes" ? (
                                             <p className="sub-title mx-2">
-                                              Copy Escalation: <b>Yes</b>
+                                              
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.copyescalation
+                      }
+                    else{
+                      return "Copy Escalation"
+                    }
+                    })()
+                  }
+                                              : <b> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.yes
+                      }
+                    else{
+                      return "Yes"
+                    }
+                    })()
+                  }</b>
                                             </p>
                                           ) : (
                                             <p className="sub-title mx-2">
-                                              Copy Escalation: <b>No</b>
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.copyescalation
+                      }
+                    else{
+                      return "Copy Escalation"
+                    }
+                    })()
+                  }
+                                              : <b>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.no
+                      }
+                    else{
+                      return "No"
+                    }
+                    })()
+                  }</b>
                                             </p>
                                           )}
                                         </div>
@@ -3266,13 +3765,35 @@ class Users extends Component {
                                       <div className="row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Category:{" "}
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.category
+                      }
+                    else{
+                      return "Category"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.categoryNames}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
-                                            Assign Escalation:{" "}
+                                            
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.assignescalation
+                      }
+                    else{
+                      return "Assign Escalation"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>
                                               {row.original.assignEscalation}
                                             </b>
@@ -3282,7 +3803,16 @@ class Users extends Component {
                                       <div className="row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Sub Category:{" "}
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.subcategory
+                      }
+                    else{
+                      return "Sub Category"
+                    }
+                    })()
+                  }:{" "}
                                             <b>
                                               {row.original.subCategoryNames}
                                             </b>
@@ -3290,20 +3820,53 @@ class Users extends Component {
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
-                                            Agent Name:{" "}
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.agentname
+                      }
+                    else{
+                      return "Agent Name"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                           </p>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Created By:{" "}
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createdby
+                      }
+                    else{
+                      return "Created By"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.createdBy}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
-                                            Updated By:{" "}
+                                            
+                                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.updatedby
+                      }
+                    else{
+                      return "Updated By"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.updatedBy}</b>
                                           </p>
                                         </div>
@@ -3311,13 +3874,37 @@ class Users extends Component {
                                       <div className="row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
-                                            Created Date:{" "}
+                                            
+                                            
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.createddate
+                      }
+                    else{
+                      return "Created Date"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.createdDate}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
-                                            Updated Date:{" "}
+                                            
+                                            
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.upadateddate
+                      }
+                    else{
+                      return "Updated Date"
+                    }
+                    })()
+                  }
+                                            :{" "}
                                             <b>{row.original.updatedDate}</b>
                                           </p>
                                         </div>
@@ -3339,7 +3926,16 @@ class Users extends Component {
                         }
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.actions
+                      }
+                    else{
+                      return "Actions"
+                    }
+                    })()
+                  }</span>,
                         accessor: "userId",
                         sortable: false,
                         Cell: row => {
@@ -3358,11 +3954,28 @@ class Users extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                           {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                         </p>
                                         <div className="del-can">
                                           <a
@@ -3371,7 +3984,16 @@ class Users extends Component {
                                               this.hide(this, "samdel" + ids)
                                             }
                                           >
-                                            CANCEL
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
                                           </a>
                                           <button
                                             className="butn"
@@ -3380,7 +4002,16 @@ class Users extends Component {
                                               row.original.userId
                                             )}
                                           >
-                                            Delete
+                                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                           </button>
                                         </div>
                                       </div>
@@ -3405,7 +4036,16 @@ class Users extends Component {
                                     row.original.userId
                                   )}
                                 >
-                                  EDIT
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }
                                 </button>
                               </span>
                             </>
@@ -3422,7 +4062,18 @@ class Users extends Component {
               </div>
               <div className="col-md-4 cus-drp">
                 <div className="right-sect-div right-sect-collapse">
-                  <h3>Create Users</h3>
+                  <h3>
+                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h3.createusers
+                      }
+                    else{
+                      return "Create Users"
+                    }
+                    })()
+                  }
+                  </h3>
                   <div className="collapse-cntr">
                     <a
                       className="collapse-title"
@@ -3432,11 +4083,32 @@ class Users extends Component {
                       aria-expanded="true"
                       aria-controls="personal-details"
                     >
-                      Personal Details
+                      
+                       {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.personaldetails
+                      }
+                    else{
+                      return "Personal Details"
+                    }
+                    })()
+                  }
                     </a>
                     <div className="multi-collapse show" id="personal-details">
                       <div className="div-cntr">
-                        <label>User Name</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.username
+                      }
+                    else{
+                      return "User Name"
+                    }
+                    })()
+                  }
+                        </label>
                         <input
                           type="text"
                           maxLength={25}
@@ -3456,7 +4128,18 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>First Name</label>
+                        <label>
+                         {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.firstname
+                      }
+                    else{
+                      return "First Name"
+                    }
+                    })()
+                  }
+                        </label>
                         <input
                           type="text"
                           maxLength={25}
@@ -3476,7 +4159,16 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>Last Name</label>
+                        <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.lastname
+                      }
+                    else{
+                      return "Last Name"
+                    }
+                    })()
+                  }</label>
                         <input
                           type="text"
                           maxLength={25}
@@ -3496,7 +4188,18 @@ class Users extends Component {
                         )} */}
                       </div>
                       <div className="div-cntr">
-                        <label>Mobile Number</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.mobilenumber
+                      }
+                    else{
+                      return "Mobile Number"
+                    }
+                    })()
+                  }
+                        </label>
                         <input
                           type="text"
                           maxLength={10}
@@ -3511,7 +4214,17 @@ class Users extends Component {
                         />
                         {this.state.phoneFlag === false && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            Please enter valid Mobile Number.
+                           
+                             {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.validmobilenumber
+                      }
+                    else{
+                      return "Please enter valid Mobile Number."
+                    }
+                    })()
+                  }
                           </p>
                         )}
                         {this.state.selectMobile.length === 0 && (
@@ -3524,7 +4237,18 @@ class Users extends Component {
                         </p>
                       </div>
                       <div className="div-cntr">
-                        <label>Email ID</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.emailid
+                      }
+                    else{
+                      return "Email ID"
+                    }
+                    })()
+                  }
+                        </label>
                         <input
                           type="text"
                           maxLength={100}
@@ -3539,7 +4263,17 @@ class Users extends Component {
                         />
                         {this.state.emailFlag === false && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            Please enter valid Email Id.
+                            
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.validemail
+                      }
+                    else{
+                      return "Please enter valid Email Id."
+                    }
+                    })()
+                  }
                           </p>
                         )}
                         {this.state.selectEmail.length === 0 && (
@@ -3562,7 +4296,16 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editMethod.bind(this)}
                           >
-                            Edit
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       ) : this.state.buttonToggle === true ? (
@@ -3575,7 +4318,25 @@ class Users extends Component {
                             className="butn"
                             onClick={this.handleEditPersonalDetails.bind(this)}
                           >
-                            Update &amp;Next
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.update
+                      }
+                    else{
+                      return "Update"
+                    }
+                    })()
+                  } &amp;{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       ) : (
@@ -3588,7 +4349,25 @@ class Users extends Component {
                             className="butn"
                             onClick={this.handleValidationEmailIdMob.bind(this)}
                           >
-                            SAVE &amp; NEXT
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.save
+                      }
+                    else{
+                      return "Save"
+                    }
+                    })()
+                  } &amp; {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       )}
@@ -3603,14 +4382,35 @@ class Users extends Component {
                       aria-expanded="false"
                       aria-controls="profile-details"
                     >
-                      Profile Details
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.profiledetails
+                      }
+                    else{
+                      return "Profile Details"
+                    }
+                    })()
+                  }
                     </a>
                     <div
                       className="collapse multi-collapse"
                       id="profile-details"
                     >
                       <div className="div-cntr">
-                        <label>User Designation</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.userdesignation
+                      }
+                    else{
+                      return "User Designation"
+                    }
+                    })()
+                  }
+                        </label>
                         <select
                           //className="add-select-category"
                           disabled={this.state.profileReadOnly}
@@ -3638,7 +4438,18 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>Reportee Designation</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.reporteedesignation
+                      }
+                    else{
+                      return "Reportee Designation"
+                    }
+                    })()
+                  }
+                        </label>
                         <select
                           //className="add-select-category"
                           disabled={this.state.profileReadOnly}
@@ -3669,7 +4480,18 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>Report To</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.reportto
+                      }
+                    else{
+                      return "Report To"
+                    }
+                    })()
+                  }
+                        </label>
                         <select
                           //className="add-select-category"
                           disabled={this.state.profileReadOnly}
@@ -3706,7 +4528,16 @@ class Users extends Component {
                             className="butn"
                             onClick={this.editProfileMethod.bind(this)}
                           >
-                            Edit
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       ) : this.state.buttonProfileToggle === true ? (
@@ -3719,7 +4550,25 @@ class Users extends Component {
                             className="butn"
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
-                            Update &amp;Next
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.update
+                      }
+                    else{
+                      return "Update"
+                    }
+                    })()
+                  } &amp;{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       ) : (
@@ -3731,7 +4580,25 @@ class Users extends Component {
                             className="butn"
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
-                            SAVE &amp; NEXT
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.save
+                      }
+                    else{
+                      return "Save"
+                    }
+                    })()
+                  } &amp; {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.next
+                      }
+                    else{
+                      return "Next"
+                    }
+                    })()
+                  }
                           </button>
                         </div>
                       )}
@@ -3746,14 +4613,33 @@ class Users extends Component {
                       aria-expanded="false"
                       aria-controls="mapped-category"
                     >
-                      Mapped Category
+                      
+                      {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.mappedcategory
+                      }
+                    else{
+                      return "Mapped Category"
+                    }
+                    })()
+                  }
                     </a>
                     <div
                       className="collapse multi-collapse"
                       id="mapped-category"
                     >
                       <div className="div-cntr">
-                        <label>Brand</label>
+                        <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  }</label>
                         <Select
                           getOptionLabel={option => option.brandName}
                           getOptionValue={option => option.brandID}
@@ -3774,7 +4660,16 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>Categories</label>
+                        <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.categories
+                      }
+                    else{
+                      return "Categories"
+                    }
+                    })()
+                  }</label>
 
                         <Select
                           getOptionLabel={option => option.categoryName}
@@ -3796,7 +4691,16 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>Sub Categories</label>
+                        <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.subcategories
+                      }
+                    else{
+                      return "Sub Categories"
+                    }
+                    })()
+                  }</label>
 
                         <Select
                           getOptionLabel={option => option.subCategoryName}
@@ -3821,7 +4725,18 @@ class Users extends Component {
                         )}
                       </div>
                       <div className="div-cntr">
-                        <label>Issue Type</label>
+                        <label>
+                        {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.issuetype
+                      }
+                    else{
+                      return "Issue Type"
+                    }
+                    })()
+                  }
+                        </label>
 
                         <Select
                           getOptionLabel={option => option.issueTypeName}
@@ -3844,7 +4759,18 @@ class Users extends Component {
                       </div>
                       <div className="mapped-cate-extra">
                         <div className="div-cntr">
-                          <label>CRM Role</label>
+                          <label>
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.crmrole
+                      }
+                    else{
+                      return "CRM Role"
+                    }
+                    })()
+                  }
+                          </label>
                           <select
                             className="add-select-category"
                             name="selectedCRMRoles"
@@ -3875,7 +4801,18 @@ class Users extends Component {
                               onChange={this.setEscn}
                             />
 
-                            <label htmlFor="copy-esc">Copy Escalation</label>
+                            <label htmlFor="copy-esc">
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.copyescalation
+                      }
+                    else{
+                      return "Copy Escalation"
+                    }
+                    })()
+                  }
+                            </label>
                           </div>
                           {this.state.selectedCopyEscalation === false && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3892,7 +4829,17 @@ class Users extends Component {
                             />
 
                             <label htmlFor="assign-esc">
-                              Assign Escalation
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.assignescalation
+                      }
+                    else{
+                      return "Assign Escalation"
+                    }
+                    })()
+                  }
                             </label>
                           </div>
                           {this.state.selectedAssignEscalation === false && (
@@ -3920,7 +4867,17 @@ class Users extends Component {
                                     htmlFor="supervisor"
                                     className="logout-label"
                                   >
-                                    Supervisor
+                                    
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.supervisor
+                      }
+                    else{
+                      return "Supervisor"
+                    }
+                    })()
+                  }
                                   </label>
                                 </div>
                                 <div className="status-options">
@@ -3938,7 +4895,16 @@ class Users extends Component {
                                     htmlFor="agent"
                                     className="logout-label"
                                   >
-                                    Agent
+                                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.agent
+                      }
+                    else{
+                      return "Agent"
+                    }
+                    })()
+                  }
                                   </label>
                                 </div>
                               </div>
@@ -3956,7 +4922,18 @@ class Users extends Component {
                         {this.state.selectedAgentRadio === true &&
                         this.state.selectedAssignEscalation === true ? (
                           <div className="div-cntr">
-                            <label>Select Agent</label>
+                            <label>
+                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.selectagent
+                      }
+                    else{
+                      return "Select Agent"
+                    }
+                    })()
+                  }
+                            </label>
 
                             <select
                               className="add-select-category"
@@ -3981,7 +4958,16 @@ class Users extends Component {
                         ) : null}
 
                         <div className="div-cntr">
-                          <label>Status</label>
+                          <label>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.status
+                      }
+                    else{
+                      return "Status"
+                    }
+                    })()
+                  }</label>
                           <select
                             name="selectedStatus"
                             value={this.state.selectedStatus}
@@ -3997,7 +4983,16 @@ class Users extends Component {
                           className="butn"
                           onClick={this.handleAddMapCategory.bind(this)}
                         >
-                          ADD
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                         </button>
                       </div>
                     </div>
@@ -4005,9 +5000,29 @@ class Users extends Component {
                 </div>
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.h3.bulkupload
+                      }
+                    else{
+                      return "Bulk Upload"
+                    }
+                    })()
+                  }
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.template
+                      }
+                    else{
+                      return "Template"
+                    }
+                    })()
+                  }</p>
                       <CSVLink filename={"User.csv"} data={config.userTemplate}>
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
@@ -4024,8 +5039,39 @@ class Users extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.addfile
+                      }
+                    else{
+                      return "Add File"
+                    }
+                    })()
+                  }
+                          </span> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.or
+                      }
+                    else{
+                      return "or"
+                    }
+                    })()
+                  }
+                          
+
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.div.dropfilehere
+                      }
+                    else{
+                      return "Drop File here"
+                    }
+                    })()
+                  }
                         </div>
                       )}
                     </Dropzone>
@@ -4061,23 +5107,61 @@ class Users extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  }
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                  
+                                  {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  }
                                 </p>
                                 <div className="del-can">
                                   <a
                                     className="canblue"
                                     onClick={this.togglePopover}
                                   >
-                                    CANCEL
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "Cancel"
+                    }
+                    })()
+                  }
                                   </a>
                                   <button
                                     className="butn"
                                     onClick={this.handleDeleteBulkupload}
                                   >
-                                    Delete
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  }
                                   </button>
                                 </div>
                               </div>
@@ -4099,11 +5183,30 @@ class Users extends Component {
                               className="file-retry"
                               onClick={this.hanldeAddBulkUpload.bind(this)}
                             >
-                              Retry
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.retry
+                      }
+                    else{
+                      return "Retry"
+                    }
+                    })()
+                  }
                             </a>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.failed
+                      }
+                    else{
+                      return "Failed"
+                    }
+                    })()
+                  }</span>
                           </div>
                         </div>
                       ) : null}
@@ -4133,7 +5236,16 @@ class Users extends Component {
                     className="butn"
                     onClick={this.hanldeAddBulkUpload.bind(this)}
                   >
-                    ADD
+                     {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.add
+                      }
+                    else{
+                      return "ADD"
+                    }
+                    })()
+                  }
                   </button>
                 </div>
               </div>
@@ -4145,4 +5257,5 @@ class Users extends Component {
   }
 }
 
+Users.contextType = MyContext;
 export default Users;

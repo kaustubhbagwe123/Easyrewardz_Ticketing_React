@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import config from "../../../helpers/config";
+import { MyContext } from '../../../context'
 import axios from "axios";
 import Select from "react-select";
 import {
@@ -1621,6 +1622,7 @@ class StoreMaster extends Component {
   };
 
   render() {
+       const TranslationContext = this.context.state.translateLanguage.default
     const { storeData } = this.state;
     return (
       <React.Fragment>
@@ -1645,7 +1647,16 @@ class StoreMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortatoz
+                      }
+                    else{
+                      return "SORT BY A TO Z"
+                    }
+                    })()
+                  } </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1655,7 +1666,16 @@ class StoreMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.sortztoa
+                      }
+                    else{
+                      return "SORT BY Z TO A"
+                    }
+                    })()
+                  } </p>
                 </div>
               </div>
               <a
@@ -1663,10 +1683,28 @@ class StoreMaster extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                 {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.clearsearch
+                      }
+                    else{
+                      return "Clear Search"
+                    }
+                    })()
+                  }   
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.filterbytype
+                      }
+                    else{
+                      return "FILTER BY TYPE"
+                    }
+                    })()
+                  }</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1858,15 +1896,43 @@ class StoreMaster extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.setting
+                      }
+                    else{
+                      return "Settings"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.ticketing
+                      }
+                    else{
+                      return "Ticketing"
+                    }
+                    })()
+                  }   
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Store Master
+            
+            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.link.storemaster
+                      }
+                    else{
+                      return "Store Master"
+                    }
+                    })()
+                  } 
           </Link>
         </div>
         <div className="container-fluid">
@@ -1890,7 +1956,17 @@ class StoreMaster extends Component {
                                 "Store Name"
                               )}
                             >
-                              Store Name
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storemaster
+                      }
+                    else{
+                      return "Store Master"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1907,7 +1983,18 @@ class StoreMaster extends Component {
                                 "Store Code"
                               )}
                             >
-                              Store Code
+                              
+                              
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.storecode
+                      }
+                    else{
+                      return "Store Code"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1924,7 +2011,17 @@ class StoreMaster extends Component {
                               //   "Brand Names"
                               // )}
                             >
-                              Brand Name
+                              
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  } 
                               {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                             </span>
                           ),
@@ -1942,7 +2039,18 @@ class StoreMaster extends Component {
                                         <div>
                                           <div>
                                             <p className="title">
-                                              Brand Name: &nbsp;
+                                              
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.brandname
+                      }
+                    else{
+                      return "Brand Name"
+                    }
+                    })()
+                  } 
+                                              : &nbsp;
                                               <b>
                                                 {row.original["brandNames"]}
                                               </b>
@@ -1976,7 +2084,16 @@ class StoreMaster extends Component {
                                 "City"
                               )}
                             >
-                              City
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.city
+                      }
+                    else{
+                      return "City"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -1993,7 +2110,16 @@ class StoreMaster extends Component {
                                 "State"
                               )}
                             >
-                              State
+                               {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.state
+                      }
+                    else{
+                      return "State"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -2009,7 +2135,16 @@ class StoreMaster extends Component {
                                 "Pin Code"
                               )}
                             >
-                              Pincode
+                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.pincode
+                      }
+                    else{
+                      return "Pincode"
+                    }
+                    })()
+                  } 
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -2026,7 +2161,16 @@ class StoreMaster extends Component {
                         //   accessor: "status"
                         // },
                         {
-                          Header: <span>Actions</span>,
+                          Header: <span>{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.span.actions
+                      }
+                    else{
+                      return "Actions"
+                    }
+                    })()
+                  } </span>,
                           accessor: "actiondept",
                           sortable: false,
                           Cell: row => {
@@ -2045,14 +2189,42 @@ class StoreMaster extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                            Delete file?
+                                            
+                                            {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.deletefile
+                      }
+                    else{
+                      return "Delete file?"
+                    }
+                    })()
+                  } 
                                           </p>
                                           <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
+                                            
+{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.areyousuredeletefile
+                      }
+                    else{
+                      return "Are you sure you want to delete this file?"
+                    }
+                    })()
+                  } 
                                           </p>
                                           <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <a href={Demo.BLANK_LINK}> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.cancel
+                      }
+                    else{
+                      return "CANCEL"
+                    }
+                    })()
+                  } </a>
                                             <button
                                               className="butn"
                                               type="button"
@@ -2061,7 +2233,17 @@ class StoreMaster extends Component {
                                                 ids
                                               )}
                                             >
-                                              Delete
+                                              
+                                              {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.delete
+                      }
+                    else{
+                      return "Delete"
+                    }
+                    })()
+                  } 
                                             </button>
                                           </div>
                                         </div>
@@ -2086,7 +2268,16 @@ class StoreMaster extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.button.edit
+                      }
+                    else{
+                      return "EDIT"
+                    }
+                    })()
+                  } 
                                   </button>
                                 </span>
                               </>
@@ -2144,9 +2335,27 @@ class StoreMaster extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="Create-store-text">CREATE STORE</label>
+                    <label className="Create-store-text"> {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.createstore
+                      }
+                    else{
+                      return "CREATE STORE"
+                    }
+                    })()
+                  } </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Brand</label>
+                      <label className="designation-name">{
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.label.brand
+                      }
+                    else{
+                      return "Brand"
+                    }
+                    })()
+                  } </label>
                       <Select
                         getOptionLabel={option => option.brandName}
                         getOptionValue={option => option.brandID}
@@ -2166,7 +2375,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Store Code</label>
+                        <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.storecode
+                        }
+                      else{
+                        return "Store Code"
+                      }
+                      })()
+                    } </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -2183,7 +2401,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Store Name</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.storename
+                        }
+                      else{
+                        return "Store Name"
+                      }
+                      })()
+                    } </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -2200,7 +2427,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">State</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.state
+                        }
+                      else{
+                        return "State"
+                      }
+                      })()
+                    } </label>
                       <select
                         className="store-create-select"
                         value={this.state.selectState}
@@ -2225,7 +2461,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">City</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.city
+                        }
+                      else{
+                        return "State"
+                      }
+                      })()
+                    } </label>
                       <select
                         className="store-create-select"
                         value={this.state.selectCity}
@@ -2250,7 +2495,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Pin Code</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.pincode
+                        }
+                      else{
+                        return "Pin Code"
+                      }
+                      })()
+                    } </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -2262,7 +2516,17 @@ class StoreMaster extends Component {
                       />
                       {this.state.pinCodeFlag === false && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
-                          Please enter valid Pin Code.
+                          
+                          {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.entervalidpincode
+                        }
+                      else{
+                        return "Please enter valid Pin Code."
+                      }
+                      })()
+                    } 
                         </p>
                       )}
                       {this.state.pin_code.length === 0 && (
@@ -2272,7 +2536,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Address</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.address
+                        }
+                      else{
+                        return "Address"
+                      }
+                      })()
+                    } </label>
                       <textarea
                         cols="31"
                         rows="3"
@@ -2290,7 +2563,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Region</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.region
+                        }
+                      else{
+                        return "Region"
+                      }
+                      })()
+                    }</label>
                       <select
                         className="store-create-select"
                         value={this.state.selectRegion}
@@ -2311,7 +2593,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Zone</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.zone
+                        }
+                      else{
+                        return "Zone"
+                      }
+                      })()
+                    }</label>
                       <select
                         className="store-create-select"
                         value={this.state.selectZone}
@@ -2332,7 +2623,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Store Type</label>
+                      <label className="designation-name">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.storetype
+                        }
+                      else{
+                        return "Store Type"
+                      }
+                      })()
+                    }</label>
                       <select
                         className="store-create-select"
                         value={this.state.store_type}
@@ -2354,7 +2654,17 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                        Contact Details:Email
+                        
+                        {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.contactdetailsemail
+                        }
+                      else{
+                        return "Contact Details:Email"
+                      }
+                      })()
+                    }
                       </label>
                       <input
                         type="text"
@@ -2367,7 +2677,17 @@ class StoreMaster extends Component {
                       />
                       {this.state.emailFlag === false && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
-                          Please enter valid Email Id.
+                          
+                          {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.validemail
+                        }
+                      else{
+                        return "Please enter valid Email Id."
+                      }
+                      })()
+                    }
                         </p>
                       )}
                       {this.state.contact_email.length === 0 && (
@@ -2378,7 +2698,17 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                        Contact Details:Phone
+                        
+                          {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.contactdetailsphone
+                        }
+                      else{
+                        return "Contact Details:Phone"
+                      }
+                      })()
+                    }
                       </label>
                       <input
                         type="text"
@@ -2391,7 +2721,16 @@ class StoreMaster extends Component {
                       />
                       {this.state.phoneFlag === false && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
-                          Please enter valid Phone Number.
+                           {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.validphone
+                        }
+                      else{
+                        return "Please enter valid Phone Number."
+                      }
+                      })()
+                    }
                         </p>
                       )}
                       {this.state.contact_Phone.length === 0 && (
@@ -2401,7 +2740,16 @@ class StoreMaster extends Component {
                       )}
                     </div>
                     <div className="div-padding-1">
-                      <label className="designation-name">Status</label>
+                      <label className="designation-name"> {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.status
+                        }
+                      else{
+                        return "Status"
+                      }
+                      })()
+                    }</label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectStatus}
@@ -2428,7 +2776,16 @@ class StoreMaster extends Component {
                         type="button"
                         onClick={this.handleSubmitData.bind(this)}
                       >
-                        ADD
+                        {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.button.add
+                        }
+                      else{
+                        return "ADD"
+                      }
+                      })()
+                    }
                       </button>
                     </div>
                   </div>
@@ -2436,9 +2793,27 @@ class StoreMaster extends Component {
                 <br />
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.h3.bulkupload
+                        }
+                      else{
+                        return "Bulk Upload"
+                      }
+                      })()
+                    }</h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.template
+                        }
+                      else{
+                        return "Template"
+                      }
+                      })()
+                    }</p>
                       <CSVLink
                         filename={"Store.csv"}
                         data={config.storeTemplate}
@@ -2458,8 +2833,36 @@ class StoreMaster extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.span.addfile
+                        }
+                      else{
+                        return "Add File"
+                      }
+                      })()
+                    }</span> {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.span.or
+                        }
+                      else{
+                        return "Or"
+                      }
+                      })()
+                    }
+                          
+                          {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.span.dropfilehere
+                        }
+                      else{
+                        return "Drop File here"
+                      }
+                      })()
+                    }
                         </div>
                       )}
                     </Dropzone>
@@ -2489,18 +2892,56 @@ class StoreMaster extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                 
+                                   {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.deletefile
+                        }
+                      else{
+                        return "Delete file?"
+                      }
+                      })()
+                    }
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                 {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.areyousuredeletefile
+                        }
+                      else{
+                        return "Are you sure you want to delete this file?"
+                      }
+                      })()
+                    }
+                                  
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.a.cancel
+                        }
+                      else{
+                        return "CANCEL"
+                      }
+                      })()
+                    }</a>
                                   <button
                                     className="butn"
                                     onClick={this.handleDeleteBulkupload}
                                   >
-                                    Delete
+                                    {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.button.delete
+                        }
+                      else{
+                        return "Delete"
+                      }
+                      })()
+                    }
                                   </button>
                                 </div>
                               </div>
@@ -2522,11 +2963,29 @@ class StoreMaster extends Component {
                               className="file-retry"
                               onClick={this.hanldeAddBulkUpload.bind(this)}
                             >
-                              Retry
+                               {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.a.retry
+                        }
+                      else{
+                        return "Retry"
+                      }
+                      })()
+                    }
                             </a>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.span.failed
+                        }
+                      else{
+                        return "Failed"
+                      }
+                      })()
+                    }</span>
                           </div>
                         </div>
                       ) : null}
@@ -2556,7 +3015,16 @@ class StoreMaster extends Component {
                     className="butn"
                     onClick={this.hanldeAddBulkUpload.bind(this)}
                   >
-                    ADD
+                    {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.button.add
+                        }
+                      else{
+                        return "ADD"
+                      }
+                      })()
+                    }
                   </button>
                 </div>
               </div>
@@ -2568,11 +3036,29 @@ class StoreMaster extends Component {
             modalId="storeEditModal"
           >
             <div className="edtpadding">
-              <label className="popover-header-text">EDIT STORE</label>
+              <label className="popover-header-text"> {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.editstore
+                        }
+                      else{
+                        return "Edit Store"
+                      }
+                      })()
+                    }</label>
               <div className="row">
                 <div className="col-md-6">
                   <div className="div-padding-1">
-                    <label className="edit-label-1">Brand</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.brand
+                        }
+                      else{
+                        return "Brand"
+                      }
+                      })()
+                    }</label>
                     <Select
                       getOptionLabel={option => option.brandName}
                       getOptionValue={option => option.brandID}
@@ -2596,7 +3082,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Store Code</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.storecode
+                        }
+                      else{
+                        return "Store Code"
+                      }
+                      })()
+                    }</label>
                     <input
                       type="text"
                       className="txt-1"
@@ -2615,7 +3110,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Store Name</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.storename
+                        }
+                      else{
+                        return "Store Name"
+                      }
+                      })()
+                    }</label>
                     <input
                       type="text"
                       className="txt-1"
@@ -2634,7 +3138,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">State</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.state
+                        }
+                      else{
+                        return "State"
+                      }
+                      })()
+                    }</label>
                     <select
                       className="store-create-select"
                       name="state_ID"
@@ -2663,7 +3176,16 @@ class StoreMaster extends Component {
 
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">City</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.city
+                        }
+                      else{
+                        return "City"
+                      }
+                      })()
+                    }</label>
                     <select
                       className="edit-dropDwon dropdown-setting"
                       name="city_ID"
@@ -2691,7 +3213,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Pin Code</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.pincode
+                        }
+                      else{
+                        return "Pin Code"
+                      }
+                      })()
+                    }</label>
                     <input
                       type="text"
                       className="txt-1"
@@ -2710,7 +3241,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Status</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.status
+                        }
+                      else{
+                        return "Status"
+                      }
+                      })()
+                    }</label>
                     <select
                       className="form-control dropdown-setting"
                       name="status_ID"
@@ -2734,7 +3274,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Region</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.region
+                        }
+                      else{
+                        return "Region"
+                      }
+                      })()
+                    }</label>
                     <select
                       className="store-create-select"
                       name="region_ID"
@@ -2758,7 +3307,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Zone</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.zone
+                        }
+                      else{
+                        return "Zone"
+                      }
+                      })()
+                    }</label>
                     <select
                       className="store-create-select"
                       name="zone_ID"
@@ -2782,7 +3340,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Store Type</label>
+                    <label className="edit-label-1">{
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.storetype
+                        }
+                      else{
+                        return "Store Type"
+                      }
+                      })()
+                    }</label>
                     <select
                       className="store-create-select"
                       name="storeType_ID"
@@ -2807,7 +3374,17 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                      Contact Details:Email
+                      
+                      {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.contactdetailsemail
+                        }
+                      else{
+                        return "Contact Details:Email"
+                      }
+                      })()
+                    }
                     </label>
                     <input
                       type="text"
@@ -2820,7 +3397,17 @@ class StoreMaster extends Component {
                     />
                     {this.state.EditEmailFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Email Id.
+                        
+                        {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.validemail
+                        }
+                      else{
+                        return "Please enter valid Email Id."
+                      }
+                      })()
+                    }
                       </p>
                     )}
                     {this.state.userEditData.email_ === "" && (
@@ -2833,7 +3420,17 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                      Contact Details:Phone
+                      
+                       {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.contactdetailsphone
+                        }
+                      else{
+                        return "Contact Details:Phone"
+                      }
+                      })()
+                    }
                     </label>
                     <input
                       type="text"
@@ -2847,7 +3444,17 @@ class StoreMaster extends Component {
                     />
                     {this.state.EditPhoneFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Phone Number.
+                        
+                        {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.p.validphone
+                        }
+                      else{
+                        return "Please enter valid Phone Number."
+                      }
+                      })()
+                    }
                       </p>
                     )}
                     {this.state.userEditData.phoneNumber_ === "" && (
@@ -2859,7 +3466,16 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Address</label>
+                    <label className="edit-label-1"> {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.address
+                        }
+                      else{
+                        return "Address"
+                      }
+                      })()
+                    }</label>
                     <textarea
                       cols="31"
                       rows="3"
@@ -2883,7 +3499,16 @@ class StoreMaster extends Component {
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >
-                      CANCEL
+                      {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.span.cancel
+                        }
+                      else{
+                        return "Cancel"
+                      }
+                      })()
+                    }
                     </span>
                     <button
                       className="pop-over-button FlNone"
@@ -2899,7 +3524,16 @@ class StoreMaster extends Component {
                         ) : (
                           ""
                         )}
-                        SAVE
+                        {
+                      (() => {
+                        if (TranslationContext!==undefined) {
+                        return TranslationContext.label.save
+                        }
+                      else{
+                        return "Save"
+                      }
+                      })()
+                    }
                       </label>
                     </button>
                   </div>
@@ -2913,5 +3547,5 @@ class StoreMaster extends Component {
     );
   }
 }
-
+StoreMaster.contextType = MyContext;
 export default StoreMaster;

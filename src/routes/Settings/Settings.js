@@ -416,7 +416,7 @@ class Settings extends Component {
                     else{
                       return "Alerts"
                     }
-                    })()
+                    })() 
                   }
                           </strong>
                           <p>

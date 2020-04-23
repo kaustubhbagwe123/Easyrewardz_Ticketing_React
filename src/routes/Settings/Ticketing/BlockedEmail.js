@@ -15,6 +15,7 @@ import axios from "axios";
 import config from "../../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import matchSorter from "match-sorter";
+import { MyContext } from './../../../context'
 import Sorting from "./../../../assets/Images/sorting.png";
 
 class BlockEmail extends Component {
@@ -788,6 +789,7 @@ class BlockEmail extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const datablockemail = this.state.BlockEmailData;
 
     return (
@@ -815,7 +817,18 @@ class BlockEmail extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -825,7 +838,18 @@ class BlockEmail extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                    </p>
                   </div>
                 </div>
                 <a
@@ -833,10 +857,30 @@ class BlockEmail extends Component {
                   style={{ margin: "0 25px", textDecoration: "underline" }}
                   onClick={this.setSortCheckStatus.bind(this, "all")}
                 >
-                  clear search
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.a.clearsearch
+                      }
+                      else {
+                        return "clear search"
+                      }
+                    })()
+                  }
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -977,15 +1021,42 @@ class BlockEmail extends Component {
             </Modal>
           </div>
           <Link to="settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.ticketing
+                }
+                else {
+                  return "Ticketing"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Blocked Email ID
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.link.blockemailid
+                }
+                else {
+                  return "Blocked Email ID"
+                }
+              })()
+            }
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -994,7 +1065,16 @@ class BlockEmail extends Component {
                 className="addplusbtnReport"
                 onClick={this.AddNewEmailID}
               >
-                + Add New
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.addnew
+                    }
+                    else {
+                      return "+ Add New"
+                    }
+                  })()
+                }
               </button>
             </div>
           </div>
@@ -1006,7 +1086,17 @@ class BlockEmail extends Component {
           >
             <div className="setting-tabs alert-tabs">
               <label style={{ marginLeft: "194px", fontSize: "large" }}>
-                Add New Email ID into Block List
+                
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.addnew
+                    }
+                    else {
+                      return "Add New Email ID into Block List"
+                    }
+                  })()
+                }
               </label>
               <img
                 src={CancelImg}
@@ -1056,7 +1146,16 @@ class BlockEmail extends Component {
                     }
                     disabled={this.state.loading}
                   >
-                    SAVE
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.save
+                        }
+                        else {
+                          return "SAVE"
+                        }
+                      })()
+                    }
                     {/* {this.state.loading ? (
                             <FontAwesomeIcon
                               className="circular-loader"
@@ -1092,7 +1191,16 @@ class BlockEmail extends Component {
                             "Email ID"
                           )}
                         >
-                          Email Id
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.emailid
+                              }
+                              else {
+                                return "Email Id"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1108,7 +1216,16 @@ class BlockEmail extends Component {
                             "Reason"
                           )}
                         >
-                          Reason
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.reason
+                              }
+                              else {
+                                return "Reason"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1124,7 +1241,16 @@ class BlockEmail extends Component {
                             "Blocked Date"
                           )}
                         >
-                          Blocked Date
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.blockeddate
+                              }
+                              else {
+                                return "Blocked Date"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1140,7 +1266,16 @@ class BlockEmail extends Component {
                             "Blocked By"
                           )}
                         >
-                          Blocked By
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.blockedby
+                              }
+                              else {
+                                return "Blocked By"
+                              }
+                            })()
+                          }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1159,11 +1294,31 @@ class BlockEmail extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifiedBy}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.updatedby
+                                              }
+                                              else {
+                                                return "Updated By:"
+                                              }
+                                            })()
+                                          }
+                                           {row.original.modifiedBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Updated Date:{" "}
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.updateddate
+                                            }
+                                            else {
+                                              return "Updated Date:"
+                                            }
+                                          })()
+                                        }
+                                        {" "}
                                         {row.original.modifiedDate}
                                       </p>
                                     </div>
@@ -1184,7 +1339,18 @@ class BlockEmail extends Component {
                       }
                     },
                     {
-                      Header: <span>Actions</span>,
+                      Header: <span>
+                         {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.action
+                            }
+                            else {
+                              return "Actions"
+                            }
+                          })()
+                        }
+                      </span>,
                       accessor: "actionReport",
                       sortable: false,
                       Cell: row => (
@@ -1198,13 +1364,42 @@ class BlockEmail extends Component {
                                   </div>
                                   <div>
                                     <p className="font-weight-bold blak-clr">
-                                      Delete file?
+                                      {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.deletefile
+                                            }
+                                            else {
+                                              return "Delete file?"
+                                            }
+                                          })()
+                                        }
                                     </p>
                                     <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this file?
+                                      {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.areyousuredeletefile
+                                            }
+                                            else {
+                                              return "Are you sure you want to delete this file?"
+                                            }
+                                          })()
+                                        }
                                     </p>
                                     <div className="del-can">
-                                      <a>CANCEL</a>
+                                      <a>
+                                      {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.a.cancel
+                                            }
+                                            else {
+                                              return "CANCEL"
+                                            }
+                                          })()
+                                        }
+                                      </a>
                                       <button
                                         className="butn"
                                         onClick={this.handleDeleteBlockEmail.bind(
@@ -1212,7 +1407,16 @@ class BlockEmail extends Component {
                                           row.original.blockEmailID
                                         )}
                                       >
-                                        Delete
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.button.delete
+                                            }
+                                            else {
+                                              return "Delete"
+                                            }
+                                          })()
+                                        }
                                       </button>
                                     </div>
                                   </div>
@@ -1237,7 +1441,16 @@ class BlockEmail extends Component {
                                 row.original
                               )}
                             >
-                              EDIT
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.edit
+                                  }
+                                  else {
+                                    return "EDIT"
+                                  }
+                                })()
+                              }
                             </button>
                           </div>
                         </div>
@@ -1257,5 +1470,5 @@ class BlockEmail extends Component {
     );
   }
 }
-
+BlockEmail.contextType = MyContext;
 export default BlockEmail;
