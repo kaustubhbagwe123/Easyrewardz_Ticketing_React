@@ -2933,13 +2933,18 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        let data = res.data;
         let CategoryData = res.data;
-        // let CategoryDataAll = res.data;
-        self.setState({
-          CategoryData: CategoryData,
-          // CategoryDataAll: CategoryDataAll
-        });
+        if(data.length > 0){
+          self.setState({
+            CategoryData: CategoryData,
+            // CategoryDataAll: CategoryDataAll
+          });
+        }else{
+          self.setState({
+            CategoryData: [],
+          });
+        }
       })
       .catch((data) => {
         console.log(data);
