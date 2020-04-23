@@ -26,12 +26,15 @@ class ProgramCodeSignIn extends Component {
     // debugger
     let self = this;
     if (this.validator.allValid()) {
-      const{programCode}=this.state;
-      var encProgramCode=encryption(programCode, "enc");
+      const { programCode } = this.state;
+      var encProgramCode = encryption(programCode, "enc");
       // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
-      let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
+      let X_Authorized_Domainname = encryption(
+        "https://erbelltkt.dcdev.brainvire.net",
+        "enc"
+      );
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
+      //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
       // setTimeout(function() {
       //   self.props.history.push({
@@ -39,7 +42,7 @@ class ProgramCodeSignIn extends Component {
       //     encProgramCode: encProgramCode
       //   });
       // }, 500);
-      // self.setState({ 
+      // self.setState({
       //   encProgramCode: {programCode: encProgramCode}
       // });
       axios({
