@@ -11495,14 +11495,16 @@ table tr th:last-child {
   position: relative;
 }
 .alertckuser {
-  top: 132px !important;
+  /* top: 132px !important; */
+  top: 82px !important;
 }
 .alertckuserinter {
   right: 75px;
   top: 37% !important;
 }
 .placeholder-alert-2 {
-  top: 37% !important;
+  /* top: 37% !important; */
+  top: 32% !important;
 }
 
 /* Responsive ends */

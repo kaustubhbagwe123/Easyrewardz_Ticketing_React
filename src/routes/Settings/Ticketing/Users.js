@@ -20,7 +20,7 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import {
   // NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import Select from "react-select";
 import { CSVLink } from "react-csv";
@@ -157,7 +157,7 @@ class Users extends Component {
       suserNameFilterCheckbox: "",
       smobileNumberFilterCheckbox: "",
       semailIDFilterCheckbox: "",
-      isortA: false
+      isortA: false,
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -231,7 +231,7 @@ class Users extends Component {
 
     this.setState({
       isortA: true,
-      userData: itemsArray
+      userData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -274,7 +274,7 @@ class Users extends Component {
 
     this.setState({
       isortA: true,
-      userData: itemsArray
+      userData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -301,7 +301,7 @@ class Users extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -310,7 +310,7 @@ class Users extends Component {
           semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -326,7 +326,7 @@ class Users extends Component {
           // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -335,7 +335,7 @@ class Users extends Component {
           semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -351,7 +351,7 @@ class Users extends Component {
           // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -360,7 +360,7 @@ class Users extends Component {
           semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -373,7 +373,7 @@ class Users extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -382,7 +382,7 @@ class Users extends Component {
           smobileNumberFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -398,7 +398,7 @@ class Users extends Component {
         sortFilterDesignation: this.state.sortDesignation,
         sortFilterUsername: this.state.sortUsername,
         sortFilterMobile: this.state.sortMobile,
-        sortFilterEmail: this.state.sortEmail
+        sortFilterEmail: this.state.sortEmail,
       });
       if (this.state.sortColumn === "designation") {
         if (this.state.sdesignationFilterCheckbox === "") {
@@ -406,7 +406,7 @@ class Users extends Component {
           this.setState({
             suserNameFilterCheckbox: "",
             smobileNumberFilterCheckbox: "",
-            semailIDFilterCheckbox: ""
+            semailIDFilterCheckbox: "",
           });
         }
       }
@@ -416,7 +416,7 @@ class Users extends Component {
           this.setState({
             sdesignationFilterCheckbox: "",
             smobileNumberFilterCheckbox: "",
-            semailIDFilterCheckbox: ""
+            semailIDFilterCheckbox: "",
           });
         }
       }
@@ -426,7 +426,7 @@ class Users extends Component {
           this.setState({
             sdesignationFilterCheckbox: "",
             suserNameFilterCheckbox: "",
-            semailIDFilterCheckbox: ""
+            semailIDFilterCheckbox: "",
           });
         }
       }
@@ -436,7 +436,7 @@ class Users extends Component {
           this.setState({
             sdesignationFilterCheckbox: "",
             suserNameFilterCheckbox: "",
-            smobileNumberFilterCheckbox: ""
+            smobileNumberFilterCheckbox: "",
           });
         }
       }
@@ -449,7 +449,7 @@ class Users extends Component {
           sortFilterDesignation: this.state.sortDesignation,
           sortFilterUsername: this.state.sortUsername,
           sortFilterMobile: this.state.sortMobile,
-          sortFilterEmail: this.state.sortEmail
+          sortFilterEmail: this.state.sortEmail,
         });
       } else {
         this.setState({
@@ -459,7 +459,7 @@ class Users extends Component {
           sortFilterDesignation: this.state.sortDesignation,
           sortFilterUsername: this.state.sortUsername,
           sortFilterMobile: this.state.sortMobile,
-          sortFilterEmail: this.state.sortEmail
+          sortFilterEmail: this.state.sortEmail,
         });
       }
     }
@@ -600,7 +600,7 @@ class Users extends Component {
       userColor: "",
       mobileColor: "",
       emailColor: "",
-      designationColor: ""
+      designationColor: "",
       // sFilterCheckbox
     });
     if (column === "all") {
@@ -611,7 +611,7 @@ class Users extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.designation === sItems[i]
+              (a) => a.designation === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -622,14 +622,16 @@ class Users extends Component {
         }
       }
       this.setState({
-        designationColor: "sort-column"
+        designationColor: "sort-column",
       });
     } else if (column === "userName") {
       var sItems = suserNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.userName === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.userName === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -639,7 +641,7 @@ class Users extends Component {
         }
       }
       this.setState({
-        userColor: "sort-column"
+        userColor: "sort-column",
       });
     } else if (column === "mobileNumber") {
       var sItems = smobileNumberFilterCheckbox.split(",");
@@ -647,7 +649,7 @@ class Users extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.mobileNumber === sItems[i]
+              (a) => a.mobileNumber === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -658,14 +660,14 @@ class Users extends Component {
         }
       }
       this.setState({
-        mobileColor: "sort-column"
+        mobileColor: "sort-column",
       });
     } else if (column === "emailID") {
       var sItems = semailIDFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.emailID === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.emailID === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -675,11 +677,11 @@ class Users extends Component {
         }
       }
       this.setState({
-        emailColor: "sort-column"
+        emailColor: "sort-column",
       });
     }
     this.setState({
-      tempuserData: itemsArray
+      tempuserData: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -712,7 +714,7 @@ class Users extends Component {
       ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
         "block";
   }
-  setUserEditData = e => {
+  setUserEditData = (e) => {
     debugger;
     let self = this;
     var brand = [];
@@ -783,7 +785,7 @@ class Users extends Component {
       for (let i = 0; i < subcatid.length; i++) {
         subcat.push({
           subCategoryID: subcatid[i],
-          subCategoryName: subcatname[i]
+          subCategoryName: subcatname[i],
         });
       }
     }
@@ -800,7 +802,7 @@ class Users extends Component {
       editSubCategory: subcat,
       editIssuetype: issue,
       editAgentRadio: agent,
-      editSupervisorRadio: supervi
+      editSupervisorRadio: supervi,
     });
 
     self.handleGetReporteedesignationList("edit");
@@ -817,7 +819,7 @@ class Users extends Component {
     let subjectvalue = e.currentTarget.checked;
     this.setState({
       selectedSupervisorRadio: false,
-      selectedAgentRadio: subjectvalue
+      selectedAgentRadio: subjectvalue,
     });
     setTimeout(() => {
       if (this.state.selectedAgentRadio === true) {
@@ -831,7 +833,7 @@ class Users extends Component {
     let subjectvalue = e.currentTarget.checked;
     this.setState({
       selectedAgentRadio: false,
-      selectedSupervisorRadio: subjectvalue
+      selectedSupervisorRadio: subjectvalue,
     });
     setTimeout(() => {
       if (this.state.selectedSupervisorRadio === true) {
@@ -862,12 +864,12 @@ class Users extends Component {
     }, 1);
   };
 
-  setEscn = e => {
+  setEscn = (e) => {
     debugger;
     this.setState({ [e.target.name]: e.currentTarget.checked });
   };
 
-  editsetEscn = e => {
+  editsetEscn = (e) => {
     debugger;
     var name = e.target.name;
     var value = e.target.checked;
@@ -877,7 +879,7 @@ class Users extends Component {
     this.setState({ EditTemp: data });
   };
 
-  handleOnChangeEditData = e => {
+  handleOnChangeEditData = (e) => {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
@@ -889,25 +891,25 @@ class Users extends Component {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value === "") {
         this.setState({
-          editEmailFlag: true
+          editEmailFlag: true,
         });
       } else if (reg.test(e.target.value) === false) {
         this.setState({
-          editEmailFlag: false
+          editEmailFlag: false,
         });
       } else {
         this.setState({
-          editEmailFlag: true
+          editEmailFlag: true,
         });
       }
     }
 
     this.setState({
-      EditTemp: data
+      EditTemp: data,
     });
   };
 
-  hanldeMobileNoChange = e => {
+  hanldeMobileNoChange = (e) => {
     debugger;
     var name = e.target.name;
     var reg = /^[0-9\b]+$/;
@@ -923,11 +925,11 @@ class Users extends Component {
       }
       if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
-          EditPhoneFlag: true
+          EditPhoneFlag: true,
         });
       } else {
         this.setState({
-          EditPhoneFlag: false
+          EditPhoneFlag: false,
         });
       }
     } else {
@@ -938,35 +940,35 @@ class Users extends Component {
       }
       if (e.target.value.length === 10 || e.target.value.length === 0) {
         this.setState({
-          phoneFlag: true
+          phoneFlag: true,
         });
       } else {
         this.setState({
-          phoneFlag: false
+          phoneFlag: false,
         });
       }
     }
   };
 
-  handleOnChangeUserData = e => {
+  handleOnChangeUserData = (e) => {
     debugger;
     var name = e.target.name;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (name === "selectEmail") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value === "") {
         this.setState({
-          emailFlag: true
+          emailFlag: true,
         });
       } else if (reg.test(e.target.value) === false) {
         this.setState({
-          emailFlag: false
+          emailFlag: false,
         });
       } else {
         this.setState({
-          emailFlag: true
+          emailFlag: true,
         });
       }
     }
@@ -975,7 +977,7 @@ class Users extends Component {
     debugger;
 
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     setTimeout(() => {
@@ -993,7 +995,7 @@ class Users extends Component {
     data[name] = value;
 
     this.setState({
-      EditTemp: data
+      EditTemp: data,
     });
 
     setTimeout(() => {
@@ -1004,7 +1006,7 @@ class Users extends Component {
         userEditData.reportee_ID = 0;
         this.setState({
           ReportToData: [],
-          userEditData
+          userEditData,
         });
       }
     }, 1);
@@ -1013,7 +1015,7 @@ class Users extends Component {
     debugger;
 
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     setTimeout(() => {
       if (this.state.selectedDesignation) {
@@ -1032,7 +1034,7 @@ class Users extends Component {
     data[name] = value;
 
     this.setState({
-      EditTemp: data
+      EditTemp: data,
     });
     setTimeout(() => {
       if (parseInt(this.state.userEditData.designation_ID)) {
@@ -1044,7 +1046,7 @@ class Users extends Component {
         this.setState({
           ReporteeDesignData: [],
           ReportToData: [],
-          userEditData
+          userEditData,
         });
       }
     }, 1);
@@ -1077,7 +1079,7 @@ class Users extends Component {
           editBrand: [],
           editCategory: [],
           editSubCategory: [],
-          editIssuetype: []
+          editIssuetype: [],
         });
       }
 
@@ -1115,7 +1117,7 @@ class Users extends Component {
         this.setState({
           editCategory: [],
           editSubCategory: [],
-          editIssuetype: []
+          editIssuetype: [],
         });
       }
 
@@ -1165,14 +1167,14 @@ class Users extends Component {
       }
     }
   };
-  handleIssueTypeChange = e => {
+  handleIssueTypeChange = (e) => {
     debugger;
     if (e === null) {
       e = [];
     }
     this.setState({ selectedIssueType: e });
   };
-  handleEditIssueTypeChange = e => {
+  handleEditIssueTypeChange = (e) => {
     debugger;
     if (e === null) {
       e = [];
@@ -1189,16 +1191,16 @@ class Users extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetCRMRoleDropdown",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         let crmroledata = res.data.responseData;
         self.setState({
-          CRMRoleData: crmroledata
+          CRMRoleData: crmroledata,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1206,14 +1208,14 @@ class Users extends Component {
     debugger;
     this.setState({
       personalReadOnly: false,
-      buttonToggle: true
+      buttonToggle: true,
     });
   }
   editProfileMethod() {
     debugger;
     this.setState({
       profileReadOnly: false,
-      buttonProfileToggle: true
+      buttonProfileToggle: true,
     });
   }
   handleGetDesignationList() {
@@ -1222,17 +1224,17 @@ class Users extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         let designationdata = res.data.responseData;
 
         self.setState({
-          DesignationData: designationdata
+          DesignationData: designationdata,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1251,18 +1253,18 @@ class Users extends Component {
       url: config.apiUrl + "/Designation/GetReporteeDesignation",
       headers: authHeader(),
       params: {
-        DesignationID: id
-      }
+        DesignationID: id,
+      },
     })
       .then(function(res) {
         debugger;
         let data = res.data.responseData;
 
         self.setState({
-          ReporteeDesignData: data
+          ReporteeDesignData: data,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1280,8 +1282,8 @@ class Users extends Component {
       url: config.apiUrl + "/Designation/GetReportTo",
       headers: authHeader(),
       params: {
-        DesignationID: id
-      }
+        DesignationID: id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1289,15 +1291,15 @@ class Users extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            ReportToData: data
+            ReportToData: data,
           });
         } else {
           self.setState({
-            ReportToData: []
+            ReportToData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1306,7 +1308,7 @@ class Users extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1318,7 +1320,7 @@ class Users extends Component {
           self.setState({ brandData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1345,8 +1347,8 @@ class Users extends Component {
       url: config.apiUrl + "/Category/GetCategoryListByMultiBrandID",
       headers: authHeader(),
       params: {
-        BrandIDs: finalBrandId
-      }
+        BrandIDs: finalBrandId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1355,16 +1357,16 @@ class Users extends Component {
         if (status === "Success") {
           self.setState({
             CategoryData: data,
-            multibrandIDs: finalBrandId
+            multibrandIDs: finalBrandId,
           });
         } else {
           self.setState({
             CategoryData: [],
-            multibrandIDs: ""
+            multibrandIDs: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1391,8 +1393,8 @@ class Users extends Component {
       url: config.apiUrl + "/SubCategory/GetSubCategoryByMultiCategoryID",
       headers: authHeader(),
       params: {
-        CategoryIDs: finalCategoryId
-      }
+        CategoryIDs: finalCategoryId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1401,16 +1403,16 @@ class Users extends Component {
         if (status === "Success") {
           self.setState({
             SubCategoryData: data,
-            multicategoryIDs: finalCategoryId
+            multicategoryIDs: finalCategoryId,
           });
         } else {
           self.setState({
             SubCategoryData: [],
-            multicategoryIDs: ""
+            multicategoryIDs: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1440,8 +1442,8 @@ class Users extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeListByMultiSubCategoryID",
       headers: authHeader(),
       params: {
-        SubCategoryIDs: finalSubCategoryId
-      }
+        SubCategoryIDs: finalSubCategoryId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1450,16 +1452,16 @@ class Users extends Component {
         if (status === "Success") {
           self.setState({
             IssueTypeData: data,
-            multisubcategoryIDs: finalSubCategoryId
+            multisubcategoryIDs: finalSubCategoryId,
           });
         } else {
           self.setState({
             IssueTypeData: [],
-            multisubcategoryIDs: ""
+            multisubcategoryIDs: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1472,8 +1474,8 @@ class Users extends Component {
       url: config.apiUrl + "/Ticketing/getagentlist",
       headers: authHeader(),
       params: {
-        TicketID: 0 // Don't change this value (Set on API side)
-      }
+        TicketID: 0, // Don't change this value (Set on API side)
+      },
     })
       .then(function(res) {
         debugger;
@@ -1485,21 +1487,21 @@ class Users extends Component {
         var editvalue2 = self.state.editSupervisorRadio;
         if (datar === "add") {
           if (addvalue1 === true) {
-            array = agentdata.filter(a => a.designation === "Agent");
+            array = agentdata.filter((a) => a.designation === "Agent");
           } else if (addvalue2 === true) {
-            array = agentdata.filter(a => a.designation === "Supervisor");
+            array = agentdata.filter((a) => a.designation === "Supervisor");
           }
         } else if (datar === "edit") {
           if (editvalue1 === true) {
-            array = agentdata.filter(a => a.designation === "Agent");
+            array = agentdata.filter((a) => a.designation === "Agent");
           } else if (editvalue2 === true) {
-            array = agentdata.filter(a => a.designation === "Supervisor");
+            array = agentdata.filter((a) => a.designation === "Supervisor");
           }
         }
 
         self.setState({ AgentData: array });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1507,9 +1509,9 @@ class Users extends Component {
     debugger;
     let self = this;
     axios({
-      method: "get",
+      method: "post",
       url: config.apiUrl + "/User/GetUserListData",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1518,11 +1520,11 @@ class Users extends Component {
 
         if (status === "Success") {
           self.setState({
-            userData: userdata
+            userData: userdata,
           });
         } else {
           self.setState({
-            userData: []
+            userData: [],
           });
         }
 
@@ -1544,10 +1546,10 @@ class Users extends Component {
 
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({
-              designation: distinct[i]
+              designation: distinct[i],
             });
             self.state.sortFilterDesignation.push({
-              designation: distinct[i]
+              designation: distinct[i],
             });
           }
 
@@ -1564,10 +1566,10 @@ class Users extends Component {
           // self.state.sortFilterUsername.push({ userName: "all" });
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortUsername.push({
-              userName: distinct[i]
+              userName: distinct[i],
             });
             self.state.sortFilterUsername.push({
-              userName: distinct[i]
+              userName: distinct[i],
             });
           }
 
@@ -1586,10 +1588,10 @@ class Users extends Component {
           //   self.state.sortFilterMobile.push({ mobileNumber: "all" });
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortMobile.push({
-              mobileNumber: distinct[i]
+              mobileNumber: distinct[i],
             });
             self.state.sortFilterMobile.push({
-              mobileNumber: distinct[i]
+              mobileNumber: distinct[i],
             });
           }
 
@@ -1605,15 +1607,15 @@ class Users extends Component {
           //   self.state.sortFilterEmail.push({ emailID: "all" });
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortEmail.push({
-              emailID: distinct[i]
+              emailID: distinct[i],
             });
             self.state.sortFilterEmail.push({
-              emailID: distinct[i]
+              emailID: distinct[i],
             });
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1627,8 +1629,8 @@ class Users extends Component {
       url: config.apiUrl + "/User/GetUserDetailsById",
       headers: authHeader(),
       params: {
-        UserID: id
-      }
+        UserID: id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1636,16 +1638,16 @@ class Users extends Component {
         var userdata = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            GetUserData: userdata
+            GetUserData: userdata,
           });
           self.setUserEditData(userdata, id);
         } else {
           self.setState({
-            GetUserData: []
+            GetUserData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1670,8 +1672,8 @@ class Users extends Component {
         headers: authHeader(),
         params: {
           UserEmailID: this.state.selectEmail,
-          UserMobile: this.state.selectMobile
-        }
+          UserMobile: this.state.selectMobile,
+        },
       })
         .then(function(res) {
           debugger;
@@ -1680,25 +1682,25 @@ class Users extends Component {
           if (status === "Success") {
             if (userdata === "Email Id already exist!") {
               self.setState({
-                emailValidation: "Email Id already exist!"
+                emailValidation: "Email Id already exist!",
               });
             } else if (userdata === "Phone number already exist!") {
               self.setState({
-                mobileValidation: "Phone number already exist!"
+                mobileValidation: "Phone number already exist!",
               });
             } else if (
               userdata === "Email Id and Phone number both are already exist!"
             ) {
               self.setState({
                 emailValidation: "Email Id already exist!",
-                mobileValidation: "Phone number already exist!"
+                mobileValidation: "Phone number already exist!",
               });
             } else if (userdata === "Not Exist") {
               self.handleAddPersonalDetails();
             }
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -1707,7 +1709,7 @@ class Users extends Component {
         firstnameCompulsion: "Please enter first name.",
         // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion: "Please enter mobile number.",
-        emailCompulsion: "Please enter emailID."
+        emailCompulsion: "Please enter emailID.",
       });
     }
   }
@@ -1727,13 +1729,13 @@ class Users extends Component {
         FirstName: this.state.selectFirstName.trim(),
         LastName: this.state.selectLastName.trim(),
         MobileNo: this.state.selectMobile.trim(),
-        EmailID: this.state.selectEmail.trim()
+        EmailID: this.state.selectEmail.trim(),
       };
       axios({
         method: "post",
         url: config.apiUrl + "/User/AddUserPersonalDetail",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -1743,14 +1745,14 @@ class Users extends Component {
             NotificationManager.success("Record Save successfully.");
             self.setState({
               getID: id,
-              personalReadOnly: true
+              personalReadOnly: true,
             });
             self.handleGetUserList();
           } else {
             NotificationManager.error("Record Not Saved .");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -1759,7 +1761,7 @@ class Users extends Component {
         firstnameCompulsion: "Please enter first name.",
         // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion: "Please enter mobile number.",
-        emailCompulsion: "Please enter emailID."
+        emailCompulsion: "Please enter emailID.",
       });
     }
   }
@@ -1781,13 +1783,13 @@ class Users extends Component {
         LastName: this.state.selectLastName,
         MobileNo: this.state.selectMobile,
         EmailID: this.state.selectEmail,
-        UserID: id
+        UserID: id,
       };
       axios({
         method: "post",
         url: config.apiUrl + "/User/EditUserPersonalDetail",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -1800,11 +1802,11 @@ class Users extends Component {
           }
           self.setState({
             getID: id,
-            personalReadOnly: true
+            personalReadOnly: true,
           });
           self.handleGetUserList();
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -1813,7 +1815,7 @@ class Users extends Component {
         firstnameCompulsion: "Please enter first name.",
         // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion: "Please enter mobile number.",
-        emailCompulsion: "Please enter emailID."
+        emailCompulsion: "Please enter emailID.",
       });
     }
   }
@@ -1822,8 +1824,9 @@ class Users extends Component {
     debugger;
     if (
       this.state.selectedDesignation > 0 &&
-      this.state.selectedReporteeDesign > 0 &&
-      this.state.selectedReportTO > 0
+      (this.state.selectedReporteeDesign > 0 ||
+        this.state.selectedReporteeDesign == -1) &&
+      (this.state.selectedReportTO > 0 || this.state.selectedReportTO == -1)
     ) {
       let self = this;
       let id = this.state.getID;
@@ -1834,8 +1837,9 @@ class Users extends Component {
         params: {
           UserID: id,
           DesignationID: this.state.selectedDesignation,
-          ReportTo: this.state.selectedReportTO
-        }
+          ReportTo:
+            this.state.selectedReportTO == -1 ? 0 : this.state.selectedReportTO,
+        },
       })
         .then(function(res) {
           debugger;
@@ -1851,7 +1855,7 @@ class Users extends Component {
               NotificationManager.success("Record Saved successfully.");
               self.setState({
                 getID: id,
-                profileReadOnly: true
+                profileReadOnly: true,
               });
               self.handleGetUserList();
             } else {
@@ -1859,14 +1863,14 @@ class Users extends Component {
             }
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
         userdesignCompulsion: "Please select designation.",
         reporteeDesignCompulsion: "Please select reportee designation.",
-        reportToCompulsion: "Please select reportee"
+        reportToCompulsion: "Please select reportee",
       });
     }
   }
@@ -1972,13 +1976,13 @@ class Users extends Component {
         IsAssignEscalation: assignescn,
         IsAgent: SuperAgent,
         IsActive: activeStatus,
-        EscalateAssignToId: this.state.selectedAgent
+        EscalateAssignToId: this.state.selectedAgent,
       };
       axios({
         method: "post",
         url: config.apiUrl + "/User/Mapcategory",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -2021,11 +2025,11 @@ class Users extends Component {
             crmroleCompulsion: "",
             copyescCompulsion: "",
             assignescCompulsion: "",
-            agentCompulsion: ""
+            agentCompulsion: "",
           });
           self.handleGetUserList();
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -2038,7 +2042,7 @@ class Users extends Component {
         // copyescCompulsion: "Please select copy escalation",
         // assignescCompulsion: "Please select assign escalation",
         RadioCompulsion: "Please select any option.",
-        agentCompulsion: "Please select agent"
+        agentCompulsion: "Please select agent",
       });
     }
   }
@@ -2052,8 +2056,8 @@ class Users extends Component {
       url: config.apiUrl + "/User/DeleteUser",
       headers: authHeader(),
       params: {
-        userID: id
-      }
+        userID: id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -2065,7 +2069,7 @@ class Users extends Component {
           self.handleGetUserList();
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2078,8 +2082,8 @@ class Users extends Component {
       url: config.apiUrl + "/User/SendMailforchangepassword",
       headers: authHeader(),
       params: {
-        userID: id
-      }
+        userID: id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -2088,7 +2092,7 @@ class Users extends Component {
           NotificationManager.success("Please Check Email.");
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2125,8 +2129,10 @@ class Users extends Component {
       this.state.userEditData.mobile_Number.length > 0 &&
       this.state.userEditData.email_ID.length > 0 &&
       this.state.userEditData.designation_ID > 0 &&
-      this.state.userEditData.reporteeDesignation_ID > 0 &&
-      this.state.userEditData.reportee_ID > 0 &&
+      (this.state.userEditData.reporteeDesignation_ID > 0 ||
+        this.state.userEditData.reporteeDesignation_ID == -1) &&
+      (this.state.userEditData.reportee_ID > 0 ||
+        this.state.userEditData.reportee_ID == -1) &&
       this.state.editBrand !== null &&
       this.state.editBrand.length > 0 &&
       this.state.editCategory !== null &&
@@ -2219,7 +2225,10 @@ class Users extends Component {
       var json = {
         UserID: this.state.userEditData.userId,
         DesignationID: this.state.userEditData.designation_ID,
-        ReporteeID: this.state.userEditData.reportee_ID,
+        ReporteeID:
+          this.state.userEditData.reportee_ID == -1
+            ? 0
+            : this.state.userEditData.reportee_ID,
         // UserName: this.state.userEditData.userName,
         UserName: this.state.userEditData.selectUserName,
         EmailID: this.state.userEditData.email_ID,
@@ -2235,13 +2244,13 @@ class Users extends Component {
         IsAssignEscalation: assignescn,
         IsAgent: SuperAgent,
         EscalateAssignToId: this.state.userEditData.assign_ID,
-        IsActive: activeStatus
+        IsActive: activeStatus,
       };
       axios({
         method: "post",
         url: config.apiUrl + "/User/EditUserDetails",
         headers: authHeader(),
-        data: json
+        data: json,
       })
         .then(function(res) {
           debugger;
@@ -2254,7 +2263,7 @@ class Users extends Component {
             self.setState({
               multibrandIDs: finalBrandId,
               multicategoryIDs: finalCategoryId,
-              multisubcategoryIDs: finalSubCategoryId
+              multisubcategoryIDs: finalSubCategoryId,
             });
           } else {
             NotificationManager.error("Record not Updated.");
@@ -2262,7 +2271,7 @@ class Users extends Component {
           self.closeEditModal();
           self.handleGetUserList();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -2283,7 +2292,7 @@ class Users extends Component {
         editRadioCompulsion: "Please select any option.",
         // editcopyescCompulsion: "Please select copy escalation",
         // editassignescCompulsion: "Please select assign escalation",
-        editagentCompulsion: "Please select agent"
+        editagentCompulsion: "Please select agent",
       });
     }
   }
@@ -2296,14 +2305,14 @@ class Users extends Component {
       this.state.userEditData.email_ID.length > 0
     ) {
       this.setState({
-        selTab: "Profile Details"
+        selTab: "Profile Details",
       });
     } else {
       this.setState({
         editusernameCompulsion: "Please enter user name.",
         editfirstnameCompulsion: "Please enter first name.",
         editmobilenumberCompulsion: "Please enter mobile number.",
-        editemailCompulsion: "Please enter emailID."
+        editemailCompulsion: "Please enter emailID.",
       });
     }
   };
@@ -2312,22 +2321,24 @@ class Users extends Component {
     debugger;
     if (
       this.state.userEditData.designation_ID > 0 &&
-      this.state.userEditData.reporteeDesignation_ID > 0 &&
-      this.state.userEditData.reportee_ID > 0
+      (this.state.userEditData.reporteeDesignation_ID > 0 ||
+        this.state.userEditData.reporteeDesignation_ID == -1) &&
+      (this.state.userEditData.reportee_ID > 0 ||
+        this.state.userEditData.reportee_ID == -1)
     ) {
       this.setState({
-        selTab: "Mapped Category"
+        selTab: "Mapped Category",
       });
     } else {
       this.setState({
         edituserdesignCompulsion: "Please select designation.",
         editreporteeDesignCompulsion: "Please select reportee designation.",
-        editreportToCompulsion: "Please select reportee"
+        editreportToCompulsion: "Please select reportee",
       });
     }
   };
 
-  fileUpload = e => {
+  fileUpload = (e) => {
     debugger;
     var allFiles = [];
     var selectedFiles = e;
@@ -2339,18 +2350,18 @@ class Users extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: ""
+        bulkuploadCompulsion: "",
       });
     }
   };
-  fileDrop = e => {
+  fileDrop = (e) => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
 
@@ -2380,7 +2391,7 @@ class Users extends Component {
         this.setState({ sortFilterUsername });
       } else {
         this.setState({
-          sortFilterUsername: this.state.sortUsername
+          sortFilterUsername: this.state.sortUsername,
         });
       }
     }
@@ -2394,30 +2405,30 @@ class Users extends Component {
         this.setState({ sortFilterMobile });
       } else {
         this.setState({
-          sortFilterMobile: this.state.sortMobile
+          sortFilterMobile: this.state.sortMobile,
         });
       }
     }
     if (this.state.sortColumn === "emailID") {
       var sortFilterEmail = matchSorter(this.state.sortEmail, e.target.value, {
-        keys: ["emailID"]
+        keys: ["emailID"],
       });
       if (sortFilterEmail.length > 0) {
         this.setState({ sortFilterEmail });
       } else {
         this.setState({
-          sortFilterEmail: this.state.sortEmail
+          sortFilterEmail: this.state.sortEmail,
         });
       }
     }
   }
 
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
-      isOpen: false
+      isOpen: false,
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -2434,7 +2445,7 @@ class Users extends Component {
         method: "post",
         url: config.apiUrl + "/User/BulkUploadUser",
         headers: authHeader(),
-        data: formData
+        data: formData,
         // onUploadProgress: (ev = ProgressEvent) => {
         //   const progress = (ev.loaded / ev.total) * 100;
         //   this.updateUploadProgress(Math.round(progress));
@@ -2450,14 +2461,14 @@ class Users extends Component {
             self.handleGetUserList();
           } else {
             self.setState({
-              showProgress: false
+              showProgress: false,
               // isFileUploadFail: true,
               // progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -2466,7 +2477,7 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
@@ -2825,6 +2836,10 @@ class Users extends Component {
                       )}
                     >
                       <option value="0">Select Reportee Designation</option>
+                      {this.state.ReporteeDesignData.length === 0 &&
+                        this.state.userEditData.designation_ID && (
+                          <option value="-1">Root</option>
+                        )}
                       {this.state.ReporteeDesignData !== null &&
                         this.state.ReporteeDesignData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -2847,6 +2862,10 @@ class Users extends Component {
                       onChange={this.handleOnChangeEditData}
                     >
                       <option value="0">Select Report To</option>
+                      {this.state.ReporteeDesignData.length === 0 &&
+                        this.state.userEditData.designation_ID && (
+                          <option value="-1">Root</option>
+                        )}
                       {this.state.ReportToData !== null &&
                         this.state.ReportToData.map((item, i) => (
                           <option key={i} value={item.user_ID}>
@@ -2887,8 +2906,8 @@ class Users extends Component {
                     <label>Brand</label>
                     {
                       <Select
-                        getOptionLabel={option => option.brandName}
-                        getOptionValue={option => option.brandID}
+                        getOptionLabel={(option) => option.brandName}
+                        getOptionValue={(option) => option.brandID}
                         options={this.state.brandData}
                         placeholder="Select"
                         closeMenuOnSelect={false}
@@ -2908,8 +2927,8 @@ class Users extends Component {
                     <label>Categories</label>
 
                     <Select
-                      getOptionLabel={option => option.categoryName}
-                      getOptionValue={option => option.categoryID}
+                      getOptionLabel={(option) => option.categoryName}
+                      getOptionValue={(option) => option.categoryID}
                       options={this.state.CategoryData}
                       placeholder="Select"
                       // menuIsOpen={true}
@@ -2933,8 +2952,8 @@ class Users extends Component {
                     <label>Sub Categories</label>
 
                     <Select
-                      getOptionLabel={option => option.subCategoryName}
-                      getOptionValue={option => option.subCategoryID}
+                      getOptionLabel={(option) => option.subCategoryName}
+                      getOptionValue={(option) => option.subCategoryID}
                       options={this.state.SubCategoryData}
                       placeholder="Select"
                       // menuIsOpen={true}
@@ -2958,8 +2977,8 @@ class Users extends Component {
                     <label>Issue Type</label>
 
                     <Select
-                      getOptionLabel={option => option.issueTypeName}
-                      getOptionValue={option => option.issueTypeID}
+                      getOptionLabel={(option) => option.issueTypeName}
+                      getOptionValue={(option) => option.issueTypeID}
                       options={this.state.IssueTypeData}
                       placeholder="Select"
                       // menuIsOpen={true}
@@ -3169,7 +3188,7 @@ class Users extends Component {
                         ),
                         sortable: false,
                         accessor: "userName",
-                        Cell: row => <span>{row.original.userName}</span>
+                        Cell: (row) => <span>{row.original.userName}</span>,
                       },
                       {
                         Header: (
@@ -3187,7 +3206,7 @@ class Users extends Component {
                         ),
                         sortable: false,
                         accessor: "mobileNumber",
-                        Cell: row => <span>{row.original.mobileNumber}</span>
+                        Cell: (row) => <span>{row.original.mobileNumber}</span>,
                       },
                       {
                         Header: (
@@ -3205,7 +3224,7 @@ class Users extends Component {
                         ),
                         sortable: false,
                         accessor: "email ID",
-                        Cell: row => <span>{row.original.emailID}</span>
+                        Cell: (row) => <span>{row.original.emailID}</span>,
                       },
                       {
                         Header: (
@@ -3223,7 +3242,7 @@ class Users extends Component {
                         ),
                         sortable: false,
                         accessor: "designation",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["userId"];
                           return (
                             <div>
@@ -3309,9 +3328,7 @@ class Users extends Component {
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             Agent Name:{" "}
-                                            <b>
-                                              {row.original.assignName}
-                                            </b>
+                                            <b>{row.original.assignName}</b>
                                           </p>
                                         </div>
                                       </div>
@@ -3357,13 +3374,13 @@ class Users extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "userId",
                         sortable: false,
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["userId"];
                           return (
                             <>
@@ -3431,8 +3448,8 @@ class Users extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     resizable={false}
                     defaultPageSize={10}
@@ -3675,6 +3692,10 @@ class Users extends Component {
                           )}
                         >
                           <option>Select Reportee Designation</option>
+                          {this.state.ReporteeDesignData.length === 0 &&
+                            this.state.selectedDesignation && (
+                              <option value="-1">Root</option>
+                            )}
                           {this.state.ReporteeDesignData !== null &&
                             this.state.ReporteeDesignData.map((item, i) => (
                               <option key={i} value={item.designationID}>
@@ -3703,6 +3724,10 @@ class Users extends Component {
                           onChange={this.handleOnChangeUserData}
                         >
                           <option>Select Report To</option>
+                          {this.state.ReporteeDesignData.length === 0 &&
+                            this.state.selectedDesignation && (
+                              <option value="-1">Root</option>
+                            )}
                           {this.state.ReportToData !== null &&
                             this.state.ReportToData.map((item, i) => (
                               <option key={i} value={item.user_ID}>
@@ -3775,8 +3800,8 @@ class Users extends Component {
                       <div className="div-cntr">
                         <label>Brand</label>
                         <Select
-                          getOptionLabel={option => option.brandName}
-                          getOptionValue={option => option.brandID}
+                          getOptionLabel={(option) => option.brandName}
+                          getOptionValue={(option) => option.brandID}
                           options={this.state.brandData}
                           placeholder="Select"
                           // menuIsOpen={true}
@@ -3797,8 +3822,8 @@ class Users extends Component {
                         <label>Categories</label>
 
                         <Select
-                          getOptionLabel={option => option.categoryName}
-                          getOptionValue={option => option.categoryID}
+                          getOptionLabel={(option) => option.categoryName}
+                          getOptionValue={(option) => option.categoryID}
                           options={this.state.CategoryData}
                           placeholder="Select"
                           // menuIsOpen={true}
@@ -3819,8 +3844,8 @@ class Users extends Component {
                         <label>Sub Categories</label>
 
                         <Select
-                          getOptionLabel={option => option.subCategoryName}
-                          getOptionValue={option => option.subCategoryID}
+                          getOptionLabel={(option) => option.subCategoryName}
+                          getOptionValue={(option) => option.subCategoryID}
                           options={this.state.SubCategoryData}
                           placeholder="Select"
                           // menuIsOpen={true}
@@ -3844,8 +3869,8 @@ class Users extends Component {
                         <label>Issue Type</label>
 
                         <Select
-                          getOptionLabel={option => option.issueTypeName}
-                          getOptionValue={option => option.issueTypeID}
+                          getOptionLabel={(option) => option.issueTypeName}
+                          getOptionValue={(option) => option.issueTypeID}
                           options={this.state.IssueTypeData}
                           placeholder="Select"
                           // menuIsOpen={true}
