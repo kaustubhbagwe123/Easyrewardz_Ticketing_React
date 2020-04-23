@@ -4180,8 +4180,6 @@ class MyTicket extends Component {
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
                       </Modal>
 
                       <div className="card-space-1">
