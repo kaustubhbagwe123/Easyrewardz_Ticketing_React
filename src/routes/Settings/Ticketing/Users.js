@@ -730,7 +730,8 @@ class Users extends Component {
     userEditData.mobile_Number = userEditData.mobileNumber;
     userEditData.email_ID = userEditData.emailID;
     userEditData.designation_ID = userEditData.designationID;
-    userEditData.reportee_ID = userEditData.reporteeID;
+    userEditData.reportee_ID =
+      userEditData.reporteeID === 0 ? "-1" : userEditData.reporteeID;
     userEditData.brand_IDs = userEditData.brandIDs;
     userEditData.brand_Names = userEditData.brandNames;
     userEditData.category_IDs = userEditData.categoryIDs;
@@ -745,7 +746,10 @@ class Users extends Component {
     userEditData.assign_ID = userEditData.assignID;
     userEditData.assign_Escalation = userEditData.assignEscalation;
     userEditData.assign_Name = userEditData.assignName;
-    userEditData.reporteeDesignation_ID = userEditData.reporteeDesignationID;
+    userEditData.reporteeDesignation_ID =
+      userEditData.reporteeDesignationID === 0
+        ? "-1"
+        : userEditData.reporteeDesignationID;
 
     if (userEditData.isActive === true) {
       userEditData.is_Active = "true";
