@@ -479,7 +479,7 @@ class UserProfile extends Component {
                     className="userChangePW"
                     //onClick={this.redirectToChangePassword}
                   >
-                    <Link to="/changePassword">Change Password</Link>
+                    <Link to="/storeChangePassword">Change Password</Link>
                   </div>
 
                   {/* <div className="row">
