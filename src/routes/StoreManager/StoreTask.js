@@ -1864,7 +1864,9 @@ class StoreTask extends Component {
                                     </li>
                                     <li>
                                       <p>Response time remaining by</p>
-                                      <p>30 mins</p>
+                                      <p>
+                                        {row.original.resolutionTimeRemaining}
+                                      </p>
                                     </li>
                                     <li>
                                       <p>Response overdue by</p>
@@ -1872,7 +1874,7 @@ class StoreTask extends Component {
                                     </li>
                                     <li>
                                       <p>Resolution overdue by</p>
-                                      <p>2 Hrs</p>
+                                      <p>{row.original.resolutionOverdueBy}</p>
                                     </li>
                                   </ul>
                                 </div>
@@ -2332,9 +2334,12 @@ class StoreTask extends Component {
                                         </p>
                                         <p>{row.original.updatedago}</p>
                                       </li>
+
                                       <li>
                                         <p>Response time remaining by</p>
-                                        <p>30 mins</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
                                       </li>
                                       <li>
                                         <p>Response overdue by</p>
@@ -2342,7 +2347,9 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
@@ -2770,8 +2777,10 @@ class StoreTask extends Component {
                                       <p>{row.original.updatedago}</p>
                                     </li>
                                     <li>
-                                      <p>Response time remaining by</p>
-                                      <p>30 mins</p>
+                                      <p>Resolution time remaining by</p>
+                                      <p>
+                                        {row.original.resolutionTimeRemaining}
+                                      </p>
                                     </li>
                                     <li>
                                       <p>Response overdue by</p>
@@ -2779,7 +2788,7 @@ class StoreTask extends Component {
                                     </li>
                                     <li>
                                       <p>Resolution overdue by</p>
-                                      <p>2 Hrs</p>
+                                      <p>{row.original.resolutionOverdueBy}</p>
                                     </li>
                                   </ul>
                                 </div>

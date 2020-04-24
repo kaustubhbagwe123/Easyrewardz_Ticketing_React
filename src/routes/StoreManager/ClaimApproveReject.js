@@ -810,6 +810,7 @@ class ClaimApproveReject extends Component {
                         className="form-control dropdown-label"
                         value={this.state.selectBrand}
                         onChange={this.handleBrandChange}
+                        disabled={true}
                       >
                         <option>select</option>
                         {this.state.brandData !== null &&
@@ -837,6 +838,7 @@ class ClaimApproveReject extends Component {
                         className="form-control dropdown-label"
                         onChange={this.handleCategoryChange}
                         value={this.state.list1Value}
+                        disabled={true}
                       >
                         <option value={0}>select</option>
                         {this.state.categoryDropData !== null &&
@@ -868,6 +870,7 @@ class ClaimApproveReject extends Component {
                         className="form-control dropdown-label"
                         onChange={this.handleSubCatOnChange}
                         value={this.state.ListOfSubCate}
+                        disabled={true}
                       >
                         <option value={0}>select</option>
                         {this.state.SubCategoryDropData !== null &&
@@ -895,6 +898,7 @@ class ClaimApproveReject extends Component {
                         className="form-control dropdown-label"
                         onChange={this.handleIssueOnChange}
                         value={this.state.ListOfIssue}
+                        disabled={true}
                       >
                         <option value={0}>select</option>
                         {this.state.ListOfIssueData !== null &&
@@ -920,6 +924,7 @@ class ClaimApproveReject extends Component {
                         name="claimPercentage"
                         disabled={true}
                         value={this.state.claimPercentage}
+                        disabled={true}
                       />
                     </div>
                   </div>

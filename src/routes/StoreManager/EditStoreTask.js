@@ -75,7 +75,7 @@ class EditStoreTask extends Component {
       this.handleGetPriority();
       this.handleStoreTaskDetialsById(taskId);
       this.handleGetCommentOnTask(taskId);
-      this.handleGetUserDropdown(taskId);
+      
       this.handleGetStoreTaskProcressBar(taskId);
     } else {
       this.props.history.push("/store/StoreTask");
@@ -92,7 +92,7 @@ class EditStoreTask extends Component {
         this.handleGetPriority();
         this.handleStoreTaskDetialsById(taskId);
         this.handleGetCommentOnTask(taskId);
-        this.handleGetUserDropdown(taskId);
+        
         this.handleGetStoreTaskProcressBar(taskId);
       }
     }
@@ -353,15 +353,15 @@ class EditStoreTask extends Component {
       });
   }
   ////handle get user dropdown
-  handleGetUserDropdown(taskId) {
+  handleGetUserDropdown() {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/UserDropdown",
       headers: authHeader(),
       params: {
-        TaskID: taskId,
-        TaskFor:1,
+        TaskID: this.state.taskId,
+        TaskFor: 1,
       },
     })
       .then(function(response) {
@@ -370,9 +370,10 @@ class EditStoreTask extends Component {
         if (message === "Success" && userData.length > 0) {
           self.setState({
             userData,
+            userModel: true,
           });
         } else {
-          self.setState({ userData });
+          self.setState({ userData, userModel: true });
         }
       })
       .catch((response) => {
@@ -429,12 +430,23 @@ class EditStoreTask extends Component {
     } else {
       this.setState({ ispriority: "" });
     }
-
+    if (this.state.taskDetails == "") {
+      this.setState({ istaskDetails: "Please Enter Task Details." });
+    } else {
+      this.setState({ istaskDetails: "" });
+    }
+    if (this.state.taskTitle == "") {
+      this.setState({ istaskTitle: "Please Enter Task Title." });
+    } else {
+      this.setState({ istaskTitle: "" });
+    }
     setTimeout(() => {
       if (
         this.state.isfuncation == "" &&
         this.state.isdepartment == "" &&
-        this.state.ispriority == ""
+        this.state.ispriority == "" &&
+        this.state.istaskDetails == "" &&
+        this.state.istaskTitle == ""
       ) {
         var inputParam = {};
 
@@ -443,6 +455,8 @@ class EditStoreTask extends Component {
         inputParam.PriorityID = this.state.priorityID;
         inputParam.TaskID = this.state.taskId;
         inputParam.TaskStatusId = statusId;
+        inputParam.TaskTitle = this.state.taskTitle;
+        inputParam.TaskDescription = this.state.taskDetails;
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -595,7 +609,8 @@ class EditStoreTask extends Component {
   };
   ////handle user model open
   handleUserModelOpen() {
-    this.setState({ userModel: true });
+    // this.setState({ userModel: true });
+    this.handleGetUserDropdown();
   }
   ////handle user model close
   handleUserModelClose() {
@@ -684,7 +699,6 @@ class EditStoreTask extends Component {
                 <div className="row">
                   <label
                     className="modal-lbl"
-                    
                     onClick={this.handleUpdateTask.bind(this, 222)}
                   >
                     Submit as <span className="modal-lbl-1">Solved</span>
