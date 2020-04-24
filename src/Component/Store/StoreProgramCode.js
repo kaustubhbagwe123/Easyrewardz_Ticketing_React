@@ -50,11 +50,11 @@ class StoreProgramCode extends Component {
           "X-Authorized-Domainname": X_Authorized_Domainname,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let Msg = res.data.statusCode;
           if (Msg === 200) {
-            setTimeout(function () {
+            setTimeout(function() {
               self.props.history.push({
                 pathname: "storeSignIn",
                 encProgramCode: encProgramCode,

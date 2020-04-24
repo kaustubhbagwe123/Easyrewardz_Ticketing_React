@@ -1,5 +1,5 @@
 let config = {
- apiUrl: "https://localhost:44357/api",
+  apiUrl: "https://localhost:44357/api",
   // hierarchyTemplate: [["Designation", "ReportTo", "Status"]],
   // priorityTemplate: [["PriorityName", "Status"]],
   // userTemplate: [
@@ -187,21 +187,21 @@ let config = {
       "Active",
     ],
     [
-        "BATA",
-        "Ahmedabad",
-        "Gujarat",
-        "370001",
-        "Store-Name-02",
-        "Store-address-02",
-        "Store-Code-02",
-        "Gujarat",
-        "West",
-        "Retail",
-        "Store02@gmail.com",
-        "909090909",
-        "In-Active",
+      "BATA",
+      "Ahmedabad",
+      "Gujarat",
+      "370001",
+      "Store-Name-02",
+      "Store-address-02",
+      "Store-Code-02",
+      "Gujarat",
+      "West",
+      "Retail",
+      "Store02@gmail.com",
+      "909090909",
+      "In-Active",
+    ],
   ],
-],
   ///// ------------------------------------ [Store bulkupload code]-----------------------------------------------
   itemMasterTemplate: [
     [
@@ -258,18 +258,46 @@ let config = {
     ["Manager", "HOD", "Active"],
   ],
 
-  campaignTemplate: [
-    ["CampaignName", "Script"]
-  ],
+  campaignTemplate: [["CampaignName", "Script"]],
   departmentTemplate: [
     ["Brand", "StoreCode", "Department", "Function", "Status"],
-    ["Paragon|Bata","TestStoreBulkasf|ApitestStoresa","Department 10","Function10-1","Active"]
+    [
+      "Paragon|Bata",
+      "TestStoreBulkasf|ApitestStoresa",
+      "Department 10",
+      "Function10-1",
+      "Active",
+    ],
   ],
   storeUserTemplate: [
-    ["Brand", "StoreCode","UserName","MobileNumber","UserEmailID", "Department", "Function", 
-    "UserDesignation","ReporteeDesignation","ReportsTo","CRMRole","Status"],
-    ["Bata","Store95t5","abc","8097654323","abc@gmail.com","Department-1","Function-1|Function-2","CXO",
-    "CTTO","xyz","Admin","Active"]
+    [
+      "Brand",
+      "StoreCode",
+      "UserName",
+      "MobileNumber",
+      "UserEmailID",
+      "Department",
+      "Function",
+      "UserDesignation",
+      "ReporteeDesignation",
+      "ReportsTo",
+      "CRMRole",
+      "Status",
+    ],
+    [
+      "Bata",
+      "Store95t5",
+      "abc",
+      "8097654323",
+      "abc@gmail.com",
+      "Department-1",
+      "Function-1|Function-2",
+      "CXO",
+      "CTTO",
+      "xyz",
+      "Admin",
+      "Active",
+    ],
   ],
   storeSlaTemplate: [
     [
@@ -287,7 +315,7 @@ let config = {
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
-  //apiUrl: 'http://ertktapistore.dcdev.brainvire.net/Api'   ///----Store API--------
+  // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
