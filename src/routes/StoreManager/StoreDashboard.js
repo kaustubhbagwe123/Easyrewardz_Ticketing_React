@@ -23,6 +23,7 @@ import moment from "moment";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader.js";
+import StoreStatus from "./StoreStatus.js";
 
 class StoreDashboard extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class StoreDashboard extends Component {
       creationStart: creationStart,
       creationEnd: creationEnd,
       dashboardGridData: [],
+      storeStatus:StoreStatus(),
       BrandData: [],
       AgentData: [],
       AgentIds: "",
@@ -65,7 +67,7 @@ class StoreDashboard extends Component {
       Task_ClaimId: "",
       Task_Ticket: "",
       task_Title: "",
-      task_status: "",
+      selectedStatus: 0,
       claim_Id: "",
       DashboardOpenTaskDepartmentWise: [],
       DashboardTaskByPriority: [],
@@ -651,7 +653,7 @@ class StoreDashboard extends Component {
         taskid: parseInt(taskId),
         Department: this.state.selectDepartment,
         tasktitle: this.state.task_Title,
-        taskstatus: this.state.task_status,
+        taskstatus: this.state.selectedStatus,
         ticketID: 0,
         functionID: this.state.selectedFuncation,
         AssigntoId: 0,
@@ -1257,17 +1259,26 @@ class StoreDashboard extends Component {
                                 ) : null}
 
                                 <div className="col-md-3">
-                                  {/* <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    value={this.state.task_status}
+                                  
+                                   <select
+                                    value={
+                                      this.state.selectedStatus
+                                    }
+                                    name="selectedStatus"
                                     onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  /> */}
-                                  <select>
-                                    <option>Task Status</option>
+                                  >
+                                    <option value="0">Task Status</option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.storeStatusID}
+                                          >
+                                            {item.storeStatusName}
+                                          </option>
+                                        )
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3 campaign-end-date creation-date-range">

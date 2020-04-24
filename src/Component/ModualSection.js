@@ -12,7 +12,6 @@ class ModualSection extends Component {
               <div className="mb-4">
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
               </div>
-              {/* <h3 className="sign-in">SIGN IN</h3> */}
 
               <br />
               <Link to={"/TicketProgramCode"}>
