@@ -3,7 +3,7 @@ import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../assets/Images/del-big.png";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
-import { Popover,Table } from "antd";
+import { Popover, Table } from "antd";
 import config from "../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
@@ -24,7 +24,7 @@ class TicketSystemTask extends Component {
       selectedDepartment: "",
       selectedFunction: "",
       selectedAssignTo: "",
-      selectedPriority: ""
+      selectedPriority: "",
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -59,8 +59,8 @@ class TicketSystemTask extends Component {
       url: config.apiUrl + "/Task/gettasklist",
       headers: authHeader(),
       params: {
-        TicketId: Id
-      }
+        TicketId: Id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -71,10 +71,9 @@ class TicketSystemTask extends Component {
           self.setState({ taskData: data });
         } else {
           self.setState({ taskData: [] });
-           
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -94,8 +93,8 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getDepartmentList",
-      headers: authHeader()
+      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
+      headers: authHeader(),
     })
       .then(function(res) {
         let status = res.data.message;
@@ -106,7 +105,7 @@ class TicketSystemTask extends Component {
           self.setState({ DepartmentData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -114,17 +113,17 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectedDepartment
-      }
+        DepartmentId: this.state.selectedDepartment,
+      },
     })
       .then(function(res) {
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -132,11 +131,11 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Task/getassignedto",
+      url: config.apiUrl + "/StoreTask/GetAssignedTo",
       headers: authHeader(),
       params: {
-        Function_ID: this.state.selectedFunction
-      }
+        Function_ID: this.state.selectedFunction,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -147,7 +146,7 @@ class TicketSystemTask extends Component {
           self.setState({ AssignToData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -155,10 +154,11 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "get",
-      url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()
+      url: config.apiUrl + "/StorePriority/GetPriorityList",
+      headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -167,12 +167,12 @@ class TicketSystemTask extends Component {
           self.setState({ TicketPriorityData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  setDepartmentValue = e => {
+  setDepartmentValue = (e) => {
     let departmentValue = e.target.value;
     var taskfield = this.state.taskfield;
     taskfield[e.target.name] = e.target.selectedOptions[0].text;
@@ -185,7 +185,7 @@ class TicketSystemTask extends Component {
       }
     }, 1);
   };
-  setFunctionValue = e => {
+  setFunctionValue = (e) => {
     let functionValue = e.currentTarget.value;
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
@@ -198,14 +198,22 @@ class TicketSystemTask extends Component {
       }
     }, 1);
   };
-  setAssignToValue = e => {
+  setAssignToValue = (e) => {
+    debugger;
     let assignToValue = e.currentTarget.value;
+
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
     taskfield["AssignToID"] = assignToValue;
+    if (assignToValue !== null) {
+      var assignname = this.state.AssignToData.filter(
+        (x) => x.userID === Number(assignToValue)
+      )[0].userName;
+      taskfield["assignName"] = assignname;
+    }
     this.setState({ selectedAssignTo: assignToValue, taskfield });
   };
-  setPriorityValue = e => {
+  setPriorityValue = (e) => {
     let priorityValue = e.currentTarget.value;
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
@@ -214,7 +222,7 @@ class TicketSystemTask extends Component {
   };
 
   handleCreateTask() {
-    debugger
+    debugger;
     if (this.validator.allValid()) {
       if (this.state.taskfield) {
         var taskData = [];
@@ -238,12 +246,12 @@ class TicketSystemTask extends Component {
             Department: "",
             Funcation: "",
             Priority: "",
-            AssignTo: ""
+            AssignTo: "",
           },
           selectedDepartment: "",
           selectedFunction: "",
           selectedAssignTo: "",
-          selectedPriority: ""
+          selectedPriority: "",
         });
         NotificationManager.success("Task created successfully.");
         this.validator.hideMessages();
@@ -253,7 +261,7 @@ class TicketSystemTask extends Component {
       this.forceUpdate();
     }
   }
-  handleTaskDelete = i => {
+  handleTaskDelete = (i) => {
     let taskData = [...this.state.taskData];
     taskData.splice(i - 1, 1);
     this.setState({ taskData });
@@ -492,72 +500,74 @@ class TicketSystemTask extends Component {
                   data-parent="#accordion"
                 >
                   <div className="card-body systemtaskreact">
-                    
-                    <Table columns={[
+                    <Table
+                      columns={[
                         {
-                          title: 'ID', dataIndex: 'ID' 
+                          title: "ID",
+                          dataIndex: "ID",
                         },
                         {
-                          title: 'Task Title', dataIndex: 'taskTitle' 
+                          title: "Task Title",
+                          dataIndex: "taskTitle",
                         },
                         {
-                          title: 'Assign To',
-                          dataIndex: "assignName" 
+                          title: "Assign To",
+                          dataIndex: "assignName",
                         },
                         {
-                          titleL:'Actions',
+                          titleL: "Actions",
                           dataIndex: "",
-                          render: (row,data) => {
-                            debugger
+                          render: (row, data) => {
                             var ids = row.ID;
                             return (
                               <>
-                                 <Popover
-                                    content={
-                                      <div className="d-flex general-popover popover-body">
-                                        <div className="del-big-icon">
-                                          <img
-                                            src={DelBigIcon}
-                                            alt="del-icon"
-                                          />
-                                        </div>
-                                        <div>
-                                          <p className="font-weight-bold blak-clr">
-                                            Delete file?
-                                          </p>
-                                          <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
-                                          </p>
-                                          <div className="del-can">
-                                            <a href="#!">CANCEL</a>
-                                            <button
-                                              className="butn"
-                                              type="button"
-                                              onClick={this.handleTaskDelete.bind(this,ids)}
-                                            >
-                                              Delete
-                                            </button>
-                                          </div>
+                                <Popover
+                                  content={
+                                    <div className="d-flex general-popover popover-body">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href="#!">CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            type="button"
+                                            onClick={this.handleTaskDelete.bind(
+                                              this,
+                                              ids
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
                                         </div>
                                       </div>
-                                    }
-                                    placement="bottom"
-                                    trigger="click"
-                                  >
-                                    <img
-                                      src={DeleteIcon}
-                                      alt="del-icon"
-                                      className="del-btn"
-                                    />
-                                  </Popover>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                  />
+                                </Popover>
                               </>
                             );
-                          }
-                        }
+                          },
+                        },
                       ]}
-                       dataSource={taskData} 
-                       pagination={false}/>
+                      dataSource={taskData}
+                      pagination={false}
+                    />
                   </div>
                 </div>
               </div>
