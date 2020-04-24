@@ -383,11 +383,24 @@ class StoreTaskByTicket extends Component {
       this.setState({ ispriority: "" });
     }
 
+    if (this.state.taskDetails == "") {
+      this.setState({ istaskDetails: "Please Enter Task Details." });
+    } else {
+      this.setState({ istaskDetails: "" });
+    }
+    if (this.state.taskTitle == "") {
+      this.setState({ istaskTitle: "Please Enter Task Title." });
+    } else {
+      this.setState({ istaskTitle: "" });
+    }
+
     setTimeout(() => {
       if (
         this.state.isfuncation == "" &&
         this.state.isdepartment == "" &&
-        this.state.ispriority == ""
+        this.state.ispriority == "" &&
+        this.state.istaskTitle == "" &&
+        this.state.istaskDetails == ""
       ) {
         var inputParam = {};
 
@@ -396,6 +409,8 @@ class StoreTaskByTicket extends Component {
         inputParam.PriorityID = this.state.priorityID;
         inputParam.TaskID = this.state.taskId;
         inputParam.TaskStatusId = statusId;
+        inputParam.TaskTitle = this.state.taskTitle;
+        inputParam.TaskDescription = this.state.taskDetails;
 
         axios({
           method: "post",
@@ -595,7 +610,11 @@ class StoreTaskByTicket extends Component {
                 </button>
                 <button
                   type="button"
-                  className={this.state.canSubmit?"btn-store-resolved":"btn-store-resolved disabled-link"}
+                  className={
+                    this.state.canSubmit
+                      ? "btn-store-resolved"
+                      : "btn-store-resolved disabled-link"
+                  }
                   onClick={this.handleSubmitReopnModalOpen.bind(this)}
                 >
                   <label className="myticket-submit-solve-button-text">

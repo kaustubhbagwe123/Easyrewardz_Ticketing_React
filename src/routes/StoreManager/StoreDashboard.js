@@ -24,6 +24,8 @@ import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader.js";
 import StoreStatus from "./StoreStatus.js";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 class StoreDashboard extends Component {
   constructor(props) {
@@ -45,7 +47,7 @@ class StoreDashboard extends Component {
       creationStart: creationStart,
       creationEnd: creationEnd,
       dashboardGridData: [],
-      storeStatus:StoreStatus(),
+      storeStatus: StoreStatus(),
       BrandData: [],
       AgentData: [],
       AgentIds: "",
@@ -78,6 +80,12 @@ class StoreDashboard extends Component {
       FlagClaimVsInvoiceArticle: false,
       FlagOpenClaimStatus: false,
       FlagClaimVsInvoiceAmount: false,
+      searchData: {},
+      categoryData: [],
+      subCategoryData: [],
+      issueTypeData: [],
+      userData: [],
+      activeTab: 1,
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -677,149 +685,186 @@ class StoreDashboard extends Component {
         console.log(response);
       });
   }
+  ////handle get claim category
+  handleGetClaimCategory() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "StoreUser/BindStoreClaimSubCategory",
+      headers: authHeader(),
+      // params: { CategoryIDs: this.state.searchData["claimcat"] },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var categoryData = response.data.response;
+        if (message == "Success" && categoryData) {
+          self.setState({ categoryData });
+        } else {
+          self.setState({ categoryData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetClaimCategory");
+      });
+  }
+
+  ////handle get claim sub cateogry by cateogry id
+  handleGetClaimSubCategory() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "StoreUser/BindStoreClaimSubCategory",
+      headers: authHeader(),
+      params: { CategoryIDs: this.state.searchData["claimcat"] },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var subCategoryData = response.data.response;
+        if (message == "Success" && subCategoryData) {
+          self.setState({ subCategoryData });
+        } else {
+          self.setState({ subCategoryData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetClaimSubCategory");
+      });
+  }
+
+  ////handle get issue type by sub cateogry id
+  handleGetIssueType() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "StoreUser/BindStoreClaimIssueType",
+      headers: authHeader(),
+      params: { subCategoryIDs: this.state.searchData["claimsubcat"] },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var issueTypeData = response.data.response;
+        if (message == "Success" && issueTypeData) {
+          self.setState({ issueTypeData });
+        } else {
+          self.setState({ issueTypeData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetIssueType");
+      });
+  }
+  //// handle get store user
+  handleGetStoreUser() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var userData = response.data.response;
+        if (message == "Success" && userData) {
+          self.setState({ userData });
+        } else {
+          self.setState({ userData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreUser");
+      });
+  }
+  ////handle cliam view search
+  handleClaimViewSearch() {
+    let self = this;
+    var inputParam = {};
+    inputParam.claimID = Number(this.state.searchData["claimID"]) || 0;
+    inputParam.ticketID = Number(this.state.searchData["ticketID"]) || 0;
+    inputParam.claimissueType =
+      Number(this.state.searchData["claimissueType"]) || 0;
+    inputParam.ticketMapped =
+      Number(this.state.searchData["ticketMapped"]) || 0;
+    inputParam.claimsubcat = Number(this.state.searchData["claimsubcat"]) || 0;
+    inputParam.assignTo = Number(this.state.searchData["assignTo"]) || 0;
+    inputParam.claimcat = Number(this.state.searchData["claimcat"]) || 0;
+    inputParam.claimraiseddate =
+      Number(this.state.searchData["cl)aimraiseddate"]) || "";
+    inputParam.taskID = Number(this.state.searchData["taskID"]) || 0;
+    inputParam.claimstatus = Number(this.state.searchData["claimstatus"]) || 0;
+    inputParam.taskmapped = Number(this.state.searchData["taskmapped"]) || 0;
+    inputParam.raisedby = Number(this.state.searchData["raisedby"]) || 0;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDashboard/GetstoreDashboardListClaim",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(response) {
+        debugger;
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreUser");
+      });
+  }
+
+  ////handle view search
+  handleViewSerach() {
+    if (this.state.activeTab == 1) {
+      this.handleViewSearchData();
+    } else {
+      this.handleClaimViewSearch();
+    }
+  }
+  ////handle tab change
+  handleTabChange = (tab, e) => {
+    this.setState({ activeTab: tab });
+  };
+  ////handle on change in view search
+  handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    var searchData = this.state.searchData;
+    if (name == "claimID") {
+      searchData[name] = value;
+    }
+    if (name == "ticketID") {
+      searchData[name] = value;
+    }
+    if (name == "claimissueType") {
+      searchData[name] = value;
+    }
+    if (name == "ticketMapped") {
+      searchData[name] = value;
+    }
+    if (name == "claimsubcat") {
+      searchData[name] = value;
+    }
+    if (name == "assignTo") {
+      searchData[name] = value;
+    }
+    if (name == "claimcat") {
+      searchData[name] = value;
+    }
+    if (name == "claimraiseddate") {
+      searchData[name] = value;
+    }
+    if (name == "taskID") {
+      searchData[name] = value;
+    }
+    if (name == "claimstatus") {
+      searchData[name] = value;
+    }
+    if (name == "taskmapped") {
+      searchData[name] = value;
+    }
+    if (name == "raisedby") {
+      searchData[name] = value;
+    }
+
+    this.setState({ searchData });
+  };
+
   render() {
-    const DefArti = (
-      <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup dashnewpopup">
-          <li>
-            <p>Category</p>
-            <p>Defective article</p>
-          </li>
-          <li>
-            <p>Sub Category</p>
-            <p>Customer wants refund</p>
-          </li>
-          <li>
-            <p>Type</p>
-            <p>Delivery</p>
-          </li>
-        </ul>
-      </div>
-    );
-
-    const dataStDash = [
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
-        DeptName: (
-          <span>
-            <label>Internet</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata1</label>,
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Store door are not working</label>,
-        DeptName: (
-          <span>
-            <label>Hardware</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata2</label>,
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        TaskTitle: <label>Supplies are not coming on time</label>,
-        DeptName: (
-          <span>
-            <label>Supply</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata3</label>,
-      },
-
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Wifi is not working from 5 Hrs</label>,
-        DeptName: (
-          <span>
-            <label>Internet</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata1</label>,
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        TaskTitle: <label>Store door are not working</label>,
-        DeptName: (
-          <span>
-            <label>Hardware</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata2</label>,
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        TaskTitle: <label>Store door are not working</label>,
-        DeptName: (
-          <span>
-            <label>Supply</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata3</label>,
-      },
-      {
-        statusNew: (
-          <span className="table-btn table-blue-btn">
-            <label>open</label>
-          </span>
-        ),
-        TaskTitle: <label>Supplies are not coming on time</label>,
-        DeptName: (
-          <span>
-            <label>Hardwares</label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        ),
-        StName: <label>Bata3</label>,
-      },
-    ];
-
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -1107,6 +1152,7 @@ class StoreDashboard extends Component {
                               role="tab"
                               aria-controls="date-tab"
                               aria-selected="true"
+                              onClick={this.handleTabChange.bind(this, 1)}
                             >
                               Task:{" "}
                               <span className="myTciket-tab-span">06</span>
@@ -1121,6 +1167,7 @@ class StoreDashboard extends Component {
                               role="tab"
                               aria-controls="ticket-tab"
                               aria-selected="false"
+                              onClick={this.handleTabChange.bind(this, 2)}
                             >
                               Claim:
                               <span className="myTciket-tab-span">05</span>
@@ -1130,7 +1177,7 @@ class StoreDashboard extends Component {
                             <button
                               className="btn-inv"
                               type="button"
-                              onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleViewSerach.bind(this)}
                             >
                               VIEW SEARCH
                             </button>
@@ -1259,26 +1306,21 @@ class StoreDashboard extends Component {
                                 ) : null}
 
                                 <div className="col-md-3">
-                                  
-                                   <select
-                                    value={
-                                      this.state.selectedStatus
-                                    }
+                                  <select
+                                    value={this.state.selectedStatus}
                                     name="selectedStatus"
                                     onChange={this.hanldetoggleOnChange}
                                   >
                                     <option value="0">Task Status</option>
                                     {this.state.storeStatus !== null &&
-                                      this.state.storeStatus.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        )
-                                      )}
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3 campaign-end-date creation-date-range">
@@ -1341,67 +1383,144 @@ class StoreDashboard extends Component {
                                   <input
                                     type="text"
                                     placeholder="Claim ID"
-                                    name="claim_Id"
-                                    value={this.state.claim_Id}
-                                    onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="claimID"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["claimID"]}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
-                                    value={this.state.claimTicket_mapped}
-                                    name="claimTicket_mapped"
-                                    onChange={this.hanldetoggleOnChange}
+                                    name="ticketMapped"
+                                    onChange={this.handleOnChange}
+                                    value={
+                                      this.state.searchData["ticketMapped"]
+                                    }
                                   >
-                                    <option value="">Ticket Mapped</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value={""} disabled selected>
+                                      Ticket Mapped
+                                    </option>
+                                    <option value={1}>Yes</option>
+                                    <option value={0}>No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Claim Category</option>
+                                  <select
+                                    name="claimcat"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["claimcat"]}
+                                  >
+                                    <option value={""} disabled selected>
+                                      Claim Category
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Claim Status</option>
+                                  <select
+                                    name="claimstatus"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["claimstatus"]}
+                                  >
+                                    <option value={""} disabled selected>
+                                      Claim Status
+                                    </option>
+                                  </select>
+                                </div>
+                                {this.state.searchData["ticketMapped"] == 1 ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                      name="ticketID"
+                                      onChange={this.handleOnChange}
+                                      value={this.state.searchData["ticketID"]}
+                                    />
+                                  </div>
+                                ) : null}
+                                <div className="col-md-3">
+                                  <select
+                                    name="claimsubcat"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["claimsubcat"]}
+                                  >
+                                    <option value={""} disabled selected>
+                                      Claim Sub Category
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input type="text" placeholder="Title ID" />
+                                  <DatePicker
+                                    style={{ margin: "0" }}
+                                    selected={
+                                      this.state.searchData["claimraiseddate"]
+                                    }
+                                    // onChange={this.handleOnChange}
+                                    name="claimraiseddate"
+                                    placeholderText="Claim Raised On"
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dateFormat="dd/MM/yyyy"
+                                    value={
+                                      this.state.searchData["claimraiseddate"]
+                                    }
+                                  />
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Claim Sub Category</option>
+                                  <select
+                                    name="taskmapped"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["taskmapped"]}
+                                  >
+                                    <option value={""} disabled selected>
+                                      Task Mapped
+                                    </option>
+                                    <option value={1}>Yes</option>
+                                    <option value={0}>No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Claim Raised On</option>
+                                  <select
+                                    name="claimissueType"
+                                    onChange={this.handleOnChange}
+                                    value={
+                                      this.state.searchData["claimissueType"]
+                                    }
+                                  >
+                                    <option value={""} disabled selected>
+                                      Claim Issue Type
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Task Mapped(Yes-No)</option>
+                                  <select
+                                    name="assignTo"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["assignTo"]}
+                                  >
+                                    <option value={""} disabled selected>
+                                      Assign To
+                                    </option>
                                   </select>
                                 </div>
+                                {this.state.searchData["taskmapped"] == 1 ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Task ID"
+                                      name="taskID"
+                                      value={this.state.searchData["taskID"]}
+                                      onChange={this.handleOnChange}
+                                    />
+                                  </div>
+                                ) : null}
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Claim Issue Type</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Assign To</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input type="text" placeholder="Task ID" />
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Raised By</option>
+                                  <select
+                                    name="raisedby"
+                                    onChange={this.handleOnChange}
+                                    value={this.state.searchData["raisedby"]}
+                                  >
+                                    <option value={""} disabled selected>
+                                      Raised By
+                                    </option>
                                   </select>
                                 </div>
                               </div>
