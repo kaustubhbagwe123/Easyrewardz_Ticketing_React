@@ -45,7 +45,7 @@ class StoreDashboard extends Component {
       creationStart: creationStart,
       creationEnd: creationEnd,
       dashboardGridData: [],
-      storeStatus:StoreStatus(),
+      storeStatus: StoreStatus(),
       BrandData: [],
       AgentData: [],
       AgentIds: "",
@@ -81,7 +81,7 @@ class StoreDashboard extends Component {
       FlagClaimVsInvoiceArticle: false,
       FlagOpenClaimStatus: false,
       FlagClaimVsInvoiceAmount: false,
-      createdUser:[]
+      createdUser: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -593,32 +593,32 @@ class StoreDashboard extends Component {
         console.log(response);
       });
   }
-    ///Get Created by user list for dropdown
-    handleGetCreatedByUserDropdown() {
-      let self = this;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreUser/GetStoreUsers",
-        headers: authHeader(),
+  ///Get Created by user list for dropdown
+  handleGetCreatedByUserDropdown() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            createdUser: data,
+          });
+        } else {
+          self.setState({
+            createdUser: [],
+          });
+        }
       })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            self.setState({
-              createdUser: data,
-            });
-          } else {
-            self.setState({
-              createdUser: [],
-            });
-          }
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    }
+      .catch((res) => {
+        console.log(res);
+      });
+  }
   //// Get Assign to list by funcation id
   handleGetAssignTobyFuncationId() {
     let self = this;
@@ -671,18 +671,27 @@ class StoreDashboard extends Component {
     debugger;
     let self = this;
     var taskId = "";
-    var claimId=0;
+    var claimId = 0;
+    var ticketId = 0;
     if (this.state.task_Id !== "") {
       taskId = this.state.task_Id;
     } else {
       taskId = "0";
     }
-    if(this.state.Task_ClaimId !== ""){
-      claimId=parseInt(this.state.Task_ClaimId)
-    }else{
-      claimId=0
+    if (this.state.Task_ClaimId !== "") {
+      claimId = parseInt(this.state.Task_ClaimId);
+    } else {
+      claimId = 0;
     }
-    
+    if(this.state.Task_ticketId !== ""){
+      ticketId=this.state.Task_ticketId;
+    }else{
+      ticketId=0;
+    }
+    var fromDate = moment(new Date(this.state.creationStart)).format(
+      "YYYY-MM-DD"
+    );
+    var toDate = moment(new Date(this.state.creationEnd)).format("YYYY-MM-DD");
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardList",
@@ -692,14 +701,16 @@ class StoreDashboard extends Component {
         Department: this.state.selectDepartment,
         tasktitle: this.state.task_Title,
         taskstatus: this.state.selectedStatus,
-        ticketID: this.state.Task_ticketId,
+        ticketID: ticketId,
         functionID: this.state.selectedFuncation,
+        CreatedOnFrom: fromDate,
+        CreatedOnTo: toDate,
         AssigntoId: this.state.selectAssignTo,
-        Priority:this.state.selectedPriority,
+        Priority: this.state.selectedPriority,
         taskwithTicket: this.state.Task_Ticket,
         taskwithClaim: this.state.Task_Claim,
         claimID: claimId,
-        createdID:this.state.SelectedCreatedBy
+        createdID: this.state.SelectedCreatedBy,
       },
     })
       .then(function(response) {
@@ -707,7 +718,7 @@ class StoreDashboard extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
-          self.setState({ dashboardGridData: data, taskCount:data.length });
+          self.setState({ dashboardGridData: data, taskCount: data.length });
         } else {
           self.setState({ dashboardGridData: [] });
         }
@@ -1148,7 +1159,9 @@ class StoreDashboard extends Component {
                               aria-selected="true"
                             >
                               Task:{" "}
-                              <span className="myTciket-tab-span">{this.state.taskCount}</span>
+                              <span className="myTciket-tab-span">
+                                {this.state.taskCount}
+                              </span>
                             </a>
                           </li>
 
@@ -1280,8 +1293,7 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                              
-                                   <select
+                                  <select
                                     className="store-create-select"
                                     value={this.state.SelectedCreatedBy}
                                     name="SelectedCreatedBy"
@@ -1289,17 +1301,15 @@ class StoreDashboard extends Component {
                                   >
                                     <option>Task Created By</option>
                                     {this.state.createdUser !== null &&
-                                      this.state.createdUser.map(
-                                        (item, j) => (
-                                          <option
-                                            key={j}
-                                            value={item.userID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.userName}
-                                          </option>
-                                        )
-                                      )}
+                                      this.state.createdUser.map((item, j) => (
+                                        <option
+                                          key={j}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 {this.state.Task_Claim === "true" ? (
@@ -1316,26 +1326,21 @@ class StoreDashboard extends Component {
                                 ) : null}
 
                                 <div className="col-md-3">
-                                  
-                                   <select
-                                    value={
-                                      this.state.selectedStatus
-                                    }
+                                  <select
+                                    value={this.state.selectedStatus}
                                     name="selectedStatus"
                                     onChange={this.hanldetoggleOnChange}
                                   >
                                     <option value="0">Task Status</option>
                                     {this.state.storeStatus !== null &&
-                                      this.state.storeStatus.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        )
-                                      )}
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3 campaign-end-date creation-date-range">
