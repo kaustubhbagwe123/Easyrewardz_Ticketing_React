@@ -353,7 +353,7 @@ class StoreTask extends Component {
       showAddTask: true,
       tabIndex: 3,
       isloading: true,
-      FilterCollapse:false,
+      FilterCollapse: false,
       sdepartmentNameFilterCheckbox: "",
       sstoreNameFilterCheckbox: "",
       spriorityNameFilterCheckbox: "",
@@ -1700,7 +1700,9 @@ class StoreTask extends Component {
                   style={{ top: "18%" }}
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
-                  <small>{this.state.FilterCollapse?"Close Search":"Search"}</small>
+                  <small>
+                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                  </small>
                   <img
                     className="search-icon"
                     src={SearchIcon}
@@ -1719,11 +1721,25 @@ class StoreTask extends Component {
                         Header: <span>Status</span>,
                         accessor: "taskStatus",
                         Cell: (row) => {
-                          return (
-                            <span className="table-btn table-blue-btn">
-                              <label>{row.original.taskStatus}</label>
-                            </span>
-                          );
+                          if (row.original.taskStatus === "New") {
+                            return (
+                              <span className="table-btn table-yellow-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          } else if (row.original.taskStatus === "Open") {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span className="table-btn table-green-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          }
                         },
                       },
                       {
@@ -2113,7 +2129,9 @@ class StoreTask extends Component {
                   style={{ top: "18%" }}
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
-                  <small>{this.state.FilterCollapse?"Close Search":"Search"}</small>
+                  <small>
+                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                  </small>
                   <img
                     className="search-icon"
                     src={SearchIcon}
@@ -2132,11 +2150,25 @@ class StoreTask extends Component {
                         Header: <span>Status</span>,
                         accessor: "taskStatus",
                         Cell: (row) => {
-                          return (
-                            <span className="table-btn table-blue-btn">
-                              <label>{row.original.taskStatus}</label>
-                            </span>
-                          );
+                          if (row.original.taskStatus === "New") {
+                            return (
+                              <span className="table-btn table-yellow-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          } else if (row.original.taskStatus === "Open") {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span className="table-btn table-green-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          }
                         },
                       },
                       {
@@ -2547,7 +2579,9 @@ class StoreTask extends Component {
                   style={{ top: "18%" }}
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
-                  <small>{this.state.FilterCollapse?"Close Search":"Search"}</small>
+                  <small>
+                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                  </small>
                   <img
                     className="search-icon"
                     src={SearchIcon}
@@ -2570,11 +2604,25 @@ class StoreTask extends Component {
                         Header: <span>Status</span>,
                         accessor: "taskStatus",
                         Cell: (row) => {
-                          return (
-                            <span className="table-btn table-blue-btn">
-                              <label>{row.original.taskStatus}</label>
-                            </span>
-                          );
+                          if (row.original.taskStatus === "New") {
+                            return (
+                              <span className="table-btn table-yellow-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          } else if (row.original.taskStatus === "Open") {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span className="table-btn table-green-btn">
+                                <label>{row.original.taskStatus}</label>
+                              </span>
+                            );
+                          }
                         },
                       },
                       {

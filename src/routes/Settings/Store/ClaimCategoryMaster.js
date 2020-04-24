@@ -1616,10 +1616,10 @@ class ClaimCategoryMaster extends Component {
         url: config.apiUrl + "/Category/BulkUploadClaimCategory",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        }
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;

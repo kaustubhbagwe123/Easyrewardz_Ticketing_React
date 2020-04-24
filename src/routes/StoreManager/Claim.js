@@ -18,6 +18,13 @@ class Claim extends Component {
     this.state = {
       raisedByMeData: [],
       assignToMeData: [],
+      statusData:[
+        { taskStatusID: 200, taskStatusName: "New" },
+        { taskStatusID: 221, taskStatusName: "Open" },
+        { taskStatusID: 222, taskStatusName: "Resolved" },
+        { taskStatusID: 223, taskStatusName: "Closed" },
+        { taskStatusID: 224, taskStatusName: "ReOpened" }
+      ]
     };
   }
 
@@ -164,7 +171,9 @@ class Claim extends Component {
                                   </div>
                                   <div className="col-md-3">
                                     <select>
-                                      <option>Ticket Mapped(Yes-No)</option>
+                                      <option value={2}>Ticket Mapped</option>
+                                      <option value={1}>Yes</option>
+                                      <option value={0}>No</option>
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -192,7 +201,9 @@ class Claim extends Component {
                                   </div>
                                   <div className="col-md-3">
                                     <select>
-                                      <option>Task Mapped(Yes-No)</option>
+                                      <option value={2}>Task Mapped</option>
+                                      <option value={1}>Yes</option>
+                                      <option value={0}>No</option>
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -254,11 +265,25 @@ class Claim extends Component {
                             ),
                             accessor: "status",
                             Cell: (row) => {
-                              return (
-                                <span className="table-btn table-blue-btn">
-                                  <label>{row.original.status}</label>
-                                </span>
-                              );
+                              if (row.original.status === "New") {
+                                return (
+                                  <span className="table-btn table-yellow-btn">
+                                    <label>{row.original.status}</label>
+                                  </span>
+                                );
+                              } else if (row.original.status === "Open") {
+                                return (
+                                  <span className="table-btn table-blue-btn">
+                                    <label>{row.original.status}</label>
+                                  </span>
+                                );
+                              } else {
+                                return (
+                                  <span className="table-btn table-green-btn">
+                                    <label>{row.original.status}</label>
+                                  </span>
+                                );
+                              }
                             },
                           },
                           {
@@ -464,7 +489,9 @@ class Claim extends Component {
                                   </div>
                                   <div className="col-md-3">
                                     <select>
-                                      <option>Ticket Mapped(Yes-No)</option>
+                                      <option value={2}>Ticket Mapped</option>
+                                      <option value={1}>Yes</option>
+                                      <option value={0}>No</option>
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -475,6 +502,10 @@ class Claim extends Component {
                                   <div className="col-md-3">
                                     <select>
                                       <option>Claim Status</option>
+                                      {this.state.statusData!==null && 
+                                      this.state.statusData.map((item,i)=>{
+                                      return<option value={item.taskStatusID}>{item.taskStatusName}</option>
+                                      })}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -492,7 +523,9 @@ class Claim extends Component {
                                   </div>
                                   <div className="col-md-3">
                                     <select>
-                                      <option>Task Mapped(Yes-No)</option>
+                                      <option value={2}>Task Mapped</option>
+                                      <option value={1}>Yes</option>
+                                      <option value={0}>No</option>
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -552,11 +585,25 @@ class Claim extends Component {
                             ),
                             accessor: "status",
                             Cell: (row) => {
-                              return (
-                                <span className="table-btn table-blue-btn">
-                                  <label>{row.original.status}</label>
-                                </span>
-                              );
+                              if (row.original.status === "New") {
+                                return (
+                                  <span className="table-btn table-yellow-btn">
+                                    <label>{row.original.status}</label>
+                                  </span>
+                                );
+                              } else if (row.original.status === "Open") {
+                                return (
+                                  <span className="table-btn table-blue-btn">
+                                    <label>{row.original.status}</label>
+                                  </span>
+                                );
+                              } else {
+                                return (
+                                  <span className="table-btn table-green-btn">
+                                    <label>{row.original.status}</label>
+                                  </span>
+                                );
+                              }
                             },
                           },
                           {

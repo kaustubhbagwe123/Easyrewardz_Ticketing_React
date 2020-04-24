@@ -27,8 +27,9 @@ class StoreTaskByTicket extends Component {
       ticketDetails: {},
       departmentData: [],
       funcationData: [],
+      priorityData: [],
       departmentID: 0,
-      functionID: 0,
+      funcationID: 0,
       taskTitle: "",
       taskDetails: "",
       istaskTitle: "",
@@ -70,12 +71,36 @@ class StoreTaskByTicket extends Component {
       this.handleGetStoreTicketingTaskByTaskID(taskId);
       this.handleGetCommentOnTask(taskId);
       this.handleGetStoreTaskProcressBar(taskId);
-      this.handleGetUserDropdown(taskId);
+      this.handleGetPriority();
       this.handleGetDepartement();
     } else {
       this.props.history.push("/store/StoreTask");
     }
   }
+
+  ///handle get priority
+  handleGetPriority() {
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/StorePriority/GetPriorityList",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var priorityData = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ priorityData });
+        } else {
+          self.setState({ priorityData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetPriority");
+      });
+  }
+
+  ///handle get user dropdown
   handleGetUserDropdown() {
     let self = this;
     axios({
@@ -93,10 +118,10 @@ class StoreTaskByTicket extends Component {
         if (message === "Success" && userData.length > 0) {
           self.setState({
             userData,
-            userModel:true
+            userModel: true,
           });
         } else {
-          self.setState({ userData,userModel:true });
+          self.setState({ userData, userModel: true });
         }
       })
       .catch((response) => {
@@ -118,7 +143,8 @@ class StoreTaskByTicket extends Component {
         var departmentID = 0;
         var taskTitle = "";
         var taskDetails = "";
-        var functionID = 0;
+        var funcationID = 0;
+        var priorityID = 0;
         var isueRaisedBy = "";
         var storeAddress = "";
         var storeName = "";
@@ -134,7 +160,7 @@ class StoreTaskByTicket extends Component {
           var taskDetailsData = responseData.storeTaskMasterDetails;
           var ticketDetails = responseData.taskTicketDetails;
           departmentID = taskDetailsData.departmentId;
-          functionID = taskDetailsData.functionID;
+          funcationID = taskDetailsData.functionID;
           taskTitle = taskDetailsData.taskTitle;
           taskDetails = taskDetailsData.taskDescription;
           isueRaisedBy = taskDetailsData.createdByName;
@@ -146,7 +172,10 @@ class StoreTaskByTicket extends Component {
           isAssignTo = taskDetailsData.isAssignTo === 1 ? true : false;
           taskStatusId = taskDetailsData.taskStatusId;
           taskStatusName = taskDetailsData.taskStatusName;
+          priorityID = taskDetailsData.priorityID;
+          debugger;
           self.setState({
+            priorityID,
             canEdit,
             isAssignTo,
             canSubmit,
@@ -158,7 +187,7 @@ class StoreTaskByTicket extends Component {
             storeName,
             ticketDetails,
             departmentID,
-            functionID,
+            funcationID,
             taskTitle,
             taskDetails,
           });
@@ -281,12 +310,12 @@ class StoreTaskByTicket extends Component {
         });
     }
   }
-  ////handle assign task
-  handleAssignTask() {
+  ////handle assign task by ticket using agent id
+  handleAssignTaskByTicket() {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreTask/AssignTask",
+      url: config.apiUrl + "/StoreTask/AssignTaskByTicket",
       headers: authHeader(),
       params: {
         TaskID: this.state.taskId,
@@ -333,6 +362,61 @@ class StoreTaskByTicket extends Component {
         console.log(response, "---handleGetStoreTaskProcressBar");
       });
   }
+
+  handleSubmitTaks(statusId) {
+    let self = this;
+    debugger;
+    if (this.state.departmentID == 0) {
+      this.setState({ isdepartment: "Please Select Department." });
+    } else {
+      this.setState({ isdepartment: "" });
+    }
+
+    if (this.state.funcationID == 0) {
+      this.setState({ isfuncation: "Please Select Function." });
+    } else {
+      this.setState({ isfuncation: "" });
+    }
+    if (this.state.priorityID == 0) {
+      this.setState({ ispriority: "Please Select Priority." });
+    } else {
+      this.setState({ ispriority: "" });
+    }
+
+    setTimeout(() => {
+      if (
+        this.state.isfuncation == "" &&
+        this.state.isdepartment == "" &&
+        this.state.ispriority == ""
+      ) {
+        var inputParam = {};
+
+        inputParam.DepartmentId = this.state.departmentID;
+        inputParam.FunctionID = this.state.funcationID;
+        inputParam.PriorityID = this.state.priorityID;
+        inputParam.TaskID = this.state.taskId;
+        inputParam.TaskStatusId = statusId;
+
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreTask/SubmitTaskByTicket",
+          headers: authHeader(),
+          data: inputParam,
+        })
+          .then(function(response) {
+            var message = response.data.message;
+            var responseData = response.data.responseData;
+            if (message == "Success") {
+              self.props.history.push("/store/StoreTask");
+            }
+          })
+          .catch((response) => {
+            console.log(response, "---handleSubmitTaks");
+          });
+      }
+    });
+  }
+
   ////handle input filed change
   handleOnchange = (e) => {
     debugger;
@@ -378,7 +462,19 @@ class StoreTaskByTicket extends Component {
         });
       }
     }
-
+    if (name == "priority") {
+      if (value !== 0) {
+        this.setState({
+          priorityID: value,
+          ispriority: "",
+        });
+      } else {
+        this.setState({
+          ispriority: "Please Select Priority.",
+          priorityID: value,
+        });
+      }
+    }
     if (name == "taskdetails") {
       if (value !== "") {
         this.setState({
@@ -499,7 +595,7 @@ class StoreTaskByTicket extends Component {
                 </button>
                 <button
                   type="button"
-                  className="btn-store-resolved"
+                  className={this.state.canSubmit?"btn-store-resolved":"btn-store-resolved disabled-link"}
                   onClick={this.handleSubmitReopnModalOpen.bind(this)}
                 >
                   <label className="myticket-submit-solve-button-text">
@@ -520,16 +616,35 @@ class StoreTaskByTicket extends Component {
                 overlayId="logout-ovrly"
               >
                 <div className="store-hdrtMdal">
-                  <div className="row">
-                    <label className="modal-lbl">
-                      Submit as <span className="modal-lbl-1">Solved</span>
-                    </label>
-                  </div>
-                  <div className="row" style={{ marginTop: "8px" }}>
-                    <label className="modal-lbl">
-                      Submit as <span className="modal-lbl-2">Closed</span>
-                    </label>
-                  </div>
+                  {this.state.taskStatusId === 222 ? (
+                    <div className="row">
+                      <label
+                        className="modal-lbl"
+                        onClick={this.handleSubmitTaks.bind(this, 224)}
+                      >
+                        Submit as <span className="modal-lbl-1">ReOpen</span>
+                      </label>
+                    </div>
+                  ) : (
+                    <div className="row">
+                      <label
+                        className="modal-lbl"
+                        onClick={this.handleSubmitTaks.bind(this, 222)}
+                      >
+                        Submit as <span className="modal-lbl-1">Solved</span>
+                      </label>
+                    </div>
+                  )}
+                  {this.state.taskStatusId !== 222 ? (
+                    <div className="row" style={{ marginTop: "8px" }}>
+                      <label
+                        className="modal-lbl"
+                        onClick={this.handleSubmitTaks.bind(this, 223)}
+                      >
+                        Submit as <span className="modal-lbl-2">Closed</span>
+                      </label>
+                    </div>
+                  ) : null}
                 </div>
               </Modal>
             </div>
@@ -582,7 +697,7 @@ class StoreTaskByTicket extends Component {
                       </select>
                       {this.state.isdepartment !== "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.iscomment}
+                          {this.state.isdepartment}
                         </p>
                       )}
                     </div>
@@ -595,7 +710,7 @@ class StoreTaskByTicket extends Component {
                             ? "form-control dropdown-label"
                             : "form-control dropdown-label disabled-link"
                         }
-                        value={this.state.functionID}
+                        value={this.state.funcationID}
                         name="funcation"
                         onChange={this.handleOnchange.bind(this)}
                       >
@@ -614,7 +729,38 @@ class StoreTaskByTicket extends Component {
                       </select>
                       {this.state.isfuncation !== "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.iscomment}
+                          {this.state.isfuncation}
+                        </p>
+                      )}
+                    </div>
+                    <div className="col-md-4 store-mrg">
+                      <label className="store-Edit-lbl">Priority</label>
+                      <select
+                        id="inputState"
+                        className={
+                          this.state.canEdit
+                            ? "form-control dropdown-label"
+                            : "disabled-link form-control dropdown-label"
+                        }
+                        value={this.state.priorityID}
+                        name="priority"
+                        onChange={this.handleOnchange}
+                      >
+                        <option value={0}>Select</option>
+                        {this.state.priorityData !== null &&
+                          this.state.priorityData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.priorityID}
+                              className="select-category-placeholder"
+                            >
+                              {item.priortyName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.ispriority !== "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ispriority}
                         </p>
                       )}
                     </div>
@@ -1029,7 +1175,7 @@ class StoreTaskByTicket extends Component {
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={this.handleAssignTask.bind(this)}
+                onClick={this.handleAssignTaskByTicket.bind(this)}
               >
                 SELECT
               </button>

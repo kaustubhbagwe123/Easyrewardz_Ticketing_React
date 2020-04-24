@@ -675,7 +675,7 @@ class EditStoreTask extends Component {
                 <div className="row">
                   <label
                     className="modal-lbl"
-                    onClick={this.handleUpdateTask.bind(this, 222)}
+                    onClick={this.handleUpdateTask.bind(this, 224)}
                   >
                     Submit as <span className="modal-lbl-1">ReOpen</span>
                   </label>
