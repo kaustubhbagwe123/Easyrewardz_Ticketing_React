@@ -93,7 +93,7 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getDepartmentList",
+      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
       .then(function(res) {
@@ -113,7 +113,7 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
         DepartmentId: this.state.selectedDepartment,
@@ -131,7 +131,7 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Task/getassignedto",
+      url: config.apiUrl + "/StoreTask/GetAssignedTo",
       headers: authHeader(),
       params: {
         Function_ID: this.state.selectedFunction,
@@ -154,10 +154,11 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "get",
-      url: config.apiUrl + "/Priority/GetPriorityList",
+      url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -198,10 +199,18 @@ class TicketSystemTask extends Component {
     }, 1);
   };
   setAssignToValue = (e) => {
+    debugger;
     let assignToValue = e.currentTarget.value;
+
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
     taskfield["AssignToID"] = assignToValue;
+    if (assignToValue !== null) {
+      var assignname = this.state.AssignToData.filter(
+        (x) => x.userID === Number(assignToValue)
+      )[0].userName;
+      taskfield["assignName"] = assignname;
+    }
     this.setState({ selectedAssignTo: assignToValue, taskfield });
   };
   setPriorityValue = (e) => {
@@ -509,7 +518,6 @@ class TicketSystemTask extends Component {
                           titleL: "Actions",
                           dataIndex: "",
                           render: (row, data) => {
-                            debugger;
                             var ids = row.ID;
                             return (
                               <>
