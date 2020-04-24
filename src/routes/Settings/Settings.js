@@ -22,6 +22,15 @@ import audit from "./../../assets/Images/audit.png";
 import { Link } from "react-router-dom";
 
 class Settings extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ticketShow: false,
+      storeShow: false,
+    };
+  }
+
   componentDidMount() {
     debugger;
     if (this.props.location.tabName) {
@@ -45,6 +54,17 @@ class Settings extends Component {
         }
       }
     }
+    var store = window.localStorage.getItem("ERS");
+    var ticket = window.localStorage.getItem("ERT");
+    if (ticket === "true") {
+      this.setState({
+        ticketShow: ticket,
+      });
+    } else {
+      this.setState({
+        storeShow: store,
+      });
+    }
   }
 
   render() {
@@ -56,30 +76,36 @@ class Settings extends Component {
         <div className="container-fluid">
           <div className="setting-tabs">
             <ul className="nav nav-tabs" role="tablist">
-              {/* <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  data-toggle="tab"
-                  href="#ticketing-tab"
-                  role="tab"
-                  aria-controls="ticketing-tab"
-                  aria-selected="true"
-                >
-                  Ticketing
-                </a>
-              </li> */}
-              <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  data-toggle="tab"
-                  href="#store-tab"
-                  role="tab"
-                  aria-controls="store-tab"
-                  aria-selected="false"
-                >
-                  Store
-                </a>
-              </li>
+              {this.state.ticketShow === "true" ? (
+                <li className="nav-item">
+                  <a
+                    className="nav-link active"
+                    data-toggle="tab"
+                    href="#ticketing-tab"
+                    role="tab"
+                    aria-controls="ticketing-tab"
+                    aria-selected="true"
+                  >
+                    Ticketing
+                  </a>
+                </li>
+              ) : null}
+              {this.state.storeShow === "true" ? (
+                  <li className="nav-item">
+                  <a
+                    className="nav-link active"
+                    data-toggle="tab"
+                    href="#store-tab"
+                    role="tab"
+                    aria-controls="store-tab"
+                    aria-selected="false"
+                  >
+                    Store
+                  </a>
+                </li>
+              ) : null}
+
+           
               {/* <li className="nav-item">
                 <a
                   className="nav-link"
@@ -107,7 +133,8 @@ class Settings extends Component {
             </ul>
             <div className="tab-content">
               <div
-                className="tab-pane"
+                // className={this.state.ticketing_Setting}
+                className={this.state.ticketShow === "true" ? "tab-pane fade show active": "tab-pane fade"}
                 id="ticketing-tab"
                 role="tabpanel"
                 aria-labelledby="ticketing-tab"
@@ -345,7 +372,7 @@ class Settings extends Component {
                 </div>
               </div>
               <div
-                className="tab-pane fade show active"
+                className={this.state.storeShow === "true" ? "tab-pane fade show active":"tab-pane fade"}
                 id="store-tab"
                 role="tabpanel"
                 aria-labelledby="store-tab"
@@ -517,10 +544,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link
-                        to="/store/storeFileUploadLogs"
-                        className="setting-box"
-                      >
+                      <Link to="fileuploadlogs" className="setting-box">
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>

@@ -29,7 +29,7 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-
+import Dropzone from "react-dropzone";
 class CreateSLA extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +47,7 @@ class CreateSLA extends Component {
       finalData: [],
       finalEditData: [],
       indiSla: "",
+      // searchSla: '',
       searchedSla: [],
       slaShow: false,
       slaOvrlayShow: false,
@@ -65,6 +66,7 @@ class CreateSLA extends Component {
       stattusColor: "",
       sortHeader: "",
       issueTypeName: "",
+      createdBy: "",
       brandName: "",
       categoryName: "",
       subCategoryName: "",
@@ -86,6 +88,7 @@ class CreateSLA extends Component {
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       sisSLAActiveFilterCheckbox: "",
+      isortA: false,
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -102,31 +105,76 @@ class CreateSLA extends Component {
     this.handleGetPriorityList();
   }
 
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.sla;
+
+    if (this.state.sortColumn === "issueTpeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTpeName < b.issueTpeName) return 1;
+        if (a.issueTpeName > b.issueTpeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return 1;
+        if (a.isSLAActive > b.isSLAActive) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      sla: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.sla;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "issueTpeName") {
+      itemsArray.sort((a, b) => {
+        if (a.issueTpeName < b.issueTpeName) return -1;
+        if (a.issueTpeName > b.issueTpeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return -1;
+        if (a.isSLAActive > b.isSLAActive) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       sla: itemsArray,
     });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.sla;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
-      sla: itemsArray,
-    });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -209,6 +257,9 @@ class CreateSLA extends Component {
         filterTxtValue: "",
         sla: this.state.tempsla,
         sFilterCheckbox: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
       });
       if (this.state.sortColumn === "issueTpeName") {
         if (this.state.sissueTpeNameFilterCheckbox === "") {
@@ -241,8 +292,11 @@ class CreateSLA extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        sla: this.state.sortAllData,
+        sla: this.state.isortA ? this.state.sla : this.state.sortAllData,
         sFilterCheckbox: "",
+        sortFilterIssueType: this.state.sortIssueType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
       });
     }
   }
@@ -882,7 +936,7 @@ class CreateSLA extends Component {
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error("SLA not added.");
+            NotificationManager.error(status);
           }
         })
         .catch((data) => {
@@ -925,7 +979,7 @@ class CreateSLA extends Component {
   fileUpload = (e) => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -979,13 +1033,28 @@ class CreateSLA extends Component {
     debugger;
     var EditData = this.state.finalEditData;
     var valid = false;
-
+    // if (EditData.length > 0) {
+    //   for (var i = 0; i < EditData.length; i++) {
+    //     if (
+    //       EditData[i].SlaBreach !== "0" &&
+    //       EditData[i].SlaBreach !== 0 &&
+    //       EditData[i].Rerspondtime !== "0" &&
+    //       EditData[i].Rerspondtime !== 0 &&
+    //       EditData[i].ResolveTime !== "0" &&
+    //       EditData[i].ResolveTime !== 0
+    //     ) {
+    //       valid = true;
+    //     } else {
+    //       valid = false;
+    //     }
+    //   }
+    // }
     let self = this;
     // if (valid === true) {
     var inputParamter = {};
     inputParamter.SLAId = this.state.SLAId;
     inputParamter.IsActive = this.state.isActive;
-    inputParamter.BrandName = this.state.brandName;
+    inputParamter.createdBy = this.state.createdBy;
     inputParamter.CategoryName = this.state.categoryName;
     inputParamter.SubCategoryName = this.state.subCategoryName;
     inputParamter.IssueTypeName = this.state.issueTypeName;
@@ -1091,16 +1160,16 @@ class CreateSLA extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/SLA/BulkUploadSLA",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -1113,7 +1182,7 @@ class CreateSLA extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
+              // isFileUploadFail: true,
               progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
@@ -1337,6 +1406,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "issueTpeName",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1387,6 +1457,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1478,6 +1549,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdBy",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1542,11 +1614,13 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "isSLAActive",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
+                        sortable: false,
                         Cell: (row) => {
                           var ids = row.original["id"];
                           return (
@@ -1875,26 +1949,32 @@ class CreateSLA extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
-                    <div className="down-excel">
-                      <p>Template</p>
-                      <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
-                        <img src={DownExcel} alt="download icon" />
-                      </CSVLink>
-                    </div>
-                    <input
-                      id="file-upload"
-                      className="file-upload d-none"
-                      type="file"
-                      // value={this.state.fileN.length>0?this.state.fileN[0]:null}
-                      onChange={this.fileUpload.bind(this)}
-                    />
-                    <label htmlFor="file-upload">
-                      <div className="file-icon">
-                        <img src={FileUpload} alt="file-upload" />
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <h3 className="pb-0">Bulk Upload</h3>
+                      <div className="down-excel">
+                        <p>Template</p>
+                        <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
                       </div>
-                      <span>Add File</span> or Drop File here
-                    </label>
+                    </div>
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>Add File</span>{" "}
+                            or Drop File here
+                          </div>
+                        )}
+                      </Dropzone>
+                    </div>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.bulkuploadCompulsion}

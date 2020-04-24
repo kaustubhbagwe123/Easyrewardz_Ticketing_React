@@ -13,7 +13,7 @@ import axios from "axios";
 import { authHeader } from "../../../helpers/authHeader";
 import {
   // NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 import ActiveStatus from "../../activeStatus";
 import Modal from "react-responsive-modal";
@@ -21,7 +21,7 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 
-const MyButton = (props) => {
+const MyButton = props => {
   const { children } = props;
   return (
     <div style={{ cursor: "pointer" }} {...props}>
@@ -32,7 +32,7 @@ const MyButton = (props) => {
   );
 };
 
-const Content = (props) => {
+const Content = props => {
   debugger;
   const { rowData } = props;
   const [brandCode, setbrandCodeValue] = useState(rowData.brandCode);
@@ -53,7 +53,7 @@ const Content = (props) => {
           maxLength={10}
           name="brand_Code"
           value={brandCode}
-          onChange={(e) => setbrandCodeValue(e.target.value)}
+          onChange={e => setbrandCodeValue(e.target.value)}
         />
         {brandCode === "" && (
           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -70,7 +70,7 @@ const Content = (props) => {
           maxLength={25}
           name="brand_name"
           value={brandName}
-          onChange={(e) => setbrandNameValue(e.target.value)}
+          onChange={e => setbrandNameValue(e.target.value)}
         />
         {brandName === "" && (
           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -84,7 +84,7 @@ const Content = (props) => {
           className="edit-dropDwon dropdown-setting"
           name="brand_status"
           value={status}
-          onChange={(e) => setStatusValue(e.target.value)}
+          onChange={e => setStatusValue(e.target.value)}
         >
           <option>select</option>
           {props.activeData !== null &&
@@ -107,7 +107,7 @@ const Content = (props) => {
         </a>
         <button
           className="pop-over-button"
-          onClick={(e) => {
+          onClick={e => {
             props.handleUpdateData(e, brandID);
           }}
         >
@@ -165,6 +165,7 @@ class Brands extends Component {
       sbrandNameFilterCheckbox: "",
       screated_ByFilterCheckbox: "",
       sstatusFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -195,35 +196,96 @@ class Brands extends Component {
     this.state.updateStatus = status;
     this.state.rowData = rowData;
   };
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.brandData;
+
+    if (this.state.sortColumn === "brandCode") {
+      itemsArray.sort((a, b) => {
+        if (a.brandCode < b.brandCode) return 1;
+        if (a.brandCode > b.brandCode) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return 1;
+        if (a.brandName > b.brandName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "created_By") {
+      itemsArray.sort((a, b) => {
+        if (a.created_By < b.created_By) return 1;
+        if (a.created_By > b.created_By) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      brandData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.brandData;
 
-    itemsArray.sort(function (a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "brandCode") {
+      itemsArray.sort((a, b) => {
+        if (a.brandCode < b.brandCode) return -1;
+        if (a.brandCode > b.brandCode) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "brandName") {
+      itemsArray.sort((a, b) => {
+        if (a.brandName < b.brandName) return -1;
+        if (a.brandName > b.brandName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "created_By") {
+      itemsArray.sort((a, b) => {
+        if (a.created_By < b.created_By) return -1;
+        if (a.created_By > b.created_By) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
-      brandData: itemsArray,
+      isortA: true,
+      brandData: itemsArray
     });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.brandData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
-      brandData: itemsArray,
-    });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
     debugger;
+
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
 
     if (
       this.state.sortFilterBrandCode.length === 0 ||
@@ -233,7 +295,7 @@ class Brands extends Component {
     ) {
       return false;
     }
-
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "brandCode") {
       if (
         this.state.sbrandNameFilterCheckbox !== "" ||
@@ -243,7 +305,7 @@ class Brands extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -253,7 +315,7 @@ class Brands extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -266,7 +328,7 @@ class Brands extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -275,7 +337,7 @@ class Brands extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -288,7 +350,7 @@ class Brands extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -297,7 +359,7 @@ class Brands extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -310,7 +372,7 @@ class Brands extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       } else {
         this.setState({
@@ -319,7 +381,7 @@ class Brands extends Component {
           screated_ByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header,
+          sortHeader: header
         });
       }
     }
@@ -330,6 +392,10 @@ class Brands extends Component {
         StatusModel: false,
         brandData: this.state.tempbrandData,
         filterTxtValue: "",
+        sortFilterBrandCode: this.state.sortBrandCode,
+        sortFilterBrandName: this.state.sortBrandName,
+        sortFilterAddedBy: this.state.sortAddedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "brandCode") {
         if (this.state.sbrandCodeFilterCheckbox === "") {
@@ -337,7 +403,7 @@ class Brands extends Component {
           this.setState({
             sbrandNameFilterCheckbox: "",
             screated_ByFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -347,7 +413,7 @@ class Brands extends Component {
           this.setState({
             sbrandCodeFilterCheckbox: "",
             screated_ByFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -357,7 +423,7 @@ class Brands extends Component {
           this.setState({
             sbrandCodeFilterCheckbox: "",
             sbrandNameFilterCheckbox: "",
-            sstatusFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -367,15 +433,21 @@ class Brands extends Component {
           this.setState({
             sbrandCodeFilterCheckbox: "",
             sbrandNameFilterCheckbox: "",
-            screated_ByFilterCheckbox: "",
+            screated_ByFilterCheckbox: ""
           });
         }
       }
     } else {
       this.setState({
         StatusModel: false,
-        brandData: this.state.sortAllData,
+        brandData: this.state.isortA
+          ? this.state.brandData
+          : this.state.sortAllData,
         filterTxtValue: "",
+        sortFilterBrandCode: this.state.sortBrandCode,
+        sortFilterBrandName: this.state.sortBrandName,
+        sortFilterAddedBy: this.state.sortAddedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   }
@@ -512,7 +584,7 @@ class Brands extends Component {
       sbrandCodeFilterCheckbox,
       sbrandNameFilterCheckbox,
       screated_ByFilterCheckbox,
-      sstatusFilterCheckbox,
+      sstatusFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -521,9 +593,7 @@ class Brands extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.brandCode === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.brandCode === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -533,16 +603,14 @@ class Brands extends Component {
         }
       }
       this.setState({
-        brandcodeColor: "sort-column",
+        brandcodeColor: "sort-column"
       });
     } else if (column === "brandName") {
       var sItems = sbrandNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.brandName === sItems[i]
-            );
+            var tempFilterData = allData.filter(a => a.brandName === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -552,7 +620,7 @@ class Brands extends Component {
         }
       }
       this.setState({
-        brandnameColor: "sort-column",
+        brandnameColor: "sort-column"
       });
     } else if (column === "created_By") {
       var sItems = screated_ByFilterCheckbox.split(",");
@@ -560,7 +628,7 @@ class Brands extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.created_By === sItems[i]
+              a => a.created_By === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -571,14 +639,14 @@ class Brands extends Component {
         }
       }
       this.setState({
-        addedColor: "sort-column",
+        addedColor: "sort-column"
       });
     } else if (column === "status") {
       var sItems = sstatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter((a) => a.status === sItems[i]);
+            var tempFilterData = allData.filter(a => a.status === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -588,25 +656,25 @@ class Brands extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column",
+        statusColor: "sort-column"
       });
     }
 
     this.setState({
-      tempbrandData: itemsArray,
+      tempbrandData: itemsArray
     });
     // this.StatusCloseModel();
   };
-  handleBrandOnchange = (e) => {
+  handleBrandOnchange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
-  handleActiveStatus = (e) => {
+  handleActiveStatus = e => {
     let value = e.target.value;
     this.setState({ selectedStatus: value });
   };
-  handleOnChangeData = (e) => {
+  handleOnChangeData = e => {
     debugger;
     var name = e.target.name;
     var value = e.target.value;
@@ -615,7 +683,7 @@ class Brands extends Component {
     data[name] = value;
 
     this.setState({
-      brandEditTemp: data,
+      brandEditTemp: data
     });
   };
 
@@ -626,9 +694,9 @@ class Brands extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/BrandList",
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -636,12 +704,12 @@ class Brands extends Component {
         if (status === "Success") {
           self.setState({
             brandData: data,
-            loading: false,
+            loading: false
           });
         } else {
           self.setState({
             brandData: [],
-            loading: false,
+            loading: false
           });
         }
 
@@ -700,7 +768,7 @@ class Brands extends Component {
           self.state.sortFilterStatus.push({ status: distinct[i] });
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -727,10 +795,10 @@ class Brands extends Component {
         data: {
           BrandCode: this.state.brand_Code.trim(),
           BrandName: this.state.brand_name.trim(),
-          IsActive: activeStatus,
-        },
+          IsActive: activeStatus
+        }
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -743,14 +811,14 @@ class Brands extends Component {
               brandcodeCompulsion: "",
               brandnameCompulsion: "",
               statusCompulsion: "",
-              addSaveLoading: false,
+              addSaveLoading: false
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ addSaveLoading: false });
             NotificationManager.error(status);
           }
         })
-        .catch((data) => {
+        .catch(data => {
           self.setState({ addSaveLoading: false });
           console.log(data);
         });
@@ -758,7 +826,7 @@ class Brands extends Component {
       this.setState({
         brandcodeCompulsion: "Please Enter Brand Code",
         brandnameCompulsion: "Please Enter Brand Name",
-        statusCompulsion: "Please Select Status",
+        statusCompulsion: "Please Select Status"
       });
     }
   }
@@ -769,10 +837,10 @@ class Brands extends Component {
       url: config.apiUrl + "/Brand/DeleteBrand",
       headers: authHeader(),
       params: {
-        BrandID: brand_Id,
-      },
+        BrandID: brand_Id
+      }
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.statusCode;
         if (status === 1010) {
@@ -782,7 +850,7 @@ class Brands extends Component {
           NotificationManager.error(res.data.message);
         }
       })
-      .catch((data) => {
+      .catch(data => {
         console.log(data);
       });
   }
@@ -809,10 +877,10 @@ class Brands extends Component {
           BrandID: brandID,
           BrandCode: this.state.updateBrandCode.trim(),
           BrandName: this.state.updateBrandName.trim(),
-          IsActive: activeStatus,
-        },
+          IsActive: activeStatus
+        }
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -820,7 +888,7 @@ class Brands extends Component {
             NotificationManager.success("Brand updated successfully.");
           }
         })
-        .catch((data) => {
+        .catch(data => {
           console.log(data);
         });
     } else {
@@ -828,7 +896,7 @@ class Brands extends Component {
       this.setState({
         editbrandcodeCompulsion: "Please enter brand code.",
         editbrandnameCompulsion: "Please enter brand name.",
-        editstatusCompulsion: "Please select status.",
+        editstatusCompulsion: "Please select status."
       });
     }
   }
@@ -840,7 +908,7 @@ class Brands extends Component {
     brandEditData.brand_status = brandEditData.status;
 
     this.setState({
-      brandEditData,
+      brandEditData
     });
   }
 
@@ -858,7 +926,7 @@ class Brands extends Component {
         this.setState({ sortFilterBrandCode });
       } else {
         this.setState({
-          sortFilterBrandCode: this.state.sortBrandCode,
+          sortFilterBrandCode: this.state.sortBrandCode
         });
       }
     }
@@ -872,7 +940,7 @@ class Brands extends Component {
         this.setState({ sortFilterBrandName });
       } else {
         this.setState({
-          sortFilterBrandName: this.state.sortBrandName,
+          sortFilterBrandName: this.state.sortBrandName
         });
       }
     }
@@ -881,14 +949,14 @@ class Brands extends Component {
         this.state.sortAddedBy,
         e.target.value,
         {
-          keys: ["created_By"],
+          keys: ["created_By"]
         }
       );
       if (sortFilterAddedBy.length > 0) {
         this.setState({ sortFilterAddedBy });
       } else {
         this.setState({
-          sortFilterAddedBy: this.state.sortAddedBy,
+          sortFilterAddedBy: this.state.sortAddedBy
         });
       }
     }
@@ -897,14 +965,14 @@ class Brands extends Component {
         this.state.sortStatus,
         e.target.value,
         {
-          keys: ["status"],
+          keys: ["status"]
         }
       );
       if (sortFilterStatus.length > 0) {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: this.state.sortStatus
         });
       }
     }
@@ -1133,7 +1201,8 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "brandCode",
+                          sortable: false,
+                          accessor: "brandCode"
                         },
                         {
                           Header: (
@@ -1149,7 +1218,8 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "brandName",
+                          sortable: false,
+                          accessor: "brandName"
                         },
                         {
                           Header: (
@@ -1165,8 +1235,9 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "created_By",
-                          Cell: (row) => {
+                          Cell: row => {
                             debugger;
                             return (
                               <div>
@@ -1212,7 +1283,7 @@ class Brands extends Component {
                                 </span>
                               </div>
                             );
-                          },
+                          }
                         },
                         {
                           Header: (
@@ -1228,12 +1299,14 @@ class Brands extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "status",
+                          sortable: false,
+                          accessor: "status"
                         },
                         {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
-                          Cell: (row) => {
+                          sortable: false,
+                          Cell: row => {
                             var brand_ID = row.original["brandID"];
                             return (
                               <>
@@ -1320,16 +1393,6 @@ class Brands extends Component {
                                     placement="bottom"
                                     trigger="click"
                                   >
-                                    {/* <button
-                                    className="react-tabel-button"
-                                    // type="button"
-                                    onClick={this.handleGetDataForEdit.bind(
-                                      this,
-                                      row.original
-                                    )}
-                                  >
-                                    EDIT
-                                  </button> */}
                                     <label className="Table-action-edit-button-text">
                                       <MyButton>EDIT</MyButton>
                                     </label>
@@ -1337,51 +1400,13 @@ class Brands extends Component {
                                 </span>
                               </>
                             );
-                          },
-                        },
+                          }
+                        }
                       ]}
                       resizable={false}
                       defaultPageSize={5}
                       showPagination={true}
                     />
-                    {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                   </div>
                 )}
               </div>

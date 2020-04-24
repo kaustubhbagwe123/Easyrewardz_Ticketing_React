@@ -205,7 +205,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        debugger;
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;

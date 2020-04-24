@@ -1658,7 +1658,7 @@ class HierarchyMaster extends Component {
                       <p>Template</p>
                       <CSVLink
                         filename={"Hierarchy.xlsx"}
-                        data={config.hierarchyTemplate}
+                        data={config.Store_HierarchyTemplate}
                       >
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>

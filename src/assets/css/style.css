@@ -247,7 +247,6 @@ p.text-muted {
 .dropdown-menu > li {
   padding-left: 15px;
   padding-right: 15px;
-  display: block;
 }
 .dropdown-menu > li > a {
   padding: 5px;

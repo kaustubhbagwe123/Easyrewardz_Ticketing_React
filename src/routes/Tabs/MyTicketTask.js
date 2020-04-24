@@ -392,7 +392,7 @@ class MyTicketTask extends Component {
 
     return (
       <div>
-        <div className="claim-addTask-btn">
+        <div className={this.props.isKB?"claim-addTask-btn iskbticket":"claim-addTask-btn"}>
           <button
             type="button"
             className="butn"

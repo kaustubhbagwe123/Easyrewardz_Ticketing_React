@@ -12,7 +12,7 @@ import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import SimpleReactValidator from "simple-react-validator";
 
@@ -24,7 +24,7 @@ class SingIn extends Component {
       emailID: "",
       password: "",
       loading: false,
-      programCode: ""
+      programCode: "",
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,7 +33,7 @@ class SingIn extends Component {
   }
   hanleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -43,7 +43,7 @@ class SingIn extends Component {
       var finalEncProgramCode = this.props.location.encProgramCode;
       if (finalEncProgramCode) {
         this.setState({
-          programCode: finalEncProgramCode
+          programCode: finalEncProgramCode,
         });
       } else {
         this.props.history.push("/");
@@ -59,7 +59,7 @@ class SingIn extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -75,7 +75,7 @@ class SingIn extends Component {
                   2000
                 );
                 self.setState({
-                  loading: false
+                  loading: false,
                 });
               } else if (
                 data[i].moduleName === "Dashboard" &&
@@ -114,7 +114,7 @@ class SingIn extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -130,12 +130,14 @@ class SingIn extends Component {
       let X_Authorized_password = encryption(password, "enc");
 
       // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
       let X_Authorized_Domainname = encryption(
         "https://erbelltkt.dcdev.brainvire.net",
         "enc"
       );
+      // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption(
-      //   "http://erbelltktstore.dcdev.brainvire.net",
+      //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
       // );
 
@@ -150,18 +152,19 @@ class SingIn extends Component {
             "X-Authorized-Programcode": X_Authorized_Programcode,
             "X-Authorized-userId": X_Authorized_userId,
             "X-Authorized-password": X_Authorized_password,
-            "X-Authorized-Domainname": X_Authorized_Domainname
-          }
+            "X-Authorized-Domainname": X_Authorized_Domainname,
+          },
         }).then(function(res) {
           debugger;
           let resValid = res.data.message;
           self.setState({
-            loading: true
+            loading: true,
           });
           if (resValid === "Valid Login") {
             debugger;
             //NotificationManager.success("Login Successfull.");
             window.localStorage.setItem("token", res.data.responseData.token);
+            window.localStorage.setItem("ERT", true);
             self.handleCRMRole();
             // setTimeout(function () {
             //   self.props.history.push("/admin/dashboard");
@@ -173,7 +176,7 @@ class SingIn extends Component {
               1500
             );
             self.setState({
-              loading: false
+              loading: false,
             });
           }
         });

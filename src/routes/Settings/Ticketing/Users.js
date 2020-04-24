@@ -29,7 +29,7 @@ import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-
+import Dropzone from "react-dropzone";
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -156,7 +156,8 @@ class Users extends Component {
       sdesignationFilterCheckbox: "",
       suserNameFilterCheckbox: "",
       smobileNumberFilterCheckbox: "",
-      semailIDFilterCheckbox: ""
+      semailIDFilterCheckbox: "",
+      isortA: false
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -194,31 +195,90 @@ class Users extends Component {
     this.handleGetReporteedesignationList();
     this.handleGetReportTOList();
   }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.userData;
+
+    if (this.state.sortColumn === "userName") {
+      itemsArray.sort((a, b) => {
+        if (a.userName < b.userName) return 1;
+        if (a.userName > b.userName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "designation") {
+      itemsArray.sort((a, b) => {
+        if (a.designation < b.designation) return 1;
+        if (a.designation > b.designation) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "mobileNumber") {
+      itemsArray.sort((a, b) => {
+        if (a.mobileNumber < b.mobileNumber) return 1;
+        if (a.mobileNumber > b.mobileNumber) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "emailID") {
+      itemsArray.sort((a, b) => {
+        if (a.emailID < b.emailID) return 1;
+        if (a.emailID > b.emailID) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      userData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "designation") {
+      itemsArray.sort((a, b) => {
+        if (a.designation < b.designation) return -1;
+        if (a.designation > b.designation) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "userName") {
+      itemsArray.sort((a, b) => {
+        if (a.userName < b.userName) return -1;
+        if (a.userName > b.userName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "mobileNumber") {
+      itemsArray.sort((a, b) => {
+        if (a.mobileNumber < b.mobileNumber) return -1;
+        if (a.mobileNumber > b.mobileNumber) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "emailID") {
+      itemsArray.sort((a, b) => {
+        if (a.emailID < b.emailID) return -1;
+        if (a.emailID > b.emailID) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       userData: itemsArray
     });
-    this.StatusCloseModel();
-  }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.userData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
-    this.setState({
-      userData: itemsArray
-    });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -334,7 +394,11 @@ class Users extends Component {
       this.setState({
         StatusModel: false,
         userData: this.state.tempuserData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterDesignation: this.state.sortDesignation,
+        sortFilterUsername: this.state.sortUsername,
+        sortFilterMobile: this.state.sortMobile,
+        sortFilterEmail: this.state.sortEmail
       });
       if (this.state.sortColumn === "designation") {
         if (this.state.sdesignationFilterCheckbox === "") {
@@ -377,11 +441,27 @@ class Users extends Component {
         }
       }
     } else {
-      this.setState({
-        StatusModel: false,
-        userData: this.state.sortAllData,
-        filterTxtValue: ""
-      });
+      if (this.state.isortA) {
+        this.setState({
+          StatusModel: false,
+          userData: this.state.userData,
+          filterTxtValue: "",
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterUsername: this.state.sortUsername,
+          sortFilterMobile: this.state.sortMobile,
+          sortFilterEmail: this.state.sortEmail
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          userData: this.state.sortAllData,
+          filterTxtValue: "",
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterUsername: this.state.sortUsername,
+          sortFilterMobile: this.state.sortMobile,
+          sortFilterEmail: this.state.sortEmail
+        });
+      }
     }
   }
 
@@ -443,9 +523,9 @@ class Users extends Component {
           sdesignationFilterCheckbox = "";
         } else {
           if (this.state.sortColumn === "designation") {
-            for (let i = 0; i < this.state.sortUsername.length; i++) {
+            for (let i = 0; i < this.state.sortDesignation.length; i++) {
               sdesignationFilterCheckbox +=
-                this.state.sortUsername[i].userName + ",";
+                this.state.sortDesignation[i].designation + ",";
             }
             sdesignationFilterCheckbox += "all";
           }
@@ -453,15 +533,15 @@ class Users extends Component {
       }
     }
     if (column === "mobileNumber" || column === "all") {
-      smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
-        "all",
-        ""
-      );
-      smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
-        "all,",
-        ""
-      );
       if (type === "value" && type !== "All") {
+        smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
+          "all,",
+          ""
+        );
         if (smobileNumberFilterCheckbox.includes(e.currentTarget.value)) {
           smobileNumberFilterCheckbox = smobileNumberFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -485,9 +565,9 @@ class Users extends Component {
       }
     }
     if (column === "emailID" || column === "all") {
-      semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all", "");
-      semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all,", "");
       if (type === "value" && type !== "All") {
+        semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all", "");
+        semailIDFilterCheckbox = semailIDFilterCheckbox.replace("all,", "");
         if (semailIDFilterCheckbox.includes(e.currentTarget.value)) {
           semailIDFilterCheckbox = semailIDFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -913,7 +993,7 @@ class Users extends Component {
     data[name] = value;
 
     this.setState({
-      EditTemp: data 
+      EditTemp: data
     });
 
     setTimeout(() => {
@@ -2250,7 +2330,7 @@ class Users extends Component {
   fileUpload = e => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -2336,7 +2416,8 @@ class Users extends Component {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
+      isOpen: false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -2348,16 +2429,16 @@ class Users extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/User/BulkUploadUser",
         headers: authHeader(),
-        data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        }
+        data: formData
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -2369,9 +2450,9 @@ class Users extends Component {
             self.handleGetUserList();
           } else {
             self.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0
+              showProgress: false
+              // isFileUploadFail: true,
+              // progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }
@@ -2695,7 +2776,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     CANCEL
                   </a>
@@ -2787,7 +2867,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     CANCEL
                   </a>
@@ -3035,7 +3114,6 @@ class Users extends Component {
                   <a
                     className="pop-over-cancle canblue"
                     onClick={this.closeEditModal.bind(this)}
-                    href="#!"
                   >
                     CANCEL
                   </a>
@@ -3089,6 +3167,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "userName",
                         Cell: row => <span>{row.original.userName}</span>
                       },
@@ -3106,6 +3185,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "mobileNumber",
                         Cell: row => <span>{row.original.mobileNumber}</span>
                       },
@@ -3123,6 +3203,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "email ID",
                         Cell: row => <span>{row.original.emailID}</span>
                       },
@@ -3140,6 +3221,7 @@ class Users extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "designation",
                         Cell: row => {
                           var ids = row.original["userId"];
@@ -3227,6 +3309,9 @@ class Users extends Component {
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             Agent Name:{" "}
+                                            <b>
+                                              {row.original.assignName}
+                                            </b>
                                           </p>
                                         </div>
                                       </div>
@@ -3277,6 +3362,7 @@ class Users extends Component {
                       {
                         Header: <span>Actions</span>,
                         accessor: "userId",
+                        sortable: false,
                         Cell: row => {
                           var ids = row.original["userId"];
                           return (
@@ -3352,38 +3438,6 @@ class Users extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4 cus-drp">
@@ -3979,23 +4033,23 @@ class Users extends Component {
                       </CSVLink>
                     </div>
                   </div>
-                  <input
-                    id="file-upload"
-                    className="file-upload d-none"
-                    type="file"
-                    onChange={this.fileUpload}
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
-                  >
-                    <div className="file-icon">
-                      <img src={FileUpload} alt="file-upload" />
-                    </div>
-                    <span>Add File</span> or Drop File here
-                  </label>
+                  <div className="mainfileUpload">
+                    <Dropzone onDrop={this.fileUpload.bind(this)}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input
+                            {...getInputProps()}
+                            className="file-upload d-none"
+                          />
+                          <div className="file-icon">
+                            <img src={FileUpload} alt="file-upload" />
+                          </div>
+                          <span className={"fileupload-span"}>Add File</span> or
+                          Drop File here
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
                   {this.state.fileN.length === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.bulkuploadCompulsion}

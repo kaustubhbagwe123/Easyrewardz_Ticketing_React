@@ -169,6 +169,7 @@ class StoreSignIn extends Component {
             if (resValid === "Valid Login") {
               debugger;
               window.localStorage.setItem("token", res.data.responseData.token);
+              window.localStorage.setItem("ERS", true);
               self.handleCRMRole();
             } else {
               NotificationManager.error(

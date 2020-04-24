@@ -15,13 +15,9 @@ class PrioritySettings extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <a href={Demo.BLANK_LINK} className="header-path">
-            Settings
-          </a>
+          <a href={Demo.BLANK_LINK} className="header-path">Settings</a>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="header-path">
-            Ticketing
-          </a>
+          <a href={Demo.BLANK_LINK} className="header-path">Ticketing</a>
           <span>&gt;</span>
           <a href={Demo.BLANK_LINK} className="header-path active">
             Priority

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import logo from "../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
 
-class ModualSection extends Component {
+class ModuleSelect extends Component {
   render() {
     return (
       <div className="auth-wrapper box-center">
@@ -14,7 +14,7 @@ class ModualSection extends Component {
               </div>
 
               <br />
-              <Link to={"/TicketProgramCode"}>
+              <Link to={"/ProgramCodeSignIn"}>
                 <button type="button" className="program-code-button" style={{marginBottom:"20px"}}>
                   TICKET
                 </button>
@@ -32,4 +32,4 @@ class ModualSection extends Component {
     );
   }
 }
-export default ModualSection;
+export default ModuleSelect;

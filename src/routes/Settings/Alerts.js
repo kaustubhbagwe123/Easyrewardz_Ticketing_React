@@ -140,7 +140,8 @@ class Alerts extends Component {
       ckCusrsorPositionStore: 0,
       ckCusrsorDataStore: "",
       notiCount: 0,
-      notiCurPosi: 0
+      notiCurPosi: 0,
+      isortA: false
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -392,33 +393,77 @@ class Alerts extends Component {
     }
   }
 
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.alert;
+
+    if (this.state.sortColumn === "alertTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.alertTypeName < b.alertTypeName) return 1;
+        if (a.alertTypeName > b.alertTypeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isAlertActive < b.isAlertActive) return 1;
+        if (a.isAlertActive > b.isAlertActive) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      alert: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.alert;
+
+    if (this.state.sortColumn === "alertTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.alertTypeName < b.alertTypeName) return -1;
+        if (a.alertTypeName > b.alertTypeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isAlertActive < b.isAlertActive) return -1;
+        if (a.isAlertActive > b.isAlertActive) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      alert: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
   StatusOpenModel(data, header) {
     debugger;
 
@@ -535,8 +580,10 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.tempalert,
-
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterAlertType: this.state.sortAlertType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "alertTypeName") {
         if (this.state.salertTypeNameFilterCheckbox === "") {
@@ -568,9 +615,11 @@ class Alerts extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        alert: this.state.sortAllData,
-
-        filterTxtValue: ""
+        alert: this.state.isortA ? this.state.alert : this.state.sortAllData,
+        filterTxtValue: "",
+        sortFilterAlertType: this.state.sortAlertType,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus
       });
     }
   };
@@ -1974,6 +2023,7 @@ class Alerts extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "alertTypeName"
                       },
                       {
@@ -2024,6 +2074,7 @@ class Alerts extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         Cell: row => {
                           var ids = row.original["id"];
                           return (
@@ -2071,6 +2122,7 @@ class Alerts extends Component {
                             </div>
                           );
                         },
+                        sortable: false,
                         accessor: "createdBy"
                       },
                       {
@@ -2087,11 +2139,13 @@ class Alerts extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "isAlertActive"
                       },
                       {
                         Header: "Actions",
                         // accessor: "action",
+
                         sortable: false,
                         Cell: row => {
                           var ids = row.original["id"];
@@ -2873,7 +2927,7 @@ class Alerts extends Component {
                     </Modal.Body>
                   </Modal>
                 </div>
-                <div className="right-sect-div">
+                <div className="right-sect-div" style={{ display: "none" }}>
                   <div className="d-flex justify-content-between align-items-center pb-2">
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">

@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +19,7 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import {
   // NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import DownExcel from "../../../assets/Images/csv.png";
 import SimpleReactValidator from "simple-react-validator";
@@ -28,6 +28,7 @@ import Modal from "react-responsive-modal";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
 
 class TicketCRMRole extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class TicketCRMRole extends Component {
         { moduleId: 4, moduleName: "Settings", isActive: true },
         { moduleId: 5, moduleName: "Chat", isActive: true },
         { moduleId: 6, moduleName: "Notification", isActive: false },
-        { moduleId: 7, moduleName: "Reports", isActive: true }
+        { moduleId: 7, moduleName: "Reports", isActive: true },
       ],
       updateRoleName: "",
       updateRoleisActive: "",
@@ -90,7 +91,8 @@ class TicketCRMRole extends Component {
       fileN: [],
       sroleNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-      sisRoleActiveFilterCheckbox: ""
+      sisRoleActiveFilterCheckbox: "",
+      isortA: false,
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -107,31 +109,76 @@ class TicketCRMRole extends Component {
     this.handleModulesDefault();
   }
 
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.crmRoles;
+
+    if (this.state.sortColumn === "roleName") {
+      itemsArray.sort((a, b) => {
+        if (a.roleName < b.roleName) return 1;
+        if (a.roleName > b.roleName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isRoleActive < b.isRoleActive) return 1;
+        if (a.isRoleActive > b.isRoleActive) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
-      hierarchyData: itemsArray
+      isortA: true,
+      crmRoles: itemsArray,
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.crmRoles;
+
+    if (this.state.sortColumn === "roleName") {
+      itemsArray.sort((a, b) => {
+        if (a.roleName < b.roleName) return -1;
+        if (a.roleName > b.roleName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isRoleActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isRoleActive < b.isRoleActive) return -1;
+        if (a.isRoleActive > b.isRoleActive) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      crmRoles: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
 
   StatusOpenModel(data, header) {
@@ -151,7 +198,7 @@ class TicketCRMRole extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -159,7 +206,7 @@ class TicketCRMRole extends Component {
           sisRoleActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -171,7 +218,7 @@ class TicketCRMRole extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -179,7 +226,7 @@ class TicketCRMRole extends Component {
           sisRoleActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -191,7 +238,7 @@ class TicketCRMRole extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -199,24 +246,27 @@ class TicketCRMRole extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
   }
-  StatusCloseModel = e => {
+  StatusCloseModel = (e) => {
     if (this.state.tempcrmRoles.length > 0) {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        crmRoles: this.state.tempcrmRoles
+        crmRoles: this.state.tempcrmRoles,
+        sortFilterRoleName: this.state.sortRoleName,
+        sortFilterCreated: this.state.sortCreated,
+        sortFilterStatus: this.state.sortStatus,
       });
       if (this.state.sortColumn === "roleName") {
         if (this.state.sroleNameFilterCheckbox === "") {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sisRoleActiveFilterCheckbox: ""
+            sisRoleActiveFilterCheckbox: "",
           });
         }
       }
@@ -225,7 +275,7 @@ class TicketCRMRole extends Component {
         } else {
           this.setState({
             sroleNameFilterCheckbox: "",
-            sisRoleActiveFilterCheckbox: ""
+            sisRoleActiveFilterCheckbox: "",
           });
         }
       }
@@ -234,7 +284,7 @@ class TicketCRMRole extends Component {
         } else {
           this.setState({
             sroleNameFilterCheckbox: "",
-            screatedByFilterCheckbox: ""
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -242,7 +292,12 @@ class TicketCRMRole extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        crmRoles: this.state.sortAllData
+        sortFilterRoleName: this.state.sortRoleName,
+        sortFilterCreated: this.state.sortCreated,
+        sortFilterStatus: this.state.sortStatus,
+        crmRoles: this.state.isortA
+          ? this.state.crmRoles
+          : this.state.sortAllData,
       });
     }
   };
@@ -349,7 +404,7 @@ class TicketCRMRole extends Component {
       sisRoleActiveFilterCheckbox,
       roleColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -358,42 +413,8 @@ class TicketCRMRole extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.roleName === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        roleColor: "sort-column"
-      });
-    } else if (column === "createdBy") {
-      var sItems = screatedByFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        createdColor: "sort-column"
-      });
-    } else if (column === "isRoleActive") {
-      var sItems = sisRoleActiveFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.isRoleActive === sItems[i]
+              (a) => a.roleName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -404,12 +425,50 @@ class TicketCRMRole extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        roleColor: "sort-column",
+      });
+    } else if (column === "createdBy") {
+      var sItems = screatedByFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdBy === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column",
+      });
+    } else if (column === "isRoleActive") {
+      var sItems = sisRoleActiveFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.isRoleActive === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempcrmRoles: itemsArray
+      tempcrmRoles: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -420,7 +479,7 @@ class TicketCRMRole extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetCRMRoles",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -472,7 +531,7 @@ class TicketCRMRole extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -492,10 +551,10 @@ class TicketCRMRole extends Component {
     }
     await this.setState({
       ModulesEnabled,
-      ModulesDisabled
+      ModulesDisabled,
     });
   };
-  checkModule = async moduleId => {
+  checkModule = async (moduleId) => {
     debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
@@ -517,7 +576,7 @@ class TicketCRMRole extends Component {
     await this.setState({
       modulesList,
       ModulesEnabled,
-      ModulesDisabled
+      ModulesDisabled,
     });
   };
   updateCheckModule = async (e, moduleId) => {
@@ -542,27 +601,27 @@ class TicketCRMRole extends Component {
     await this.setState({
       updateModulesList,
       updateModulesEnabled,
-      updateModulesDisabled
+      updateModulesDisabled,
     });
   };
   handleRoleName(e) {
     debugger;
     this.setState({
-      RoleName: e.target.value
+      RoleName: e.target.value,
     });
   }
   handleUpdateRoleName(e) {
     debugger;
     this.setState({
-      updateRoleName: e.target.value
+      updateRoleName: e.target.value,
     });
   }
-  handleRoleisActive = e => {
+  handleRoleisActive = (e) => {
     debugger;
     let RoleisActive = e.currentTarget.value;
     this.setState({ RoleisActive });
   };
-  handleUpdateRoleisActive = e => {
+  handleUpdateRoleisActive = (e) => {
     debugger;
     let updateRoleisActive = e.currentTarget.value;
     this.setState({ updateRoleisActive });
@@ -626,10 +685,10 @@ class TicketCRMRole extends Component {
         RoleName: RoleName,
         RoleisActive: RoleisActive,
         ModulesEnabled: ModulesEnabled,
-        ModulesDisabled: ModulesDisabled
-      }
+        ModulesDisabled: ModulesDisabled,
+      },
     })
-      .then(res => {
+      .then((res) => {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -641,14 +700,14 @@ class TicketCRMRole extends Component {
               ModulesEnabled: "",
               ModulesDisabled: "",
               updateModulesEnabled: "",
-              updateModulesDisabled: ""
+              updateModulesDisabled: "",
             });
             self.handleGetCRMRoles();
           } else if (e === "update") {
             self.toggleEditModal();
             self.setState({
               editSaveLoading: false,
-              editRoleNameValidMsg: ""
+              editRoleNameValidMsg: "",
             });
             NotificationManager.success("CRM Role updated successfully.");
             self.handleGetCRMRoles();
@@ -666,7 +725,7 @@ class TicketCRMRole extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         self.setState({ editSaveLoading: false, editmodel: false });
         console.log(data);
       });
@@ -683,8 +742,8 @@ class TicketCRMRole extends Component {
       url: config.apiUrl + "/CRMRole/DeleteCRMRole",
       headers: authHeader(),
       params: {
-        CRMRoleID: deleteId
-      }
+        CRMRoleID: deleteId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -696,7 +755,7 @@ class TicketCRMRole extends Component {
           self.handleGetCRMRoles();
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -715,14 +774,14 @@ class TicketCRMRole extends Component {
     this.setState({
       updateRoleName,
       updateRoleisActive,
-      updateModulesList
+      updateModulesList,
     });
   }
 
-  fileUpload = e => {
+  fileUpload = (e) => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -731,15 +790,15 @@ class TicketCRMRole extends Component {
         fileSize,
         fileN: allFiles,
         fileName: allFiles[0].name,
-        bulkuploadCompulsion: ""
+        bulkuploadCompulsion: "",
       });
     }
   };
-  showPopOver = id => {
+  showPopOver = (id) => {
     debugger;
     this.setState({
       activePopOver: id,
-      popOverVisible: true
+      popOverVisible: true,
     });
   };
 
@@ -752,14 +811,14 @@ class TicketCRMRole extends Component {
     this.state.rowData = rowData;
   };
 
-  hanldeEditCRM = rowData => {
+  hanldeEditCRM = (rowData) => {
     debugger;
     this.setState({
       modulesData: rowData.modules,
       modulestatus: rowData.isRoleActive,
       editRoleName: rowData.roleName,
       crmRoleID: rowData.crmRoleID,
-      editmodel: true
+      editmodel: true,
     });
   };
 
@@ -775,21 +834,21 @@ class TicketCRMRole extends Component {
         this.setState({
           editRoleName: value,
           editRoleNameValidMsg: "",
-          editCheckRoleName: ""
+          editCheckRoleName: "",
         });
       } else {
         this.setState({
           editRoleName: value,
           editRoleNameValidMsg: "The role name field is required.",
-          editCheckRoleName: "Required"
+          editCheckRoleName: "Required",
         });
       }
     }
   }
 
-  handleModuleChange = id => {
+  handleModuleChange = (id) => {
     debugger;
-    var index = this.state.modulesData.findIndex(x => x.moduleID === id);
+    var index = this.state.modulesData.findIndex((x) => x.moduleID === id);
     var modulesData = this.state.modulesData;
     modulesData[index].modulestatus = !modulesData[index].modulestatus;
     this.setState({ modulesData });
@@ -799,7 +858,7 @@ class TicketCRMRole extends Component {
     this.setState({
       editmodel: false,
       editRoleNameValidMsg: "",
-      editCheckRoleName: ""
+      editCheckRoleName: "",
     });
   }
   filteTextChange(e) {
@@ -816,7 +875,7 @@ class TicketCRMRole extends Component {
         this.setState({ sortFilterRoleName });
       } else {
         this.setState({
-          sortFilterRoleName: this.state.sortRoleName
+          sortFilterRoleName: this.state.sortRoleName,
         });
       }
     }
@@ -830,7 +889,7 @@ class TicketCRMRole extends Component {
         this.setState({ sortFilterCreated });
       } else {
         this.setState({
-          sortFilterCreated: this.state.sortCreated
+          sortFilterCreated: this.state.sortCreated,
         });
       }
     }
@@ -844,7 +903,7 @@ class TicketCRMRole extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus
+          sortFilterStatus: this.state.sortStatus,
         });
       }
     }
@@ -857,7 +916,7 @@ class TicketCRMRole extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
@@ -866,7 +925,7 @@ class TicketCRMRole extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        }
+        },
       })
         .then(function(res) {
           debugger;
@@ -879,13 +938,13 @@ class TicketCRMRole extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0
+              // isFileUploadFail: true,
+              progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -894,23 +953,22 @@ class TicketCRMRole extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
     });
     NotificationManager.success("File deleted successfully.");
   };
   render() {
-
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1090,14 +1148,18 @@ class TicketCRMRole extends Component {
                         Header: (
                           <span
                             className={this.state.roleColor}
-                            onClick={this.StatusOpenModel.bind(this, "roleName", "Role Name")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "roleName",
+                              "Role Name"
+                            )}
                           >
                             Role Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "roleName",
-                        Cell: row => {
+                        Cell: (row) => {
                           // var ids = row.original["id"];
                           return (
                             <div>
@@ -1132,20 +1194,24 @@ class TicketCRMRole extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
                           <span
                             className={this.state.createdColor}
-                            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created By")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "createdBy",
+                              "Created By"
+                            )}
                           >
                             Created By
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "createdBy",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <div>
@@ -1161,17 +1227,20 @@ class TicketCRMRole extends Component {
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date: {row.original.createdDate}
+                                          Created Date:{" "}
+                                          {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By: {row.original.modifiedBy}
+                                            Updated By:{" "}
+                                            {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date: {row.original.modifiedDate}
+                                          Updated Date:{" "}
+                                          {row.original.modifiedDate}
                                         </p>
                                       </div>
                                     </>
@@ -1188,24 +1257,28 @@ class TicketCRMRole extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
                           <span
                             className={this.state.statusColor}
-                            onClick={this.StatusOpenModel.bind(this, "isRoleActive", "Status")}
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "isRoleActive",
+                              "Status"
+                            )}
                           >
                             Status
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "isRoleActive"
+                        accessor: "isRoleActive",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <>
@@ -1221,7 +1294,8 @@ class TicketCRMRole extends Component {
                                           Delete file?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this file?
+                                          Are you sure you want to delete this
+                                          file?
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>CANCEL</a>
@@ -1248,20 +1322,22 @@ class TicketCRMRole extends Component {
                                     id={ids}
                                   />
                                 </Popover>
-                
+
                                 <button
                                   className="react-tabel-button ReNewBtn"
                                   type="button"
-                                  onClick={this.hanldeEditCRM.bind(this, row.original)}
+                                  onClick={this.hanldeEditCRM.bind(
+                                    this,
+                                    row.original
+                                  )}
                                 >
                                   EDIT
                                 </button>
-                             
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     resizable={false}
                     defaultPageSize={10}
@@ -1320,11 +1396,11 @@ class TicketCRMRole extends Component {
                         maxLength={25}
                         onChange={this.handleRoleName}
                       />
-                      {this.state.checkRoleName !== "" && (
+                      {this.state.checkRoleName != "" && (
                         <p
                           style={{
                             color: "red",
-                            marginBottom: "0px"
+                            marginBottom: "0px",
                           }}
                         >
                           {this.state.checkRoleName}
@@ -1386,23 +1462,35 @@ class TicketCRMRole extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
-                    Template
-                    <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
-                      <img src={DownExcel} alt="download icon" />
-                    </CSVLink>
-                    <input
-                      id="file-upload"
-                      className="file-upload d-none"
-                      type="file"
-                      onChange={this.fileUpload.bind(this)}
-                    />
-                    <label htmlFor="file-upload">
-                      <div className="file-icon">
-                        <img src={FileUpload} alt="file-upload" />
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <h3 className="pb-0">Bulk Upload</h3>
+                      <div className="down-excel">
+                        <p>Template</p>
+                        <CSVLink
+                          filename={"CRM.csv"}
+                          data={config.crmRoleTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
                       </div>
-                      <span>Add File</span> or Drop File here
-                    </label>
+                    </div>
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>Add File</span>{" "}
+                            or Drop File here
+                          </div>
+                        )}
+                      </Dropzone>
+                    </div>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.bulkuploadCompulsion}

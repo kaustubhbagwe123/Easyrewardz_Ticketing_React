@@ -2962,8 +2962,22 @@
 .ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 8px !important;
 }
-.TicketStoreReact .ReactTable .rt-tbody .rt-td {
+/* .TicketStoreReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 8px !important;
+} */
+.TicketStoreReact .ReactTable .rt-table::-webkit-scrollbar {
+  height: 7px;
+}
+.TicketStoreReact .ReactTable .rt-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.TicketStoreReact .ReactTable .rt-table::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.TicketStoreReact .ReactTable .rt-table::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
 }
 .TicketCategoyMasReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
 .ReactTable .rt-thead .rt-td.-cursor-pointer {

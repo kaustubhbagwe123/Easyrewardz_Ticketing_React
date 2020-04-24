@@ -43,7 +43,7 @@ class JunkWords extends Component {
       sortFilterenteredBy: [],
       StatusModel: false,
       filterTxtValue: "",
-      tempBlockEmailData: [],
+      tempJunkWordsData: [],
       sortColumn: "",
       sortHeader: ""
     };
@@ -197,32 +197,95 @@ class JunkWords extends Component {
         console.log(data);
       });
   }
-  sortStatusAtoZ() {
-    debugger;
-    var itemsArray = [];
-    itemsArray = this.state.BlockEmailData;
-    
-    itemsArray.sort(function(a, b) {
-      return a.enteredBy > b.enteredBy ? 1 : -1;
-    });
 
-    this.setState({
-      BlockEmailData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.BlockEmailData;
-    itemsArray.sort((a, b) => {
-      return a.enteredBy < b.enteredBy;
-    });
+    itemsArray = this.state.JunkWordsData;
+
+    if (this.state.sortColumn === "junkKeyword") {
+      itemsArray.sort((a, b) => {
+        if (a.junkKeyword < b.junkKeyword) return 1;
+        if (a.junkKeyword > b.junkKeyword) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reason") {
+      itemsArray.sort((a, b) => {
+        if (a.reason < b.reason) return 1;
+        if (a.reason > b.reason) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "enteredDate") {
+      itemsArray.sort((a, b) => {
+        if (a.enteredDate < b.enteredDate) return 1;
+        if (a.enteredDate > b.enteredDate) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "enteredBy") {
+      itemsArray.sort((a, b) => {
+        if (a.enteredBy < b.enteredBy) return 1;
+        if (a.enteredBy > b.enteredBy) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
-      BlockEmailData: itemsArray
+      isortA: true,
+      JunkWordsData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
+
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+
+    itemsArray = this.state.JunkWordsData;
+
+    if (this.state.sortColumn === "junkKeyword") {
+      itemsArray.sort((a, b) => {
+        if (a.junkKeyword < b.junkKeyword) return -1;
+        if (a.junkKeyword > b.junkKeyword) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reason") {
+      itemsArray.sort((a, b) => {
+        if (a.reason < b.reason) return -1;
+        if (a.reason > b.reason) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "enteredDate") {
+      itemsArray.sort((a, b) => {
+        if (a.enteredDate < b.enteredDate) return -1;
+        if (a.enteredDate > b.enteredDate) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "enteredBy") {
+      itemsArray.sort((a, b) => {
+        if (a.enteredBy < b.enteredBy) return -1;
+        if (a.enteredBy > b.enteredBy) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      JunkWordsData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   setSortCheckStatus = (column, type, e) => {
     debugger;
 
@@ -435,19 +498,22 @@ class JunkWords extends Component {
     }
 
     this.setState({
-      tempBlockEmailData: itemsArray
+      tempJunkWordsData: itemsArray
     });
     // this.StatusCloseModel();
   };
 
   StatusCloseModel() {
     debugger;
-    if (this.state.tempBlockEmailData.length > 0) {
+    if (this.state.tempJunkWordsData.length > 0) {
       this.setState({
         StatusModel: false,
-        BlockEmailData: this.state.tempBlockEmailData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        JunkWordsData: this.state.tempJunkWordsData,
+        filterTxtValue: "",
+        sortFilterjunkKeyword: this.state.sortjunkKeyword,
+        sortFilterreason: this.state.sortreason,
+        sortFilterenteredDate: this.state.sortenteredBy,
+        sortFilterenteredBy: this.state.sortenteredBy
       });
       if (this.state.sortColumn === "junkKeyword") {
         if (this.state.sjunkKeywordFilterCheckbox === "") {
@@ -492,9 +558,14 @@ class JunkWords extends Component {
     } else {
       this.setState({
         StatusModel: false,
-        BlockEmailData: this.state.sortAllData,
-        sFilterCheckbox: "",
-        filterTxtValue: ""
+        JunkWordsData: this.state.isortA
+          ? this.state.JunkWordsData
+          : this.state.sortAllData,
+        filterTxtValue: "",
+        sortFilterjunkKeyword: this.state.sortjunkKeyword,
+        sortFilterreason: this.state.sortreason,
+        sortFilterenteredDate: this.state.sortenteredBy,
+        sortFilterenteredBy: this.state.sortenteredBy
       });
     }
   }
@@ -953,7 +1024,7 @@ class JunkWords extends Component {
           </Modal>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr settingtable reactreport">
+          <div className="store-settings-cntr settingtable    report">
             <div style={{ backgroundColor: "#fff" }}>
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
@@ -974,6 +1045,7 @@ class JunkWords extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+                      sortable: false,
                       accessor: "junkKeyword"
                     },
                     {
@@ -989,6 +1061,7 @@ class JunkWords extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+                      sortable: false,
                       accessor: "reason"
                     },
                     {
@@ -1004,6 +1077,7 @@ class JunkWords extends Component {
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
+                      sortable: false,
                       accessor: "enteredDate"
                     },
                     {
@@ -1020,24 +1094,25 @@ class JunkWords extends Component {
                         </span>
                       ),
                       accessor: "enteredBy",
+                      sortable: false,
                       Cell: row => {
                         var ids = row.original["Id"];
                         return (
                           <div>
                             <span>
-                              Admin
+                            {row.original.enteredBy}
                               <Popover
                                 content={
                                   <>
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifiedBy}
+                                          Updated By: {row.original.modifyBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
                                         Updated Date:{" "}
-                                        {row.original.modifiedDate}
+                                        {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>
@@ -1058,6 +1133,7 @@ class JunkWords extends Component {
                     },
                     {
                       Header: <span>Actions</span>,
+                      sortable: false,
                       accessor: "actionReport",
                       Cell: row => (
                         <div className="report-action">

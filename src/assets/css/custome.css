@@ -3310,7 +3310,8 @@ table tr th:last-child {
   color: #fff;
   background-color: #2684ff;
 }
-.normal-dropdown .css-1g48xl4-IndicatorsContainer {
+.normal-dropdown .css-1g48xl4-IndicatorsContainer,
+.normal-dropdown .css-1wy0on6 {
   display: none;
 }
 .normal-dropdown .css-yt9ioa-option:active {
@@ -3817,6 +3818,9 @@ table tr th:last-child {
 }
 .ck-exp-width iframe {
   height: calc(100% - 60px) !important;
+}
+.store-date-width {
+  width: 115px;
 }
 /* ticket system ends */
 
@@ -5355,6 +5359,11 @@ progress::-webkit-progress-bar {
   padding-left: 24px;
   padding-top: 17px;
   cursor: pointer;
+}
+.kb-header span {
+  margin-left: 20px;
+  margin-top: 17px;
+  display: inline-block;
 }
 
 .kb-Header-button {
@@ -8576,6 +8585,7 @@ table tr th:last-child {
   float: right;
   margin-right: 10px;
   margin-top: -30px;
+  cursor: pointer;
 }
 .orderdetailpopup {
   font-size: 16px;
@@ -11739,6 +11749,20 @@ table tr th:last-child {
   margin-right: auto !important;
   min-width: 30%;
 }
+
+.knowticketID {
+  color: #2561a8 !important;
+  cursor: pointer;
+}
+.iskbticket {
+  pointer-events: none;
+}
+.storeTdetail .ReactTable .rt-thead .rt-tr {
+  text-align: left;
+}
+.autopriority {
+  display: none;
+}
 .plusline1new {
   border-right: 1px solid #9b9b9b;
   padding-top: 12px;
@@ -11772,7 +11796,6 @@ table tr th:last-child {
   font-weight: 700;
   vertical-align: middle;
 }
-
 .tasksearchdiv{
 text-align: right;
   width: 100%;

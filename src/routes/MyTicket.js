@@ -60,6 +60,7 @@ import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { withRouter } from "react-router";
 import ReactHtmlParser from "react-html-parser";
+import Demo from "../store/Hashtag";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -78,7 +79,6 @@ class MyTicket extends Component {
       EmailCollapse: false,
       CommentsDrawer: false,
       BillInvoiceModal: false,
-      HistOrderShow: true,
       ReAssignComment: false,
       FreeTextComment: false,
       CommentCollapse: false,
@@ -128,7 +128,7 @@ class MyTicket extends Component {
       ReplyCKEditoertemplat: [],
       CkEditorTemplateDetails: [],
       selectedStore: [],
-      selectedProduct: [],
+      // selectedProduct: [],
       tempName: "",
       selectTicketTemplateId: 0,
       mailBodyData: "",
@@ -138,7 +138,7 @@ class MyTicket extends Component {
       loading: false,
       Plus: false,
       selectedStoreData: [],
-      selectedDataRow: [],
+      // selectedDataRow: [],
       CheckStoreID: {},
       CheckOrderID: {},
       notesCommentCompulsion: "",
@@ -155,7 +155,6 @@ class MyTicket extends Component {
       mailFiled: {},
       orderNumber: "",
       orderDetailsData: [],
-      validOrdernumber: "",
       StoreName: "",
       ProductName: "",
       agentId: 0,
@@ -205,9 +204,11 @@ class MyTicket extends Component {
       notiCountCmnt: 0,
       notiCurPosiCmnt: 0,
       notiCountFreeCmnt: 0,
-      notiCurPosiFreeCmnt: 0
+      notiCurPosiFreeCmnt: 0,
+      isKB: false,
+      selectedInvoiceNo: "",
+      isSystemGenerated: false
     };
-    this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -226,6 +227,7 @@ class MyTicket extends Component {
       this
     );
     this.handleAssignDataList = this.handleAssignDataList.bind(this);
+    this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
@@ -251,9 +253,15 @@ class MyTicket extends Component {
 
   componentDidMount() {
     ////
+    debugger;
     if (this.props.location.ticketDetailID) {
       var ticketId = this.props.location.ticketDetailID;
-      this.setState({ HistOrderShow: true, ticket_Id: ticketId });
+      var isKB = false;
+      if (this.props.location.isKB) {
+        isKB = true;
+      }
+
+      this.setState({ HistOrderShow: true, ticket_Id: ticketId, isKB });
       this.handleGetTicketPriorityList();
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
@@ -271,8 +279,10 @@ class MyTicket extends Component {
     }
   }
 
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
   onAddCKEditorChange = evt => {
-    ////
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
@@ -294,8 +304,8 @@ class MyTicket extends Component {
   onCkBlurReply = evt => {
     debugger;
     var ckCusrsorPositionReply = evt.editor.getSelection().getRanges()[0];
-    var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0].endContainer.$
-      .wholeText;
+    var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0]
+      .endContainer.$.wholeText;
     if (!ckCusrsorDataReply) {
       ckCusrsorDataReply = "";
     }
@@ -305,7 +315,6 @@ class MyTicket extends Component {
     });
   };
   onreplyCKEditorChange = evt => {
-    ////
     var newContent = evt.editor.getData();
     this.setState({
       replymailBodyData: newContent
@@ -487,8 +496,6 @@ class MyTicket extends Component {
   handleOnLoadFiles() {
     ////
     for (let i = 0; i < this.state.fileDummy.length; i++) {
-      ////
-
       var objFile = new Object();
       var name = this.state.fileDummy[i].attachmentName;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -512,7 +519,6 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
         let data = res.data.responseData;
         self.setState({
           SearchAssignData: data
@@ -528,16 +534,15 @@ class MyTicket extends Component {
     this.setState({
       notiCurPosiCmnt: e.target.selectionStart
     });
-  }
+  };
   setNotiCurPosiFreeCmnt = e => {
     debugger;
     this.setState({
       notiCurPosiFreeCmnt: e.target.selectionStart
     });
-  }
+  };
 
   handleUpdateTicketStatus(ticStaId) {
-    ////
     // let self = this;
     axios({
       method: "post",
@@ -580,7 +585,11 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
+
+          var isSystemGenerated =
+            data[0].msgDetails[0].latestMessageDetails.isSystemGenerated;
           self.setState({
+            isSystemGenerated,
             messageDetails: data,
             hasAttachmentFile: data
           });
@@ -644,7 +653,7 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -660,7 +669,6 @@ class MyTicket extends Component {
 
   ////hanlde get order details
   handleGetProductData() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -671,39 +679,57 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
+        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
           const newSelected = Object.assign({}, self.state.CheckOrderID);
-          ////
 
           var OrderSubItem = [];
           var selectedRow = [];
+
+          var CselectedRow = [];
           for (let i = 0; i < data.length; i++) {
-            if (data[i].orderMasterID) {
-              newSelected[data[i].orderMasterID] = !self.state.CheckOrderID[
-                data[i].orderMasterID
+            var selectedInvoiceNo = data[i].invoiceNumber;
+            if (data[i].invoiceNumber) {
+              newSelected[data[i].invoiceNumber] = !self.state.CheckOrderID[
+                data[i].invoiceNumber
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckOrderID: data[i].orderMasterID ? newSelected : false
+                CheckOrderID: data[i].invoiceNumber ? newSelected : false
               });
             }
             if (data[i].orderItems.length > 0) {
-              for (let j = 0; j < data[i].orderItems.length; j++) {
-                OrderSubItem.push(data[i].orderItems[j]);
+              var OrderSubItem = data[i].orderItems;
+              self.setState({
+                OrderSubItem
+              });
+              var Order_Master = self.state.OrderSubItem.filter(
+                x => x.invoiceNumber === data[i].invoiceNumber
+              );
+              if (Order_Master.length > 0) {
+                var objCheckBoxAllItem = new Object();
+                for (let j = 0; j < Order_Master.length; j++) {
+                  objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
+
+                  CselectedRow.push(Order_Master[j]);
+                }
+                self.setState({
+                  CheckBoxAllItem: objCheckBoxAllItem
+                });
               }
             }
           }
+
           self.setState({
-            selectedDataRow: selectedRow,
-            selectedProduct: data,
-            OrderSubItem
+            SelectedAllOrder: data,
+            OrderSubItem,
+            selectedInvoiceNo
           });
         } else {
           self.setState({
-            selectedProduct: []
+            SelectedAllOrder: []
           });
         }
       })
@@ -718,34 +744,58 @@ class MyTicket extends Component {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let textBefore = this.state.ticketFreeTextcomment.substring(0, this.state.notiCurPosiFreeCmnt);
-      let textAfter = this.state.ticketFreeTextcomment.substring(this.state.notiCurPosiFreeCmnt, this.state.notiCountFreeCmnt);
+      let textBefore = this.state.ticketFreeTextcomment.substring(
+        0,
+        this.state.notiCurPosiFreeCmnt
+      );
+      let textAfter = this.state.ticketFreeTextcomment.substring(
+        this.state.notiCurPosiFreeCmnt,
+        this.state.notiCountFreeCmnt
+      );
       // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
-      let text = textBefore + ' @' + userName + textAfter;
+      let text = textBefore + " @" + userName + textAfter;
       let notiCurPosiFreeCmnt = textBefore.length + userName.length + 2;
-      let notiCountFreeCmnt = textBefore.length + userName.length + 2 + textAfter.length;
-      this.setState({ ticketFreeTextcomment: text, followUpIds, notiCurPosiFreeCmnt, notiCountFreeCmnt });
+      let notiCountFreeCmnt =
+        textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({
+        ticketFreeTextcomment: text,
+        followUpIds,
+        notiCurPosiFreeCmnt,
+        notiCountFreeCmnt
+      });
     } else if (check === "comment") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
       followUpIds += assign + ",";
-      let textBefore = this.state.ticketcommentMSG.substring(0, this.state.notiCurPosiCmnt);
-      let textAfter = this.state.ticketcommentMSG.substring(this.state.notiCurPosiCmnt, this.state.notiCountCmnt);
+      let textBefore = this.state.ticketcommentMSG.substring(
+        0,
+        this.state.notiCurPosiCmnt
+      );
+      let textAfter = this.state.ticketcommentMSG.substring(
+        this.state.notiCurPosiCmnt,
+        this.state.notiCountCmnt
+      );
       // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
         x => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
-      let text = textBefore + ' @' + userName + textAfter;
+      let text = textBefore + " @" + userName + textAfter;
       let notiCurPosiCmnt = textBefore.length + userName.length + 2;
-      let notiCountCmnt = textBefore.length + userName.length + 2 + textAfter.length;
-      this.setState({ ticketcommentMSG: text, followUpIds, notiCurPosiCmnt, notiCountCmnt });
+      let notiCountCmnt =
+        textBefore.length + userName.length + 2 + textAfter.length;
+      this.setState({
+        ticketcommentMSG: text,
+        followUpIds,
+        notiCurPosiCmnt,
+        notiCountCmnt
+      });
     } else if (check === "rply") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -753,32 +803,35 @@ class MyTicket extends Component {
       let text = this.state.replymailBodyData;
       let ckDataArr = text.split("\n\n");
       let ckDataArrNew = [];
-    for (let i = 0; i < ckDataArr.length; i++) {
-      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
-      const element2 = element1.replace(/&nbsp;/g, " ");
-      const element = element2.replace(/\n/g, " ");
-      ckDataArrNew.push(element);
-    }
-    let selectedVal = "",
-      loopFlag = true,
-      ckTags,
-      selectedArr;
-    for (let i = 0; i < ckDataArrNew.length; i++) {
-      if (loopFlag) {
-        if (this.state.ckCusrsorDataReply.trim() === ckDataArrNew[i].trim()) {
-          selectedVal = ckDataArrNew[i];
-          selectedArr = i;
-          ckTags = ckDataArr[i].match(/<[^>]+>/g);
-          loopFlag = false;
+      for (let i = 0; i < ckDataArr.length; i++) {
+        const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+        const element2 = element1.replace(/&nbsp;/g, " ");
+        const element = element2.replace(/\n/g, " ");
+        ckDataArrNew.push(element);
+      }
+      let selectedVal = "",
+        loopFlag = true,
+        ckTags,
+        selectedArr;
+      for (let i = 0; i < ckDataArrNew.length; i++) {
+        if (loopFlag) {
+          if (this.state.ckCusrsorDataReply.trim() === ckDataArrNew[i].trim()) {
+            selectedVal = ckDataArrNew[i];
+            selectedArr = i;
+            ckTags = ckDataArr[i].match(/<[^>]+>/g);
+            loopFlag = false;
+          }
         }
       }
-    }
-    let ckDataArrLast = selectedVal;
-    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPositionReply);
-    let textAfter = ckDataArrLast.substring(
-      this.state.ckCusrsorPositionReply,
-      ckDataArrLast.length
-    );
+      let ckDataArrLast = selectedVal;
+      let textBefore = ckDataArrLast.substring(
+        0,
+        this.state.ckCusrsorPositionReply
+      );
+      let textAfter = ckDataArrLast.substring(
+        this.state.ckCusrsorPositionReply,
+        ckDataArrLast.length
+      );
       // let ckDataArrLast = ckDataArr.pop();
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -788,12 +841,12 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
       ckDataArrLast = textBefore + " @" + userName + textAfter;
-    let newCkCusrsorPosition =
-      this.state.ckCusrsorPositionReply + userName.length + 2;
-    this.setState({
-      ckCusrsorPositionReply: newCkCusrsorPosition,
-      ckCusrsorDataReply: ckDataArrLast
-    });
+      let newCkCusrsorPosition =
+        this.state.ckCusrsorPositionReply + userName.length + 2;
+      this.setState({
+        ckCusrsorPositionReply: newCkCusrsorPosition,
+        ckCusrsorDataReply: ckDataArrLast
+      });
       if (ckTags) {
         // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
@@ -813,32 +866,32 @@ class MyTicket extends Component {
       let ckData = this.state.mailBodyData;
       let ckDataArr = ckData.split("\n\n");
       let ckDataArrNew = [];
-    for (let i = 0; i < ckDataArr.length; i++) {
-      const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
-      const element2 = element1.replace(/&nbsp;/g, " ");
-      const element = element2.replace(/\n/g, " ");
-      ckDataArrNew.push(element);
-    }
-    let selectedVal = "",
-      loopFlag = true,
-      ckTags,
-      selectedArr;
-    for (let i = 0; i < ckDataArrNew.length; i++) {
-      if (loopFlag) {
-        if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
-          selectedVal = ckDataArrNew[i];
-          selectedArr = i;
-          ckTags = ckDataArr[i].match(/<[^>]+>/g);
-          loopFlag = false;
+      for (let i = 0; i < ckDataArr.length; i++) {
+        const element1 = ckDataArr[i].replace(/<[^>]+>/g, "");
+        const element2 = element1.replace(/&nbsp;/g, " ");
+        const element = element2.replace(/\n/g, " ");
+        ckDataArrNew.push(element);
+      }
+      let selectedVal = "",
+        loopFlag = true,
+        ckTags,
+        selectedArr;
+      for (let i = 0; i < ckDataArrNew.length; i++) {
+        if (loopFlag) {
+          if (this.state.ckCusrsorData.trim() === ckDataArrNew[i].trim()) {
+            selectedVal = ckDataArrNew[i];
+            selectedArr = i;
+            ckTags = ckDataArr[i].match(/<[^>]+>/g);
+            loopFlag = false;
+          }
         }
       }
-    }
-    let ckDataArrLast = selectedVal;
-    let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
-    let textAfter = ckDataArrLast.substring(
-      this.state.ckCusrsorPosition,
-      ckDataArrLast.length
-    );
+      let ckDataArrLast = selectedVal;
+      let textBefore = ckDataArrLast.substring(0, this.state.ckCusrsorPosition);
+      let textAfter = ckDataArrLast.substring(
+        this.state.ckCusrsorPosition,
+        ckDataArrLast.length
+      );
       // let ckDataArrLast = ckDataArr.pop();
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
@@ -848,12 +901,12 @@ class MyTicket extends Component {
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
       ckDataArrLast = textBefore + " @" + userName + textAfter;
-    let newCkCusrsorPosition =
-      this.state.ckCusrsorPosition + userName.length + 2;
-    this.setState({
-      ckCusrsorPosition: newCkCusrsorPosition,
-      ckCusrsorData: ckDataArrLast
-    });
+      let newCkCusrsorPosition =
+        this.state.ckCusrsorPosition + userName.length + 2;
+      this.setState({
+        ckCusrsorPosition: newCkCusrsorPosition,
+        ckCusrsorData: ckDataArrLast
+      });
       if (ckTags) {
         // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
@@ -930,14 +983,14 @@ class MyTicket extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Store/searchStoreDetail",
+      url: config.apiUrl + "/Store/SearchStoreDetail",
       headers: authHeader(),
       params: {
         SearchText: this.state.SearchStore
       }
     })
       .then(function(res) {
-        ////
+        debugger;
         let data = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -964,7 +1017,6 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1001,7 +1053,6 @@ class MyTicket extends Component {
         }
       })
         .then(function(res) {
-          ////
           let status = res.data.message;
           if (status === "Success") {
             if (self.state.isaddKnowledge) {
@@ -1022,60 +1073,69 @@ class MyTicket extends Component {
     }
   }
   handleRequireSize(e, rowData) {
-    ////
-
-    var id = rowData.original.orderItemID;
+    debugger;
+    var id = rowData.original.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
-    var index = this.state.OrderSubItem.findIndex(
-      x => x.orderItemID === rowData.original.orderItemID
-    );
+    var reg = /^[0-9\b]+$/;
 
-    var OrderSubItem = this.state.OrderSubItem;
-    OrderSubItem[index].requireSize = value;
+    if (value === "" || reg.test(value)) {
+      var index = this.state.OrderSubItem.findIndex(
+        x => x.articleNumber === rowData.original.articleNumber
+      );
 
-    this.setState({ OrderSubItem });
+      var OrderSubItem = this.state.OrderSubItem;
+      OrderSubItem[index].requireSize = value;
+
+      this.setState({ OrderSubItem });
+      this.searchInput.focus();
+    } else {
+      NotificationManager.error("Only numeric value allow.");
+    }
+
+    // var index = this.state.OrderSubItem.findIndex(
+    //   x => x.articleNumber === rowData.original.articleNumber
+    // );
+
+    // var OrderSubItem = this.state.OrderSubItem;
+    // OrderSubItem[index].requireSize = value;
+
+    // this.setState({ OrderSubItem });
   }
   handleOrderSearchData() {
-    ////
+    debugger;
     let self = this;
-    if (this.state.orderNumber.length > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-        headers: authHeader(),
-        params: {
-          OrderNumber: this.state.orderNumber,
-          CustomerID: this.state.custID
-        }
-      })
-        .then(function(res) {
-          ////
-          let Msg = res.data.message;
-          let mainData = res.data.responseData;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+      headers: authHeader(),
+      params: {
+        OrderNumber: this.state.orderNumber,
+        CustomerID: this.state.custID
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let mainData = res.data.responseData;
 
-          var OrderSubItem = [];
+        var OrderSubItem = [];
 
-          for (let i = 0; i < mainData.length; i++) {
-            if (mainData[i].orderItems.length > 0) {
-              for (let j = 0; j < mainData[i].orderItems.length; j++) {
-                OrderSubItem.push(mainData[i].orderItems[j]);
-              }
+        for (let i = 0; i < mainData.length; i++) {
+          if (mainData[i].invoiceNumber.length > 0) {
+            for (let j = 0; j < mainData[i].invoiceNumber.length; j++) {
+              OrderSubItem.push(mainData[i].invoiceNumber[j]);
             }
           }
-          self.setState({
-            message: Msg,
-            orderDetailsData: mainData,
-            OrderSubItem
-          });
-        })
-        .catch(data => {
-          console.log(data);
+        }
+        self.setState({
+          message: Msg,
+          orderDetailsData: mainData,
+          OrderSubItem
         });
-    } else {
-      self.setState({
-        validOrdernumber: "Please Enter Order Number"
+      })
+      .catch(data => {
+        console.log(data);
       });
-    }
   }
 
   handleNoteOnChange = e => {
@@ -1107,7 +1167,6 @@ class MyTicket extends Component {
   };
 
   hanldeStatusChange(e) {
-    ////
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
@@ -1212,8 +1271,6 @@ class MyTicket extends Component {
       });
   }
   handleGetCategoryList() {
-    ////
-
     let self = this;
     axios({
       method: "post",
@@ -1224,10 +1281,17 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
-        // let status=
         let data = res.data;
-        self.setState({ CategoryData: data });
+        let CategoryData = res.data;
+        if(data.length > 0){
+          self.setState({
+            CategoryData: CategoryData,
+          });
+        }else{
+          self.setState({
+            CategoryData: [],
+          });
+        }
       })
       .catch(data => {
         console.log(data);
@@ -1256,8 +1320,6 @@ class MyTicket extends Component {
       });
   }
   handleGetSubCategoryList() {
-    ////
-
     let self = this;
     axios({
       method: "post",
@@ -1282,7 +1344,6 @@ class MyTicket extends Component {
       });
   }
   handleGetIssueTypeList() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -1328,7 +1389,6 @@ class MyTicket extends Component {
       });
   }
   handleAssignTickets() {
-    ////
     let self = this;
 
     axios({
@@ -1373,11 +1433,6 @@ class MyTicket extends Component {
   fileDragEnter = e => {
     e.preventDefault();
   };
-  toggleView() {
-    this.setState({
-      HistOrderShow: !this.state.HistOrderShow
-    });
-  }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
   }
@@ -1396,7 +1451,11 @@ class MyTicket extends Component {
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
-    this.setState({ OrderTable: false, SearchStore: "" });
+    this.setState({
+      OrderTable: false,
+      SearchStore: "",
+      OrdItmBtnStatus: false
+    });
   }
 
   HandleStoreModalOpen() {
@@ -1479,7 +1538,8 @@ class MyTicket extends Component {
     this.setState({ BillInvoiceModal: true });
   }
   handleBillImgModalClose() {
-    this.setState({ BillInvoiceModal: false });
+    debugger;
+    this.setState({ BillInvoiceModal: !this.state.BillInvoiceModal });
   }
   handleThumbModalOpen() {
     this.setState({ Plus: true });
@@ -1635,7 +1695,6 @@ class MyTicket extends Component {
           self.setState({
             selectedStoreData: selectedRow,
             selectedStore: data
-            // loading: false
           });
         } else {
           self.setState({
@@ -1649,7 +1708,7 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
-    ////
+    debugger;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1661,34 +1720,106 @@ class MyTicket extends Component {
       } else {
         PurposeID = 2;
       }
+      var visitDate = "";
+      if (
+        this.state.selectedStoreData[j]["storeVisitDate"] === null ||
+        this.state.selectedStoreData[j]["storeVisitDate"] === undefined ||
+        this.state.selectedStoreData[j]["storeVisitDate"] === ""
+      ) {
+        visitDate = "";
+      } else {
+        visitDate = moment(
+          this.state.selectedStoreData[j]["storeVisitDate"]
+        ).format("YYYY-MM-DD");
+      }
 
       selectedStore +=
         this.state.selectedStoreData[j]["storeID"] +
         "|" +
-        moment(this.state.selectedStoreData[j]["storeVisitDate"]).format(
-          "YYYY-MM-DD"
-        ) +
+        visitDate +
         "|" +
         PurposeID +
         ",";
     }
+
+    const formData = new FormData();
+
+    //// -------------------Store attachment Code start---------------
+    var store_Details = [];
+    for (let k = 0; k < this.state.selectedStoreData.length; k++) {
+      var storeData = {};
+
+      ///check purpose id
+      var PurposeID = this.state.selectedStoreData[k]["Purpose_Id"];
+
+      if (PurposeID === "0") {
+        // Send Purpose Id as 1 and 2 from API
+        PurposeID = 1;
+      } else {
+        PurposeID = 2;
+      }
+
+      var visitDate = "";
+      if (
+        this.state.selectedStoreData[k]["storeVisitDate"] === null ||
+        this.state.selectedStoreData[k]["storeVisitDate"] === undefined ||
+        this.state.selectedStoreData[k]["storeVisitDate"] === ""
+      ) {
+        visitDate = "";
+      } else {
+        visitDate = moment(
+          this.state.selectedStoreData[k]["storeVisitDate"]
+        ).format("YYYY-MM-DD");
+      }
+
+      storeData["StoreID"] = this.state.selectedStoreData[k]["storeID"];
+      storeData["BrandID"] = this.state.selectedStoreData[k]["brandID"];
+      storeData["CityID"] = this.state.selectedStoreData[k]["cityID"];
+      storeData["StateID"] = this.state.selectedStoreData[k]["stateID"];
+      storeData["PincodeID"] = this.state.selectedStoreData[k]["pincodeID"];
+      storeData["StoreName"] = this.state.selectedStoreData[k]["storeName"];
+      storeData["Address"] = this.state.selectedStoreData[k]["address"];
+      storeData["StoreCode"] = this.state.selectedStoreData[k]["storeCode"];
+      storeData["RegionID"] = this.state.selectedStoreData[k]["regionID"];
+      storeData["ZoneID"] = this.state.selectedStoreData[k]["zoneID"];
+      storeData["StoreTypeID"] = this.state.selectedStoreData[k]["storeTypeID"];
+      storeData["StoreEmailID"] = this.state.selectedStoreData[k][
+        "storeEmailID"
+      ];
+      storeData["StorePhoneNo"] = this.state.selectedStoreData[k][
+        "storePhoneNo"
+      ];
+      storeData["StoreVisitDate"] = visitDate;
+      storeData["Purpose"] = PurposeID;
+      storeData["Pincode"] = this.state.selectedStoreData[k]["pincode"];
+      storeData["BrandIDs"] = this.state.selectetedParameters.brandID;
+
+      store_Details.push(storeData);
+    }
+    //// -------------------Store attachment Code end-----------------
+    formData.append("storeDetails", JSON.stringify(store_Details));
+    formData.append(
+      "StoreId",
+      selectedStore.substring(",", selectedStore.length - 1)
+    );
+    formData.append("TicketId", this.state.ticket_Id);
+
     axios({
       method: "post",
       url: config.apiUrl + "/Store/attachstore",
       headers: authHeader(),
-      params: {
-        TicketId: this.state.ticket_Id,
-        StoreId: selectedStore.substring(",", selectedStore.length - 1)
-      }
+      data: formData
     })
       .then(function(res) {
-        ////
+        debugger;
         let status = res.data.message;
-        // let details = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success("Store attached successfully.");
           self.HandleStoreModalClose();
           self.handleGetTicketDetails(self.state.ticket_Id);
+          self.setState({
+            storeDetails:[]
+          })
         } else {
           NotificationManager.error("Store not attached");
         }
@@ -1699,57 +1830,143 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    // let self = this;
+    debugger;
+    let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
-      var selectedRow = "";
-
-      if (this.state.SelectedAllOrder.length > 1) {
-        if (this.state.SelectedAllItem.length === 0) {
-          for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
-            selectedRow +=
-              this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+      for (let k = 0; k < this.state.SelectedAllOrder.length; k++) {
+        if (this.state.SelectedAllOrder[k].orderItems) {
+          for (
+            let i = 0;
+            i < this.state.SelectedAllOrder[k].orderItems.length;
+            i++
+          ) {
+            if (
+              this.state.SelectedAllOrder[k].orderItems[i].orderItemID !== 0
+            ) {
+              var selectedRow = "";
+              for (
+                let i = 0;
+                i < this.state.SelectedAllOrder[k].orderItems.length;
+                i++
+              ) {
+                selectedRow +=
+                  this.state.SelectedAllOrder[k].orderItems[i]["orderItemID"] +
+                  "|" +
+                  this.state.SelectedAllOrder[k].orderItems[i]["requireSize"] +
+                  "|0,";
+              }
+            }
           }
         } else {
-          for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
-            selectedRow +=
-              this.state.SelectedAllItem[i]["orderItemID"] +
-              "|" +
-              this.state.SelectedAllItem[i]["requireSize"] +
-              "|0,";
-          }
-        }
-      } else {
-        if (this.state.SelectedAllItem.length === 0) {
-          for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
-            selectedRow +=
-              this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
-          }
-        } else {
-          for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
-            selectedRow +=
-              this.state.SelectedAllItem[i]["orderItemID"] +
-              "|" +
-              this.state.SelectedAllItem[i]["requireSize"] +
-              "|0,";
+          var selectedRow = "";
+          if (this.state.SelectedAllOrder.length > 1) {
+            if (this.state.SelectedAllItem.length === 0) {
+              for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+                selectedRow +=
+                  this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+              }
+            } else {
+              for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+                selectedRow +=
+                  this.state.SelectedAllItem[i]["orderItemID"] +
+                  "|" +
+                  this.state.SelectedAllItem[i]["requireSize"] +
+                  "|0,";
+              }
+            }
+          } else {
+            if (this.state.SelectedAllItem.length === 0) {
+              for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+                selectedRow +=
+                  this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+              }
+            } else {
+              for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+                selectedRow +=
+                  this.state.SelectedAllItem[i]["orderItemID"] +
+                  "|" +
+                  this.state.SelectedAllItem[i]["requireSize"] +
+                  "|0,";
+              }
+            }
           }
         }
       }
+      //
+      const formData = new FormData();
 
+      /// For Attached order
+      if (this.state.SelectedAllOrder.length > 0) {
+        var order_data = this.state.SelectedAllOrder[0];
+        var OrderData = {
+          OrderMasterID: order_data.orderMasterID,
+          OrderNumber: order_data.invoiceNumber,
+          InvoiceDate: order_data.invoiceDate,
+          OrderPrice: order_data.ordeItemPrice,
+          PricePaid: order_data.orderPricePaid,
+          CustomerID: this.state.custID,
+          Discount: order_data.discount,
+          StoreCode: order_data.storeCode,
+          TransactionDate: order_data.invoiceDate,
+          ModeOfPaymentID: 1,
+          TicketSourceID: this.state.selectetedParameters.channelOfPurchaseID
+        };
+      } else {
+        var OrderData = null;
+      }
+
+      /// For Attached OrderItem data
+      var order_itemData = [];
+      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+        var item_data = {};
+        item_data["OrderItemID"] = this.state.SelectedAllItem[i]["orderItemID"];
+        item_data["OrderMasterID"] = this.state.SelectedAllItem[i][
+          "orderMasterID"
+        ];
+        item_data["ItemName"] = this.state.SelectedAllItem[i]["itemName"];
+        item_data["InvoiceNumber"] = this.state.SelectedAllItem[i][
+          "invoiceNumber"
+        ];
+        item_data["InvoiceDate"] = this.state.SelectedAllItem[i]["invoiceDate"];
+        item_data["ItemCount"] = this.state.SelectedAllItem[i]["itemCount"];
+        item_data["ItemPrice"] = this.state.SelectedAllItem[i]["itemPrice"];
+        item_data["PricePaid"] = this.state.SelectedAllItem[i]["pricePaid"];
+        item_data["Size"] = this.state.SelectedAllItem[i]["size"];
+        item_data["RequireSize"] = this.state.SelectedAllItem[i]["requireSize"];
+        item_data["Discount"] = this.state.SelectedAllItem[i]["discount"];
+        item_data["ArticleNumber"] = this.state.SelectedAllItem[i][
+          "articleNumber"
+        ];
+        item_data["ArticleName"] = this.state.SelectedAllItem[i]["itemName"];
+
+        order_itemData.push(item_data);
+      }
+
+      formData.append("orderDetails", JSON.stringify(OrderData));
+      formData.append("orderItemDetails", JSON.stringify(order_itemData));
+      formData.append(
+        "OrderID",
+        selectedRow.substring(",", selectedRow.length - 1)
+      );
+      formData.append("TicketId", this.state.ticket_Id);
       axios({
         method: "post",
         url: config.apiUrl + "/Order/attachorder",
         headers: authHeader(),
-        params: {
-          TicketId: this.state.ticket_Id,
-          OrderID: selectedRow.substring(",", selectedRow.length - 1)
-        }
+        data: formData
       })
         .then(function(res) {
-          ////
+          debugger;
           let status = res.data.message;
           // let details = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("Product attached successfully.");
+            self.handleOrderTableClose();
+            self.handleGetTicketDetails(self.state.ticket_Id);
+            self.setState({
+              SelectedAllOrder: [],
+              orderDetailsData: []
+            });
           } else {
             NotificationManager.error("Product not attached");
           }
@@ -2009,7 +2226,7 @@ class MyTicket extends Component {
             selectedStore += this.state.selectedStoreData[i]["storeID"] + ",";
           }
         } else {
-           selectedStore = "";
+          selectedStore = "";
         }
         const formData = new FormData();
         var paramMessageData = {
@@ -2077,7 +2294,7 @@ class MyTicket extends Component {
               store_Id += this.state.selectedStoreData[i]["storeID"] + ",";
             }
           } else {
-              store_Id = "";
+            store_Id = "";
           }
           const formData = new FormData();
           var paramData2 = {
@@ -2416,8 +2633,28 @@ class MyTicket extends Component {
   }
 
   handleByvisitDate(e, rowData) {
-    var id = e.original.storeID;
-    var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
+    debugger;
+    // var id = e.original.lpassStoreID;
+    // var index = this.state.selectedStoreData.findIndex(
+    //   x => x.lpassStoreID === id
+    // );
+    if(e.original.lpassStoreID > 0){
+      var id = e.original.lpassStoreID;
+    }else{
+      var id = e.original.storeID;
+    }
+
+    if(e.original.lpassStoreID > 0){
+      var id = e.original.lpassStoreID;
+      var index = this.state.selectedStoreData.findIndex(
+        x => x.lpassStoreID === id
+      );
+    }else{
+      var id = e.original.storeID;
+      var index = this.state.selectedStoreData.findIndex(
+        x => x.storeID === id
+      );
+    }
     // this.state.selectedStoreData["VisitedDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
     selectedStoreData[index].storeVisitDate = rowData;
@@ -2425,37 +2662,62 @@ class MyTicket extends Component {
     this.setState({ selectedStoreData });
   }
   handleChangeOrderItem = e => {
-    ////
-
+    debugger;
     var values = e.target.checked;
     if (!this.state.selectProductOrd) {
       if (values) {
-        var x = document.getElementById("ordertbls");
-        var x1 = document.getElementById("orderitemtbl");
+        var x = document.getElementById("ordertbls1");
+        var x1 = document.getElementById("orderitemtbl1");
 
-        x.style.display = "block";
-        x1.style.display = "none";
+        var i = document.getElementById("ordertbls");
+        var j = document.getElementById("orderitemtbl");
+
+        x.style.display = "none";
+        x1.style.display = "block";
+
+        i.style.display = "none";
+        j.style.display = "block";
       } else {
         var i = document.getElementById("ordertbls");
         var j = document.getElementById("orderitemtbl");
-        i.style.display = "none";
-        j.style.display = "block ";
+
+        var x = document.getElementById("ordertbls1");
+        var x1 = document.getElementById("orderitemtbl1");
+
+        x.style.display = "block";
+        x1.style.display = "none";
+
+        i.style.display = "block";
+        j.style.display = "none ";
       }
       this.setState({
         OrdItmBtnStatus: e.target.checked
       });
     } else {
       if (values) {
-        var ot = document.getElementById("ordertable");
-        var oi = document.getElementById("orderitemtable");
+        var ot = document.getElementById("ordertbls");
+        var oi = document.getElementById("orderitemtbl");
+
+        var ot1 = document.getElementById("ordertbls1");
+        var oi2 = document.getElementById("orderitemtbl1");
+
+        ot.style.display = "none";
+        oi.style.display = "block";
+
+        ot1.style.display = "none";
+        oi2.style.display = "block";
+      } else {
+        var ot1 = document.getElementById("ordertbls1");
+        var oi2 = document.getElementById("orderitemtbl1");
+
+        var ot = document.getElementById("ordertbls");
+        var oi = document.getElementById("orderitemtbl");
 
         ot.style.display = "block";
         oi.style.display = "none";
-      } else {
-        var ot1 = document.getElementById("ordertable");
-        var oi2 = document.getElementById("orderitemtable");
-        ot1.style.display = "none";
-        oi2.style.display = "block ";
+
+        ot1.style.display = "block";
+        oi2.style.display = "none";
       }
       this.setState({
         OrdItmBtnStatus: e.target.checked
@@ -2464,7 +2726,6 @@ class MyTicket extends Component {
   };
 
   handleRemoveImage(i) {
-    ////
     let file = this.state.file;
     file.splice(i, 1);
     var fileText = file.length;
@@ -2474,112 +2735,378 @@ class MyTicket extends Component {
   }
 
   handleSetDataTab = () => {
-    ////
+    debugger;
+    if (this.state.OrdItmBtnStatus) {
+      var x = document.getElementById("ordertbls1");
+      var x1 = document.getElementById("orderitemtbl1");
+
+      var y = document.getElementById("ordertbls");
+      var y1 = document.getElementById("orderitemtbl");
+
+      x.style.display = "none";
+      x1.style.display = "block";
+
+      y.style.display = "none";
+      y1.style.display = "block";
+    } else {
+      var x = document.getElementById("ordertbls");
+      var x1 = document.getElementById("orderitemtbl");
+
+      var y = document.getElementById("ordertbls1");
+      var y1 = document.getElementById("orderitemtbl1");
+
+      x.style.display = "block";
+      x1.style.display = "none";
+
+      y.style.display = "block";
+      y1.style.display = "none";
+    }
     this.setState({
       selectProductOrd: !this.state.selectProductOrd
     });
   };
-
-  // -------------------------------Check box selected all code start-------------------------------
-
-  onCheckMasterAllChange(orderMasterID, rowData) {
-    const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
-    newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
-    this.setState({
-      CheckBoxAllOrder: orderMasterID ? newSelected : false
-    });
-    var selectedRow = [];
-    var CselectedRow = [];
-    if (this.state.SelectedAllOrder.length === 0) {
-      selectedRow.push(rowData);
-      var Order_Master = this.state.OrderSubItem.filter(
-        x => x.orderMasterID === orderMasterID
-      );
-      if (Order_Master.length > 0) {
-        var objCheckBoxAllItem = new Object();
-        for (let j = 0; j < Order_Master.length; j++) {
-          objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
-
-          CselectedRow.push(Order_Master[j]);
-        }
-        this.setState({
-          CheckBoxAllItem: objCheckBoxAllItem
-        });
-      }
+  /// Handle get Order Item data
+  handleGetOderItemData(invoiceNumber, rowData, e) {
+    debugger;
+    if (e.target.checked) {
+      var selectproduct = [];
       this.setState({
-        SelectedAllOrder: selectedRow,
-        SelectedAllItem: CselectedRow
+        SelectedAllOrder: [],
+        SelectedAllItem: [],
+        OrderSubItem: [],
+        selectedInvoiceNo: ""
       });
-    } else {
-      if (newSelected[orderMasterID] === true) {
-        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
-          if (this.state.SelectedAllOrder[i] === rowData) {
-            selectedRow = this.state.SelectedAllOrder;
-            selectedRow.push(rowData);
-            var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === orderMasterID
-            );
-            if (Order_Master.length > 0) {
-              var objCheckBoxAllItem = new Object();
-              for (let j = 0; j < Order_Master.length; j++) {
-                objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Order/getOrderItemDetailsList",
+        headers: authHeader(),
+        data: {
+          OrderMasterID: rowData.orderMasterID,
+          OrderNumber: rowData.invoiceNumber,
+          CustomerID: this.state.custID,
+          StoreCode: rowData.storeCode,
+          InvoiceDate: rowData.invoiceDate
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          let data = res.data.responseData;
+          if (Msg === "Success") {
+            self.setState({
+              OrderSubItem: data
+            });
+            var selectedInvoiceNo = invoiceNumber;
+            const newSelected = Object.assign({}, self.state.CheckBoxAllOrder);
+            newSelected[invoiceNumber] = !self.state.CheckBoxAllOrder[
+              invoiceNumber
+            ];
+            self.setState({
+              CheckBoxAllOrder: newSelected,
+              selectedInvoiceNo
+            });
+            var selectedRow = [];
+            var CselectedRow = [];
+            if (self.state.SelectedAllOrder.length === 0) {
+              selectedRow.push(rowData);
+              var Order_Master = self.state.OrderSubItem.filter(
+                x => x.invoiceNumber === invoiceNumber
+              );
+              if (Order_Master.length > 0) {
+                var objCheckBoxAllItem = new Object();
+                for (let j = 0; j < Order_Master.length; j++) {
+                  objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
 
-                CselectedRow.push(Order_Master[j]);
+                  CselectedRow.push(Order_Master[j]);
+                }
+                self.setState({
+                  CheckBoxAllItem: objCheckBoxAllItem
+                });
               }
-              this.setState({
-                CheckBoxAllItem: objCheckBoxAllItem
+              self.setState({
+                SelectedAllOrder: selectedRow,
+                SelectedAllItem: CselectedRow
               });
+            } else {
+              if (newSelected[invoiceNumber] === true) {
+                for (var i = 0; i < self.state.SelectedAllOrder.length; i++) {
+                  if (self.state.SelectedAllOrder[i] === rowData) {
+                    selectedRow = self.state.SelectedAllOrder;
+                    selectedRow.push(rowData);
+                    var Order_Master = self.state.OrderSubItem.filter(
+                      x => x.invoiceNumber === invoiceNumber
+                    );
+                    if (Order_Master.length > 0) {
+                      var objCheckBoxAllItem = new Object();
+                      for (let j = 0; j < Order_Master.length; j++) {
+                        objCheckBoxAllItem[
+                          Order_Master[j].articleNumber
+                        ] = true;
+
+                        CselectedRow.push(Order_Master[j]);
+                      }
+                      self.setState({
+                        CheckBoxAllItem: objCheckBoxAllItem
+                      });
+                    }
+
+                    self.setState({
+                      SelectedAllOrder: selectedRow,
+                      SelectedAllItem: CselectedRow
+                    });
+
+                    break;
+                  }
+                }
+              } else {
+                for (var i = 0; i < self.state.SelectedAllOrder.length; i++) {
+                  if (self.state.SelectedAllOrder[i] === rowData) {
+                    selectedRow = self.state.SelectedAllOrder;
+                    selectedRow.splice(i, 1);
+                    var Order_Master = self.state.OrderSubItem.filter(
+                      x => x.invoiceNumber === invoiceNumber
+                    );
+                    if (Order_Master.length > 0) {
+                      var objCheckBoxAllItem = new Object();
+                      for (let j = 0; j < Order_Master.length; j++) {
+                        objCheckBoxAllItem[
+                          Order_Master[j].articleNumber
+                        ] = false;
+                      }
+                      self.setState({
+                        CheckBoxAllItem: objCheckBoxAllItem
+                      });
+                    }
+
+                    self.setState({
+                      SelectedAllOrder: selectedRow,
+                      SelectedAllItem: []
+                    });
+
+                    break;
+                  }
+                }
+              }
             }
 
-            this.setState({
+            self.setState({
               SelectedAllOrder: selectedRow,
               SelectedAllItem: CselectedRow
             });
+          } else {
+            var selectedInvoiceNo = invoiceNumber;
+            const newSelected = Object.assign({}, self.state.CheckBoxAllOrder);
+            newSelected[invoiceNumber] = !self.state.CheckBoxAllOrder[
+              invoiceNumber
+            ];
+            self.setState({
+              CheckBoxAllOrder: newSelected,
+              selectedInvoiceNo
+            });
+            var selectedRow = [];
+            var CselectedRow = [];
+            if (self.state.SelectedAllOrder.length === 0) {
+              selectedRow.push(rowData);
+              var Order_Master = self.state.OrderSubItem.filter(
+                x => x.invoiceNumber === invoiceNumber
+              );
+              if (Order_Master.length > 0) {
+                var objCheckBoxAllItem = new Object();
+                for (let j = 0; j < Order_Master.length; j++) {
+                  objCheckBoxAllItem[Order_Master[j].articleNumber] = true;
 
-            break;
-          }
-        }
-      } else {
-        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
-          if (this.state.SelectedAllOrder[i] === rowData) {
-            selectedRow = this.state.SelectedAllOrder;
-            selectedRow.splice(i, 1);
-            var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === orderMasterID
-            );
-            if (Order_Master.length > 0) {
-              var objCheckBoxAllItem = new Object();
-              for (let j = 0; j < Order_Master.length; j++) {
-                objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
+                  CselectedRow.push(Order_Master[j]);
+                }
+                self.setState({
+                  CheckBoxAllItem: objCheckBoxAllItem
+                });
               }
-              this.setState({
-                CheckBoxAllItem: objCheckBoxAllItem
+              self.setState({
+                SelectedAllOrder: selectedRow,
+                SelectedAllItem: CselectedRow
               });
+            } else {
+              if (newSelected[invoiceNumber] === true) {
+                for (var i = 0; i < self.state.SelectedAllOrder.length; i++) {
+                  if (self.state.SelectedAllOrder[i] === rowData) {
+                    selectedRow = self.state.SelectedAllOrder;
+                    selectedRow.push(rowData);
+                    var Order_Master = self.state.OrderSubItem.filter(
+                      x => x.invoiceNumber === invoiceNumber
+                    );
+                    if (Order_Master.length > 0) {
+                      var objCheckBoxAllItem = new Object();
+                      for (let j = 0; j < Order_Master.length; j++) {
+                        objCheckBoxAllItem[
+                          Order_Master[j].articleNumber
+                        ] = true;
+
+                        CselectedRow.push(Order_Master[j]);
+                      }
+                      self.setState({
+                        CheckBoxAllItem: objCheckBoxAllItem
+                      });
+                    }
+
+                    self.setState({
+                      SelectedAllOrder: selectedRow,
+                      SelectedAllItem: CselectedRow
+                    });
+
+                    break;
+                  }
+                }
+              } else {
+                for (var i = 0; i < self.state.SelectedAllOrder.length; i++) {
+                  if (self.state.SelectedAllOrder[i] === rowData) {
+                    selectedRow = self.state.SelectedAllOrder;
+                    selectedRow.splice(i, 1);
+                    var Order_Master = self.state.OrderSubItem.filter(
+                      x => x.invoiceNumber === invoiceNumber
+                    );
+                    if (Order_Master.length > 0) {
+                      var objCheckBoxAllItem = new Object();
+                      for (let j = 0; j < Order_Master.length; j++) {
+                        objCheckBoxAllItem[
+                          Order_Master[j].articleNumber
+                        ] = false;
+                      }
+                      self.setState({
+                        CheckBoxAllItem: objCheckBoxAllItem
+                      });
+                    }
+
+                    self.setState({
+                      SelectedAllOrder: selectedRow,
+                      SelectedAllItem: []
+                    });
+
+                    break;
+                  }
+                }
+              }
             }
 
-            this.setState({
-              SelectedAllOrder: selectedRow,
-              SelectedAllItem: []
+            self.setState({
+              CheckBoxAllOrder: newSelected,
+              selectedInvoiceNo,
+              OrderSubItem: []
             });
-
-            break;
           }
-        }
-      }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        SelectedAllOrder: [],
+        SelectedAllItem: [],
+        OrderSubItem: [],
+        selectedInvoiceNo: ""
+      });
     }
-
-    this.setState({
-      SelectedAllOrder: selectedRow,
-      SelectedAllItem: CselectedRow,
-      selectedProduct: selectedRow
-    });
   }
+  // // -------------------------------Check box selected all code start-------------------------------
+  // onCheckMasterAllChange(invoiceNumber, rowData) {
+  //   const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+  //   newSelected[invoiceNumber] = !this.state.CheckBoxAllOrder[invoiceNumber];
+  //   this.setState({
+  //     CheckBoxAllOrder: invoiceNumber ? newSelected : false
+  //   });
+  //   var selectedRow = [];
+  //   var CselectedRow = [];
+  //   if (this.state.SelectedAllOrder.length === 0) {
+  //     selectedRow.push(rowData);
+  //     var Order_Master = this.state.OrderSubItem.filter(
+  //       x => x.invoiceNumber === invoiceNumber
+  //     );
+  //     if (Order_Master.length > 0) {
+  //       var objCheckBoxAllItem = new Object();
+  //       for (let j = 0; j < Order_Master.length; j++) {
+  //         objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
 
-  checkIndividualItem(orderItemID, rowData) {
+  //         CselectedRow.push(Order_Master[j]);
+  //       }
+  //       this.setState({
+  //         CheckBoxAllItem: objCheckBoxAllItem
+  //       });
+  //     }
+  //     this.setState({
+  //       SelectedAllOrder: selectedRow,
+  //       SelectedAllItem: CselectedRow
+  //     });
+  //   } else {
+  //     if (newSelected[invoiceNumber] === true) {
+  //       for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+  //         if (this.state.SelectedAllOrder[i] === rowData) {
+  //           selectedRow = this.state.SelectedAllOrder;
+  //           selectedRow.push(rowData);
+  //           var Order_Master = this.state.OrderSubItem.filter(
+  //             x => x.invoiceNumber === invoiceNumber
+  //           );
+  //           if (Order_Master.length > 0) {
+  //             var objCheckBoxAllItem = new Object();
+  //             for (let j = 0; j < Order_Master.length; j++) {
+  //               objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+  //               CselectedRow.push(Order_Master[j]);
+  //             }
+  //             this.setState({
+  //               CheckBoxAllItem: objCheckBoxAllItem
+  //             });
+  //           }
+
+  //           this.setState({
+  //             SelectedAllOrder: selectedRow,
+  //             SelectedAllItem: CselectedRow
+  //           });
+
+  //           break;
+  //         }
+  //       }
+  //     } else {
+  //       for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+  //         if (this.state.SelectedAllOrder[i] === rowData) {
+  //           selectedRow = this.state.SelectedAllOrder;
+  //           selectedRow.splice(i, 1);
+  //           var Order_Master = this.state.OrderSubItem.filter(
+  //             x => x.invoiceNumber === invoiceNumber
+  //           );
+  //           if (Order_Master.length > 0) {
+  //             var objCheckBoxAllItem = new Object();
+  //             for (let j = 0; j < Order_Master.length; j++) {
+  //               objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
+  //             }
+  //             this.setState({
+  //               CheckBoxAllItem: objCheckBoxAllItem
+  //             });
+  //           }
+
+  //           this.setState({
+  //             SelectedAllOrder: selectedRow,
+  //             SelectedAllItem: []
+  //           });
+
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   this.setState({
+  //     SelectedAllOrder: selectedRow,
+  //     SelectedAllItem: CselectedRow,
+  //     selectedProduct: selectedRow
+  //   });
+  // }
+
+  checkIndividualItem(articleNumber, rowData) {
+    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
-    newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
+    newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
-      CheckBoxAllItem: orderItemID ? newSelected : false
+      CheckBoxAllItem: articleNumber ? newSelected : false
     });
     var selectedRow = [];
     if (this.state.SelectedAllItem.length === 0) {
@@ -2588,24 +3115,24 @@ class MyTicket extends Component {
         SelectedAllItem: selectedRow
       });
     } else {
-      if (newSelected[orderItemID] === true) {
+      if (newSelected[articleNumber] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
           selectedRow = this.state.SelectedAllItem;
           selectedRow.push(rowData);
           var Order_Master = this.state.OrderSubItem.filter(
-            x => x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+            x => x.articleNumber === this.state.SelectedAllItem[i].articleNumber
           );
           if (Order_Master.length === selectedRow.length) {
             const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
-            newSelected[Order_Master[0].orderMasterID] = !this.state
-              .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+            newSelected[Order_Master[0].articleNumber] = !this.state
+              .CheckBoxAllOrder[Order_Master[0].articleNumber];
             this.setState({
-              CheckBoxAllOrder: Order_Master[0].orderMasterID
+              CheckBoxAllOrder: Order_Master[0].articleNumber
                 ? newSelected
                 : false
             });
             var data_master = this.state.orderDetailsData.filter(
-              y => y.orderMasterID === Order_Master[0].orderMasterID
+              y => y.articleNumber === Order_Master[0].articleNumber
             );
             if (data_master.length > 0) {
               var MastOrd = this.state.SelectedAllOrder;
@@ -2624,7 +3151,7 @@ class MyTicket extends Component {
             selectedRow.splice(j, 1);
 
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.orderMasterID === rowData.orderMasterID
+              x => x.articleNumber === rowData.articleNumber
             );
 
             if (Order_Master.length !== selectedRow.length) {
@@ -2632,17 +3159,17 @@ class MyTicket extends Component {
                 {},
                 this.state.CheckBoxAllOrder
               );
-              newSelected[Order_Master[0].orderMasterID] = false;
+              newSelected[Order_Master[0].articleNumber] = false;
               this.setState({
-                CheckBoxAllOrder: Order_Master[0].orderMasterID
+                CheckBoxAllOrder: Order_Master[0].articleNumber
                   ? newSelected
                   : false
               });
               var data_master = this.state.orderDetailsData.filter(
-                y => y.orderMasterID === Order_Master[0].orderMasterID
+                y => y.articleNumber === Order_Master[0].articleNumber
               );
               var GetIndex = this.state.orderDetailsData.findIndex(
-                y => y.orderMasterID === Order_Master[0].orderMasterID
+                y => y.articleNumber === Order_Master[0].articleNumber
               );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
@@ -2660,7 +3187,7 @@ class MyTicket extends Component {
     }
     this.setState({
       SelectedAllItem: selectedRow,
-      selectedProduct: selectedRow
+      SelectedAllOrder: selectedRow
     });
   }
   // -------------------------------Check box selected all code end-------------------------------
@@ -2778,18 +3305,26 @@ class MyTicket extends Component {
   handleAddKnwoldgeBase() {
     debugger;
     let self = this;
-    var tempDescription = this.state.messageDetails[0][
-      "msgDetails"
-    ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
-    var Description = tempDescription.replace(/&nbsp;/gi, " ");
+    var tempDescription = "";
+    var Description = "";
+    debugger;
+    if (this.state.messageDetails.length > 0) {
+      tempDescription = this.state.messageDetails[0][
+        "msgDetails"
+      ][0].latestMessageDetails.ticketMailBody.replace(/<[^>]+>/g, "");
+      Description = tempDescription.replace(/&nbsp;/gi, " ");
+    }
+
     var inputParam = {
       KBCODE: "",
       CategoryID: this.state.selectetedParameters.categoryID,
       SubCategoryID: this.state.selectetedParameters.subCategoryID,
       Subject: this.state.ticketDetailsData.ticketTitle,
-      Description: Description,
+      Description: Description || "",
       IsActive: 1,
-      IssueTypeID: this.state.selectetedParameters.issueTypeID
+      IssueTypeID: this.state.selectetedParameters.issueTypeID,
+      TicketID: this.state.ticket_Id,
+      IsFromTicket: 1
     };
     axios({
       method: "post",
@@ -2820,8 +3355,6 @@ class MyTicket extends Component {
       historicalDetails,
       SearchAssignData,
       orderDetails,
-      selectedProduct,
-      storeDetails,
       selectedStore
     } = this.state;
 
@@ -2843,99 +3376,23 @@ class MyTicket extends Component {
       }
     }
 
-    // const HidecollapsUp = this.state.collapseUp ? (
-    //   <img
-    //     src={Up1Img}
-    //     alt="up"
-    //     className="up-1"
-    //     onClick={this.handleUpClose.bind(this)}
-    //   />
-    // ) : (
-    //   <img
-    //     src={Down1Img}
-    //     alt="up"
-    //     className="up-1"
-    //     onClick={this.handleUpOpen.bind(this)}
-    //   />
-    // );
-
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
-      <a href="#!"
+      <a
+        href="#!"
         style={{ height: "30px", cursor: "pointer" }}
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       >
         <img src={MinusImg} alt="Minus" className="minus-img" />
       </a>
     ) : (
-      <a href="#!"
+      <a
+        href="#!"
         style={{ height: "30px", cursor: "pointer" }}
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       >
         <img src={PlusImg} alt="Plush" className="plush-img" />
       </a>
     );
-
-    const data1 = [
-      {
-        sku: (
-          <span>
-            <div className="filter-type order1checkbox">
-              <div className="filter-checkbox order2checkbox">
-                <input type="checkbox" id="fil-id" name="filter-type" />
-                <label htmlFor="fil-id">BB221345</label>
-              </div>
-            </div>
-          </span>
-        ),
-
-        Name: (
-          <span>
-            <label>
-              HUSH PUPPIES{" "}
-              <span style={{ display: "block" }}>
-                Blue Casual Shoes For Men
-              </span>
-            </label>
-          </span>
-        ),
-        Price: "4500",
-        Quantity: (
-          <span>
-            <label>01</label>
-          </span>
-        ),
-        Mop: <label>Cash</label>
-      },
-      {
-        sku: (
-          <span>
-            <div className="filter-type order1checkbox">
-              <div className="filter-checkbox order2checkbox">
-                <input type="checkbox" id="fil-id1" name="filter-type" />
-                <label htmlFor="fil-id1">BB221345</label>
-              </div>
-            </div>
-          </span>
-        ),
-        Name: (
-          <span>
-            <label>
-              HUSH PUPPIES
-              <span style={{ display: "block" }}>
-                Blue Casual Shoes For Men
-              </span>
-            </label>
-          </span>
-        ),
-        Price: "4500",
-        Quantity: (
-          <span>
-            <label>01</label>
-          </span>
-        ),
-        Mop: <label>Cash</label>
-      }
-    ];
 
     return (
       <Fragment>
@@ -2958,7 +3415,11 @@ class MyTicket extends Component {
                         {ticketDetailsData.updateDate}
                       </span>
                     </label>
-                    <a href="#!" className="loading-rectangle-cntr" onClick={this.handleGetHistoricalData.bind(this)}>
+                    <a
+                      href="#!"
+                      className="loading-rectangle-cntr"
+                      onClick={this.handleGetHistoricalData.bind(this)}
+                    >
                       <img
                         src={LoadingImg}
                         alt="Loading"
@@ -3022,9 +3483,22 @@ class MyTicket extends Component {
                     </Modal>
                   </div>
 
-                  <div className="col-12 col-xs-8 col-sm-8 col-md-9">
-                    <div style={{ float: "right", marginTop: "0px" }}>
-                      <a href="#!" className="d-inline-block" onClick={this.HandlelabelModalOpen.bind(this)}>
+                  <div
+                    className={
+                      this.state.isKB
+                        ? "col-12 col-xs-8 col-sm-8 col-md-9 iskbticket"
+                        : "col-12 col-xs-8 col-sm-8 col-md-9"
+                    }
+                  >
+                    <div
+                      style={{ float: "right", marginTop: "0px" }}
+                      className={this.state.isKB ? "iskbticket" : ""}
+                    >
+                      <a
+                        href="#!"
+                        className="d-inline-block"
+                        onClick={this.HandlelabelModalOpen.bind(this)}
+                      >
                         <img
                           src={Headphone2Img}
                           alt="headphone"
@@ -3041,7 +3515,11 @@ class MyTicket extends Component {
                       </a>
                       <button
                         type="button"
-                        className="myticket-submit-solve-button"
+                        className={
+                          this.state.isKB
+                            ? "myticket-submit-solve-button iskbticket"
+                            : "myticket-submit-solve-button"
+                        }
                         onClick={this.handleSubmitTicket.bind(this)}
                       >
                         SUBMIT
@@ -3056,7 +3534,11 @@ class MyTicket extends Component {
                     overlayId="logout-ovrly"
                   >
                     <div
-                      className="myTicket-table remov agentlist"
+                      className={
+                        this.state.isKB
+                          ? "myTicket-table remov agentlist iskbticket"
+                          : "myTicket-table remov agentlist"
+                      }
                       id="tic-det-assign"
                     >
                       <ReactTable
@@ -3077,17 +3559,14 @@ class MyTicket extends Component {
                             accessor: "designation"
                           }
                         ]}
-                        // resizable={false}
                         minRows={2}
                         // defaultPageSize={5}
                         showPagination={false}
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
-                          // ////
                           const index = column ? column.index : -1;
                           return {
                             onClick: e => {
-                              ////
                               this.selectedRow = index;
                               var agentId = column.original["user_ID"];
                               this.setState({ agentId });
@@ -3187,7 +3666,10 @@ class MyTicket extends Component {
                       <label className="mobile-no">
                         {ticketDetailsData.customerPhoneNumber}
                       </label>
-                      <a href="#!" onClick={this.HandleProfileModalOpen.bind(this)}>
+                      <a
+                        href="#!"
+                        onClick={this.HandleProfileModalOpen.bind(this)}
+                      >
                         <img
                           src={EyeImg}
                           alt="eye"
@@ -3270,7 +3752,9 @@ class MyTicket extends Component {
                           </div>
                         </div>
                       </Modal>
-                      <a href="#!" onClick={this.handleBillImgModalOpen.bind(this)}
+                      <a
+                        href={Demo.BLANK_LINK}
+                        onClick={this.handleBillImgModalOpen.bind(this)}
                         className=""
                         style={{
                           display: "inline",
@@ -3284,262 +3768,114 @@ class MyTicket extends Component {
                           title="Historical Order"
                           // onClick={this.handleBillImgModalOpen.bind(this)}
                         />
-                        <Modal
-                          open={this.state.BillInvoiceModal}
-                          onClose={this.handleBillImgModalClose.bind(this)}
-                          modalId="BillInvoice-popup"
-                          overlayId="logout-ovrly"
-                        >
-                          <div className="row">
-                            <div className="col-md-5">
-                              <div className="customerBill">
-                                <img
-                                  src={UserIcon}
-                                  alt="customer-icon"
-                                  className="usericon"
-                                />
-                                <label className="customer-text">
-                                  CUSTOMER
+                      </a>
+                      <Modal
+                        open={this.state.BillInvoiceModal}
+                        onClose={this.handleBillImgModalClose.bind(this)}
+                        modalId="BillInvoice-popup"
+                        overlayId="logout-ovrly"
+                      >
+                        <div className="row">
+                          <div className="col-md-5">
+                            <div className="customerBill">
+                              <img
+                                src={UserIcon}
+                                alt="customer-icon"
+                                className="usericon"
+                              />
+                              <label className="customer-text">CUSTOMER</label>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6 namepad">
+                                <label className="fullna">Full Name</label>
+                                <label className="namedi">
+                                  {ticketDetailsData.customerName}
                                 </label>
                               </div>
-                              <div className="row">
-                                <div className="col-md-6 namepad">
-                                  <label className="fullna">Full Name</label>
-                                  <label className="namedi">
-                                    {ticketDetailsData.customerName}
-                                  </label>
-                                </div>
-                                <div className="col-md-6 namepad">
-                                  <label className="fullna">
-                                    Mobile Number
-                                  </label>
-                                  <label className="namedi">
-                                    {ticketDetailsData.customerPhoneNumber}
-                                  </label>
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="col-md-12 namepad">
-                                  <label className="fullna">Email ID</label>
-                                  <label className="namedi">
-                                    {ticketDetailsData.customerEmailId}
-                                  </label>
-                                </div>
+                              <div className="col-md-6 namepad">
+                                <label className="fullna">Mobile Number</label>
+                                <label className="namedi">
+                                  {ticketDetailsData.customerPhoneNumber}
+                                </label>
                               </div>
                             </div>
-
-                            <div className="col-md-7 xyz">
-                              <img
-                                src={CrossIcon}
-                                alt="cross-icon"
-                                className="cross"
-                                onClick={this.handleBillImgModalClose.bind(
-                                  this
-                                )}
-                              />
-                              {this.state.HistOrderShow ? (
-                                <div>
-                                  <div className="histo">
-                                    <img
-                                      src={Order}
-                                      alt="customer-icon"
-                                      style={{ marginTop: "-10px" }}
-                                    />
-                                    <label className="customer-text">
-                                      HISTORICAL ORDER
-                                    </label>
-                                  </div>
-
-                                  <div className="tablehistrical">
-                                    <ReactTable
-                                      data={orderDetails}
-                                      columns={[
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Order Number
-                                            </span>
-                                          ),
-                                          accessor: "orderNumber"
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Mobile Number
-                                            </span>
-                                          ),
-                                          accessor: "mobileNumber"
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Amount
-                                            </span>
-                                          ),
-                                          accessor: "itemPrice"
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Purchase Date
-                                            </span>
-                                          ),
-                                          accessor: "dateFormat"
-                                        }
-                                      ]}
-                                      // resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                    />
-                                  </div>
-
-                                  {/* <div className="row skipmar">
-                                <div className="col-md-5">
-                                  <label className="skiptext">
-                                    SKIP ATTATCHING ORDER
-                                  </label>
-                                </div>
-                                <div className="col-md-7">
-                                  <div className="calnex">
-                                    <button type="button" className="calnexbtn">
-                                      <label className="calnexbtn-text">
-                                        Cancel
-                                      </label>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="calnexbtn1"
-                                      onClick={this.toggleView}
-                                    >
-                                      <label className="calnexbtn1-text">
-                                        Next
-                                      </label>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div> */}
-                                </div>
-                              ) : (
-                                <div>
-                                  <div className="row histo">
-                                    <div className="col-md-7">
-                                      <img
-                                        src={UserIcon}
-                                        alt="customer-icon"
-                                        className="usericon"
-                                      />
-                                      <img
-                                        src={Up1Img}
-                                        alt="down"
-                                        className="down-header"
-                                      />
-                                      <label className="customer-text">
-                                        ORDER - BB2213451123
-                                      </label>
-                                    </div>
-                                    <div className="col-md-5">
-                                      <label className="customerOrder-text">
-                                        ORDER
-                                      </label>
-                                      <label className="customerItem-text">
-                                        ITEM
-                                      </label>
-                                      <div className="orderswitch">
-                                        <div className="switch switch-primary d-inline">
-                                          <input
-                                            type="checkbox"
-                                            id="editTasks-p-2"
-                                          />
-                                          <label
-                                            htmlFor="editTasks-p-2"
-                                            className="cr ord"
-                                          ></label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="tablehistrical tablehistricaldetail">
-                                    <ReactTable
-                                      data={data1}
-                                      columns={[
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header ">
-                                              SKU
-                                            </span>
-                                          ),
-                                          accessor: "sku"
-                                        },
-                                        {
-                                          id: "createdBy",
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Name
-                                            </span>
-                                          ),
-                                          accessor: "Name"
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Price
-                                            </span>
-                                          ),
-                                          accessor: "Price"
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              Quantity
-                                            </span>
-                                          ),
-                                          accessor: "Quantity"
-                                        },
-                                        {
-                                          Header: (
-                                            <span className="historyTable-header">
-                                              MOP
-                                            </span>
-                                          ),
-                                          accessor: "Mop"
-                                        }
-                                      ]}
-                                      // resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                    />
-                                  </div>
-                                  <div className="row skipmar done">
-                                    <div className="col-md-12">
-                                      <div className="calnex">
-                                        <button
-                                          type="button"
-                                          className="calnexbtn"
-                                        >
-                                          <label className="calnexbtn-text">
-                                            Cancel
-                                          </label>
-                                        </button>
-                                        <button
-                                          type="button"
-                                          className="calnexbtn1"
-                                          onClick={this.handleBillImgModalClose.bind(
-                                            this
-                                          )}
-                                        >
-                                          <label className="calnexbtn1-text">
-                                            DONE
-                                          </label>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
+                            <div className="row">
+                              <div className="col-md-12 namepad">
+                                <label className="fullna">Email ID</label>
+                                <label className="namedi">
+                                  {ticketDetailsData.customerEmailId}
+                                </label>
+                              </div>
                             </div>
                           </div>
-                        </Modal>
-                      </a>
+
+                          <div className="col-md-7 xyz">
+                            <img
+                              src={CrossIcon}
+                              alt="cross-icon"
+                              className="cross"
+                              onClick={this.handleBillImgModalClose.bind(this)}
+                            />
+                            <div>
+                              <div className="histo">
+                                <img
+                                  src={Order}
+                                  alt="customer-icon"
+                                  style={{ marginTop: "-10px" }}
+                                />
+                                <label className="customer-text">
+                                  HISTORICAL ORDER
+                                </label>
+                              </div>
+
+                              <div className="tablehistrical">
+                                <ReactTable
+                                  data={orderDetails}
+                                  columns={[
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Order Number
+                                        </span>
+                                      ),
+                                      accessor: "orderNumber"
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Mobile Number
+                                        </span>
+                                      ),
+                                      accessor: "mobileNumber"
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Amount
+                                        </span>
+                                      ),
+                                      // accessor: "itemPrice",
+                                      accessor: "itemPrice"
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Purchase Date
+                                        </span>
+                                      ),
+                                      accessor: "dateFormat"
+                                    }
+                                  ]}
+                                  defaultPageSize={5}
+                                  showPagination={false}
+                                  // minRows={2}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Modal>
+
                       <div className="card-space-1">
                         <label className="target-closure-date">
                           Target Closure Date &nbsp;
@@ -3630,7 +3966,11 @@ class MyTicket extends Component {
                           >
                             <label className="label-4">Status</label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={
                                 this.state.selectetedParameters.ticketStatusID
                               }
@@ -3662,18 +4002,40 @@ class MyTicket extends Component {
                           >
                             <label className="label-4">Priority</label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={this.state.selectetedParameters.priorityID}
                               onChange={this.handleDropDownChange}
                               name="priorityID"
                             >
                               <option>Priority</option>
                               {this.state.TicketPriorityData !== null &&
-                                this.state.TicketPriorityData.map((item, i) => (
-                                  <option key={i} value={item.priorityID}>
-                                    {item.priortyName}
-                                  </option>
-                                ))}
+                                this.state.TicketPriorityData.map((item, i) => {
+                                  if (
+                                    this.state.isSystemGenerated == false &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return null;
+                                  } else if (
+                                    this.state.isSystemGenerated == true &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  }
+                                })}
                             </select>
                           </div>
                         </div>
@@ -3691,7 +4053,11 @@ class MyTicket extends Component {
                           >
                             <label className="label-4">Brand</label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={this.state.selectetedParameters.brandID}
                               onChange={this.handleDropDownChange}
                               name="brandID"
@@ -3726,7 +4092,11 @@ class MyTicket extends Component {
                           >
                             <label className="label-4">Category</label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={this.state.selectetedParameters.categoryID}
                               onChange={this.handleDropDownChange}
                               name="categoryID"
@@ -3761,7 +4131,11 @@ class MyTicket extends Component {
                           >
                             <label className="label-4">Sub Category</label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={
                                 this.state.selectetedParameters.subCategoryID
                               }
@@ -3799,7 +4173,11 @@ class MyTicket extends Component {
                             <label className="label-4">Issue Type</label>
 
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={
                                 this.state.selectetedParameters.issueTypeID
                               }
@@ -3838,7 +4216,11 @@ class MyTicket extends Component {
                               Channel Of Purchase
                             </label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={
                                 this.state.selectetedParameters
                                   .channelOfPurchaseID
@@ -3881,7 +4263,11 @@ class MyTicket extends Component {
                               Ticket Action Type
                             </label>
                             <select
-                              className="rectangle-9 select-category-placeholder"
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
                               value={
                                 this.state.selectetedParameters
                                   .ticketActionTypeID
@@ -3915,7 +4301,8 @@ class MyTicket extends Component {
                       <div className="storebox">
                         <div className="form-group">
                           <label className="label-4 storeSpacing">Store</label>
-                          <a href="#!"
+                          <a
+                            href="#!"
                             className="bata-rajouri-garden d-inline-block"
                             onClick={this.HandleStoreModalOpen.bind(this)}
                           >
@@ -3941,9 +4328,13 @@ class MyTicket extends Component {
                             overlayId="logout-ovrly"
                           >
                             <div className="row storemainrow">
-                              <div className="col-md-12">
+                              <div className={"col-md-12"}>
                                 <select
-                                  className="systemstoredropdown1"
+                                  className={
+                                    this.state.isKB
+                                      ? "systemstoredropdown1 iskbticket"
+                                      : "systemstoredropdown1"
+                                  }
                                   value={this.state.CustStoreStatusDrop}
                                   onChange={this.hanldeStatusChange.bind(this)}
                                 >
@@ -3964,7 +4355,13 @@ class MyTicket extends Component {
                                   <label className="orderdetailpopup">
                                     Yes
                                   </label>
-                                  <div className="switchmargin">
+                                  <div
+                                    className={
+                                      this.state.isKB
+                                        ? "switchmargin iskbticket"
+                                        : "switchmargin"
+                                    }
+                                  >
                                     <div className="switch switch-primary d-inline m-r-10">
                                       <input
                                         type="checkbox"
@@ -3999,7 +4396,11 @@ class MyTicket extends Component {
 
                             <div className="row m-0">
                               <div
-                                className="col-md-6 m-b-10 m-t-10"
+                                className={
+                                  this.state.isKB
+                                    ? "col-md-6 m-b-10 m-t-10 iskbticket"
+                                    : "col-md-6 m-b-10 m-t-10"
+                                }
                                 // style={{ marginLeft: "25px" }}
                               >
                                 <input
@@ -4023,7 +4424,11 @@ class MyTicket extends Component {
                               <div className="col-md-6 m-b-10 m-t-10 text-right">
                                 <button
                                   type="button"
-                                  className="myticket-submit-solve-button m-0"
+                                  className={
+                                    this.state.isKB
+                                      ? "myticket-submit-solve-button m-0 iskbticket"
+                                      : "myticket-submit-solve-button m-0"
+                                  }
                                   onClick={this.handleAttachStoreData.bind(
                                     this
                                   )}
@@ -4081,37 +4486,42 @@ class MyTicket extends Component {
                               >
                                 <div className="reactstoreselect custom-react-table datePickertable">
                                   <ReactTable
-                                    data={storeDetails}
+                                    data={this.state.storeDetails}
                                     columns={[
                                       {
                                         Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: row => {
+                                          debugger;
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
                                           return (
                                             <div className="filter-checkbox">
                                               <input
                                                 type="checkbox"
-                                                id={"i" + row.original.storeID}
+                                                id={"i" + storeId}
                                                 style={{
                                                   display: "none"
                                                 }}
                                                 name="ticket-store"
                                                 checked={
                                                   this.state.CheckStoreID[
-                                                    row.original.storeID
+                                                    storeId
                                                   ] === true
                                                 }
                                                 onChange={this.handleCheckStoreID.bind(
                                                   this,
-                                                  row.original.storeID,
+                                                  storeId,
                                                   row.original
                                                 )}
                                                 defaultChecked={true}
                                               />
                                               <label
-                                                htmlFor={
-                                                  "i" + row.original.storeID
-                                                }
+                                                htmlFor={"i" + storeId}
                                               ></label>
                                             </div>
                                           );
@@ -4152,10 +4562,8 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="selectedstore-tab"
                               >
-                                <div className="reactstoreselect custom-react-table datePickertable">
-                                  {/* {this.state.loading === true ? (
-                                    <div className="loader-icon"></div>
-                                  ) : ( */}
+                                <div className="reactstoreselect custom-react-table datePickertable storeTdetail">
+                                 
                                   <ReactTable
                                     data={this.state.selectedStoreData}
                                     columns={[
@@ -4163,43 +4571,50 @@ class MyTicket extends Component {
                                         Header: "",
                                         accessor: "storeID",
                                         width: 20,
-                                        Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                            style={{
-                                              marginLeft: "15px"
-                                            }}
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              id={"i" + row.original.storeID}
+                                        Cell: row => {
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
+                                          return (
+                                            <div
+                                              className="filter-checkbox"
                                               style={{
-                                                display: "none"
+                                                marginLeft: "15px"
                                               }}
-                                              name="ticket-store"
-                                              checked={
-                                                this.state.CheckStoreID[
-                                                  row.original.storeID
-                                                ] === true
-                                              }
-                                              onChange={this.handleCheckStoreID.bind(
-                                                this,
-                                                row.original.storeID,
-                                                row.original
-                                              )}
-                                              defaultChecked={true}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.storeID
-                                              }
-                                            ></label>
-                                          </div>
-                                        )
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                id={"i" + storeId}
+                                                style={{
+                                                  display: "none"
+                                                }}
+                                                name="ticket-store"
+                                                checked={
+                                                  this.state.CheckStoreID[
+                                                    storeId
+                                                  ] === true
+                                                }
+                                                onChange={this.handleCheckStoreID.bind(
+                                                  this,
+                                                  storeId,
+                                                  row.original
+                                                )}
+                                                defaultChecked={true}
+                                              />
+                                              <label
+                                                htmlFor={"i" + storeId}
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
                                       },
                                       {
                                         Header: <span>Purpose</span>,
                                         accessor: "invoiceNumber",
+                                        minWidth: 160,
                                         Cell: row => (
                                           <div
                                             className="filter-checkbox"
@@ -4233,16 +4648,25 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Store Email ID</span>,
-                                        accessor: "storeEmailID"
+                                        accessor: "storeEmailID",
+                                        minWidth: 190
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "address"
+                                        accessor: "address",
+                                        minWidth: 140
                                       },
                                       {
                                         Header: <span>Visit Date</span>,
                                         accessor: "storeVisitDate",
+                                        minWidth: 150,
                                         Cell: row => {
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
@@ -4255,18 +4679,12 @@ class MyTicket extends Component {
                                                     : new Date()
                                                 }
                                                 placeholderText="MM/DD/YYYY"
-                                                // placeholderText={
-                                                //   row.original
-                                                //     .storeVisitDate === null
-                                                //     ? "MM/DD/YYYY"
-                                                //     : null
-                                                // }
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
                                                 id={
                                                   "visitDate" +
-                                                  row.original.storeID
+                                                  storeId
                                                 }
                                                 value={
                                                   row.original
@@ -4288,7 +4706,7 @@ class MyTicket extends Component {
                                         }
                                       }
                                     ]}
-                                    // resizable={false}
+                                    resizable={false}
                                     defaultPageSize={5}
                                     showPagination={false}
                                     minRows={2}
@@ -4300,7 +4718,8 @@ class MyTicket extends Component {
                         </div>
                         <div className="">
                           <label className="label-4">Product</label>
-                          <a href="#!"
+                          <a
+                            href="#!"
                             className="bata-rajouri-garden d-inline-block"
                             onClick={this.handleOrderTableOpen.bind(this)}
                           >
@@ -4378,7 +4797,13 @@ class MyTicket extends Component {
                                   <label className="orderdetailpopup">
                                     Order
                                   </label>
-                                  <div className="orderswitch orderswitchitem">
+                                  <div
+                                    className={
+                                      this.state.isKB
+                                        ? "orderswitch orderswitchitem iskbticket"
+                                        : "orderswitch orderswitchitem"
+                                    }
+                                  >
                                     <div className="switch switch-primary d-inline">
                                       <input
                                         type="checkbox"
@@ -4397,7 +4822,13 @@ class MyTicket extends Component {
                                   </label>
                                 </div>
                               </div>
-                              <div className="col-md-3">
+                              <div
+                                className={
+                                  this.state.isKB
+                                    ? "col-md-3 iskbticket"
+                                    : "col-md-3"
+                                }
+                              >
                                 <input
                                   type="text"
                                   className="searchtextpopup"
@@ -4405,6 +4836,7 @@ class MyTicket extends Component {
                                   name="orderNumber"
                                   value={this.state.orderNumber}
                                   onChange={this.handleNoteOnChange}
+                                  autoComplete="off"
                                 />
                                 <img
                                   src={SearchBlackImg}
@@ -4414,16 +4846,6 @@ class MyTicket extends Component {
                                     this
                                   )}
                                 />
-                                {this.state.orderNumber.length === 0 && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px"
-                                    }}
-                                  >
-                                    {this.state.validOrdernumber}
-                                  </p>
-                                )}
                               </div>
                             </div>
 
@@ -4448,7 +4870,7 @@ class MyTicket extends Component {
                                         Product Details
                                       </a>
                                     </li>
-                                    {this.state.selectedProduct.length > 0 ? (
+                                    {this.state.SelectedAllOrder.length > 0 ? (
                                       <li className="nav-item fo">
                                         <a
                                           className="nav-link"
@@ -4464,11 +4886,15 @@ class MyTicket extends Component {
                                       </li>
                                     ) : null}
                                   </ul>
-                                  {/* {this.state.selectedProduct.length > 0 ? ( */}
+                                  {/* {this.state.SelectedAllOrder.length > 0 ? ( */}
                                   <div className="col-md-6 m-b-10 m-t-10 text-right">
                                     <button
                                       type="button"
-                                      className="myticket-submit-solve-button m-0"
+                                      className={
+                                        this.state.isKB
+                                          ? "myticket-submit-solve-button m-0 iskbticket"
+                                          : "myticket-submit-solve-button m-0"
+                                      }
                                       onClick={this.handleAttachProductData.bind(
                                         this
                                       )}
@@ -4490,7 +4916,7 @@ class MyTicket extends Component {
                               >
                                 <div
                                   className="reactstoreselect custom-react-table"
-                                  id="orderitemtable"
+                                  id="ordertbls"
                                   style={{ display: "block" }}
                                 >
                                   <ReactTable
@@ -4498,7 +4924,7 @@ class MyTicket extends Component {
                                     columns={[
                                       {
                                         Header: <span></span>,
-                                        accessor: "orderMasterID",
+                                        accessor: "invoiceNumber",
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
@@ -4506,27 +4932,25 @@ class MyTicket extends Component {
                                               type="checkbox"
                                               id={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                               style={{
                                                 display: "none"
                                               }}
                                               name="AllOrder"
-                                              checked={
-                                                this.state.CheckBoxAllOrder[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              onChange={this.onCheckMasterAllChange.bind(
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
+                                              )}
+                                              onChange={this.handleGetOderItemData.bind(
                                                 this,
-                                                row.original.orderMasterID,
+                                                row.original.invoiceNumber,
                                                 row.original
                                               )}
                                             />
                                             <label
                                               htmlFor={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                             ></label>
                                           </div>
@@ -4534,11 +4958,13 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
-                                        accessor: "invoiceNumber"
+                                        accessor: "invoiceNumber",
+                                        minWidth: 150
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
-                                        accessor: "dateFormat"
+                                        accessor: "dateFormat",
+                                        minWidth: 120
                                       },
                                       {
                                         Header: <span>Item Count</span>,
@@ -4565,15 +4991,15 @@ class MyTicket extends Component {
                                         accessor: "discount"
                                       }
                                     ]}
-                                    //resizable={false}
+                                    resizable={false}
                                     minRows={2}
                                     defaultPageSize={5}
-                                    showPagination={false}
+                                    showPagination={true}
                                   />
                                 </div>
                                 <div
                                   className="reactstoreselect custom-react-table"
-                                  id="ordertable"
+                                  id="orderitemtbl"
                                   style={{ display: "none" }}
                                 >
                                   <ReactTable
@@ -4602,7 +5028,7 @@ class MyTicket extends Component {
                                     columns={[
                                       {
                                         Header: <span></span>,
-                                        accessor: "orderMasterID",
+                                        accessor: "invoiceNumber",
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
@@ -4610,27 +5036,25 @@ class MyTicket extends Component {
                                               type="checkbox"
                                               id={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                               style={{
                                                 display: "none"
                                               }}
                                               name="AllOrder"
-                                              checked={
-                                                this.state.CheckBoxAllOrder[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              onChange={this.onCheckMasterAllChange.bind(
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
+                                              )}
+                                              onChange={this.handleGetOderItemData.bind(
                                                 this,
-                                                row.original.orderMasterID,
+                                                row.original.invoiceNumber,
                                                 row.original
                                               )}
                                             />
                                             <label
                                               htmlFor={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                             ></label>
                                           </div>
@@ -4638,11 +5062,13 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
-                                        accessor: "invoiceNumber"
+                                        accessor: "invoiceNumber",
+                                        minWidth: 150
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
-                                        accessor: "dateFormat"
+                                        accessor: "dateFormat",
+                                        minWidth: 120
                                       },
                                       {
                                         Header: <span>Item Count</span>,
@@ -4669,10 +5095,10 @@ class MyTicket extends Component {
                                         accessor: "discount"
                                       }
                                     ]}
-                                    //resizable={false}
+                                    resizable={false}
                                     minRows={2}
                                     defaultPageSize={5}
-                                    showPagination={false}
+                                    showPagination={true}
                                     SubComponent={row => {
                                       return (
                                         <div
@@ -4683,8 +5109,8 @@ class MyTicket extends Component {
                                             // data={row.original.orderItems}
                                             data={this.state.OrderSubItem.filter(
                                               x =>
-                                                x.orderMasterID ===
-                                                row.original.orderMasterID
+                                                x.invoiceNumber ===
+                                                row.original.invoiceNumber
                                             )}
                                             columns={[
                                               {
@@ -4700,7 +5126,7 @@ class MyTicket extends Component {
                                                         id={
                                                           "item" +
                                                           row.original
-                                                            .orderItemID
+                                                            .invoiceNumber
                                                         }
                                                         style={{
                                                           display: "none"
@@ -4710,13 +5136,13 @@ class MyTicket extends Component {
                                                           this.state
                                                             .CheckBoxAllItem[
                                                             row.original
-                                                              .orderItemID
+                                                              .articleNumber
                                                           ] === true
                                                         }
                                                         onChange={this.checkIndividualItem.bind(
                                                           this,
                                                           row.original
-                                                            .orderItemID,
+                                                            .articleNumber,
                                                           row.original
                                                         )}
                                                       />
@@ -4724,7 +5150,7 @@ class MyTicket extends Component {
                                                         htmlFor={
                                                           "item" +
                                                           row.original
-                                                            .orderItemID
+                                                            .invoiceNumber
                                                         }
                                                       ></label>
                                                     </div>
@@ -4735,7 +5161,8 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Article Number</span>
                                                 ),
-                                                accessor: "articleNumber"
+                                                accessor: "articleNumber",
+                                                minWidth: 140
                                               },
                                               {
                                                 Header: (
@@ -4764,13 +5191,13 @@ class MyTicket extends Component {
                                                 accessor: "requireSize",
                                                 Cell: row => {
                                                   return (
-                                                    <div>
+                                                    <div ref={this.setWrapperRef}>
                                                       <input
                                                         type="text"
                                                         id={
                                                           "requireSizeTxt" +
                                                           row.original
-                                                            .orderItemID
+                                                            .articleNumber
                                                         }
                                                         value={
                                                           row.original
@@ -4778,6 +5205,10 @@ class MyTicket extends Component {
                                                         }
                                                         name="requiredSize"
                                                         className="order-input"
+                                                        autoComplete="off"
+                                                        ref={input => {
+                                                          this.searchInput = input;
+                                                        }}
                                                         onChange={() => {
                                                           this.handleRequireSize(
                                                             this,
@@ -4790,6 +5221,7 @@ class MyTicket extends Component {
                                                 }
                                               }
                                             ]}
+                                            resizable={false}
                                             defaultPageSize={5}
                                             minRows={2}
                                             showPagination={false}
@@ -4808,12 +5240,11 @@ class MyTicket extends Component {
                               >
                                 <div
                                   className="reactstoreselect custom-react-table"
-                                  id="orderitemtbl"
+                                  id="ordertbls1"
                                   style={{ display: "block" }}
                                 >
                                   <ReactTable
-                                    data={selectedProduct}
-                                    // data={this.state.selectedDataRow}
+                                    data={this.state.SelectedAllOrder}
                                     expanded={this.state.expanded}
                                     onExpandedChange={(
                                       newExpanded,
@@ -4838,7 +5269,7 @@ class MyTicket extends Component {
                                     columns={[
                                       {
                                         Header: <span></span>,
-                                        accessor: "orderMasterID",
+                                        accessor: "invoiceNumber",
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
@@ -4846,27 +5277,25 @@ class MyTicket extends Component {
                                               type="checkbox"
                                               id={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                               style={{
                                                 display: "none"
                                               }}
                                               name="AllOrder"
-                                              checked={
-                                                this.state.CheckBoxAllOrder[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              onChange={this.onCheckMasterAllChange.bind(
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
+                                              )}
+                                              onChange={this.handleGetOderItemData.bind(
                                                 this,
-                                                row.original.orderMasterID,
+                                                row.original.invoiceNumber,
                                                 row.original
                                               )}
                                             />
                                             <label
                                               htmlFor={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                             ></label>
                                           </div>
@@ -4874,11 +5303,13 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
-                                        accessor: "invoiceNumber"
+                                        accessor: "invoiceNumber",
+                                        minWidth: 150
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
-                                        accessor: "dateFormat"
+                                        accessor: "dateFormat",
+                                        minWidth: 120
                                       },
                                       {
                                         Header: <span>Item Count</span>,
@@ -4905,7 +5336,7 @@ class MyTicket extends Component {
                                         accessor: "discount"
                                       }
                                     ]}
-                                    //resizable={false}
+                                    resizable={false}
                                     minRows={2}
                                     defaultPageSize={5}
                                     showPagination={false}
@@ -4913,12 +5344,11 @@ class MyTicket extends Component {
                                 </div>
                                 <div
                                   className="reactstoreselect custom-react-table"
-                                  id="ordertbls"
+                                  id="orderitemtbl1"
                                   style={{ display: "none" }}
                                 >
                                   <ReactTable
-                                    data={selectedProduct}
-                                    // data={this.state.selectedDataRow}
+                                    data={this.state.SelectedAllOrder}
                                     expanded={this.state.expanded}
                                     onExpandedChange={(
                                       newExpanded,
@@ -4943,7 +5373,7 @@ class MyTicket extends Component {
                                     columns={[
                                       {
                                         Header: <span></span>,
-                                        accessor: "orderMasterID",
+                                        accessor: "invoiceNumber",
                                         width: 20,
                                         Cell: row => (
                                           <div className="filter-checkbox">
@@ -4951,27 +5381,25 @@ class MyTicket extends Component {
                                               type="checkbox"
                                               id={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                               style={{
                                                 display: "none"
                                               }}
                                               name="AllOrder"
-                                              checked={
-                                                this.state.CheckBoxAllOrder[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              onChange={this.onCheckMasterAllChange.bind(
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
+                                              )}
+                                              onChange={this.handleGetOderItemData.bind(
                                                 this,
-                                                row.original.orderMasterID,
+                                                row.original.invoiceNumber,
                                                 row.original
                                               )}
                                             />
                                             <label
                                               htmlFor={
                                                 "all" +
-                                                row.original.orderMasterID
+                                                row.original.invoiceNumber
                                               }
                                             ></label>
                                           </div>
@@ -5023,8 +5451,8 @@ class MyTicket extends Component {
                                           <ReactTable
                                             data={this.state.OrderSubItem.filter(
                                               x =>
-                                                x.orderMasterID ===
-                                                row.original.orderMasterID
+                                                x.invoiceNumber ===
+                                                row.original.invoiceNumber
                                             )}
                                             columns={[
                                               {
@@ -5037,7 +5465,8 @@ class MyTicket extends Component {
                                                       type="checkbox"
                                                       id={
                                                         "item" +
-                                                        row.original.orderItemID
+                                                        row.original
+                                                          .articleNumber
                                                       }
                                                       style={{
                                                         display: "none"
@@ -5047,24 +5476,23 @@ class MyTicket extends Component {
                                                         this.state
                                                           .CheckBoxAllItem[
                                                           row.original
-                                                            .orderItemID
+                                                            .articleNumber
                                                         ] === true
                                                       }
                                                       onChange={this.checkIndividualItem.bind(
                                                         this,
                                                         row.original
-                                                          .orderItemID,
+                                                          .articleNumber,
                                                         row.original
                                                       )}
                                                     />
                                                     <label
                                                       htmlFor={
                                                         "item" +
-                                                        row.original.orderItemID
+                                                        row.original
+                                                          .articleNumber
                                                       }
-                                                    >
-                                                      {row.original.orderItemID}
-                                                    </label>
+                                                    ></label>
                                                   </div>
                                                 )
                                               },
@@ -5072,13 +5500,13 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Article Number</span>
                                                 ),
-                                                accessor: "orderItemID"
+                                                accessor: "articleNumber"
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Size</span>
+                                                  <span>Article Name</span>
                                                 ),
-                                                accessor: "size"
+                                                accessor: "articleName"
                                               },
                                               {
                                                 Header: (
@@ -5101,15 +5529,14 @@ class MyTicket extends Component {
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: row => {
-                                                  // ////
                                                   return (
-                                                    <div>
+                                                    <div ref={this.setWrapperRef}>
                                                       <input
                                                         type="text"
                                                         id={
                                                           "requireSizeTxt" +
                                                           row.original
-                                                            .orderItemID
+                                                            .articleNumber
                                                         }
                                                         className="order-input"
                                                         value={
@@ -5117,12 +5544,17 @@ class MyTicket extends Component {
                                                             .requireSize || ""
                                                         }
                                                         name="requiredSize"
+                                                        autoComplete="off"
+                                                        ref={input => {
+                                                          this.searchInput = input;
+                                                        }}
                                                         onChange={() => {
                                                           this.handleRequireSize(
                                                             this,
                                                             row
                                                           );
                                                         }}
+                                                        
                                                       />
                                                     </div>
                                                   );
@@ -5285,7 +5717,12 @@ class MyTicket extends Component {
                         style={{ display: "inherit" }}
                       ></div>
 
-                      <div className="dropdown" style={{ display: "inherit" }}>
+                      <div
+                        className={
+                          this.state.isKB ? "dropdown iskbticket" : "dropdown"
+                        }
+                        style={{ display: "inherit" }}
+                      >
                         <select
                           className="my-tic-email"
                           value={this.state.ticketSourceId}
@@ -5344,7 +5781,9 @@ class MyTicket extends Component {
                       </div> */}
 
                       <div
-                        className="mob-float"
+                        className={
+                          this.state.isKB ? "mob-float iskbticket" : "mob-float"
+                        }
                         style={{ display: "flex", float: "right" }}
                       >
                         <div className="line-1"></div>
@@ -5727,7 +6166,10 @@ class MyTicket extends Component {
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
-                            <a href="#!" className="copyblue-kbtext d-inline-block">
+                            <a
+                              href="#!"
+                              className="copyblue-kbtext d-inline-block"
+                            >
                               VIEW POLICY
                               <img
                                 src={ViewBlue}
@@ -5910,8 +6352,15 @@ class MyTicket extends Component {
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
-                      <div className="inlineGridTicket">
-                        <a href="#!"
+                      <div
+                        className={
+                          this.state.isKB
+                            ? "inlineGridTicket iskbticket"
+                            : "inlineGridTicket"
+                        }
+                      >
+                        <a
+                          href="#!"
                           className="comment-text"
                           onClick={this.handleFreeTextCommentOpen.bind(this)}
                         >
@@ -6141,10 +6590,17 @@ class MyTicket extends Component {
                                             </div>
                                           )}
 
-                                          <div className="inlineGridTicket">
+                                          <div
+                                            className={
+                                              this.state.isKB
+                                                ? "inlineGridTicket iskbticket"
+                                                : "inlineGridTicket"
+                                            }
+                                          >
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
-                                              <a href="#!"
+                                              <a
+                                                href="#!"
                                                 className="reply-comment"
                                                 onClick={this.hanldeCommentOpen2.bind(
                                                   this,
@@ -6156,7 +6612,8 @@ class MyTicket extends Component {
                                               </a>
                                             ) : null}
 
-                                            <a href="#!"
+                                            <a
+                                              href="#!"
                                               className="comment-text"
                                               onClick={this.handleCommentCollapseOpen.bind(
                                                 this,
@@ -6773,17 +7230,20 @@ class MyTicket extends Component {
                     aria-labelledby="Task-tab"
                   >
                     {this.state.ticket_Id > 0 ? (
-                      <MyTicketTask
-                        callbackToParent={this.callbackToParent}
-                        taskData={{
-                          TicketData: {
-                            TicketId: this.state.ticket_Id,
-                            // GridData: this.state.taskTableGrid,
-                            TabActiveId: this.state.TaskTab
-                          }
-                        }}
-                        // callBackTaskLenght={this.handleGetCountOfTabs(this.state.ticket_Id)}
-                      />
+                      <div className={this.props.isKB ? "iskbticket" : ""}>
+                        <MyTicketTask
+                          callbackToParent={this.callbackToParent}
+                          isKB={this.state.isKB}
+                          taskData={{
+                            TicketData: {
+                              TicketId: this.state.ticket_Id,
+                              // GridData: this.state.taskTableGrid,
+                              TabActiveId: this.state.TaskTab
+                            }
+                          }}
+                          // callBackTaskLenght={this.handleGetCountOfTabs(this.state.ticket_Id)}
+                        />
+                      </div>
                     ) : (
                       ""
                     )}
@@ -6798,9 +7258,19 @@ class MyTicket extends Component {
                       className="row removemarg"
                       style={{ marginTop: "20px" }}
                     >
-                      <div className="col-12 col-xs-12 col-sm-4">
+                      <div
+                        className={
+                          this.props.isKB
+                            ? "col-12 col-xs-12 col-sm-4 iskbticket"
+                            : "col-12 col-xs-12 col-sm-4"
+                        }
+                      >
                         <textarea
-                          className="Add-Notes-textarea"
+                          className={
+                            this.state.isKB
+                              ? "Add-Notes-textarea iskbticket"
+                              : "Add-Notes-textarea"
+                          }
                           placeholder="Add Notes"
                           name="NoteAddComment"
                           value={this.state.NoteAddComment}
@@ -6818,7 +7288,11 @@ class MyTicket extends Component {
                         )}
                         <button
                           type="button"
-                          className="notesbtn notesbtn-text"
+                          className={
+                            this.state.isKB
+                              ? "notesbtn notesbtn-text iskbticket"
+                              : "notesbtn notesbtn-text"
+                          }
                           onClick={this.handleNoteAddComments.bind(this)}
                           style={{ marginTop: "5px" }}
                         >
@@ -7020,14 +7494,7 @@ class MyTicket extends Component {
             >
               <div className="commenttextborder">
                 <div className="comment-disp">
-                  <div>
-                    {/* <img
-                      src={CrossIcon}
-                      alt="Minus"
-                      className="pro-cross-icn m-0"
-                      
-                    /> */}
-                  </div>
+                  <div></div>
                 </div>
                 <div className="Commentlabel">
                   <p className="Commentlabel1 mb-4 text-center">
@@ -7053,7 +7520,6 @@ class MyTicket extends Component {
               </div>
             </Modal>
             {/* -------------------End knowledge base modal pop up----------------------- */}
-            {/* <NotificationContainer /> */}
           </div>
         )}
       </Fragment>

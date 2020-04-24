@@ -19,7 +19,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import config from "../../../helpers/config";
 import axios from "axios";
 import {
-  // NotificationContainer,
+  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
@@ -28,6 +28,7 @@ import { CSVLink } from "react-csv";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
 // const CancelToken = axios.CancelToken;
 // const source = CancelToken.source();
 
@@ -200,13 +201,16 @@ class TicketHierarchy extends Component {
       sdesignationNameFilterCheckbox: "",
       sreportToFilterCheckbox: "",
       screatedbypersonFilterCheckbox: "",
-      sstatusFilterCheckbox: ""
+      sstatusFilterCheckbox: "",
+      isortA: false,
+      temphierarchyData: []
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
     );
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
@@ -244,43 +248,98 @@ class TicketHierarchy extends Component {
     this.handleGetHierarchyData();
     this.hanldeGetReportListDropDown();
   }
+
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    var headerName = "";
+
+    if (this.state.sortColumn === "designationName") {
+      itemsArray.sort((a, b) => {
+        if (a.designationName < b.designationName) return 1;
+        if (a.designationName > b.designationName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportTo") {
+      itemsArray.sort((a, b) => {
+        if (a.reportTo < b.reportTo) return 1;
+        if (a.reportTo > b.reportTo) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdbyperson") {
+      itemsArray.sort((a, b) => {
+        if (a.createdbyperson < b.createdbyperson) return 1;
+        if (a.createdbyperson > b.createdbyperson) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      hierarchyData: itemsArray
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
+    var headerName = "";
 
-    // function myFunction() {
-    // First sort the array
-    //itemsArray.designationName.sort();
-    // Then reverse it:
-    //fruits.reverse();
-
-    // }
-
-    itemsArray.sort((a, b) => a.designationName > b.designationName);
+    if (this.state.sortColumn === "designationName") {
+      itemsArray.sort((a, b) => {
+        if (a.designationName < b.designationName) return -1;
+        if (a.designationName > b.designationName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportTo") {
+      itemsArray.sort((a, b) => {
+        if (a.reportTo < b.reportTo) return -1;
+        if (a.reportTo > b.reportTo) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdbyperson") {
+      itemsArray.sort((a, b) => {
+        if (a.createdbyperson < b.createdbyperson) return -1;
+        if (a.createdbyperson > b.createdbyperson) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isortA: true,
       hierarchyData: itemsArray
     });
-    this.StatusCloseModel();
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
   }
-  sortStatusZtoA() {
-    debugger;
-    var itemsArray = [];
-    var itemsArray1 = [];
-    itemsArray1 = this.state.hierarchyData;
-    itemsArray = itemsArray1.sort((a, b) => {
-      return b.designationName > a.designationName;
-    });
-    this.setState({
-      hierarchyData: itemsArray
-    });
-    this.StatusCloseModel();
-  }
-
   StatusOpenModel(data, header) {
     debugger;
 
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterDesignation.length === 0 ||
       this.state.sortFilterReportTo.length === 0 ||
@@ -289,6 +348,7 @@ class TicketHierarchy extends Component {
     ) {
       return false;
     }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "designationName") {
       if (
         this.state.sreportToFilterCheckbox !== "" ||
@@ -318,6 +378,9 @@ class TicketHierarchy extends Component {
         this.state.sdesignationNameFilterCheckbox !== ""
       ) {
         this.setState({
+          // sdesignationFilterCheckbox: "",
+          // smobileNumberFilterCheckbox: "",
+          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header
@@ -340,6 +403,9 @@ class TicketHierarchy extends Component {
         this.state.sdesignationNameFilterCheckbox !== ""
       ) {
         this.setState({
+          // sdesignationFilterCheckbox: "",
+          // suserNameFilterCheckbox: "",
+          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header
@@ -384,16 +450,19 @@ class TicketHierarchy extends Component {
       this.setState({
         StatusModel: false,
         hierarchyData: this.state.temphierarchyData,
-        filterTxtValue: ""
+        filterTxtValue: "",
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterDesignation: this.state.sortDesignation,
+        sortFilterReportTo: this.state.sortReportTo,
+        sortFilterStatus: this.state.sortStatus
       });
       if (this.state.sortColumn === "designationName") {
         if (this.state.sdesignationNameFilterCheckbox === "") {
         } else {
           this.setState({
-            sreportToFilterCheckbox	:"",	
-            screatedbypersonFilterCheckbox		:"",	
-            sstatusFilterCheckbox		:"",	
-            
+            sreportToFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: "",
+            sstatusFilterCheckbox: ""
           });
         }
       }
@@ -428,11 +497,27 @@ class TicketHierarchy extends Component {
         }
       }
     } else {
-      this.setState({
-        StatusModel: false,
-        hierarchyData: this.state.sortAllData,
-        filterTxtValue: ""
-      });
+      if (this.state.isortA) {
+        this.setState({
+          StatusModel: false,
+          hierarchyData: this.state.hierarchyData,
+          filterTxtValue: "",
+          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterReportTo: this.state.sortReportTo,
+          sortFilterStatus: this.state.sortStatus
+        });
+      } else {
+        this.setState({
+          StatusModel: false,
+          hierarchyData: this.state.sortAllData,
+          filterTxtValue: "",
+          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterReportTo: this.state.sortReportTo,
+          sortFilterStatus: this.state.sortStatus
+        });
+      }
     }
   }
 
@@ -688,7 +773,8 @@ class TicketHierarchy extends Component {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
+      isOpen: false
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -704,17 +790,17 @@ class TicketHierarchy extends Component {
 
       formData.append("file", this.state.fileN[0]);
 
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
         headers: authHeader(),
-        data: formData,
+        data: formData
         // cancelToken: source.token,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        }
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // }
       })
         .then(function(res) {
           debugger;
@@ -726,9 +812,9 @@ class TicketHierarchy extends Component {
             self.handleGetHierarchyData();
           } else {
             self.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0
+              showProgress: false
+              // isFileUploadFail: true,
+              // progressValue: 0
             });
             NotificationManager.error("File not uploaded.");
           }
@@ -1009,7 +1095,7 @@ class TicketHierarchy extends Component {
   fileUpload = e => {
     debugger;
     var allFiles = [];
-    var selectedFiles = e.target.files;
+    var selectedFiles = e;
     if (selectedFiles) {
       allFiles.push(selectedFiles[0]);
 
@@ -1334,6 +1420,7 @@ class TicketHierarchy extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "designationName"
                       },
                       {
@@ -1350,6 +1437,7 @@ class TicketHierarchy extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "reportTo"
                       },
                       {
@@ -1367,12 +1455,13 @@ class TicketHierarchy extends Component {
                           </span>
                         ),
                         accessor: "createdbyperson",
+                        sortable: false,
                         Cell: row => {
                           // var ids = row.original["designationID"];
                           return (
                             <div>
                               <span>
-                                Admin
+                                {row.original.createdbyperson}
                                 <Popover
                                   content={
                                     <div>
@@ -1429,6 +1518,7 @@ class TicketHierarchy extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "status"
                       },
                       {
@@ -1539,7 +1629,7 @@ class TicketHierarchy extends Component {
                       }
                     ]}
                     // resizable={false}
-                    minRows={1}
+                    minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
                   />
@@ -1652,23 +1742,23 @@ class TicketHierarchy extends Component {
                       </CSVLink>
                     </div>
                   </div>
-                  <input
-                    id="file-upload"
-                    className="file-upload d-none"
-                    type="file"
-                    onChange={this.fileUpload}
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    onDrop={this.fileDrop}
-                    onDragOver={this.fileDragOver}
-                    onDragEnter={this.fileDragEnter}
-                  >
-                    <div className="file-icon">
-                      <img src={FileUpload} alt="file-upload" />
-                    </div>
-                    <span>Add File</span> or Drop File here
-                  </label>
+                  <div className="mainfileUpload">
+                    <Dropzone onDrop={this.fileUpload.bind(this)}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input
+                            {...getInputProps()}
+                            className="file-upload d-none"
+                          />
+                          <div className="file-icon">
+                            <img src={FileUpload} alt="file-upload" />
+                          </div>
+                          <span className={"fileupload-span"}>Add File</span> or
+                          Drop File here
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
                   {this.state.fileN.length === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.bulkuploadCompulsion}

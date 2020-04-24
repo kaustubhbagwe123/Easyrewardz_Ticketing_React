@@ -79,6 +79,7 @@ class Dashboard extends Component {
       ScheduleOption: ScheduleDateDropDown(),
       TotalNoOfChatShow: true,
       date: [new Date(), new Date()],
+      range: "",
       CSVDownload: [],
       SearchTicketData: [],
       SearchListData: [],
@@ -328,7 +329,6 @@ class Dashboard extends Component {
       sassignedToFilterCheckbox: "",
     };
     this.applyCallback = this.applyCallback.bind(this);
-    // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -390,10 +390,11 @@ class Dashboard extends Component {
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
     this.handleAdvanceSearchOption = this.handleAdvanceSearchOption.bind(this);
   }
-  
 
   componentDidMount() {
     debugger;
+    // this.handleSearchTicketEscalation();   // this is called for bydefault content
+    // this.handleTicketsOnLoad();
     this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
@@ -989,7 +990,7 @@ class Dashboard extends Component {
         priorityColor: "sort-column",
       });
     } else if (column === "assignedTo") {
-      var sItems = screatedOnFilterCheckbox.split(",");
+      var sItems = sassignedToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1008,7 +1009,7 @@ class Dashboard extends Component {
         assignColor: "sort-column",
       });
     } else if (column === "createdOn") {
-      var sItems = sassignedToFilterCheckbox.split(",");
+      var sItems = screatedOnFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
@@ -1079,12 +1080,6 @@ class Dashboard extends Component {
         let moduleIDMyticket = data[1].moduleID;
         self.handleAdvanceSearchOption(moduleID);
       }
-
-      // if (status === "Success") {
-      //   self.setState({ modulesNames: data, moduleID });
-      // } else {
-      //   self.setState({ modulesNames: [] });
-      // }
     });
   }
   handleAdvanceSearchOption(id) {
@@ -1310,8 +1305,16 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DashBoardGraphData",
       headers: authHeader(),
       params: {
+        // UserIds: "6,7,8",
+        // fromdate: "2019-12-26",
+        // todate: "2020-01-15",
+        // BrandID: "26, 31"
         UserIds: this.state.AgentIds,
+        // fromdate: this.state.start._d,
+        // fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
         fromdate: fromdate,
+        // todate: this.state.end._d,
+        // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         todate: todate,
         BrandID: this.state.BrandIds,
       },
@@ -1603,8 +1606,8 @@ class Dashboard extends Component {
           });
         }
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetBrandList() {
@@ -1627,8 +1630,8 @@ class Dashboard extends Component {
           self.checkAllBrandStart();
         }
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((data) => {
+        console.log(data);
       });
   }
   handelCheckBoxCheckedChange = async (ticketID) => {
@@ -1727,7 +1730,9 @@ class Dashboard extends Component {
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
   };
-
+  handleDateRange(date) {
+    this.setState({ range: date });
+  }
   handleByDateCreate(date) {
     this.setState({ ByDateCreatDate: date });
   }
@@ -2005,6 +2010,13 @@ class Dashboard extends Component {
   }
   StatusCloseModel() {
     debugger;
+    this.setState({
+      sortFilterTicketData: this.state.sortTicketData,
+      sortFilterCategoryData: this.state.sortCategoryData,
+      sortFilterPriorityData: this.state.sortPriorityData,
+      sortFiltercreatedOnData: this.state.sortcreatedOnData,
+      sortFilterAssigneeData: this.state.sortAssigneeData,
+    });
     var tempFinalSearchTicketData = [];
     if (this.state.tempSearchTicketData.length > 0) {
       var tempSearchTicketData = this.state.tempSearchTicketData;
@@ -2588,7 +2600,6 @@ class Dashboard extends Component {
   }
   handleSchedulePopupSuccess() {
     debugger;
-
     let self = this;
 
     var month, day, year, hours, minutes, seconds;
@@ -2601,7 +2612,7 @@ class Dashboard extends Component {
 
     var mySQLDate = [date.getFullYear(), month, day].join("-");
     var mySQLTime = [hours, minutes, seconds].join(":");
-    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
+    let selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
 
     axios({
       method: "post",
@@ -2612,7 +2623,7 @@ class Dashboard extends Component {
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
-        ScheduleTime: this.state.selectedScheduleTime,
+        ScheduleTime: selectedScheduleTime,
         IsDaily: this.state.IsDaily,
         IsWeekly: this.state.IsWeekly,
         NoOfWeek: this.state.selectedNoOfWeek,
@@ -2639,8 +2650,8 @@ class Dashboard extends Component {
         debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
-          self.ScheduleCloseModel();
           NotificationManager.success("Scheduled successfully.");
+          self.ScheduleCloseModel();
           self.setState({
             scheduleRequired: "",
             selectedTeamMemberCommaSeperated: "",
@@ -2914,7 +2925,6 @@ class Dashboard extends Component {
   }
   handleGetCategoryList() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2923,12 +2933,19 @@ class Dashboard extends Component {
     })
       .then(function(res) {
         debugger;
+        let data = res.data;
         let CategoryData = res.data;
-        // let CategoryDataAll = res.data;
-        self.setState({
-          CategoryData: CategoryData,
-          // CategoryDataAll: CategoryDataAll
-        });
+        if(data.length > 0){
+          self.setState({
+            CategoryData: CategoryData,
+            // CategoryDataAll: CategoryDataAll
+          });
+        }else{
+          self.setState({
+            CategoryData: [],
+          });
+        }
+        
       })
       .catch((data) => {
         console.log(data);
@@ -3343,7 +3360,6 @@ class Dashboard extends Component {
       FinalSaveSearchData,
     });
     // ----------------------------------------------------------
-
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
@@ -4178,7 +4194,6 @@ class Dashboard extends Component {
     // let disabled = false;
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -4718,7 +4733,7 @@ class Dashboard extends Component {
                                   <p className="pie-chart-count">
                                     <span>
                                       {
-                                        this.state.DashboardGraphData 
+                                        this.state.DashboardGraphData
                                           .openPriorityTicketCount
                                       }
                                     </span>{" "}
@@ -5227,8 +5242,6 @@ class Dashboard extends Component {
                                     </div>
                                   </li>
                                 ))}
-
-                              {/* </li> */}
                             </ul>
                           </div>
                         </Modal>
@@ -6255,9 +6268,10 @@ class Dashboard extends Component {
                                 onClose={this.ScheduleCloseModel}
                                 open={this.state.Schedule}
                                 modalId="ScheduleModel"
-                                classNames={{
-                                  modal: "schedule-width",
-                                }}
+                                className="schedule-width"
+                                // className={{
+                                //   modal: "schedule-width"
+                                // }}
                                 overlayId="logout-ovrly"
                               >
                                 <div>
