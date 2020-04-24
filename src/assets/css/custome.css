@@ -5127,8 +5127,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 20px;
-  padding-top: 17px;
+  /* padding-left: 20px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5139,8 +5139,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 24px;
-  padding-top: 17px;
+  /* padding-left: 24px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5344,8 +5344,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 20px;
-  padding-top: 17px;
+  /* padding-left: 20px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5356,8 +5356,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  padding-left: 24px;
-  padding-top: 17px;
+  /* padding-left: 24px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 .kb-header span {
@@ -11660,14 +11660,16 @@ table tr th:last-child {
   position: relative;
 }
 .alertckuser {
-  top: 132px !important;
+  /* top: 132px !important; */
+  top: 82px !important;
 }
 .alertckuserinter {
   right: 75px;
   top: 37% !important;
 }
 .placeholder-alert-2 {
-  top: 37% !important;
+  /* top: 37% !important; */
+  top: 32% !important;
 }
 
 /* Responsive ends */
@@ -11796,8 +11798,8 @@ table tr th:last-child {
   font-weight: 700;
   vertical-align: middle;
 }
-.tasksearchdiv{
-text-align: right;
+.tasksearchdiv {
+  text-align: right;
   width: 100%;
 }
 .rejectmodal-popup {

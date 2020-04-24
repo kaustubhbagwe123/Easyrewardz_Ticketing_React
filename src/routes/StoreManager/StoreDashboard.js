@@ -61,6 +61,7 @@ class StoreDashboard extends Component {
       selectedFuncation: 0,
       selectedPriority: 0,
       selectAssignTo: 0,
+      SelectedCreatedBy: 0,
       priorityData: [],
       graphCount: {},
       loadingAbove: true,
@@ -71,6 +72,8 @@ class StoreDashboard extends Component {
       task_Title: "",
       selectedStatus: 0,
       claim_Id: "",
+      Task_ticketId: "",
+      taskCount: 0,
       DashboardOpenTaskDepartmentWise: [],
       DashboardTaskByPriority: [],
       DashboardOpenCampaignByType: [],
@@ -86,6 +89,7 @@ class StoreDashboard extends Component {
       issueTypeData: [],
       userData: [],
       activeTab: 1,
+      createdUser:[]
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -108,6 +112,7 @@ class StoreDashboard extends Component {
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
     this.handleGetDepartmentDropdown();
+    this.handleGetCreatedByUserDropdown();
     this.handleGetPriorityList();
   }
   StatusOpenModel() {
@@ -596,6 +601,32 @@ class StoreDashboard extends Component {
         console.log(response);
       });
   }
+    ///Get Created by user list for dropdown
+    handleGetCreatedByUserDropdown() {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/GetStoreUsers",
+        headers: authHeader(),
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            self.setState({
+              createdUser: data,
+            });
+          } else {
+            self.setState({
+              createdUser: [],
+            });
+          }
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    }
   //// Get Assign to list by funcation id
   handleGetAssignTobyFuncationId() {
     let self = this;
@@ -648,11 +679,18 @@ class StoreDashboard extends Component {
     debugger;
     let self = this;
     var taskId = "";
+    var claimId=0;
     if (this.state.task_Id !== "") {
       taskId = this.state.task_Id;
     } else {
       taskId = "0";
     }
+    if(this.state.Task_ClaimId !== ""){
+      claimId=parseInt(this.state.Task_ClaimId)
+    }else{
+      claimId=0
+    }
+    
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardList",
@@ -662,13 +700,14 @@ class StoreDashboard extends Component {
         Department: this.state.selectDepartment,
         tasktitle: this.state.task_Title,
         taskstatus: this.state.selectedStatus,
-        ticketID: 0,
+        ticketID: this.state.Task_ticketId,
         functionID: this.state.selectedFuncation,
-        AssigntoId: 0,
+        AssigntoId: this.state.selectAssignTo,
+        Priority:this.state.selectedPriority,
         taskwithTicket: this.state.Task_Ticket,
         taskwithClaim: this.state.Task_Claim,
-        claimID: this.state.Task_ClaimId,
-        Priority: 0,
+        claimID: claimId,
+        createdID:this.state.SelectedCreatedBy
       },
     })
       .then(function(response) {
@@ -676,7 +715,7 @@ class StoreDashboard extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
-          self.setState({ dashboardGridData: data });
+          self.setState({ dashboardGridData: data, taskCount:data.length });
         } else {
           self.setState({ dashboardGridData: [] });
         }
@@ -1155,7 +1194,7 @@ class StoreDashboard extends Component {
                               onClick={this.handleTabChange.bind(this, 1)}
                             >
                               Task:{" "}
-                              <span className="myTciket-tab-span">06</span>
+                              <span className="myTciket-tab-span">{this.state.taskCount}</span>
                             </a>
                           </li>
 
@@ -1288,8 +1327,26 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
+                              
+                                   <select
+                                    className="store-create-select"
+                                    value={this.state.SelectedCreatedBy}
+                                    name="SelectedCreatedBy"
+                                    onChange={this.handleDropdownOnchange}
+                                  >
                                     <option>Task Created By</option>
+                                    {this.state.createdUser !== null &&
+                                      this.state.createdUser.map(
+                                        (item, j) => (
+                                          <option
+                                            key={j}
+                                            value={item.userID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.userName}
+                                          </option>
+                                        )
+                                      )}
                                   </select>
                                 </div>
                                 {this.state.Task_Claim === "true" ? (
@@ -1365,6 +1422,10 @@ class StoreDashboard extends Component {
                                       className="no-bg"
                                       type="text"
                                       placeholder="Ticket ID"
+                                      name="Task_ticketId"
+                                      value={this.state.Task_ticketId}
+                                      onChange={this.hanldetoggleOnChange}
+                                      autoComplete="off"
                                     />
                                   </div>
                                 ) : null}

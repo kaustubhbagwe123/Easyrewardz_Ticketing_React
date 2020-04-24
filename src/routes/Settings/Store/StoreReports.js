@@ -26,6 +26,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import moment from "moment";
+import ClaimStatus from "../../../routes/ClaimStatus"
 
 class StoreReports extends Component {
   constructor(props) {
@@ -65,17 +66,15 @@ class StoreReports extends Component {
       departmentName: [],
       functionName: [],
       priorityName: [],
-      claimStatusName: [
-        { campaignNameID: 7, campaignName: "Claim Status 1" },
-        { campaignNameID: 8, campaignName: "Claim Status 2" },
-      ],
+      claimStatusName: ClaimStatus(),
+      // [
+      //   { campaignNameID: 7, campaignName: "Claim Status 1" },
+      //   { campaignNameID: 8, campaignName: "Claim Status 2" },
+      // ],
       claimCategoryName: [],
       claimSubCategoryName: [],
       claimIssueTypeName: [],
-      campaignName: [
-        { campaignNameID: 15, campaignName: "Campaign Name 1" },
-        { campaignNameID: 16, campaignName: "Campaign Name 2" },
-      ],
+      campaignName: [],
       campaignStatusName: [
         { campaignNameID: 17, campaignName: "Campaign Status 1" },
         { campaignNameID: 18, campaignName: "Campaign Status 2" },
@@ -166,7 +165,9 @@ class StoreReports extends Component {
         {
           month: "October",
         },
-      ]
+      ],
+      reportID: 0,
+      selectedTaskStatus: ""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -200,6 +201,7 @@ class StoreReports extends Component {
     this.handleGetClaimCategory();
     this.handleGetStoreReports();
     this.handleGetUser();
+    this.handleGetCampaignName();
   }
 
   applyCallback = async (startDate, endDate) => {
@@ -1140,15 +1142,15 @@ class StoreReports extends Component {
     let self = this;
     var taskStatus = "";
     var paramData ={};
-    for(var a=0; a<this.state.taskStatus; a++){
-      taskStatus+=this.state.taskStatus[a].ticketActionTypeName
+    for(var a=0; a<this.state.taskStatus.length; a++){
+      this.state.selectedTaskStatus+=this.state.taskStatus[a].taskStatusID+","
     }
    if(activeTabId === 1)
    {
     paramData ={
       ActiveTabId: activeTabId,
       TaskTitle: this.state.taskIdTitle,
-      TaskStatus: taskStatus,
+      TaskStatus: this.state.selectedTaskStatus,
       IsTaskWithTicket: this.state.taskWithTickets==="no"?false:true,
       TaskTicketID: this.state.taskLinkedTicketId,
       DepartmentIds: this.state.indiDepartment,
@@ -1157,14 +1159,14 @@ class StoreReports extends Component {
       IsTaskWithClaim: this.state.taskWithClaim==="no"?false:true,
       TaskClaimID: this.state.taskClaimId,
       TaskCreatedDate: this.state.taskCreateDate,
-      TaskCreatedBy: 1,
-      TaskAssignedId: 1
+      TaskCreatedBy: this.state.taskCreatedBy,
+      TaskAssignedId: this.state.taskAssignedTo
     }
    }
    if (activeTabId === 2) {
     paramData ={
       ActiveTabId: activeTabId,
-      ClaimID: this.state.taskClaimId===""?0:parseInt(this.state.taskClaimId),
+      ClaimID: this.state.claimClaimId===""?0:parseInt(this.state.claimClaimId),
       ClaimStatus: this.state.indiClaimStatus,
       IsClaimWithTicket: false,
       ClaimTicketID: this.state.claimLinkedTicketId===""?0:parseInt(this.state.claimLinkedTicketId),
@@ -1174,8 +1176,8 @@ class StoreReports extends Component {
       IsClaimWithTask: this.state.claimWithTask === "no"?false:true,
       ClaimTaskID: this.state.linkedTaskId===""?0:parseInt(this.state.linkedTaskId),
       ClaimCreatedDate: this.state.claimCreateDate,
-      ClaimCreatedBy: 1,
-      ClaimAssignedId: 1
+      ClaimCreatedBy: this.state.claimCreatedBy,
+      ClaimAssignedId: this.state.claimAssignedTo
     }
    }
    if (activeTabId === 3) {
@@ -1741,7 +1743,7 @@ class StoreReports extends Component {
           url: config.apiUrl + "/StoreReport/SaveStoreReport",
           headers: authHeader(),
           data: {
-            ReportID: 0,
+            ReportID: this.state.reportID,
             ReportName: self.state.selectedReportName,
             ScheduleID: this.state.Schedule_ID,
             StoreReportSearchParams: SearchParams
@@ -1849,144 +1851,57 @@ class StoreReports extends Component {
     let withClaim = 0;
     let withTask = 0;
     // allTab=objEdit;
+    this.state.Schedule_ID = rowData.scheduleID;
     this.state.tabIndex = allTab["ActiveTabId"];
     this.state.taskIdTitle = allTab["TaskTitle"];
     this.state.taskLinkedTicketId = allTab["TaskTicketID"];
     this.state.taskAssignedTo = allTab["TaskAssignedId"];
+    this.state.taskCreatedBy = allTab["TaskCreatedBy"];
     this.state.taskWithTickets = allTab["IsTaskWithTicket"] === true?"yes":"no";
     this.state.taskWithClaim = allTab["IsTaskWithClaim"] === true?"yes":"no";
     this.state.taskClaimId = allTab["TaskClaimID"];
+    this.state.indiDepartment = allTab["DepartmentIds"];
+    this.state.indiFunction = allTab["FunctionIds"];
+    this.state.indiPriority = allTab["PriorityIds"];
+    if (allTab["TaskStatus"]) {
+      var tData = allTab["TaskStatus"].split(",");
+      var taskStatusCommaSeperated = [];
+      for (let j = 0; j < tData.length - 1; j++) {
+        var data = this.state.taskStatusList.filter(
+          (x) => x.taskStatusID == tData[j]
+        );
+        taskStatusCommaSeperated.push(data[0]);
+      }
+      this.setState({taskStatus: taskStatusCommaSeperated});
+    }
 
     this.state.claimClaimId = allTab["ClaimTaskID"];
     this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
     this.state.claimAssignedTo = allTab["ClaimAssignedId"];
+    this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
     this.state.claimWithTickets = allTab["IsClaimWithTicket"] === true?"yes":"no";
     this.state.claimWithTask = allTab["IsClaimWithTask"] === true?"yes":"no";
+    this.state.indiClaimCategory = allTab["ClaimCategoryIds"];
+    this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
+    this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
+    this.state.indiClaimStatus = allTab["ClaimStatus"];
+
+    this.state.indiCampaignName = allTab["CampaignName"];
+    this.state.indiCampaignStatus = allTab["CampaignStatusids"];
+    this.state.campaignAssignedTo = allTab["CampaignAssignedIds"];
+    this.state.campaignEndDateFrom = allTab["CampaignStartDate"];
+    this.state.campaignEndDateTo = allTab["CampaignEndDate"];
 
     this.state.selectedReportName = rowData.reportName;
-
-   
-    // withClaim = allTab["HaveClaim"];
-    // withTask = allTab["HaveTask"];
-    // this.state.selectBrand = allTab["BrandID"];
-    // this.state.selectedIssueType = allTab["IssueType"];
-    // this.state.selectedTaskPriority = allTab["TaskPriority"];
-    // this.state.selectedWithClaim = allTab["HaveClaim"] === 0 ? "no" : "yes";
-    // this.state.selectedWithTaskAll = allTab["HaveTask"] === 0 ? "no" : "yes";
-    // if (this.state.selectedWithClaim === "yes") {
-    //   withClaim = 1;
-    // }
-    // if (this.state.selectedWithTaskAll === "yes") {
-    //   withTask = 1;
-    // }
-    // // this.state.ReportCreateDate="04/02/2020";
-    // //this.state.ReportCreateDate=moment(allTab["CreatedDate"]).format("DD/MM/YYYY");
-
-    // // this.state.ReportLastDate=allTab["ModifiedDate"];
-    // // // --------------------Check null date----------------------------------
-    // // if (
-    // //   this.state.ReportCreateDate === null ||
-    // //   this.state.ReportCreateDate === undefined ||
-    // //   this.state.ReportCreateDate === ""
-    // // ) {
-    // //   allTab["CreatedDate"] = "";
-    // // } else {
-    // //   allTab["CreatedDate"] = moment(this.state.ReportCreateDate).format(
-    // //     "YYYY-MM-DD"
-    // //   );
-    // // }
-    // // // --------------------Check null date----------------------------------
-    // // if (
-    // //   this.state.ReportLastDate === null ||
-    // //   this.state.ReportLastDate === undefined ||
-    // //   this.state.ReportLastDate === ""
-    // // ) {
-    // //   allTab["ModifiedDate"] = "";
-    // // } else {
-    // //   allTab["ModifiedDate"] = moment(this.state.ReportLastDate).format(
-    // //     "YYYY-MM-DD"
-    // //   );
-    // // }
-    // this.state.selectedReportName = rowData.reportName;
-    // var scheduledIds = rowData.scheduleFor;
-    // var scheduledIdsArray = scheduledIds.split(",");
-    // // this.state.AssignToData.filter(x => x.userID == )
-
-    // // this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
-    // this.state.selectBrand = allTab["BrandID"];
-    // this.state.selectedIssueType = allTab["IssueType"];
-    // this.state.selectedTaskPriority = allTab["TaskPriority"];
-    // // this.state.selectedCategory=allTab["CategoryId"];
-    // this.setState(
-    //   {
-    //     selectedCategory: allTab["CategoryId"],
-    //   },
-    //   () => {
-    //     this.handleGetSubCategoryList();
-    //   }
-    // );
-    // //this.handleGetSubCategoryList();
-    // // this.state.selectedSubCategory=allTab["SubCategoryId"];
-    // this.setState(
-    //   {
-    //     selectedSubCategory: allTab["SubCategoryId"],
-    //   },
-    //   () => {
-    //     this.handleGetIssueTypeList();
-    //   }
-    // );
-    // this.state.selectedIssueType = allTab["IssueTypeId"];
-    // this.state.selectedTicketSource = allTab["TicketSourceTypeID"];
-    // this.state.selectedTicketID = allTab["TicketIdORTitle"];
-    // this.state.selectedPriority = allTab["PriorityId"];
-    // this.state.selectedTicketStatus = allTab["TicketSatutsID"];
-    // this.state.selectedSLAStatus = allTab["SLAStatus"];
-    // this.state.selectedClaimID = allTab["ClaimId"];
-    // this.state.selectedInvoiceNo = allTab["InvoiceNumberORSubOrderNo"];
-    // this.state.selectedItemID = allTab["OrderItemId"];
-    // this.state.selectedVisitStore = allTab["IsVisitStore"];
-    // this.state.selectedWantVisitStore = allTab["IsWantVistingStore"];
-    // this.state.selectedEmailID = allTab["CustomerEmailID"];
-    // this.state.selectedMobileNo = allTab["CustomerMobileNo"];
-    // this.state.selectedAssignedTo = allTab["AssignTo"];
-    // this.state.selectedWantVisitStore = allTab["StoreCodeORAddress"];
-    // this.state.selectedVisitStoreAddress = allTab["WantToStoreCodeORAddress"];
-
-    // this.state.selectedClaimStatus = allTab["ClaimStatusId"];
-    // // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
-    // this.setState(
-    //   {
-    //     selectedClaimCategory: allTab["ClaimCategoryId"],
-    //   },
-    //   () => {
-    //     this.handleGetSubCategoryList();
-    //   }
-    // );
-    // // this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
-    // this.setState(
-    //   {
-    //     selectedClaimSubCategory: allTab["ClaimSubCategoryId"],
-    //   },
-    //   () => {
-    //     this.handleGetIssueTypeList();
-    //   }
-    // );
-    // this.state.selectedClaimIssueType = allTab["ClaimIssueTypeId"];
-
-    // this.state.selectedTaskStatus = allTab["TaskStatusId"];
-    // // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
-    // this.setState(
-    //   {
-    //     selectedDepartment: allTab["TaskDepartment_Id"],
-    //   },
-    //   () => {
-    //     this.handleGetFunctionList();
-    //   }
-    // );
-    // this.state.selectedFunction = allTab["TaskFunction_Id"];
+    this.state.reportID = rowData.reportID;
 
     // //////////////////Scheduler/////////////////////////
     this.state.IsDaily = rowData.isDaily;
+    this.state.IsWeekly = rowData.isWeekly;
+    this.state.IsDailyForMonth = rowData.isDailyForMonth;
+    this.state.IsWeeklyForMonth = rowData.isWeeklyForMonth;
+    this.state.IsDailyForYear = rowData.isDailyForYear;
+    this.state.IsWeeklyForYear = rowData.isWeeklyForYear;
     this.state.selectScheduleDate = rowData.scheduleType;
     this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
     this.state.selectedNoOfDay = rowData.noOfDay;
@@ -2009,7 +1924,7 @@ class StoreReports extends Component {
     // this.state.selectedScheduleTime=rowData.scheduleTime;
     this.state.selectedNoOfWeek = rowData.noOfWeek;
     this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
-    var dayIds = rowData.dayIds.slice(0, -1);
+    var dayIds = rowData.dayIds;
     var splittedDayIds = dayIds.split(",");
     this.setState({
       dayIdsArray: splittedDayIds,
@@ -2098,8 +2013,55 @@ class StoreReports extends Component {
     });
 
     ///////////////////////////////////////////////////
+    this.handleGetFunction();
+    this.handleGetClaimSubCategory();
+    this.handleGetClaimIssueType();
     this.handleAddReportOpen();
   };
+
+  handleDeleteStoreReports(reportID) {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/DeleteStoreReport",
+       params: { ReportID: reportID },
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData > 0) {
+          self.handleGetStoreReports();
+          NotificationManager.success("Report deleted successfully.");
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
+
+  handleGetCampaignName() {
+    debugger; 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/GetCampaignNames",
+      headers: authHeader()
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({campaignName: responseData});
+        }
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }
 
   render() {
     const datareport = this.state.storeReportData;
@@ -2136,8 +2098,23 @@ class StoreReports extends Component {
           return (
             <div>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
+                {row.original["createdBy"]}
+                <Popover content={
+                <>
+                <div>
+                  <b>
+                    <p className="title">Created By: {row.original["createdBy"]}</p>
+                  </b>
+                  <p className="sub-title">Created Date: {row.original["createdDate"]}</p>
+                </div>
+                <div>
+                  <b>
+                    <p className="title">Updated By: {row.original["modifiedBy"]}</p>
+                  </b>
+                  <p className="sub-title">Updated Date: {row.original["modifiedDate"]}</p>
+                </div>
+                </>
+                } placement="bottom">
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -2169,7 +2146,24 @@ class StoreReports extends Component {
               alt="download icon"
               className="downloadaction"
             />
-            <Popover content={ActionDelete} placement="bottom" trigger="click">
+            <Popover content={
+              <div className="d-flex general-popover popover-body">
+                <div className="del-big-icon">
+                  <img src={DelBigIcon} alt="del-icon" />
+                </div>
+                <div>
+                  <p className="font-weight-bold blak-clr">Delete file?</p>
+                  <p className="mt-1 fs-12">
+                    Are you sure you want to delete this file?
+                  </p>
+                  <div className="del-can">
+                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                    <button className="butn" 
+                    onClick={this.handleDeleteStoreReports.bind(this,row.original["reportID"])}>Delete</button>
+                  </div>
+                </div>
+              </div>
+            } placement="bottom" trigger="click">
               <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
             </Popover>
             <button className="react-tabel-button editre" id="p-edit-pop-2"
@@ -2196,7 +2190,7 @@ class StoreReports extends Component {
           </p>
           <div className="del-can">
             <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
+            <button className="butn" onClick={this.handleDeleteStoreReports.bind(this,)}>Delete</button>
           </div>
         </div>
       </div>
@@ -2438,6 +2432,10 @@ class StoreReports extends Component {
                                           this,
                                           item.departmentID
                                         )}
+                                        checked={this.state.indiDepartment !== undefined?
+                                          this.state.indiDepartment.includes(
+                                          item.departmentID):false
+                                        }
                                       />
                                       <label
                                         htmlFor={"i" + item.departmentID}
@@ -2553,6 +2551,10 @@ class StoreReports extends Component {
                                           this,
                                           item.functionID
                                         )}
+                                        checked={this.state.indiFunction !== undefined?
+                                          this.state.indiFunction.includes(
+                                          item.functionID):false
+                                        }
                                       />
                                       <label
                                         htmlFor={"i" + item.functionID}
@@ -2660,6 +2662,9 @@ class StoreReports extends Component {
                                           this,
                                           item.priorityID
                                         )}
+                                        checked={this.state.indiPriority !== undefined?
+                                          this.state.indiPriority.includes(
+                                          item.priorityID):false}
                                       />
                                       <label
                                         htmlFor={"i" + item.priorityID}
@@ -2829,6 +2834,9 @@ class StoreReports extends Component {
                                             this,
                                             item.categoryID
                                           )}
+                                          checked={this.state.indiClaimCategory !== undefined?
+                                            this.state.indiClaimCategory.includes(
+                                            item.categoryID):false}
                                         />
                                         <label
                                           htmlFor={"i" + item.categoryID}
@@ -2924,17 +2932,20 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.campaignNameID}
+                                        id={"i" + item.claimStatusID}
                                         name="allClaimStatus"
                                         onChange={this.selectIndividualClaimStatus.bind(
                                           this,
-                                          item.campaignNameID
+                                          item.claimStatusID
                                         )}
+                                        checked={this.state.indiClaimStatus !== undefined?
+                                          this.state.indiClaimStatus.includes(
+                                          item.claimStatusID):false}
                                       />
                                       <label
-                                        htmlFor={"i" + item.campaignNameID}
+                                        htmlFor={"i" + item.claimStatusID}
                                       >
-                                        {item.campaignName}
+                                        {item.claimStatusName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
                                         </div>
@@ -3013,6 +3024,9 @@ class StoreReports extends Component {
                                             this,
                                             item.subCategoryID
                                           )}
+                                          checked={this.state.indiClaimSubCategory !== undefined?
+                                            this.state.indiClaimSubCategory.includes(
+                                            item.subCategoryID):false}
                                         />
                                         <label
                                           htmlFor={"s" + item.subCategoryID}
@@ -3123,8 +3137,11 @@ class StoreReports extends Component {
                                           name="allClaimIssueType"
                                           onChange={this.selectIndividualClaimIssueType.bind(
                                             this,
-                                            item.campaignNameID
+                                            item.issueTypeID
                                           )}
+                                          checked={this.state.indiClaimIssueType !== undefined?
+                                            this.state.indiClaimIssueType.includes(
+                                            item.issueTypeID):false}
                                         />
                                         <label
                                           htmlFor={"t" + item.issueTypeID}
@@ -3277,15 +3294,18 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.campaignNameID}
+                                        id={"camp" + item.campaignNameID}
                                         name="allCampaignName"
                                         onChange={this.selectIndividualCampaignName.bind(
                                           this,
                                           item.campaignNameID
                                         )}
+                                        checked={this.state.indiCampaignName !== undefined?
+                                          this.state.indiCampaignName.includes(
+                                          item.campaignNameID):false}
                                       />
                                       <label
-                                        htmlFor={"i" + item.campaignNameID}
+                                        htmlFor={"camp" + item.campaignNameID}
                                       >
                                         {item.campaignName}
                                         <div>
@@ -3392,6 +3412,9 @@ class StoreReports extends Component {
                                             this,
                                             item.campaignNameID
                                           )}
+                                          checked={this.state.indiCampaignStatus !== undefined?
+                                            this.state.indiCampaignStatus.includes(
+                                            item.campaignNameID):false}
                                         />
                                         <label
                                           htmlFor={"i" + item.campaignNameID}
@@ -3577,30 +3600,35 @@ class StoreReports extends Component {
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Wed"
+                                id="Wed"
                               >
                                 Wed
                               </Checkbox>
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Thu"
+                                id="Thu"
                               >
                                 Thu
                               </Checkbox>
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Fri"
+                                id="Fri"
                               >
                                 Fri
                               </Checkbox>
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Sat"
+                                id="Sat"
                               >
                                 Sat
                               </Checkbox>
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Sun"
+                                id="Sun"
                               >
                                 Sun
                               </Checkbox>

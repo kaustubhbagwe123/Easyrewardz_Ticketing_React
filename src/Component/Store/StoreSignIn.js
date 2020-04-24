@@ -37,11 +37,11 @@ class StoreSignIn extends Component {
     });
   }
 
-  handlePasswordChange = (e)=>{
+  handlePasswordChange = (e) => {
     this.setState({
       password: e.target.value,
     });
-  }
+  };
 
   componentDidMount() {
     debugger;

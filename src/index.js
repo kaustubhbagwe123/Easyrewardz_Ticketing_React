@@ -42,6 +42,7 @@ import StoreSignIn from "./Component/Store/StoreSignIn";
 import StoreForgotPassword from "./Component/Store/StoreForgotPassword";
 import StoreUserForgotPassword from "./Component/Store/StoreUserForgotPassword";
 import ModuleSelect from "./Component/ModuleSelect";
+import StoreChangePassword from "./Component/Store/ChangePassword";
 
 ReactDOM.render(
   <Router>
@@ -53,6 +54,7 @@ ReactDOM.render(
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/ChangePassword" component={ChangePassword} />
+    <Route exact path="/storeChangePassword" component={StoreChangePassword} />
     <Route path="/StoreProgramCode" component={StoreProgramCode} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
     <Route exact path="/storeForgotpassword" component={StoreForgotPassword} />
