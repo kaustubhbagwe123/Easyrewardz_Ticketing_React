@@ -1077,7 +1077,7 @@ class ClaimApproveReject extends Component {
                             </div>
                           </div>
                           <div className="row" style={{ margin: "0" }}>
-                            <label className="naman-R">
+                            <label className="naman-R allign-reassign">
                               Reassign to {item.newAgentName}
                             </label>
                           </div>
@@ -1164,7 +1164,7 @@ class ClaimApproveReject extends Component {
                   </div>
                   {this.state.approveCommentData.map((value, i) => (
                     <div key={i}>
-                      <div className="row" style={{ margin: "0" }}>
+                      <div className="row mb-3" style={{ margin: "0" }}>
                         <div className="col-xs-3">
                           <img
                             src={storeImg}
@@ -1206,7 +1206,7 @@ class ClaimApproveReject extends Component {
                   </div>
                   {this.state.rejectCommentData.map((value, i) => (
                     <div key={i}>
-                      <div className="row" style={{ margin: "0" }}>
+                      <div className="row mb-3" style={{ margin: "0" }}>
                         <div className="col-xs-3">
                           <img
                             src={storeImg}

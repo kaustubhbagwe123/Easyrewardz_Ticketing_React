@@ -546,8 +546,21 @@
   padding: 0;
   padding-top: 25px;
 }
-.table-expandable-sctn1 .tab-content .row.all-row div {
+.table-expandable-sctn1 .tab-content .row.all-row > div {
   margin-bottom: 25px;
+}
+.table-expandable-sctn1 .react-datepicker-wrapper input[type="text"] {
+  background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
+}
+.table-expandable-sctn1 .react-datepicker-popper {
+  z-index: 2;
+}
+.table-expandable-sctn1 .react-datepicker button {
+  min-width: auto;
+}
+.table-expandable-sctn1 .react-datepicker-wrapper {
+  width: 100%;
 }
 .bill-graph-list {
   font-weight: 300;
@@ -1089,6 +1102,13 @@ table tr th:last-child {
 .uploadsearch {
   text-align: center;
   margin-top: 70px;
+}
+.uploadsearch-space {
+  margin-bottom: 60px;
+}
+.allign-reassign {
+  margin-left: 35px !important;
+  margin-top: -10px;
 }
 .searchtext {
   background-color: #ffffff;
