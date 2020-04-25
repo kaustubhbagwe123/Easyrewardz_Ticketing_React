@@ -953,7 +953,8 @@ class StoreDashboard extends Component {
   };
   handleCliamDateSearchChange = (e) => {
     debugger;
-    this.state.searchData["claimraiseddate"] = null;
+    this.state.searchData["claimraiseddate"] = e;
+    this.setState({ searchData: this.state.searchData });
   };
 
   render() {
@@ -1692,6 +1693,16 @@ class StoreDashboard extends Component {
                                     <option value={""} disabled selected>
                                       Raised By
                                     </option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                               </div>

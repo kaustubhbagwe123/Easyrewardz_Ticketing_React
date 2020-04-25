@@ -14,6 +14,9 @@ import Sorting from "./../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
 import { Collapse, CardBody, Card } from "reactstrap";
 import SearchIcon from "../../assets/Images/search-icon.png";
+import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
+import StoreStatus from "./StoreStatus.js";
+import moment from "moment";
 class StoreTask extends Component {
   constructor(props) {
     super(props);
@@ -59,6 +62,11 @@ class StoreTask extends Component {
       assignToData: [],
       funcationData: [],
       departmentData: [],
+      assignSearchData: {},
+      raiseSearchData: {},
+      ticketSearchData: {},
+      storeStatus: StoreStatus(),
+      userData: [],
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -69,6 +77,7 @@ class StoreTask extends Component {
     this.handleGetTaskData(1);
     this.handleGetDepartment();
     this.handleGetPriorityList();
+    this.handleGetStoreUser();
   }
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
@@ -494,10 +503,10 @@ class StoreTask extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function(response) {
         debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
+        let status = response.data.message;
+        let data = response.data.responseData;
         if (status === "Success") {
           self.setState({
             departmentData: data,
@@ -508,18 +517,29 @@ class StoreTask extends Component {
           });
         }
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((response) => {
+        console.log(response, "---handleGetDepartment");
       });
   }
   /// Get Funcation list by Department Id for dropdown
   handleGetFuncationByDepartmentId() {
+    var departmentId = 0;
+    if (this.state.tabIndex === 1) {
+      departmentId = this.state.raiseSearchData["Department"];
+    }
+    if (this.state.tabIndex === 2) {
+      departmentId = this.state.assignSearchData["Department"];
+    }
+    if (this.state.tabIndex === 3) {
+      departmentId = this.state.ticketSearchData["Department"];
+    }
+
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
-      params: { DepartmentId: this.state.selectDepartment },
+      params: { DepartmentId: departmentId },
     })
       .then(function(response) {
         debugger;
@@ -537,13 +557,23 @@ class StoreTask extends Component {
   }
   //// Get Assign to list by funcation id
   handleGetAssignTobyFuncationId() {
+    var funcationID = 0;
+    if (this.state.tabIndex === 1) {
+      funcationID = this.state.raiseSearchData["functionID"];
+    }
+    if (this.state.tabIndex === 2) {
+      funcationID = this.state.assignSearchData["functionID"];
+    }
+    if (this.state.tabIndex === 3) {
+      funcationID = this.state.ticketSearchData["functionID"];
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetAssignedTo",
       headers: authHeader(),
       params: {
-        Function_ID: this.state.selectedFuncation,
+        Function_ID: funcationID,
       },
     })
       .then(function(response) {
@@ -579,6 +609,101 @@ class StoreTask extends Component {
       })
       .catch((response) => {
         console.log(response, "---handleGetPriorityList");
+      });
+  }
+  handleGetStoreUser() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var userData = response.data.responseData;
+        if (message == "Success" && userData) {
+          self.setState({ userData });
+        } else {
+          self.setState({ userData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreUser");
+      });
+  }
+  ////handle get assign by me search filter
+  handleGetAssigenBymefilterData() {
+    let self = this;
+
+    var inputParam = {};
+
+    inputParam.taskid = "";
+    inputParam.Department = "";
+    inputParam.tasktitle = "";
+    inputParam.taskstatus = "";
+    inputParam.functionID = "";
+    inputParam.CreatedOnFrom = "";
+    inputParam.CreatedOnTo = "";
+    inputParam.createdID = "";
+    inputParam.Priority = "";
+    inputParam.userid = "";
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetAssigenBymefilterData",
+      headers: authHeader(),
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetAssigenBymefilterData");
+      });
+  }
+  ////handle get raise by me search filter
+  handleGetRaisedbymefilterData() {
+    let self = this;
+    debugger;
+    var inputParam = {};
+
+    inputParam.taskid = this.state.raiseSearchData["taskid"] || 0;
+    inputParam.Department = this.state.raiseSearchData["Department"] || 0;
+    inputParam.tasktitle = this.state.raiseSearchData["tasktitle"] || "";
+    inputParam.taskstatus = this.state.raiseSearchData["taskstatus"] || 0;
+    inputParam.functionID = this.state.raiseSearchData["functionID"] || 0;
+    if (this.state.raiseSearchData["CreatedOnFrom"]) {
+      var start = new Date(this.state.searchData["CreatedOnFrom"]);
+      inputParam.CreatedOnFrom =
+        moment(start)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnFrom = null;
+    }
+    if (this.state.raiseSearchData["CreatedOnTo"]) {
+      var end = new Date(this.state.searchData["CreatedOnTo"]);
+      inputParam.CreatedOnTo =
+        moment(end)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnTo = null;
+    }
+
+    inputParam.AssigntoId = this.state.raiseSearchData["AssigntoId"] || 0;
+    inputParam.createdID = 0; //this.state.raiseSearchData["createdID"] || 0;
+    inputParam.Priority = this.state.raiseSearchData["Priority"] || 0;
+    inputParam.userid = this.state.raiseSearchData["createdID"] || 0;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetRaisedbymefilterData",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(response) {
+        debugger;
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetRaisedbymefilterData");
       });
   }
   sortStatusZtoA() {
@@ -1419,9 +1544,65 @@ class StoreTask extends Component {
       }
     }
   }
+  ////handle collapse search
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
   }
+  handleOnChange(e) {
+    const { name, value } = e.target;
+    if (this.state.tabIndex == 1) {
+      this.state.raiseSearchData[name] = value;
+      this.setState({ raiseSearchData: this.state.raiseSearchData });
+      if (name === "functionID") {
+        this.state.raiseSearchData["AssigntoId"] = "";
+        this.setState({
+          raiseSearchData: this.state.raiseSearchData,
+          assignToData: [],
+        });
+        this.handleGetAssignTobyFuncationId();
+      }
+      if (name === "Department") {
+        this.state.raiseSearchData["functionID"] = "";
+        this.state.raiseSearchData["AssigntoId"] = "";
+        this.setState({
+          raiseSearchData: this.state.raiseSearchData,
+          funcationData: [],
+          assignToData: [],
+        });
+        this.handleGetFuncationByDepartmentId();
+      }
+    }
+    if (this.state.tabIndex == 2) {
+      this.state.raiseSearchData[name] = value;
+      this.setState({ raiseSearchData: this.state.raiseSearchData });
+      if (name === "Department") {
+        this.handleGetFuncationByDepartmentId();
+      }
+    }
+    if (this.state.tabIndex == 3) {
+      this.state.raiseSearchData[name] = value;
+      this.setState({ raiseSearchData: this.state.raiseSearchData });
+    }
+  }
+  SearchCreationOn = async (startDate) => {
+    debugger;
+    if (this.state.tabIndex == 1) {
+      this.state.raiseSearchData["CreatedOnFrom"] = startDate[0];
+      this.state.raiseSearchData["CreatedOnTo"] = startDate[1];
+      this.setState({ raiseSearchData: this.state.raiseSearchData });
+    }
+    if (this.state.tabIndex == 2) {
+      this.state.assignSearchData["CreatedOnFrom"] = startDate[0];
+      this.state.assignSearchData["CreatedOnTo"] = startDate[1];
+      this.setState({ assignSearchData: this.state.assignSearchData });
+    }
+    if (this.state.tabIndex == 3) {
+      this.state.ticketSearchData["CreatedOnFrom"] = startDate[0];
+      this.state.ticketSearchData["CreatedOnTo"] = startDate[1];
+      this.setState({ ticketSearchData: this.state.ticketSearchData });
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -1515,7 +1696,9 @@ class StoreTask extends Component {
                               className="btn-inv"
                               type="button"
                               style={{ margin: "10px", width: "180px" }}
-                              // onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleGetRaisedbymefilterData.bind(
+                                this
+                              )}
                             >
                               VIEW SEARCH
                             </button>
@@ -1534,20 +1717,24 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
-                                    name="task_Id"
-                                    value={this.state.task_Id}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="taskid"
+                                    value={this.state.raiseSearchData["taskid"]}
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
-                                    // value={this.state.selectDepartment}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="Department"
+                                    value={
+                                      this.state.raiseSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Department</option>
+                                    <option value="" disabled selected>
+                                      Department
+                                    </option>
+
                                     {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
@@ -1565,52 +1752,16 @@ class StoreTask extends Component {
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectAssignTo"
-                                    // value={this.state.selectAssignTo}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="functionID"
+                                    value={
+                                      this.state.raiseSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Assign To</option>
-                                    {this.state.assignToData !== null &&
-                                      this.state.assignToData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    value={this.state.Task_Claim}
-                                    name="Task_Claim"
-                                    onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    type="text"
-                                    placeholder="Task Title"
-                                    name="task_Title"
-                                    // value={this.state.task_Title}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
-                                    // value={this.state.selectedFuncation}
-                                    name="selectedFuncation"
-                                    // onChange={this.handleDropdownOnchange}
-                                  >
-                                    <option>Funcation</option>
+                                    <option value={""} disabled selected>
+                                      Funcation
+                                    </option>
+
                                     {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
@@ -1626,50 +1777,107 @@ class StoreTask extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Task Created By</option>
+                                  <select
+                                    className="store-create-select"
+                                    name="AssigntoId"
+                                    value={
+                                      this.state.raiseSearchData["AssigntoId"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected disabled>
+                                      Assign To
+                                    </option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <input
-                                    className="no-bg"
                                     type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    // value={this.state.task_status}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    placeholder="Task Title"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.raiseSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Creation On</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
-                                    // value={this.state.Task_Ticket}
-                                    name="Task_Ticket"
-                                    // onChange={this.hanldetoggleOnChange}
+                                    name="createdID"
+                                    value={
+                                      this.state.raiseSearchData["createdID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option disabled value="" selected>
+                                      Task Created By
+                                    </option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    name="taskstatus"
+                                    value={
+                                      this.state.raiseSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value={0} disabled selected>
+                                      Task Status
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectedPriority"
-                                    // onChange={this.handleDropdownOnchange}
-                                    // value={this.state.selectedPriority}
+                                    name="Priority"
+                                    value={
+                                      this.state.raiseSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value={0}>Task Priority</option>
+                                    <option value={""} selected disabled>
+                                      Task Priority
+                                    </option>
                                     {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
@@ -1682,13 +1890,13 @@ class StoreTask extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
+                                {/* <div className="col-md-3">
                                   <input
                                     className="no-bg"
                                     type="text"
                                     placeholder="Ticket ID"
                                   />
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>
@@ -1965,18 +2173,21 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
-                                    name="task_Id"
-                                    value={this.state.task_Id}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="taskid"
+                                    value={
+                                      this.state.assignSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
-                                    // value={this.state.selectDepartment}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="Department"
+                                    value={
+                                      this.state.assignSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Department</option>
                                     {/* {this.state.departmentData !== null &&
@@ -1993,53 +2204,26 @@ class StoreTask extends Component {
                                       )} */}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
-                                    name="selectAssignTo"
-                                    value={this.state.selectAssignTo}
-                                    onChange={this.handleDropdownOnchange}
-                                  >
-                                    <option>Assign To</option>
-                                    {/* {this.state.assignToData !== null &&
-                                      this.state.assignToData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))} */}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    value={this.state.Task_Claim}
-                                    name="Task_Claim"
-                                    onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <input
                                     type="text"
                                     placeholder="Task Title"
-                                    name="task_Title"
-                                    // value={this.state.task_Title}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.assignSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    // value={this.state.selectedFuncation}
-                                    name="selectedFuncation"
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="functionID"
+                                    value={
+                                      this.state.assignSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Funcation</option>
                                     {/* {this.state.funcationData !== null &&
@@ -2057,51 +2241,56 @@ class StoreTask extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
+                                  <select
+                                    name="createdID"
+                                    value={
+                                      this.state.assignSearchData["createdID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
                                     <option>Task Created By</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
+                                  <select
+                                    className="store-create-select"
+                                    name="taskstatus"
+                                    value={
+                                      this.state.assignSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>Task Status</option>
+
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
                                   </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    // value={this.state.task_status}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  />
                                 </div>
                                 <div className="col-md-3">
                                   <select>
                                     <option>Creation On</option>
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    // value={this.state.Task_Ticket}
-                                    name="Task_Ticket"
-                                    // onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectedPriority"
-                                    // onChange={this.handleDropdownOnchange}
-                                    // value={this.state.selectedPriority}
+                                    name="Priority"
+                                    value={
+                                      this.state.assignSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Task Priority</option>
-                                    {/* {this.state.priorityData !== null &&
+                                    {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
                                           key={i}
@@ -2110,15 +2299,8 @@ class StoreTask extends Component {
                                         >
                                           {item.priortyName}
                                         </option>
-                                      ))} */}
+                                      ))}
                                   </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Ticket ID"
-                                  />
                                 </div>
                               </div>
                             </div>
