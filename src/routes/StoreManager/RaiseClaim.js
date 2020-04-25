@@ -531,7 +531,7 @@ class RaiseClaim extends Component {
     debugger;
     if (CustID > 0) {
       if (this.state.ticketId == 0) {
-        if (typeof e.preventDefault!== "undefined") {
+        if (typeof e.preventDefault !== "undefined") {
           e.preventDefault();
         }
       }
@@ -1017,6 +1017,22 @@ class RaiseClaim extends Component {
     debugger;
     if (this.handleValidation()) {
       const formData = new FormData();
+      var selectedRow = "";
+      if (this.state.SelectedItemData.length === 0) {
+        for (let j = 0; j < this.state.selectedOrderData.length; j++) {
+          selectedRow +=
+            this.state.selectedOrderData[j]["orderMasterID"] + "|0|1,";
+        }
+      } else {
+        for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+          selectedRow +=
+            this.state.SelectedItemData[i]["orderItemID"] +
+            "|" +
+            this.state.SelectedItemData[i]["requireSize"] +
+            "|0,";
+        }
+      }
+
       var paramData = {
         BrandID: this.state.selectBrand,
         CategoryID: this.state.list1Value,
@@ -1024,6 +1040,7 @@ class RaiseClaim extends Component {
         IssueTypeID: this.state.ListOfIssue,
         ClaimPercent: this.state.claimPercentage,
         CustomerID: this.state.customerId,
+        OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
         OrderIDs: "",
         TicketID: this.state.ticketId,
         TaskID: this.state.taskId,

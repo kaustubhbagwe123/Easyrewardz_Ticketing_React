@@ -137,7 +137,11 @@ class StoreTask extends Component {
     }
     if (tabFor !== 4) {
       this.setState({
+        FilterCollapse: false,
         isloading: true,
+        raiseSearchData: {},
+        assignSearchData: {},
+        ticketSearchData: {},
         sdepartmentNameFilterCheckbox: "",
         sstoreNameFilterCheckbox: "",
         spriorityNameFilterCheckbox: "",
@@ -365,6 +369,9 @@ class StoreTask extends Component {
       tabIndex: 3,
       isloading: true,
       FilterCollapse: false,
+      raiseSearchData: {},
+      assignSearchData: {},
+      ticketSearchData: {},
       sdepartmentNameFilterCheckbox: "",
       sstoreNameFilterCheckbox: "",
       spriorityNameFilterCheckbox: "",
@@ -633,25 +640,44 @@ class StoreTask extends Component {
   }
   ////handle get assign by me search filter
   handleGetAssigenBymefilterData() {
+    debugger;
     let self = this;
 
     var inputParam = {};
 
-    inputParam.taskid = "";
-    inputParam.Department = "";
-    inputParam.tasktitle = "";
-    inputParam.taskstatus = "";
-    inputParam.functionID = "";
-    inputParam.CreatedOnFrom = "";
-    inputParam.CreatedOnTo = "";
-    inputParam.createdID = "";
-    inputParam.Priority = "";
-    inputParam.userid = "";
+    inputParam.taskid = this.state.assignSearchData["taskid"] || 0;
+    inputParam.Department = this.state.assignSearchData["Department"] || 0;
+    inputParam.tasktitle = this.state.assignSearchData["tasktitle"] || "";
+    inputParam.taskstatus = this.state.assignSearchData["taskstatus"] || 0;
+    inputParam.functionID = this.state.assignSearchData["functionID"] || 0;
+    if (this.state.assignSearchData["CreatedOnFrom"]) {
+      var start = new Date(this.state.assignSearchData["CreatedOnFrom"]);
+      inputParam.CreatedOnFrom =
+        moment(start)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnFrom = null;
+    }
+    if (this.state.assignSearchData["CreatedOnTo"]) {
+      var end = new Date(this.state.assignSearchData["CreatedOnTo"]);
+      inputParam.CreatedOnTo =
+        moment(end)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnTo = null;
+    }
+
+    inputParam.AssigntoId = 0; //this.state.raiseSearchData["AssigntoId"] || 0;
+    inputParam.createdID = this.state.assignSearchData["createdID"] || 0;
+    inputParam.Priority = this.state.assignSearchData["Priority"] || 0;
 
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetAssigenBymefilterData",
       headers: authHeader(),
+      data: inputParam,
     })
       .then(function(response) {})
       .catch((response) => {
@@ -670,7 +696,7 @@ class StoreTask extends Component {
     inputParam.taskstatus = this.state.raiseSearchData["taskstatus"] || 0;
     inputParam.functionID = this.state.raiseSearchData["functionID"] || 0;
     if (this.state.raiseSearchData["CreatedOnFrom"]) {
-      var start = new Date(this.state.searchData["CreatedOnFrom"]);
+      var start = new Date(this.state.raiseSearchData["CreatedOnFrom"]);
       inputParam.CreatedOnFrom =
         moment(start)
           .format("YYYY-MM-DD")
@@ -679,7 +705,7 @@ class StoreTask extends Component {
       inputParam.CreatedOnFrom = null;
     }
     if (this.state.raiseSearchData["CreatedOnTo"]) {
-      var end = new Date(this.state.searchData["CreatedOnTo"]);
+      var end = new Date(this.state.raiseSearchData["CreatedOnTo"]);
       inputParam.CreatedOnTo =
         moment(end)
           .format("YYYY-MM-DD")
@@ -691,7 +717,6 @@ class StoreTask extends Component {
     inputParam.AssigntoId = this.state.raiseSearchData["AssigntoId"] || 0;
     inputParam.createdID = 0; //this.state.raiseSearchData["createdID"] || 0;
     inputParam.Priority = this.state.raiseSearchData["Priority"] || 0;
-    inputParam.userid = this.state.raiseSearchData["createdID"] || 0;
 
     axios({
       method: "post",
@@ -704,6 +729,55 @@ class StoreTask extends Component {
       })
       .catch((response) => {
         console.log(response, "---handleGetRaisedbymefilterData");
+      });
+  }
+  handleGetTaskbyTicketData() {
+    let self = this;
+    debugger;
+    var inputParam = {};
+
+    inputParam.taskid = this.state.ticketSearchData["taskid"] || 0;
+    inputParam.Department = this.state.ticketSearchData["Department"] || 0;
+    inputParam.tasktitle = this.state.ticketSearchData["tasktitle"] || "";
+    inputParam.taskstatus = this.state.ticketSearchData["taskstatus"] || 0;
+    inputParam.functionID = this.state.ticketSearchData["functionID"] || 0;
+    if (this.state.ticketSearchData["CreatedOnFrom"]) {
+      var start = new Date(this.state.ticketSearchData["CreatedOnFrom"]);
+      inputParam.CreatedOnFrom =
+        moment(start)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnFrom = null;
+    }
+    if (this.state.ticketSearchData["CreatedOnTo"]) {
+      var end = new Date(this.state.ticketSearchData["CreatedOnTo"]);
+      inputParam.CreatedOnTo =
+        moment(end)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnTo = null;
+    }
+
+    inputParam.createdID = this.state.ticketSearchData["createdID"] || 0;
+    inputParam.Priority = this.state.ticketSearchData["Priority"] || 0;
+    inputParam.claimID = this.state.ticketSearchData["claimID"] || 0;
+    inputParam.ticketID = this.state.ticketSearchData["ticketID"] || 0;
+    inputParam.taskwithClaim =
+      this.state.ticketSearchData["taskwithClaim"] || 0;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetTaskbyTicketData",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(response) {
+        debugger;
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetTaskbyTicketData");
       });
   }
   sortStatusZtoA() {
@@ -1549,6 +1623,7 @@ class StoreTask extends Component {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
   }
   handleOnChange(e) {
+    debugger;
     const { name, value } = e.target;
     if (this.state.tabIndex == 1) {
       this.state.raiseSearchData[name] = value;
@@ -1573,15 +1648,32 @@ class StoreTask extends Component {
       }
     }
     if (this.state.tabIndex == 2) {
-      this.state.raiseSearchData[name] = value;
-      this.setState({ raiseSearchData: this.state.raiseSearchData });
+      this.state.assignSearchData[name] = value;
+      this.setState({ assignSearchData: this.state.assignSearchData });
       if (name === "Department") {
         this.handleGetFuncationByDepartmentId();
       }
     }
     if (this.state.tabIndex == 3) {
-      this.state.raiseSearchData[name] = value;
-      this.setState({ raiseSearchData: this.state.raiseSearchData });
+      this.state.ticketSearchData[name] = value;
+      this.setState({ ticketSearchData: this.state.ticketSearchData });
+      if (name === "functionID") {
+        this.state.ticketSearchData["AssigntoId"] = "";
+        this.setState({
+          ticketSearchData: this.state.ticketSearchData,
+          assignToData: [],
+        });
+        this.handleGetAssignTobyFuncationId();
+      }
+      if (name === "Department") {
+        this.state.ticketSearchData["functionID"] = "";
+        this.state.ticketSearchData["AssigntoId"] = "";
+        this.setState({
+          ticketSearchData: this.state.ticketSearchData,
+          funcationData: [],
+          assignToData: [],
+        });
+      }
     }
   }
   SearchCreationOn = async (startDate) => {
@@ -1731,7 +1823,7 @@ class StoreTask extends Component {
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value="" disabled selected>
+                                    <option value="" selected>
                                       Department
                                     </option>
 
@@ -1758,7 +1850,7 @@ class StoreTask extends Component {
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Funcation
                                     </option>
 
@@ -1785,7 +1877,7 @@ class StoreTask extends Component {
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value="" selected disabled>
+                                    <option value="" selected>
                                       Assign To
                                     </option>
                                     {this.state.assignToData !== null &&
@@ -1815,37 +1907,13 @@ class StoreTask extends Component {
 
                                 <div className="col-md-3">
                                   <select
-                                    name="createdID"
-                                    value={
-                                      this.state.raiseSearchData["createdID"]
-                                    }
-                                    onChange={this.handleOnChange.bind(this)}
-                                  >
-                                    <option disabled value="" selected>
-                                      Task Created By
-                                    </option>
-                                    {this.state.userData !== null &&
-                                      this.state.userData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div>
-
-                                <div className="col-md-3">
-                                  <select
                                     name="taskstatus"
                                     value={
                                       this.state.raiseSearchData["taskstatus"]
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value={0} disabled selected>
+                                    <option value={0} selected>
                                       Task Status
                                     </option>
                                     {this.state.storeStatus !== null &&
@@ -1875,7 +1943,7 @@ class StoreTask extends Component {
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value={""} selected disabled>
+                                    <option value={""} selected>
                                       Task Priority
                                     </option>
                                     {this.state.priorityData !== null &&
@@ -2154,7 +2222,9 @@ class StoreTask extends Component {
                               className="btn-inv"
                               type="button"
                               style={{ margin: "10px", width: "180px" }}
-                              // onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleGetAssigenBymefilterData.bind(
+                                this
+                              )}
                             >
                               VIEW SEARCH
                             </button>
@@ -2185,12 +2255,12 @@ class StoreTask extends Component {
                                     className="store-create-select"
                                     name="Department"
                                     value={
-                                      this.state.assignSearchData["taskid"]
+                                      this.state.assignSearchData["Department"]
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Department</option>
-                                    {/* {this.state.departmentData !== null &&
+                                    {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
                                           <option
@@ -2201,7 +2271,7 @@ class StoreTask extends Component {
                                             {item.departmentName}
                                           </option>
                                         )
-                                      )} */}
+                                      )}
                                   </select>
                                 </div>
 
@@ -2226,7 +2296,7 @@ class StoreTask extends Component {
                                     onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Funcation</option>
-                                    {/* {this.state.funcationData !== null &&
+                                    {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
                                           <option
@@ -2237,7 +2307,7 @@ class StoreTask extends Component {
                                             {item.funcationName}
                                           </option>
                                         )
-                                      )} */}
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -2249,6 +2319,16 @@ class StoreTask extends Component {
                                     onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Task Created By</option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -2274,10 +2354,10 @@ class StoreTask extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Creation On</option>
-                                  </select>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
                                 </div>
 
                                 <div className="col-md-3">
@@ -2602,21 +2682,26 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
-                                    name="task_Id"
-                                    value={this.state.task_Id}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="taskid"
+                                    value={
+                                      this.state.ticketSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
-                                    // value={this.state.selectDepartment}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="Department"
+                                    value={
+                                      this.state.ticketSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Department</option>
-                                    {/* {this.state.departmentData !== null &&
+                                    <option value="" selected>
+                                      Department
+                                    </option>
+                                    {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
                                           <option
@@ -2627,18 +2712,22 @@ class StoreTask extends Component {
                                             {item.departmentName}
                                           </option>
                                         )
-                                      )} */}
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectAssignTo"
-                                    value={this.state.selectAssignTo}
-                                    onChange={this.handleDropdownOnchange}
+                                    name="AssigntoId"
+                                    value={
+                                      this.state.ticketSearchData["AssigntoId"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Assign To</option>
-                                    {/* {this.state.assignToData !== null &&
+                                    <option value="" selected>
+                                      Assign To
+                                    </option>
+                                    {this.state.assignToData !== null &&
                                       this.state.assignToData.map((item, i) => (
                                         <option
                                           key={i}
@@ -2647,39 +2736,49 @@ class StoreTask extends Component {
                                         >
                                           {item.userName}
                                         </option>
-                                      ))} */}
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
-                                    value={this.state.Task_Claim}
-                                    name="Task_Claim"
-                                    onChange={this.hanldetoggleOnChange}
+                                    className="store-create-select"
+                                    name="taskwithClaim"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithClaim"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value={true}>Yes</option>
+                                    <option value={false}>No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <input
                                     type="text"
                                     placeholder="Task Title"
-                                    name="task_Title"
-                                    // value={this.state.task_Title}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.ticketSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    // value={this.state.selectedFuncation}
-                                    name="selectedFuncation"
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="functionID"
+                                    value={
+                                      this.state.ticketSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Funcation</option>
-                                    {/* {this.state.funcationData !== null &&
+                                    <option value="" selected>
+                                      Funcation
+                                    </option>
+                                    {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
                                           <option
@@ -2690,55 +2789,44 @@ class StoreTask extends Component {
                                             {item.funcationName}
                                           </option>
                                         )
-                                      )} */}
+                                      )}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Task Created By</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    // value={this.state.task_status}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
                                   />
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Creation On</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
                                   <select
-                                    // value={this.state.Task_Ticket}
-                                    name="Task_Ticket"
-                                    // onChange={this.hanldetoggleOnChange}
+                                    className="store-create-select"
+                                    name="taskwithTicket"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithTicket"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value={true}>Yes</option>
+                                    <option value={false}>No</option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectedPriority"
-                                    // onChange={this.handleDropdownOnchange}
-                                    // value={this.state.selectedPriority}
+                                    name="Priority"
+                                    value={
+                                      this.state.ticketSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Task Priority</option>
-                                    {/* {this.state.priorityData !== null &&
+                                    <option value="" selected>
+                                      Task Priority
+                                    </option>
+                                    {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
                                           key={i}
@@ -2747,16 +2835,65 @@ class StoreTask extends Component {
                                         >
                                           {item.priortyName}
                                         </option>
-                                      ))} */}
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Ticket ID"
-                                  />
+                                  <select
+                                    className="store-create-select"
+                                    name="taskstatus"
+                                    value={
+                                      this.state.ticketSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      Task Status
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
+                                  </select>
                                 </div>
+                                {this.state.ticketSearchData[
+                                  "taskwithClaim"
+                                ] ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      className="no-bg"
+                                      type="text"
+                                      placeholder="Claim ID"
+                                      name="claimID"
+                                      value={
+                                        this.state.ticketSearchData["claimID"]
+                                      }
+                                      onChange={this.handleOnChange.bind(this)}
+                                    />
+                                  </div>
+                                ) : null}
+                                {this.state.ticketSearchData[
+                                  "taskwithTicket"
+                                ] ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      className="no-bg"
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                      name="ticketID"
+                                      value={
+                                        this.state.ticketSearchData["ticketID"]
+                                      }
+                                      onChange={this.handleOnChange.bind(this)}
+                                    />
+                                  </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>
