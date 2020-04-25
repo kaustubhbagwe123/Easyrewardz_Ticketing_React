@@ -211,7 +211,11 @@ class ClaimApproveReject extends Component {
         var responseData = response.data.responseData;
         if (message == "Success" && responseData) {
           var orderDetails = [];
-          orderDetails.push(responseData.customOrderMaster);
+          if(responseData.customOrderMaster)
+          {
+            orderDetails.push(responseData.customOrderMaster);
+          }
+          
           var imageURL = responseData.attachments[0].attachmentName;
           var ticketingTaskID = responseData.ticketingTaskID;
           var ticketID = responseData.ticketID;
@@ -219,7 +223,8 @@ class ClaimApproveReject extends Component {
           var assigneeID = responseData.assigneeID;
           var status = responseData.status;
           var orderItems;
-          if (responseData.customOrderMaster.orderItems) {
+          if (responseData.customOrderMaster) {
+            
             orderItems = responseData.customOrderMaster.orderItems;
           } else {
             orderItems = [];
@@ -558,7 +563,7 @@ class ClaimApproveReject extends Component {
       this.setState({ isAssignComment: "Please enter comment." });
     }
   }
-  ////handel
+  ////handel commenr change
   handleAssignCommentChange(e) {
     if (e.target.value !== "") {
       this.setState({ assignComment: e.target.value, isAssignComment: "" });
@@ -569,6 +574,10 @@ class ClaimApproveReject extends Component {
       });
     }
   }
+
+  
+
+
   render() {
     const { orderDetailsData } = this.state;
 

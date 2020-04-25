@@ -110,7 +110,6 @@ class RaiseClaim extends Component {
 
   ////handle add manullay order
   hadleAddManuallyOrderData() {
-    debugger;
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.state.customerId;
@@ -140,14 +139,13 @@ class RaiseClaim extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             let data = res.data.responseData;
             NotificationManager.success("New Order added successfully.");
-            // self.handleOrderSearchData(data);
 
             self.setState({
+              orderNumber: data,
               productBarCode: "",
               billId: "",
               orderId: "",
@@ -163,6 +161,9 @@ class RaiseClaim extends Component {
               message: "Success",
               saveLoader: false,
             });
+            setTimeout(() => {
+              self.handleOrderSearchData(self);
+            }, 100);
           } else {
             NotificationManager.error("Order not added.");
             self.setState({
@@ -530,7 +531,9 @@ class RaiseClaim extends Component {
     debugger;
     if (CustID > 0) {
       if (this.state.ticketId == 0) {
-        e.preventDefault();
+        if (typeof e.preventDefault!== "undefined") {
+          e.preventDefault();
+        }
       }
       axios({
         method: "post",

@@ -89,7 +89,7 @@ class StoreDashboard extends Component {
       issueTypeData: [],
       userData: [],
       activeTab: 1,
-      createdUser:[]
+      createdUser: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -108,6 +108,8 @@ class StoreDashboard extends Component {
     this.handleGetBrandList();
     this.handleGetAgentList();
     // this.handleGetDashboardGraphCount();
+    this.handleGetClaimCategory();
+    this.handleGetStoreUser();
   }
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
@@ -601,32 +603,32 @@ class StoreDashboard extends Component {
         console.log(response);
       });
   }
-    ///Get Created by user list for dropdown
-    handleGetCreatedByUserDropdown() {
-      let self = this;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreUser/GetStoreUsers",
-        headers: authHeader(),
+  ///Get Created by user list for dropdown
+  handleGetCreatedByUserDropdown() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            createdUser: data,
+          });
+        } else {
+          self.setState({
+            createdUser: [],
+          });
+        }
       })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            self.setState({
-              createdUser: data,
-            });
-          } else {
-            self.setState({
-              createdUser: [],
-            });
-          }
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    }
+      .catch((res) => {
+        console.log(res);
+      });
+  }
   //// Get Assign to list by funcation id
   handleGetAssignTobyFuncationId() {
     let self = this;
@@ -679,18 +681,18 @@ class StoreDashboard extends Component {
     debugger;
     let self = this;
     var taskId = "";
-    var claimId=0;
+    var claimId = 0;
     if (this.state.task_Id !== "") {
       taskId = this.state.task_Id;
     } else {
       taskId = "0";
     }
-    if(this.state.Task_ClaimId !== ""){
-      claimId=parseInt(this.state.Task_ClaimId)
-    }else{
-      claimId=0
+    if (this.state.Task_ClaimId !== "") {
+      claimId = parseInt(this.state.Task_ClaimId);
+    } else {
+      claimId = 0;
     }
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardList",
@@ -703,11 +705,11 @@ class StoreDashboard extends Component {
         ticketID: this.state.Task_ticketId,
         functionID: this.state.selectedFuncation,
         AssigntoId: this.state.selectAssignTo,
-        Priority:this.state.selectedPriority,
+        Priority: this.state.selectedPriority,
         taskwithTicket: this.state.Task_Ticket,
         taskwithClaim: this.state.Task_Claim,
         claimID: claimId,
-        createdID:this.state.SelectedCreatedBy
+        createdID: this.state.SelectedCreatedBy,
       },
     })
       .then(function(response) {
@@ -715,7 +717,7 @@ class StoreDashboard extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
-          self.setState({ dashboardGridData: data, taskCount:data.length });
+          self.setState({ dashboardGridData: data, taskCount: data.length });
         } else {
           self.setState({ dashboardGridData: [] });
         }
@@ -729,13 +731,14 @@ class StoreDashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "StoreUser/BindStoreClaimSubCategory",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
       headers: authHeader(),
-      // params: { CategoryIDs: this.state.searchData["claimcat"] },
+      params: { BrandIds: "" },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
-        var categoryData = response.data.response;
+        var categoryData = response.data.responseData;
         if (message == "Success" && categoryData) {
           self.setState({ categoryData });
         } else {
@@ -752,13 +755,13 @@ class StoreDashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "StoreUser/BindStoreClaimSubCategory",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimSubCategory",
       headers: authHeader(),
       params: { CategoryIDs: this.state.searchData["claimcat"] },
     })
       .then(function(response) {
         var message = response.data.message;
-        var subCategoryData = response.data.response;
+        var subCategoryData = response.data.responseData;
         if (message == "Success" && subCategoryData) {
           self.setState({ subCategoryData });
         } else {
@@ -775,13 +778,13 @@ class StoreDashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "StoreUser/BindStoreClaimIssueType",
+      url: config.apiUrl + "/StoreUser/BindStoreClaimIssueType",
       headers: authHeader(),
       params: { subCategoryIDs: this.state.searchData["claimsubcat"] },
     })
       .then(function(response) {
         var message = response.data.message;
-        var issueTypeData = response.data.response;
+        var issueTypeData = response.data.responseData;
         if (message == "Success" && issueTypeData) {
           self.setState({ issueTypeData });
         } else {
@@ -802,7 +805,7 @@ class StoreDashboard extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        var userData = response.data.response;
+        var userData = response.data.responseData;
         if (message == "Success" && userData) {
           self.setState({ userData });
         } else {
@@ -826,12 +829,34 @@ class StoreDashboard extends Component {
     inputParam.claimsubcat = Number(this.state.searchData["claimsubcat"]) || 0;
     inputParam.assignTo = Number(this.state.searchData["assignTo"]) || 0;
     inputParam.claimcat = Number(this.state.searchData["claimcat"]) || 0;
-    inputParam.claimraiseddate =
-      Number(this.state.searchData["cl)aimraiseddate"]) || "";
+    if (this.state.searchData["claimraiseddate"]) {
+      var rasiedDate = new Date(this.state.searchData["claimraiseddate"]);
+      inputParam.claimraiseddate =
+        moment(rasiedDate)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.claimraiseddate = "";
+    }
+
     inputParam.taskID = Number(this.state.searchData["taskID"]) || 0;
     inputParam.claimstatus = Number(this.state.searchData["claimstatus"]) || 0;
     inputParam.taskmapped = Number(this.state.searchData["taskmapped"]) || 0;
-    inputParam.raisedby = Number(this.state.searchData["raisedby"]) || 0;
+    inputParam.BrandIDs = this.state.BrandIds || "";
+    inputParam.AgentIds = this.state.AgentIds || "";
+    var startData = new Date(this.state.start);
+    var endDate = new Date(this.state.end);
+
+    inputParam.FromDate =
+      moment(startData)
+        .format("YYYY-MM-DD")
+        .toString() || null;
+    inputParam.ToDate =
+      moment(endDate)
+        .format("YYYY-MM-DD")
+        .toString() || null;
+
+    debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/GetstoreDashboardListClaim",
@@ -842,7 +867,7 @@ class StoreDashboard extends Component {
         debugger;
       })
       .catch((response) => {
-        console.log(response, "---handleGetStoreUser");
+        console.log(response, "---handleClaimViewSearch");
       });
   }
 
@@ -861,46 +886,66 @@ class StoreDashboard extends Component {
   ////handle on change in view search
   handleOnChange = (e) => {
     const { name, value } = e.target;
-
+    debugger;
     var searchData = this.state.searchData;
     if (name == "claimID") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "ticketID") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "claimissueType") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "ticketMapped") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "claimsubcat") {
       searchData[name] = value;
+      this.setState({ searchData });
+      setTimeout(() => {
+        this.handleGetIssueType();
+      }, 100);
     }
     if (name == "assignTo") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "claimcat") {
       searchData[name] = value;
+      this.setState({ searchData });
+      setTimeout(() => {
+        this.handleGetClaimSubCategory();
+      }, 100);
     }
     if (name == "claimraiseddate") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "taskID") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "claimstatus") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "taskmapped") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
     if (name == "raisedby") {
       searchData[name] = value;
+      this.setState({ searchData });
     }
-
-    this.setState({ searchData });
+  };
+  handleCliamDateSearchChange = (e) => {
+    debugger;
+    this.state.searchData["claimraiseddate"] = null;
   };
 
   render() {
@@ -1194,7 +1239,9 @@ class StoreDashboard extends Component {
                               onClick={this.handleTabChange.bind(this, 1)}
                             >
                               Task:{" "}
-                              <span className="myTciket-tab-span">{this.state.taskCount}</span>
+                              <span className="myTciket-tab-span">
+                                {this.state.taskCount}
+                              </span>
                             </a>
                           </li>
 
@@ -1327,8 +1374,7 @@ class StoreDashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                              
-                                   <select
+                                  <select
                                     className="store-create-select"
                                     value={this.state.SelectedCreatedBy}
                                     name="SelectedCreatedBy"
@@ -1336,17 +1382,15 @@ class StoreDashboard extends Component {
                                   >
                                     <option>Task Created By</option>
                                     {this.state.createdUser !== null &&
-                                      this.state.createdUser.map(
-                                        (item, j) => (
-                                          <option
-                                            key={j}
-                                            value={item.userID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.userName}
-                                          </option>
-                                        )
-                                      )}
+                                      this.state.createdUser.map((item, j) => (
+                                        <option
+                                          key={j}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 {this.state.Task_Claim === "true" ? (
@@ -1445,14 +1489,14 @@ class StoreDashboard extends Component {
                                     type="text"
                                     placeholder="Claim ID"
                                     name="claimID"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["claimID"]}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     name="ticketMapped"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={
                                       this.state.searchData["ticketMapped"]
                                     }
@@ -1467,23 +1511,46 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     name="claimcat"
-                                    onChange={this.handleOnChange}
-                                    value={this.state.searchData["claimcat"]}
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={
+                                      this.state.searchData["claimcat"] || ""
+                                    }
                                   >
                                     <option value={""} disabled selected>
                                       Claim Category
                                     </option>
+                                    {this.state.categoryData !== null &&
+                                      this.state.categoryData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.categoryID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.categoryName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     name="claimstatus"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["claimstatus"]}
                                   >
                                     <option value={""} disabled selected>
                                       Claim Status
                                     </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => {
+                                        return (
+                                          <option
+                                            key={i}
+                                            value={item.storeStatusID}
+                                          >
+                                            {item.storeStatusName}
+                                          </option>
+                                        );
+                                      })}
                                   </select>
                                 </div>
                                 {this.state.searchData["ticketMapped"] == 1 ? (
@@ -1492,7 +1559,7 @@ class StoreDashboard extends Component {
                                       type="text"
                                       placeholder="Ticket ID"
                                       name="ticketID"
-                                      onChange={this.handleOnChange}
+                                      onChange={this.handleOnChange.bind(this)}
                                       value={this.state.searchData["ticketID"]}
                                     />
                                   </div>
@@ -1500,12 +1567,25 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     name="claimsubcat"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["claimsubcat"]}
                                   >
                                     <option value={""} disabled selected>
                                       Claim Sub Category
                                     </option>
+                                    {this.state.subCategoryData !== null &&
+                                      this.state.subCategoryData.map(
+                                        (item, i) => {
+                                          return (
+                                            <option
+                                              key={i}
+                                              value={item.subCategoryID}
+                                            >
+                                              {item.subCategoryName}
+                                            </option>
+                                          );
+                                        }
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -1514,7 +1594,9 @@ class StoreDashboard extends Component {
                                     selected={
                                       this.state.searchData["claimraiseddate"]
                                     }
-                                    // onChange={this.handleOnChange}
+                                    onChange={this.handleCliamDateSearchChange.bind(
+                                      this
+                                    )}
                                     name="claimraiseddate"
                                     placeholderText="Claim Raised On"
                                     showMonthDropdown
@@ -1528,7 +1610,7 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     name="taskmapped"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["taskmapped"]}
                                   >
                                     <option value={""} disabled selected>
@@ -1541,7 +1623,7 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     name="claimissueType"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={
                                       this.state.searchData["claimissueType"]
                                     }
@@ -1549,17 +1631,37 @@ class StoreDashboard extends Component {
                                     <option value={""} disabled selected>
                                       Claim Issue Type
                                     </option>
+                                    {this.state.issueTypeData !== null &&
+                                      this.state.issueTypeData.map(
+                                        (item, i) => {
+                                          return (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
+                                            </option>
+                                          );
+                                        }
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     name="assignTo"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["assignTo"]}
                                   >
                                     <option value={""} disabled selected>
                                       Assign To
                                     </option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 {this.state.searchData["taskmapped"] == 1 ? (
@@ -1569,14 +1671,14 @@ class StoreDashboard extends Component {
                                       placeholder="Task ID"
                                       name="taskID"
                                       value={this.state.searchData["taskID"]}
-                                      onChange={this.handleOnChange}
+                                      onChange={this.handleOnChange.bind(this)}
                                     />
                                   </div>
                                 ) : null}
                                 <div className="col-md-3">
                                   <select
                                     name="raisedby"
-                                    onChange={this.handleOnChange}
+                                    onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["raisedby"]}
                                   >
                                     <option value={""} disabled selected>
