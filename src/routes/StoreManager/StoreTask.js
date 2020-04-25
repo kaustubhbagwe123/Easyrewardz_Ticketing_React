@@ -126,226 +126,228 @@ class StoreTask extends Component {
         showAddTask: true,
       });
     }
-    this.setState({
-      isloading: true,
-      sdepartmentNameFilterCheckbox: "",
-      sstoreNameFilterCheckbox: "",
-      spriorityNameFilterCheckbox: "",
-      screationOnFilterCheckbox: "",
-      sassigntoFilterCheckbox: "",
-      screatedByFilterCheckbox: "",
+    if (tabFor !== 4) {
+      this.setState({
+        isloading: true,
+        sdepartmentNameFilterCheckbox: "",
+        sstoreNameFilterCheckbox: "",
+        spriorityNameFilterCheckbox: "",
+        screationOnFilterCheckbox: "",
+        sassigntoFilterCheckbox: "",
+        screatedByFilterCheckbox: "",
 
-      sortFilterdepartmentName: [],
-      sortFilterstoreName: [],
-      sortFilterpriorityName: [],
-      sortFiltercreationOn: [],
-      sortFilterassignto: [],
-      sortFiltercreatedBy: [],
+        sortFilterdepartmentName: [],
+        sortFilterstoreName: [],
+        sortFilterpriorityName: [],
+        sortFiltercreationOn: [],
+        sortFilterassignto: [],
+        sortFiltercreatedBy: [],
 
-      sortdepartmentName: [],
-      sortstoreName: [],
-      sortpriorityName: [],
-      sortcreationOn: [],
-      sortassignto: [],
-      sortcreatedBy: [],
-    });
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreTask/GetStoreTaskList",
-      headers: authHeader(),
-      params: { tabFor: tabFor },
-    })
-      .then(function(response) {
-        debugger;
-        var message = response.data.message;
-        var data = response.data.responseData;
-        if (message === "Success" && data.length > 0) {
-          if (tabFor === 1) {
-            self.setState({
-              raisedByMeData: data,
-              isloading: false,
-              tabIndex: tabFor,
-            });
-            self.state.sortAllData = data;
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].departmentName] &&
-                data[i].departmentName !== ""
-              ) {
-                distinct.push(data[i].departmentName);
-                unique[data[i].departmentName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortdepartmentName.push({
-                departmentName: distinct[i],
-              });
-              self.state.sortFilterdepartmentName.push({
-                departmentName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].storeName] && data[i].storeName !== "") {
-                distinct.push(data[i].storeName);
-                unique[data[i].storeName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortstoreName.push({ storeName: distinct[i] });
-              self.state.sortFilterstoreName.push({ storeName: distinct[i] });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].priorityName] &&
-                data[i].priorityName !== ""
-              ) {
-                distinct.push(data[i].priorityName);
-                unique[data[i].priorityName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortpriorityName.push({ priorityName: distinct[i] });
-              self.state.sortFilterpriorityName.push({
-                priorityName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
-                distinct.push(data[i].creationOn);
-                unique[data[i].creationOn] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortcreationOn.push({
-                creationOn: distinct[i],
-              });
-              self.state.sortFiltercreationOn.push({
-                creationOn: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].assignto] && data[i].assignto !== "") {
-                distinct.push(data[i].assignto);
-                unique[data[i].assignto] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortassignto.push({ assignto: distinct[i] });
-              self.state.sortFilterassignto.push({
-                assignto: distinct[i],
-              });
-            }
-          }
-          if (tabFor === 2) {
-            self.setState({
-              assignToMeData: data,
-              isloading: false,
-              tabIndex: tabFor,
-            });
-            self.state.sortAllData = data;
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].departmentName] &&
-                data[i].departmentName !== ""
-              ) {
-                distinct.push(data[i].departmentName);
-                unique[data[i].departmentName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortdepartmentName.push({
-                departmentName: distinct[i],
-              });
-              self.state.sortFilterdepartmentName.push({
-                departmentName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].storeName] && data[i].storeName !== "") {
-                distinct.push(data[i].storeName);
-                unique[data[i].storeName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortstoreName.push({ storeName: distinct[i] });
-              self.state.sortFilterstoreName.push({ storeName: distinct[i] });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].priorityName] &&
-                data[i].priorityName !== ""
-              ) {
-                distinct.push(data[i].priorityName);
-                unique[data[i].priorityName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortpriorityName.push({ priorityName: distinct[i] });
-              self.state.sortFilterpriorityName.push({
-                priorityName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
-                distinct.push(data[i].creationOn);
-                unique[data[i].creationOn] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortcreationOn.push({
-                creationOn: distinct[i],
-              });
-              self.state.sortFiltercreationOn.push({
-                creationOn: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].createdBy] && data[i].createdBy !== "") {
-                distinct.push(data[i].createdBy);
-                unique[data[i].createdBy] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortcreatedBy.push({ createdBy: distinct[i] });
-              self.state.sortFiltercreatedBy.push({
-                createdBy: distinct[i],
-              });
-            }
-          }
-        } else {
-          if (tabFor === 1) {
-            self.setState({ raisedByMeData: data, isloading: false });
-          }
-          if (tabFor === 2) {
-            self.setState({ assignToMeData: data, isloading: false });
-          }
-        }
-      })
-      .catch((response) => {
-        self.setState({ isloading: false });
-        console.log(response, "---handleGetTaskData");
+        sortdepartmentName: [],
+        sortstoreName: [],
+        sortpriorityName: [],
+        sortcreationOn: [],
+        sortassignto: [],
+        sortcreatedBy: [],
       });
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreTask/GetStoreTaskList",
+        headers: authHeader(),
+        params: { tabFor: tabFor },
+      })
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          var data = response.data.responseData;
+          if (message === "Success" && data.length > 0) {
+            if (tabFor === 1) {
+              self.setState({
+                raisedByMeData: data,
+                isloading: false,
+                tabIndex: tabFor,
+              });
+              self.state.sortAllData = data;
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].departmentName] &&
+                  data[i].departmentName !== ""
+                ) {
+                  distinct.push(data[i].departmentName);
+                  unique[data[i].departmentName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortdepartmentName.push({
+                  departmentName: distinct[i],
+                });
+                self.state.sortFilterdepartmentName.push({
+                  departmentName: distinct[i],
+                });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].storeName] && data[i].storeName !== "") {
+                  distinct.push(data[i].storeName);
+                  unique[data[i].storeName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortstoreName.push({ storeName: distinct[i] });
+                self.state.sortFilterstoreName.push({ storeName: distinct[i] });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].priorityName] &&
+                  data[i].priorityName !== ""
+                ) {
+                  distinct.push(data[i].priorityName);
+                  unique[data[i].priorityName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortpriorityName.push({ priorityName: distinct[i] });
+                self.state.sortFilterpriorityName.push({
+                  priorityName: distinct[i],
+                });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
+                  distinct.push(data[i].creationOn);
+                  unique[data[i].creationOn] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortcreationOn.push({
+                  creationOn: distinct[i],
+                });
+                self.state.sortFiltercreationOn.push({
+                  creationOn: distinct[i],
+                });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].assignto] && data[i].assignto !== "") {
+                  distinct.push(data[i].assignto);
+                  unique[data[i].assignto] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortassignto.push({ assignto: distinct[i] });
+                self.state.sortFilterassignto.push({
+                  assignto: distinct[i],
+                });
+              }
+            }
+            if (tabFor === 2) {
+              self.setState({
+                assignToMeData: data,
+                isloading: false,
+                tabIndex: tabFor,
+              });
+              self.state.sortAllData = data;
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].departmentName] &&
+                  data[i].departmentName !== ""
+                ) {
+                  distinct.push(data[i].departmentName);
+                  unique[data[i].departmentName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortdepartmentName.push({
+                  departmentName: distinct[i],
+                });
+                self.state.sortFilterdepartmentName.push({
+                  departmentName: distinct[i],
+                });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].storeName] && data[i].storeName !== "") {
+                  distinct.push(data[i].storeName);
+                  unique[data[i].storeName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortstoreName.push({ storeName: distinct[i] });
+                self.state.sortFilterstoreName.push({ storeName: distinct[i] });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].priorityName] &&
+                  data[i].priorityName !== ""
+                ) {
+                  distinct.push(data[i].priorityName);
+                  unique[data[i].priorityName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortpriorityName.push({ priorityName: distinct[i] });
+                self.state.sortFilterpriorityName.push({
+                  priorityName: distinct[i],
+                });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
+                  distinct.push(data[i].creationOn);
+                  unique[data[i].creationOn] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortcreationOn.push({
+                  creationOn: distinct[i],
+                });
+                self.state.sortFiltercreationOn.push({
+                  creationOn: distinct[i],
+                });
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].createdBy] && data[i].createdBy !== "") {
+                  distinct.push(data[i].createdBy);
+                  unique[data[i].createdBy] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                self.state.sortcreatedBy.push({ createdBy: distinct[i] });
+                self.state.sortFiltercreatedBy.push({
+                  createdBy: distinct[i],
+                });
+              }
+            }
+          } else {
+            if (tabFor === 1) {
+              self.setState({ raisedByMeData: data, isloading: false });
+            }
+            if (tabFor === 2) {
+              self.setState({ assignToMeData: data, isloading: false });
+            }
+          }
+        })
+        .catch((response) => {
+          self.setState({ isloading: false });
+          console.log(response, "---handleGetTaskData");
+        });
+    }
   }
 
   handleGetTaskbyTicket() {
