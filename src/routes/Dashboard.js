@@ -2926,7 +2926,6 @@ class Dashboard extends Component {
   }
   handleGetCategoryList() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2935,12 +2934,19 @@ class Dashboard extends Component {
     })
       .then(function(res) {
         debugger;
+        let data = res.data;
         let CategoryData = res.data;
-        // let CategoryDataAll = res.data;
-        self.setState({
-          CategoryData: CategoryData,
-          // CategoryDataAll: CategoryDataAll
-        });
+        if(data.length > 0){
+          self.setState({
+            CategoryData: CategoryData,
+            // CategoryDataAll: CategoryDataAll
+          });
+        }else{
+          self.setState({
+            CategoryData: [],
+          });
+        }
+        
       })
       .catch((data) => {
         console.log(data);

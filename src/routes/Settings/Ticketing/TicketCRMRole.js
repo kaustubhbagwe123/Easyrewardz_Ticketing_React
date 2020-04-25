@@ -970,7 +970,7 @@ class TicketCRMRole extends Component {
     NotificationManager.success("File deleted successfully.");
   };
   render() {
-    const TranslationContext = this.context.state.translateLanguage.default
+       const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">

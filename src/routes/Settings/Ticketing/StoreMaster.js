@@ -1717,6 +1717,81 @@ class StoreMaster extends Component {
           }
         }
         for (let i = 0; i < distinct.length; i++) {
+          if (distinct[i]) {
+            self.state.sortStoreName.push({ storeName: distinct[i] });
+            self.state.sortFilterStoreName.push({ storeName: distinct[i] });
+          }
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].regionName]) {
+            distinct.push(data[i].regionName);
+            unique[data[i].regionName] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          if (distinct[i]) {
+            self.state.sortStoreCode.push({ storeCode: distinct[i] });
+            self.state.sortFilterStoreCode.push({ storeCode: distinct[i] });
+          }
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].zone]) {
+            distinct.push(data[i].zone);
+            unique[data[i].zone] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          if (distinct[i]) {
+            self.state.sortCity.push({ cityName: distinct[i] });
+            self.state.sortFilterCity.push({ cityName: distinct[i] });
+          }
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].stateName]) {
+            distinct.push(data[i].stateName);
+            unique[data[i].stateName] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          if (distinct[i]) {
+            self.state.sortState.push({ stateName: distinct[i] });
+            self.state.sortFilterState.push({ stateName: distinct[i] });
+          }
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].strPinCode]) {
+            distinct.push(data[i].strPinCode);
+            unique[data[i].strPinCode] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          if (distinct[i]) {
+            self.state.sortPincode.push({ strPinCode: distinct[i] });
+            self.state.sortFilterPincode.push({ strPinCode: distinct[i] });
+          }
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].brandNames]) {
+            distinct.push(data[i].brandNames);
+            unique[data[i].brandNames] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
           self.state.sortBrandName.push({ brandNames: distinct[i] });
           self.state.sortFilterBrandName.push({ brandNames: distinct[i] });
         }
@@ -3034,6 +3109,162 @@ class StoreMaster extends Component {
                         </div>
                       ))
                     : null}
+                  {this.state.sortColumn === "regionName"
+                    ? this.state.sortFilterregionName !== null &&
+                      this.state.sortFilterregionName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.regionName}
+                            value={item.regionName}
+                            checked={this.state.sregionNameFilterCheckbox.includes(
+                              item.regionName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "regionName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.regionName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.regionName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "zone"
+                    ? this.state.sortFilterzone !== null &&
+                      this.state.sortFilterzone.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.zone}
+                            value={item.zone}
+                            checked={this.state.szoneFilterCheckbox.includes(
+                              item.zone
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "zone",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.zone}>
+                            <span className="table-btn table-blue-btn">
+                              {item.zone}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "storeTypeName"
+                    ? this.state.sortFilterstoreTypeName !== null &&
+                      this.state.sortFilterstoreTypeName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.storeTypeName}
+                            value={item.storeTypeName}
+                            checked={this.state.sstoreTypeNameFilterCheckbox.includes(
+                              item.storeTypeName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "storeTypeName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.storeTypeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.storeTypeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "email"
+                    ? this.state.sortFilteremail !== null &&
+                      this.state.sortFilteremail.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.email}
+                            value={item.email}
+                            checked={this.state.semailFilterCheckbox.includes(
+                              item.email
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "email",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.email}>
+                            <span className="table-btn table-blue-btn">
+                              {item.email}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "phoneNumber"
+                    ? this.state.sortFilterphoneNumber !== null &&
+                      this.state.sortFilterphoneNumber.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.phoneNumber}
+                            value={item.phoneNumber}
+                            checked={this.state.sphoneNumberFilterCheckbox.includes(
+                              item.phoneNumber
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "phoneNumber",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.phoneNumber}>
+                            <span className="table-btn table-blue-btn">
+                              {item.phoneNumber}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                  {this.state.sortColumn === "status"
+                    ? this.state.sortFilterstatus !== null &&
+                      this.state.sortFilterstatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
                   {/* {this.state.sortColumn === "brandNames"
                     ? this.state.sortFilterBrandName !== null &&
                       this.state.sortFilterBrandName.map((item, i) => (
@@ -3313,6 +3544,128 @@ class StoreMaster extends Component {
                     }
                     })()
                   } 
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "strPinCode",
+                        },
+                        {
+                          Header: (
+                            <span
+                            // className={this.state.pincodeColor}
+                            // onClick={this.StatusOpenModel.bind(
+                            //   this,
+                            //   "strPinCode",
+                            //   "Pin Code"
+                            // )}
+                            >
+                              Address
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "address",
+                          minWidth: 250,
+                        },
+                        {
+                          Header: (
+                            <span
+                              // className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "regionName",
+                                "Region Name"
+                              )}
+                            >
+                              Region
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "regionName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              // className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "zone",
+                                "Zone"
+                              )}
+                            >
+                              Zone
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "zone",
+                        },
+                        {
+                          Header: (
+                            <span
+                              // className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeTypeName",
+                                "Store Type"
+                              )}
+                            >
+                              Store Type
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeTypeName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              // className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "email",
+                                "Email ID"
+                              )}
+                            >
+                              Email ID
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "email",
+                          minWidth: 220,
+                        },
+                        {
+                          Header: (
+                            <span
+                              // className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "phoneNumber",
+                                "Phone No"
+                              )}
+                            >
+                              Phone No
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "phoneNumber",
+                          minWidth: 120,
+                        },
+                        {
+                          Header: (
+                            <span
+                              // className={this.state.pincodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "status",
+                                "Status"
+                              )}
+                            >
+                              Status
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),

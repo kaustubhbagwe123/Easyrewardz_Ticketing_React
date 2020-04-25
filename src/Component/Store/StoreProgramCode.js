@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import logo from "../assets/Images/logo.jpg";
+import logo from "../../assets/Images/logo.jpg";
 import SimpleReactValidator from "simple-react-validator";
-import { encryption } from "../helpers/encryption";
+import { encryption } from "../../helpers/encryption";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import axios from "axios";
-import config from "../helpers/config";
+import config from "../../helpers/config";
 
-class ProgramCodeSignIn extends Component {
+class StoreProgramCode extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,52 +26,54 @@ class ProgramCodeSignIn extends Component {
     // debugger
     let self = this;
     if (this.validator.allValid()) {
-      const{programCode}=this.state;
-      var encProgramCode=encryption(programCode, "enc");
-      // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
-      let X_Authorized_Domainname = encryption('http://erbelltktstore.dcdev.brainvire.net', "enc");
-      // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
+      const { programCode } = this.state;
+      var encProgramCode = encryption(programCode, "enc");
+      let X_Authorized_Domainname = encryption(
+        "http://erbelltktstore.dcdev.brainvire.net",
+        "enc"
+      );
+      // let X_Authorized_Domainname = encryption(
+      //   "http://erbelltktstore.dcdev.brainvire.net",
+      //   "enc"
+      // );
+      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
-      // setTimeout(function() {
-      //   self.props.history.push({
-      //     pathname: "SignIn",
-      //     encProgramCode: encProgramCode
-      //   });
-      // }, 500);
-      // self.setState({ 
-      //   encProgramCode: {programCode: encProgramCode}
-      // });
+
+      // validate program code
       axios({
         method: "get",
-        url: config.apiUrl + "/Account/validateprogramcode",
+        url: config.apiUrl + "/StoreAccount/validateprogramcode",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "X-Authorized-Programcode": X_Authorized_Programcode,
           "X-Authorized-Domainname": X_Authorized_Domainname,
         },
-      }).then(function(res) {
-        debugger;
-        let Msg = res.data.statusCode;
-        if (Msg === 200) {
-          setTimeout(function() {
-            self.props.history.push({
-              pathname: "SignIn",
-              encProgramCode: encProgramCode,
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.statusCode;
+          if (Msg === 200) {
+            setTimeout(function() {
+              self.props.history.push({
+                pathname: "storeSignIn",
+                encProgramCode: encProgramCode,
+              });
+            }, 500);
+            self.setState({
+              encProgramCode: { programCode: encProgramCode },
             });
-          }, 500);
-          self.setState({
-            encProgramCode: { programCode: encProgramCode },
-          });
-        } else {
-          NotificationManager.error(
-            "Please enter valid program code.",
-            "",
-            1500
-          );
-        }
-      });
+          } else {
+            NotificationManager.error(
+              "Please enter valid program code.",
+              "",
+              1500
+            );
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
       // this.props.history.push("SignIn");
     } else {
       this.validator.showMessages();
@@ -80,11 +82,6 @@ class ProgramCodeSignIn extends Component {
   }
   handleProgramCode = (e) => {
     this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleActiveStatus = (e) => {
-    let value = e.target.value;
-    this.setState({ selectedActiveStatus: value });
   };
 
   render() {
@@ -103,7 +100,7 @@ class ProgramCodeSignIn extends Component {
                   <input
                     type="text"
                     className="program-code-textbox"
-                    placeholder="Program Code*"
+                    placeholder="Store Program Code*"
                     style={{ border: 0 }}
                     name="programCode"
                     maxLength={10}
@@ -132,4 +129,4 @@ class ProgramCodeSignIn extends Component {
     );
   }
 }
-export default ProgramCodeSignIn;
+export default StoreProgramCode;

@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/ie11";
-import "./../assets/css/custome.css";
-import Logo from "./../assets/Images/logo.jpg";
+import "./../../assets/css/custome.css";
+import Logo from "./../../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { encryption } from "../helpers/encryption";
+import { encryption } from "../../helpers/encryption";
 import axios from "axios";
-import { authHeader } from "../helpers/authHeader";
-import config from "../helpers/config";
+import { authHeader } from "../../helpers/authHeader";
+import config from "../../helpers/config";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import SimpleReactValidator from "simple-react-validator";
 
-class SingIn extends Component {
+class StoreSignIn extends Component {
   constructor(props) {
     super(props);
 
@@ -37,6 +37,12 @@ class SingIn extends Component {
     });
   }
 
+  handlePasswordChange = (e) => {
+    this.setState({
+      password: e.target.value,
+    });
+  };
+
   componentDidMount() {
     debugger;
     if (this.props.location.encProgramCode) {
@@ -46,10 +52,10 @@ class SingIn extends Component {
           programCode: finalEncProgramCode,
         });
       } else {
-        this.props.history.push("/");
+        this.props.history.push("/storeProgramCode");
       }
     } else {
-      this.props.history.push("/");
+      this.props.history.push("/storeProgramCode");
     }
   }
 
@@ -58,7 +64,7 @@ class SingIn extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/CRMRole/GetRolesByUserID",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
       headers: authHeader(),
     })
       .then(function(res) {
@@ -82,23 +88,23 @@ class SingIn extends Component {
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/admin/dashboard");
+                  self.props.history.push("/store/storedashboard");
                 }, 400);
                 return;
               } else if (
-                data[i].moduleName === "Tickets" &&
+                data[i].moduleName === "Tasks" &&
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/admin/myTicketlist");
+                  self.props.history.push("/store/StoreTask");
                 }, 400);
                 return;
               } else if (
-                data[i].moduleName === "Knowledge Base" &&
+                data[i].moduleName === "Claim" &&
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/admin/knowledgebase");
+                  self.props.history.push("/store/claim");
                 }, 400);
                 return;
               } else if (
@@ -130,22 +136,21 @@ class SingIn extends Component {
       let X_Authorized_password = encryption(password, "enc");
 
       // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
       let X_Authorized_Domainname = encryption(
         "http://erbelltktstore.dcdev.brainvire.net",
         "enc"
       );
-      // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption(
-      //   "http://easyrewardz.demo.brainvire.net",
+      //   "http://erbelltktstore.dcdev.brainvire.net",
       //   "enc"
       // );
 
       let X_Authorized_Programcode = this.state.programCode;
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
+        // authenticate user
         axios({
           method: "post",
-          url: config.apiUrl + "/Account/authenticateUser",
+          url: config.apiUrl + "/StoreAccount/authenticateUser",
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -154,32 +159,32 @@ class SingIn extends Component {
             "X-Authorized-password": X_Authorized_password,
             "X-Authorized-Domainname": X_Authorized_Domainname,
           },
-        }).then(function(res) {
-          debugger;
-          let resValid = res.data.message;
-          self.setState({
-            loading: true,
-          });
-          if (resValid === "Valid Login") {
+        })
+          .then(function(res) {
             debugger;
-            //NotificationManager.success("Login Successfull.");
-            window.localStorage.setItem("token", res.data.responseData.token);
-            window.localStorage.setItem("ERT", true);
-            self.handleCRMRole();
-            // setTimeout(function () {
-            //   self.props.history.push("/admin/dashboard");
-            // }, 400);
-          } else {
-            NotificationManager.error(
-              "Username or password is invalid.",
-              "",
-              1500
-            );
+            let resValid = res.data.message;
             self.setState({
-              loading: false,
+              loading: true,
             });
-          }
-        });
+            if (resValid === "Valid Login") {
+              debugger;
+              window.localStorage.setItem("token", res.data.responseData.token);
+              window.localStorage.setItem("ERS", true);
+              self.handleCRMRole();
+            } else {
+              NotificationManager.error(
+                "Username or password is invalid.",
+                "",
+                1500
+              );
+              self.setState({
+                loading: false,
+              });
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
       }
     } else {
       this.validator.showMessages();
@@ -221,9 +226,7 @@ class SingIn extends Component {
                     type="password"
                     className="program-code-textbox"
                     placeholder="Password*"
-                    name="password"
-                    onChange={this.hanleChange}
-                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
                     autoComplete="off"
                     maxLength={25}
                   />
@@ -254,7 +257,7 @@ class SingIn extends Component {
                 <br />
                 <p className="mb-0 text-muted">
                   <Link
-                    to="Forgotpassword"
+                    to="storeForgotpassword"
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                     FORGOT PASSWORD
@@ -269,4 +272,4 @@ class SingIn extends Component {
   }
 }
 
-export default SingIn;
+export default StoreSignIn;

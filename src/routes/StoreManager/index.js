@@ -10,6 +10,7 @@ import RaiseClaim from "./RaiseClaim";
 import Claim from "./Claim";
 import ClaimApproveReject from "./ClaimApproveReject";
 import StoreAddTask from "./StoreAddTask";
+import Settings from "./../Settings/Settings";
 import HierarchyMaster from "./../Settings/Store/HierarchyMaster";
 import StorePriority from "./../Settings/Store/StorePriority";
 import StoreCRMRole from "./../Settings/Store/StoreCRMRole";
@@ -22,6 +23,8 @@ import DepartmentMaster from "./../Settings/Store/DepartmentMaster";
 import ClaimCategoryMaster from "./../Settings/Store/ClaimCategoryMaster";
 import StoreAlerts from "./../Settings/Store/StoreAlerts";
 import { NotificationContainer } from "react-notifications";
+import StoreFileUploadLogs from "../Settings/Store/StoreFileUploadLogs";
+import UserProfile from "./UserProfile";
 
 export class StoreApp extends Component {
   render() {
@@ -77,6 +80,7 @@ export class StoreApp extends Component {
           path={`${match.url}/storeCRMRole`}
           component={StoreCRMRole}
         />
+        <Route exact path={`${match.url}/settings`} component={Settings} />
         <Route
           exact
           path={`${match.url}/storeReports`}
@@ -108,6 +112,16 @@ export class StoreApp extends Component {
           exact
           path={`${match.url}/storeAlerts`}
           component={StoreAlerts}
+        />
+        <Route
+          exact
+          path={`${match.url}/storeFileUploadLogs`}
+          component={StoreFileUploadLogs}
+        />
+        <Route
+          exact
+          path={`${match.url}/userProfile`}
+          component={UserProfile}
         />
         <NotificationContainer />
       </StoreLayout>

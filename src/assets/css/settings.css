@@ -634,6 +634,13 @@
   padding: 25px 35px;
   margin-bottom: 25px;
 }
+.right-sect-div-edit {
+  box-shadow: initial;
+  padding: 0;
+}
+.right-sect-div-edit label {
+  font-size: 12px !important;
+}
 .right-sect-div:last-child {
   margin-bottom: 0;
 }
@@ -2538,6 +2545,12 @@
 }
 .storePop-lbl {
   font-weight: 500;
+  max-width: 250px;
+}
+.campaign-script-less {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .stort-textArea {
   display: flex;
@@ -2673,6 +2686,12 @@
   cursor: pointer;
   border: none;
   font-weight: 600;
+  margin-bottom: 25px;
+}
+.chatallowedStore select {
+  margin-bottom: 0;
+}
+.chatallowedStore .row {
   margin-bottom: 25px;
 }
 .chatagent {
@@ -3345,4 +3364,14 @@
 .fileupload-span {
   font-weight: 700;
   color: #2561a8;
+}
+#Raised-popup {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  left: 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+.progress-sect
+{
+  display:inherit;
 }

@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
- 
+
 import "react-datepicker/dist/react-datepicker.css";
 
 class CampaignTable1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: null       
+      startDate: null,
     };
     this.DateChange = this.DateChange.bind(this);
   }
-  DateChange(date){
+  DateChange(date) {
     this.setState({
-      startDate: date
+      startDate: date,
     });
   }
-  
+
   render() {
     return (
       <div>
@@ -28,14 +28,14 @@ class CampaignTable1 extends Component {
               <th style={{ paddingLeft: "8px" }}>Status</th>
               <th style={{ padding: "0px" }}>Responce</th>
               <th style={{ padding: "0px" }}>Call Recheduled To</th>
-              <th style={{ textAlign: "left",float:"right" }}>Actions</th>
+              <th style={{ textAlign: "left", float: "right" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr style={{ border: "none" }}>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -44,30 +44,66 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
-                <button
+                {/* <button
                   className="contactBtnGreen"
                   type="button"
                   style={{ minWidth: "5px", marginRight: "2px" }}
                 >
                   <label className="table-btnlabel">Contacted</label>
-                </button>
-                <button
+                </button> */}
+                <input
+                  type="radio"
+                  name="campaign-status"
+                  className="campaign-status-btn"
+                  id="contactBtnGreen"
+                />
+                <label
+                  className="table-btnlabel contactBtnGreen"
+                  htmlFor="contactBtnGreen"
+                >
+                  Contacted
+                </label>
+                {/* <button
                   className="notConnectedBtnRed"
                   type="button"
                   style={{ marginRight: "2px" }}
                 >
                   <label className="table-btnlabel">Not Contacted</label>
-                </button>
-                <button
+                </button> */}
+                <input
+                  type="radio"
+                  name="campaign-status"
+                  className="campaign-status-btn"
+                  id="notConnectedBtnRed"
+                />
+                <label
+                  className="table-btnlabel notConnectedBtnRed"
+                  htmlFor="notConnectedBtnRed"
+                >
+                  Not Contacted
+                </label>
+                {/* <button
                   className="followUpBtnYellow"
                   type="button"
                   style={{ minWidth: "5px" }}
                 >
                   <label className="table-btnlabel">Follow Up</label>
-                </button>
+                </button> */}
+                <input
+                  type="radio"
+                  name="campaign-status"
+                  className="campaign-status-btn"
+                  id="followUpBtnYellow"
+                />
+                <label
+                  className="table-btnlabel followUpBtnYellow"
+                  htmlFor="followUpBtnYellow"
+                >
+                  Follow Up
+                </label>
               </td>
               <td style={{ width: "18%", paddingLeft: "0px" }}>
                 <select
@@ -93,13 +129,14 @@ class CampaignTable1 extends Component {
                   className="txtStore dateTimeStore"
                 /> */}
                 <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
@@ -118,7 +155,7 @@ class CampaignTable1 extends Component {
             <tr style={{ border: "none" }}>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -127,7 +164,7 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 <button
@@ -170,14 +207,15 @@ class CampaignTable1 extends Component {
                 </select>
               </td>
               <td style={{ width: "15%", textAlign: "left", padding: "0px" }}>
-              <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                <DatePicker
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
@@ -196,7 +234,7 @@ class CampaignTable1 extends Component {
             <tr style={{ border: "none" }}>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -205,7 +243,7 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 <button
@@ -248,14 +286,15 @@ class CampaignTable1 extends Component {
                 </select>
               </td>
               <td style={{ width: "15%", textAlign: "left", padding: "0px" }}>
-              <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                <DatePicker
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
@@ -274,7 +313,7 @@ class CampaignTable1 extends Component {
             <tr style={{ border: "none" }}>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -283,7 +322,7 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 <button
@@ -326,14 +365,15 @@ class CampaignTable1 extends Component {
                 </select>
               </td>
               <td style={{ width: "15%", textAlign: "left", padding: "0px" }}>
-              <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                <DatePicker
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
@@ -352,7 +392,7 @@ class CampaignTable1 extends Component {
             <tr style={{ border: "none" }}>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -361,7 +401,7 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 <button
@@ -404,14 +444,15 @@ class CampaignTable1 extends Component {
                 </select>
               </td>
               <td style={{ width: "15%", textAlign: "left", padding: "0px" }}>
-              <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                <DatePicker
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
@@ -430,7 +471,7 @@ class CampaignTable1 extends Component {
             <tr style={{ border: "none" }}>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -439,7 +480,7 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 <button
@@ -482,14 +523,15 @@ class CampaignTable1 extends Component {
                 </select>
               </td>
               <td style={{ width: "15%", textAlign: "left", padding: "0px" }}>
-              <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                <DatePicker
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
@@ -508,7 +550,7 @@ class CampaignTable1 extends Component {
             <tr>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 Naman Rampal
-                <span>9873470074</span>
+                <span className="sml-fnt">9873470074</span>
               </td>
               <td style={{ textAlign: "left", whiteSpace: "nowrap" }}>
                 29 April 2016
@@ -517,7 +559,7 @@ class CampaignTable1 extends Component {
                 style={{
                   paddingLeft: "5px",
                   textAlign: "left",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 <button
@@ -560,14 +602,15 @@ class CampaignTable1 extends Component {
                 </select>
               </td>
               <td style={{ width: "15%", textAlign: "left", padding: "0px" }}>
-              <DatePicker
-                  id="startDate" name="startDate"
-                  showMonthDropdown showYearDropdown
+                <DatePicker
+                  id="startDate"
+                  name="startDate"
+                  showMonthDropdown
+                  showYearDropdown
                   selected={this.state.startDate}
                   onChange={this.DateChange}
                   className="txtStore dateTimeStore"
                   placeholderText="Select Date & Time"
-                  
                 />
               </td>
               <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>

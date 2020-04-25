@@ -23,13 +23,11 @@ import config from "../../../helpers/config";
 import Dropzone from "react-dropzone";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import { authHeader } from "./../../../helpers/authHeader";
 
-const MyButton = props => {
+const MyButton = (props) => {
   const { children } = props;
   return (
     <div style={{ cursor: "pointer" }} {...props}>
@@ -40,7 +38,7 @@ const MyButton = props => {
   );
 };
 
-const Content = props => {
+const Content = (props) => {
   const { rowData } = props;
   const [designationName, setDesignationvalue] = useState(
     rowData.designationName
@@ -62,7 +60,7 @@ const Content = props => {
           maxLength={25}
           name="designation_Name"
           value={designationName}
-          onChange={e => setDesignationvalue(e.target.value)}
+          onChange={(e) => setDesignationvalue(e.target.value)}
         />
         {designationName === "" && (
           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -77,7 +75,7 @@ const Content = props => {
           name="report_To"
           value={reportTo}
           //onChange={this.handleOnChangeData}
-          onChange={e => setreportToValue(e.target.value)}
+          onChange={(e) => setreportToValue(e.target.value)}
         >
           <option>select</option>
           <option value={0}>Root</option>
@@ -100,7 +98,7 @@ const Content = props => {
           className="edit-dropDwon dropdown-setting"
           name="designation_status"
           value={status}
-          onChange={e => setStatusValue(e.target.value)}
+          onChange={(e) => setStatusValue(e.target.value)}
         >
           <option>select</option>
           {props.activeData !== null &&
@@ -123,7 +121,7 @@ const Content = props => {
         </a>
         <button
           className="pop-over-button"
-          onClick={e => {
+          onClick={(e) => {
             props.handleUpdateHierarchyData(e, designationID);
           }}
           disabled={props.editSaveLoading}
@@ -203,7 +201,7 @@ class HierarchyMaster extends Component {
       file: {},
       fileValidation: "",
       isErrorBulkUpload: false,
-      isShowProgress: false
+      isShowProgress: false,
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -226,16 +224,15 @@ class HierarchyMaster extends Component {
       this.setState({
         StatusModel: false,
         hierarchyData: this.state.temphierarchyData,
-        filterTxtValue: ""
+        filterTxtValue: "",
       });
       if (this.state.sortColumn === "designationName") {
         if (this.state.sdesignationNameFilterCheckbox === "") {
         } else {
           this.setState({
-            sreportToFilterCheckbox	:"",	
-            screatedbypersonFilterCheckbox		:"",	
-            sstatusFilterCheckbox		:"",	
-            
+            sreportToFilterCheckbox: "",
+            screatedbypersonFilterCheckbox: "",
+            sstatusFilterCheckbox: "",
           });
         }
       }
@@ -245,7 +242,7 @@ class HierarchyMaster extends Component {
           this.setState({
             sdesignationNameFilterCheckbox: "",
             screatedbypersonFilterCheckbox: "",
-            sstatusFilterCheckbox: ""
+            sstatusFilterCheckbox: "",
           });
         }
       }
@@ -255,7 +252,7 @@ class HierarchyMaster extends Component {
           this.setState({
             sdesignationNameFilterCheckbox: "",
             sreportToFilterCheckbox: "",
-            sstatusFilterCheckbox: ""
+            sstatusFilterCheckbox: "",
           });
         }
       }
@@ -265,7 +262,7 @@ class HierarchyMaster extends Component {
           this.setState({
             sdesignationNameFilterCheckbox: "",
             sreportToFilterCheckbox: "",
-            screatedbypersonFilterCheckbox: ""
+            screatedbypersonFilterCheckbox: "",
           });
         }
       }
@@ -273,32 +270,44 @@ class HierarchyMaster extends Component {
       this.setState({
         StatusModel: false,
         hierarchyData: this.state.sortAllData,
-        filterTxtValue: ""
+        filterTxtValue: "",
       });
     }
+  }
+  updateUploadProgress(value) {
+    this.setState({ progressValue: value });
   }
 
   handleBulkUpload() {
     let self = this;
-    if (this.state.file) {
+    if (this.state.fileName) {
       const formData = new FormData();
       formData.append("file", this.state.file);
+      this.setState({ isShowProgress: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+        url: config.apiUrl + "/StoreHierarchy/BulkUploadStoreHierarchy",
         headers: authHeader(),
-        data: formData
-      }).then(response => {
-          var status = response.data.status;
+        data: formData,
+        onUploadProgress: (ev = ProgressEvent) => {
+          const progress = (ev.loaded / ev.total) * 100;
+          this.updateUploadProgress(Math.round(progress));
+        },
+      })
+        .then((response) => {
+          var status = response.data.message;
           var itemData = response.data.responseData;
-          if (status && itemData.lenght > 0) {
-            self.setState(itemData);
-            self.setState({ isErrorBulkUpload: false });
+          if (status === "Success") {
+            NotificationManager.success("File uploaded successfully.");
+            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.handleGetItem();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            self.setState({ isErrorBulkUpload: true });
+            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(response => {
+        .catch((response) => {
           self.setState({ isErrorBulkUpload: true });
           console.log(response);
         });
@@ -323,7 +332,7 @@ class HierarchyMaster extends Component {
     itemsArray.sort((a, b) => a.designationName > b.designationName);
 
     this.setState({
-      hierarchyData: itemsArray
+      hierarchyData: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -336,7 +345,7 @@ class HierarchyMaster extends Component {
       return b.designationName > a.designationName;
     });
     this.setState({
-      hierarchyData: itemsArray
+      hierarchyData: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -478,7 +487,7 @@ class HierarchyMaster extends Component {
       sdesignationNameFilterCheckbox,
       sreportToFilterCheckbox,
       screatedbypersonFilterCheckbox,
-      sstatusFilterCheckbox
+      sstatusFilterCheckbox,
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -488,7 +497,7 @@ class HierarchyMaster extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.designationName === sItems[i]
+              (a) => a.designationName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -500,32 +509,15 @@ class HierarchyMaster extends Component {
       }
       this.setState({
         designationColor: "sort-column",
-        [e.target.name]: true
+        [e.target.name]: true,
       });
     } else if (column === "reportTo") {
       var sItems = sreportToFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.reportTo === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        reportToColor: "sort-column"
-      });
-    } else if (column === "createdbyperson") {
-      var sItems = screatedbypersonFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.createdbyperson === sItems[i]
+              (a) => a.reportTo === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -536,14 +528,16 @@ class HierarchyMaster extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        reportToColor: "sort-column",
       });
-    } else if (column === "status") {
-      var sItems = sstatusFilterCheckbox.split(",");
+    } else if (column === "createdbyperson") {
+      var sItems = screatedbypersonFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.status === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.createdbyperson === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -553,26 +547,45 @@ class HierarchyMaster extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        createdColor: "sort-column",
+      });
+    } else if (column === "status") {
+      var sItems = sstatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter((a) => a.status === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      temphierarchyData: itemsArray
+      temphierarchyData: itemsArray,
     });
     // this.StatusCloseModel();
   };
 
-  handleOnChangeHierarchyData = e => {
+  handleOnChangeHierarchyData = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
-  handleOnReportToChange = e => {
+  handleOnReportToChange = (e) => {
     let value = e.target.value;
     this.setState({ selectReportTo: value });
   };
-  handleStatusChange = e => {
+
+  handleStatusChange = (e) => {
+    debugger;
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
@@ -590,29 +603,41 @@ class HierarchyMaster extends Component {
     }
   };
 
+  fileUpload = (file) => {
+    debugger;
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
+      this.setState({
+        fileName,
+        fileSize,
+        file: file[0],
+        fileValidation: "",
+      });
+    }
+  };
+
   hanldeGetReportListDropDown() {
     axios({
       method: "post",
-      url: config.apiUrl + "/Designation/GetDesignationList",
+      url: config.apiUrl + "/StoreHierarchy/GetStoreDesignationList",
       headers: authHeader(),
-      params: {
-        hierarchyFor: 2
-      }
-    }).then(response => {
+    })
+      .then((response) => {
         debugger;
         let status = response.data.message;
         let data = response.data.responseData;
         if (status === "Success") {
           this.setState({
-            reportToData: data
+            reportToData: data,
           });
         } else {
           this.setState({
-            reportToData: []
+            reportToData: [],
           });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -677,7 +702,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterDesignation });
       } else {
         this.setState({
-          sortFilterDesignation: this.state.sortDesignation
+          sortFilterDesignation: this.state.sortDesignation,
         });
       }
     }
@@ -691,7 +716,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterReportTo });
       } else {
         this.setState({
-          sortFilterReportTo: this.state.sortReportTo
+          sortFilterReportTo: this.state.sortReportTo,
         });
       }
     }
@@ -700,14 +725,14 @@ class HierarchyMaster extends Component {
         this.state.sortCreatedBy,
         e.target.value,
         {
-          keys: ["createdbyperson"]
+          keys: ["createdbyperson"],
         }
       );
       if (sortFilterCreatedBy.length > 0) {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy
+          sortFilterCreatedBy: this.state.sortCreatedBy,
         });
       }
     }
@@ -716,14 +741,14 @@ class HierarchyMaster extends Component {
         this.state.sortCreatedBy,
         e.target.value,
         {
-          keys: ["status"]
+          keys: ["status"],
         }
       );
       if (sortFilterStatus.length > 0) {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortCreatedBy
+          sortFilterStatus: this.state.sortCreatedBy,
         });
       }
     }
@@ -733,12 +758,10 @@ class HierarchyMaster extends Component {
   handleGetItem() {
     axios({
       method: "post",
-      url: config.apiUrl + "/Hierarchy/ListHierarchy",
+      url: config.apiUrl + "/StoreHierarchy/ListStoreHierarchy",
       headers: authHeader(),
-      params: {
-        HierarchyFor: 2
-      }
-    }).then(response => {
+    })
+      .then((response) => {
         debugger;
         let status = response.data.message;
         let data = response.data.responseData;
@@ -756,7 +779,7 @@ class HierarchyMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             this.state.sortDesignation.push({ designationName: distinct[i] });
             this.state.sortFilterDesignation.push({
-              designationName: distinct[i]
+              designationName: distinct[i],
             });
           }
 
@@ -784,7 +807,7 @@ class HierarchyMaster extends Component {
           for (let i = 0; i < distinct.length; i++) {
             this.state.sortCreatedBy.push({ createdbyperson: distinct[i] });
             this.state.sortFilterCreatedBy.push({
-              createdbyperson: distinct[i]
+              createdbyperson: distinct[i],
             });
           }
 
@@ -804,15 +827,15 @@ class HierarchyMaster extends Component {
 
         if (status === "Success" && data) {
           this.setState({
-            hierarchyData: data
+            hierarchyData: data,
           });
         } else {
           this.setState({
-            hierarchyData: []
+            hierarchyData: [],
           });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -824,7 +847,7 @@ class HierarchyMaster extends Component {
       fileName: "",
       fileSize: "",
       isErrorBulkUpload: false,
-      isShowProgress: false
+      isShowProgress: false,
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -834,14 +857,13 @@ class HierarchyMaster extends Component {
     debugger;
     axios({
       method: "post",
-      url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+      url: config.apiUrl + "/StoreHierarchy/DeleteStoreHierarchy",
       headers: authHeader(),
       data: {
-        DesignationID: hierarchy_Id,
-        Deleteflag: 1,
-        HierarchyFor: 2
-      }
-    }).then(response => {
+        designationID: hierarchy_Id,
+      },
+    })
+      .then((response) => {
         debugger;
         let status = response.data.message;
         if (status === "Success") {
@@ -852,7 +874,7 @@ class HierarchyMaster extends Component {
           NotificationManager.error(response.data.message);
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -877,18 +899,18 @@ class HierarchyMaster extends Component {
       // update item
       axios({
         method: "post",
-        url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+        url: config.apiUrl + "/StoreHierarchy/UpdateStoreHierarchy",
         headers: authHeader(),
         data: {
           DesignationID: designationID,
           DesignationName: this.state.updateDesignation.trim(),
           ReportToDesignation: this.state.updateReprtTo,
           IsActive: activeStatus,
-          HierarchyFor: 2
-        }
-      }).then(response => {
-        debugger;
-        let status = response.data.message;
+        },
+      })
+        .then((response) => {
+          debugger;
+          let status = response.data.message;
           if (status === "Success") {
             this.handleGetItem();
             NotificationManager.success("Hierarchy update successfully.");
@@ -898,17 +920,16 @@ class HierarchyMaster extends Component {
             this.setState({ editSaveLoading: false });
             NotificationManager.error("Hierarchy not update.");
           }
-      })
-      .catch(response => {
-        console.log(response);
-      });
-
+        })
+        .catch((response) => {
+          console.log(response);
+        });
     } else {
       NotificationManager.error("Hierarchy not update.");
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
-        editstatusCompulsion: "Status field is compulsory."
+        editstatusCompulsion: "Status field is compulsory.",
       });
     }
   }
@@ -935,7 +956,7 @@ class HierarchyMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -944,7 +965,7 @@ class HierarchyMaster extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -960,7 +981,7 @@ class HierarchyMaster extends Component {
           // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -969,7 +990,7 @@ class HierarchyMaster extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -985,7 +1006,7 @@ class HierarchyMaster extends Component {
           // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -994,7 +1015,7 @@ class HierarchyMaster extends Component {
           sstatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -1007,7 +1028,7 @@ class HierarchyMaster extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -1016,7 +1037,7 @@ class HierarchyMaster extends Component {
           screatedbypersonFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -1026,8 +1047,8 @@ class HierarchyMaster extends Component {
     debugger;
     if (
       this.state.designation_name.length > 0 &&
-      this.state.selectReportTo !== 0 &&
-      this.state.selectStatus !== 0
+      parseInt(this.state.selectReportTo) !== 0 &&
+      parseInt(this.state.selectStatus) !== 0
     ) {
       let self = this;
       var activeStatus = 0;
@@ -1042,21 +1063,21 @@ class HierarchyMaster extends Component {
         ReportId = 0;
       }
       this.setState({ addSaveLoading: true });
-      
+
       // create item
       axios({
         method: "post",
-        url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+        url: config.apiUrl + "/StoreHierarchy/CreateStoreHierarchy",
         headers: authHeader(),
         data: {
           DesignationName: this.state.designation_name.trim(),
           ReportToDesignation: ReportId,
           IsActive: activeStatus,
-          HierarchyFor: 2
-        }
-      }).then(response => {
-        debugger;
-        let status = response.data.message;
+        },
+      })
+        .then((response) => {
+          debugger;
+          let status = response.data.message;
           if (status === "Success") {
             this.handleGetItem();
             NotificationManager.success("Hierarchy added successfully.");
@@ -1068,21 +1089,21 @@ class HierarchyMaster extends Component {
               designationNameCompulsion: "",
               reportToCompulsion: "",
               statusCompulsion: "",
-              addSaveLoading: false
+              addSaveLoading: false,
             });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.");
             this.setState({ addSaveLoading: false });
           }
-      })
-      .catch(response => {
-        console.log(response);
-      });
+        })
+        .catch((response) => {
+          console.log(response);
+        });
     } else {
       this.setState({
         designationNameCompulsion: "Designation Name field is compulsory.",
         reportToCompulsion: "ReportTo field is compulsory.",
-        statusCompulsion: "Status field is compulsory."
+        statusCompulsion: "Status field is compulsory.",
       });
     }
   }
@@ -1092,7 +1113,7 @@ class HierarchyMaster extends Component {
 
     return (
       <React.Fragment>
-                <div className="position-relative d-inline-block">
+        <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
             open={this.state.StatusModel}
@@ -1276,14 +1297,19 @@ class HierarchyMaster extends Component {
           </Modal>
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/admin/settings" className="header-path">Settings</Link>
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
           <Link
             to={{
-              pathname: "/admin/settings",
-              tabName: "store-tab"
+              pathname: "/store/settings",
+              tabName: "store-tab",
             }}
-            className="header-path">Store</Link>
+            className="header-path"
+          >
+            Store
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
             Hierarchy Master
@@ -1311,7 +1337,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "designationName"
+                        accessor: "designationName",
                       },
                       {
                         Header: (
@@ -1327,7 +1353,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "reportTo"
+                        accessor: "reportTo",
                       },
                       {
                         Header: (
@@ -1344,7 +1370,7 @@ class HierarchyMaster extends Component {
                           </span>
                         ),
                         accessor: "createdbyperson",
-                        Cell: row => {
+                        Cell: (row) => {
                           // var ids = row.original["designationID"];
                           return (
                             <div>
@@ -1390,7 +1416,7 @@ class HierarchyMaster extends Component {
                               </span>
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         Header: (
@@ -1406,12 +1432,12 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        accessor: "status"
+                        accessor: "status",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["designationID"];
                           return (
                             <>
@@ -1512,8 +1538,8 @@ class HierarchyMaster extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     // resizable={false}
                     minRows={1}
@@ -1578,7 +1604,7 @@ class HierarchyMaster extends Component {
                           value={this.state.selectReportTo}
                           onChange={this.handleOnReportToChange}
                         >
-                          <option>select</option>
+                          <option value="0">select</option>
                           <option value={1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
@@ -1587,7 +1613,7 @@ class HierarchyMaster extends Component {
                               </option>
                             ))}
                         </select>
-                        {this.state.selectReportTo === 0 && (
+                        {parseInt(this.state.selectReportTo) === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.reportToCompulsion}
                           </p>
@@ -1601,7 +1627,7 @@ class HierarchyMaster extends Component {
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option>select</option>
+                        <option value="0">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -1609,7 +1635,7 @@ class HierarchyMaster extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectStatus === 0 && (
+                      {parseInt(this.state.selectStatus) === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.statusCompulsion}
                         </p>
@@ -1644,8 +1670,8 @@ class HierarchyMaster extends Component {
                     <div className="down-excel">
                       <p>Template</p>
                       <CSVLink
-                        filename={"Hierarchy.csv"}
-                        data={config.hierarchyTemplate}
+                        filename={"Hierarchy.xlsx"}
+                        data={config.Store_HierarchyTemplate}
                       >
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
@@ -1753,7 +1779,12 @@ class HierarchyMaster extends Component {
                       ) : null}
                     </div>
                   )}
-                  <button className="butn" onClick={this.handleBulkUpload.bind(this)}>ADD</button>
+                  <button
+                    className="butn"
+                    onClick={this.handleBulkUpload.bind(this)}
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             </div>

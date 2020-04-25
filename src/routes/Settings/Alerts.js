@@ -30,7 +30,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import {
   // NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
@@ -171,8 +171,8 @@ class Alerts extends Component {
       url: config.apiUrl + "/Template/GetMailParameter",
       headers: authHeader(),
       params: {
-        AlertID: alertId
-      }
+        AlertID: alertId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -181,23 +181,23 @@ class Alerts extends Component {
         if (status === "Success") {
           self.setState({
             placeholderData: data,
-            placeholderShown: true
+            placeholderShown: true,
           });
         } else {
           self.setState({
             placeholderData: [],
-            placeholderShown: false
+            placeholderShown: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   setPlaceholderValue(type, e) {
     debugger;
     let matchedArr = this.state.placeholderData.filter(
-      x => x.mailParameterID == e.currentTarget.value
+      (x) => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     if (type == "Customer") {
@@ -484,7 +484,7 @@ class Alerts extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -492,7 +492,7 @@ class Alerts extends Component {
           sisAlertActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -504,7 +504,7 @@ class Alerts extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -512,7 +512,7 @@ class Alerts extends Component {
           sisAlertActiveFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -524,7 +524,7 @@ class Alerts extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -532,12 +532,12 @@ class Alerts extends Component {
           screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
   }
-  onCkBlurCustomer = evt => {
+  onCkBlurCustomer = (evt) => {
     debugger;
     var ckCusrsorPositionCustomer = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataCustomer = evt.editor.getSelection().getRanges()[0]
@@ -547,7 +547,7 @@ class Alerts extends Component {
     }
     this.setState({
       ckCusrsorPositionCustomer: ckCusrsorPositionCustomer.startOffset,
-      ckCusrsorDataCustomer
+      ckCusrsorDataCustomer,
     });
   };
   onCkBlurInternal = evt => {
@@ -560,7 +560,7 @@ class Alerts extends Component {
     }
     this.setState({
       ckCusrsorPositionInternal: ckCusrsorPositionInternal.startOffset,
-      ckCusrsorDataInternal
+      ckCusrsorDataInternal,
     });
   };
   onCkBlurStore = evt => {
@@ -573,7 +573,7 @@ class Alerts extends Component {
     }
     this.setState({
       ckCusrsorPositionStore: ckCusrsorPositionStore.startOffset,
-      ckCusrsorDataStore
+      ckCusrsorDataStore,
     });
   };
   StatusCloseModel = e => {
@@ -591,7 +591,7 @@ class Alerts extends Component {
         } else {
           this.setState({
             screatedByFilterCheckbox: "",
-            sisAlertActiveFilterCheckbox: ""
+            sisAlertActiveFilterCheckbox: "",
           });
         }
       }
@@ -600,7 +600,7 @@ class Alerts extends Component {
         } else {
           this.setState({
             salertTypeNameFilterCheckbox: "",
-            sisAlertActiveFilterCheckbox: ""
+            sisAlertActiveFilterCheckbox: "",
           });
         }
       }
@@ -609,7 +609,7 @@ class Alerts extends Component {
         } else {
           this.setState({
             salertTypeNameFilterCheckbox: "",
-            screatedByFilterCheckbox: ""
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -733,7 +733,7 @@ class Alerts extends Component {
       sisAlertActiveFilterCheckbox,
       alertColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -743,7 +743,7 @@ class Alerts extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.alertTypeName === sItems[i]
+              (a) => a.alertTypeName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -754,14 +754,16 @@ class Alerts extends Component {
         }
       }
       this.setState({
-        alertColor: "sort-column"
+        alertColor: "sort-column",
       });
     } else if (column === "createdBy") {
       var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.createdBy === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.createdBy === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -771,7 +773,7 @@ class Alerts extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     } else if (column === "isAlertActive") {
       var sItems = sisAlertActiveFilterCheckbox.split(",");
@@ -779,7 +781,7 @@ class Alerts extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.isAlertActive === sItems[i]
+              (a) => a.isAlertActive === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -790,12 +792,12 @@ class Alerts extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempalert: itemsArray
+      tempalert: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -807,10 +809,10 @@ class Alerts extends Component {
     this.state.updateAlertisActive = isAlertActive;
     this.state.rowData = rowData;
   };
-  setNotiCurPosi = e => {
+  setNotiCurPosi = (e) => {
     debugger;
     this.setState({
-      notiCurPosi: e.target.selectionStart
+      notiCurPosi: e.target.selectionStart,
     });
   };
   setDataOnChangeAlert = e => {
@@ -819,7 +821,7 @@ class Alerts extends Component {
       if (e.target.value !== "0") {
         this.setState({
           [e.target.name]: e.target.value,
-          selectedAlertTypeName: e.target.selectedOptions[0].innerText
+          selectedAlertTypeName: e.target.selectedOptions[0].innerText,
         });
         this.handlePlaceholderList(e.target.value);
         let self = this;
@@ -827,7 +829,7 @@ class Alerts extends Component {
           method: "post",
           url: config.apiUrl + "/Alert/ValidateAlertNameExist",
           params: { alertTypeId: e.target.value },
-          headers: authHeader()
+          headers: authHeader(),
         })
           .then(function(res) {
             var data = res.data.responseData;
@@ -843,7 +845,7 @@ class Alerts extends Component {
               self.setState({ isExitsType: "" });
             }
           })
-          .catch(response => {
+          .catch((response) => {
             console.log(response);
           });
       } else {
@@ -851,36 +853,36 @@ class Alerts extends Component {
       }
     } else {
       this.setState({
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       });
     }
     if (e.target.name == "selectedNotifContent") {
       this.setState({
         notiCount: e.target.value.length,
-        notiCurPosi: e.target.value.length
+        notiCurPosi: e.target.value.length,
       });
     }
   };
 
-  setCKEditorCustomer = evt => {
+  setCKEditorCustomer = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      selectedCKCustomer: newContent
+      selectedCKCustomer: newContent,
     });
   };
-  setCKEditorInternal = evt => {
+  setCKEditorInternal = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      selectedCKInternal: newContent
+      selectedCKInternal: newContent,
     });
   };
-  setCKEditorStore = evt => {
+  setCKEditorStore = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      selectedCKStore: newContent
+      selectedCKStore: newContent,
     });
   };
 
@@ -891,7 +893,7 @@ class Alerts extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/BindAlerts",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -899,30 +901,30 @@ class Alerts extends Component {
         var msg = res.data.message;
         if (msg === "Success") {
           self.setState({
-            alertData: data
+            alertData: data,
           });
         } else {
           self.setState({
-            alertData: []
+            alertData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  handleAlertTabs = e => {
+  handleAlertTabs = (e) => {
     debugger;
     let check = e.target.checked;
     let val = e.target.value;
     if (check === true) {
       this.setState({
-        [val]: true
+        [val]: true,
       });
     } else {
       this.setState({
-        [val]: false
+        [val]: false,
       });
     }
     setTimeout(() => {
@@ -932,28 +934,28 @@ class Alerts extends Component {
         this.state.emailStore
       ) {
         this.setState({
-          tabIndex: 0
+          tabIndex: 0,
         });
       } else if (this.state.smsCust) {
         this.setState({
-          tabIndex: 1
+          tabIndex: 1,
         });
       } else if (this.state.notiInt) {
         this.setState({
-          tabIndex: 2
+          tabIndex: 2,
         });
       }
       if (this.state.emailCust) {
         this.setState({
-          innerTabIndex: 0
+          innerTabIndex: 0,
         });
       } else if (this.state.emailInt) {
         this.setState({
-          innerTabIndex: 1
+          innerTabIndex: 1,
         });
       } else if (this.state.emailStore) {
         this.setState({
-          innerTabIndex: 2
+          innerTabIndex: 2,
         });
       }
     }, 100);
@@ -999,7 +1001,7 @@ class Alerts extends Component {
       method: "post",
       url: config.apiUrl + "/Alert/GetAlertList",
       params: { alertId: alertId },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1084,7 +1086,7 @@ class Alerts extends Component {
             notiInt,
             alertEdit,
             editModal: true,
-            isEdit: true
+            isEdit: true,
           });
         } else {
           if (alert !== null && alert !== undefined) {
@@ -1134,7 +1136,7 @@ class Alerts extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1146,8 +1148,8 @@ class Alerts extends Component {
       url: config.apiUrl + "/Alert/DeleteAlert",
       headers: authHeader(),
       params: {
-        AlertID: deleteId
-      }
+        AlertID: deleteId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1159,7 +1161,7 @@ class Alerts extends Component {
           NotificationManager.error("Alert not deleted.");
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1176,11 +1178,11 @@ class Alerts extends Component {
       if (this.state.notiInt == true) {
         if (this.state.selectedNotifContent == "") {
           this.setState({
-            NotifContentCompulsion: "Please Enter Notification."
+            NotifContentCompulsion: "Please Enter Notification.",
           });
         } else {
           this.setState({
-            NotifContentCompulsion: "Please Enter Notification"
+            NotifContentCompulsion: "Please Enter Notification",
           });
         }
       }
@@ -1199,12 +1201,12 @@ class Alerts extends Component {
         } else {
           this.setState({ ckCustomerCompulsion: "" });
         }
-        if (this.state.selectedSubjectCustomer === "") {
-          this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
-          return false;
-        } else {
-          this.setState({ subjectCustomerCompulsion: "" });
-        }
+        // if (this.state.selectedSubjectCustomer === "") {
+        //   this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
+        //   return false;
+        // } else {
+        //   this.setState({ subjectCustomerCompulsion: "" });
+        // }
       }
 
       if (this.state.emailInt == true) {
@@ -1214,14 +1216,14 @@ class Alerts extends Component {
         } else {
           this.setState({ ckInternalCompulsion: "" });
         }
-        if (this.state.selectedSubjectInternal === "") {
-          this.setState({
-            subjectInternalCompulsion: "Please Enter Description."
-          });
-          return false;
-        } else {
-          this.setState({ subjectInternalCompulsion: "" });
-        }
+        // if (this.state.selectedSubjectInternal === "") {
+        //   this.setState({
+        //     subjectInternalCompulsion: "Please Enter Description.",
+        //   });
+        //   return false;
+        // } else {
+        //   this.setState({ subjectInternalCompulsion: "" });
+        // }
       }
 
       if (this.state.emailStore == true) {
@@ -1232,15 +1234,15 @@ class Alerts extends Component {
         } else {
           this.setState({ ckStoreCompulsion: "" });
         }
-        if (this.state.selectedSubjectCustomer === "") {
-          this.setState({
-            subjectStoreCompulsion: "Please Enter Description."
-          });
+        // if (this.state.selectedSubjectCustomer === "") {
+        //   this.setState({
+        //     subjectStoreCompulsion: "Please Enter Description.",
+        //   });
 
-          return false;
-        } else {
-          this.setState({ subjectStoreCompulsion: "" });
-        }
+        //   return false;
+        // } else {
+        //   this.setState({ subjectStoreCompulsion: "" });
+        // }
       }
       var CommunicationModeDetails = [];
 
@@ -1249,33 +1251,33 @@ class Alerts extends Component {
         CommunicationFor: 250,
         AlertTypeID: this.state.cAlertTypeId,
         Content: this.state.selectedCKCustomer,
-        Subject: this.state.selectedSubjectCustomer
+        Subject: this.state.selectedSubjectCustomer,
       };
       var emailInternal = {
         Communication_Mode: 240,
         CommunicationFor: 251,
         AlertTypeID: this.state.iAlertTypeId,
         Content: this.state.selectedCKInternal,
-        Subject: this.state.selectedSubjectInternal
+        Subject: this.state.selectedSubjectInternal,
       };
       var emailStore = {
         Communication_Mode: 240,
         CommunicationFor: 252,
         AlertTypeID: this.state.sAlertTypeId,
         Content: this.state.selectedCKStore,
-        Subject: this.state.selectedSubjectStore
+        Subject: this.state.selectedSubjectStore,
       };
       var sms = {
         Communication_Mode: 241,
         CommunicationFor: 250,
         AlertTypeID: this.state.sAlertTypeId,
-        Content: this.state.selectedSMSContent
+        Content: this.state.selectedSMSContent,
       };
       var notification = {
         Communication_Mode: 242,
         CommunicationFor: 251,
         AlertTypeID: this.state.nAlertTypeId,
-        Content: this.state.selectedNotifContent
+        Content: this.state.selectedNotifContent,
       };
       if (this.state.emailCust) {
         CommunicationModeDetails.push(emailCustomer); //// for Email For Customer
@@ -1303,7 +1305,7 @@ class Alerts extends Component {
         // return false;
       }
       this.setState({
-        editSaveLoading: true
+        editSaveLoading: true,
       });
 
       let self = this;
@@ -1315,10 +1317,10 @@ class Alerts extends Component {
           AlertID: this.state.alertEdit.selectedAlertType,
           AlertTypeName: this.state.alertEdit.AlertTypeName,
           isAlertActive: AlertisActive,
-          CommunicationModeDetails: CommunicationModeDetails
-        }
+          CommunicationModeDetails: CommunicationModeDetails,
+        },
       })
-        .then(res => {
+        .then((res) => {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -1326,27 +1328,27 @@ class Alerts extends Component {
             self.handleGetAlert();
             self.setState({
               AddAlertTabsPopup: false,
-              editSaveLoading: false
+              editSaveLoading: false,
             });
           } else {
             self.setState({
               editSaveLoading: false,
-              AddAlertTabsPopup: false
+              AddAlertTabsPopup: false,
             });
             NotificationManager.error("Alert not updated.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           self.setState({
             editSaveLoading: false,
-            AddAlertTabsPopup: false
+            AddAlertTabsPopup: false,
           });
           console.log(data);
         });
     } else {
       NotificationManager.error("Alert not updated.");
       this.setState({
-        editAlertNameCopulsion: "Please enter alerttype name."
+        editAlertNameCopulsion: "Please enter alerttype name.",
       });
     }
   }
@@ -1359,24 +1361,24 @@ class Alerts extends Component {
   handleUpdateAlertTypeName(e) {
     debugger;
     this.setState({
-      updateAlertTypeName: e.target.value
+      updateAlertTypeName: e.target.value,
     });
   }
-  handleUpdateAlertisActive = e => {
+  handleUpdateAlertisActive = (e) => {
     let updateAlertisActive = e.currentTarget.value;
     this.setState({ updateAlertisActive });
   };
-  fileUpload = e => {
+  fileUpload = (e) => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  fileDrop = e => {
+  fileDrop = (e) => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
@@ -1396,7 +1398,7 @@ class Alerts extends Component {
       this.setState({
         alertTypeCompulsion: "Please Enter Alert Type",
         statusCompulsion: "Please Select Status",
-        communicationModeCompulsion: "Please Select Any Communication Mode"
+        communicationModeCompulsion: "Please Select Any Communication Mode",
       });
     }
   }
@@ -1424,24 +1426,24 @@ class Alerts extends Component {
       emailInt: false,
       emailStore: false,
       smsCust: false,
-      notiInt: false
+      notiInt: false,
     });
   }
   updateContent(newContent) {
     this.setState({
-      content: newContent
+      content: newContent,
     });
   }
   onChange(evt) {
     var newContent = evt.editor.getData();
     this.setState({
-      content: newContent
+      content: newContent,
     });
   }
   handleTabChange(index) {
     debugger;
     this.setState({
-      tabIndex: index
+      tabIndex: index,
     });
   }
   validationInsertAlert() {
@@ -1451,7 +1453,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailCustomer === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectCustomer.length > 0 &&
+        // this.state.selectedSubjectCustomer.length > 0 &&
         this.state.selectedCKCustomer.length > 0
       ) {
         validation.push("1");
@@ -1461,7 +1463,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailInternal === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectInternal.length > 0 &&
+        // this.state.selectedSubjectInternal.length > 0 &&
         this.state.selectedCKInternal.length > 0
       ) {
         validation.push("1");
@@ -1471,7 +1473,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailStore === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectStore.length > 0 &&
+        // this.state.selectedSubjectStore.length > 0 &&
         this.state.selectedCKStore.length > 0
       ) {
         validation.push("1");
@@ -1506,7 +1508,7 @@ class Alerts extends Component {
         subjectStoreCompulsion: "Please Enter Subject.",
         ckStoreCompulsion: "Please Enter Description.",
         SMSContentCompulsion: "Please Enter Message.",
-        NotifContentCompulsion: "Please Enter Notification"
+        NotifContentCompulsion: "Please Enter Notification",
       });
     }
   }
@@ -1532,7 +1534,7 @@ class Alerts extends Component {
       ToEmailID: this.state.selectedToCustomer,
       CCEmailID: this.state.selectedCCCustomer,
       BCCEmailID: this.state.selectedBCCCustomer,
-      Subject: this.state.selectedSubjectCustomer
+      Subject: this.state.selectedSubjectCustomer,
     };
     inter = {
       Communication_Mode: 240,
@@ -1541,7 +1543,7 @@ class Alerts extends Component {
       ToEmailID: this.state.selectedToInternal,
       CCEmailID: this.state.selectedCCInternal,
       BCCEmailID: this.state.selectedBCCInternal,
-      Subject: this.state.selectedSubjectInternal
+      Subject: this.state.selectedSubjectInternal,
     };
     store = {
       Communication_Mode: 240,
@@ -1550,17 +1552,17 @@ class Alerts extends Component {
       ToEmailID: this.state.selectedToStore,
       CCEmailID: this.state.selectedCCStore,
       BCCEmailID: this.state.selectedBCCStore,
-      Subject: this.state.selectedSubjectStore
+      Subject: this.state.selectedSubjectStore,
     };
     sms = {
       Communication_Mode: 241,
       CommunicationFor: 250,
-      Content: this.state.selectedSMSContent
+      Content: this.state.selectedSMSContent,
     };
     notn = {
       Communication_Mode: 242,
       CommunicationFor: 251,
-      Content: this.state.selectedNotifContent
+      Content: this.state.selectedNotifContent,
     };
 
     if (this.state.selectedEmailCustomer === true) {
@@ -1581,14 +1583,14 @@ class Alerts extends Component {
     var json = {
       AlertTypeName: this.state.selectedAlertTypeName,
       isAlertActive: setstatus,
-      CommunicationModeDetails: jsondata
+      CommunicationModeDetails: jsondata,
     };
 
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/CreateAlert",
       headers: authHeader(),
-      data: json
+      data: json,
     })
       .then(function(res) {
         debugger;
@@ -1601,7 +1603,7 @@ class Alerts extends Component {
         }
         self.handleAddAlertTabsClose();
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1646,7 +1648,7 @@ class Alerts extends Component {
       this.state.notiInt === false
     ) {
       this.setState({
-        editcommunicationModeCompulsion: "Please Select Any Communication Mode"
+        editcommunicationModeCompulsion: "Please Select Any Communication Mode",
       });
     } else {
       var innerTabIndex = 0;
@@ -1661,7 +1663,7 @@ class Alerts extends Component {
       this.setState({
         AddAlertTabsPopup: true,
         editModal: false,
-        innerTabIndex
+        innerTabIndex,
       });
     }
   }
@@ -1673,7 +1675,7 @@ class Alerts extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -1681,16 +1683,16 @@ class Alerts extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            AssignToData: data
+            AssignToData: data,
           });
           self.checkAllAgentStart();
         } else {
           self.setState({
-            AssignToData: []
+            AssignToData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1701,7 +1703,7 @@ class Alerts extends Component {
     if (type === "Customer") {
       let ckData = this.state.selectedCKCustomer;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       ckData += "@" + userName;
@@ -1710,7 +1712,7 @@ class Alerts extends Component {
     if (type == "Internal") {
       let ckData = this.state.selectedCKInternal;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       ckData += "@" + userName;
@@ -1719,7 +1721,7 @@ class Alerts extends Component {
     if (type == "Store") {
       let ckData = this.state.selectedCKStore;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID == e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       ckData += "@" + userName;
@@ -1740,7 +1742,7 @@ class Alerts extends Component {
         this.setState({ sortFilterAlertType });
       } else {
         this.setState({
-          sortFilterAlertType: this.state.sortAlertType
+          sortFilterAlertType: this.state.sortAlertType,
         });
       }
     }
@@ -1754,7 +1756,7 @@ class Alerts extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy
+          sortFilterCreatedBy: this.state.sortCreatedBy,
         });
       }
     }
@@ -1768,7 +1770,7 @@ class Alerts extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus
+          sortFilterStatus: this.state.sortStatus,
         });
       }
     }
@@ -1790,7 +1792,7 @@ class Alerts extends Component {
         onUploadProgress: (ev = ProgressEvent) => {
           const progress = (ev.loaded / ev.total) * 100;
           this.updateUploadProgress(Math.round(progress));
-        }
+        },
       })
         .then(function(res) {
           debugger;
@@ -1804,12 +1806,12 @@ class Alerts extends Component {
             self.setState({
               showProgress: false,
               isFileUploadFail: true,
-              progressValue: 0
+              progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
@@ -1818,18 +1820,18 @@ class Alerts extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file."
+        bulkuploadCompulsion: "Please select file.",
       });
     }
   }
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
-  handleDeleteBulkupload = e => {
+  handleDeleteBulkupload = (e) => {
     debugger;
     this.setState({
       fileN: [],
-      fileName: ""
+      fileName: "",
     });
     NotificationManager.success("File deleted successfully.");
   };
@@ -2106,7 +2108,7 @@ class Alerts extends Component {
                         accessor: "modeOfCommunication",
                         className: "communication-labelHeader",
                         sortable: false,
-                        Cell: row => {
+                        Cell: (row) => {
                           return (
                             <div>
                               {row.original.isByEmail === true && (
@@ -2132,7 +2134,7 @@ class Alerts extends Component {
                               )}
                             </div>
                           );
-                        }
+                        },
                       },
                       {
                         id: "createdBy",
@@ -2245,7 +2247,7 @@ class Alerts extends Component {
                           );
                         },
                         sortable: false,
-                        accessor: "createdBy"
+                        accessor: "createdBy",
                       },
                       {
                         Header: (
@@ -2271,14 +2273,14 @@ class Alerts extends Component {
                           </span>
                         ),
                         sortable: false,
-                        accessor: "isAlertActive"
+                        accessor: "isAlertActive",
                       },
                       {
                         Header: "Actions",
                         // accessor: "action",
 
                         sortable: false,
-                        Cell: row => {
+                        Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <>
@@ -2379,8 +2381,8 @@ class Alerts extends Component {
                               </span>
                             </>
                           );
-                        }
-                      }
+                        },
+                      },
                     ]}
                     resizable={false}
                     defaultPageSize={10}
@@ -2851,7 +2853,7 @@ class Alerts extends Component {
                     })()
                   }
                                 </label>
-                                <div className="div-padding-alert">
+                                {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       {
@@ -2888,7 +2890,7 @@ class Alerts extends Component {
                                       )}
                                     </div>
                                   </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
                                   <select
                                     className="add-select-category"
@@ -2939,14 +2941,14 @@ class Alerts extends Component {
                                   onChange={this.setCKEditorCustomer}
                                   onBlur={this.onCkBlurCustomer}
                                   events={{
-                                    items: this.fileUpload
+                                    items: this.fileUpload,
                                   }}
                                 />
                                 {this.state.selectedCKCustomer.length === 0 && (
                                   <p
                                     style={{
                                       color: "red",
-                                      marginBottom: "0px"
+                                      marginBottom: "0px",
                                     }}
                                   >
                                     {this.state.ckCustomerCompulsion}
@@ -2973,7 +2975,7 @@ class Alerts extends Component {
                     })()
                   }
                                 </label>
-                                <div className="div-padding-alert">
+                                {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       
@@ -3011,7 +3013,7 @@ class Alerts extends Component {
                                       )}
                                     </div>
                                   </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
@@ -3059,7 +3061,7 @@ class Alerts extends Component {
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
-                                    items: this.fileUpload
+                                    items: this.fileUpload,
                                   }}
                                   name="selectedCKInternal"
                                   data={this.state.selectedCKInternal}
@@ -3070,7 +3072,7 @@ class Alerts extends Component {
                                   <p
                                     style={{
                                       color: "red",
-                                      marginBottom: "0px"
+                                      marginBottom: "0px",
                                     }}
                                   >
                                     {this.state.ckInternalCompulsion}
@@ -3096,7 +3098,7 @@ class Alerts extends Component {
                     })()
                   }
                                 </label>
-                                <div className="div-padding-alert">
+                                {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       {
@@ -3131,7 +3133,7 @@ class Alerts extends Component {
                                       )}
                                     </div>
                                   </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
@@ -3180,7 +3182,7 @@ class Alerts extends Component {
                                   content={this.state.content}
                                   events={{
                                     change: this.onChange,
-                                    items: this.fileUpload
+                                    items: this.fileUpload,
                                   }}
                                   name="selectedCKStore"
                                   data={this.state.selectedCKStore}
@@ -3191,7 +3193,7 @@ class Alerts extends Component {
                                   <p
                                     style={{
                                       color: "red",
-                                      marginBottom: "0px"
+                                      marginBottom: "0px",
                                     }}
                                   >
                                     {this.state.ckStoreCompulsion}

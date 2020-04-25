@@ -23,13 +23,19 @@ import { Link } from "react-router-dom";
 import { MyContext } from './../../context'
 
 class Settings extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ticketShow: false,
+      storeShow: false,
+    };
+  }
 
   componentDidMount() {
     debugger;
     if (this.props.location.tabName) {
-      let lowerTabsPane = document.querySelectorAll(
-        ".tab-pane"
-      );
+      let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {
         lowerTabsPane[i].classList.remove("active");
         lowerTabsPane[i].classList.remove("show");
@@ -41,11 +47,25 @@ class Settings extends Component {
       let upperTabs = document.querySelectorAll(".nav-link");
       for (let i = 0; i < upperTabs.length; i++) {
         upperTabs[i].classList.remove("active");
-        if ("#" + this.props.location.tabName === upperTabs[i].getAttribute('href')) {
+        if (
+          "#" + this.props.location.tabName ===
+          upperTabs[i].getAttribute("href")
+        ) {
           upperTabs[i].classList.add("active");
         }
       }
-  }
+    }
+    var store = window.localStorage.getItem("ERS");
+    var ticket = window.localStorage.getItem("ERT");
+    if (ticket === "true") {
+      this.setState({
+        ticketShow: ticket,
+      });
+    } else {
+      this.setState({
+        storeShow: store,
+      });
+    }
   }
 
   render() {
@@ -131,7 +151,8 @@ class Settings extends Component {
             </ul>
             <div className="tab-content">
               <div
-                className="tab-pane fade show active"
+                // className={this.state.ticketing_Setting}
+                className={this.state.ticketShow === "true" ? "tab-pane fade show active": "tab-pane fade"}
                 id="ticketing-tab"
                 role="tabpanel"
                 aria-labelledby="ticketing-tab"
@@ -645,7 +666,7 @@ class Settings extends Component {
                 </div>
               </div>
               <div
-                className="tab-pane fade"
+                className={this.state.storeShow === "true" ? "tab-pane fade show active":"tab-pane fade"}
                 id="store-tab"
                 role="tabpanel"
                 aria-labelledby="store-tab"

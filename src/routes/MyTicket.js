@@ -1282,10 +1282,17 @@ class MyTicket extends Component {
       }
     })
       .then(function(res) {
-        ////
-        // let status=
         let data = res.data;
-        self.setState({ CategoryData: data });
+        let CategoryData = res.data;
+        if(data.length > 0){
+          self.setState({
+            CategoryData: CategoryData,
+          });
+        }else{
+          self.setState({
+            CategoryData: [],
+          });
+        }
       })
       .catch(data => {
         console.log(data);
