@@ -770,37 +770,40 @@ class FileUploadLogs extends Component {
         Header: <span>Error File</span>,
         accessor: "Erroor",
         sortable: false,
-        Cell: (row) => (
-          <div>
-            <button
-              className="downloadBtn"
-              onClick={this.downloadDefaultReport.bind(
-                this,
-                row.original.errorFilePath
-              )}
-            >
-              DOWNLOAD
-            </button>
-          </div>
-        ),
+        Cell: (row) =>
+          row.original.fileUploadStatus === "Completed" &&
+          row.original.errorFilePath && (
+            <div>
+              <button
+                className="downloadBtn"
+                onClick={this.downloadDefaultReport.bind(
+                  this,
+                  row.original.errorFilePath
+                )}
+              >
+                DOWNLOAD
+              </button>
+            </div>
+          ),
       },
       {
         Header: <span>Success File</span>,
         accessor: "success",
-        Cell: (row) => (
-          <div>
-            <button
-              className="downloadBtn"
-              onClick={this.downloadDefaultReport.bind(
-                this,
-                row.original.successFilePath
-              )}
-            >
-              DOWNLOAD
-              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
-            </button>
-          </div>
-        ),
+        Cell: (row) =>
+          row.original.fileUploadStatus === "Completed" &&
+          row.original.successFilePath && (
+            <div>
+              <button
+                className="downloadBtn"
+                onClick={this.downloadDefaultReport.bind(
+                  this,
+                  row.original.successFilePath
+                )}
+              >
+                DOWNLOAD
+              </button>
+            </div>
+          ),
       },
     ];
 
