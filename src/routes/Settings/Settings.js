@@ -91,7 +91,7 @@ class Settings extends Component {
                 </li>
               ) : null}
               {this.state.storeShow === "true" ? (
-                  <li className="nav-item">
+                <li className="nav-item">
                   <a
                     className="nav-link active"
                     data-toggle="tab"
@@ -105,7 +105,6 @@ class Settings extends Component {
                 </li>
               ) : null}
 
-           
               {/* <li className="nav-item">
                 <a
                   className="nav-link"
@@ -134,7 +133,11 @@ class Settings extends Component {
             <div className="tab-content">
               <div
                 // className={this.state.ticketing_Setting}
-                className={this.state.ticketShow === "true" ? "tab-pane fade show active": "tab-pane fade"}
+                className={
+                  this.state.ticketShow === "true"
+                    ? "tab-pane fade show active"
+                    : "tab-pane fade"
+                }
                 id="ticketing-tab"
                 role="tabpanel"
                 aria-labelledby="ticketing-tab"
@@ -372,7 +375,11 @@ class Settings extends Component {
                 </div>
               </div>
               <div
-                className={this.state.storeShow === "true" ? "tab-pane fade show active":"tab-pane fade"}
+                className={
+                  this.state.storeShow === "true"
+                    ? "tab-pane fade show active"
+                    : "tab-pane fade"
+                }
                 id="store-tab"
                 role="tabpanel"
                 aria-labelledby="store-tab"

@@ -1291,7 +1291,7 @@ class RaiseClaim extends Component {
     return (
       <Fragment>
         <div className="raiseclaim">
-          <div className="row" style={{ background: "#ecf2f4" }}>
+          <div className="row" style={{ background: "#ecf2f4", margin: 0 }}>
             <div className="col-md-8">
               {/* <label className="claim-ticket">Claim Ticket ID :</label>
               <label className="claim-A22345">
@@ -1319,7 +1319,7 @@ class RaiseClaim extends Component {
             </div>
           </div>
           <div className="back-color">
-            <div className="row">
+            <div className="row m-0">
               <div className="col-md-9" style={{ padding: "0" }}>
                 <div className="card card-radius">
                   <div className="search-customer-padding">
@@ -1394,10 +1394,10 @@ class RaiseClaim extends Component {
                           borderRadius: "5px",
                         }}
                       >
-                        <Card>
+                        <Card className="w-100">
                           <CardBody style={{ padding: "15px 0 0" }}>
                             {this.state.showManual ? null : (
-                              <div className="row">
+                              <div className="row m-0">
                                 <div className="col-md-6">
                                   <label className="orderdetailtext">
                                     Order details
@@ -1911,7 +1911,7 @@ class RaiseClaim extends Component {
                                 </div>
                               </div>
                             ) : (
-                              <div className="uploadsearch">
+                              <div className="uploadsearch uploadsearch-space">
                                 <div className="row">
                                   <div className="col-md-12 uploadsechmargin">
                                     <label className="uploadsearch-text">
@@ -1940,7 +1940,7 @@ class RaiseClaim extends Component {
                         </Card>
                       </Collapse>
                     </div>
-                    <div className="row">
+                    <div className="row m-0 w-100">
                       <div className="form-group col-md-4">
                         <label className="label-6">Brand</label>
                         <select
@@ -2040,7 +2040,7 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row m-0">
                       <div className="form-group col-md-4">
                         <label className="label-6"> Claim Asked for %</label>
                         <input
@@ -2074,7 +2074,7 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row m-0">
                       <div className="form-group col-md-4">
                         <label className="label-6">Attached Image</label>
                       </div>

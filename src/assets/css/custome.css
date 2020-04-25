@@ -4259,9 +4259,9 @@ table tr th:last-child {
   padding-top: 15px;
   padding-bottom: 10px;
 }
-.raiseclaim .row {
+/* .raiseclaim .row {
   margin: 0;
-}
+} */
 .ticket-comments-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
