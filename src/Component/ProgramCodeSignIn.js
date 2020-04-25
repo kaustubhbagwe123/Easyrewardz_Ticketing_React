@@ -36,15 +36,7 @@ class ProgramCodeSignIn extends Component {
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
       //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
-      // setTimeout(function() {
-      //   self.props.history.push({
-      //     pathname: "SignIn",
-      //     encProgramCode: encProgramCode
-      //   });
-      // }, 500);
-      // self.setState({
-      //   encProgramCode: {programCode: encProgramCode}
-      // });
+      
       axios({
         method: "get",
         url: config.apiUrl + "/Account/validateprogramcode",
