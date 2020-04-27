@@ -329,8 +329,37 @@ class HierarchyMaster extends Component {
     //fruits.reverse();
 
     // }
+    if (this.state.sortColumn === "designationName") {
+      itemsArray.sort((a, b) => {
+        if (a.designationName.toLowerCase() <  b.designationName.toLowerCase()) return -1;
+        if (a.designationName.toLowerCase() > b.designationName.toLowerCase()) return 1;
+        return 0;
+      });
+    }
 
-    itemsArray.sort((a, b) => a.designationName > b.designationName);
+    if (this.state.sortColumn === "reportTo") {
+      itemsArray.sort((a, b) => {
+        if (a.reportTo.toLowerCase() <  b.reportTo.toLowerCase()) return -1;
+        if (a.reportTo.toLowerCase() > b.reportTo.toLowerCase()) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "createdbyperson") {
+      itemsArray.sort((a, b) => {
+        if (a.createdbyperson.toLowerCase() <  b.createdbyperson.toLowerCase()) return -1;
+        if (a.createdbyperson.toLowerCase() > b.createdbyperson.toLowerCase()) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "status") {
+      itemsArray.sort((a, b) => {
+        if (a.status.toLowerCase() <  b.status.toLowerCase()) return -1;
+        if (a.status.toLowerCase() > b.status.toLowerCase()) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
       hierarchyData: itemsArray,
@@ -342,9 +371,38 @@ class HierarchyMaster extends Component {
     var itemsArray = [];
     var itemsArray1 = [];
     itemsArray1 = this.state.hierarchyData;
-    itemsArray = itemsArray1.sort((a, b) => {
-      return b.designationName > a.designationName;
-    });
+    if (this.state.sortColumn === "designationName") {
+      itemsArray = itemsArray1.sort((a, b) => {
+        if (a.designationName.toLowerCase() <  b.designationName.toLowerCase()) return 1;
+        if (a.designationName.toLowerCase() > b.designationName.toLowerCase()) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "reportTo") {
+      itemsArray = itemsArray1.sort((a, b) => {
+        if (a.reportTo.toLowerCase() <  b.reportTo.toLowerCase()) return 1;
+        if (a.reportTo.toLowerCase() > b.reportTo.toLowerCase()) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "createdbyperson") {
+      itemsArray = itemsArray1.sort((a, b) => {
+        if (a.createdbyperson.toLowerCase() <  b.createdbyperson.toLowerCase()) return 1;
+        if (a.createdbyperson.toLowerCase() > b.createdbyperson.toLowerCase()) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "status") {
+      itemsArray = itemsArray1.sort((a, b) => {
+        if (a.status.toLowerCase() <  b.status.toLowerCase()) return 1;
+        if (a.status.toLowerCase() > b.status.toLowerCase()) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
       hierarchyData: itemsArray,
     });
@@ -1325,6 +1383,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "designationName",
                       },
                       {
@@ -1341,6 +1400,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "reportTo",
                       },
                       {
@@ -1357,6 +1417,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdbyperson",
                         Cell: (row) => {
                           // var ids = row.original["designationID"];
@@ -1420,6 +1481,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "status",
                       },
                       {

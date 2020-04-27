@@ -1308,7 +1308,8 @@ class StoreModule extends Component {
                                     <div>
                                       <span className="d-flex align-items-end">
                                         <span className="campaign-script-less">
-                                          {row.original.campaignScriptLess}
+                                          {/* {row.original.campaignScriptLess} */}
+                                          {row.original.campaignScript}
                                         </span>
                                         <Popover
                                           content={
@@ -1570,8 +1571,8 @@ class StoreModule extends Component {
                               <div
                                 className={
                                   this.state.campaignShow
-                                    ? "dropdown-menu dropdown-menu-campaignScriptData show"
-                                    : "dropdown-menu dropdown-menu-campaignScriptData"
+                                    ? "dropdown-menu dropdown-menu-sla show"
+                                    : "dropdown-menu dropdown-menu-sla"
                                 }
                               >
                                 <div className="cat-mainbox">
@@ -1856,6 +1857,11 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
+                  <div
+                    id="overlaySla"
+                    className={this.state.campaignOvrlayShow ? "show" : ""}
+                    onClick={this.handleCampaignButton}
+                  />
                   {/* </div> */}
                 </Tab>
               </Tabs>

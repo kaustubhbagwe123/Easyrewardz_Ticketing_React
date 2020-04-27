@@ -82,10 +82,12 @@ class StoreCRMRole extends Component {
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.handleModulesDefault = this.handleModulesDefault.bind(this);
   }
 
   componentDidMount() {
     this.handleGetCRMGridData();
+    this.handleModulesDefault();
   }
   handleTabChange(index) {
     this.setState({
@@ -283,10 +285,7 @@ class StoreCRMRole extends Component {
       }
     }
     if (e === "add") {
-      if (
-        this.state.RoleName.length > 0 &&
-        this.state.RoleisActive.length > 0
-      ) {
+      if (this.state.RoleName.length > 0 && this.state.RoleisActive != 0) {
         CRMRoleID = 0;
         RoleName = self.state.RoleName;
         ModulesEnabled = self.state.ModulesEnabled;
@@ -344,6 +343,7 @@ class StoreCRMRole extends Component {
               statusCompulsory: "",
             });
             self.handleGetCRMGridData();
+            this.handleModulesDefault();
           } else if (e === "update") {
             self.toggleEditModal();
             self.setState({
@@ -819,22 +819,24 @@ class StoreCRMRole extends Component {
 
     if (this.state.sortColumn === "roleName") {
       itemsArray.sort((a, b) => {
-        if (a.roleName < b.roleName) return -1;
-        if (a.roleName > b.roleName) return 1;
+        if (a.roleName.toLowerCase() < b.roleName.toLowerCase()) return -1;
+        if (a.roleName.toLowerCase() > b.roleName.toLowerCase()) return 1;
         return 0;
       });
     }
     if (this.state.sortColumn === "createdBy") {
       itemsArray.sort((a, b) => {
-        if (a.createdBy < b.createdBy) return -1;
-        if (a.createdBy > b.createdBy) return 1;
+        if (a.createdBy.toLowerCase() < b.createdBy.toLowerCase()) return -1;
+        if (a.createdBy.toLowerCase() > b.createdBy.toLowerCase()) return 1;
         return 0;
       });
     }
     if (this.state.sortColumn === "isRoleActive") {
       itemsArray.sort((a, b) => {
-        if (a.isRoleActive < b.isRoleActive) return -1;
-        if (a.isRoleActive > b.isRoleActive) return 1;
+        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase())
+          return -1;
+        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase())
+          return 1;
         return 0;
       });
     }
@@ -855,22 +857,24 @@ class StoreCRMRole extends Component {
 
     if (this.state.sortColumn === "roleName") {
       itemsArray.sort((a, b) => {
-        if (a.roleName < b.roleName) return 1;
-        if (a.roleName > b.roleName) return -1;
+        if (a.roleName.toLowerCase() < b.roleName.toLowerCase()) return 1;
+        if (a.roleName.toLowerCase() > b.roleName.toLowerCase()) return -1;
         return 0;
       });
     }
     if (this.state.sortColumn === "createdBy") {
       itemsArray.sort((a, b) => {
-        if (a.createdBy < b.createdBy) return 1;
-        if (a.createdBy > b.createdBy) return -1;
+        if (a.createdBy.toLowerCase() < b.createdBy.toLowerCase()) return 1;
+        if (a.createdBy.toLowerCase() > b.createdBy.toLowerCase()) return -1;
         return 0;
       });
     }
     if (this.state.sortColumn === "isRoleActive") {
       itemsArray.sort((a, b) => {
-        if (a.isRoleActive < b.isRoleActive) return 1;
-        if (a.isRoleActive > b.isRoleActive) return -1;
+        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase())
+          return 1;
+        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase())
+          return -1;
         return 0;
       });
     }
@@ -1062,7 +1066,8 @@ class StoreCRMRole extends Component {
                               )}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
-                                "isRoleActive"
+                                "isRoleActive",
+                                "value"
                               )}
                             />
                             <label htmlFor={"fil-open" + item.isRoleActive}>
@@ -1097,6 +1102,7 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "roleName",
                         Cell: (row) => {
                           // var ids = row.original["id"];
@@ -1149,6 +1155,7 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdBy",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1212,6 +1219,7 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "isRoleActive",
                       },
                       {
@@ -1386,7 +1394,7 @@ class StoreCRMRole extends Component {
                         value={this.state.RoleisActive}
                         onChange={this.handleRoleisActive}
                       >
-                        <option>select</option>
+                        <option value="0">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -1394,7 +1402,7 @@ class StoreCRMRole extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.RoleisActive === 0 && (
+                      {this.state.RoleisActive == 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.statusCompulsory}
                         </p>
