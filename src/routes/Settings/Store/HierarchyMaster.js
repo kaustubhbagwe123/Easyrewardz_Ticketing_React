@@ -748,7 +748,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterDesignation });
       } else {
         this.setState({
-          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterDesignation: [],
         });
       }
     }
@@ -1226,9 +1226,11 @@ class HierarchyMaster extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
+                    {this.state.sortFilterDesignation.length > 0?(
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
-                    </label>
+                    </label>):null
+                    }
                   </div>
                   {this.state.sortColumn === "designationName"
                     ? this.state.sortFilterDesignation !== null &&
