@@ -67,6 +67,7 @@ class StoreTask extends Component {
       ticketSearchData: {},
       storeStatus: StoreStatus(),
       userData: [],
+      isViewSerach: false,
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -672,7 +673,7 @@ class StoreTask extends Component {
     inputParam.AssigntoId = 0; //this.state.raiseSearchData["AssigntoId"] || 0;
     inputParam.createdID = this.state.assignSearchData["createdID"] || 0;
     inputParam.Priority = this.state.assignSearchData["Priority"] || 0;
-
+    this.setState({ isViewSerach: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetAssigenBymefilterData",
@@ -683,9 +684,9 @@ class StoreTask extends Component {
         var message = response.data.message;
         var assignToMeData = response.data.responseData;
         if (message === "Success" && assignToMeData) {
-          self.setState({ assignToMeData });
+          self.setState({ assignToMeData, isViewSerach: false });
         } else {
-          self.setState({ assignToMeData });
+          self.setState({ assignToMeData, isViewSerach: false });
         }
       })
       .catch((response) => {
@@ -725,7 +726,7 @@ class StoreTask extends Component {
     inputParam.AssigntoId = this.state.raiseSearchData["AssigntoId"] || 0;
     inputParam.createdID = 0; //this.state.raiseSearchData["createdID"] || 0;
     inputParam.Priority = this.state.raiseSearchData["Priority"] || 0;
-
+    this.setState({ isViewSerach: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetRaisedbymefilterData",
@@ -737,9 +738,9 @@ class StoreTask extends Component {
         var message = response.data.message;
         var raisedByMeData = response.data.responseData;
         if (message === "Success" && raisedByMeData) {
-          self.setState({ raisedByMeData });
+          self.setState({ raisedByMeData, isViewSerach: false });
         } else {
-          self.setState({ raisedByMeData });
+          self.setState({ raisedByMeData, isViewSerach: false });
         }
       })
       .catch((response) => {
@@ -784,7 +785,7 @@ class StoreTask extends Component {
       this.state.ticketSearchData["taskwithClaim"] || "";
     inputParam.taskwithTicket =
       this.state.ticketSearchData["taskwithTicket"] || "";
-
+    this.setState({ isViewSerach: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetTaskbyTicketData",
@@ -796,9 +797,9 @@ class StoreTask extends Component {
         var message = response.data.message;
         var taskByTicketData = response.data.responseData;
         if (message === "Success" && taskByTicketData) {
-          self.setState({ taskByTicketData });
+          self.setState({ taskByTicketData, isViewSerach: false });
         } else {
-          self.setState({ taskByTicketData });
+          self.setState({ taskByTicketData, isViewSerach: false });
         }
       })
       .catch((response) => {
@@ -1670,7 +1671,6 @@ class StoreTask extends Component {
   ////handle collapse search
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
-    
   }
   handleOnChange(e) {
     debugger;
@@ -1723,6 +1723,7 @@ class StoreTask extends Component {
           funcationData: [],
           assignToData: [],
         });
+        this.handleGetFuncationByDepartmentId()
       }
     }
   }
@@ -2029,7 +2030,7 @@ class StoreTask extends Component {
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
-                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                    {this.state.FilterCollapse ? "Search" : "Search"}
                   </small>
                   <img
                     className="search-icon"
@@ -2038,72 +2039,185 @@ class StoreTask extends Component {
                   />
                 </div>
                 <div className="table-cntr raisereactTable">
-                  <ReactTable
-                    data={this.state.raisedByMeData}
-                    columns={[
-                      {
-                        Header: <span>ID</span>,
-                        accessor: "storeTaskID",
-                      },
-                      {
-                        Header: <span>Status</span>,
-                        accessor: "taskStatus",
-                        Cell: (row) => {
-                          if (row.original.taskStatus === "New") {
-                            return (
-                              <span className="table-btn table-yellow-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          } else if (row.original.taskStatus === "Open") {
-                            return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          } else {
-                            return (
-                              <span className="table-btn table-green-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          }
+                  {this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.raisedByMeData}
+                      columns={[
+                        {
+                          Header: <span>ID</span>,
+                          accessor: "storeTaskID",
                         },
-                      },
-                      {
-                        Header: <span>Task Title</span>,
-                        accessor: "taskTitle",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "departmentName",
-                              "Department"
-                            )}
-                          >
-                            Department <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "departmentName",
-                        Cell: (row) => {
-                          return (
-                            <>
-                              {row.original.departmentName}
+                        {
+                          Header: <span>Status</span>,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
+                        },
+                        {
+                          Header: <span>Task Title</span>,
+                          accessor: "taskTitle",
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "departmentName",
+                                "Department"
+                              )}
+                            >
+                              Department <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.departmentName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priorityName",
+                                "Priority"
+                              )}
+                            >
+                              Priority <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "priorityName	",
+                          Cell: (row) => {
+                            return <span>{row.original.priorityName}</span>;
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                "Creation On"
+                              )}
+                            >
+                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "creationOn",
+                          sortable: false,
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.creationOn}</label>
+
                               <Popover
                                 content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
                                       <li>
-                                        <p>Function</p>
-                                        <p>{row.original.functionName}</p>
+                                        <p>
+                                          {row.original.createdBy + " Created"}
+                                        </p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {row.original.updatedBy + " "} updated
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
+                                placement="left"
                               >
                                 <img
                                   className="info-icon"
@@ -2111,141 +2225,38 @@ class StoreTask extends Component {
                                   alt="info-icon"
                                 />
                               </Popover>
-                            </>
-                          );
+                            </span>
+                          ),
                         },
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "storeName",
-                              "Store Name"
-                            )}
-                          >
-                            Store Name <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "storeName",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "priorityName",
-                              "Priority"
-                            )}
-                          >
-                            Priority <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "priorityName	",
-                        Cell: (row) => {
-                          return <span>{row.original.priorityName}</span>;
-                        },
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "creationOn",
-                              "Creation On"
-                            )}
-                          >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "creationOn",
-                        sortable: false,
-                        Cell: (row) => (
-                          <span>
-                            <label>{row.original.creationOn}</label>
-
-                            <Popover
-                              content={
-                                <div className="insertpop1">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
-                                    <li>
-                                      <p>
-                                        {row.original.createdBy + " Created"}
-                                      </p>
-                                      <p>{row.original.createdago}</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                        Assigned to{" "}
-                                        {" " + row.original.assignto}
-                                      </p>
-                                      <p>{row.original.assignedago}</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                        {row.original.updatedBy + " "} updated
-                                      </p>
-                                      <p>{row.original.updatedago}</p>
-                                    </li>
-                                    <li>
-                                      <p>Response time remaining by</p>
-                                      <p>
-                                        {row.original.resolutionTimeRemaining}
-                                      </p>
-                                    </li>
-                                    <li>
-                                      <p>Response overdue by</p>
-                                      <p>1 Hr</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution overdue by</p>
-                                      <p>{row.original.resolutionOverdueBy}</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              }
-                              placement="left"
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignto",
+                                "Assign to"
+                              )}
                             >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
-                              />
-                            </Popover>
-                          </span>
-                        ),
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "assignto",
-                              "Assign to"
-                            )}
-                          >
-                            Assign to
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "assignto",
-                        // Cell: (props) => (
-                        //   <span>
-                        //     <label>A, Bansal</label>
-                        //   </span>
-                        // ),
-                      },
-                    ]}
-                    // resizable={false}
-                    defaultPageSize={10}
-                    minRows={2}
-                    showPagination={true}
-                    getTrProps={this.handleRowClickRaisedTable}
-                  />
+                              Assign to
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "assignto",
+                          // Cell: (props) => (
+                          //   <span>
+                          //     <label>A, Bansal</label>
+                          //   </span>
+                          // ),
+                        },
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={10}
+                      minRows={2}
+                      showPagination={true}
+                      getTrProps={this.handleRowClickRaisedTable}
+                    />
+                  )}
                 </div>
               </div>
             )}
@@ -2446,7 +2457,7 @@ class StoreTask extends Component {
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
-                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                    {this.state.FilterCollapse ? "Search" : "Search"}
                   </small>
                   <img
                     className="search-icon"
@@ -2455,238 +2466,249 @@ class StoreTask extends Component {
                   />
                 </div>
                 <div className="table-cntr">
-                  <ReactTable
-                    data={this.state.assignToMeData}
-                    columns={[
-                      {
-                        Header: <span>ID</span>,
-                        accessor: "storeTaskID",
-                      },
-                      {
-                        Header: <span>Status</span>,
-                        accessor: "taskStatus",
-                        Cell: (row) => {
-                          if (row.original.taskStatus === "New") {
-                            return (
-                              <span className="table-btn table-yellow-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          } else if (row.original.taskStatus === "Open") {
-                            return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          } else {
-                            return (
-                              <span className="table-btn table-green-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          }
+                  {this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.assignToMeData}
+                      columns={[
+                        {
+                          Header: <span>ID</span>,
+                          accessor: "storeTaskID",
                         },
-                      },
-                      {
-                        Header: <span>Task Title</span>,
-                        accessor: "taskTitle",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "departmentName",
-                              "Department"
-                            )}
-                          >
-                            Department <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "departmentName",
-                        Cell: (row) => {
-                          return (
-                            <span>
-                              <label>{row.original.departmentName}</label>
-                              <Popover
-                                content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
-                                      <li>
-                                        <p>Function</p>
-                                        <p>{row.original.functionName}</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
+                        {
+                          Header: <span>Status</span>,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
+                        },
+                        {
+                          Header: <span>Task Title</span>,
+                          accessor: "taskTitle",
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "departmentName",
+                                "Department"
+                              )}
+                            >
+                              Department <FontAwesomeIcon icon={faCaretDown} />
                             </span>
-                          );
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.departmentName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
                         },
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "createdBy",
-                              "Created by"
-                            )}
-                          >
-                            Created by <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "createdBy",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "priorityName",
-                              "Priority"
-                            )}
-                          >
-                            Priority <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "priorityName",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "storeName",
-                              "Store Name"
-                            )}
-                          >
-                            Store Name
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "storeName",
-                        Cell: (row) => {
-                          return (
-                            <span>
-                              <label>{row.original.storeName}</label>
-                              <Popover
-                                content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
-                                      <li>
-                                        <p>Store Name</p>
-                                        <p>ABS</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdBy",
+                                "Created by"
+                              )}
+                            >
+                              Created by <FontAwesomeIcon icon={faCaretDown} />
                             </span>
-                          );
+                          ),
+                          sortable: false,
+                          accessor: "createdBy",
                         },
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "creationOn",
-                              "Creation On"
-                            )}
-                          >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "creationOn",
-                        Cell: (row) => {
-                          return (
-                            <span>
-                              <label>{row.original.creationOn}</label>
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priorityName",
+                                "Priority"
+                              )}
+                            >
+                              Priority <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "priorityName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Name</p>
+                                          <p>ABS</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                "Creation On"
+                              )}
+                            >
+                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "creationOn",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.creationOn}</label>
 
-                              <Popover
-                                content={
-                                  <div className="insertpop1">
-                                    <ul className="dash-creation-popup">
-                                      <li className="title">
-                                        Creation details
-                                      </li>
-                                      <li>
-                                        <p>
-                                          {row.original.createdBy + " Created"}
-                                        </p>
-                                        <p>{row.original.createdago}</p>
-                                      </li>
-                                      <li>
-                                        <p>
-                                          Assigned to{" "}
-                                          {" " + row.original.assignto}
-                                        </p>
-                                        <p>{row.original.assignedago}</p>
-                                      </li>
-                                      <li>
-                                        <p>
-                                          {row.original.updatedBy + " "} updated
-                                        </p>
-                                        <p>{row.original.updatedago}</p>
-                                      </li>
+                                <Popover
+                                  content={
+                                    <div className="insertpop1">
+                                      <ul className="dash-creation-popup">
+                                        <li className="title">
+                                          Creation details
+                                        </li>
+                                        <li>
+                                          <p>
+                                            {row.original.createdBy +
+                                              " Created"}
+                                          </p>
+                                          <p>{row.original.createdago}</p>
+                                        </li>
+                                        <li>
+                                          <p>
+                                            Assigned to{" "}
+                                            {" " + row.original.assignto}
+                                          </p>
+                                          <p>{row.original.assignedago}</p>
+                                        </li>
+                                        <li>
+                                          <p>
+                                            {row.original.updatedBy + " "}{" "}
+                                            updated
+                                          </p>
+                                          <p>{row.original.updatedago}</p>
+                                        </li>
 
-                                      <li>
-                                        <p>Response time remaining by</p>
-                                        <p>
-                                          {row.original.resolutionTimeRemaining}
-                                        </p>
-                                      </li>
-                                      <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
-                                      </li>
-                                      <li>
-                                        <p>Resolution overdue by</p>
-                                        <p>
-                                          {row.original.resolutionOverdueBy}
-                                        </p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                }
-                                placement="left"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
-                            </span>
-                          );
+                                        <li>
+                                          <p>Response time remaining by</p>
+                                          <p>
+                                            {
+                                              row.original
+                                                .resolutionTimeRemaining
+                                            }
+                                          </p>
+                                        </li>
+                                        <li>
+                                          <p>Response overdue by</p>
+                                          <p>1 Hr</p>
+                                        </li>
+                                        <li>
+                                          <p>Resolution overdue by</p>
+                                          <p>
+                                            {row.original.resolutionOverdueBy}
+                                          </p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="left"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
                         },
-                      },
-                    ]}
-                    // resizable={false}
-                    minRows={2}
-                    defaultPageSize={10}
-                    showPagination={true}
-                    getTrProps={this.handleRowClickRaisedTable}
-                  />
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      getTrProps={this.handleRowClickRaisedTable}
+                    />
+                  )}
                 </div>
               </div>
             )}
@@ -2962,7 +2984,7 @@ class StoreTask extends Component {
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
-                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                    {this.state.FilterCollapse ? "Search" : "Search"}
                   </small>
                   <img
                     className="search-icon"
@@ -2971,133 +2993,213 @@ class StoreTask extends Component {
                   />
                 </div>
                 <div className="table-cntr taskByTable">
-                  <ReactTable
-                    data={this.state.taskByTicketData}
-                    columns={[
-                      {
-                        Header: <span>Task ID</span>,
-                        accessor: "storeTaskID",
-                      },
-                      {
-                        Header: <span>Ticket ID</span>,
-                        accessor: "ticketID",
-                      },
-                      {
-                        Header: <span>Status</span>,
-                        accessor: "taskStatus",
-                        Cell: (row) => {
-                          if (row.original.taskStatus === "New") {
-                            return (
-                              <span className="table-btn table-yellow-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          } else if (row.original.taskStatus === "Open") {
-                            return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          } else {
-                            return (
-                              <span className="table-btn table-green-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
-                            );
-                          }
+                  {this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.taskByTicketData}
+                      columns={[
+                        {
+                          Header: <span>Task ID</span>,
+                          accessor: "storeTaskID",
                         },
-                      },
-                      {
-                        Header: <span>Task Title</span>,
-                        accessor: "taskTitle",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "departmentName",
-                              "Department"
-                            )}
-                          >
-                            Department <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "departmentName",
-                        Cell: (row) => {
-                          return (
-                            <>
-                              {row.original.departmentName}
-                              <Popover
-                                content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
-                                      <li>
-                                        <p>Function</p>
-                                        <p>{row.original.functionName}</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
-                            </>
-                          );
+                        {
+                          Header: <span>Ticket ID</span>,
+                          accessor: "ticketID",
                         },
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "createdBy",
-                              "Created by"
-                            )}
-                          >
-                            Created by <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "createdBy",
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "storeName",
-                              "Store Name"
-                            )}
-                          >
-                            Store Name
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "storeName",
-                        Cell: (row) => {
-                          return (
+                        {
+                          Header: <span>Status</span>,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
+                        },
+                        {
+                          Header: <span>Task Title</span>,
+                          accessor: "taskTitle",
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "departmentName",
+                                "Department"
+                              )}
+                            >
+                              Department <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.departmentName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdBy",
+                                "Created by"
+                              )}
+                            >
+                              Created by <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "createdBy",
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                "Creation On"
+                              )}
+                            >
+                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "creationOn",
+                          Cell: (row) => (
                             <span>
-                              <label>{row.original.storeName}</label>
+                              <label>{row.original.creationOn}</label>
+
                               <Popover
                                 content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
                                       <li>
-                                        <p>Store Address</p>
-                                        <p>{row.original.storeAddress}</p>
+                                        <p>
+                                          {row.original.createdBy + " "} Created
+                                        </p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {row.original.updatedBy + " "} updated
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
+                                placement="left"
                               >
                                 <img
                                   className="info-icon"
@@ -3106,102 +3208,32 @@ class StoreTask extends Component {
                                 />
                               </Popover>
                             </span>
-                          );
+                          ),
                         },
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "creationOn",
-                              "Creation On"
-                            )}
-                          >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "creationOn",
-                        Cell: (row) => (
-                          <span>
-                            <label>{row.original.creationOn}</label>
-
-                            <Popover
-                              content={
-                                <div className="insertpop1">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
-                                    <li>
-                                      <p>
-                                        {row.original.createdBy + " "} Created
-                                      </p>
-                                      <p>{row.original.createdago}</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                        Assigned to{" "}
-                                        {" " + row.original.assignto}
-                                      </p>
-                                      <p>{row.original.assignedago}</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                        {row.original.updatedBy + " "} updated
-                                      </p>
-                                      <p>{row.original.updatedago}</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution time remaining by</p>
-                                      <p>
-                                        {row.original.resolutionTimeRemaining}
-                                      </p>
-                                    </li>
-                                    <li>
-                                      <p>Response overdue by</p>
-                                      <p>1 Hr</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution overdue by</p>
-                                      <p>{row.original.resolutionOverdueBy}</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              }
-                              placement="left"
+                        {
+                          Header: (
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignto",
+                                "Assign to"
+                              )}
                             >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
-                              />
-                            </Popover>
-                          </span>
-                        ),
-                      },
-                      {
-                        Header: (
-                          <span
-                            onClick={this.StatusOpenModel.bind(
-                              this,
-                              "assignto",
-                              "Assign to"
-                            )}
-                          >
-                            Assign to
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        sortable: false,
-                        accessor: "assignto",
-                      },
-                    ]}
-                    // resizable={false}
-                    defaultPageSize={10}
-                    showPagination={true}
-                    minRows={2}
-                    getTrProps={this.HandleRowTaskByClickPage}
-                  />
+                              Assign to
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "assignto",
+                        },
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      minRows={2}
+                      getTrProps={this.HandleRowTaskByClickPage}
+                    />
+                  )}
                 </div>
               </div>
             )}

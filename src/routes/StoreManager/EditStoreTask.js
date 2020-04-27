@@ -64,6 +64,7 @@ class EditStoreTask extends Component {
       assignComment: "",
       isAssignComment: "",
       assginToModal: false,
+      oldagentId:0
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -114,7 +115,7 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetCommentOnTask",
       headers: authHeader(),
-      params: { TaskID: taskId },
+      params: { TaskID: taskId, taskFor: 1 },
     })
       .then(function(response) {
         debugger;
@@ -338,6 +339,7 @@ class EditStoreTask extends Component {
           data: {
             TaskID: this.state.taskId,
             Comment: this.state.comment,
+            TaskFor: 1,
           },
         })
           .then(function(response) {
@@ -419,9 +421,13 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/AssignTask",
       headers: authHeader(),
-      params: {
+      dat: {
         TaskID: this.state.taskId,
         AgentID: this.state.agentId,
+        CommentOnAssign:this.state.assignComment,
+        IsCommentOnAssign:1,
+        OldAgentID:this.state.oldagentId
+
       },
     })
       .then(function(response) {

@@ -92,6 +92,8 @@ class StoreDashboard extends Component {
       activeTab: 1,
       createdUser: [],
       cliamCount: 0,
+      cliamSearchData: [],
+      isViewSerach: false,
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -865,7 +867,7 @@ class StoreDashboard extends Component {
         .format("YYYY-MM-DD")
         .toString() || null;
 
-    debugger;
+    this.setState({ isViewSerach: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/GetstoreDashboardListClaim",
@@ -874,16 +876,18 @@ class StoreDashboard extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        var dashboardGridData = response.data.responseData;
-        if (message === "Success" && dashboardGridData) {
+        var cliamSearchData = response.data.responseData;
+        if (message === "Success" && cliamSearchData) {
           self.setState({
-            dashboardGridData,
-            cliamCount: dashboardGridData.length,
+            cliamSearchData,
+            cliamCount: cliamSearchData.length,
+            isViewSerach: false,
           });
         } else {
           self.setState({
-            dashboardGridData,
-            cliamCount: dashboardGridData.length,
+            cliamSearchData,
+            cliamCount: cliamSearchData.length,
+            isViewSerach: false,
           });
         }
       })
@@ -903,6 +907,9 @@ class StoreDashboard extends Component {
   ////handle tab change
   handleTabChange = (tab, e) => {
     this.setState({ activeTab: tab });
+    if (tab == 2) {
+      this.handleClaimViewSearch();
+    }
   };
   ////handle on change in view search
   handleOnChange = (e) => {
@@ -1731,117 +1738,244 @@ class StoreDashboard extends Component {
                   </Card>
                 </Collapse>
                 <div className="table-responsive tickhierpad">
-                  <ReactTable
-                    data={this.state.dashboardGridData}
-                    columns={[
-                      {
-                        Header: <span>ID</span>,
-                        accessor: "taskid",
-                      },
-                      {
-                        Header: (
-                          <span onClick={this.StatusOpenModel}>
-                            Status <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "taskstatus",
-                        Cell: (row) => {
-                          return (
-                            <span className="table-btn table-blue-btn">
-                              <label>{row.original.taskstatus}</label>
-                            </span>
-                          );
+                  {this.state.activeTab === 1 ? (
+                    <ReactTable
+                      data={this.state.dashboardGridData}
+                      columns={[
+                        {
+                          Header: <span>ID</span>,
+                          accessor: "taskid",
                         },
-                      },
-                      {
-                        Header: <span>Task Title</span>,
-                        accessor: "tasktitle",
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Department <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "department",
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Store Name <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "storeName",
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "createdOn",
-                        Cell: (row) => (
-                          <span>
-                            <label>{row.original.createdOn}</label>
+                        {
+                          Header: (
+                            <span onClick={this.StatusOpenModel}>
+                              Status <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "taskstatus",
+                          Cell: (row) => {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.taskstatus}</label>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: <span>Task Title</span>,
+                          accessor: "tasktitle",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Department <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "department",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Store Name <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "storeName",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "createdOn",
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.createdOn}</label>
 
-                            <Popover
-                              content={
-                                <div className="insertpop1">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
-                                    <li>
-                                      <p>Naman Created</p>
-                                      <p>2 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Assigned to Vikas</p>
-                                      <p>1.5 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Vikas updated</p>
-                                      <p>1 Hr ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Response time remaining by</p>
-                                      <p>30 mins</p>
-                                    </li>
-                                    <li>
-                                      <p>Response overdue by</p>
-                                      <p>1 Hr</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution overdue by</p>
-                                      <p>2 Hrs</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              }
-                              placement="left"
-                            >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
-                              />
-                            </Popover>
-                          </span>
-                        ),
-                      },
-                      {
-                        Header: (
-                          <span>
-                            Assign to
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "assigntoId",
-                      },
-                    ]}
-                    // resizable={false}
-                    minRows={2}
-                    defaultPageSize={10}
-                    showPagination={true}
-                  />
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>Naman Created</p>
+                                        <p>2 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Assigned to Vikas</p>
+                                        <p>1.5 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Vikas updated</p>
+                                        <p>1 Hr ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>30 mins</p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>2 Hrs</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          ),
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Assign to
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "assigntoId",
+                        },
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                    />
+                  ) : this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.cliamSearchData}
+                      columns={[
+                        {
+                          Header: <span>ID</span>,
+                          accessor: "claimID",
+                        },
+                        {
+                          Header: (
+                            <span onClick={this.StatusOpenModel}>
+                              Status <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "claimStatus",
+                          Cell: (row) => {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.claimStatus}</label>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: <span>Claim Issue Type</span>,
+                          accessor: "issueTypeName",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Category <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "categoryName",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Created By <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "createdByName",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "creationOn",
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.creationOn}</label>
+
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {row.original.createdByName} Created
+                                        </p>
+                                        <p>2 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to {row.original.assignTo}
+                                        </p>
+                                        <p>1.5 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Vikas updated</p>
+                                        <p>1 Hr ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>30 mins</p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>2 Hrs</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          ),
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Assign to
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "assignTo",
+                        },
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                    />
+                  )}
+
                   {/* <div className="position-relative">
                         <div className="pagi">
                           <ul>
