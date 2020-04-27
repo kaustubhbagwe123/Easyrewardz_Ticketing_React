@@ -2067,6 +2067,30 @@ class StoreReports extends Component {
       });
   }
 
+  handleDownload = (id) => {
+    debugger;
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreReport/DownloadStoreReportSearch",
+        headers: authHeader(),
+        params: {
+          SchedulerID: id,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          window.open(res.data.responseData);
+          // self.downloadURI(res.data.responseData,name+".csv");
+          // self.setState({
+          //   loading: false,
+          // });
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    };
+
   render() {
     const datareport = this.state.storeReportData;
 
@@ -2149,6 +2173,10 @@ class StoreReports extends Component {
               src={DownExcel}
               alt="download icon"
               className="downloadaction"
+              onClick={this.handleDownload.bind(
+                this,
+                row.original.scheduleID
+              )}
             />
             <Popover content={
               <div className="d-flex general-popover popover-body">
