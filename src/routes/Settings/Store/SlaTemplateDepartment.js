@@ -84,6 +84,7 @@ class SlaTemplateDepartment extends Component {
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       sisSLAActiveFilterCheckbox: "",
+      regexp : /^[0-9\b]+$/
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -568,12 +569,14 @@ class SlaTemplateDepartment extends Component {
   handleSlaTargets = (i, e) => {
     debugger;
     const { name, value } = e.target;
-    let finalData = [...this.state.finalData];
-    finalData[i] = {
-      ...finalData[i],
-      [name]: value,
-    };
-    this.setState({ finalData });
+    if(value === '' || this.state.regexp.test(value)){
+      let finalData = [...this.state.finalData];
+      finalData[i] = {
+        ...finalData[i],
+        [name]: value,
+      };
+      this.setState({ finalData });
+    }
   };
   handleSlaTargetsDropdowns(e) {
     debugger;
@@ -1630,7 +1633,7 @@ class SlaTemplateDepartment extends Component {
                                         <li key={i}>
                                           <input
                                             type="checkbox"
-                                            id={"i" + item.functionID}
+                                            id={"i" + item.functionID+"_"+i}
                                             name="allSla"
                                             onChange={this.selectIndividualSLA.bind(
                                               this,
@@ -1638,7 +1641,7 @@ class SlaTemplateDepartment extends Component {
                                             )}
                                           />
                                           <label
-                                            htmlFor={"i" + item.functionID}
+                                            htmlFor={"i" + item.functionID+"_"+i}
                                           >
                                             {item.functionName}
                                             <div>
