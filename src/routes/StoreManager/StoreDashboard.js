@@ -1012,8 +1012,6 @@ class StoreDashboard extends Component {
         var ClaimID = column.original["claimID"];
         if (TaskID !== "") {
           this.handleTaskPageRedirect(TaskID);
-        } else {
-          this.handleClaimPageRedirect(ClaimID);
         }
       },
     };
@@ -1030,6 +1028,22 @@ class StoreDashboard extends Component {
     this.props.history.push({
       pathname: "claimApproveReject",
       state: { ClaimID: id },
+    });
+  }
+  HandleRowClickPage = (rowInfo, column) => {
+    return {
+      onClick: (e) => {
+        var claimID = column.original["claimID"];
+        this.handleRedirectToViewStoreClaim(claimID);
+      },
+    };
+  };
+
+  handleRedirectToViewStoreClaim(claimID) {
+    debugger;
+    this.props.history.push({
+      pathname: "claimApproveReject",
+      state: { ClaimID: claimID },
     });
   }
   render() {
@@ -1341,7 +1355,7 @@ class StoreDashboard extends Component {
                             >
                               Claim:
                               <span className="myTciket-tab-span">
-                                {this.state.cliamCount < 0
+                                {this.state.cliamCount < 9
                                   ? "0" + this.state.cliamCount
                                   : this.state.cliamCount}
                               </span>
@@ -1941,11 +1955,25 @@ class StoreDashboard extends Component {
                           ),
                           accessor: "claimStatus",
                           Cell: (row) => {
-                            return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.claimStatus}</label>
-                              </span>
-                            );
+                            if (row.original.claimStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.claimStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.claimStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.claimStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.claimStatus}</label>
+                                </span>
+                              );
+                            }
                           },
                         },
                         {
@@ -1959,6 +1987,50 @@ class StoreDashboard extends Component {
                             </span>
                           ),
                           accessor: "categoryName",
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.categoryName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <div>
+                                        <b>
+                                          <p className="title">Category</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.categoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">Sub Category</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.subCategoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">Type</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.issueTypeName}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
                         },
                         {
                           Header: (
@@ -2042,6 +2114,7 @@ class StoreDashboard extends Component {
                       minRows={2}
                       defaultPageSize={10}
                       showPagination={true}
+                      getTrProps={this.HandleRowClickPage}
                     />
                   )}
 

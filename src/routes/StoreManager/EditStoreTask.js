@@ -64,7 +64,8 @@ class EditStoreTask extends Component {
       assignComment: "",
       isAssignComment: "",
       assginToModal: false,
-      oldagentId:0
+      oldassignToID: 0,
+      
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -168,6 +169,7 @@ class EditStoreTask extends Component {
           funcationID = data.functionID;
           priorityID = data.priorityID;
           assignToID = data.assignToID;
+          var oldassignToID = data.assignToID;
           taskTitle = data.taskTitle;
           taskDetails = data.taskDescription;
           issueRaisedBy = data.createdByName;
@@ -181,6 +183,7 @@ class EditStoreTask extends Component {
           taskStatusName = data.taskStatusName;
 
           self.setState({
+            oldassignToID,
             canAssignTo,
             taskStatusId,
             taskStatusName,
@@ -304,7 +307,8 @@ class EditStoreTask extends Component {
         headers: authHeader(),
         data: {
           TaskID: this.state.taskId,
-          Comment: this.state.assignComment,
+          Comment: this.state.assignComment.trim(),
+          TaskFor: 1,
         },
       })
         .then(function(response) {
@@ -421,13 +425,12 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/AssignTask",
       headers: authHeader(),
-      dat: {
+      data: {
         TaskID: this.state.taskId,
         AgentID: this.state.agentId,
-        CommentOnAssign:this.state.assignComment,
-        IsCommentOnAssign:1,
-        OldAgentID:this.state.oldagentId
-
+        CommentOnAssign: this.state.assignComment.trim(),
+        IsCommentOnAssign: 1,
+        OldAgentID: this.state.oldassignToID,
       },
     })
       .then(function(response) {
@@ -435,8 +438,9 @@ class EditStoreTask extends Component {
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && responseData) {
-          self.setState({ userModel: false });
+          self.setState({ userModel: false, assignComment: "" });
           NotificationManager.success("Task Assign Successfully.");
+          NotificationManager.success("Comment Added successfully.");
           self.componentDidMount();
         } else {
           NotificationManager.error("Task Assign Fail.");
@@ -661,14 +665,13 @@ class EditStoreTask extends Component {
     } else {
       this.setState({
         assignComment: e.target.value,
-        isAssignComment: "Please enter comment.",
+        // isAssignComment: "Please enter comment.",
       });
     }
   }
   ////handle assign to with comment
   handleAssigntoWithComment() {
     if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
-      this.handleAddCommentByTaskId(true);
       this.handleAssignTask();
     } else {
       this.setState({ isAssignComment: "Please enter comment." });
@@ -676,7 +679,6 @@ class EditStoreTask extends Component {
   }
   ///handle re assign modal skip button on click
   handleSkipButtonClick() {
-    this.handleAddCommentByTaskId(true);
     this.handleAssignTask();
   }
   ////handle assgin to modal open
@@ -986,6 +988,13 @@ class EditStoreTask extends Component {
                             <label className="naman-r-store">
                               {item.commentByName}
                             </label>
+                            {item.isCommentOnAssign === 1 ? (
+                              <div className="row" style={{ margin: "0" }}>
+                                <label className="naman-R allign-reassign">
+                                  Reassign to {item.newAgentName}
+                                </label>
+                              </div>
+                            ) : null}
                             <label className="store-hrLbl">
                               {item.commentedDiff}
                             </label>

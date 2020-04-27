@@ -53,6 +53,9 @@ class StoreTaskByTicket extends Component {
       isAssignTo: false,
       taskStatusId: 0,
       taskStatusName: "",
+      isAssignComment: "",
+      assignComment: "",
+      assginToModal: false,
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -173,8 +176,13 @@ class StoreTaskByTicket extends Component {
           taskStatusId = taskDetailsData.taskStatusId;
           taskStatusName = taskDetailsData.taskStatusName;
           priorityID = taskDetailsData.priorityID;
+          var oldassignToID = taskDetailsData.assignToID;
+          var agentId = taskDetailsData.assignToID;
+
           debugger;
           self.setState({
+            agentId,
+            oldassignToID,
             priorityID,
             canEdit,
             isAssignTo,
@@ -254,7 +262,7 @@ class StoreTaskByTicket extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetCommentOnTask",
       headers: authHeader(),
-      params: { TaskID: taskId },
+      params: { TaskID: taskId, taskFor: 2 },
     })
       .then(function(response) {
         debugger;
@@ -289,7 +297,8 @@ class StoreTaskByTicket extends Component {
         headers: authHeader(),
         data: {
           TaskID: this.state.taskId,
-          Comment: this.state.comment,
+          Comment: this.state.comment.trim(),
+          TaskFor: 2,
         },
       })
         .then(function(response) {
@@ -317,9 +326,12 @@ class StoreTaskByTicket extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/AssignTaskByTicket",
       headers: authHeader(),
-      params: {
+      data: {
         TaskID: this.state.taskId,
         AgentID: this.state.agentId,
+        CommentOnAssign: this.state.assignComment.trim(),
+        IsCommentOnAssign: 1,
+        OldAgentID: this.state.oldassignToID,
       },
     })
       .then(function(response) {
@@ -327,8 +339,13 @@ class StoreTaskByTicket extends Component {
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && responseData) {
-          self.setState({ userModel: false });
+          self.setState({
+            userModel: false,
+            assginToModal: false,
+            assignComment: "",
+          });
           NotificationManager.success("Task Assign Successfully.");
+          NotificationManager.success("Comment Added successfully.");
           self.componentDidMount();
         } else {
           NotificationManager.error("Task Assign Fail.");
@@ -336,7 +353,7 @@ class StoreTaskByTicket extends Component {
         }
       })
       .catch((response) => {
-        console.log(response, "---handleAssignTask");
+        console.log(response, "---handleAssignTaskByTicket");
       });
   }
   ////handle get store task progress bar data
@@ -536,6 +553,36 @@ class StoreTaskByTicket extends Component {
         ticketId: this.state.ticketId,
       },
     });
+  }
+  ////handle assign to with comment
+  handleAssigntoWithComment() {
+    if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
+      this.handleAssignTaskByTicket();
+    } else {
+      this.setState({ isAssignComment: "Please enter comment." });
+    }
+  }
+  ///handle re assign modal skip button on click
+  handleSkipButtonClick() {
+    this.handleAssignTaskByTicket();
+  }
+  ////handle assgin to modal open
+  handleAssginToModalOpen() {
+    this.setState({ assginToModal: true });
+  }
+  ///handle assgin to modal close
+  handleAssginToModalClose() {
+    this.setState({ assginToModal: false });
+  }
+  handleAssignCommentChange(e) {
+    if (e.target.value !== "") {
+      this.setState({ assignComment: e.target.value, isAssignComment: "" });
+    } else {
+      this.setState({
+        assignComment: e.target.value,
+        // isAssignComment: "Please enter comment.",
+      });
+    }
   }
   render() {
     return (
@@ -1194,7 +1241,7 @@ class StoreTaskByTicket extends Component {
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={this.handleAssignTaskByTicket.bind(this)}
+                onClick={this.handleAssginToModalOpen.bind(this)}
               >
                 SELECT
               </button>
@@ -1204,6 +1251,64 @@ class StoreTaskByTicket extends Component {
               onClick={this.handleUserModelClose.bind(this)}
             >
               <img src={CancelImg} alt="cancel" />
+            </div>
+          </div>
+        </Modal>
+        {/* -------------------------assign to modal------------------------ */}
+        <Modal
+          open={this.state.assginToModal}
+          onClose={this.handleAssginToModalClose.bind(this)}
+          closeIconId="sdsg"
+          modalId="Historical-popup"
+          overlayId="logout-ovrly"
+          classNames={{
+            modal: "rejectmodal-popup",
+          }}
+        >
+          <div className="commenttextborder">
+            <div className="comment-disp">
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Add Comment</label>
+              </div>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handleAssginToModalClose.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="commenttextmessage">
+              <textarea
+                cols="31"
+                rows="3"
+                className="ticketMSGCmt-textarea"
+                maxLength={300}
+                value={this.state.assignComment}
+                onChange={this.handleAssignCommentChange.bind(this)}
+              ></textarea>
+            </div>
+            {this.state.isAssignComment !== "" && (
+              <p style={{ color: "red", marginTop: "0px" }}>
+                {this.state.isAssignComment}
+              </p>
+            )}
+            <div className="SendCommentBtn" style={{ float: "left" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleSkipButtonClick.bind(this)}
+              >
+                SKIP
+              </button>
+            </div>
+            <div className="SendCommentBtn" style={{ margin: "0" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleAssigntoWithComment.bind(this)}
+              >
+                ADD
+              </button>
             </div>
           </div>
         </Modal>
