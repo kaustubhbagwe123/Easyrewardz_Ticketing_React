@@ -822,22 +822,22 @@ class StoreCRMRole extends Component {
 
     if (this.state.sortColumn === "roleName") {
       itemsArray.sort((a, b) => {
-        if (a.roleName < b.roleName) return -1;
-        if (a.roleName > b.roleName) return 1;
+        if (a.roleName.toLowerCase() < b.roleName.toLowerCase()) return -1;
+        if (a.roleName.toLowerCase() > b.roleName.toLowerCase()) return 1;
         return 0;
       });
     }
     if (this.state.sortColumn === "createdBy") {
       itemsArray.sort((a, b) => {
-        if (a.createdBy < b.createdBy) return -1;
-        if (a.createdBy > b.createdBy) return 1;
+        if (a.createdBy.toLowerCase() < b.createdBy.toLowerCase()) return -1;
+        if (a.createdBy.toLowerCase() > b.createdBy.toLowerCase()) return 1;
         return 0;
       });
     }
     if (this.state.sortColumn === "isRoleActive") {
       itemsArray.sort((a, b) => {
-        if (a.isRoleActive < b.isRoleActive) return -1;
-        if (a.isRoleActive > b.isRoleActive) return 1;
+        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase()) return -1;
+        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase()) return 1;
         return 0;
       });
     }
@@ -858,22 +858,22 @@ class StoreCRMRole extends Component {
 
     if (this.state.sortColumn === "roleName") {
       itemsArray.sort((a, b) => {
-        if (a.roleName < b.roleName) return 1;
-        if (a.roleName > b.roleName) return -1;
+        if (a.roleName.toLowerCase() < b.roleName.toLowerCase()) return 1;
+        if (a.roleName.toLowerCase() > b.roleName.toLowerCase()) return -1;
         return 0;
       });
     }
     if (this.state.sortColumn === "createdBy") {
       itemsArray.sort((a, b) => {
-        if (a.createdBy < b.createdBy) return 1;
-        if (a.createdBy > b.createdBy) return -1;
+        if (a.createdBy.toLowerCase() < b.createdBy.toLowerCase()) return 1;
+        if (a.createdBy.toLowerCase() > b.createdBy.toLowerCase()) return -1;
         return 0;
       });
     }
     if (this.state.sortColumn === "isRoleActive") {
       itemsArray.sort((a, b) => {
-        if (a.isRoleActive < b.isRoleActive) return 1;
-        if (a.isRoleActive > b.isRoleActive) return -1;
+        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase()) return 1;
+        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase()) return -1;
         return 0;
       });
     }
@@ -1100,6 +1100,7 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "roleName",
                         Cell: (row) => {
                           // var ids = row.original["id"];
@@ -1152,6 +1153,7 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdBy",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1215,6 +1217,7 @@ class StoreCRMRole extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "isRoleActive",
                       },
                       {
