@@ -265,7 +265,11 @@ class SlaTemplateDepartment extends Component {
         );
         if (sissueTpeNameFilterCheckbox.includes(e.currentTarget.value)) {
           sissueTpeNameFilterCheckbox = sissueTpeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -291,7 +295,11 @@ class SlaTemplateDepartment extends Component {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
         if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -323,7 +331,11 @@ class SlaTemplateDepartment extends Component {
         );
         if (sisSLAActiveFilterCheckbox.includes(e.currentTarget.value)) {
           sisSLAActiveFilterCheckbox = sisSLAActiveFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
