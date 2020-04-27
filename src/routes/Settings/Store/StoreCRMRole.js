@@ -448,7 +448,11 @@ class StoreCRMRole extends Component {
         sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all,", "");
         if (sroleNameFilterCheckbox.includes(e.currentTarget.value)) {
           sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -474,7 +478,11 @@ class StoreCRMRole extends Component {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
         if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -506,7 +514,11 @@ class StoreCRMRole extends Component {
         );
         if (sisRoleActiveFilterCheckbox.includes(e.currentTarget.value)) {
           sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
