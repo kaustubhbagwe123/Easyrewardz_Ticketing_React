@@ -91,6 +91,7 @@ class StoreDashboard extends Component {
       userData: [],
       activeTab: 1,
       createdUser: [],
+      cliamCount: 0,
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -872,7 +873,19 @@ class StoreDashboard extends Component {
       data: inputParam,
     })
       .then(function(response) {
-        debugger;
+        var message = response.data.message;
+        var dashboardGridData = response.data.responseData;
+        if (message === "Success" && dashboardGridData) {
+          self.setState({
+            dashboardGridData,
+            cliamCount: dashboardGridData.length,
+          });
+        } else {
+          self.setState({
+            dashboardGridData,
+            cliamCount: dashboardGridData.length,
+          });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleClaimViewSearch");
@@ -1265,7 +1278,11 @@ class StoreDashboard extends Component {
                               onClick={this.handleTabChange.bind(this, 2)}
                             >
                               Claim:
-                              <span className="myTciket-tab-span">05</span>
+                              <span className="myTciket-tab-span">
+                                {this.state.cliamCount < 0
+                                  ? "0" + this.state.cliamCount
+                                  : this.state.cliamCount}
+                              </span>
                             </a>
                           </li>
                           <div className="save-view-search">

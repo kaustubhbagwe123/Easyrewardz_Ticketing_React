@@ -458,9 +458,13 @@ class ClaimCategoryMaster extends Component {
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
         if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
           sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
-          );
+          )
         } else {
           sbrandNameFilterCheckbox += e.currentTarget.value + ",";
         }
@@ -490,9 +494,13 @@ class ClaimCategoryMaster extends Component {
         );
         if (scategoryNameFilterCheckbox.includes(e.currentTarget.value)) {
           scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
-          );
+          )
         } else {
           scategoryNameFilterCheckbox += e.currentTarget.value + ",";
         }
@@ -522,9 +530,13 @@ class ClaimCategoryMaster extends Component {
         );
         if (ssubCategoryNameFilterCheckbox.includes(e.currentTarget.value)) {
           ssubCategoryNameFilterCheckbox = ssubCategoryNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
-          );
+          )
         } else {
           ssubCategoryNameFilterCheckbox += e.currentTarget.value + ",";
         }
@@ -554,9 +566,13 @@ class ClaimCategoryMaster extends Component {
         );
         if (sissueTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
           sissueTypeNameFilterCheckbox = sissueTypeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
-          );
+          )
         } else {
           sissueTypeNameFilterCheckbox += e.currentTarget.value + ",";
         }
@@ -586,9 +602,13 @@ class ClaimCategoryMaster extends Component {
         );
         if (sstatusNameFilterCheckbox.includes(e.currentTarget.value)) {
           sstatusNameFilterCheckbox = sstatusNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
-          );
+          )
         } else {
           sstatusNameFilterCheckbox += e.currentTarget.value + ",";
         }
@@ -2123,6 +2143,7 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.list1Value}
                           style={{ width: "100%" }}
                           onChange={this.handleCategoryChange}
+                          placeholder="Select Claim Category"
                         >
                           {list1SelectOptions}
                           <Option value={NEW_ITEM}>
@@ -2190,6 +2211,7 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.ListOfSubCate}
                           style={{ width: "100%" }}
                           onChange={this.handleSubCatOnChange}
+                          placeholder="Select Claim Sub Category"
                         >
                           {listSubCategory}
                           <Option value={NEW_ITEM}>
@@ -2250,6 +2272,7 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.ListOfIssue}
                           style={{ width: "100%" }}
                           onChange={this.handleIssueOnChange}
+                          placeholder="Select Claim Issue Type"
                         >
                           {listOfIssueType}
                           <Option value={NEW_ITEM}>

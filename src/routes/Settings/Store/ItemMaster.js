@@ -751,7 +751,11 @@ class ItemMaster extends Component {
         sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all,", "");
         if (sitemCodeFilterCheckbox.includes(e.currentTarget.value)) {
           sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -777,7 +781,11 @@ class ItemMaster extends Component {
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
         if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
           sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -803,7 +811,11 @@ class ItemMaster extends Component {
         sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace("all,", "");
         if (sitemNameFilterCheckbox.includes(e.currentTarget.value)) {
           sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -835,7 +847,11 @@ class ItemMaster extends Component {
         );
         if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -867,7 +883,11 @@ class ItemMaster extends Component {
         );
         if (sitemCategoryFilterCheckbox.includes(e.currentTarget.value)) {
           sitemCategoryFilterCheckbox = sitemCategoryFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -899,7 +919,11 @@ class ItemMaster extends Component {
         );
         if (sitemSubCategoryFilterCheckbox.includes(e.currentTarget.value)) {
           sitemSubCategoryFilterCheckbox = sitemSubCategoryFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -925,7 +949,11 @@ class ItemMaster extends Component {
         sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace("all,", "");
         if (sitemGroupFilterCheckbox.includes(e.currentTarget.value)) {
           sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {

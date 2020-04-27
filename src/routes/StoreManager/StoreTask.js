@@ -679,7 +679,15 @@ class StoreTask extends Component {
       headers: authHeader(),
       data: inputParam,
     })
-      .then(function(response) {})
+      .then(function(response) {
+        var message = response.data.message;
+        var assignToMeData = response.data.responseData;
+        if (message === "Success" && assignToMeData) {
+          self.setState({ assignToMeData });
+        } else {
+          self.setState({ assignToMeData });
+        }
+      })
       .catch((response) => {
         console.log(response, "---handleGetAssigenBymefilterData");
       });
@@ -726,6 +734,13 @@ class StoreTask extends Component {
     })
       .then(function(response) {
         debugger;
+        var message = response.data.message;
+        var raisedByMeData = response.data.responseData;
+        if (message === "Success" && raisedByMeData) {
+          self.setState({ raisedByMeData });
+        } else {
+          self.setState({ raisedByMeData });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleGetRaisedbymefilterData");
@@ -741,6 +756,7 @@ class StoreTask extends Component {
     inputParam.tasktitle = this.state.ticketSearchData["tasktitle"] || "";
     inputParam.taskstatus = this.state.ticketSearchData["taskstatus"] || 0;
     inputParam.functionID = this.state.ticketSearchData["functionID"] || 0;
+    inputParam.AssigntoId = this.state.ticketSearchData["AssigntoId"] || 0;
     if (this.state.ticketSearchData["CreatedOnFrom"]) {
       var start = new Date(this.state.ticketSearchData["CreatedOnFrom"]);
       inputParam.CreatedOnFrom =
@@ -760,12 +776,14 @@ class StoreTask extends Component {
       inputParam.CreatedOnTo = null;
     }
 
-    inputParam.createdID = this.state.ticketSearchData["createdID"] || 0;
     inputParam.Priority = this.state.ticketSearchData["Priority"] || 0;
+    inputParam.createdID = 0;
     inputParam.claimID = this.state.ticketSearchData["claimID"] || 0;
     inputParam.ticketID = this.state.ticketSearchData["ticketID"] || 0;
     inputParam.taskwithClaim =
-      this.state.ticketSearchData["taskwithClaim"] || 0;
+      this.state.ticketSearchData["taskwithClaim"] || "";
+    inputParam.taskwithTicket =
+      this.state.ticketSearchData["taskwithTicket"] || "";
 
     axios({
       method: "post",
@@ -775,6 +793,13 @@ class StoreTask extends Component {
     })
       .then(function(response) {
         debugger;
+        var message = response.data.message;
+        var taskByTicketData = response.data.responseData;
+        if (message === "Success" && taskByTicketData) {
+          self.setState({ taskByTicketData });
+        } else {
+          self.setState({ taskByTicketData });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleGetTaskbyTicketData");
@@ -1224,7 +1249,11 @@ class StoreTask extends Component {
         sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all,", "");
         if (sstoreNameFilterCheckbox.includes(e.currentTarget.value)) {
           sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1256,7 +1285,11 @@ class StoreTask extends Component {
         );
         if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1288,7 +1321,11 @@ class StoreTask extends Component {
         );
         if (spriorityNameFilterCheckbox.includes(e.currentTarget.value)) {
           spriorityNameFilterCheckbox = spriorityNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1320,7 +1357,11 @@ class StoreTask extends Component {
         );
         if (screationOnFilterCheckbox.includes(e.currentTarget.value)) {
           screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1346,7 +1387,11 @@ class StoreTask extends Component {
         sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace("all,", "");
         if (sassigntoFilterCheckbox.includes(e.currentTarget.value)) {
           sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1372,7 +1417,11 @@ class StoreTask extends Component {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
         if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1621,6 +1670,7 @@ class StoreTask extends Component {
   ////handle collapse search
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
+    
   }
   handleOnChange(e) {
     debugger;
@@ -2663,7 +2713,9 @@ class StoreTask extends Component {
                               className="btn-inv"
                               type="button"
                               style={{ margin: "10px", width: "180px" }}
-                              // onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleGetTaskbyTicketData.bind(
+                                this
+                              )}
                             >
                               VIEW SEARCH
                             </button>
@@ -2718,57 +2770,6 @@ class StoreTask extends Component {
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="AssigntoId"
-                                    value={
-                                      this.state.ticketSearchData["AssigntoId"]
-                                    }
-                                    onChange={this.handleOnChange.bind(this)}
-                                  >
-                                    <option value="" selected>
-                                      Assign To
-                                    </option>
-                                    {this.state.assignToData !== null &&
-                                      this.state.assignToData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
-                                    name="taskwithClaim"
-                                    value={
-                                      this.state.ticketSearchData[
-                                        "taskwithClaim"
-                                      ]
-                                    }
-                                    onChange={this.handleOnChange.bind(this)}
-                                  >
-                                    <option value="">Task With Claim</option>
-                                    <option value={true}>Yes</option>
-                                    <option value={false}>No</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    type="text"
-                                    placeholder="Task Title"
-                                    name="tasktitle"
-                                    value={
-                                      this.state.ticketSearchData["tasktitle"]
-                                    }
-                                    onChange={this.handleOnChange.bind(this)}
-                                  />
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
                                     name="functionID"
                                     value={
                                       this.state.ticketSearchData["functionID"]
@@ -2792,28 +2793,42 @@ class StoreTask extends Component {
                                       )}
                                   </select>
                                 </div>
-
-                                <div className="col-md-3 campaign-end-date creation-date-range">
-                                  <CreationOnDatePickerCompo
-                                    applyCallback={this.SearchCreationOn}
-                                  />
-                                </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="taskwithTicket"
+                                    name="AssigntoId"
                                     value={
-                                      this.state.ticketSearchData[
-                                        "taskwithTicket"
-                                      ]
+                                      this.state.ticketSearchData["AssigntoId"]
                                     }
                                     onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value="">Task With Ticket</option>
-                                    <option value={true}>Yes</option>
-                                    <option value={false}>No</option>
+                                    <option value="" selected>
+                                      Assign To
+                                    </option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task Title"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.ticketSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
@@ -2838,6 +2853,12 @@ class StoreTask extends Component {
                                       ))}
                                   </select>
                                 </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
@@ -2862,9 +2883,42 @@ class StoreTask extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                {this.state.ticketSearchData[
-                                  "taskwithClaim"
-                                ] ? (
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskwithClaim"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithClaim"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="">Task With Claim</option>
+                                    <option value={"Yes"}>Yes</option>
+                                    <option value={"No"}>No</option>
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskwithTicket"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithTicket"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="">Task With Ticket</option>
+                                    <option value={"Yes"}>Yes</option>
+                                    <option value={"No"}>No</option>
+                                  </select>
+                                </div>
+
+                                {this.state.ticketSearchData["taskwithClaim"] ==
+                                "Yes" ? (
                                   <div className="col-md-3">
                                     <input
                                       className="no-bg"
@@ -2880,7 +2934,7 @@ class StoreTask extends Component {
                                 ) : null}
                                 {this.state.ticketSearchData[
                                   "taskwithTicket"
-                                ] ? (
+                                ] == "Yes" ? (
                                   <div className="col-md-3">
                                     <input
                                       className="no-bg"

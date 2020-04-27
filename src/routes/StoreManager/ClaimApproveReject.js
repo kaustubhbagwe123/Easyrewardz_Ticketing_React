@@ -601,7 +601,7 @@ class ClaimApproveReject extends Component {
       this.setState({ isAssignComment: "Please enter comment." });
     }
   }
-  ////handel commenr change
+  ////handel comment change
   handleAssignCommentChange(e) {
     if (e.target.value !== "") {
       this.setState({ assignComment: e.target.value, isAssignComment: "" });

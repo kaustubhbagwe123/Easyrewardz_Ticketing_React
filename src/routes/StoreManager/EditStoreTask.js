@@ -61,6 +61,9 @@ class EditStoreTask extends Component {
       canAssignTo: false,
       taskStatusId: 0,
       taskStatusName: "",
+      assignComment: "",
+      isAssignComment: "",
+      assginToModal: false,
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -75,7 +78,7 @@ class EditStoreTask extends Component {
       this.handleGetPriority();
       this.handleStoreTaskDetialsById(taskId);
       this.handleGetCommentOnTask(taskId);
-      
+
       this.handleGetStoreTaskProcressBar(taskId);
     } else {
       this.props.history.push("/store/StoreTask");
@@ -92,7 +95,7 @@ class EditStoreTask extends Component {
         this.handleGetPriority();
         this.handleStoreTaskDetialsById(taskId);
         this.handleGetCommentOnTask(taskId);
-        
+
         this.handleGetStoreTaskProcressBar(taskId);
       }
     }
@@ -289,24 +292,18 @@ class EditStoreTask extends Component {
   }
 
   ////handle add comment by task id
-  handleAddCommentByTaskId() {
+  handleAddCommentByTaskId(type) {
     debugger;
     let self = this;
-    if (this.state.comment == "") {
-      this.setState({ iscomment: "Please Enter Comment." });
-    } else {
-      this.setState({ iscomment: "" });
-    }
 
-    if (this.state.comment !== "") {
-      this.setState({ iscmtLoading: true });
+    if (type == true) {
       axios({
         method: "post",
         url: config.apiUrl + "/StoreTask/AddStoreTaskComment",
         headers: authHeader(),
         data: {
           TaskID: this.state.taskId,
-          Comment: this.state.comment,
+          Comment: this.state.assignComment,
         },
       })
         .then(function(response) {
@@ -314,17 +311,52 @@ class EditStoreTask extends Component {
           var responseData = response.data.responseData;
           if (message == "Success" && responseData > 0) {
             NotificationManager.success("Comment Added successfully.");
-            self.setState({ iscmtLoading: false });
+            self.setState({ assginToModal: false, assignComment: "" });
             self.handleGetCommentOnTask(self.state.taskId);
           } else {
             NotificationManager.error("Comment Not Added successfully.");
-            self.setState({ iscmtLoading: false });
+            self.setState({ assginToModal: false });
           }
         })
         .catch((response) => {
           self.setState({ iscmtLoading: false });
           console.log(response, "---handleAddCommentByTaskId");
         });
+    } else {
+      if (this.state.comment == "") {
+        this.setState({ iscomment: "Please Enter Comment." });
+      } else {
+        this.setState({ iscomment: "" });
+      }
+
+      if (this.state.comment !== "") {
+        this.setState({ iscmtLoading: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreTask/AddStoreTaskComment",
+          headers: authHeader(),
+          data: {
+            TaskID: this.state.taskId,
+            Comment: this.state.comment,
+          },
+        })
+          .then(function(response) {
+            var message = response.data.message;
+            var responseData = response.data.responseData;
+            if (message == "Success" && responseData > 0) {
+              NotificationManager.success("Comment Added successfully.");
+              self.setState({ iscmtLoading: false, comment: "" });
+              self.handleGetCommentOnTask(self.state.taskId);
+            } else {
+              NotificationManager.error("Comment Not Added successfully.");
+              self.setState({ iscmtLoading: false });
+            }
+          })
+          .catch((response) => {
+            self.setState({ iscmtLoading: false });
+            console.log(response, "---handleAddCommentByTaskId");
+          });
+      }
     }
   }
 
@@ -615,6 +647,39 @@ class EditStoreTask extends Component {
   ////handle user model close
   handleUserModelClose() {
     this.setState({ userModel: false });
+  }
+  ////handel comment change
+  handleAssignCommentChange(e) {
+    if (e.target.value !== "") {
+      this.setState({ assignComment: e.target.value, isAssignComment: "" });
+    } else {
+      this.setState({
+        assignComment: e.target.value,
+        isAssignComment: "Please enter comment.",
+      });
+    }
+  }
+  ////handle assign to with comment
+  handleAssigntoWithComment() {
+    if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
+      this.handleAddCommentByTaskId(true);
+      this.handleAssignTask();
+    } else {
+      this.setState({ isAssignComment: "Please enter comment." });
+    }
+  }
+  ///handle re assign modal skip button on click
+  handleSkipButtonClick() {
+    this.handleAddCommentByTaskId(true);
+    this.handleAssignTask();
+  }
+  ////handle assgin to modal open
+  handleAssginToModalOpen() {
+    this.setState({ assginToModal: true });
+  }
+  ///handle assgin to modal close
+  handleAssginToModalClose() {
+    this.setState({ assginToModal: false });
   }
   render() {
     return (
@@ -1126,7 +1191,7 @@ class EditStoreTask extends Component {
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={this.handleAssignTask.bind(this)}
+                onClick={this.handleAssginToModalOpen.bind(this)}
               >
                 SELECT
               </button>
@@ -1136,6 +1201,64 @@ class EditStoreTask extends Component {
               onClick={this.handleUserModelClose.bind(this)}
             >
               <img src={CancelImg} alt="cancel" />
+            </div>
+          </div>
+        </Modal>
+        {/* -------------------------assign to modal------------------------ */}
+        <Modal
+          open={this.state.assginToModal}
+          onClose={this.handleAssginToModalClose.bind(this)}
+          closeIconId="sdsg"
+          modalId="Historical-popup"
+          overlayId="logout-ovrly"
+          classNames={{
+            modal: "rejectmodal-popup",
+          }}
+        >
+          <div className="commenttextborder">
+            <div className="comment-disp">
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Add Comment</label>
+              </div>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handleAssginToModalClose.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="commenttextmessage">
+              <textarea
+                cols="31"
+                rows="3"
+                className="ticketMSGCmt-textarea"
+                maxLength={300}
+                value={this.state.assignComment}
+                onChange={this.handleAssignCommentChange.bind(this)}
+              ></textarea>
+            </div>
+            {this.state.isAssignComment !== "" && (
+              <p style={{ color: "red", marginTop: "0px" }}>
+                {this.state.isAssignComment}
+              </p>
+            )}
+            <div className="SendCommentBtn" style={{ float: "left" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleSkipButtonClick.bind(this)}
+              >
+                SKIP
+              </button>
+            </div>
+            <div className="SendCommentBtn" style={{ margin: "0" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleAssigntoWithComment.bind(this)}
+              >
+                ADD
+              </button>
             </div>
           </div>
         </Modal>
