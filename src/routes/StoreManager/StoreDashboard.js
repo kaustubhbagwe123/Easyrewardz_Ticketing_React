@@ -92,6 +92,8 @@ class StoreDashboard extends Component {
       activeTab: 1,
       createdUser: [],
       cliamCount: 0,
+      TaskID: 0,
+      ClaimID: 0,
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -683,6 +685,9 @@ class StoreDashboard extends Component {
   handleViewSearchData(check) {
     debugger;
     let self = this;
+    var claimID = 0;
+    var taskID = 0;
+    var ticketID = 0;
     if (check === "grid") {
       var fromDate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
       var toDate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
@@ -699,17 +704,33 @@ class StoreDashboard extends Component {
         var toDate = null;
       }
     }
+    if (this.state.Task_ClaimId !== "") {
+      claimID = parseInt(this.state.Task_ClaimId);
+    } else {
+      claimID = 0;
+    }
+    if (this.state.Task_ticketId !== "") {
+      ticketID = this.state.Task_ticketId;
+    } else {
+      ticketID = 0;
+    }
+
+    if(this.state.task_Id !== ""){
+      taskID=parseInt(this.state.task_Id)
+    }else{
+      taskID=0
+    }
 
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardList",
       headers: authHeader(),
       data: {
-        taskid: parseInt(this.state.task_Id),
+        taskid: taskID,
         Department: this.state.selectDepartment,
         tasktitle: this.state.task_Title,
         taskstatus: this.state.selectedStatus,
-        ticketID: this.state.Task_ticketId,
+        ticketID: ticketID,
         functionID: this.state.selectedFuncation,
         CreatedOnFrom: fromDate,
         CreatedOnTo: toDate,
@@ -717,7 +738,7 @@ class StoreDashboard extends Component {
         Priority: this.state.selectedPriority,
         taskwithTicket: this.state.Task_Ticket,
         taskwithClaim: this.state.Task_Claim,
-        claimID: parseInt(this.state.Task_ClaimId),
+        claimID: claimID,
         createdID: this.state.SelectedCreatedBy,
       },
     })
@@ -725,11 +746,20 @@ class StoreDashboard extends Component {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
-        if (message === "Success") {
-          self.setState({ dashboardGridData: data, taskCount: data.length });
-        } else {
-          self.setState({ dashboardGridData: [], taskCount: 0 });
+        if(check="grid"){
+          if (message === "Success") {
+            self.setState({ dashboardGridData: data });
+          } else {
+            self.setState({ dashboardGridData: [] });
+          }
+        }else{
+          if (message === "Success") {
+            self.setState({ dashboardGridData: data, taskCount: data.length });
+          } else {
+            self.setState({ dashboardGridData: [], taskCount: 0 });
+          }
         }
+      
       })
       .catch((response) => {
         console.log(response);
@@ -965,11 +995,37 @@ class StoreDashboard extends Component {
     }
   };
   handleCliamDateSearchChange = (e) => {
-    debugger;
     this.state.searchData["claimraiseddate"] = e;
     this.setState({ searchData: this.state.searchData });
   };
-
+   ////handle row click to redirect with respective page
+  handleRowClickredirectPage= (rowInfo, column) => {
+    return {
+      onClick: (e) => {
+        var TaskID = column.original["taskid"];
+        var ClaimID = column.original["claimID"];
+        if(TaskID !== ""){
+          this.handleTaskPageRedirect(TaskID);
+        }else{
+          this.handleClaimPageRedirect(ClaimID);
+        }
+      },
+    };
+  }
+   ////handle redirect task page
+  handleTaskPageRedirect(ID){
+    this.props.history.push({
+      pathname: "editStoreTask",
+      state: { TaskID: ID },
+    });
+  }
+    ////handle redirect claim page
+  handleClaimPageRedirect(id){
+    this.props.history.push({
+      pathname: "claimApproveReject",
+      state: { ClaimID: id },
+    });
+  }
   render() {
     return (
       <div>
@@ -1746,11 +1802,25 @@ class StoreDashboard extends Component {
                         ),
                         accessor: "taskstatus",
                         Cell: (row) => {
-                          return (
-                            <span className="table-btn table-blue-btn">
-                              <label>{row.original.taskstatus}</label>
-                            </span>
-                          );
+                          if (row.original.taskstatus === "New") {
+                            return (
+                              <span className="table-btn table-yellow-btn">
+                                <label>{row.original.taskstatus}</label>
+                              </span>
+                            );
+                          } else if (row.original.taskstatus === "Open") {
+                            return (
+                              <span className="table-btn table-blue-btn">
+                                <label>{row.original.taskstatus}</label>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span className="table-btn table-green-btn">
+                                <label>{row.original.taskstatus}</label>
+                              </span>
+                            );
+                          }
                         },
                       },
                       {
@@ -1841,6 +1911,7 @@ class StoreDashboard extends Component {
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
+                    getTrProps={this.handleRowClickredirectPage}
                   />
                   {/* <div className="position-relative">
                         <div className="pagi">

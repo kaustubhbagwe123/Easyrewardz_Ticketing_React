@@ -1208,7 +1208,11 @@ class StoreUsers extends Component {
         sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all,", "");
         if (sitemCodeFilterCheckbox.includes(e.currentTarget.value)) {
           sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1234,7 +1238,11 @@ class StoreUsers extends Component {
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
         if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
           sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1260,7 +1268,11 @@ class StoreUsers extends Component {
         suserNameFilterCheckbox = suserNameFilterCheckbox.replace("all,", "");
         if (suserNameFilterCheckbox.includes(e.currentTarget.value)) {
           suserNameFilterCheckbox = suserNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1292,7 +1304,11 @@ class StoreUsers extends Component {
         );
         if (sdesignationNameFilterCheckbox.includes(e.currentTarget.value)) {
           sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1324,7 +1340,11 @@ class StoreUsers extends Component {
         );
         if (sreporteeNameFilterCheckbox.includes(e.currentTarget.value)) {
           sreporteeNameFilterCheckbox = sreporteeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1356,7 +1376,11 @@ class StoreUsers extends Component {
         );
         if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1388,7 +1412,11 @@ class StoreUsers extends Component {
         );
         if (smappedFunctionsFilterCheckbox.includes(e.currentTarget.value)) {
           smappedFunctionsFilterCheckbox = smappedFunctionsFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {

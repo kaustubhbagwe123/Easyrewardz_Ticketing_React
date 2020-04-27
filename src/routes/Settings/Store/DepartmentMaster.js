@@ -498,7 +498,11 @@ class DepartmentMaster extends Component {
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
         if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
           sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -524,7 +528,11 @@ class DepartmentMaster extends Component {
         sStoreCodeFilterCheckbox = sStoreCodeFilterCheckbox.replace("all,", "");
         if (sStoreCodeFilterCheckbox.includes(e.currentTarget.value)) {
           sStoreCodeFilterCheckbox = sStoreCodeFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -556,7 +564,11 @@ class DepartmentMaster extends Component {
         );
         if (sDepartNameFilterCheckbox.includes(e.currentTarget.value)) {
           sDepartNameFilterCheckbox = sDepartNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -582,7 +594,11 @@ class DepartmentMaster extends Component {
         sFunctionFilterCheckbox = sFunctionFilterCheckbox.replace("all,", "");
         if (sFunctionFilterCheckbox.includes(e.currentTarget.value)) {
           sFunctionFilterCheckbox = sFunctionFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -608,7 +624,11 @@ class DepartmentMaster extends Component {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
         if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -634,7 +654,11 @@ class DepartmentMaster extends Component {
         sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
         if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
           sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
