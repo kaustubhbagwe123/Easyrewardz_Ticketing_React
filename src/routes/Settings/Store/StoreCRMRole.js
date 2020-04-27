@@ -82,10 +82,12 @@ class StoreCRMRole extends Component {
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.handleModulesDefault = this.handleModulesDefault.bind(this);
   }
 
   componentDidMount() {
     this.handleGetCRMGridData();
+    this.handleModulesDefault();
   }
   handleTabChange(index) {
     this.setState({
@@ -344,6 +346,7 @@ class StoreCRMRole extends Component {
               statusCompulsory: "",
             });
             self.handleGetCRMGridData();
+            this.handleModulesDefault();
           } else if (e === "update") {
             self.toggleEditModal();
             self.setState({
@@ -1386,7 +1389,7 @@ class StoreCRMRole extends Component {
                         value={this.state.RoleisActive}
                         onChange={this.handleRoleisActive}
                       >
-                        <option>select</option>
+                        <option value="0">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -1394,7 +1397,7 @@ class StoreCRMRole extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.RoleisActive === 0 && (
+                      {this.state.RoleisActive == 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.statusCompulsory}
                         </p>
