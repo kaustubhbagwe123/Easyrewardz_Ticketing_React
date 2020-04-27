@@ -285,10 +285,7 @@ class StoreCRMRole extends Component {
       }
     }
     if (e === "add") {
-      if (
-        this.state.RoleName.length > 0 &&
-        this.state.RoleisActive.length > 0
-      ) {
+      if (this.state.RoleName.length > 0 && this.state.RoleisActive != 0) {
         CRMRoleID = 0;
         RoleName = self.state.RoleName;
         ModulesEnabled = self.state.ModulesEnabled;
@@ -836,8 +833,10 @@ class StoreCRMRole extends Component {
     }
     if (this.state.sortColumn === "isRoleActive") {
       itemsArray.sort((a, b) => {
-        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase()) return -1;
-        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase()) return 1;
+        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase())
+          return -1;
+        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase())
+          return 1;
         return 0;
       });
     }
@@ -872,8 +871,10 @@ class StoreCRMRole extends Component {
     }
     if (this.state.sortColumn === "isRoleActive") {
       itemsArray.sort((a, b) => {
-        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase()) return 1;
-        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase()) return -1;
+        if (a.isRoleActive.toLowerCase() < b.isRoleActive.toLowerCase())
+          return 1;
+        if (a.isRoleActive.toLowerCase() > b.isRoleActive.toLowerCase())
+          return -1;
         return 0;
       });
     }
@@ -1065,7 +1066,8 @@ class StoreCRMRole extends Component {
                               )}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
-                                "isRoleActive"
+                                "isRoleActive",
+                                "value"
                               )}
                             />
                             <label htmlFor={"fil-open" + item.isRoleActive}>
