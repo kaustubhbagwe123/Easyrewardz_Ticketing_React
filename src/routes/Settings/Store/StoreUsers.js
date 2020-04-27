@@ -3488,6 +3488,7 @@ class StoreUsers extends Component {
                       {
                         Header: <span>Actions</span>,
                         accessor: "userID",
+                        minWidth: 120,
                         Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
