@@ -1105,7 +1105,7 @@ class StoreCRMRole extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StorCrmRoleReact">
+                <div className="table-cntr table-height StorCrmRoleReact align-table">
                   <ReactTable
                     data={this.state.crmRoles}
                     columns={[

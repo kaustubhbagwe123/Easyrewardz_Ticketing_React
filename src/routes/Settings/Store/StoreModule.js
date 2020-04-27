@@ -1276,7 +1276,7 @@ class StoreModule extends Component {
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-8">
-                        <div className="table-cntr table-height alertsTable">
+                        <div className="table-cntr table-height alertsTable align-table">
                           <ReactTable
                             data={this.state.campaignScriptData}
                             columns={[
@@ -1415,6 +1415,7 @@ class StoreModule extends Component {
                                 ),
                                 sortable: false,
                                 accessor: "status",
+                                width: 110,
                                 Cell: (row) => {
                                   return row.original.status
                                     ? "Active"
