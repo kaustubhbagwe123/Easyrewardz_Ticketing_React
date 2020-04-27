@@ -1216,7 +1216,7 @@ class DepartmentMaster extends Component {
     if (check === "Add") {
       finalDepartmentId = this.state.list1Value;
     } else {
-      finalDepartmentId = parseInt(this.state.editDepartment.departmentID);
+      finalDepartmentId = parseInt(check);
     }
     axios({
       method: "post",
