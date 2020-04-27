@@ -329,8 +329,13 @@ class HierarchyMaster extends Component {
     //fruits.reverse();
 
     // }
-
-    itemsArray.sort((a, b) => a.designationName > b.designationName);
+    if (this.state.sortColumn === "designationName") {
+      itemsArray.sort((a, b) => {
+        if (a.designationName <  b.designationName) return -1;
+        if (a.designationName > b.designationName) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
       hierarchyData: itemsArray,
@@ -1325,6 +1330,7 @@ class HierarchyMaster extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "designationName",
                       },
                       {
