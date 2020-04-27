@@ -551,7 +551,10 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="fileuploadlogs" className="setting-box">
+                      <Link
+                        to="/store/storeFileUploadLogs"
+                        className="setting-box"
+                      >
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>
