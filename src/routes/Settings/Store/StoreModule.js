@@ -1308,7 +1308,8 @@ class StoreModule extends Component {
                                     <div>
                                       <span className="d-flex align-items-end">
                                         <span className="campaign-script-less">
-                                          {row.original.campaignScriptLess}
+                                          {/* {row.original.campaignScriptLess} */}
+                                          {row.original.campaignScript}
                                         </span>
                                         <Popover
                                           content={
