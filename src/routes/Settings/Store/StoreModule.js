@@ -1570,8 +1570,8 @@ class StoreModule extends Component {
                               <div
                                 className={
                                   this.state.campaignShow
-                                    ? "dropdown-menu dropdown-menu-campaignScriptData show"
-                                    : "dropdown-menu dropdown-menu-campaignScriptData"
+                                    ? "dropdown-menu dropdown-menu-sla show"
+                                    : "dropdown-menu dropdown-menu-sla"
                                 }
                               >
                                 <div className="cat-mainbox">
@@ -1856,6 +1856,11 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
+                  <div
+                    id="overlaySla"
+                    className={this.state.campaignOvrlayShow ? "show" : ""}
+                    onClick={this.handleCampaignButton}
+                  />
                   {/* </div> */}
                 </Tab>
               </Tabs>
