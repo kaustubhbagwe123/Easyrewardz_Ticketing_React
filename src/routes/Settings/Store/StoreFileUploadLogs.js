@@ -358,9 +358,37 @@ class StoreFileUploadLogs extends Component {
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
 
-    itemsArray.sort(function(a, b) {
-      return a.fileUploadStatus > b.fileUploadStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "fileType") {
+      itemsArray.sort(function(a, b) {
+        if (a.fileType.toLowerCase() < b.fileType.toLowerCase()) return -1;
+        if (a.fileType.toLowerCase() > b.fileType.toLowerCase()) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "fileName") {
+      itemsArray.sort(function(a, b) {
+        if (a.fileName.toLowerCase() < b.fileName.toLowerCase()) return -1;
+        if (a.fileName.toLowerCase() > b.fileName.toLowerCase()) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort(function(a, b) {
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "fileUploadStatus") {
+      itemsArray.sort(function(a, b) {
+        if (a.fileUploadStatus.toLowerCase() < b.fileUploadStatus.toLowerCase()) return -1;
+        if (a.fileUploadStatus.toLowerCase() > b.fileUploadStatus.toLowerCase()) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
       fileUploadLog: itemsArray,
@@ -371,9 +399,37 @@ class StoreFileUploadLogs extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
-    itemsArray.sort((a, b) => {
-      return a.fileUploadStatus < b.fileUploadStatus;
-    });
+    if (this.state.sortColumn === "fileType") {
+      itemsArray.sort(function(a, b) {
+        if (a.fileType.toLowerCase() < b.fileType.toLowerCase()) return 1;
+        if (a.fileType.toLowerCase() > b.fileType.toLowerCase()) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "fileName") {
+      itemsArray.sort(function(a, b) {
+        if (a.fileName.toLowerCase() < b.fileName.toLowerCase()) return 1;
+        if (a.fileName.toLowerCase() > b.fileName.toLowerCase()) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort(function(a, b) {
+        if (a.date < b.date) return 1;
+        if (a.date > b.date) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "fileUploadStatus") {
+      itemsArray.sort(function(a, b) {
+        if (a.fileUploadStatus.toLowerCase() < b.fileUploadStatus.toLowerCase()) return 1;
+        if (a.fileUploadStatus.toLowerCase() > b.fileUploadStatus.toLowerCase()) return -1;
+        return 0;
+      });
+    }
     this.setState({
       fileUploadLog: itemsArray,
     });
@@ -612,6 +668,7 @@ class StoreFileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "fileType",
       },
       {
@@ -621,6 +678,7 @@ class StoreFileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "fileName",
       },
       {
@@ -632,6 +690,7 @@ class StoreFileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "date",
         Cell: (row) => {
           var ids = row.original["id"];
@@ -691,6 +750,7 @@ class StoreFileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
+        sortable: false,
         accessor: "fileUploadStatus",
       },
       {
