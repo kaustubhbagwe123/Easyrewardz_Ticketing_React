@@ -2005,7 +2005,7 @@ class DepartmentMaster extends Component {
                   <div className="div-cntr">
                     <label>Store Code</label>
                     <Select
-                      getOptionLabel={option => option.storeName}
+                      getOptionLabel={option => option.storeCode}
                       getOptionValue={option => option.storeID}
                       options={this.state.StoreCode}
                       placeholder="Select"

@@ -202,6 +202,7 @@ class HierarchyMaster extends Component {
       fileValidation: "",
       isErrorBulkUpload: false,
       isShowProgress: false,
+      temphierarchyData: []
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -1433,7 +1434,7 @@ class HierarchyMaster extends Component {
                                   content={
                                     <div
                                       className="samdel d-flex general-popover popover-body"
-                                      id={"samdel" + ids}
+                                      // id={"samdel" + ids}
                                     >
                                       <div className="del-big-icon">
                                         <img src={DelBigIcon} alt="del-icon" />
@@ -1447,14 +1448,15 @@ class HierarchyMaster extends Component {
                                           file?
                                         </p>
                                         <div className="del-can">
-                                          <a
+                                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          {/* <a
                                             className="canblue"
                                             onClick={() =>
                                               this.hide(this, "samdel" + ids)
                                             }
                                           >
                                             CANCEL
-                                          </a>
+                                          </a> */}
                                           <button
                                             className="butn"
                                             type="button"
@@ -1476,9 +1478,10 @@ class HierarchyMaster extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
-                                    onClick={() =>
-                                      this.show(this, "samdel" + ids)
-                                    }
+                                    id={ids}
+                                    // onClick={() =>
+                                    //   this.show(this, "samdel" + ids)
+                                    // }
                                   />
                                 </Popover>
                                 <Popover

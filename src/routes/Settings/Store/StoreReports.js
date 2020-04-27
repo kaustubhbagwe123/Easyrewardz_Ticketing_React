@@ -1158,7 +1158,8 @@ class StoreReports extends Component {
       PriorityIds: this.state.indiPriority,
       IsTaskWithClaim: this.state.taskWithClaim==="no"?false:true,
       TaskClaimID: this.state.taskClaimId,
-      TaskCreatedDate: this.state.taskCreateDate,
+      TaskCreatedDate: this.state.taskCreateDate===""?null:
+                        moment(this.state.taskCreateDate).format('YYYY-MM-DD'),
       TaskCreatedBy: this.state.taskCreatedBy,
       TaskAssignedId: this.state.taskAssignedTo
     }
@@ -1175,7 +1176,8 @@ class StoreReports extends Component {
       ClaimIssuetypeIds: this.state.indiClaimIssueType,
       IsClaimWithTask: this.state.claimWithTask === "no"?false:true,
       ClaimTaskID: this.state.linkedTaskId===""?0:parseInt(this.state.linkedTaskId),
-      ClaimCreatedDate: this.state.claimCreateDate,
+      ClaimCreatedDate: this.state.claimCreateDate===""?null:
+                        moment(this.state.claimCreateDate).format('YYYY-MM-DD'),
       ClaimCreatedBy: this.state.claimCreatedBy,
       ClaimAssignedId: this.state.claimAssignedTo
     }
@@ -1185,8 +1187,10 @@ class StoreReports extends Component {
       ActiveTabId: activeTabId,
       CampaignName: this.state.indiCampaignName,
       CampaignAssignedIds: this.state.campaignAssignedTo,
-      CampaignStartDate: this.state.campaignEndDateFrom,
-      CampaignEndDate: this.state.campaignEndDateTo,
+      CampaignStartDate: this.state.campaignEndDateFrom===""?null:
+                          moment(this.state.campaignEndDateFrom).format('YYYY-MM-DD'),
+      CampaignEndDate: this.state.campaignEndDateTo===""?null:
+                      moment(this.state.campaignEndDateTo).format('YYYY-MM-DD'),
       CampaignStatusids: this.state.indiCampaignStatus
     }
    }
