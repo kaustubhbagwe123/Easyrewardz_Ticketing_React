@@ -727,6 +727,14 @@ class ItemMaster extends Component {
           ? this.state.itemData
           : this.state.sortAllData,
         filterTxtValue: "",
+        sortFilteritemCode: this.state.sortitemCode,
+        sortFilterbrandName: this.state.sortbrandName,
+        sortFilteritemName: this.state.sortitemName,
+        sortFilterdepartmentName: this.state.sortdepartmentName,
+        sortFilteritemCategory: this.state.sortitemCategory,
+        sortFilteritemSubCategory: this.state.sortitemSubCategory,
+        sortFilteritemGroup: this.state.sortitemGroup
+
       });
     }
   }
@@ -1140,7 +1148,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemCode });
       } else {
         this.setState({
-          sortFilteritemCode: this.state.sortitemCode,
+          sortFilteritemCode: [],
         });
       }
     }
@@ -1154,7 +1162,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilterbrandName });
       } else {
         this.setState({
-          sortFilterbrandName: this.state.sortbrandName,
+          sortFilterbrandName: [],
         });
       }
     }
@@ -1170,7 +1178,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemName });
       } else {
         this.setState({
-          sortFilteritemName: this.state.sortitemName,
+          sortFilteritemName: [],
         });
       }
     }
@@ -1186,7 +1194,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName,
+          sortFilterdepartmentName: [],
         });
       }
     }
@@ -1202,7 +1210,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemCategory });
       } else {
         this.setState({
-          sortFilteritemCategory: this.state.sortitemCategory,
+          sortFilteritemCategory: [],
         });
       }
     }
@@ -1218,7 +1226,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemSubCategory });
       } else {
         this.setState({
-          sortFilteritemSubCategory: this.state.sortitemSubCategory,
+          sortFilteritemSubCategory: [],
         });
       }
     }
@@ -1234,7 +1242,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemGroup });
       } else {
         this.setState({
-          sortFilteritemGroup: this.state.sortitemGroup,
+          sortFilteritemGroup: [],
         });
       }
     }
@@ -1315,9 +1323,18 @@ class ItemMaster extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
+                     {this.state.sortFilteritemCode.length > 0 &&
+                     this.state.sortFilterbrandName.length > 0 &&
+                     this.state.sortFilteritemName.length > 0 &&
+                     this.state.sortFilterdepartmentName.length > 0 &&
+                     this.state.sortFilteritemCategory.length > 0 &&
+                     this.state.sortFilteritemSubCategory.length > 0 &&
+                     this.state.sortFilteritemGroup.length > 0
+                    ?(
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
-                    </label>
+                    </label>):null
+                    }
                   </div>
                   {this.state.sortColumn === "itemCode"
                     ? this.state.sortFilteritemCode !== null &&

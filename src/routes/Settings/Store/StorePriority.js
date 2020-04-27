@@ -211,6 +211,10 @@ class CreatePriority extends Component {
       StatusModel: true,
       sortColumn: data,
       sortHeader: header,
+      sortFilterName: this.state.sortName,
+      sortFilterCreatedBy: this.state.sortCreatedBy,
+      sortFilterCreatedDate: this.state.sortCreatedDate,
+      sortFilterStatus: this.state.sortStatus
     });
   }
   StatusCloseModel() {
@@ -875,7 +879,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterName });
       } else {
         this.setState({
-          sortFilterName: this.state.sortName,
+          sortFilterName: [],
         });
       }
     }
@@ -891,7 +895,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -905,7 +909,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterCreatedDate });
       } else {
         this.setState({
-          sortFilterCreatedDate: this.state.sortCreatedDate,
+          sortFilterCreatedDate: [],
         });
       }
     }
@@ -919,7 +923,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -992,9 +996,15 @@ class CreatePriority extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
-                    <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
-                    </label>
+                    {this.state.sortFilterName.length > 0 &&
+                     this.state.sortFilterCreatedBy.length > 0 &&
+                     this.state.sortFilterCreatedDate.length > 0 &&
+                     this.state.sortFilterStatus.length > 0
+                    ?(
+                      <label htmlFor={"fil-open"}>
+                        <span className="table-btn table-blue-btn">ALL</span>
+                      </label>):null
+                    }
                   </div>
                   {this.state.sortColumn === "priortyName"
                     ? this.state.sortFilterName !== null &&
