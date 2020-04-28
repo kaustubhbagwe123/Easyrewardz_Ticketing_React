@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
+import { MyContext } from './../../context'
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -309,13 +310,37 @@ class StoreAddTask extends Component {
   };
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         <div className="row card1">
           <div className="col-md-8">
             <div className="card" style={{ padding: "35px 35px" }}>
-              <label className="store-Edit-lblcre">Create Task</label>
-              <label className="store-Edit-lbl1"> Task Title</label>
+              <label className="store-Edit-lblcre">
+                {
+                  (() => {
+
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.createtask
+                    }
+                    else {
+                      return "Create Task"
+                    }
+                  })()
+                }
+              </label>
+              <label className="store-Edit-lbl1">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.tasktitle
+                    }
+                    else {
+                      return "Task Title"
+                    }
+                  })()
+                }
+              </label>
               <input
                 type="text"
                 className="store-edit-txt"
@@ -332,7 +357,18 @@ class StoreAddTask extends Component {
 
               <div className="row">
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Department</label>
+                  <label className="store-Edit-lbl1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.department
+                        }
+                        else {
+                          return "Department"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -359,7 +395,18 @@ class StoreAddTask extends Component {
                   )}
                 </div>
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Function</label>
+                  <label className="store-Edit-lbl1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.function
+                        }
+                        else {
+                          return "Function"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -389,7 +436,18 @@ class StoreAddTask extends Component {
 
               <div className="row">
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Priority</label>
+                  <label className="store-Edit-lbl1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.priority
+                        }
+                        else {
+                          return "Priority"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -416,7 +474,18 @@ class StoreAddTask extends Component {
                   )}
                 </div>
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Assign to</label>
+                  <label className="store-Edit-lbl1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.assignto
+                        }
+                        else {
+                          return "Assign to"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -445,7 +514,18 @@ class StoreAddTask extends Component {
 
               <div className="row">
                 <div className="col-md-12 store-mrg">
-                  <label className="store-Edit-lbl1">Task Details</label>
+                  <label className="store-Edit-lbl1">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.taskdetails
+                        }
+                        else {
+                          return "Task Details"
+                        }
+                      })()
+                    }
+                  </label>
                   <textarea
                     onChange={this.handleOnchange}
                     value={this.state.taskDetails}
@@ -477,8 +557,17 @@ class StoreAddTask extends Component {
                       />
                     ) : (
                       ""
-                    )}
-                    SUBMIT TASK
+                    )} 
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.submittask
+                        }
+                        else {
+                          return "SUBMIT TASK"
+                        }
+                      })()
+                    }
                   </button>
                 </div>
               </div>
@@ -493,4 +582,5 @@ class StoreAddTask extends Component {
   }
 }
 
+StoreAddTask.contextType = MyContext;
 export default StoreAddTask;

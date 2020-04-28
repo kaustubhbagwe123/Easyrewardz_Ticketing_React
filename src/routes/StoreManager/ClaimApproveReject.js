@@ -5,6 +5,7 @@ import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
 import DownImg from "./../../assets/Images/down.png";
 import storeImg from "./../../assets/Images/store.png";
+import { MyContext } from './../../context'
 import ReactTable from "react-table";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -579,17 +580,40 @@ class ClaimApproveReject extends Component {
 
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const { orderDetailsData } = this.state;
 
     return (
       <Fragment>
         <div className="row claim-header-card width">
           <div className="col-md-7">
-            <label className="claim-title1">Claim Ticket ID :</label>
+            <label className="claim-title1">
+              {
+                (() => {
+                  if (TranslationContext !== undefined) {
+                    return TranslationContext.label.claimticketid
+                  }
+                  else {
+                    return "Claim Ticket ID :"
+                  }
+                })()
+              }
+            </label>
             <label className="claim-A22345">{this.state.claimID}</label>
             {this.state.ticketingTaskID > 0 ? (
               <>
-                <label className="claim-title1">Task ID :</label>
+                <label className="claim-title1">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.taskid
+                    }
+                    else {
+                      return "Task ID :"
+                    }
+                  })()
+                }
+                </label>
                 <label className="claim-A22345">
                   {this.state.ticketingTaskID}
                 </label>
@@ -599,7 +623,18 @@ class ClaimApproveReject extends Component {
             )}
             {this.state.ticketID > 0 ? (
               <>
-                <label className="claim-title1">Ticket ID :</label>
+                <label className="claim-title1">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.ticketid
+                    }
+                    else {
+                      return "Ticket ID :"
+                    }
+                  })()
+                }
+                </label>
                 <label className="claim-A22345">{this.state.ticketID}</label>
               </>
             ) : null}
@@ -623,7 +658,16 @@ class ClaimApproveReject extends Component {
                 className="btn-approrej1"
                 onClick={this.handleApproveRejectClaim.bind(this, true)}
               >
-                APPROVE CLAIM
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.approveclaim
+                    }
+                    else {
+                      return "APPROVE CLAIM"
+                    }
+                  })()
+                }
               </button>
               <button
                 type="button"
@@ -631,7 +675,16 @@ class ClaimApproveReject extends Component {
                 onClick={this.handleRejectModalOpen.bind(this)}
                 // onClick={this.handleApproveRejectClaim.bind(this, false)}
               >
-                REJECT CLAIM
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.rejectclaim
+                    }
+                    else {
+                      return "REJECT CLAIM"
+                    }
+                  })()
+                }
               </button>
             </div>
           </div>
@@ -653,7 +706,18 @@ class ClaimApproveReject extends Component {
                   >
                     <div className="claim-status-card">
                       <label>
-                        <b>Claim Status: {this.state.status}</b>
+                        <b>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.b.claimstatus
+                              }
+                              else {
+                                return "Claim Status: "
+                              }
+                            })()
+                          }
+                        {this.state.status}</b>
                       </label>
                       <div className="claimplus">
                         <span className="plusline1new"></span>
@@ -681,7 +745,16 @@ class ClaimApproveReject extends Component {
                           <div className="row mx-0">
                             <div className="col-md-6">
                               <label className="orderdetailtext">
-                                Order details
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.label.orderdetails
+                                    }
+                                    else {
+                                      return "Order details"
+                                    }
+                                  })()
+                                }
                               </label>
                             </div>
 
@@ -779,7 +852,16 @@ class ClaimApproveReject extends Component {
                               <div className="row">
                                 <div className="col-md-12 uploadsechmargin">
                                   <label className="uploadsearch-text">
-                                    No order found with this number
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.noorderfoundwiththisnumber
+                                          }
+                                          else {
+                                            return "No order found with this number"
+                                          }
+                                        })()
+                                      }
                                   </label>
                                 </div>
                               </div>
@@ -793,7 +875,16 @@ class ClaimApproveReject extends Component {
                                       for="file-upload"
                                       className="uploadsearchbtn-text"
                                     >
-                                      UPLOAD FILE
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.uploadfile
+                                          }
+                                          else {
+                                            return "UPLOAD FILE"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                   </button>
                                 </div>
@@ -801,7 +892,18 @@ class ClaimApproveReject extends Component {
                               <div className="row">
                                 <div className="col-md-12 uploadsechmargin">
                                   <u>
-                                    <a href="#!">DOWNLOAD SAMPLE FILE</a>
+                                    <a href="#!">
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.dowloadsamplefile
+                                          }
+                                          else {
+                                            return "DOWNLOAD SAMPLE FILE"
+                                          }
+                                        })()
+                                      }
+                                    </a>
                                   </u>
                                 </div>
                               </div>
@@ -813,7 +915,18 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6">Brand</label>
+                      <label className="label-6">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.brand
+                            }
+                            else {
+                              return "Brand"
+                            }
+                          })()
+                        }
+                      </label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -835,7 +948,18 @@ class ClaimApproveReject extends Component {
                       </select>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="label-6">Claim Category</label>
+                      <label className="label-6">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.claimcategory
+                            }
+                            else {
+                              return "Claim Category"
+                            }
+                          })()
+                        }
+                      </label>
                       {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
@@ -867,7 +991,18 @@ class ClaimApproveReject extends Component {
                       </p>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="label-6">Sub Category</label>
+                      <label className="label-6">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.subcategory
+                            }
+                            else {
+                              return "Sub Category"
+                            }
+                          })()
+                        }
+                      </label>
                       {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
@@ -895,7 +1030,18 @@ class ClaimApproveReject extends Component {
                       </select>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="label-6">Claim Type</label>
+                      <label className="label-6">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.claimtype
+                          }
+                          else {
+                            return "Claim Type"
+                          }
+                        })()
+                      }
+                      </label>
                       {/* <input
                         id="inputState"
                         className="form-control dropdown-label"
@@ -925,7 +1071,18 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6"> Claim Asked for %</label>
+                      <label className="label-6">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.claimaskedfor
+                          }
+                          else {
+                            return "Claim Asked for %"
+                          }
+                        })()
+                      }
+                      </label>
                       <input
                         type="text"
                         className="form-control textBox"
@@ -939,7 +1096,18 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6">Attached Image</label>
+                      <label className="label-6">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.attachedimage
+                          }
+                          else {
+                            return "Attached Image"
+                          }
+                        })()
+                      }
+                      </label>
                     </div>
                   </div>
                   {this.state.imageUR !== "" ? (
@@ -962,7 +1130,18 @@ class ClaimApproveReject extends Component {
                       className="form-group col-md-4"
                       style={{ padding: "0" }}
                     >
-                      <label className="label-6">Final Claim Asked for %</label>
+                      <label className="label-6">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.finalclaimasked
+                          }
+                          else {
+                            return "Final Claim Asked for %"
+                          }
+                        })()
+                      }
+                      </label>
                       <input
                         type="text"
                         className="form-control textBox"
@@ -981,7 +1160,18 @@ class ClaimApproveReject extends Component {
 
                   <div className="row" style={{ margin: "0" }}>
                     <div style={{ width: "100%" }}>
-                      <label className="label-6">Comments By Approval</label>
+                      <label className="label-6">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.commentbyapproval
+                          }
+                          else {
+                            return "Comments By Approval"
+                          }
+                        })()
+                      }
+                      </label>
                       <hr></hr>
                     </div>
                     <div className="" style={{ display: "contents" }}>
@@ -1000,7 +1190,18 @@ class ClaimApproveReject extends Component {
                       className="commentbtn"
                       onClick={this.handleAddStoreClaimComments.bind(this)}
                     >
-                      <label className="txt">ADD COMMENT</label>
+                      <label className="txt">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.addcomment
+                          }
+                          else {
+                            return "ADD COMMENT"
+                          }
+                        })()
+                      }
+                      </label>
                     </button>
                   </div>
                   <div className="row" style={{ margin: "0" }}>
@@ -1032,7 +1233,16 @@ class ClaimApproveReject extends Component {
                       </div>
                       <div className="row" style={{ margin: "0" }}>
                         <label className="label-6" style={{ paddingTop: "0" }}>
-                          Comments:
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.comments
+                              }
+                              else {
+                                return "Comments:"
+                              }
+                            })()
+                          }
                         </label>
                       </div>
                       <div className="row" style={{ margin: "0" }}>
@@ -1053,7 +1263,18 @@ class ClaimApproveReject extends Component {
               <div className="card card-radius2 cardbor">
                 <div className="alankrit">
                   <label>
-                    <b>CUSTOMER NAME</b>
+                    <b>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.b.customername
+                          }
+                          else {
+                            return "CUSTOMER NAME"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>
                     {this.state.customerName ? (
@@ -1068,31 +1289,86 @@ class ClaimApproveReject extends Component {
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>PHONE NUMBER</b>
+                    <b>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.b.phonenumber
+                          }
+                          else {
+                            return "PHONE NUMBER"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{this.state.customerPhoneNumber}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>ALTERNATE NUMBER</b>
+                    <b>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.b.alternatenumber
+                          }
+                          else {
+                            return "ALTERNATE NUMBER"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{this.state.customerAlternateNumber}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>EMAIL</b>
+                    <b>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.b.email
+                          }
+                          else {
+                            return "EMAIL"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{this.state.emailID}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>ALTERNATE EMAIL</b>
+                    <b>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.b.alternateemail
+                          }
+                          else {
+                            return "ALTERNATE EMAIL"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{this.state.alternateEmailID}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>GENDER</b>
+                    <b>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.b.gender
+                        }
+                        else {
+                          return "GENDER"
+                        }
+                      })()
+                    }
+                    </b>
                   </label>
                   <label>{this.state.gender}</label>
                 </div>
@@ -1114,12 +1390,34 @@ class ClaimApproveReject extends Component {
               data={this.state.userData}
               columns={[
                 {
-                  Header: <span>Emp Id</span>,
+                  Header: <span>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.empid
+                        }
+                        else {
+                          return "Emp Id"
+                        }
+                      })()
+                    }
+                  </span>,
                   accessor: "user_ID",
                   width: 80,
                 },
                 {
-                  Header: <span>Name</span>,
+                  Header: <span>
+                     {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.name
+                        }
+                        else {
+                          return "Name"
+                        }
+                      })()
+                    }
+                  </span>,
                   accessor: "userName",
                 },
                 // {
@@ -1153,7 +1451,16 @@ class ClaimApproveReject extends Component {
                 // onClick={this.handleAssignClaim.bind(this)}
                 onClick={this.handleAssginToModalOpen.bind(this)}
               >
-                SELECT
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.select
+                    }
+                    else {
+                      return "SELECT"
+                    }
+                  })()
+                }
               </button>
             </div>
             <div
@@ -1178,7 +1485,18 @@ class ClaimApproveReject extends Component {
           <div className="commenttextborder">
             <div className="comment-disp">
               <div className="Commentlabel">
-                <label className="Commentlabel1">Comment for Rejection</label>
+                <label className="Commentlabel1">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.commentforrejection
+                    }
+                    else {
+                      return "Comment for Rejection"
+                    }
+                  })()
+                }
+                </label>
               </div>
               <div>
                 <img
@@ -1217,7 +1535,16 @@ class ClaimApproveReject extends Component {
                 className="SendCommentBtn1"
                 // onClick={this..bind(this, 4)}
               >
-                SUBMIT
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.submit
+                    }
+                    else {
+                      return "SUBMIT"
+                    }
+                  })()
+                }
               </button>
             </div>
           </div>
@@ -1236,7 +1563,18 @@ class ClaimApproveReject extends Component {
           <div className="commenttextborder">
             <div className="comment-disp">
               <div className="Commentlabel">
-                <label className="Commentlabel1">Add Comment</label>
+                <label className="Commentlabel1">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.addcomment
+                    }
+                    else {
+                      return "Add Comment"
+                    }
+                  })()
+                }
+                </label>
               </div>
               <div>
                 <img
@@ -1267,7 +1605,16 @@ class ClaimApproveReject extends Component {
                 className="SendCommentBtn1"
                 onClick={this.handleAssignClaim.bind(this)}
               >
-                SKIP
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.skip
+                    }
+                    else {
+                      return "SKIP"
+                    }
+                  })()
+                }
               </button>
             </div>
             <div className="SendCommentBtn" style={{ margin: "0" }}>
@@ -1276,7 +1623,16 @@ class ClaimApproveReject extends Component {
                 onClick={this.handleAssigntoWithComment.bind(this)}
                 // onClick={this..bind(this, 4)}
               >
-                ADD
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.add
+                    }
+                    else {
+                      return "ADD"
+                    }
+                  })()
+                }
               </button>
             </div>
           </div>
@@ -1286,4 +1642,5 @@ class ClaimApproveReject extends Component {
   }
 }
 
+ClaimApproveReject.contextType = MyContext;
 export default withRouter(ClaimApproveReject);

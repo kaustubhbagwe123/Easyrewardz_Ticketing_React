@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import { authHeader } from "./../../helpers/authHeader";
+import { MyContext } from './../../context'
 import axios from "axios";
 import config from "./../../helpers/config";
 import Modal from "react-responsive-modal";
@@ -1421,6 +1422,7 @@ class StoreTask extends Component {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="store-task-tabs">
@@ -1434,8 +1436,17 @@ class StoreTask extends Component {
                 aria-controls="raised-by-me-tab"
                 aria-selected="true"
                 onClick={this.handleGetTaskData.bind(this, 1)}
-              >
-                Raised by Me
+              > 
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.raisedbyme
+                    }
+                    else {
+                      return "Raised by Me"
+                    }
+                  })()
+                }
               </a>
             </li>
             <li className="nav-item">
@@ -1448,7 +1459,16 @@ class StoreTask extends Component {
                 aria-selected="false"
                 onClick={this.handleGetTaskData.bind(this, 2)}
               >
-                Assigned To Me
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.assignedtome
+                    }
+                    else {
+                      return "Assigned To Me"
+                    }
+                  })()
+                }
               </a>
             </li>
             <li className="nav-item">
@@ -1461,7 +1481,16 @@ class StoreTask extends Component {
                 aria-selected="false"
                 onClick={this.handleGetTaskbyTicket.bind(this)}
               >
-                Task By Tickets
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.taskbyticket
+                    }
+                    else {
+                      return "Task By Tickets"
+                    }
+                  })()
+                }
               </a>
             </li>
             <li className="nav-item">
@@ -1474,7 +1503,16 @@ class StoreTask extends Component {
                 aria-selected="false"
                 onClick={this.handleGetTaskData.bind(this, 4)}
               >
-                Campaign
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.campaign
+                    }
+                    else {
+                      return "Campaign"
+                    }
+                  })()
+                }
               </a>
             </li>
           </ul>
@@ -1482,8 +1520,17 @@ class StoreTask extends Component {
             <button
               className="butn"
               onClick={this.handleChagneAddTask.bind(this)}
-            >
-              Add Task
+            > 
+              {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.addtask
+                    }
+                    else {
+                      return "Add Task"
+                    }
+                  })()
+                }
             </button>
           )}
         </div>
@@ -1515,7 +1562,16 @@ class StoreTask extends Component {
                               style={{ margin: "10px", width: "180px" }}
                               // onClick={this.handleViewSearchData.bind(this)}
                             >
-                              VIEW SEARCH
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.viewsearch
+                                  }
+                                  else {
+                                    return "VIEW SEARCH"
+                                  }
+                                })()
+                              }
                             </button>
                           </div>
                         </ul>
@@ -1714,11 +1770,33 @@ class StoreTask extends Component {
                     data={this.state.raisedByMeData}
                     columns={[
                       {
-                        Header: <span>ID</span>,
+                        Header: <span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.id
+                              }
+                              else {
+                                return "ID"
+                              }
+                            })()
+                          }
+                        </span>,
                         accessor: "storeTaskID",
                       },
                       {
-                        Header: <span>Status</span>,
+                        Header: <span>
+                          {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "taskStatus",
                         Cell: (row) => {
                           if (row.original.taskStatus === "New") {
@@ -1743,7 +1821,18 @@ class StoreTask extends Component {
                         },
                       },
                       {
-                        Header: <span>Task Title</span>,
+                        Header: <span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.tasktitle
+                                }
+                                else {
+                                  return "Task Title"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "taskTitle",
                       },
                       {
@@ -1755,7 +1844,17 @@ class StoreTask extends Component {
                               "Department"
                             )}
                           >
-                            Department <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.department
+                                }
+                                else {
+                                  return "Department"
+                                }
+                              })()
+                            }
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -1769,7 +1868,18 @@ class StoreTask extends Component {
                                   <div className="dash-creation-popup-cntr">
                                     <ul className="dash-category-popup dashnewpopup">
                                       <li>
-                                        <p>Function</p>
+                                        <p>
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.function
+                                              }
+                                              else {
+                                                return "Function"
+                                              }
+                                            })()
+                                          }
+                                        </p>
                                         <p>{row.original.functionName}</p>
                                       </li>
                                     </ul>
@@ -1795,8 +1905,18 @@ class StoreTask extends Component {
                               "storeName",
                               "Store Name"
                             )}
-                          >
-                            Store Name <FontAwesomeIcon icon={faCaretDown} />
+                          > 
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.storename
+                                }
+                                else {
+                                  return "Store Name"
+                                }
+                              })()
+                            }
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -1810,8 +1930,18 @@ class StoreTask extends Component {
                               "priorityName",
                               "Priority"
                             )}
-                          >
-                            Priority <FontAwesomeIcon icon={faCaretDown} />
+                          > 
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.priority
+                                }
+                                else {
+                                  return "Priority"
+                                }
+                              })()
+                            }
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -1829,7 +1959,17 @@ class StoreTask extends Component {
                               "Creation On"
                             )}
                           >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.creationon
+                                }
+                                else {
+                                  return "Creation On"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "creationOn",
@@ -1842,7 +1982,18 @@ class StoreTask extends Component {
                               content={
                                 <div className="insertpop1">
                                   <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
+                                    <li className="title">
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.li.creationdetails
+                                          }
+                                          else {
+                                            return "Creation details"
+                                          }
+                                        })()
+                                      }
+                                    </li>
                                     <li>
                                       <p>
                                         {row.original.createdBy + " Created"}
@@ -1869,11 +2020,33 @@ class StoreTask extends Component {
                                       </p>
                                     </li>
                                     <li>
-                                      <p>Response overdue by</p>
+                                      <p>
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.responseoverdueby
+                                            }
+                                            else {
+                                              return "Response overdue by"
+                                            }
+                                          })()
+                                        }
+                                      </p>
                                       <p>1 Hr</p>
                                     </li>
                                     <li>
-                                      <p>Resolution overdue by</p>
+                                      <p>
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.resolutionoverdueby
+                                            }
+                                            else {
+                                              return "Resolution overdue by"
+                                            }
+                                          })()
+                                        }
+                                      </p>
                                       <p>{row.original.resolutionOverdueBy}</p>
                                     </li>
                                   </ul>
@@ -1899,7 +2072,16 @@ class StoreTask extends Component {
                               "Assign to"
                             )}
                           >
-                            Assign to
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.assignto
+                                }
+                                else {
+                                  return "Assign to"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1946,7 +2128,16 @@ class StoreTask extends Component {
                               style={{ margin: "10px", width: "180px" }}
                               // onClick={this.handleViewSearchData.bind(this)}
                             >
-                              VIEW SEARCH
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.viewsearch
+                                  }
+                                  else {
+                                    return "VIEW SEARCH"
+                                  }
+                                })()
+                              }
                             </button>
                           </div>
                         </ul>
@@ -2145,11 +2336,33 @@ class StoreTask extends Component {
                     data={this.state.assignToMeData}
                     columns={[
                       {
-                        Header: <span>ID</span>,
+                        Header: <span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.id
+                                }
+                                else {
+                                  return "ID"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "storeTaskID",
                       },
                       {
-                        Header: <span>Status</span>,
+                        Header: <span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "taskStatus",
                         Cell: (row) => {
                           if (row.original.taskStatus === "New") {
@@ -2174,7 +2387,18 @@ class StoreTask extends Component {
                         },
                       },
                       {
-                        Header: <span>Task Title</span>,
+                        Header: <span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.tasktitle
+                                }
+                                else {
+                                  return "Task Title"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "taskTitle",
                       },
                       {
@@ -2185,8 +2409,18 @@ class StoreTask extends Component {
                               "departmentName",
                               "Department"
                             )}
-                          >
-                            Department <FontAwesomeIcon icon={faCaretDown} />
+                          > 
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.department
+                                }
+                                else {
+                                  return "Department"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -2200,7 +2434,18 @@ class StoreTask extends Component {
                                   <div className="dash-creation-popup-cntr">
                                     <ul className="dash-category-popup dashnewpopup">
                                       <li>
-                                        <p>Function</p>
+                                        <p>
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.function
+                                              }
+                                              else {
+                                                return "Function"
+                                              }
+                                            })()
+                                          }
+                                        </p>
                                         <p>{row.original.functionName}</p>
                                       </li>
                                     </ul>
@@ -2227,7 +2472,17 @@ class StoreTask extends Component {
                               "Created by"
                             )}
                           >
-                            Created by <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created by"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -2298,7 +2553,17 @@ class StoreTask extends Component {
                               "Creation On"
                             )}
                           >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.creationon
+                                }
+                                else {
+                                  return "Creation On"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -2313,7 +2578,16 @@ class StoreTask extends Component {
                                   <div className="insertpop1">
                                     <ul className="dash-creation-popup">
                                       <li className="title">
-                                        Creation details
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.li.creationdetails
+                                          }
+                                          else {
+                                            return "Creation details"
+                                          }
+                                        })()
+                                      }
                                       </li>
                                       <li>
                                         <p>
@@ -2342,11 +2616,33 @@ class StoreTask extends Component {
                                         </p>
                                       </li>
                                       <li>
-                                        <p>Response overdue by</p>
+                                        <p>
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.responseoverdueby
+                                            }
+                                            else {
+                                              return "Response overdue by"
+                                            }
+                                          })()
+                                        }
+                                        </p>
                                         <p>1 Hr</p>
                                       </li>
                                       <li>
-                                        <p>Resolution overdue by</p>
+                                        <p>
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.resolutionoverdueby
+                                            }
+                                            else {
+                                              return "Resolution overdue by"
+                                            }
+                                          })()
+                                        }
+                                        </p>
                                         <p>
                                           {row.original.resolutionOverdueBy}
                                         </p>
@@ -2401,7 +2697,16 @@ class StoreTask extends Component {
                               style={{ margin: "10px", width: "180px" }}
                               // onClick={this.handleViewSearchData.bind(this)}
                             >
-                              VIEW SEARCH
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.button.viewsearch
+                                  }
+                                  else {
+                                    return "VIEW SEARCH"
+                                  }
+                                })()
+                              }
                             </button>
                           </div>
                         </ul>
@@ -2600,15 +2905,48 @@ class StoreTask extends Component {
                     data={this.state.taskByTicketData}
                     columns={[
                       {
-                        Header: <span>Task ID</span>,
+                        Header: <span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.taskid
+                              }
+                              else {
+                                return "Task ID"
+                              }
+                            })()
+                          }
+                        </span>,
                         accessor: "storeTaskID",
                       },
                       {
-                        Header: <span>Ticket ID</span>,
+                        Header: <span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.ticketid
+                              }
+                              else {
+                                return "Ticket ID"
+                              }
+                            })()
+                          }
+                        </span>,
                         accessor: "ticketID",
                       },
                       {
-                        Header: <span>Status</span>,
+                        Header: <span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "taskStatus",
                         Cell: (row) => {
                           if (row.original.taskStatus === "New") {
@@ -2633,7 +2971,18 @@ class StoreTask extends Component {
                         },
                       },
                       {
-                        Header: <span>Task Title</span>,
+                        Header: <span>
+                          {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.tasktitle
+                                }
+                                else {
+                                  return "Task Title"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "taskTitle",
                       },
                       {
@@ -2645,7 +2994,17 @@ class StoreTask extends Component {
                               "Department"
                             )}
                           >
-                            Department <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.department
+                                }
+                                else {
+                                  return "Department"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -2659,7 +3018,18 @@ class StoreTask extends Component {
                                   <div className="dash-creation-popup-cntr">
                                     <ul className="dash-category-popup dashnewpopup">
                                       <li>
-                                        <p>Function</p>
+                                        <p>
+                                        {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.function
+                                              }
+                                              else {
+                                                return "Function"
+                                              }
+                                            })()
+                                          }
+                                        </p>
                                         <p>{row.original.functionName}</p>
                                       </li>
                                     </ul>
@@ -2686,7 +3056,17 @@ class StoreTask extends Component {
                               "Created by"
                             )}
                           >
-                            Created by <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created by"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -2701,7 +3081,16 @@ class StoreTask extends Component {
                               "Store Name"
                             )}
                           >
-                            Store Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.storename
+                                }
+                                else {
+                                  return "Store Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2716,7 +3105,18 @@ class StoreTask extends Component {
                                   <div className="dash-creation-popup-cntr">
                                     <ul className="dash-category-popup dashnewpopup">
                                       <li>
-                                        <p>Store Address</p>
+                                        <p>
+                                        {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.storeaddress
+                                              }
+                                              else {
+                                                return "Store Address"
+                                              }
+                                            })()
+                                          }
+                                        </p>
                                         <p>{row.original.storeAddress}</p>
                                       </li>
                                     </ul>
@@ -2743,7 +3143,17 @@ class StoreTask extends Component {
                               "Creation On"
                             )}
                           >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.creationon
+                                }
+                                else {
+                                  return "Creation On"
+                                }
+                              })()
+                            } 
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         sortable: false,
@@ -2756,7 +3166,18 @@ class StoreTask extends Component {
                               content={
                                 <div className="insertpop1">
                                   <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
+                                    <li className="title">
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.li.creationdetails
+                                          }
+                                          else {
+                                            return "Creation details"
+                                          }
+                                        })()
+                                      }
+                                    </li>
                                     <li>
                                       <p>
                                         {row.original.createdBy + " "} Created
@@ -2783,11 +3204,33 @@ class StoreTask extends Component {
                                       </p>
                                     </li>
                                     <li>
-                                      <p>Response overdue by</p>
+                                      <p>
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.responseoverdueby
+                                            }
+                                            else {
+                                              return "Response overdue by"
+                                            }
+                                          })()
+                                        }
+                                      </p>
                                       <p>1 Hr</p>
                                     </li>
                                     <li>
-                                      <p>Resolution overdue by</p>
+                                      <p>
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.p.resolutionoverdueby
+                                            }
+                                            else {
+                                              return "Resolution overdue by"
+                                            }
+                                          })()
+                                        }
+                                      </p>
                                       <p>{row.original.resolutionOverdueBy}</p>
                                     </li>
                                   </ul>
@@ -2813,7 +3256,16 @@ class StoreTask extends Component {
                               "Assign to"
                             )}
                           >
-                            Assign to
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.assignto
+                                }
+                                else {
+                                  return "Assign to"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2859,7 +3311,18 @@ class StoreTask extends Component {
                 >
                   <img src={Sorting} alt="sorting-icon" />
                 </a>
-                <p>SORT BY A TO Z</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.sortatoz
+                      }
+                      else {
+                        return "SORT BY A TO Z"
+                      }
+                    })()
+                  }
+                </p>
               </div>
               <div className="d-flex">
                 <a
@@ -2869,7 +3332,18 @@ class StoreTask extends Component {
                 >
                   <img src={Sorting} alt="sorting-icon" />
                 </a>
-                <p>SORT BY Z TO A</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.sortztoa
+                      }
+                      else {
+                        return "SORT BY Z TO A"
+                      }
+                    })()
+                  }
+                </p>
               </div>
             </div>
             <a
@@ -2877,10 +3351,30 @@ class StoreTask extends Component {
               style={{ margin: "0 25px", textDecoration: "underline" }}
               onClick={this.setSortCheckStatus.bind(this, "all")}
             >
-              clear search
+              {
+                (() => {
+                  if (TranslationContext !== undefined) {
+                    return TranslationContext.a.clearsearch
+                  }
+                  else {
+                    return "clear search"
+                  }
+                })()
+              }
             </a>
             <div className="filter-type">
-              <p>FILTER BY TYPE</p>
+              <p>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.p.filterbytype
+                    }
+                    else {
+                      return "FILTER BY TYPE"
+                    }
+                  })()
+                }
+              </p>
               <input
                 type="text"
                 style={{ display: "block" }}
@@ -3077,5 +3571,5 @@ class StoreTask extends Component {
     );
   }
 }
-
+StoreTask.contextType = MyContext;
 export default StoreTask;

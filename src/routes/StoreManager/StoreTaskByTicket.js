@@ -10,6 +10,7 @@ import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
 import DownImg from "./../../assets/Images/down.png";
+import { MyContext } from './../../context'
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -538,6 +539,7 @@ class StoreTaskByTicket extends Component {
     });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         <div className="edit-storeTask-header">
@@ -552,8 +554,17 @@ class StoreTaskByTicket extends Component {
                     role="tab"
                     aria-controls="Task-tab"
                     aria-selected="true"
-                  >
-                    Task
+                  > 
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.task
+                        }
+                        else {
+                          return "Task"
+                        }
+                      })()
+                    }
                   </a>
                 </li>
                 <li className="nav-item">
@@ -564,8 +575,17 @@ class StoreTaskByTicket extends Component {
                     role="tab"
                     aria-controls="Ticket-tab"
                     aria-selected="false"
-                  >
-                    Ticket
+                  >  
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.tickets
+                        }
+                        else {
+                          return "Ticket"
+                        }
+                      })()
+                    }
                   </a>
                 </li>
               </ul>
@@ -605,7 +625,16 @@ class StoreTaskByTicket extends Component {
                     className="raisedClaim-lbl"
                     onClick={this.handleRedirectToCreateClaim.bind(this)}
                   >
-                    RAISE CLAIM
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.raiseclaim
+                        }
+                        else {
+                          return "RAISE CLAIM"
+                        }
+                      })()
+                    }
                   </label>
                 </button>
                 <button
@@ -618,7 +647,16 @@ class StoreTaskByTicket extends Component {
                   onClick={this.handleSubmitReopnModalOpen.bind(this)}
                 >
                   <label className="myticket-submit-solve-button-text">
-                    SUBMIT AS RESOLVED
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.submitasresolved
+                        }
+                        else {
+                          return "SUBMIT AS RESOLVED"
+                        }
+                      })()
+                    }
                   </label>
                   <img
                     src={DownWhiteImg}
@@ -641,7 +679,28 @@ class StoreTaskByTicket extends Component {
                         className="modal-lbl"
                         onClick={this.handleSubmitTaks.bind(this, 224)}
                       >
-                        Submit as <span className="modal-lbl-1">ReOpen</span>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.submitas
+                            }
+                            else {
+                              return "Submit as"
+                            }
+                          })()
+                        }
+                         <span className="modal-lbl-1">
+                         {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.reopen
+                              }
+                              else {
+                                return "ReOpen"
+                              }
+                            })()
+                          }
+                         </span>
                       </label>
                     </div>
                   ) : (
@@ -650,7 +709,28 @@ class StoreTaskByTicket extends Component {
                         className="modal-lbl"
                         onClick={this.handleSubmitTaks.bind(this, 222)}
                       >
-                        Submit as <span className="modal-lbl-1">Solved</span>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.submitas
+                            }
+                            else {
+                              return "Submit as"
+                            }
+                          })()
+                        }
+                        <span className="modal-lbl-1">
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.solved
+                                }
+                                else {
+                                  return "Solved"
+                                }
+                              })()
+                            }
+                        </span>
                       </label>
                     </div>
                   )}
@@ -660,7 +740,28 @@ class StoreTaskByTicket extends Component {
                         className="modal-lbl"
                         onClick={this.handleSubmitTaks.bind(this, 223)}
                       >
-                        Submit as <span className="modal-lbl-2">Closed</span>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.submitas
+                            }
+                            else {
+                              return "Submit as"
+                            }
+                          })()
+                        }
+                        <span className="modal-lbl-2">
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.closed
+                              }
+                              else {
+                                return "Closed"
+                              }
+                            })()
+                          }
+                        </span>
                       </label>
                     </div>
                   ) : null}
@@ -670,7 +771,18 @@ class StoreTaskByTicket extends Component {
             <div className="row width">
               <div className="col-md-7">
                 <div className="card store-card-padding">
-                  <label className="store-Edit-lbl"> Task Title</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.tasktitle
+                        }
+                        else {
+                          return "Task Title"
+                        }
+                      })()
+                    }
+                  </label>
                   <input
                     type="text"
                     className={
@@ -690,7 +802,18 @@ class StoreTaskByTicket extends Component {
                   )}
                   <div className="row">
                     <div className="col-md-4 store-mrg">
-                      <label className="store-Edit-lbl">Department</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.department
+                            }
+                            else {
+                              return "Department"
+                            }
+                          })()
+                        }
+                      </label>
                       <select
                         id="inputState"
                         className={
@@ -721,7 +844,18 @@ class StoreTaskByTicket extends Component {
                       )}
                     </div>
                     <div className="col-md-4 store-mrg">
-                      <label className="store-Edit-lbl">Function</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.function
+                            }
+                            else {
+                              return "Function"
+                            }
+                          })()
+                        }
+                      </label>
                       <select
                         id="inputState"
                         className={
@@ -753,7 +887,18 @@ class StoreTaskByTicket extends Component {
                       )}
                     </div>
                     <div className="col-md-4 store-mrg">
-                      <label className="store-Edit-lbl">Priority</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.priority
+                            }
+                            else {
+                              return "Priority"
+                            }
+                          })()
+                        }
+                      </label>
                       <select
                         id="inputState"
                         className={
@@ -786,7 +931,18 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-12 store-mrg">
-                      <label className="store-Edit-lbl">Task Details</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.taskdetails
+                            }
+                            else {
+                              return "Task Details"
+                            }
+                          })()
+                        }
+                      </label>
                       <textarea
                         rows="8"
                         className={
@@ -807,7 +963,18 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-12 store-mrg">
-                      <label className="store-Edit-lbl">Comments</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.comments
+                            }
+                            else {
+                              return "Comments"
+                            }
+                          })()
+                        }
+                      </label>
                       <textarea
                         rows="8"
                         className="textarea-store-comments"
@@ -845,7 +1012,16 @@ class StoreTaskByTicket extends Component {
                         ) : (
                           ""
                         )}
-                        Add Comment
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.button.addcomment
+                            }
+                            else {
+                              return "Add Comment"
+                            }
+                          })()
+                        }
                       </button>
                     </div>
                   </div>
@@ -875,7 +1051,18 @@ class StoreTaskByTicket extends Component {
                                 className="col-md-12"
                                 style={{ marginTop: "3px" }}
                               >
-                                <span className="store-comment">Comment :</span>
+                                <span className="store-comment">
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.comment
+                                      }
+                                      else {
+                                        return "Comment :"
+                                      }
+                                    })()
+                                  }
+                                </span>
                               </div>
                             </div>
                             <div className="row">
@@ -896,10 +1083,32 @@ class StoreTaskByTicket extends Component {
                 <div className="card store-card-3">
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Issue Raised By:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.issueraisedby
+                            }
+                            else {
+                              return "Issue Raised By:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                     <div className="col-md-4">
-                      <label className="store-Edit-lbl">Store Name:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.storename
+                            }
+                            else {
+                              return "Store Name:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -923,7 +1132,18 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row store-mrg-3">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Store Address:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.storeaddress
+                            }
+                            else {
+                              return "Store Address:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -936,7 +1156,16 @@ class StoreTaskByTicket extends Component {
                   <div className="row store-mrg-3">
                     <div className="col-md-6">
                       <label className="task-clouserDate">
-                        Task Closure Date
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.taskclosuredate
+                            }
+                            else {
+                              return "Task Closure Date"
+                            }
+                          })()
+                        }
                       </label>
                     </div>
                   </div>
@@ -987,7 +1216,18 @@ class StoreTaskByTicket extends Component {
             <div className="row width">
               <div className="col-md-8">
                 <div className="card store-card-padding-ticket">
-                  <label className="store-Edit-lbl"> Ticket Title</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.tickettitle
+                        }
+                        else {
+                          return "Ticket Title"
+                        }
+                      })()
+                    }
+                  </label>
                   <input
                     type="text"
                     className="store-edit-txt"
@@ -998,7 +1238,18 @@ class StoreTaskByTicket extends Component {
                   <img src={NoEditImg} alt="NoEditImg" className="noEditImg" />
                   <div className="row">
                     <div className="col-md-12 store-mrg">
-                      <label className="store-Edit-lbl"> Ticket Details</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.ticketdetails
+                            }
+                            else {
+                              return "Ticket Details"
+                            }
+                          })()
+                        }
+                      </label>
                       <textarea
                         disabled={true}
                         rows="8"
@@ -1019,10 +1270,32 @@ class StoreTaskByTicket extends Component {
                 <div className="card store-card-2">
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Customer Name:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.customername
+                            }
+                            else {
+                              return "Customer Name:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                     <div className="col-md-4">
-                      <label className="store-Edit-lbl">Gender:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.gender
+                            }
+                            else {
+                              return "Gender:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1039,10 +1312,32 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row store-mrg-3">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Mobile Number:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.mobilenumber
+                            }
+                            else {
+                              return "Mobile Number:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Email ID:</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.emailid
+                            }
+                            else {
+                              return "Email ID:"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1062,10 +1357,32 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Status</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.status
+                            }
+                            else {
+                              return "Status"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                     <div className="col-md-4">
-                      <label className="store-Edit-lbl">Priority</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.priority
+                            }
+                            else {
+                              return "Priority"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1082,10 +1399,32 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row store-mrg-3">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Category</label>
+                      <label className="store-Edit-lbl">
+                      {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.category
+                            }
+                            else {
+                              return "Category"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Sub Category</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.subcategory
+                            }
+                            else {
+                              return "Sub Category"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1102,7 +1441,18 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row store-mrg-3">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Type</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.type
+                            }
+                            else {
+                              return "Type"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1117,7 +1467,18 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Store</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.store
+                            }
+                            else {
+                              return "Store"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1129,7 +1490,18 @@ class StoreTaskByTicket extends Component {
                   </div>
                   <div className="row store-mrg-3">
                     <div className="col-md-6">
-                      <label className="store-Edit-lbl">Product</label>
+                      <label className="store-Edit-lbl">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.product
+                            }
+                            else {
+                              return "Product"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -1158,12 +1530,34 @@ class StoreTaskByTicket extends Component {
               data={this.state.userData}
               columns={[
                 {
-                  Header: <span>Emp Id</span>,
+                  Header: <span>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.empid
+                        }
+                        else {
+                          return "Emp Id"
+                        }
+                      })()
+                    }
+                  </span>,
                   accessor: "user_ID",
                   width: 80,
                 },
                 {
-                  Header: <span>Name</span>,
+                  Header: <span>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.name
+                        }
+                        else {
+                          return "Name"
+                        }
+                      })()
+                    }
+                  </span>,
                   accessor: "userName",
                 },
                 // {
@@ -1196,7 +1590,16 @@ class StoreTaskByTicket extends Component {
                 className="btn btn-outline-primary"
                 onClick={this.handleAssignTaskByTicket.bind(this)}
               >
-                SELECT
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.select
+                    }
+                    else {
+                      return "SELECT"
+                    }
+                  })()
+                }
               </button>
             </div>
             <div
@@ -1212,4 +1615,5 @@ class StoreTaskByTicket extends Component {
   }
 }
 
+StoreTaskByTicket.contextType = MyContext;
 export default StoreTaskByTicket;

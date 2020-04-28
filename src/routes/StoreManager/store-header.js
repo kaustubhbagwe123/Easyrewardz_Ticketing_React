@@ -15,6 +15,7 @@ import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import { Link, withRouter } from "react-router-dom";
+import { MyContext } from './../../context'
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
 import PencilImg from "./../../assets/Images/pencil.png";
@@ -393,6 +394,7 @@ class Header extends Component {
   };
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div
@@ -401,7 +403,18 @@ class Header extends Component {
         >
           <div className="d-flex">
             <div className="er">
-              <label className="er-label">ER</label>
+              <label className="er-label">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.er
+                    }
+                    else {
+                      return "ER"
+                    }
+                  })()
+                }
+              </label>
             </div>
             <div className="hamb-menu">
               <img src={Hamb} alt="hamburger icon" />
@@ -501,7 +514,16 @@ class Header extends Component {
               >
                 <img src={NotificationLogo} alt="logo" className="notifi" />
                 <span style={{ display: "none" }} className="icon-fullname">
-                  Notifications
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.span.notifications
+                      }
+                      else {
+                        return "Notifications"
+                      }
+                    })()
+                  }
                 </span>
                 {/* {this.state.notiCount > 0 && ( */}
                 <span className="upper-noti-count">
@@ -509,7 +531,16 @@ class Header extends Component {
                 </span>
                 {/* } */}
                 <span style={{ display: "none" }} className="icon-fullname">
-                  Notifications
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.span.notifications
+                      }
+                      else {
+                        return "Notifications"
+                      }
+                    })()
+                  }
                 </span>
               </div>
             </a>
@@ -522,11 +553,29 @@ class Header extends Component {
                 style={{ display: "none" }}
               />
               <span style={{ display: "none" }} className="icon-fullname">
-                Settings
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.span.setting
+                      }
+                      else {
+                        return "Settings"
+                      }
+                    })()
+                  }
               </span>
             </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
-              SM
+              {
+                (() => {
+                  if (TranslationContext !== undefined) {
+                    return TranslationContext.a.sm
+                  }
+                  else {
+                    return "SM"
+                  }
+                })()
+              }
             </a>
           </div>
         </div>
@@ -577,7 +626,16 @@ class Header extends Component {
                   className="logout"
                   onClick={this.handleLogoutMethod.bind(this)}
                 >
-                  LOGOUT
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.button.logout
+                      }
+                      else {
+                        return "LOGOUT"
+                      }
+                    })()
+                  }
                 </button>
               </div>
             </div>
@@ -586,37 +644,97 @@ class Header extends Component {
                 <div className="logout-status" style={{ marginTop: "10px" }}>
                   <img src={StatusLogo} alt="status" />
                 </div>
-                <p className="logout-label chat-status">CHAT STATUS :</p>
+                <p className="logout-label chat-status">
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.chatstatus
+                      }
+                      else {
+                        return "CHAT STATUS :"
+                      }
+                    })()
+                  }
+                </p>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="online" />
                 <label htmlFor="online" className="logout-label">
-                  Online
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.label.online
+                      }
+                      else {
+                        return "Online"
+                      }
+                    })()
+                  }
                 </label>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="away" />
                 <label htmlFor="away" className="logout-label">
-                  Away
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.label.away
+                      }
+                      else {
+                        return "Away"
+                      }
+                    })()
+                  }
                 </label>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="offline" />
                 <label htmlFor="offline" className="logout-label">
-                  Offline
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.label.offline
+                      }
+                      else {
+                        return "Offline"
+                      }
+                    })()
+                  }
                 </label>
               </div>
             </div>
             <div className="d-block">
               <div className="d-flex justify-content-between">
                 <div>
-                  <p className="logout-label">Login Time</p>
+                  <p className="logout-label">
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.logintime
+                      }
+                      else {
+                        return "Login Time"
+                      }
+                    })()
+                  }
+                  </p>
                   <p className="font-weight-bold" style={{ fontSize: "16px" }}>
                     {this.state.LoginTime}
                   </p>
                 </div>
                 <div>
-                  <p className="logout-label">Logout Time</p>
+                  <p className="logout-label">
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.logouttime
+                      }
+                      else {
+                        return "Logout Time"
+                      }
+                    })()
+                  }
+                  </p>
                   <p
                     className="font-weight-bold"
                     style={{ fontSize: "16px", float: "right" }}
@@ -641,7 +759,18 @@ class Header extends Component {
             </div>
             <div>
               <div>
-                <p className="logout-label">SLA SCORE</p>
+                <p className="logout-label">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.p.slascore
+                    }
+                    else {
+                      return "SLA SCORE"
+                    }
+                  })()
+                }
+                </p>
                 <p className="font-weight-bold">{this.state.SLAScore}</p>
               </div>
               {/* <div>
@@ -649,7 +778,18 @@ class Header extends Component {
                 <p className="font-weight-bold">{this.state.CSatScore}</p>
               </div> */}
               <div>
-                <p className="logout-label">Avg Response time</p>
+                <p className="logout-label">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.p.avgresponsetime
+                    }
+                    else {
+                      return "Avg Response time"
+                    }
+                  })()
+                }
+                </p>
                 <p className="font-weight-bold">{this.state.AvgResponse}</p>
               </div>
             </div>
@@ -664,7 +804,18 @@ class Header extends Component {
         >
           <div className="notifi-container">
             {this.state.notificationCount === 0 ? (
-              <span>No Notification Found</span>
+              <span>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.span.nonotificationfound
+                    }
+                    else {
+                      return "No Notification Found"
+                    }
+                  })()
+                }
+              </span>
             ) : (
               this.state.notificationData !== null &&
               this.state.notificationData.map((item, i) => {
@@ -747,7 +898,16 @@ class Header extends Component {
                               : "text-disabled"
                           }
                         >
-                          VIEW
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.div.view
+                              }
+                              else {
+                                return "VIEW"
+                              }
+                            })()
+                          }
                         </div>
                       </Popover>
                     </div>
@@ -762,4 +922,5 @@ class Header extends Component {
   }
 }
 
+Header.contextType = MyContext;
 export default Header;

@@ -6,6 +6,7 @@ import ReactTable from "react-table";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadphoneImg from "./../../assets/Images/headphone3.png";
 import Demo from "./../../store/Hashtag";
+import { MyContext } from './../../context'
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
@@ -280,6 +281,7 @@ class Claim extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         <div className="store-task-tabs">
@@ -294,7 +296,16 @@ class Claim extends Component {
                 aria-selected="true"
                 onClick={this.handleGetClaimData.bind(this, 1)}
               >
-                Raised by Me
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.raisedbyme
+                    }
+                    else {
+                      return "Raised by Me"
+                    }
+                  })()
+                }
               </a>
             </li>
             <li className="nav-item">
@@ -307,12 +318,30 @@ class Claim extends Component {
                 aria-selected="false"
                 onClick={this.handleGetClaimData.bind(this, 2)}
               >
-                Assigned To Me
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.assignedtome
+                    }
+                    else {
+                      return "Assigned To Me"
+                    }
+                  })()
+                }
               </a>
             </li>
           </ul>
           <button className="butn" onClick={this.handlePageChange.bind(this)}>
-            RAISE CLAIM
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.button.raiseclaim
+                }
+                else {
+                  return "RAISE CLAIM"
+                }
+              })()
+            }
           </button>
         </div>
         <div className="tab-content store-task-tab-cont">
@@ -343,7 +372,16 @@ class Claim extends Component {
                                     style={{ margin: "10px", width: "180px" }}
                                     onClick={this.handleGetStoreFilterList.bind(this)}
                                   >
-                                    VIEW SEARCH
+                                    {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.button.viewsearch
+                                          }
+                                          else {
+                                            return "VIEW SEARCH"
+                                          }
+                                        })()
+                                      }
                                   </button>
                                 </div>
                               </ul>
@@ -515,16 +553,36 @@ class Claim extends Component {
                         columns={[
                           {
                             Header: (
-                              <span>
-                                ID <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.id
+                                    }
+                                    else {
+                                      return "ID"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "claimID",
                           },
                           {
                             Header: (
-                              <span>
-                                Status <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.status
+                                    }
+                                    else {
+                                      return "Status"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "status",
@@ -585,8 +643,18 @@ class Claim extends Component {
                           },
                           {
                             Header: (
-                              <span>
-                                Category <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.category
+                                    }
+                                    else {
+                                      return "Category"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "categoryName",
@@ -599,7 +667,18 @@ class Claim extends Component {
                                       <div className="dash-creation-popup-cntr">
                                         <div>
                                           <b>
-                                            <p className="title">Category</p>
+                                            <p className="title">
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.p.category
+                                                  }
+                                                  else {
+                                                    return "Category"
+                                                  }
+                                                })()
+                                              }
+                                            </p>
                                           </b>
                                           <p className="sub-title">
                                             {row.original.categoryName}
@@ -608,7 +687,16 @@ class Claim extends Component {
                                         <div>
                                           <b>
                                             <p className="title">
-                                              Sub Category
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.p.subcategory
+                                                  }
+                                                  else {
+                                                    return "Sub Category"
+                                                  }
+                                                })()
+                                              }
                                             </p>
                                           </b>
                                           <p className="sub-title">
@@ -617,7 +705,18 @@ class Claim extends Component {
                                         </div>
                                         <div>
                                           <b>
-                                            <p className="title">Type</p>
+                                            <p className="title">
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.p.type
+                                                  }
+                                                  else {
+                                                    return "Type"
+                                                  }
+                                                })()
+                                              }
+                                            </p>
                                           </b>
                                           <p className="sub-title">
                                             {row.original.issueTypeName}
@@ -639,8 +738,18 @@ class Claim extends Component {
                           },
                           {
                             Header: (
-                              <span>
-                                Raised by <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.raisedby
+                                    }
+                                    else {
+                                      return "Raised by"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "raiseBy",
@@ -671,12 +780,30 @@ class Claim extends Component {
                                         <div className="dash-creation-popup-cntr">
                                           <ul className="dash-creation-popup">
                                             <li className="title">
-                                              Creation details
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.li.creationdetails
+                                                  }
+                                                  else {
+                                                    return "Creation details"
+                                                  }
+                                                })()
+                                              }
                                             </li>
                                             <li>
                                               <p>
                                                 {row.original.raiseBy + " "}{" "}
-                                                Created
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.created
+                                                    }
+                                                    else {
+                                                      return "Created"
+                                                    }
+                                                  })()
+                                                }
                                               </p>
                                               <p>2 Hrs ago</p>
                                             </li>
@@ -692,15 +819,48 @@ class Claim extends Component {
                                               <p>1 Hr ago</p>
                                             </li>
                                             <li>
-                                              <p>Response time remaining by</p>
+                                              <p>
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.responsetimeremainingby
+                                                    }
+                                                    else {
+                                                      return "Response time remaining by"
+                                                    }
+                                                  })()
+                                                }
+                                              </p>
                                               <p>30 mins</p>
                                             </li>
                                             <li>
-                                              <p>Response overdue by</p>
+                                              <p>
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.responseoverdueby
+                                                    }
+                                                    else {
+                                                      return "Response overdue by"
+                                                    }
+                                                  })()
+                                                }
+                                              </p>
                                               <p>1 Hr</p>
                                             </li>
                                             <li>
-                                              <p>Resolution overdue by</p>
+                                              <p>
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.resolutionoverdueby
+                                                    }
+                                                    else {
+                                                      return "Resolution overdue by"
+                                                    }
+                                                  })()
+                                                }
+                                              </p>
                                               <p>2 Hrs</p>
                                             </li>
                                           </ul>
@@ -722,7 +882,16 @@ class Claim extends Component {
                           {
                             Header: (
                               <span>
-                                Assign to
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.assignto
+                                    }
+                                    else {
+                                      return "Assign to"
+                                    }
+                                  })()
+                                }
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -773,7 +942,16 @@ class Claim extends Component {
                                     style={{ margin: "10px", width: "180px" }}
                                     onClick={this.handleGetStoreFilterList.bind(this)}
                                   >
-                                    VIEW SEARCH
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.button.viewsearch
+                                          }
+                                          else {
+                                            return "VIEW SEARCH"
+                                          }
+                                        })()
+                                      }
                                   </button>
                                 </div>
                               </ul>
@@ -926,7 +1104,18 @@ class Claim extends Component {
                       className="float-search"
                       onClick={this.handleFilterCollapse.bind(this)}
                     >
-                      <small>Search</small>
+                      <small>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.small.search
+                              }
+                              else {
+                                return "Search"
+                              }
+                            })()
+                          }
+                      </small>
                       <img
                         className="search-icon"
                         src={SearchIcon}
@@ -940,16 +1129,36 @@ class Claim extends Component {
                         columns={[
                           {
                             Header: (
-                              <span>
-                                ID <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.id
+                                    }
+                                    else {
+                                      return "ID"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "claimID",
                           },
                           {
                             Header: (
-                              <span>
-                                Status <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.status
+                                    }
+                                    else {
+                                      return "Status"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "status",
@@ -1010,7 +1219,17 @@ class Claim extends Component {
                           {
                             Header: (
                               <span>
-                                Category <FontAwesomeIcon icon={faCaretDown} />
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.category
+                                    }
+                                    else {
+                                      return "Category "
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "categoryName",
@@ -1023,27 +1242,87 @@ class Claim extends Component {
                                       <div className="dash-creation-popup-cntr">
                                         <div>
                                           <b>
-                                            <p className="title">Category</p>
+                                            <p className="title">
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.p.category
+                                                  }
+                                                  else {
+                                                    return "Category"
+                                                  }
+                                                })()
+                                              }
+                                            </p>
                                           </b>
                                           <p className="sub-title">
-                                            Defective article
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.defectivearticle
+                                                }
+                                                else {
+                                                  return "Defective article"
+                                                }
+                                              })()
+                                            }
                                           </p>
                                         </div>
                                         <div>
                                           <b>
                                             <p className="title">
-                                              Sub Category
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.p.subcategory
+                                                  }
+                                                  else {
+                                                    return " Sub Category"
+                                                  }
+                                                })()
+                                              }
                                             </p>
                                           </b>
                                           <p className="sub-title">
-                                            Customer wants refund
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.customerwantsrefund
+                                                }
+                                                else {
+                                                  return "Customer wants refund"
+                                                }
+                                              })()
+                                            }
                                           </p>
                                         </div>
                                         <div>
                                           <b>
-                                            <p className="title">Type</p>
+                                            <p className="title">
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.p.type
+                                                  }
+                                                  else {
+                                                    return "Type"
+                                                  }
+                                                })()
+                                              }
+                                            </p>
                                           </b>
-                                          <p className="sub-title">Delivery</p>
+                                          <p className="sub-title">
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.delivery
+                                                }
+                                                else {
+                                                  return "Delivery"
+                                                }
+                                              })()
+                                            }
+                                          </p>
                                         </div>
                                       </div>
                                     }
@@ -1061,8 +1340,18 @@ class Claim extends Component {
                           },
                           {
                             Header: (
-                              <span>
-                                Raised by <FontAwesomeIcon icon={faCaretDown} />
+                              <span> 
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.raisedby
+                                    }
+                                    else {
+                                      return "Raised by"
+                                    }
+                                  })()
+                                }
+                                <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
                             accessor: "raiseBy",
@@ -1085,12 +1374,30 @@ class Claim extends Component {
                                         <div className="dash-creation-popup-cntr">
                                           <ul className="dash-creation-popup">
                                             <li className="title">
-                                              Creation details
+                                              {
+                                                (() => {
+                                                  if (TranslationContext !== undefined) {
+                                                    return TranslationContext.li.creationdetails
+                                                  }
+                                                  else {
+                                                    return "Creation details"
+                                                  }
+                                                })()
+                                              }
                                             </li>
                                             <li>
                                               <p>
                                                 {row.original.raiseBy + " "}{" "}
-                                                Created
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.created
+                                                    }
+                                                    else {
+                                                      return "Created"
+                                                    }
+                                                  })()
+                                                }
                                               </p>
                                               <p>2 Hrs ago</p>
                                             </li>
@@ -1106,15 +1413,48 @@ class Claim extends Component {
                                               <p>1 Hr ago</p>
                                             </li>
                                             <li>
-                                              <p>Response time remaining by</p>
+                                              <p>
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.responsetimeremainingby
+                                                    }
+                                                    else {
+                                                      return "Response time remaining by"
+                                                    }
+                                                  })()
+                                                }
+                                              </p>
                                               <p>30 mins</p>
                                             </li>
                                             <li>
-                                              <p>Response overdue by</p>
+                                              <p>
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.responseoverdueby
+                                                    }
+                                                    else {
+                                                      return "Response overdue by"
+                                                    }
+                                                  })()
+                                                }
+                                              </p>
                                               <p>1 Hr</p>
                                             </li>
                                             <li>
-                                              <p>Resolution overdue by</p>
+                                              <p>
+                                                {
+                                                  (() => {
+                                                    if (TranslationContext !== undefined) {
+                                                      return TranslationContext.p.resolutionoverdueby
+                                                    }
+                                                    else {
+                                                      return "Resolution overdue by"
+                                                    }
+                                                  })()
+                                                }
+                                              </p>
                                               <p>2 Hrs</p>
                                             </li>
                                           </ul>
@@ -1136,7 +1476,16 @@ class Claim extends Component {
                           {
                             Header: (
                               <span>
-                                Assign to
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.assignto
+                                    }
+                                    else {
+                                      return "Assign to"
+                                    }
+                                  })()
+                                }
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1165,4 +1514,5 @@ class Claim extends Component {
     );
   }
 }
+Claim.contextType = MyContext;
 export default Claim;

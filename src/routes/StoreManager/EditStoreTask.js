@@ -13,6 +13,7 @@ import {
 } from "react-notifications";
 import LoadingImg from "./../../assets/Images/loading.png";
 import CancelImg from "./../../assets/Images/cancel.png";
+import { MyContext } from './../../context'
 import ReactTable from "react-table";
 import moment from "moment";
 import DownImg from "./../../assets/Images/down.png";
@@ -617,11 +618,22 @@ class EditStoreTask extends Component {
     this.setState({ userModel: false });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         <div className="edit-storeTask-header">
           <label className="store-header-lbl">
-            Store ticket id : <span>{this.state.taskId}</span>
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.label.storeticketid
+                }
+                else {
+                  return "Store ticket id :"
+                }
+              })()
+            }
+            <span>{this.state.taskId}</span>
           </label>
           <a
             className="loading-rectangle-cntr"
@@ -673,7 +685,16 @@ class EditStoreTask extends Component {
               onClick={this.handleSubmitReopnModalOpen.bind(this)}
             >
               <label className="myticket-submit-solve-button-text">
-                SUBMIT AS RESOLVED
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.submitasresolved
+                    }
+                    else {
+                      return "SUBMIT AS RESOLVED"
+                    }
+                  })()
+                }
               </label>
               <img src={DownWhiteImg} alt="headphone" className="down-white" />
             </button>
@@ -691,8 +712,29 @@ class EditStoreTask extends Component {
                   <label
                     className="modal-lbl"
                     onClick={this.handleUpdateTask.bind(this, 224)}
-                  >
-                    Submit as <span className="modal-lbl-1">ReOpen</span>
+                  > 
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.submitas
+                        }
+                        else {
+                          return "Submit as"
+                        }
+                      })()
+                    }
+                    <span className="modal-lbl-1">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.reopen
+                          }
+                          else {
+                            return "ReOpen"
+                          }
+                        })()
+                      }
+                    </span>
                   </label>
                 </div>
               ) : (
@@ -700,8 +742,29 @@ class EditStoreTask extends Component {
                   <label
                     className="modal-lbl"
                     onClick={this.handleUpdateTask.bind(this, 222)}
-                  >
-                    Submit as <span className="modal-lbl-1">Solved</span>
+                  > 
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.submitas
+                        }
+                        else {
+                          return "Submit as"
+                        }
+                      })()
+                    }
+                    <span className="modal-lbl-1">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.solved
+                          }
+                          else {
+                            return "Solved"
+                          }
+                        })()
+                      }
+                    </span>
                   </label>
                 </div>
               )}
@@ -710,8 +773,29 @@ class EditStoreTask extends Component {
                   <label
                     className="modal-lbl"
                     onClick={this.handleUpdateTask.bind(this, 223)}
-                  >
-                    Submit as <span className="modal-lbl-2">Closed</span>
+                  > 
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.submitas
+                        }
+                        else {
+                          return "Submit as"
+                        }
+                      })()
+                    }
+                    <span className="modal-lbl-2">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.closed
+                          }
+                          else {
+                            return "Closed"
+                          }
+                        })()
+                      }
+                    </span>
                   </label>
                 </div>
               ) : null}
@@ -721,7 +805,18 @@ class EditStoreTask extends Component {
         <div className="row width">
           <div className="col-md-7">
             <div className="card store-card-padding h-100">
-              <label className="store-Edit-lbl"> Task Title</label>
+              <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.tasktitle
+                        }
+                        else {
+                          return "Task Title"
+                        }
+                      })()
+                    }
+              </label>
               <input
                 type="text"
                 className={
@@ -741,7 +836,18 @@ class EditStoreTask extends Component {
               )}
               <div className="row">
                 <div className="col-md-4 store-mrg">
-                  <label className="store-Edit-lbl">Department</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.department
+                        }
+                        else {
+                          return "Department"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className={
@@ -772,7 +878,18 @@ class EditStoreTask extends Component {
                   )}
                 </div>
                 <div className="col-md-4 store-mrg">
-                  <label className="store-Edit-lbl">Function</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.function
+                        }
+                        else {
+                          return "Function"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className={
@@ -803,7 +920,18 @@ class EditStoreTask extends Component {
                   )}
                 </div>
                 <div className="col-md-4 store-mrg">
-                  <label className="store-Edit-lbl">Priority</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.priority
+                        }
+                        else {
+                          return "Priority"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     id="inputState"
                     className={
@@ -836,7 +964,18 @@ class EditStoreTask extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 store-mrg">
-                  <label className="store-Edit-lbl">Task Details</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.taskdetails
+                        }
+                        else {
+                          return "Task Details"
+                        }
+                      })()
+                    }
+                  </label>
                   <textarea
                     rows="8"
                     className={
@@ -857,7 +996,18 @@ class EditStoreTask extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 store-mrg">
-                  <label className="store-Edit-lbl">Comments</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.comments
+                        }
+                        else {
+                          return "Comments"
+                        }
+                      })()
+                    }
+                  </label>
                   <textarea
                     rows="8"
                     className="textarea-store-comments"
@@ -895,7 +1045,16 @@ class EditStoreTask extends Component {
                     ) : (
                       ""
                     )}
-                    Add Comment
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.addcomment
+                        }
+                        else {
+                          return "Add Comment"
+                        }
+                      })()
+                    }
                   </button>
                 </div>
               </div>
@@ -925,7 +1084,18 @@ class EditStoreTask extends Component {
                             className="col-md-12"
                             style={{ marginTop: "3px" }}
                           >
-                            <span className="store-comment">Comment :</span>
+                            <span className="store-comment">
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.comment
+                                  }
+                                  else {
+                                    return "Comment :"
+                                  }
+                                })()
+                              }
+                            </span>
                           </div>
                         </div>
                         <div className="row">
@@ -944,10 +1114,32 @@ class EditStoreTask extends Component {
             <div className="card store-card-2 h-100">
               <div className="row">
                 <div className="col-md-6">
-                  <label className="store-Edit-lbl">Issue Raised By:</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.issueraisedby
+                        }
+                        else {
+                          return "Issue Raised By:"
+                        }
+                      })()
+                    }
+                  </label>
                 </div>
                 <div className="col-md-4">
-                  <label className="store-Edit-lbl">Store Name:</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.storename
+                        }
+                        else {
+                          return "Store Name:"
+                        }
+                      })()
+                    }
+                  </label>
                 </div>
               </div>
               <div className="row">
@@ -971,7 +1163,18 @@ class EditStoreTask extends Component {
               </div>
               <div className="row store-mrg-3">
                 <div className="col-md-6">
-                  <label className="store-Edit-lbl">Store Address:</label>
+                  <label className="store-Edit-lbl">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.storeaddress
+                        }
+                        else {
+                          return "Store Address:"
+                        }
+                      })()
+                    }
+                  </label>
                 </div>
               </div>
               <div className="row">
@@ -983,7 +1186,18 @@ class EditStoreTask extends Component {
               </div>
               <div className="row store-mrg-3">
                 <div className="col-md-6">
-                  <label className="task-clouserDate">Task Closure Date</label>
+                  <label className="task-clouserDate">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.taskclosuredate
+                        }
+                        else {
+                          return "Task Closure Date"
+                        }
+                      })()
+                    }
+                  </label>
                 </div>
               </div>
               <div className="row">
@@ -1033,7 +1247,18 @@ class EditStoreTask extends Component {
             overlayId="logout-ovrly"
             classNames={{ modal: "historical-popup" }}
           >
-            <label className="lblHistorical">Ticket Historical</label>
+            <label className="lblHistorical">
+              {
+                (() => {
+                  if (TranslationContext !== undefined) {
+                    return TranslationContext.label.tickethistorical
+                  }
+                  else {
+                    return "Ticket Historical"
+                  }
+                })()
+              }
+            </label>
             <img
               src={CancelImg}
               alt="cancelImg"
@@ -1046,16 +1271,49 @@ class EditStoreTask extends Component {
                 data={this.state.historyData}
                 columns={[
                   {
-                    Header: <span>Name</span>,
+                    Header: <span>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.name
+                          }
+                          else {
+                            return "Name"
+                          }
+                        })()
+                      }
+                    </span>,
                     accessor: "name",
                     width: 150,
                   },
                   {
-                    Header: <span>Action</span>,
+                    Header: <span>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.action
+                          }
+                          else {
+                            return "Action"
+                          }
+                        })()
+                      }
+                    </span>,
                     accessor: "action",
                   },
                   {
-                    Header: <span>Time & Date</span>,
+                    Header: <span>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.timeanddate
+                          }
+                          else {
+                            return "Time & Date"
+                          }
+                        })()
+                      }
+                    </span>,
                     accessor: "dateandTime",
                     width: 200,
                     Cell: (row) => {
@@ -1090,12 +1348,34 @@ class EditStoreTask extends Component {
               data={this.state.userData}
               columns={[
                 {
-                  Header: <span>Emp Id</span>,
+                  Header: <span>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.empid
+                        }
+                        else {
+                          return "Emp Id"
+                        }
+                      })()
+                    }
+                  </span>,
                   accessor: "user_ID",
                   width: 80,
                 },
                 {
-                  Header: <span>Name</span>,
+                  Header: <span>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.name
+                        }
+                        else {
+                          return "Name"
+                        }
+                      })()
+                    }
+                  </span>,
                   accessor: "userName",
                 },
                 // {
@@ -1128,7 +1408,16 @@ class EditStoreTask extends Component {
                 className="btn btn-outline-primary"
                 onClick={this.handleAssignTask.bind(this)}
               >
-                SELECT
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.select
+                    }
+                    else {
+                      return "SELECT"
+                    }
+                  })()
+                }
               </button>
             </div>
             <div
@@ -1144,4 +1433,5 @@ class EditStoreTask extends Component {
   }
 }
 
+EditStoreTask.contextType = MyContext;
 export default withRouter(EditStoreTask);

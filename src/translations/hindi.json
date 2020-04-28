@@ -164,6 +164,16 @@
       "composenotification":"अपनी सूचना लिखें",
       "dropfilehere":"यहाँ ड्रॉप फ़ाइल",
       "or":"या",
+      "addnewemailintoblocklist":"ब्लॉक सूची में नई ईमेल आईडी जोड़ें",
+      "addnewjunkwords":"नए जंक शब्द जोड़ें",
+      "filedname":"क्षेत्र का नाम",
+      "showhide":"छुपा हुआ देखना",
+      "edittemplate":"संपादित करें नमूने",
+      "createtemlate":"टेम्पलेट बनाएँ",
+      "selectall":"सभी का चयन करे",
+      "clear":"स्पष्ट",
+      "templatenamecomplaintstatus":"टेम्पलेट नाम:कम्पलाट स्टेटस",
+      "templatesubject":"टेम्पलेट विषय",
       "selectedbrand":"चयनित ब्रांड",
       "ticketsource":"टिकट स्रोत",
       "invosuborderno":"चालान नं / उप आदेश सं",
@@ -200,16 +210,44 @@
       "enterreportdetails":"रिपोर्ट विवरण दर्ज करें",
       "totalresult":"कुल परिणाम",
       "reportname":"रिपोर्ट का नाम",
-      "addnewemailintoblocklist":"ब्लॉक सूची में नई ईमेल आईडी जोड़ें",
-      "addnewjunkwords":"नए जंक शब्द जोड़ें",
-      "filedname":"क्षेत्र का नाम",
-      "showhide":"छुपा हुआ देखना",
-      "edittemplate":"संपादित करें नमूने",
-      "createtemlate":"टेम्पलेट बनाएँ",
-      "selectall":"सभी का चयन करे",
-      "clear":"स्पष्ट",
-      "templatenamecomplaintstatus":"टेम्पलेट नाम:कम्पलाट स्टेटस",
-      "templatesubject":"टेम्पलेट विषय"
+      "dateofbirth":"जन्म की तारीख",
+      "raiseticket":"टिकट उठाएं",
+      "followup": "जाँच करना",
+      "notcontacted":"संपर्क नहीं किया गया",
+      "contacted":"व्यक्ति से संपर्क किया",
+      "close":"बंद करे",
+      "commentforrejection":"अस्वीकृति के लिए टिप्पणी करें",
+      "finalclaimasked":"अंतिम दावा % के लिए पूछा गया",
+      "commentbyapproval":"टिप्पणियाँ स्वीकृति द्वारा",
+      "comments":"टिप्पणियाँ",
+      "attachedimage":"संलग्न छवि",
+      "claimaskedfor":"% के लिए दावा किया गया",
+      "claimtype":"दावा प्रकार",
+      "noorderfoundwiththisnumber":"इस नंबर के साथ कोई आदेश नहीं मिला",
+      "uploadfile":"दस्तावेज अपलोड करें",
+      "taskid":"कार्य आईडी:",
+      "claimticketid":"टिकट आईडी का दावा करें:",
+      "taskclosuredate":"कार्य बंद करने की तारीख",
+      "storeaddress":"स्टोर का पता",
+      "issueraisedby":"द्वारा उठाया गया मुद्दा:",
+      "taskdetails":"कार्य विवरण",
+      "function":"समारोह",
+      "department": "विभाग",
+      "tasktitle":"कार्य का शीर्षक",
+      "submitasresolved":"प्रस्तुत रूप में प्रस्तुत किया गया",
+      "storeticketid":"दुकान टिकट आईडी",
+      "submitas":"के रूप में जमा करें",
+      "designation":"पद",
+      "deletephoto":"फोटो हटाएं",
+      "photo":"तस्वीर",
+      "newpassword":"नया पासवर्ड",
+      "currentpassword":"वर्तमान पासवर्ड",
+      "changepassword":"पासवर्ड बदलें",
+      "createtask":"कार्य बनाएँ",
+      "assignto":"को आवंटित",
+      "raiseclaim":"राईस क्लैम",
+      "createclaimcategory":"दावा श्रेणी बनाएँ",
+      "editdepartment":"विभाग संपादित करें"
     },
     "text":{
       "brand": "ब्रांड :",
@@ -289,13 +327,33 @@
       "editalerts":"अलर्ट संपादित करें",
       "alerttype":"अलर्ट प्रकार",
       "areyousurewanttodeletethisrecord":"क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?",
-      "deleterecord":"रिकॉर्ड हटाएं"
+      "deleterecord":"रिकॉर्ड हटाएं",
+      "customerdetails":"उपभोक्ता विवरण",
+      "source": "स्रोत",
+      "type":"प्रकार",
+      "created":"बनाया था",
+      "delivery":"वितरण",
+      "customerwantsrefund":"ग्राहक रिफंड चाहता है",
+      "defectivearticle":"दोषपूर्ण लेख",
+      "responsetimeremainingby":"प्रतिसाद समय शेष",
+      "avgresponsetime":"औसत प्रतिक्रिया समय",
+      "campaign":"अभियान",
+      "opentaskdepartmentwise":"खुला कार्य-विभाग वार",
+      "taskbypriority":"प्राथमिकता से कार्य करें",
+      "opencampaignbytype":"प्रकार द्वारा खुला अभियान",
+      "opeclaimstat":"ओपन स्टैट स्टैट्स",
+      "claimvsinvoiceamount":"दावा बनाम चालान राशि",
+      "storeaddress":"स्टोर का पता",
+      "function":"समारोह"
     },
     "small":{
       "moreinsights": "अधिक जानकारी देखें",
       "clearsearch": "स्पष्ट खोज",
       "open": "खुला हुआ",
-      "closed": "बन्द है"
+      "closed": "बन्द है",
+      "search":"खोज",
+      "duetoday": "आज के लिए",
+      "overdue": "ओवर के कारण"
     },
     "a":{
       "billgraph": "टिकट का बिल ग्राफ",
@@ -344,7 +402,13 @@
       "internal":"अंदर का",
       "store":"दुकान",
       "tickets": "टिकट",
-      "hats":"चैट"
+      "hats":"चैट",
+      "raisedbyme":"मेरे द्वारा उठाया गया",
+      "assignedtome":"मुझे सौंपा गया",
+      "dowloadsamplefile":"डाउनलोड नमूना फ़ाइल",
+      "sm":"एस.एम.",
+      "campaign":"अभियान",
+      "taskbyticket":"टिकट द्वारा कार्य"
     },
     "span":{
       "status": "स्थिति",
@@ -438,7 +502,31 @@
       "enteredby":"द्वारा दर्ज",
       "entereddate":"दर्ज की गई तारीख",
       "junkwords": "जुबान के शब्द",
-      "issuetype": "समस्या का प्रकार"
+      "issuetype": "समस्या का प्रकार",
+      "id": "आईडी",
+      "raisedby":"द्वारा उठाया",
+      "assignto":"को आवंटित",
+      "timeanddate":"समय और दिनांक",
+      "comment":"टिप्पणी",
+      "closed": "बन्द है",
+      "solved":"हल किया",
+      "reopen": "फिर से खुला",
+      "claimcategory":"दावा श्रेणी",
+      "claimsubcategory":"उप श्रेणी का दावा करें",
+      "claimissuetype":"दावा जारी करने का प्रकार",
+      "addnew":"नया जोड़ें",
+      "departmentname":"विभाग का नाम",
+      "function":"समारोह",
+      "nonotificationfound":"कोई अधिसूचना नहीं मिली",
+      "open": "खुला हुआ",
+      "new": "नया",
+      "brand":"ब्रांड",
+      "daterange": "तिथि सीमा :",
+      "tasktitle":"कार्य का शीर्षक",
+      "department": "विभाग",
+      "creationon":"निर्माण पर",
+      "ticketid":"टिकट आईडी :",
+      "taskid":"कार्य आईडी:"
     },
     "div": {
       "viewtickets": "टिकट देखें",
@@ -454,7 +542,8 @@
       "ticketfromdate":"तारीख से टिकट",
       "tickettodate":"टिकट टू डेट",
       "ticketsource":"टिकट स्रोत",
-      "status":"स्थिति"
+      "status":"स्थिति",
+      "view":"राय देखना"
     },
     "button": {
       "logout": "लॉगआउट",
@@ -499,7 +588,14 @@
       "download":"डाउनलोड",
       "addnew":"नया जोड़ें",
       "configuretemplate":"टेम्पलेट कॉन्फ़िगर करें",
-      "saveandnext":"सहेजें और आगे"
+      "saveandnext":"सहेजें और आगे",
+      "creatticket":"टिकट बनाएँ",
+      "raiseclaim":"राईस क्लैम",
+      "approveclaim":"दावा स्वीकार करें",
+      "rejectclaim":"अस्वीकार दावा",
+      "addcomment":"टिप्पणी जोड़ें",
+      "submittask":"कार्य सबमिट करें",
+      "addtask":"कार्य जोड़ें"
     },
     "strong": {
       "hierarchy": "अनुक्रम",
@@ -542,7 +638,8 @@
     "h3": {
       "bulkupload":"बल्कू अपलोड",
       "createusers":"उपयोगकर्ता बनाएँ",
-      "createalerts":"अलर्ट बनाएं"
+      "createalerts":"अलर्ट बनाएं",
+      "createdepartment":"विभाग बनाएँ"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
@@ -578,12 +675,23 @@
       "blockemailid":"ब्लॉक की गई ईमेल आईडी",
       "junkwords": "जुबान के शब्द",
       "modules": "मॉड्यूल",
-      "templates": "टेम्पलेट्स"
+      "templates": "टेम्पलेट्स",
+      "changepassword":"पासवर्ड बदलें",
+      "claimcategorymaster":"दावा श्रेणी मास्टर",
+      "store":"दुकान",
+      "departmentmaster":"विभाग के मास्टर"
     },
     "mybutton": {
       "edit":"संपादित करें"
     },
     "b":{
-      "mail":"मेल"
+      "mail":"मेल",
+      "gender":"लिंग",
+      "alternateemail":"वैकल्पिक ईमेल",
+      "email":"ईमेल",
+      "customername":"ग्राहक का नाम",
+      "phonenumber":"फ़ोन नंबर",
+      "alternatenumber":"वैकल्पिक नंबर",
+      "claimstatus":"दावा की स्थिति"
     }
   }

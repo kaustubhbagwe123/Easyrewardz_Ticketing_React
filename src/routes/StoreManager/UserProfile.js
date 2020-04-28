@@ -6,6 +6,7 @@ import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
+import { MyContext } from './../../context'
 import { transferData } from "./../../helpers/transferData";
 import { NotificationManager } from "react-notifications";
 import { Link } from "react-router-dom";
@@ -265,6 +266,7 @@ class UserProfile extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
@@ -321,7 +323,16 @@ class UserProfile extends Component {
                         <img src="{FileUpload}" alt="file-upload" />
                       </div> */}
                           {this.state.imgFlag === "" ? "Upload" : "Change"}{" "}
-                          Photo
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.photo
+                              }
+                              else {
+                                return "Photo"
+                              }
+                            })()
+                          }
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -351,7 +362,16 @@ class UserProfile extends Component {
                           className="uploadtextprofile1"
                           // onChange={this.fileUpload.bind(this)}
                         >
-                          Delete Photo
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.deletephoto
+                              }
+                              else {
+                                return "Delete Photo"
+                              }
+                            })()
+                          }
                         </label>
                       )}
                       {this.state.fileName.length === 0 && (
@@ -365,7 +385,18 @@ class UserProfile extends Component {
                   <div className="centerprofile col-md-5">
                     <div className="divSpace">
                       <div className="">
-                        <label className="designation-name">First Name</label>
+                        <label className="designation-name">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.firstname
+                            }
+                            else {
+                              return "First Name"
+                            }
+                          })()
+                        }
+                        </label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
@@ -384,7 +415,18 @@ class UserProfile extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="">
-                        <label className="designation-name">Last Name</label>
+                        <label className="designation-name">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.lastname
+                            }
+                            else {
+                              return "Last Name"
+                            }
+                          })()
+                        }
+                        </label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
@@ -403,7 +445,18 @@ class UserProfile extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="">
-                        <label className="reports-to">Mobile No.</label>
+                        <label className="reports-to">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.mobilenumber
+                            }
+                            else {
+                              return "Mobile No."
+                            }
+                          })()
+                        }
+                        </label>
                         <input
                           type="text"
                           className="txt-1"
@@ -422,7 +475,18 @@ class UserProfile extends Component {
 
                     <div className="divSpace">
                       <div className="">
-                        <label className="reports-to">Email ID</label>
+                        <label className="reports-to">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.emailid
+                            }
+                            else {
+                              return "Email ID"
+                            }
+                          })()
+                        }
+                        </label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
@@ -442,7 +506,18 @@ class UserProfile extends Component {
 
                     <div className="divSpace">
                       <div className="">
-                        <label className="reports-to">Designation</label>
+                        <label className="reports-to">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.designation
+                            }
+                            else {
+                              return "Designation"
+                            }
+                          })()
+                        }
+                        </label>
                         <select
                           className="add-select-category cursor-disabled"
                           name="selectedDesignation"
@@ -470,8 +545,17 @@ class UserProfile extends Component {
                       <button
                         className="CreateADDBtn"
                         onClick={this.handleEditUserProfile.bind(this)}
-                      >
-                        SAVE
+                      > 
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.button.save
+                            }
+                            else {
+                              return "SAVE"
+                            }
+                          })()
+                        }
                       </button>
                     </div>
                   </div>
@@ -479,7 +563,18 @@ class UserProfile extends Component {
                     className="userChangePW"
                     //onClick={this.redirectToChangePassword}
                   >
-                    <Link to="/storeChangePassword">Change Password</Link>
+                    <Link to="/storeChangePassword">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.link.changepassword
+                          }
+                          else {
+                            return "Change Password"
+                          }
+                        })()
+                      }
+                    </Link>
                   </div>
 
                   {/* <div className="row">
@@ -508,14 +603,32 @@ class UserProfile extends Component {
                     <div className="modalforgotpadding">
                       <div className="divSpace">
                         <label className="Changepasswordheader">
-                          Change Password
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.label.changepassword
+                                }
+                                else {
+                                  return "Change Password"
+                                }
+                              })()
+                            }
                         </label>
                       </div>
 
                       <div className="divSpace">
                         <div className="">
                           <label className="designation-name">
-                            Current Password
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.label.currentpassword
+                                }
+                                else {
+                                  return "Current Password"
+                                }
+                              })()
+                            }
                           </label>
                           <input
                             type="password"
@@ -526,7 +639,18 @@ class UserProfile extends Component {
                       </div>
                       <div className="divSpace">
                         <div className="">
-                          <label className="reports-to">New Password</label>
+                          <label className="reports-to">
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.label.newpassword
+                                }
+                                else {
+                                  return "New Password"
+                                }
+                              })()
+                            }
+                          </label>
                           <img
                             className="info-icon-cp"
                             src={BlackInfoIcon}
@@ -541,7 +665,18 @@ class UserProfile extends Component {
                       </div>
                       <div className="chatconfigbtn">
                         <button className="CreateADDBtn">
-                          <label className="addLable">SAVE</label>
+                          <label className="addLable">
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.label.save
+                                }
+                                else {
+                                  return "SAVE"
+                                }
+                              })()
+                            }
+                          </label>
                         </button>
                       </div>
                     </div>
@@ -563,4 +698,5 @@ class UserProfile extends Component {
   }
 }
 
+UserProfile.contextType = MyContext;
 export default UserProfile;
