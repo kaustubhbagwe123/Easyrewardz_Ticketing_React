@@ -3,6 +3,7 @@ import Campaign from "./Campaign";
 import InfoIcon from "../../assets/Images/info-icon.png";
 import Demo from "../../store/Hashtag";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
@@ -68,6 +69,8 @@ class StoreTask extends Component {
       storeStatus: StoreStatus(),
       userData: [],
       isViewSerach: false,
+      isATOZ: true,
+      itemData: [],
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -863,6 +866,7 @@ class StoreTask extends Component {
     }
     this.setState({
       isortA: true,
+      isATOZ: false,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -930,6 +934,7 @@ class StoreTask extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -947,7 +952,7 @@ class StoreTask extends Component {
     ) {
       return false;
     }
-
+    this.setState({ isortA: false });
     if (data === "storeName") {
       if (
         this.state.sdepartmentNameFilterCheckbox !== "" ||
@@ -1206,6 +1211,7 @@ class StoreTask extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
 
       if (this.state.tabIndex === 1) {
@@ -1590,6 +1596,7 @@ class StoreTask extends Component {
     }
 
     this.setState({
+      isATOZ:true,
       tempitemData: itemsArray,
     });
   };
@@ -2107,13 +2114,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "departmentName",
                                 "Department"
                               )}
                             >
-                              Department <FontAwesomeIcon icon={faCaretDown} />
+                              Department{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2148,28 +2168,80 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
                                 "Store Name"
                               )}
                             >
-                              Store Name <FontAwesomeIcon icon={faCaretDown} />
+                              Store Name{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
                           accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
                         },
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Priority"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "priorityName",
                                 "Priority"
                               )}
                             >
-                              Priority <FontAwesomeIcon icon={faCaretDown} />
+                              Priority{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Priority"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2181,13 +2253,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
                                 "Creation On"
                               )}
                             >
-                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "creationOn",
@@ -2255,6 +2340,11 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "assignto",
@@ -2262,7 +2352,14 @@ class StoreTask extends Component {
                               )}
                             >
                               Assign to
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2329,6 +2426,7 @@ class StoreTask extends Component {
                                     type="text"
                                     placeholder="Task ID"
                                     name="taskid"
+                                    autoComplete="off"
                                     value={
                                       this.state.assignSearchData["taskid"]
                                     }
@@ -2534,13 +2632,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "departmentName",
                                 "Department"
                               )}
                             >
-                              Department <FontAwesomeIcon icon={faCaretDown} />
+                              Department{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2575,13 +2686,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Created by"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "createdBy",
                                 "Created by"
                               )}
                             >
-                              Created by <FontAwesomeIcon icon={faCaretDown} />
+                              Created by{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created by"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2590,13 +2714,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Priority"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "priorityName",
                                 "Priority"
                               )}
                             >
-                              Priority <FontAwesomeIcon icon={faCaretDown} />
+                              Priority{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Priority"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2605,6 +2742,11 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
@@ -2612,7 +2754,14 @@ class StoreTask extends Component {
                               )}
                             >
                               Store Name
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "storeName",
@@ -2625,8 +2774,8 @@ class StoreTask extends Component {
                                     <div className="dash-creation-popup-cntr">
                                       <ul className="dash-category-popup dashnewpopup">
                                         <li>
-                                          <p>Store Name</p>
-                                          <p>ABS</p>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
                                         </li>
                                       </ul>
                                     </div>
@@ -2646,13 +2795,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
                                 "Creation On"
                               )}
                             >
-                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2780,6 +2942,7 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
+                                    autoComplete="off"
                                     name="taskid"
                                     value={
                                       this.state.ticketSearchData["taskid"]
@@ -2970,6 +3133,7 @@ class StoreTask extends Component {
                                       className="no-bg"
                                       type="text"
                                       placeholder="Claim ID"
+                                      autoComplete="off"
                                       name="claimID"
                                       value={
                                         this.state.ticketSearchData["claimID"]
@@ -2987,6 +3151,7 @@ class StoreTask extends Component {
                                       type="text"
                                       placeholder="Ticket ID"
                                       name="ticketID"
+                                      autoComplete="off"
                                       value={
                                         this.state.ticketSearchData["ticketID"]
                                       }
@@ -3065,13 +3230,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "departmentName",
                                 "Department"
                               )}
                             >
-                              Department <FontAwesomeIcon icon={faCaretDown} />
+                              Department{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -3106,13 +3284,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Created by"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "createdBy",
                                 "Created by"
                               )}
                             >
-                              Created by <FontAwesomeIcon icon={faCaretDown} />
+                              Created by{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created by"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -3121,6 +3312,11 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
@@ -3128,7 +3324,14 @@ class StoreTask extends Component {
                               )}
                             >
                               Store Name
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -3163,13 +3366,26 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
                                 "Creation On"
                               )}
                             >
-                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -3212,7 +3428,7 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>Response overdue by</p>
-                                        <p>1 Hr</p>
+                                        <p></p>
                                       </li>
                                       <li>
                                         <p>Resolution overdue by</p>
@@ -3237,6 +3453,11 @@ class StoreTask extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "assignto",
@@ -3244,7 +3465,14 @@ class StoreTask extends Component {
                               )}
                             >
                               Assign to
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,

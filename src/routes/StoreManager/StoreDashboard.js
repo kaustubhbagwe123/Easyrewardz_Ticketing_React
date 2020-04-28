@@ -16,7 +16,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown,faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePickerComponenet from "./../Settings/Store/DatePickerComponenet";
 import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
@@ -118,6 +118,8 @@ class StoreDashboard extends Component {
       isortA: false,
       tempitemData: [],
       sortAllData: [],
+      isATOZ: true,
+      itemData:[]
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -190,7 +192,8 @@ class StoreDashboard extends Component {
 
     this.setState({
       isortA: true,
-      tempitemData: itemsArray,
+      isATOZ: false,
+      itemData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -241,7 +244,8 @@ class StoreDashboard extends Component {
 
     this.setState({
       isortA: true,
-      tempitemData: itemsArray,
+      isATOZ: true,
+      itemData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -249,6 +253,7 @@ class StoreDashboard extends Component {
   }
   StatusOpenModel(data, header) {
     debugger;
+    this.setState({ isortA: false });
     if (data === "categoryName") {
       if (
         this.state.sclaimStatusFilterCheckbox !== "" ||
@@ -451,11 +456,12 @@ class StoreDashboard extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
 
       this.setState({
         cliamSearchData: this.state.isortA
-          ? this.state.tempitemData
+          ? this.state.itemData
           : this.state.sortAllData,
       });
     }
@@ -1078,18 +1084,11 @@ class StoreDashboard extends Component {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
-        if ((check = "grid")) {
-          if (message === "Success") {
-            self.setState({ dashboardGridData: data });
-          } else {
-            self.setState({ dashboardGridData: [] });
-          }
+
+        if (message === "Success") {
+          self.setState({ dashboardGridData: data, taskCount: data.length });
         } else {
-          if (message === "Success") {
-            self.setState({ dashboardGridData: data, taskCount: data.length });
-          } else {
-            self.setState({ dashboardGridData: [], taskCount: 0 });
-          }
+          self.setState({ dashboardGridData: [], taskCount: 0 });
         }
       })
       .catch((response) => {
@@ -1242,10 +1241,7 @@ class StoreDashboard extends Component {
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (
-              !unique[data[i].categoryName] &&
-              data[i].categoryName !== ""
-            ) {
+            if (!unique[data[i].categoryName] && data[i].categoryName !== "") {
               distinct.push(data[i].categoryName);
               unique[data[i].categoryName] = 1;
             }
@@ -1757,7 +1753,7 @@ class StoreDashboard extends Component {
           }
         }
       }
-    }else if (column === "claimStatus") {
+    } else if (column === "claimStatus") {
       var sItems = sclaimStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
@@ -1776,6 +1772,7 @@ class StoreDashboard extends Component {
     }
 
     this.setState({
+      isATOZ:true,
       tempitemData: itemsArray,
     });
   };
@@ -2407,21 +2404,7 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["claimID"]}
                                   />
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="ticketMapped"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={
-                                      this.state.searchData["ticketMapped"]
-                                    }
-                                  >
-                                    <option value={""} disabled selected>
-                                      Ticket Mapped
-                                    </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     name="claimcat"
@@ -2430,7 +2413,7 @@ class StoreDashboard extends Component {
                                       this.state.searchData["claimcat"] || ""
                                     }
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Claim Category
                                     </option>
                                     {this.state.categoryData !== null &&
@@ -2445,46 +2428,14 @@ class StoreDashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="claimstatus"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={this.state.searchData["claimstatus"]}
-                                  >
-                                    <option value={""} disabled selected>
-                                      Claim Status
-                                    </option>
-                                    {this.state.storeStatus !== null &&
-                                      this.state.storeStatus.map((item, i) => {
-                                        return (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
-                                </div>
-                                {this.state.searchData["ticketMapped"] == 1 ? (
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder="Ticket ID"
-                                      name="ticketID"
-                                      onChange={this.handleOnChange.bind(this)}
-                                      value={this.state.searchData["ticketID"]}
-                                    />
-                                  </div>
-                                ) : null}
+
                                 <div className="col-md-3">
                                   <select
                                     name="claimsubcat"
                                     onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["claimsubcat"]}
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Claim Sub Category
                                     </option>
                                     {this.state.subCategoryData !== null &&
@@ -2496,6 +2447,30 @@ class StoreDashboard extends Component {
                                               value={item.subCategoryID}
                                             >
                                               {item.subCategoryName}
+                                            </option>
+                                          );
+                                        }
+                                      )}
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    name="claimissueType"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={
+                                      this.state.searchData["claimissueType"]
+                                    }
+                                  >
+                                    <option value={""} selected>
+                                      Claim Issue Type
+                                    </option>
+                                    {this.state.issueTypeData !== null &&
+                                      this.state.issueTypeData.map(
+                                        (item, i) => {
+                                          return (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
                                             </option>
                                           );
                                         }
@@ -2521,49 +2496,14 @@ class StoreDashboard extends Component {
                                     }
                                   />
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="taskmapped"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={this.state.searchData["taskmapped"]}
-                                  >
-                                    <option value={""} disabled selected>
-                                      Task Mapped
-                                    </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="claimissueType"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={
-                                      this.state.searchData["claimissueType"]
-                                    }
-                                  >
-                                    <option value={""} disabled selected>
-                                      Claim Issue Type
-                                    </option>
-                                    {this.state.issueTypeData !== null &&
-                                      this.state.issueTypeData.map(
-                                        (item, i) => {
-                                          return (
-                                            <option value={item.issueTypeID}>
-                                              {item.issueTypeName}
-                                            </option>
-                                          );
-                                        }
-                                      )}
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     name="assignTo"
                                     onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["assignTo"]}
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Assign To
                                     </option>
                                     {this.state.userData !== null &&
@@ -2578,17 +2518,6 @@ class StoreDashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                {this.state.searchData["taskmapped"] == 1 ? (
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder="Task ID"
-                                      name="taskID"
-                                      value={this.state.searchData["taskID"]}
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
-                                ) : null}
                                 <div className="col-md-3">
                                   <select
                                     name="raisedby"
@@ -2610,6 +2539,82 @@ class StoreDashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
+                                <div className="col-md-3">
+                                  <select
+                                    name="claimstatus"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={this.state.searchData["claimstatus"]}
+                                  >
+                                    <option value={""} selected>
+                                      Claim Status
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => {
+                                        return (
+                                          <option
+                                            key={i}
+                                            value={item.storeStatusID}
+                                          >
+                                            {item.storeStatusName}
+                                          </option>
+                                        );
+                                      })}
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    name="taskmapped"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={this.state.searchData["taskmapped"]}
+                                  >
+                                    <option value={""} selected>
+                                      Task Mapped
+                                    </option>
+                                    <option value={1}>Yes</option>
+                                    <option value={0}>No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    name="ticketMapped"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={
+                                      this.state.searchData["ticketMapped"]
+                                    }
+                                  >
+                                    <option value={""} selected>
+                                      Ticket Mapped
+                                    </option>
+                                    <option value={1}>Yes</option>
+                                    <option value={0}>No</option>
+                                  </select>
+                                </div>
+
+                                {this.state.searchData["taskmapped"] == 1 ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Task ID"
+                                      name="taskID"
+                                      value={this.state.searchData["taskID"]}
+                                      onChange={this.handleOnChange.bind(this)}
+                                      autoComplete="off"
+                                    />
+                                  </div>
+                                ) : null}
+                                {this.state.searchData["ticketMapped"] == 1 ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                      name="ticketID"
+                                      onChange={this.handleOnChange.bind(this)}
+                                      value={this.state.searchData["ticketID"]}
+                                      autoComplete="off"
+                                    />
+                                  </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>
@@ -2630,7 +2635,15 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span onClick={this.StatusOpenModel}>
-                              Status <FontAwesomeIcon icon={faCaretDown} />
+                              Status{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "taskstatus",
@@ -2663,7 +2676,15 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span>
-                              Department <FontAwesomeIcon icon={faCaretDown} />
+                              Department{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "department",
@@ -2671,7 +2692,15 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span>
-                              Store Name <FontAwesomeIcon icon={faCaretDown} />
+                              Store Name{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "storeName",
@@ -2679,7 +2708,15 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span>
-                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "createdOn",
@@ -2736,7 +2773,14 @@ class StoreDashboard extends Component {
                           Header: (
                             <span>
                               Assign to
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "assigntoId",
@@ -2762,13 +2806,26 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "claimStatus",
                                 "Status"
                               )}
                             >
-                              Status <FontAwesomeIcon icon={faCaretDown} />
+                              Status{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2802,13 +2859,26 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Category"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "categoryName",
                                 "Category"
                               )}
                             >
-                              Category <FontAwesomeIcon icon={faCaretDown} />
+                              Category{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Category"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "categoryName",
@@ -2861,13 +2931,26 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Created By"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "createdByName",
                                 "Created By"
                               )}
                             >
-                              Created By <FontAwesomeIcon icon={faCaretDown} />
+                              Created By{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created By"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2876,13 +2959,26 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
                                 "Creation On"
                               )}
                             >
-                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           accessor: "creationOn",
@@ -2943,6 +3039,11 @@ class StoreDashboard extends Component {
                         {
                           Header: (
                             <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "assignTo",
@@ -2950,7 +3051,14 @@ class StoreDashboard extends Component {
                               )}
                             >
                               Assign to
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,

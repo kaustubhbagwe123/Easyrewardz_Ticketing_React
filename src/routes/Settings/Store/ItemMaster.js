@@ -9,7 +9,7 @@ import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
 import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
@@ -64,6 +64,8 @@ class ItemMaster extends Component {
       StatusModel: false,
       tempitemData: [],
       isortA: false,
+      isATOZ: true,
+      itemData: [],
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -330,6 +332,7 @@ class ItemMaster extends Component {
     }
     this.setState({
       isortA: true,
+      isATOZ: false,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -394,6 +397,7 @@ class ItemMaster extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -415,7 +419,7 @@ class ItemMaster extends Component {
     ) {
       return false;
     }
-
+    this.setState({ isortA: false });
     if (data === "itemCode") {
       if (
         this.state.sbrandNameFilterCheckbox !== "" ||
@@ -723,6 +727,7 @@ class ItemMaster extends Component {
     } else {
       this.setState({
         StatusModel: false,
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
         itemData: this.state.isortA
           ? this.state.itemData
           : this.state.sortAllData,
@@ -1038,9 +1043,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   brandcodeColor: "sort-column",
-      // });
     } else if (column === "brandName") {
       var sItems = sbrandNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1057,9 +1059,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   brandnameColor: "sort-column",
-      // });
     } else if (column === "itemName") {
       var sItems = sitemNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1076,9 +1075,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   addedColor: "sort-column",
-      // });
     } else if (column === "departmentName") {
       var sItems = sdepartmentNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1095,9 +1091,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   statusColor: "sort-column",
-      // });
     } else if (column === "itemCategory") {
       var sItems = sitemCategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1114,9 +1107,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   statusColor: "sort-column",
-      // });
     } else if (column === "itemSubCategory") {
       var sItems = sitemSubCategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1133,9 +1123,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   statusColor: "sort-column",
-      // });
     } else if (column === "itemGroup") {
       var sItems = sitemGroupFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1152,12 +1139,10 @@ class ItemMaster extends Component {
           }
         }
       }
-      this.setState({
-        statusColor: "sort-column",
-      });
     }
 
     this.setState({
+      isATOZ: true,
       tempitemData: itemsArray,
     });
   };
@@ -1584,7 +1569,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Brand Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
@@ -1592,7 +1581,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Brand Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Brand Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1601,7 +1597,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Code"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCode",
@@ -1609,7 +1609,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Item Code
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Item Code"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1618,7 +1625,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemName",
@@ -1626,7 +1637,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Item Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Item Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1635,7 +1653,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Department Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
@@ -1643,7 +1665,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Department Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Department Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1652,7 +1681,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Cat"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCategory",
@@ -1660,7 +1693,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Item Cat
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Item Cat"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1669,7 +1709,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Sub Cat"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemSubCategory",
@@ -1677,7 +1721,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Item Sub Cat
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Item Sub Cat"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1686,7 +1737,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Group"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemGroup",
@@ -1694,7 +1749,14 @@ class ItemMaster extends Component {
                             )}
                           >
                             Item Group
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Item Group"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
