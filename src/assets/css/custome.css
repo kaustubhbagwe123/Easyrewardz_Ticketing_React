@@ -4633,6 +4633,7 @@ progress::-webkit-progress-bar {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  display: block;
 }
 
 .recent-orders {
