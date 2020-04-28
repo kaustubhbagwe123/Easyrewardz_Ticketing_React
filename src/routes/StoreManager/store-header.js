@@ -268,7 +268,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        debugger;
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {

@@ -268,7 +268,7 @@ class MyTicketClaim extends Component {
                 accessor: "category",
                 Cell: (row) => (
                   <span>
-                    <label>{row.original.category} </label>
+                    <label>{row.original.category}</label>
                     <Popover
                       content={
                         <div className="dash-creation-popup-cntr">
