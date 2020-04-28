@@ -1327,7 +1327,8 @@ class ClaimCategoryMaster extends Component {
   handleCategoryChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
-      this.setState({ list1Value: value, SubCategoryDropData: [] });
+      this.setState({ list1Value: value, SubCategoryDropData: [], 
+        ListOfSubCate: "",ListOfIssue:"",ListOfIssueData:[]});
       setTimeout(() => {
         if (this.state.list1Value) {
           this.handleGetSubCategoryList(value);
@@ -1341,7 +1342,7 @@ class ClaimCategoryMaster extends Component {
   handleSubCatOnChange = value => {
     debugger;
     if (value !== NEW_ITEM) {
-      this.setState({ ListOfSubCate: value });
+      this.setState({ ListOfSubCate: value, ListOfIssueData: [], ListOfIssue: ""});
       setTimeout(() => {
         if (this.state.ListOfSubCate) {
           this.handleGetIssueTypeList();
@@ -1366,7 +1367,10 @@ class ClaimCategoryMaster extends Component {
       selectBrand: value,
       categoryDropData: [],
       SubCategoryDropData: [],
-      ListOfIssueData: []
+      ListOfIssueData: [],
+      list1Value: "",
+      ListOfSubCate: "",
+      ListOfIssue: ""
     });
     setTimeout(() => {
       if (this.state.selectBrand) {
@@ -2362,7 +2366,8 @@ class ClaimCategoryMaster extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                    <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
                       <CSVLink
@@ -2371,6 +2376,7 @@ class ClaimCategoryMaster extends Component {
                       >
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
+                    </div>
                     </div>
                     <div className="mainfileUpload">
                       <Dropzone onDrop={this.fileUpload.bind(this)}>
