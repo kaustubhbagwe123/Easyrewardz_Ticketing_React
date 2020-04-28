@@ -1174,6 +1174,26 @@ class HierarchyMaster extends Component {
 
     return (
       <React.Fragment>
+        
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="header-path active">
+            Hierarchy Master
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -1362,27 +1382,8 @@ class HierarchyMaster extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/store/settings" className="header-path">
-            Settings
-          </Link>
-          <span>&gt;</span>
-          <Link
-            to={{
-              pathname: "/store/settings",
-              tabName: "store-tab",
-            }}
-            className="header-path"
-          >
-            Store
-          </Link>
-          <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path active">
-            Hierarchy Master
-          </Link>
-        </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr hiermas">
+          <div className="hiermas">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height StoreHierarchyReact">

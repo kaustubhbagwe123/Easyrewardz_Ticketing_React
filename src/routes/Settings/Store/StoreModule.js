@@ -1028,6 +1028,25 @@ class StoreModule extends Component {
   render() {
     return (
       <Fragment>
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            Modules
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             show={this.state.StatusModel}
@@ -1181,26 +1200,6 @@ class StoreModule extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/store/settings" className="header-path">
-            Settings
-          </Link>
-          <span>&gt;</span>
-          <Link
-            to={{
-              pathname: "/store/settings",
-              tabName: "store-tab",
-            }}
-            className="header-path"
-          >
-            Store
-          </Link>
-          <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active header-path">
-            Modules
-          </Link>
-        </div>
-
         <div className="Store-paddmodule storeModule">
           <div className="module-tabs">
             <section>

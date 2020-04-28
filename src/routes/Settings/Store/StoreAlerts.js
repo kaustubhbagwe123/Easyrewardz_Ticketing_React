@@ -28,12 +28,10 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import {
-  // NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
-// import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
   constructor(props) {
@@ -2003,6 +2001,26 @@ class Alerts extends Component {
   render() {
     return (
       <React.Fragment>
+       
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            Alerts
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             show={this.state.StatusModel}
@@ -2157,27 +2175,8 @@ class Alerts extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/store/settings" className="header-path">
-            Settings
-          </Link>
-          <span>&gt;</span>
-          <Link
-            to={{
-              pathname: "/store/settings",
-              tabName: "store-tab",
-            }}
-            className="header-path"
-          >
-            Store
-          </Link>
-          <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active header-path">
-            Alerts
-          </Link>
-        </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr settingtable">
+          <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
                 <div className="table-cntr table-height alertsTable">
