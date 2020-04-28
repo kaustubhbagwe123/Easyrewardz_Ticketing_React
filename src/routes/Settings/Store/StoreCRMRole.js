@@ -1446,15 +1446,22 @@ class StoreCRMRole extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
-                    Template
-                    <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
-                      <img
-                        src={DownExcel}
-                        alt="download icon"
-                        style={{ marginLeft: "5px" }}
-                      />
-                    </CSVLink>
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <h3 className="pb-0">Bulk Upload</h3>
+                      <div className="down-excel">
+                        <p>Template</p>
+                        <CSVLink
+                          filename={"CRM.csv"}
+                          data={config.crmRoleTemplate}
+                        >
+                          <img
+                            src={DownExcel}
+                            alt="download icon"
+                            style={{ marginLeft: "5px" }}
+                          />
+                        </CSVLink>
+                      </div>
+                    </div>
                     <div className="mainfileUpload">
                       <Dropzone onDrop={this.fileUpload.bind(this)}>
                         {({ getRootProps, getInputProps }) => (
