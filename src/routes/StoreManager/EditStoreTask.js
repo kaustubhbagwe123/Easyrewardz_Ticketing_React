@@ -65,7 +65,8 @@ class EditStoreTask extends Component {
       isAssignComment: "",
       assginToModal: false,
       oldassignToID: 0,
-      
+      isCommentMax: "",
+      isSubmit: false,
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -438,7 +439,11 @@ class EditStoreTask extends Component {
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && responseData) {
-          self.setState({ userModel: false, assignComment: "" });
+          self.setState({
+            userModel: false,
+            assignComment: "",
+            assginToModal: false,
+          });
           NotificationManager.success("Task Assign Successfully.");
           NotificationManager.success("Comment Added successfully.");
           self.componentDidMount();
@@ -490,6 +495,7 @@ class EditStoreTask extends Component {
         this.state.istaskDetails == "" &&
         this.state.istaskTitle == ""
       ) {
+        this.setState({ isSubmit: true });
         var inputParam = {};
 
         inputParam.DepartmentId = this.state.departmentID;
@@ -499,6 +505,7 @@ class EditStoreTask extends Component {
         inputParam.TaskStatusId = statusId;
         inputParam.TaskTitle = this.state.taskTitle;
         inputParam.TaskDescription = this.state.taskDetails;
+
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -508,12 +515,13 @@ class EditStoreTask extends Component {
           .then(function(response) {
             var message = response.data.message;
             if (message === "Success") {
-              setTimeout(() => {
-                NotificationManager.success("Task Submited Successfully.");
-                self.props.history.push("/store/StoreTask");
-              }, 2000);
+              self.setState({ isSubmit: false });
+
+              NotificationManager.success("Task Submited Successfully.");
+              self.props.history.push("/store/StoreTask");
             } else {
               NotificationManager.error("Task Submited Failed.");
+              self.setState({ isSubmit: false });
             }
           })
           .catch((response) => {
@@ -633,10 +641,18 @@ class EditStoreTask extends Component {
     }
     if (name == "comment") {
       if (value !== "") {
-        this.setState({
-          comment: value,
-          iscomment: "",
-        });
+        if (value.length < 50) {
+          this.setState({
+            comment: value,
+            iscomment: "",
+            isCommentMax: "",
+          });
+        } else {
+          this.setState({
+            isCommentMax: "Comment Has Certain Limit",
+            iscomment: "",
+          });
+        }
       } else {
         this.setState({
           iscomment: "Please Enter Comment.",
@@ -690,6 +706,7 @@ class EditStoreTask extends Component {
     this.setState({ assginToModal: false });
   }
   render() {
+    console.log(this.state.isSubmit, "----isSubmit");
     return (
       <Fragment>
         <div className="edit-storeTask-header">
@@ -719,23 +736,6 @@ class EditStoreTask extends Component {
               <label className="naman-r">{this.state.assignToName}</label>
               <img src={DownImg} alt="down" className="down-header" />
             </a>
-
-            {/* <button
-              type="button"
-              className={
-                this.state.canSubmit
-                  ? "submitAs-reopen"
-                  : "submitAs-reopen disabled-link"
-              }
-              onClick={this.handleUpdateTask.bind(this)}
-            >
-              <label
-                className="myticket-submit-solve-button-text"
-                style={{ marginLeft: "0" }}
-              >
-                SUBMIT
-              </label>
-            </button> */}
             <button
               type="button"
               className={
@@ -762,7 +762,11 @@ class EditStoreTask extends Component {
               {this.state.taskStatusId === 222 ? (
                 <div className="row">
                   <label
-                    className="modal-lbl"
+                    className={
+                      this.state.isSubmit
+                        ? "modal-lbl disabled-link"
+                        : "modal-lbl"
+                    }
                     onClick={this.handleUpdateTask.bind(this, 224)}
                   >
                     Submit as <span className="modal-lbl-1">ReOpen</span>
@@ -771,7 +775,8 @@ class EditStoreTask extends Component {
               ) : (
                 <div className="row">
                   <label
-                    className="modal-lbl"
+                    disabled={this.state.isSubmit}
+                    className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
                     onClick={this.handleUpdateTask.bind(this, 222)}
                   >
                     Submit as <span className="modal-lbl-1">Solved</span>
@@ -781,6 +786,8 @@ class EditStoreTask extends Component {
               {this.state.taskStatusId !== 222 ? (
                 <div className="row" style={{ marginTop: "8px" }}>
                   <label
+                    disabled={this.state.isSubmit}
+                    className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
                     className="modal-lbl"
                     onClick={this.handleUpdateTask.bind(this, 223)}
                   >
@@ -942,6 +949,11 @@ class EditStoreTask extends Component {
                   {this.state.iscomment !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.iscomment}
+                    </p>
+                  )}
+                  {this.state.isCommentMax !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isCommentMax}
                     </p>
                   )}
                 </div>

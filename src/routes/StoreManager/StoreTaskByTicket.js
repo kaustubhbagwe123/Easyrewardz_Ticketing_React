@@ -56,6 +56,7 @@ class StoreTaskByTicket extends Component {
       isAssignComment: "",
       assignComment: "",
       assginToModal: false,
+      isSubmit: false,
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -419,6 +420,7 @@ class StoreTaskByTicket extends Component {
         this.state.istaskTitle == "" &&
         this.state.istaskDetails == ""
       ) {
+        this.setState({ isSubmit: true });
         var inputParam = {};
 
         inputParam.DepartmentId = this.state.departmentID;
@@ -429,6 +431,7 @@ class StoreTaskByTicket extends Component {
         inputParam.TaskTitle = this.state.taskTitle;
         inputParam.TaskDescription = this.state.taskDetails;
 
+        
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/SubmitTaskByTicket",
@@ -440,6 +443,11 @@ class StoreTaskByTicket extends Component {
             var responseData = response.data.responseData;
             if (message == "Success") {
               self.props.history.push("/store/StoreTask");
+              NotificationManager.success("Task Submited Successfully.");
+              self.setState({ isSubmit: false });
+            } else {
+              NotificationManager.error("Task Submited Failed.");
+              self.setState({ isSubmit: false });
             }
           })
           .catch((response) => {
@@ -685,7 +693,9 @@ class StoreTaskByTicket extends Component {
                   {this.state.taskStatusId === 222 ? (
                     <div className="row">
                       <label
+                        disabled={this.state.isSubmit}
                         className="modal-lbl"
+                        className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
                         onClick={this.handleSubmitTaks.bind(this, 224)}
                       >
                         Submit as <span className="modal-lbl-1">ReOpen</span>
@@ -694,7 +704,9 @@ class StoreTaskByTicket extends Component {
                   ) : (
                     <div className="row">
                       <label
+                        disabled={this.state.isSubmit}
                         className="modal-lbl"
+                        className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
                         onClick={this.handleSubmitTaks.bind(this, 222)}
                       >
                         Submit as <span className="modal-lbl-1">Solved</span>
@@ -704,7 +716,9 @@ class StoreTaskByTicket extends Component {
                   {this.state.taskStatusId !== 222 ? (
                     <div className="row" style={{ marginTop: "8px" }}>
                       <label
+                        disabled={this.state.isSubmit}
                         className="modal-lbl"
+                        className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
                         onClick={this.handleSubmitTaks.bind(this, 223)}
                       >
                         Submit as <span className="modal-lbl-2">Closed</span>

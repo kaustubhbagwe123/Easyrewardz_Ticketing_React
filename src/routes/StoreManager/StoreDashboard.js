@@ -27,6 +27,7 @@ import { authHeader } from "../../helpers/authHeader.js";
 import StoreStatus from "./StoreStatus.js";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import matchSorter from "match-sorter";
 
 class StoreDashboard extends Component {
   constructor(props) {
@@ -96,6 +97,27 @@ class StoreDashboard extends Component {
       isViewSerach: false,
       TaskID: 0,
       ClaimID: 0,
+      scategoryNameFilterCheckbox: "",
+      screatedByNameFilterCheckbox: "",
+      screationOnFilterCheckbox: "",
+      sassignToFilterCheckbox: "",
+      sclaimStatusFilterCheckbox: "",
+      sortFiltercategoryName: [],
+      sortFiltercreatedByName: [],
+      sortFiltercreationOn: [],
+      sortFilterassignTo: [],
+      sortFilterclaimStatus: [],
+      sortcategoryName: [],
+      sortcreatedByName: [],
+      sortcreationOn: [],
+      sortassignTo: [],
+      sortclaimStatus: [],
+      sortColumn: "",
+      sortHeader: "",
+      filterTxtValue: "",
+      isortA: false,
+      tempitemData: [],
+      sortAllData: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -124,11 +146,319 @@ class StoreDashboard extends Component {
     this.handleGetCreatedByUserDropdown();
     this.handleGetPriorityList();
   }
-  StatusOpenModel() {
-    this.setState({ StatusModel: true });
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+
+    itemsArray = this.state.cliamSearchData;
+
+    if (this.state.sortColumn === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return 1;
+        if (a.categoryName > b.categoryName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "claimStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.claimStatus < b.claimStatus) return 1;
+        if (a.claimStatus > b.claimStatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdByName") {
+      itemsArray.sort((a, b) => {
+        if (a.createdByName < b.createdByName) return 1;
+        if (a.createdByName > b.createdByName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "creationOn") {
+      itemsArray.sort((a, b) => {
+        if (a.creationOn < b.creationOn) return 1;
+        if (a.creationOn > b.creationOn) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assignTo") {
+      itemsArray.sort((a, b) => {
+        if (a.assignTo < b.assignTo) return 1;
+        if (a.assignTo > b.assignTo) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      tempitemData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+
+    itemsArray = this.state.cliamSearchData;
+
+    if (this.state.sortColumn === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return -1;
+        if (a.categoryName > b.categoryName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "claimStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.claimStatus < b.claimStatus) return -1;
+        if (a.claimStatus > b.claimStatus) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdByName") {
+      itemsArray.sort((a, b) => {
+        if (a.createdByName < b.createdByName) return -1;
+        if (a.createdByName > b.createdByName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "creationOn") {
+      itemsArray.sort((a, b) => {
+        if (a.creationOn < b.creationOn) return -1;
+        if (a.creationOn > b.creationOn) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assignTo") {
+      itemsArray.sort((a, b) => {
+        if (a.assignTo < b.assignTo) return -1;
+        if (a.assignTo > b.assignTo) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      tempitemData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+  StatusOpenModel(data, header) {
+    debugger;
+    if (data === "categoryName") {
+      if (
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sclaimStatusFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "claimStatus") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdByName") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          sclaimStatusFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "creationOn") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          sclaimStatusFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "assignTo") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          sclaimStatusFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    debugger;
+    this.setState({
+      sortFilterclaimStatus: this.state.sortclaimStatus,
+      sortFiltercategoryName: this.state.sortcategoryName,
+      sortFiltercreatedByName: this.state.sortcreatedByName,
+      sortFiltercreationOn: this.state.sortcreationOn,
+      sortFilterassignTo: this.state.sortassignTo,
+    });
+    if (this.state.tempitemData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+      });
+
+      this.setState({ cliamSearchData: this.state.tempitemData });
+
+      if (this.state.sortColumn === "categoryName") {
+        if (this.state.scategoryNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdByName") {
+        if (this.state.screatedByNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "claimStatus") {
+        if (this.state.sclaimStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            screatedByNameFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "creationOn") {
+        if (this.state.screationOnFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            screatedByNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "assignTo") {
+        if (this.state.sassignToFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            screatedByNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+      });
+
+      this.setState({
+        cliamSearchData: this.state.isortA
+          ? this.state.tempitemData
+          : this.state.sortAllData,
+      });
+    }
   }
   hanldetoggleOnChange = (e) => {
     this.setState({
@@ -370,7 +700,7 @@ class StoreDashboard extends Component {
   handleDropdownOnchange = (e) => {
     let value = e.target.value;
     let name = e.target.name;
-    if (name === "departmentName") {
+    if (name === "claimStatus") {
       this.setState({
         selectDepartment: value,
       });
@@ -907,6 +1237,108 @@ class StoreDashboard extends Component {
         var message = response.data.message;
         var cliamSearchData = response.data.responseData;
         if (message === "Success" && cliamSearchData) {
+          var data = response.data.responseData;
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (
+              !unique[data[i].categoryName] &&
+              data[i].categoryName !== ""
+            ) {
+              distinct.push(data[i].categoryName);
+              unique[data[i].categoryName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              self.state.sortcategoryName.push({
+                categoryName: distinct[i],
+              });
+              self.state.sortFiltercategoryName.push({
+                categoryName: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (
+              !unique[data[i].createdByName] &&
+              data[i].createdByName !== ""
+            ) {
+              distinct.push(data[i].createdByName);
+              unique[data[i].createdByName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              self.state.sortcreatedByName.push({
+                createdByName: distinct[i],
+              });
+              self.state.sortFiltercreatedByName.push({
+                createdByName: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
+              distinct.push(data[i].creationOn);
+              unique[data[i].creationOn] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              self.state.sortcreationOn.push({
+                creationOn: distinct[i],
+              });
+              self.state.sortFiltercreationOn.push({
+                creationOn: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].assignTo] && data[i].assignTo !== "") {
+              distinct.push(data[i].assignTo);
+              unique[data[i].assignTo] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              self.state.sortassignTo.push({
+                assignTo: distinct[i],
+              });
+              self.state.sortFilterassignTo.push({
+                assignTo: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].claimStatus] && data[i].claimStatus !== "") {
+              distinct.push(data[i].claimStatus);
+              unique[data[i].claimStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              self.state.sortclaimStatus.push({
+                claimStatus: distinct[i],
+              });
+              self.state.sortFilterclaimStatus.push({
+                claimStatus: distinct[i],
+              });
+            }
+          }
           self.setState({
             cliamSearchData,
             cliamCount: cliamSearchData.length,
@@ -1023,13 +1455,7 @@ class StoreDashboard extends Component {
       state: { TaskID: ID },
     });
   }
-  ////handle redirect claim page
-  handleClaimPageRedirect(id) {
-    this.props.history.push({
-      pathname: "claimApproveReject",
-      state: { ClaimID: id },
-    });
-  }
+  ////handle cliam table row click
   HandleRowClickPage = (rowInfo, column) => {
     return {
       onClick: (e) => {
@@ -1038,7 +1464,7 @@ class StoreDashboard extends Component {
       },
     };
   };
-
+  ////hadle redirect to view claim page.
   handleRedirectToViewStoreClaim(claimID) {
     debugger;
     this.props.history.push({
@@ -1046,6 +1472,392 @@ class StoreDashboard extends Component {
       state: { ClaimID: claimID },
     });
   }
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
+    var sclaimStatusFilterCheckbox = this.state.sclaimStatusFilterCheckbox;
+    var screationOnFilterCheckbox = this.state.screationOnFilterCheckbox;
+    var sassignToFilterCheckbox = this.state.sassignToFilterCheckbox;
+    var screatedByNameFilterCheckbox = this.state.screatedByNameFilterCheckbox;
+
+    if (column === "categoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          scategoryNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          scategoryNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryNameFilterCheckbox.includes("all")) {
+          scategoryNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "categoryName") {
+            for (let i = 0; i < this.state.sortcategoryName.length; i++) {
+              scategoryNameFilterCheckbox +=
+                this.state.sortcategoryName[i].categoryName + ",";
+            }
+            scategoryNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "claimStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sclaimStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sclaimStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sclaimStatusFilterCheckbox.includes("all")) {
+          sclaimStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "claimStatus") {
+            for (let i = 0; i < this.state.sortclaimStatus.length; i++) {
+              sclaimStatusFilterCheckbox +=
+                this.state.sortclaimStatus[i].claimStatus + ",";
+            }
+            sclaimStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "creationOn" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          screationOnFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screationOnFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screationOnFilterCheckbox.includes("all")) {
+          screationOnFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "creationOn") {
+            for (let i = 0; i < this.state.sortcreationOn.length; i++) {
+              screationOnFilterCheckbox +=
+                this.state.sortcreationOn[i].creationOn + ",";
+            }
+            screationOnFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "assignTo" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sassignToFilterCheckbox = sassignToFilterCheckbox.replace("all", "");
+        sassignToFilterCheckbox = sassignToFilterCheckbox.replace("all,", "");
+        if (
+          sassignToFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sassignToFilterCheckbox = sassignToFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sassignToFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sassignToFilterCheckbox.includes("all")) {
+          sassignToFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "assignTo") {
+            for (let i = 0; i < this.state.sortassignTo.length; i++) {
+              sassignToFilterCheckbox +=
+                this.state.sortassignTo[i].assignTo + ",";
+            }
+            sassignToFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdByName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          screatedByNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screatedByNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByNameFilterCheckbox.includes("all")) {
+          screatedByNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdByName") {
+            for (let i = 0; i < this.state.sortcreatedBy.length; i++) {
+              screatedByNameFilterCheckbox +=
+                this.state.sortcreatedBy[i].createdByName + ",";
+            }
+            screatedByNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      scategoryNameFilterCheckbox,
+      sclaimStatusFilterCheckbox,
+      screationOnFilterCheckbox,
+      sassignToFilterCheckbox,
+      screatedByNameFilterCheckbox,
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "categoryName") {
+      var sItems = scategoryNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.categoryName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "creationOn") {
+      var sItems = screationOnFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.creationOn === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   statusColor: "sort-column",
+      // });
+    } else if (column === "assignTo") {
+      var sItems = sassignToFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.assignTo === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "createdByName") {
+      var sItems = screatedByNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdByName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    }else if (column === "claimStatus") {
+      var sItems = sclaimStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.claimStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    this.setState({
+      tempitemData: itemsArray,
+    });
+  };
+  filteTextChange(e) {
+    if (this.state.sortColumn === "categoryName") {
+      var sortFiltercategoryName = matchSorter(
+        this.state.sortcategoryName,
+        e.target.value,
+        { keys: ["categoryName"] }
+      );
+      if (sortFiltercategoryName.length > 0) {
+        this.setState({ sortFiltercategoryName });
+      } else {
+        this.setState({
+          sortFiltercategoryName: this.state.sortcategoryName,
+        });
+      }
+    }
+    if (this.state.sortColumn === "claimStatus") {
+      var sortFilterclaimStatus = matchSorter(
+        this.state.sortclaimStatus,
+        e.target.value,
+        { keys: ["claimStatus"] }
+      );
+      if (sortFilterclaimStatus.length > 0) {
+        this.setState({ sortFilterclaimStatus });
+      } else {
+        this.setState({
+          sortFilterclaimStatus: this.state.sortclaimStatus,
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdByName") {
+      var sortFiltercreatedByName = matchSorter(
+        this.state.sortcreatedByName,
+        e.target.value,
+        {
+          keys: ["createdByName"],
+        }
+      );
+      if (sortFiltercreatedByName.length > 0) {
+        this.setState({ sortFiltercreatedByName });
+      } else {
+        this.setState({
+          sortFiltercreatedByName: this.state.sortcreatedByName,
+        });
+      }
+    }
+    if (this.state.sortColumn === "creationOn") {
+      var sortFiltercreationOn = matchSorter(
+        this.state.sortcreationOn,
+        e.target.value,
+        {
+          keys: ["creationOn"],
+        }
+      );
+      if (sortFiltercreationOn.length > 0) {
+        this.setState({ sortFiltercreationOn });
+      } else {
+        this.setState({
+          sortFiltercreationOn: this.state.sortcreationOn,
+        });
+      }
+    }
+    if (this.state.sortColumn === "assignTo") {
+      var sortFilterassignTo = matchSorter(
+        this.state.sortassignTo,
+        e.target.value,
+        {
+          keys: ["assignTo"],
+        }
+      );
+      if (sortFilterassignTo.length > 0) {
+        this.setState({ sortFilterassignTo });
+      } else {
+        this.setState({
+          sortFilterassignTo: this.state.sortassignTo,
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -1393,7 +2205,7 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
+                                    name="claimStatus"
                                     value={this.state.selectDepartment}
                                     onChange={this.handleDropdownOnchange}
                                   >
@@ -1406,7 +2218,7 @@ class StoreDashboard extends Component {
                                             value={item.departmentID}
                                             className="select-category-placeholder"
                                           >
-                                            {item.departmentName}
+                                            {item.claimStatus}
                                           </option>
                                         )
                                       )}
@@ -1949,10 +2761,17 @@ class StoreDashboard extends Component {
                         },
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel}>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "claimStatus",
+                                "Status"
+                              )}
+                            >
                               Status <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "claimStatus",
                           Cell: (row) => {
                             if (row.original.claimStatus === "New") {
@@ -1982,11 +2801,18 @@ class StoreDashboard extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "categoryName",
+                                "Category"
+                              )}
+                            >
                               Category <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           accessor: "categoryName",
+                          sortable: false,
                           Cell: (row) => {
                             return (
                               <>
@@ -2034,19 +2860,33 @@ class StoreDashboard extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdByName",
+                                "Created By"
+                              )}
+                            >
                               Created By <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "createdByName",
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                "Creation On"
+                              )}
+                            >
                               Creation On <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           accessor: "creationOn",
+                          sortable: false,
                           Cell: (row) => (
                             <span>
                               <label>{row.original.creationOn}</label>
@@ -2102,11 +2942,18 @@ class StoreDashboard extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignTo",
+                                "Assign to"
+                              )}
+                            >
                               Assign to
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "assignTo",
                         },
                       ]}
@@ -2118,44 +2965,6 @@ class StoreDashboard extends Component {
                     />
                   )}
 
-                  {/* <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div> */}
                   <Modal
                     onClose={this.StatusCloseModel}
                     open={this.state.StatusModel}
@@ -2164,99 +2973,234 @@ class StoreDashboard extends Component {
                   >
                     <div className="status-drop-down">
                       <div className="sort-sctn">
+                        <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                          {this.state.sortHeader}
+                        </label>
                         <div className="d-flex">
-                          <a href={Demo.BLANK_LINK} className="sorting-icon">
+                          <a
+                            href="#!"
+                            onClick={this.sortStatusAtoZ.bind(this)}
+                            className="sorting-icon"
+                          >
                             <img src={Sorting} alt="sorting-icon" />
                           </a>
                           <p>SORT BY A TO Z</p>
                         </div>
                         <div className="d-flex">
-                          <a href={Demo.BLANK_LINK} className="sorting-icon">
+                          <a
+                            href="#!"
+                            onClick={this.sortStatusZtoA.bind(this)}
+                            className="sorting-icon"
+                          >
                             <img src={Sorting} alt="sorting-icon" />
                           </a>
                           <p>SORT BY Z TO A</p>
                         </div>
                       </div>
+                      <a
+                        href=""
+                        style={{
+                          margin: "0 25px",
+                          textDecoration: "underline",
+                        }}
+                        onClick={this.setSortCheckStatus.bind(this, "all")}
+                      >
+                        clear search
+                      </a>
                       <div className="filter-type">
                         <p>FILTER BY TYPE</p>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-open"
-                            name="filter-type"
-                          />
-                          <label htmlFor="fil-open">
-                            <span className="table-btn table-blue-btn">
-                              Open
-                            </span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-new"
-                            name="filter-type"
-                          />
-                          <label htmlFor="fil-new">
-                            <span className="table-btn table-yellow-btn">
-                              New
-                            </span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-solved"
-                            name="filter-type"
-                          />
-                          <label htmlFor="fil-solved">
-                            <span className="table-btn table-green-btn">
-                              Solved
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="filter-type filter-color">
-                        <p>FILTER BY COLOR</p>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-red"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-red">
-                            <span className="fil-color-red fil-color-bg"></span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-orange"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-orange">
-                            <span className="fil-color-orange fil-color-bg"></span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-white"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-white">
-                            <span className="fil-color-white fil-color-bg"></span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-green"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-green">
-                            <span className="fil-color-green fil-color-bg"></span>
-                          </label>
+                        <input
+                          type="text"
+                          style={{ display: "block" }}
+                          value={this.state.filterTxtValue}
+                          onChange={this.filteTextChange.bind(this)}
+                        />
+                        <div className="FTypeScroll">
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open"}
+                              value="all"
+                              checked={
+                                this.state.scategoryNameFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.sclaimStatusFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.screatedByNameFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.screationOnFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.sassignToFilterCheckbox.includes(
+                                  "all"
+                                )
+                              }
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "all"
+                              )}
+                            />
+                            <label htmlFor={"fil-open"}>
+                              <span className="table-btn table-blue-btn">
+                                ALL
+                              </span>
+                            </label>
+                          </div>
+                          {this.state.sortColumn === "categoryName"
+                            ? this.state.sortFiltercategoryName !== null &&
+                              this.state.sortFiltercategoryName.map(
+                                (item, i) => (
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name="filter-type"
+                                      id={"fil-open" + item.categoryName}
+                                      value={item.categoryName}
+                                      checked={this.state.scategoryNameFilterCheckbox
+                                        .split(",")
+                                        .find(
+                                          (word) => word === item.categoryName
+                                        )}
+                                      onChange={this.setSortCheckStatus.bind(
+                                        this,
+                                        "categoryName",
+                                        "value"
+                                      )}
+                                    />
+                                    <label
+                                      htmlFor={"fil-open" + item.categoryName}
+                                    >
+                                      <span className="table-btn table-blue-btn">
+                                        {item.categoryName}
+                                      </span>
+                                    </label>
+                                  </div>
+                                )
+                              )
+                            : null}
+
+                          {this.state.sortColumn === "claimStatus"
+                            ? this.state.sortFilterclaimStatus !== null &&
+                              this.state.sortFilterclaimStatus.map(
+                                (item, i) => (
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name="filter-type"
+                                      id={"fil-open" + item.claimStatus}
+                                      value={item.claimStatus}
+                                      checked={this.state.sclaimStatusFilterCheckbox
+                                        .split(",")
+                                        .find(
+                                          (word) => word === item.claimStatus
+                                        )}
+                                      onChange={this.setSortCheckStatus.bind(
+                                        this,
+                                        "claimStatus",
+                                        "value"
+                                      )}
+                                    />
+                                    <label
+                                      htmlFor={"fil-open" + item.claimStatus}
+                                    >
+                                      <span className="table-btn table-blue-btn">
+                                        {item.claimStatus}
+                                      </span>
+                                    </label>
+                                  </div>
+                                )
+                              )
+                            : null}
+
+                          {this.state.sortColumn === "createdByName"
+                            ? this.state.sortFiltercreatedByName !== null &&
+                              this.state.sortFiltercreatedByName.map(
+                                (item, i) => (
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name="filter-type"
+                                      id={"fil-open" + item.createdByName}
+                                      value={item.createdByName}
+                                      checked={this.state.screatedByNameFilterCheckbox
+                                        .split(",")
+                                        .find(
+                                          (word) => word === item.createdByName
+                                        )}
+                                      onChange={this.setSortCheckStatus.bind(
+                                        this,
+                                        "createdByName",
+                                        "value"
+                                      )}
+                                    />
+                                    <label
+                                      htmlFor={"fil-open" + item.createdByName}
+                                    >
+                                      <span className="table-btn table-blue-btn">
+                                        {item.createdByName}
+                                      </span>
+                                    </label>
+                                  </div>
+                                )
+                              )
+                            : null}
+
+                          {this.state.sortColumn === "creationOn"
+                            ? this.state.sortFiltercreationOn !== null &&
+                              this.state.sortFiltercreationOn.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.creationOn}
+                                    value={item.creationOn}
+                                    checked={this.state.screationOnFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.creationOn)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "creationOn",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.creationOn}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.creationOn}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "assignTo"
+                            ? this.state.sortFilterassignTo !== null &&
+                              this.state.sortFilterassignTo.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.assignTo}
+                                    value={item.assignTo}
+                                    checked={this.state.sassignToFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.assignTo)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "assignTo",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.assignTo}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.assignTo}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
                         </div>
                       </div>
                     </div>

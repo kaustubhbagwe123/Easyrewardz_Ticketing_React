@@ -1248,7 +1248,11 @@ class StoreTask extends Component {
       if (type === "value" && type !== "All") {
         sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all", "");
         sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all,", "");
-        if (sstoreNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sstoreNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1284,7 +1288,11 @@ class StoreTask extends Component {
           "all,",
           ""
         );
-        if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sdepartmentNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1320,7 +1328,11 @@ class StoreTask extends Component {
           "all,",
           ""
         );
-        if (spriorityNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          spriorityNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           spriorityNameFilterCheckbox = spriorityNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1356,7 +1368,11 @@ class StoreTask extends Component {
           "all,",
           ""
         );
-        if (screationOnFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screationOnFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1386,7 +1402,11 @@ class StoreTask extends Component {
       if (type === "value" && type !== "All") {
         sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace("all", "");
         sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace("all,", "");
-        if (sassigntoFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sassigntoFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1416,7 +1436,11 @@ class StoreTask extends Component {
       if (type === "value" && type !== "All") {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
-        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1723,7 +1747,7 @@ class StoreTask extends Component {
           funcationData: [],
           assignToData: [],
         });
-        this.handleGetFuncationByDepartmentId()
+        this.handleGetFuncationByDepartmentId();
       }
     }
   }
@@ -3326,9 +3350,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.storeName}
                           value={item.storeName}
-                          checked={this.state.sstoreNameFilterCheckbox.includes(
-                            item.storeName
-                          )}
+                          checked={this.state.sstoreNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.storeName)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "storeName",
@@ -3353,9 +3377,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.departmentName}
                           value={item.departmentName}
-                          checked={this.state.sdepartmentNameFilterCheckbox.includes(
-                            item.departmentName
-                          )}
+                          checked={this.state.sdepartmentNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.departmentName)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "departmentName",
@@ -3380,9 +3404,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.priorityName}
                           value={item.priorityName}
-                          checked={this.state.spriorityNameFilterCheckbox.includes(
-                            item.priorityName
-                          )}
+                          checked={this.state.spriorityNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.priorityName)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "priorityName",
@@ -3407,9 +3431,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.creationOn}
                           value={item.creationOn}
-                          checked={this.state.screationOnFilterCheckbox.includes(
-                            item.creationOn
-                          )}
+                          checked={this.state.screationOnFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.creationOn)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "creationOn",
@@ -3433,9 +3457,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.assignto}
                           value={item.assignto}
-                          checked={this.state.sassigntoFilterCheckbox.includes(
-                            item.assignto
-                          )}
+                          checked={this.state.sassigntoFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.assignto)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "assignto",
@@ -3459,9 +3483,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.createdBy}
                           value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
+                          checked={this.state.screatedByFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.createdBy)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "createdBy",
