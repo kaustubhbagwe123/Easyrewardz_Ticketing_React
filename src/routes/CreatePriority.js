@@ -170,6 +170,8 @@ class CreatePriority extends Component {
       AddPriority: false,
       isNewName: "",
       isprority: false,
+      isexist: "",
+      editIsExist: "",
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -704,10 +706,11 @@ class CreatePriority extends Component {
       } else {
         activeStatus = 0;
       }
-      this.setState({
-        AddPriority: true,
-      });
-      if (this.state.priorityNameCompulsion === "") {
+
+      if (this.state.isexist === "") {
+        this.setState({
+          AddPriority: true,
+        });
         axios({
           method: "post",
           url: config.apiUrl + "/Priority/AddPriority",
@@ -781,7 +784,7 @@ class CreatePriority extends Component {
     } else {
       if (this.state.isprority == true) {
         this.setState({
-          editpriorityNameCompulsion: "Priority already exist!",
+          editIsExist: "Priority already exist!",
         });
       } else {
         this.setState({ editpriorityNameCompulsion: "" });
@@ -911,6 +914,9 @@ class CreatePriority extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.value == "") {
+      this.setState({ isexist: "" });
+    }
   };
   handleOnChangeData = (e) => {
     var name = e.target.name;
@@ -953,12 +959,25 @@ class CreatePriority extends Component {
   }
 
   handelEditChange(e) {
+    debugger;
     const { name, value } = e.target;
 
     var rowData = this.state.rowData;
 
     rowData[name] = value;
+
     this.setState({ rowData });
+    if (name === "priortyName" && value == "") {
+      this.setState({
+        editIsExist: "",
+        editpriorityNameCompulsion: "Please enter priority name",
+      });
+    } else {
+      this.setState({
+        editIsExist: "",
+        editpriorityNameCompulsion: "",
+      });
+    }
   }
   filteTextChange(e) {
     this.setState({ filterTxtValue: e.target.value });
@@ -1025,11 +1044,11 @@ class CreatePriority extends Component {
     debugger;
     var priority_name = "";
     if (this.state.editmodel) {
-      if (this.state.isNewName !== this.state.rowData.priortyName) {
+      if (this.state.isNewName !== this.state.rowData.priortyName && this.state.rowData.priortyName!=="") {
         priority_name = this.state.rowData.priortyName;
         this.setState({ isprority: false });
       } else {
-        this.setState({ editpriorityNameCompulsion: "", isprority: false });
+        this.setState({ editpriorityNameCompulsion: "Please enter priority name." });
         return false;
       }
     } else {
@@ -1054,17 +1073,18 @@ class CreatePriority extends Component {
             if (self.state.editmodel) {
               self.setState({
                 isprority: true,
-                editpriorityNameCompulsion: "Priority already exist!",
+                editIsExist: "Priority already exist!",
               });
             } else {
               self.setState({
-                priorityNameCompulsion: "Priority already exist!",
+                isexist: "Priority already exist!",
               });
             }
           } else {
             self.setState({
               isprority: false,
-              priorityNameCompulsion: "",
+              isexist: "",
+              editIsExist: "",
               editpriorityNameCompulsion: "",
             });
           }
@@ -1644,9 +1664,9 @@ class CreatePriority extends Component {
                           {this.state.priorityNameCompulsion}
                         </p>
                       )}
-                      {this.state.priorityNameCompulsion !== "" && (
+                      {this.state.isexist !== "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.priorityNameCompulsion}
+                          {this.state.isexist}
                         </p>
                       )}
                     </div>
@@ -1727,14 +1747,14 @@ class CreatePriority extends Component {
                   {this.state.editpriorityNameCompulsion}
                 </p>
               )}
-              {this.state.editpriorityNameCompulsion !== "" && (
+              {this.state.editIsExist !== "" && (
                 <p
                   style={{
                     color: "red",
                     marginBottom: "0px",
                   }}
                 >
-                  {this.state.editpriorityNameCompulsion}
+                  {this.state.editIsExist}
                 </p>
               )}
             </div>
