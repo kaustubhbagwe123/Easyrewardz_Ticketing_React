@@ -272,6 +272,10 @@ class HierarchyMaster extends Component {
         StatusModel: false,
         hierarchyData: this.state.sortAllData,
         filterTxtValue: "",
+        sortFilterDesignation: this.state.sortDesignation,
+        sortFilterReportTo: this.state.sortReportTo,
+        sortFilterCreatedBy:this.state.sortCreatedBy,
+        sortFilterStatus:this.state.sortCreatedBy
       });
     }
   }
@@ -479,15 +483,15 @@ class HierarchyMaster extends Component {
       }
     }
     if (column === "createdbyperson" || column === "all") {
-      screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
-        "all",
-        ""
-      );
-      screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
-        "all,",
-        ""
-      );
       if (type === "value" && type !== "All") {
+        screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
+          "all,",
+          ""
+        );
         if (screatedbypersonFilterCheckbox.includes(e.currentTarget.value)) {
           screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -511,9 +515,9 @@ class HierarchyMaster extends Component {
       }
     }
     if (column === "status" || column === "all") {
-      sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
-      sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
       if (type === "value" && type !== "All") {
+        sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
+        sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
         if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
           sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
             e.currentTarget.value + ",",
@@ -748,7 +752,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterDesignation });
       } else {
         this.setState({
-          sortFilterDesignation: this.state.sortDesignation,
+          sortFilterDesignation: [],
         });
       }
     }
@@ -762,7 +766,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterReportTo });
       } else {
         this.setState({
-          sortFilterReportTo: this.state.sortReportTo,
+          sortFilterReportTo: [],
         });
       }
     }
@@ -778,7 +782,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -794,7 +798,7 @@ class HierarchyMaster extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortCreatedBy,
+          sortFilterStatus: [],
         });
       }
     }
@@ -1226,9 +1230,15 @@ class HierarchyMaster extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
+                    {this.state.sortFilterDesignation.length > 0 &&
+                     this.state.sortFilterReportTo.length > 0 &&
+                     this.state.sortFilterCreatedBy.length > 0 &&
+                     this.state.sortFilterStatus.length > 0
+                    ?(
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
-                    </label>
+                    </label>):null
+                    }
                   </div>
                   {this.state.sortColumn === "designationName"
                     ? this.state.sortFilterDesignation !== null &&
@@ -1660,7 +1670,7 @@ class HierarchyMaster extends Component {
                           <option value={1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
-                              <option key={i} value={item.designationID}>
+                              <option key={i+1} value={item.designationID}>
                                 {item.designationName}
                               </option>
                             ))}

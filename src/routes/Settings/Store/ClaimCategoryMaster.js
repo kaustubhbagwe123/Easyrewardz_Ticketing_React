@@ -2143,7 +2143,7 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.list1Value}
                           style={{ width: "100%" }}
                           onChange={this.handleCategoryChange}
-                          placeholder="Select Claim Category"
+                          Placeholder="Select Claim Category"
                         >
                           {list1SelectOptions}
                           <Option value={NEW_ITEM}>

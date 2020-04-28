@@ -446,7 +446,11 @@ class StoreCRMRole extends Component {
       if (type === "value" && type !== "All") {
         sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all", "");
         sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace("all,", "");
-        if (sroleNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sroleNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sroleNameFilterCheckbox = sroleNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -476,7 +480,11 @@ class StoreCRMRole extends Component {
       if (type === "value" && type !== "All") {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
-        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -512,7 +520,11 @@ class StoreCRMRole extends Component {
           "all,",
           ""
         );
-        if (sisRoleActiveFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sisRoleActiveFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sisRoleActiveFilterCheckbox = sisRoleActiveFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
@@ -1007,9 +1019,12 @@ class StoreCRMRole extends Component {
                               name={item.roleName}
                               id={"fil-open" + item.roleName}
                               value={item.roleName}
-                              checked={this.state.sroleNameFilterCheckbox.includes(
-                                item.roleName
-                              )}
+                              // checked={this.state.sroleNameFilterCheckbox.includes(
+                              //   item.roleName
+                              // )}
+                              checked={this.state.sroleNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.roleName)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "roleName",
@@ -1034,9 +1049,12 @@ class StoreCRMRole extends Component {
                               name={item.createdBy}
                               id={"fil-open" + item.createdBy}
                               value={item.createdBy}
-                              checked={this.state.screatedByFilterCheckbox.includes(
-                                item.createdBy
-                              )}
+                              // checked={this.state.screatedByFilterCheckbox.includes(
+                              //   item.createdBy
+                              // )}
+                              checked={this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "createdBy",
@@ -1061,9 +1079,12 @@ class StoreCRMRole extends Component {
                               name={item.isRoleActive}
                               id={"fil-open" + item.isRoleActive}
                               value={item.isRoleActive}
-                              checked={this.state.sisRoleActiveFilterCheckbox.includes(
-                                item.isRoleActive
-                              )}
+                              // checked={this.state.sisRoleActiveFilterCheckbox.includes(
+                              //   item.isRoleActive
+                              // )}
+                              checked={this.state.sisRoleActiveFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.isRoleActive)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "isRoleActive",
@@ -1084,7 +1105,7 @@ class StoreCRMRole extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StorCrmRoleReact">
+                <div className="table-cntr table-height StorCrmRoleReact align-table">
                   <ReactTable
                     data={this.state.crmRoles}
                     columns={[
