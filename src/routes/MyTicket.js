@@ -1573,6 +1573,7 @@ class MyTicket extends Component {
     });
   };
   handleGetTabsName(e) {
+    debugger
     let self = this;
     let CurrentActive = e.target.name;
     if (CurrentActive === "Task") {
@@ -2326,7 +2327,6 @@ class MyTicket extends Component {
             data: formData
           })
             .then(function(res) {
-              ////
               let status = res.data.message;
               if (status === "Success") {
                 self.handleGetMessageDetails(self.state.ticket_Id);
@@ -2375,7 +2375,6 @@ class MyTicket extends Component {
           data: formData
         })
           .then(function(res) {
-            ////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Comment Added successfully.");
@@ -2425,7 +2424,6 @@ class MyTicket extends Component {
           data: formData
         })
           .then(function(res) {
-            ////
             let status = res.data.message;
             if (status === "Success") {
               // NotificationManager.success(
@@ -2473,7 +2471,6 @@ class MyTicket extends Component {
           data: formData
         })
           .then(function(res) {
-            ////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Comment Added successfully.");
@@ -2501,7 +2498,6 @@ class MyTicket extends Component {
   }
 
   handleMailOnChange(filed, e) {
-    ////
     var mailFiled = this.state.mailFiled;
     mailFiled[filed] = e.target.value;
 
@@ -2573,7 +2569,6 @@ class MyTicket extends Component {
     //   }
     // }
     for (let i = 0; i < e.target.files.length; i++) {
-      ////
 
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -2594,7 +2589,6 @@ class MyTicket extends Component {
     });
   }
   handleFileUpload(e) {
-    ////
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -2614,7 +2608,6 @@ class MyTicket extends Component {
       }
     }
     for (let i = 0; i < e.target.files.length; i++) {
-      ////
 
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -2884,7 +2877,6 @@ class MyTicket extends Component {
                       SelectedAllOrder: selectedRow,
                       SelectedAllItem: []
                     });
-
                     break;
                   }
                 }
@@ -3194,7 +3186,6 @@ class MyTicket extends Component {
   // -------------------------------Check box selected all code end-------------------------------
 
   callbackToParent = () => {
-    ////
     this.handleGetCountOfTabs(this.state.ticket_Id);
   };
   handleTicketSourceChange = e => {
@@ -3207,7 +3198,6 @@ class MyTicket extends Component {
     this.setState({ ReplySourceId: value });
   };
   handleSkipComment() {
-    ////
     let self = this;
     const formData = new FormData();
     var paramData = {
@@ -3229,7 +3219,6 @@ class MyTicket extends Component {
       data: formData
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
@@ -3447,7 +3436,6 @@ class MyTicket extends Component {
                         className="cancalImg"
                         onClick={this.onCloseModal.bind(this)}
                       />
-                      {/* <HistoricalTable /> */}
                       <div className="tic-history tic-his varunoverflow">
                         <ReactTable
                           data={historicalDetails}
@@ -5119,7 +5107,6 @@ class MyTicket extends Component {
                                                 accessor: "invoiceNo",
                                                 width: 20,
                                                 Cell: row => {
-                                                  // ////debugger
                                                   return (
                                                     <div className="filter-checkbox">
                                                       <input
@@ -6293,7 +6280,7 @@ class MyTicket extends Component {
                               : this.state.tabCounts.task}
                           </a>
                         </li>
-                        <li className="nav-item fo" style={{ display: "none" }}>
+                        <li className="nav-item fo">
                           <a
                             className="nav-link"
                             data-toggle="tab"
