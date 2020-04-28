@@ -1011,7 +1011,8 @@ class ClaimCategoryMaster extends Component {
             self.setState({
               editCategory,
               ListOfIssueData: [],
-              SubCategoryDropData: []
+              SubCategoryDropData: [],
+              editCategoryCompulsory: ""
             });
             self.handleGetCategoryList(data, "edit");
           } else {
@@ -1067,7 +1068,8 @@ class ClaimCategoryMaster extends Component {
 
             self.setState({
               ListOfIssueData: [],
-              editCategory
+              editCategory,
+              editSubCatCompulsory: ""
             });
 
             self.handleGetSubCategoryList("edit");
@@ -1117,7 +1119,7 @@ class ClaimCategoryMaster extends Component {
           if (type == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["issueTypeID"] = data;
-            self.setState({ editCategory });
+            self.setState({ editCategory, editIssueCompulsory: "" });
             self.handleGetIssueTypeList("edit");
           } else {
             self.setState({
@@ -1295,14 +1297,30 @@ class ClaimCategoryMaster extends Component {
           console.log(data);
         });
     } else {
-      self.setState({
-        editBrandCompulsory: "Please Select Brand.",
-        editCategoryCompulsory: "Please Select Category.",
-        editSubCatCompulsory: "Please Select SubCategory.",
-        editIssueCompulsory: "Please Select Issue type",
-        editStatusCompulsory: "Please Select Status"
-      });
-    }
+      if (this.state.editCategory.brandID === null || this.state.editCategory.brandID === "0"){
+        self.setState({
+          editBrandCompulsory: "Please Select Brand."
+        })
+      }
+
+      if(this.state.editCategory.categoryID === "" || this.state.editCategory.categoryID === undefined){
+        self.setState({
+          editCategoryCompulsory: "Please Select Category."
+        })
+      }
+
+      if(this.state.editCategory.subCategoryID === "" || this.state.editCategory.subCategoryID === undefined){
+        self.setState({
+          editSubCatCompulsory: "Please Select SubCategory."
+        })
+      }
+
+      if(this.state.editCategory.issueTypeID === "" || this.state.editCategory.issueTypeID === undefined){
+        self.setState({
+          editIssueCompulsory: "Please Select Issue type."
+        })
+      }
+      }
   }
 
   HandleMultiSelect() {
@@ -2523,7 +2541,7 @@ class ClaimCategoryMaster extends Component {
                     ))}
                 </select>
                 {this.state.editCategory.brandID !== null && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
+                  <p style={{ color: "red", marginBottom: "21px" }}>
                     {this.state.editBrandCompulsory}
                   </p>
                 )}
@@ -2532,7 +2550,7 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Category</label>
+                    <label className="edit-label-1">Claim Category</label>
                     <Select
                       showSearch={true}
                       value={this.state.editCategory.categoryID}
@@ -2593,7 +2611,7 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Sub Category</label>
+                    <label className="edit-label-1">Claim Sub Category</label>
                     <Select
                       showSearch={true}
                       value={this.state.editCategory.subCategoryID}
@@ -2660,7 +2678,7 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Issue Type</label>
+                    <label className="edit-label-1">Claim Issue Type</label>
                     <Select
                       showSearch={true}
                       value={this.state.editCategory.issueTypeID}
