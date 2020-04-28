@@ -1344,21 +1344,30 @@ class ClaimCategoryMaster extends Component {
   };
   handleCategoryChange = value => {
     debugger;
-    if (value !== NEW_ITEM) {
-      this.setState({ list1Value: value, SubCategoryDropData: [], 
-        ListOfSubCate: "",ListOfIssue:"",ListOfIssueData:[]});
-      setTimeout(() => {
-        if (this.state.list1Value) {
-          this.handleGetSubCategoryList(value);
-        }
-      }, 10);
-    } else {
-      this.setState({ showList1: true });
+    if (this.state.selectBrand.length > 0){
+      if (value !== NEW_ITEM) {
+        this.setState({ list1Value: value, SubCategoryDropData: [], 
+          ListOfSubCate: "",ListOfIssue:"",ListOfIssueData:[]});
+        setTimeout(() => {
+          if (this.state.list1Value) {
+            this.handleGetSubCategoryList(value);
+          }
+        }, 10);
+      } else {
+        this.setState({ showList1: true });
+      }
+    }else{
+      this.setState({
+        brandCompulsion: "Please Select Brand"
+      });
     }
   };
 
   handleSubCatOnChange = value => {
     debugger;
+    if (
+      this.state.selectBrand.length > 0 &&
+      (this.state.list1Value > 0 || this.state.list1Value !== "")){
     if (value !== NEW_ITEM) {
       this.setState({ ListOfSubCate: value, ListOfIssueData: [], ListOfIssue: ""});
       setTimeout(() => {
@@ -1369,14 +1378,32 @@ class ClaimCategoryMaster extends Component {
     } else {
       this.setState({ ShowSubCate: true });
     }
+   }else{
+    this.setState({
+      brandCompulsion: "Please Select Brand",
+      categoryCompulsion: "Please Select category"
+    });
+   }
   };
+
   handleIssueOnChange = value => {
     debugger;
-    if (value !== NEW_ITEM) {
-      this.setState({ ListOfIssue: value });
-    } else {
-      this.setState({ ShowIssuetype: true });
-    }
+    if (this.state.selectBrand.length > 0 &&
+      (this.state.list1Value > 0 || this.state.list1Value !== "") &&
+      (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== ""))
+      {
+        if (value !== NEW_ITEM) {
+          this.setState({ ListOfIssue: value });
+        } else {
+          this.setState({ ShowIssuetype: true });
+        }
+      }else{
+        this.setState({
+          brandCompulsion: "Please Select Brand",
+          categoryCompulsion: "Please Select category",
+          subcategoryCompulsion: "Please Select SubCategory"
+        });
+      }
   };
   handleBrandChange = e => {
     debugger;
