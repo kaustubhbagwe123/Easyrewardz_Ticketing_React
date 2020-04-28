@@ -202,7 +202,7 @@ class HierarchyMaster extends Component {
       fileValidation: "",
       isErrorBulkUpload: false,
       isShowProgress: false,
-      temphierarchyData: []
+      temphierarchyData: [],
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -274,8 +274,8 @@ class HierarchyMaster extends Component {
         filterTxtValue: "",
         sortFilterDesignation: this.state.sortDesignation,
         sortFilterReportTo: this.state.sortReportTo,
-        sortFilterCreatedBy:this.state.sortCreatedBy,
-        sortFilterStatus:this.state.sortCreatedBy
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortCreatedBy,
       });
     }
   }
@@ -335,15 +335,17 @@ class HierarchyMaster extends Component {
     // }
     if (this.state.sortColumn === "designationName") {
       itemsArray.sort((a, b) => {
-        if (a.designationName.toLowerCase() <  b.designationName.toLowerCase()) return -1;
-        if (a.designationName.toLowerCase() > b.designationName.toLowerCase()) return 1;
+        if (a.designationName.toLowerCase() < b.designationName.toLowerCase())
+          return -1;
+        if (a.designationName.toLowerCase() > b.designationName.toLowerCase())
+          return 1;
         return 0;
       });
     }
 
     if (this.state.sortColumn === "reportTo") {
       itemsArray.sort((a, b) => {
-        if (a.reportTo.toLowerCase() <  b.reportTo.toLowerCase()) return -1;
+        if (a.reportTo.toLowerCase() < b.reportTo.toLowerCase()) return -1;
         if (a.reportTo.toLowerCase() > b.reportTo.toLowerCase()) return 1;
         return 0;
       });
@@ -351,15 +353,17 @@ class HierarchyMaster extends Component {
 
     if (this.state.sortColumn === "createdbyperson") {
       itemsArray.sort((a, b) => {
-        if (a.createdbyperson.toLowerCase() <  b.createdbyperson.toLowerCase()) return -1;
-        if (a.createdbyperson.toLowerCase() > b.createdbyperson.toLowerCase()) return 1;
+        if (a.createdbyperson.toLowerCase() < b.createdbyperson.toLowerCase())
+          return -1;
+        if (a.createdbyperson.toLowerCase() > b.createdbyperson.toLowerCase())
+          return 1;
         return 0;
       });
     }
 
     if (this.state.sortColumn === "status") {
       itemsArray.sort((a, b) => {
-        if (a.status.toLowerCase() <  b.status.toLowerCase()) return -1;
+        if (a.status.toLowerCase() < b.status.toLowerCase()) return -1;
         if (a.status.toLowerCase() > b.status.toLowerCase()) return 1;
         return 0;
       });
@@ -377,15 +381,17 @@ class HierarchyMaster extends Component {
     itemsArray1 = this.state.hierarchyData;
     if (this.state.sortColumn === "designationName") {
       itemsArray = itemsArray1.sort((a, b) => {
-        if (a.designationName.toLowerCase() <  b.designationName.toLowerCase()) return 1;
-        if (a.designationName.toLowerCase() > b.designationName.toLowerCase()) return -1;
+        if (a.designationName.toLowerCase() < b.designationName.toLowerCase())
+          return 1;
+        if (a.designationName.toLowerCase() > b.designationName.toLowerCase())
+          return -1;
         return 0;
       });
     }
 
     if (this.state.sortColumn === "reportTo") {
       itemsArray = itemsArray1.sort((a, b) => {
-        if (a.reportTo.toLowerCase() <  b.reportTo.toLowerCase()) return 1;
+        if (a.reportTo.toLowerCase() < b.reportTo.toLowerCase()) return 1;
         if (a.reportTo.toLowerCase() > b.reportTo.toLowerCase()) return -1;
         return 0;
       });
@@ -393,15 +399,17 @@ class HierarchyMaster extends Component {
 
     if (this.state.sortColumn === "createdbyperson") {
       itemsArray = itemsArray1.sort((a, b) => {
-        if (a.createdbyperson.toLowerCase() <  b.createdbyperson.toLowerCase()) return 1;
-        if (a.createdbyperson.toLowerCase() > b.createdbyperson.toLowerCase()) return -1;
+        if (a.createdbyperson.toLowerCase() < b.createdbyperson.toLowerCase())
+          return 1;
+        if (a.createdbyperson.toLowerCase() > b.createdbyperson.toLowerCase())
+          return -1;
         return 0;
       });
     }
 
     if (this.state.sortColumn === "status") {
       itemsArray = itemsArray1.sort((a, b) => {
-        if (a.status.toLowerCase() <  b.status.toLowerCase()) return 1;
+        if (a.status.toLowerCase() < b.status.toLowerCase()) return 1;
         if (a.status.toLowerCase() > b.status.toLowerCase()) return -1;
         return 0;
       });
@@ -909,7 +917,7 @@ class HierarchyMaster extends Component {
       method: "post",
       url: config.apiUrl + "/StoreHierarchy/DeleteStoreHierarchy",
       headers: authHeader(),
-      data: {
+      params: {
         designationID: hierarchy_Id,
       },
     })
@@ -965,6 +973,9 @@ class HierarchyMaster extends Component {
             this.handleGetItem();
             NotificationManager.success("Hierarchy update successfully.");
             this.hanldeGetReportListDropDown();
+            this.setState({ editSaveLoading: false });
+          } else if (status === "Record Already Exists ") {
+            NotificationManager.error("Record Already Exists.");
             this.setState({ editSaveLoading: false });
           } else {
             this.setState({ editSaveLoading: false });
@@ -1231,14 +1242,13 @@ class HierarchyMaster extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     {this.state.sortFilterDesignation.length > 0 &&
-                     this.state.sortFilterReportTo.length > 0 &&
-                     this.state.sortFilterCreatedBy.length > 0 &&
-                     this.state.sortFilterStatus.length > 0
-                    ?(
-                    <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
-                    </label>):null
-                    }
+                    this.state.sortFilterReportTo.length > 0 &&
+                    this.state.sortFilterCreatedBy.length > 0 &&
+                    this.state.sortFilterStatus.length > 0 ? (
+                      <label htmlFor={"fil-open"}>
+                        <span className="table-btn table-blue-btn">ALL</span>
+                      </label>
+                    ) : null}
                   </div>
                   {this.state.sortColumn === "designationName"
                     ? this.state.sortFilterDesignation !== null &&
@@ -1520,7 +1530,7 @@ class HierarchyMaster extends Component {
                                           file?
                                         </p>
                                         <div className="del-can">
-                                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
                                           {/* <a
                                             className="canblue"
                                             onClick={() =>
@@ -1670,7 +1680,7 @@ class HierarchyMaster extends Component {
                           <option value={1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
-                              <option key={i+1} value={item.designationID}>
+                              <option key={i + 1} value={item.designationID}>
                                 {item.designationName}
                               </option>
                             ))}
