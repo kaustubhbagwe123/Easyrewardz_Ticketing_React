@@ -1143,7 +1143,7 @@ class ClaimCategoryMaster extends Component {
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== "") &&
       (this.state.ListOfIssue > 0 || this.state.ListOfIssue !== "") &&
-      this.state.selectStatus.length > 0
+      (this.state.selectStatus !== 0 && this.state.selectStatus !== "select")
     ) {
       let self = this;
       var activeStatus = 0;
@@ -1415,7 +1415,7 @@ class ClaimCategoryMaster extends Component {
     editCategory.brandCategoryMappingID = rowData.brandCategoryMappingID;
     editCategory.brandID = rowData.braindID;
     editCategory.brandName = rowData.brandName;
-
+ 
     await this.handleGetCategoryList(rowData.braindID);
 
     editCategory.categoryID = rowData.categoryID;
@@ -1430,10 +1430,12 @@ class ClaimCategoryMaster extends Component {
 
     editCategory.issueTypeID = rowData.issueTypeID;
     editCategory.issueTypeName = rowData.issueTypeName;
+
+    await this.handleModalIssueOnChange(rowData.issueTypeID);
     editCategory.statusName = rowData.statusName;
     var Id = rowData.brandCategoryMappingID;
 
-    this.setState({ editmodel: true, editCategory, brandCatmapId: Id });
+    this.setState({ editmodel: true, editCategory, brandCatmapId: Id, editBrandCompulsory: "" });
   };
   ////handle toggle edit modal pop
   toggleEditModal() {
@@ -2361,7 +2363,7 @@ class ClaimCategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
-                        {this.state.selectStatus === 0 && (
+                        {(this.state.selectStatus === 0 || this.state.selectStatus === "select") && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.statusCompulsion}
                           </p>
@@ -2518,7 +2520,7 @@ class ClaimCategoryMaster extends Component {
             onClose={this.toggleEditModal}
             modalId="categoryEditModal"
           >
-            <div className="edtpadding">
+            <div className="edtpadding cus-cs">
               <label className="popover-header-text">EDIT CATEGORY</label>
               <div className="pop-over-div">
                 <label className="edit-label-1">Brand Name</label>
