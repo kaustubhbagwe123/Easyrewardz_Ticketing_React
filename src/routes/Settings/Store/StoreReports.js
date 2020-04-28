@@ -2068,8 +2068,6 @@ class StoreReports extends Component {
   }
 
   handleDownload = (id) => {
-    debugger;
-      let self = this;
       axios({
         method: "post",
         url: config.apiUrl + "/StoreReport/DownloadStoreReportSearch",
@@ -2081,10 +2079,6 @@ class StoreReports extends Component {
         .then(function(res) {
           debugger;
           window.open(res.data.responseData);
-          // self.downloadURI(res.data.responseData,name+".csv");
-          // self.setState({
-          //   loading: false,
-          // });
         })
         .catch((data) => {
           console.log(data);
