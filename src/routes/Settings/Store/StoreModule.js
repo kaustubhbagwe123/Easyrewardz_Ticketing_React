@@ -4,7 +4,7 @@ import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
@@ -78,6 +78,8 @@ class StoreModule extends Component {
       fileValidation: "",
       isErrorBulkUpload: false,
       isShowProgress: false,
+      isATOZ: true,
+      itemData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -419,10 +421,12 @@ class StoreModule extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcampaignName.push({ campaignName: distinct[i] });
-            self.state.sortFiltercampaignName.push({
-              campaignName: distinct[i],
-            });
+            if (distinct[i]) {
+              self.state.sortcampaignName.push({ campaignName: distinct[i] });
+              self.state.sortFiltercampaignName.push({
+                campaignName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
@@ -434,21 +438,25 @@ class StoreModule extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreatedBy.push({ createdBy: distinct[i] });
-            self.state.sortFiltercreatedBy.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortcreatedBy.push({ createdBy: distinct[i] });
+              self.state.sortFiltercreatedBy.push({ createdBy: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].status]) {
-              distinct.push(data[i].status);
-              unique[data[i].status] = 1;
+            if (!unique[data[i].statusName]) {
+              distinct.push(data[i].statusName);
+              unique[data[i].statusName] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortstatus.push({ status: distinct[i] });
-            self.state.sortFilteristatus.push({ status: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortstatus.push({ status: distinct[i] });
+              self.state.sortFilteristatus.push({ status: distinct[i] });
+            }
           }
         }
       })
@@ -628,6 +636,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: false,
       campaignScriptData: itemsArray,
     });
     setTimeout(() => {
@@ -664,6 +673,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       campaignScriptData: itemsArray,
     });
     setTimeout(() => {
@@ -683,6 +693,7 @@ class StoreModule extends Component {
     ) {
       return false;
     }
+    this.setState({ isortA: false });
     if (data === "campaignName") {
       if (
         this.state.screatedByFilterCheckbox !== "" ||
@@ -788,6 +799,7 @@ class StoreModule extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
         campaignScriptData: this.state.isortA
           ? this.state.campaignScriptData
           : this.state.sortAllData,
@@ -1283,7 +1295,11 @@ class StoreModule extends Component {
                               {
                                 Header: (
                                   <span
-                                    className="table-column"
+                                    className={
+                                      this.state.sortHeader === "Campaign Name"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "campaignName",
@@ -1291,7 +1307,15 @@ class StoreModule extends Component {
                                     )}
                                   >
                                     Campaign Name
-                                    <FontAwesomeIcon icon={faCaretDown} />
+                                    <FontAwesomeIcon
+                                      icon={
+                                        this.state.isATOZ == false &&
+                                        this.state.sortHeader ===
+                                          "Campaign Name"
+                                          ? faCaretUp
+                                          : faCaretDown
+                                      }
+                                    />
                                   </span>
                                 ),
                                 sortable: false,
@@ -1338,7 +1362,11 @@ class StoreModule extends Component {
                                 sortable: false,
                                 Header: (
                                   <span
-                                    className="table-column"
+                                    className={
+                                      this.state.sortHeader === "Department"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "createdBy",
@@ -1346,7 +1374,14 @@ class StoreModule extends Component {
                                     )}
                                   >
                                     Created by
-                                    <FontAwesomeIcon icon={faCaretDown} />
+                                    <FontAwesomeIcon
+                                      icon={
+                                        this.state.isATOZ == false &&
+                                        this.state.sortHeader === "Created by"
+                                          ? faCaretUp
+                                          : faCaretDown
+                                      }
+                                    />
                                   </span>
                                 ),
                                 Cell: (row) => {
@@ -1402,7 +1437,11 @@ class StoreModule extends Component {
                               {
                                 Header: (
                                   <span
-                                    className="table-column"
+                                    className={
+                                      this.state.sortHeader === "Status"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "status",
@@ -1410,7 +1449,14 @@ class StoreModule extends Component {
                                     )}
                                   >
                                     Status
-                                    <FontAwesomeIcon icon={faCaretDown} />
+                                    <FontAwesomeIcon
+                                      icon={
+                                        this.state.isATOZ == false &&
+                                        this.state.sortHeader === "Status"
+                                          ? faCaretUp
+                                          : faCaretDown
+                                      }
+                                    />
                                   </span>
                                 ),
                                 sortable: false,
