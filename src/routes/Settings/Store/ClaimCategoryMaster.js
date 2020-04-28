@@ -1139,7 +1139,7 @@ class ClaimCategoryMaster extends Component {
   handleSubmitData() {
     debugger;
     if (
-      this.state.selectBrand.length > 0 &&
+      (this.state.selectBrand !== 0 && this.state.selectBrand !== "Select") &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== "") &&
       (this.state.ListOfIssue > 0 || this.state.ListOfIssue !== "") &&
@@ -2177,7 +2177,7 @@ class ClaimCategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
-                        {this.state.selectBrand === 0 && (
+                        {(this.state.selectBrand === 0 || this.state.selectBrand === "Select") && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.brandCompulsion}
                           </p>
