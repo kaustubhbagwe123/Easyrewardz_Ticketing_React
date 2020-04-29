@@ -117,10 +117,20 @@ p {
   box-shadow: none;
   border-radius: 10px;
   background-color: #2561a8;
+  font-weight: 500;
+}
+.chatcontentdivtab .nav-tabs .nav-link{
+  color: #000000;
+  border: 2px solid #2561a8;
+  box-shadow: none;
+  border-radius: 10px;
+  background-color: #fff;
+  font-weight: 500;
 }
 .chatcontentdivtab .nav-tabs {
   border: none;
-  border-radius: 10px;
-  border: 2px solid #2561a8;
-  color: #000000;
+  
+}
+.chatcontentdivtab .nav-item {
+  margin-left: 20px;
 }
