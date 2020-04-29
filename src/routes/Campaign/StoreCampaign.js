@@ -654,7 +654,7 @@ class StoreCampaign extends Component {
                 dataIndex: "campaignName",
               },
               {
-                title: "Customer",
+                title: "Customers",
                 dataIndex: "contactCount",
               },
               {
@@ -719,12 +719,51 @@ class StoreCampaign extends Component {
                       dataIndex: "campaignTypeDate",
                     },
                     {
+                        title: "Response",
+                        render: (row, item) => {
+                          return (
+                            <div
+                              className={
+                                item.campaignStatus === 0 ? "disabled-input" : ""
+                              }
+                            >
+                              <select
+                                className={
+                                  item.campaignStatus === 0
+                                    ? "responceDrop-down dropdown-label disabled-link"
+                                    : "responceDrop-down dropdown-label"
+                                }
+                                value={item.response}
+                                onChange={this.onResponseChange.bind(
+                                  this,
+                                  item.campaignTypeID,
+                                  item.campaignCustomerID
+                                )}
+                              >
+                                <option hidden>Select Response</option>
+                                {item.campaignResponseList !== null &&
+                                  item.campaignResponseList
+                                    .filter(
+                                      (x) =>
+                                        x.statusNameID === item.campaignStatus
+                                    )
+                                    .map((items, i) => (
+                                      <option key={i} value={items.responseID}>
+                                        {items.response}
+                                      </option>
+                                    ))}
+                              </select>
+                            </div>
+                          );
+                        },
+                      },
+                    {
                       title: "Status",
                       // dataIndex: "articleName"
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
-                            <div>
+                            {/* <div>
                               <input
                                 type="radio"
                                 name={
@@ -748,7 +787,7 @@ class StoreCampaign extends Component {
                               >
                                 Contacted
                               </label>
-                            </div>
+                            </div> */}
                             <div className="position-relative">
                               {item.noOfTimesNotContacted !== 0 &&
                                 item.campaignStatus === 101 && (
@@ -782,7 +821,7 @@ class StoreCampaign extends Component {
                                 Not Contacted
                               </label>
                             </div>
-                            <div>
+                            {/* <div>
                               <input
                                 type="radio"
                                 name={
@@ -808,46 +847,7 @@ class StoreCampaign extends Component {
                               >
                                 Follow Up
                               </label>
-                            </div>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Responce",
-                      render: (row, item) => {
-                        return (
-                          <div
-                            className={
-                              item.campaignStatus === 0 ? "disabled-input" : ""
-                            }
-                          >
-                            <select
-                              className={
-                                item.campaignStatus === 0
-                                  ? "responceDrop-down dropdown-label disabled-link"
-                                  : "responceDrop-down dropdown-label"
-                              }
-                              value={item.response}
-                              onChange={this.onResponseChange.bind(
-                                this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
-                              )}
-                            >
-                              <option hidden>Select</option>
-                              {item.campaignResponseList !== null &&
-                                item.campaignResponseList
-                                  .filter(
-                                    (x) =>
-                                      x.statusNameID === item.campaignStatus
-                                  )
-                                  .map((items, i) => (
-                                    <option key={i} value={items.responseID}>
-                                      {items.response}
-                                    </option>
-                                  ))}
-                            </select>
+                            </div> */}
                           </div>
                         );
                       },
