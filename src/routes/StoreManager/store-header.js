@@ -24,6 +24,7 @@ import axios from "axios";
 import { Popover } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
+import "./../../assets/css/store-chat.css";
 
 class Header extends Component {
   constructor(props) {
@@ -50,6 +51,8 @@ class Header extends Component {
       workTimeHours: "0H 0M",
       selectedUserProfilePicture: "",
       cont: [],
+      chatModal: false,
+      ongoingChatCount: 3,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -61,6 +64,8 @@ class Header extends Component {
     this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
     this.handleCRMRole = this.handleCRMRole.bind(this);
     this.setAccessUser = this.setAccessUser.bind(this);
+    this.handleChatModalClose = this.handleChatModalClose.bind(this);
+    this.handleChatModalOpen = this.handleChatModalOpen.bind(this);
   }
 
   componentDidMount() {
@@ -392,6 +397,15 @@ class Header extends Component {
     this.setState({ cont: contDummy });
   };
 
+  ////handle chat modal close
+  handleChatModalClose() {
+    this.setState({ chatModal: false });
+  }
+  ////handle chat modal open
+  handleChatModalOpen() {
+    this.setState({ chatModal: true });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -483,7 +497,7 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a href="#!">
+            <a href="#!" onClick={this.handleChatModalOpen.bind(this)}>
               <img src={ChatLogo} alt="logo" className="chatImg" />
               <img
                 src={ChatLogoBlue}
@@ -755,6 +769,197 @@ class Header extends Component {
                 );
               })
             )}
+          </div>
+        </Modal>
+
+        {/*----------------- chat modal-------------- */}
+        <Modal
+          onClose={this.handleChatModalClose.bind(this)}
+          open={this.state.chatModal}
+          modalId="chat-popup"
+          overlayId="chat-popup-overlay"
+        >
+          <div className="store-chat-header">
+            <h3>Store chat window</h3>
+            <span className="rounded-cross" onClick={this.handleChatModalClose}>
+              &times;
+            </span>
+          </div>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-lg-3 p-0">
+                <div className="chatbot-left">
+                  <div className="chat-cntr">
+                    <p className="chats-heading">
+                      Ongoing Chats (
+                      {this.state.ongoingChatCount < 10
+                        ? "0" + this.state.ongoingChatCount
+                        : this.state.ongoingChatCount}
+                      )
+                    </p>
+                    <div className="chat-left-height">
+                      <div className="chat-info">
+                        <div className="d-flex align-items-center">
+                          <span className="dark-blue-ini initial">V</span>
+                          <div className="name-num ml-2">
+                            <p>Varun Kumar</p>
+                            <p className="num">+91-9873470074</p>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mess-time">
+                            <p>2 New Messages</p>
+                            <p>56s</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="chat-info active">
+                        <div className="d-flex align-items-center">
+                          <span className="light-blue-ini initial">M</span>
+                          <div className="name-num ml-2">
+                            <p>Mohit Verma</p>
+                            <p className="num">Mohit90@gmail.com</p>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mess-time">
+                            <p>1 New Messages</p>
+                            <p>1m:36s</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="chat-info">
+                        <div className="d-flex align-items-center">
+                          <span className="yellow-ini initial">A</span>
+                          <div className="name-num ml-2">
+                            <p>Ankit Gupta</p>
+                            <p className="num">+91-9382838834</p>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mess-time">
+                            <p>No New Messages</p>
+                            <p>1m:36s</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="chat-cntr">
+                    <p className="chats-heading">New Chats (02)</p>
+                    <div className="chat-left-height">
+                      <div className="chat-info">
+                        <div className="d-flex align-items-center">
+                          <span className="green-ini initial">V</span>
+                          <div className="name-num ml-2">
+                            <p>Vipin Kumar</p>
+                            <p className="num">+91-9873470074</p>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mess-time">
+                            <p>Waiting for reply</p>
+                            <p>56s</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="chat-info">
+                        <div className="d-flex align-items-center">
+                          <span className="orange-ini initial">M</span>
+                          <div className="name-num ml-2">
+                            <p>Mohit Kumar</p>
+                            <p className="num">Mohit90@gmail.com</p>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mess-time">
+                            <p>Waiting for reply</p>
+                            <p>1m:36s</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
+              </div>
+              <div className="col-lg-9 p-0">
+                <div className="chatbot-right">
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="chatdivtitle">
+                      <label className="chattitlelbl">Naman Rampal</label>
+                    </div>
+                  </div>
+                  <div className="row chatcontentRow">
+                    <div className="chatcontentDiv"></div>
+                  </div>
+                  <div className="row chatcontentdivtab" >
+                    <ul className="nav nav-tabs" role="tablist">
+                      <li className="nav-item">
+                        <a
+                          className="nav-link active"
+                          data-toggle="tab"
+                          href="#raised-by-me-tab"
+                          role="tab"
+                          aria-controls="raised-by-me-tab"
+                          aria-selected="true"
+                        >
+                          MESSAGE
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          data-toggle="tab"
+                          href="#assigned-to-me-tab"
+                          role="tab"
+                          aria-controls="assigned-to-me-tab"
+                          aria-selected="false"
+                        >
+                          CARD
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          data-toggle="tab"
+                          href="#task-by-tickets-tab"
+                          role="tab"
+                          aria-controls="task-by-tickets-tab"
+                          aria-selected="false"
+                        >
+                          RECOMMENDED LIST
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          data-toggle="tab"
+                          href="#campaign-tab"
+                          role="tab"
+                          aria-controls="campaign-tab"
+                          aria-selected="false"
+                        >
+                          SCHEDULE VISIT
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          data-toggle="tab"
+                          href="#campaign-tab"
+                          role="tab"
+                          aria-controls="campaign-tab"
+                          aria-selected="false"
+                        >
+                          GENERATE PAYMENT LINK
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </Modal>
       </React.Fragment>
