@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
+import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover } from "antd";
@@ -58,7 +59,6 @@ class StoreCampaign extends Component {
   }
 
   onRowExpand(expanded, record) {
-    
     let rowExpandedCount;
     if (expanded) {
       rowExpandedCount = this.state.rowExpandedCount + 1;
@@ -74,7 +74,6 @@ class StoreCampaign extends Component {
   }
 
   onStatusChange(campaignTypeID, campaignCustomerID, e) {
-    
     this.state.campaignGridData
       .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
@@ -94,7 +93,6 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignTypeID, campaignCustomerID, e) {
-    
     this.state.campaignGridData
       .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
@@ -104,7 +102,6 @@ class StoreCampaign extends Component {
   }
 
   onDateChange(campaignTypeID, campaignCustomerID, e) {
-    
     this.state.campaignGridData
       .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
@@ -114,7 +111,6 @@ class StoreCampaign extends Component {
   }
 
   handleCampaignGridData() {
-    
     let self = this;
     this.setState({
       loading: true,
@@ -125,7 +121,6 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -149,7 +144,6 @@ class StoreCampaign extends Component {
     callReScheduledTo,
     e
   ) {
-    
     let self = this,
       calculatedCallReScheduledTo;
 
@@ -176,7 +170,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(res) {
-        
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Record saved successFully.");
@@ -193,7 +186,6 @@ class StoreCampaign extends Component {
   }
 
   handleCloseCampaign(campaignTypeID, e) {
-    
     let self = this;
     this.setState({
       loading: true,
@@ -209,7 +201,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(res) {
-        
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign closed successFully.");
@@ -233,7 +224,6 @@ class StoreCampaign extends Component {
   }
 
   handleCreateTicket() {
-    
     if (this.state.modalData.tiketTitle == "") {
       this.setState({ isTiketTitle: "Please Enter Ticket Title." });
     } else {
@@ -317,7 +307,6 @@ class StoreCampaign extends Component {
           data: formData,
         })
           .then(function(res) {
-            
             let Msg = res.data.status;
             // let TID = res.data.responseData;
             if (Msg) {
@@ -342,7 +331,6 @@ class StoreCampaign extends Component {
   }
   ////handle raised ticket modal open
   handleRaisedTicketModalOpen(row, item) {
-    
     var modalData = {};
     modalData.name = row.customerName;
     modalData.customerId = row.customerID;
@@ -373,7 +361,6 @@ class StoreCampaign extends Component {
 
   ////handle get brand list
   handleGetBrand() {
-    
     let self = this;
     axios({
       method: "post",
@@ -381,7 +368,6 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var brandData = response.data.responseData;
         if (message == "Success" && brandData.length > 0) {
@@ -397,7 +383,7 @@ class StoreCampaign extends Component {
   ////handle get category by brand id list
   handleGetCateogory() {
     let self = this;
-    
+
     var brandID = this.state.modalData.brandId;
     axios({
       method: "post",
@@ -406,7 +392,6 @@ class StoreCampaign extends Component {
       params: { BrandID: Number(brandID) },
     })
       .then(function(response) {
-        
         var categoryData = response.data;
         if (categoryData.length > 0) {
           self.setState({ categoryData });
@@ -421,7 +406,6 @@ class StoreCampaign extends Component {
 
   ////handle get sub category by category id list
   handleGetSubCateogory() {
-    
     let self = this;
     var categoryID = this.state.modalData.cateogryId;
     axios({
@@ -431,7 +415,6 @@ class StoreCampaign extends Component {
       params: { CategoryID: categoryID },
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
         if (message == "Success" && subCategoryData.length > 0) {
@@ -447,7 +430,6 @@ class StoreCampaign extends Component {
 
   ////handle get issue type by sub category list
   handleGetIssueType() {
-    
     let self = this;
     var subCategoryId = this.state.modalData.subCategoryId;
     axios({
@@ -457,7 +439,6 @@ class StoreCampaign extends Component {
       params: { SubCategoryID: subCategoryId },
     })
       .then(function(response) {
-        
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
         if (message == "Success" && issueTypeData.length > 0) {
@@ -472,7 +453,6 @@ class StoreCampaign extends Component {
   }
 
   handleOnchange = (e) => {
-    
     const { name, value } = e.target;
     var modalData = this.state.modalData;
     if (name == "name") {
@@ -718,6 +698,17 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Actions",
+                render: (row) => {
+                  return (
+                    <div>
+                      <img
+                        src={BroadCastIcon}
+                        alt="cancel-icone"
+                        className="broadCast-icon"
+                      />
+                    </div>
+                  );
+                },
                 // dataIndex: "orderPricePaid"
               },
             ]}
@@ -984,8 +975,8 @@ class StoreCampaign extends Component {
           modalId="CustomerName-popup"
           overlayId="logout-ovrly"
         >
-            <div>Naman Rampal</div>
-            <img
+          <div>Naman Rampal</div>
+          <img
             src={CancelIcon}
             alt="cancel-icone"
             className="custMdl-icon"
