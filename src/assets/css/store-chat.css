@@ -21,7 +21,7 @@ p {
 }
 .store-chat-header {
   background-color: #2561a8;
-  padding: 12px 20px;
+  padding: 12px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,6 +49,31 @@ p {
 .name-num p,
 .mess-time p {
   line-height: 1.5;
+}
+.name-num {
+  overflow: hidden;
+}
+.mess-time p {
+  font-weight: 400;
+}
+.mess-time {
+  text-align: right;
+  white-space: nowrap;
+}
+.initial {
+  margin-top: 0;
+  flex: 0 0 28px;
+}
+.chat-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.chat-info {
+  transition: all 0.3s ease-in;
+}
+.chat-info:hover {
+  background-color: #ecf2f4;
 }
 /* Chetan CSS ends */
 
