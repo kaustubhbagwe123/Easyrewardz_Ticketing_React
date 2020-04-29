@@ -700,11 +700,10 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row) => {
                   return (
-                    <div>
+                    <div className="broadcast-icon">
                       <img
                         src={BroadCastIcon}
                         alt="cancel-icone"
-                        className="broadCast-icon"
                       />
                     </div>
                   );
