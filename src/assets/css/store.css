@@ -1306,7 +1306,7 @@ table tr th:last-child {
   font-size: 13px !important;
 }
 .button-red {
-  color: #ee6261;
+  color: #ee6261 !important;
     font-weight: 600;
     border-radius: 50px;
     border: 1px solid #ee6261;
@@ -1315,7 +1315,7 @@ table tr th:last-child {
     margin-right: 10px;
 }
 .button-blue {
-  color: #2196f3;
+  color: #2196f3 !important;
   font-weight: 600;
     border-radius: 50px;
     font-size: 12px;

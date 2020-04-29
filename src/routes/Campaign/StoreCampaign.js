@@ -664,8 +664,8 @@ class StoreCampaign extends Component {
                 dataIndex: "campaignScript",
                 render: (row, item) => {
                   return <div>
-                      <label className="button-red">Chatbot Script</label>
-                      <label className="button-blue">SMS Script</label>
+                      <a className="button-red">Chatbot Script</a>
+                      <a className="button-blue">SMS Script</a>
                   </div>;
                 },
               },
@@ -767,32 +767,7 @@ class StoreCampaign extends Component {
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
-                            {/* <div>
-                              <input
-                                type="radio"
-                                name={
-                                  "campaign-status-" + item.campaignCustomerID
-                                }
-                                className="campaign-status-btn"
-                                id={"contactBtnGreen" + item.campaignCustomerID}
-                                onChange={this.onStatusChange.bind(
-                                  this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
-                                )}
-                                value="100"
-                                checked={item.campaignStatus === 100}
-                              />
-                              <label
-                                className="table-btnlabel contactBtnGreen"
-                                htmlFor={
-                                  "contactBtnGreen" + item.campaignCustomerID
-                                }
-                              >
-                                Contacted
-                              </label>
-                            </div> */}
-                            <div className="position-relative">
+                            {/* <div className="position-relative">
                               {item.noOfTimesNotContacted !== 0 &&
                                 item.campaignStatus === 101 && (
                                   <div className="not-contacted-count">
@@ -824,7 +799,10 @@ class StoreCampaign extends Component {
                               >
                                 Not Contacted
                               </label>
-                            </div>
+                            </div> */}
+                            <label class="table-btnlabel notConnectedBtnRed">Not Contacted</label>
+                            <label class="table-btnlabel contactBtnGreen">Contacted</label>
+                            <label class="table-btnlabel followUpBtnYellow">Follow Up</label>
                             {/* <div>
                               <input
                                 type="radio"
@@ -987,8 +965,8 @@ class StoreCampaign extends Component {
             expandIconAsCell={false}
             pagination={false}
             loading={this.state.loading}
-            // dataSource={this.state.campaignGridData}
-            dataSource={this.state.GridData}
+            dataSource={this.state.campaignGridData}
+            // dataSource={this.state.GridData}
           />
         </div>
         {/* ---------Raised Ticket Modal----------- */}
