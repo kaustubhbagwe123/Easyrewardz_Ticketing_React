@@ -49,6 +49,7 @@ p {
 .name-num p,
 .mess-time p {
   line-height: 1.5;
+  color: red;
 }
 /* Chetan CSS ends */
 
