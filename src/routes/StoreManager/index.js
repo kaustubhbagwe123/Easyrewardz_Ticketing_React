@@ -25,6 +25,7 @@ import StoreAlerts from "./../Settings/Store/StoreAlerts";
 import { NotificationContainer } from "react-notifications";
 import StoreFileUploadLogs from "../Settings/Store/StoreFileUploadLogs";
 import UserProfile from "./UserProfile";
+import Appointment from "./Appointment"
 
 export class StoreApp extends Component {
   render() {
@@ -123,6 +124,7 @@ export class StoreApp extends Component {
           path={`${match.url}/userProfile`}
           component={UserProfile}
         />
+        <Route exact path={`${match.url}/appointment`} component={Appointment} />
         <NotificationContainer />
       </StoreLayout>
     );
