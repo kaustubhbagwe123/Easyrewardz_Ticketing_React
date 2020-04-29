@@ -6,6 +6,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover } from "antd";
 import DatePicker from "react-datepicker";
+import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
 // import { Collapse, CardBody, Card } from "reactstrap";
@@ -971,16 +972,71 @@ class StoreCampaign extends Component {
           open={this.state.custNameModal}
           onClose={this.handleCustomerNameModalClose.bind(this)}
           center
-          modalId="CustomerName-popup"
+          modalId="customername-popup"
           overlayId="logout-ovrly"
         >
-          <div>Naman Rampal</div>
           <img
             src={CancelIcon}
             alt="cancel-icone"
-            className="custMdl-icon"
+            className="cust-icon"
             onClick={this.handleCustomerNameModalClose.bind(this)}
           />
+          <div className="row">
+            <div className="col-12 col-md-12">
+              <div className="nr-initials"><p>NR</p></div>
+              <div className="nr-name">
+                <h3>Naman Rampal</h3>
+                <p>Elite</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12 col-md-6">
+              <div className="lifetimevalue">
+                <table>
+                  <tr>
+                    <td>
+                      <h4>Lifetime Value</h4>
+                      <label>₹16,347</label>
+                    </td>
+                    <td>
+                      <h4>Visit Count</h4>
+                      <label>08</label>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div className="keyinsights">
+                <h4>Key Insights</h4>
+                <p>Naman has an ATV Rs 500 in last quarter</p>
+                <p>Naman's favourite product category is Men Closet</p>
+                <p>Naman's basket size is reducing, Recommended Brands are: North Star, Hush Puppies</p>
+              </div>
+            </div>
+            <div className="col-12 col-md-6">
+              <div className="productbox">
+                <Tabs
+                >
+                  <Tab label="Recommended">
+                    <div>
+                      <h4 style={{ textAlign: "center" }}></h4>
+                      <div className="right-sect-div right-sect-div-edit">
+                      </div>
+                    </div>
+                  </Tab>
+                  <Tab label="Last Transaction">
+                    <div>
+                      <h4 style={{ textAlign: "center" }}>
+                        
+                      </h4>
+                      <div className="right-sect-div right-sect-div-edit">
+                      </div>
+                    </div>
+                  </Tab>
+                </Tabs>
+              </div>
+            </div>
+          </div>
         </Modal>
         {/* ---------Raised Ticket Modal----------- */}
         {/* <Modal
