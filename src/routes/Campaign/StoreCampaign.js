@@ -12,6 +12,7 @@ import { NotificationManager } from "react-notifications";
 // import { Collapse, CardBody, Card } from "reactstrap";
 // import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
+import TestingDemo from "../TestingDemo";
 
 class StoreCampaign extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class StoreCampaign extends Component {
     this.state = {
       FirstCollapse: false,
       TwoCollapse: false,
-      campaignGridData: [],
+    //   campaignGridData: [],
+      GridData: TestingDemo(),
       rowExpandedCount: 0,
       raisedTicketModal: false,
       brandData: [],
@@ -939,7 +941,7 @@ class StoreCampaign extends Component {
                                   item.callReScheduledTo
                                 )}
                               >
-                                <label className="saveLabel">Save</label>
+                                <label className="saveLabel">Update</label>
                               </button>
                             </div>
                             <div
@@ -983,7 +985,8 @@ class StoreCampaign extends Component {
             expandIconAsCell={false}
             pagination={false}
             loading={this.state.loading}
-            dataSource={this.state.campaignGridData}
+            // dataSource={this.state.campaignGridData}
+            dataSource={this.state.GridData}
           />
         </div>
         {/* ---------Raised Ticket Modal----------- */}
