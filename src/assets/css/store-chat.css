@@ -18,6 +18,8 @@ p {
   max-width: 100%;
   width: 100%;
   padding: 0;
+  height: calc(100vh - 40px);
+  overflow: hidden;
 }
 .store-chat-header {
   background-color: #2561a8;
@@ -119,7 +121,7 @@ p {
   background-color: #2561a8;
   font-weight: 500;
 }
-.chatcontentdivtab .nav-tabs .nav-link{
+.chatcontentdivtab .nav-tabs .nav-link {
   color: #000000;
   border: 2px solid #2561a8;
   box-shadow: none;
@@ -129,8 +131,10 @@ p {
 }
 .chatcontentdivtab .nav-tabs {
   border: none;
-  
 }
 .chatcontentdivtab .nav-item {
   margin-left: 20px;
+}
+.message-div{
+  margin: 20px;
 }
