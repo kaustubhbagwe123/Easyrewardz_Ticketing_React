@@ -25,6 +25,7 @@ import { Popover } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
+import CKEditor from "ckeditor4-react";
 
 class Header extends Component {
   constructor(props) {
@@ -899,9 +900,9 @@ class Header extends Component {
                           <a
                             className="nav-link active"
                             data-toggle="tab"
-                            href="#raised-by-me-tab"
+                            href="#message-tab"
                             role="tab"
-                            aria-controls="raised-by-me-tab"
+                            aria-controls="message-tab"
                             aria-selected="true"
                           >
                             MESSAGE
@@ -911,9 +912,9 @@ class Header extends Component {
                           <a
                             className="nav-link"
                             data-toggle="tab"
-                            href="#assigned-to-me-tab"
+                            href="#card-tab"
                             role="tab"
-                            aria-controls="assigned-to-me-tab"
+                            aria-controls="card-tab"
                             aria-selected="false"
                           >
                             CARD
@@ -923,9 +924,9 @@ class Header extends Component {
                           <a
                             className="nav-link"
                             data-toggle="tab"
-                            href="#task-by-tickets-tab"
+                            href="#recommended-list-tab"
                             role="tab"
-                            aria-controls="task-by-tickets-tab"
+                            aria-controls="recommended-list-tab"
                             aria-selected="false"
                           >
                             RECOMMENDED LIST
@@ -935,9 +936,9 @@ class Header extends Component {
                           <a
                             className="nav-link"
                             data-toggle="tab"
-                            href="#campaign-tab"
+                            href="#schedule-visit-tab"
                             role="tab"
-                            aria-controls="campaign-tab"
+                            aria-controls="schedule-visit-tab"
                             aria-selected="false"
                           >
                             SCHEDULE VISIT
@@ -947,15 +948,54 @@ class Header extends Component {
                           <a
                             className="nav-link"
                             data-toggle="tab"
-                            href="#campaign-tab"
+                            href="#generate-payment-link-tab"
                             role="tab"
-                            aria-controls="campaign-tab"
+                            aria-controls="generate-payment-link-tab"
                             aria-selected="false"
                           >
                             GENERATE PAYMENT LINK
                           </a>
                         </li>
                       </ul>
+                      {/* --------Message Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="message-tab"
+                        role="tabpanel"
+                        aria-labelledby="message-tab"
+                      >
+                        <div className="message-div">
+                          <CKEditor name="messageCKEditor" />
+                        </div>
+                      </div>
+                      {/* --------Card Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="card-tab"
+                        role="tabpanel"
+                        aria-labelledby="card-tab"
+                      ></div>
+                      {/* --------Recommended List Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="recommended-list-tab"
+                        role="tabpanel"
+                        aria-labelledby="recommended-list-tab"
+                      ></div>
+                      {/* --------Schedule Visit Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="schedule-visit-tab"
+                        role="tabpanel"
+                        aria-labelledby="schedule-visit-tab"
+                      ></div>
+                      {/* --------Generate Payment Link Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="generate-payment-link-tab"
+                        role="tabpanel"
+                        aria-labelledby="generate-payment-link-tab"
+                      ></div>
                     </div>
                   </div>
                 </div>
