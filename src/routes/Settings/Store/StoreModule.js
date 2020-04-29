@@ -929,9 +929,7 @@ class StoreModule extends Component {
           }
         }
       }
-      this.setState({
-        issueColor: "sort-column",
-      });
+      
     } else if (column === "createdBy") {
       var sItems1 = screatedByFilterCheckbox.split(",");
       if (sItems1.length > 0) {
@@ -948,16 +946,14 @@ class StoreModule extends Component {
           }
         }
       }
-      this.setState({
-        createdColor: "sort-column",
-      });
+      
     } else if (column === "status") {
       var sItems2 = sstatusFilterCheckbox.split(",");
       if (sItems2.length > 0) {
         for (let i = 0; i < sItems2.length; i++) {
           if (sItems2[i] !== "") {
             var tempFilterData2 = allData.filter(
-              (a) => a.status === sItems2[i]
+              (a) => a.statusName === sItems2[i]
             );
             if (tempFilterData2.length > 0) {
               for (let j = 0; j < tempFilterData2.length; j++) {
@@ -967,12 +963,11 @@ class StoreModule extends Component {
           }
         }
       }
-      this.setState({
-        stattusColor: "sort-column",
-      });
+      
     }
 
     this.setState({
+      isATOZ:true,
       tempcampaignScriptData: itemsArray,
     });
   };
@@ -1297,8 +1292,8 @@ class StoreModule extends Component {
                                   <span
                                     className={
                                       this.state.sortHeader === "Campaign Name"
-                                        ? "table-column sort-column"
-                                        : "table-column"
+                                        ? "sort-column"
+                                        : ""
                                     }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
@@ -1363,9 +1358,9 @@ class StoreModule extends Component {
                                 Header: (
                                   <span
                                     className={
-                                      this.state.sortHeader === "Department"
-                                        ? "table-column sort-column"
-                                        : "table-column"
+                                      this.state.sortHeader === "Created by"
+                                        ? "sort-column"
+                                        : ""
                                     }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
@@ -1439,8 +1434,8 @@ class StoreModule extends Component {
                                   <span
                                     className={
                                       this.state.sortHeader === "Status"
-                                        ? "table-column sort-column"
-                                        : "table-column"
+                                        ? "sort-column"
+                                        : ""
                                     }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
@@ -1584,7 +1579,8 @@ class StoreModule extends Component {
                               },
                             ]}
                             // resizable={false}
-                            defaultPageSize={5}
+                            minRows={2}
+                            defaultPageSize={10}
                             showPagination={true}
                           />
                         </div>
