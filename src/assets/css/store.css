@@ -1484,4 +1484,9 @@ table tr th:last-child {
 .productbox .nav-item:first-child {
   margin-right: 90px;
 }
+.broadChannel{
+  display: 'block';
+  height: '30px';
+  line-height: 30px;
+}
 /* ------------------Campain Css End ------------------------- */

@@ -4,7 +4,7 @@ import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table, Popover } from "antd";
+import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
@@ -12,7 +12,6 @@ import { NotificationManager } from "react-notifications";
 // import { Collapse, CardBody, Card } from "reactstrap";
 // import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
-import TestingDemo from "../TestingDemo";
 
 class StoreCampaign extends Component {
   constructor(props) {
@@ -20,8 +19,7 @@ class StoreCampaign extends Component {
     this.state = {
       FirstCollapse: false,
       TwoCollapse: false,
-      //   campaignGridData: [],
-      GridData: TestingDemo(),
+      campaignGridData: [],
       rowExpandedCount: 0,
       raisedTicketModal: false,
       custNameModal: false,
@@ -40,6 +38,7 @@ class StoreCampaign extends Component {
       isTiketTitle: "",
       isTiketDetails: "",
       loading: false,
+      broadcastChannel: 1,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -615,6 +614,11 @@ class StoreCampaign extends Component {
       custNameModal: false,
     });
   }
+  handleBroadcastChange = (e) => {
+    this.setState({
+      broadcastChannel: e.target.value,
+    });
+  };
   render() {
     return (
       <div className="custom-tableak">
@@ -701,12 +705,38 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row) => {
                   return (
-                    <div className="broadcast-icon">
-                      <img
-                        src={BroadCastIcon}
-                        alt="cancel-icone"
-                      />
-                    </div>
+                    <Popover
+                      content={
+                        <div className="d-flex general-popover popover-body">
+                          <label>
+                            <b>Broadcast to Campaign Customers</b>
+                          </label>
+                          <label>Choose Channel</label>
+                          <div>
+                            <Radio.Group
+                              onChange={this.handleBroadcastChange}
+                              value={this.state.broadcastChannel}
+                            >
+                              <Radio className="broadChannel" value={1}>
+                                Email
+                              </Radio>
+                              <Radio className="broadChannel" value={2}>
+                                SMS
+                              </Radio>
+                              <Radio className="broadChannel" value={3}>
+                                Whatsapp
+                              </Radio>
+                            </Radio.Group>
+                          </div>
+                        </div>
+                      }
+                      placement="bottom"
+                      trigger="click"
+                    >
+                      <div className="broadcast-icon">
+                        <img src={BroadCastIcon} alt="cancel-icone" />
+                      </div>
+                    </Popover>
                   );
                 },
                 // dataIndex: "orderPricePaid"
@@ -965,7 +995,6 @@ class StoreCampaign extends Component {
             pagination={false}
             loading={this.state.loading}
             dataSource={this.state.campaignGridData}
-            // dataSource={this.state.GridData}
           />
         </div>
         <Modal
