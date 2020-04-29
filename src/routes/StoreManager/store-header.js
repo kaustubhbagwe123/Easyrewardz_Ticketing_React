@@ -889,73 +889,74 @@ class Header extends Component {
                     <div className="chatdivtitle">
                       <label className="chattitlelbl">Naman Rampal</label>
                     </div>
-                  </div>
-                  <div className="row chatcontentRow">
-                    <div className="chatcontentDiv"></div>
-                  </div>
-                  <div className="row chatcontentdivtab" >
-                    <ul className="nav nav-tabs" role="tablist">
-                      <li className="nav-item">
-                        <a
-                          className="nav-link active"
-                          data-toggle="tab"
-                          href="#raised-by-me-tab"
-                          role="tab"
-                          aria-controls="raised-by-me-tab"
-                          aria-selected="true"
-                        >
-                          MESSAGE
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#assigned-to-me-tab"
-                          role="tab"
-                          aria-controls="assigned-to-me-tab"
-                          aria-selected="false"
-                        >
-                          CARD
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#task-by-tickets-tab"
-                          role="tab"
-                          aria-controls="task-by-tickets-tab"
-                          aria-selected="false"
-                        >
-                          RECOMMENDED LIST
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#campaign-tab"
-                          role="tab"
-                          aria-controls="campaign-tab"
-                          aria-selected="false"
-                        >
-                          SCHEDULE VISIT
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#campaign-tab"
-                          role="tab"
-                          aria-controls="campaign-tab"
-                          aria-selected="false"
-                        >
-                          GENERATE PAYMENT LINK
-                        </a>
-                      </li>
-                    </ul>
+
+                    <div className="chatcontentRow">
+                      <div className="chatcontentDiv"></div>
+                    </div>
+                    <div className="chatcontentdivtab">
+                      <ul className="nav nav-tabs" role="tablist">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#raised-by-me-tab"
+                            role="tab"
+                            aria-controls="raised-by-me-tab"
+                            aria-selected="true"
+                          >
+                            MESSAGE
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#assigned-to-me-tab"
+                            role="tab"
+                            aria-controls="assigned-to-me-tab"
+                            aria-selected="false"
+                          >
+                            CARD
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#task-by-tickets-tab"
+                            role="tab"
+                            aria-controls="task-by-tickets-tab"
+                            aria-selected="false"
+                          >
+                            RECOMMENDED LIST
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#campaign-tab"
+                            role="tab"
+                            aria-controls="campaign-tab"
+                            aria-selected="false"
+                          >
+                            SCHEDULE VISIT
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#campaign-tab"
+                            role="tab"
+                            aria-controls="campaign-tab"
+                            aria-selected="false"
+                          >
+                            GENERATE PAYMENT LINK
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
