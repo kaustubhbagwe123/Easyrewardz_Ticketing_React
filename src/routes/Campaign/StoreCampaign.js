@@ -668,8 +668,8 @@ class StoreCampaign extends Component {
                       <Popover
                         content={
                           <div className="insertpop1">
-                            <div className="dash-creation-popup">
-                              <label className="title">Chatbot Script</label>
+                            <div className="dash-creation-popup custompop">
+                              <label className="poptitle">Chatbot Script</label>
                               <label>
                                 A wonderful serenity has taken possession of my
                                 entire soul, like these sweet mornings of spring
@@ -685,8 +685,8 @@ class StoreCampaign extends Component {
                       <Popover
                         content={
                           <div className="insertpop1">
-                            <div className="dash-creation-popup">
-                              <label className="title">SMS Script</label>
+                            <div className="dash-creation-popup custompop">
+                              <label className="poptitle">SMS Script</label>
                               <label>
                                 A wonderful serenity has taken possession of my
                                 entire soul, like these sweet mornings of spring.

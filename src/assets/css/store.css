@@ -1311,6 +1311,7 @@ table tr th:last-child {
     border-radius: 50px;
     border: 1px solid #ee6261;
     padding: 5px 20px;
+    cursor: pointer;
     font-size: 12px;
     margin-right: 10px;
 }
@@ -1319,6 +1320,7 @@ table tr th:last-child {
   font-weight: 600;
     border-radius: 50px;
     font-size: 12px;
+    cursor: pointer;
     border: 1px solid #2196f3;
     padding: 5px 20px;
     margin-right: 10px;
@@ -1361,5 +1363,19 @@ table tr th:last-child {
   /* padding-top: 0px !important;
   background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center */
   background-size: 14px;
+}
+.customclassforhomeshop .ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow{
+  display: none;
+}
+.customclassforhomeshop .ant-popover-inner {
+  border-radius: 20px !important;
+}
+.customclassforhomeshop .ant-popover-placement-bottom, .customclassforhomeshop .ant-popover-placement-bottomLeft, .customclassforhomeshop .ant-popover-placement-bottomRight {
+  padding-top: 1px !important;
+}
+.custompop .poptitle {
+  font-size: 18px;
+    font-weight: bolder;
+    margin-bottom: 15px;
 }
 /* ------------------Campain Css End ------------------------- */
