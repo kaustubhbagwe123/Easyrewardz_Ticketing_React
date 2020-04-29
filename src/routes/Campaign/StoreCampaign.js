@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import down from "./../../assets/Images/collapsedown.png";
-import collapseUp from "./../../assets/Images/collapseUp.png";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import axios from "axios";
@@ -24,6 +22,7 @@ class StoreCampaign extends Component {
       GridData: TestingDemo(),
       rowExpandedCount: 0,
       raisedTicketModal: false,
+      custNameModal: false,
       brandData: [],
       categoryData: [],
       subCategoryData: [],
@@ -59,7 +58,7 @@ class StoreCampaign extends Component {
   }
 
   onRowExpand(expanded, record) {
-    debugger;
+    
     let rowExpandedCount;
     if (expanded) {
       rowExpandedCount = this.state.rowExpandedCount + 1;
@@ -75,7 +74,7 @@ class StoreCampaign extends Component {
   }
 
   onStatusChange(campaignTypeID, campaignCustomerID, e) {
-    debugger;
+    
     this.state.campaignGridData
       .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
@@ -95,7 +94,7 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignTypeID, campaignCustomerID, e) {
-    debugger;
+    
     this.state.campaignGridData
       .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
@@ -105,7 +104,7 @@ class StoreCampaign extends Component {
   }
 
   onDateChange(campaignTypeID, campaignCustomerID, e) {
-    debugger;
+    
     this.state.campaignGridData
       .filter((x) => x.campaignTypeID == campaignTypeID)[0]
       .storeCampaignCustomerList.filter(
@@ -115,7 +114,7 @@ class StoreCampaign extends Component {
   }
 
   handleCampaignGridData() {
-    debugger;
+    
     let self = this;
     this.setState({
       loading: true,
@@ -126,7 +125,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -150,7 +149,7 @@ class StoreCampaign extends Component {
     callReScheduledTo,
     e
   ) {
-    debugger;
+    
     let self = this,
       calculatedCallReScheduledTo;
 
@@ -177,7 +176,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Record saved successFully.");
@@ -194,7 +193,7 @@ class StoreCampaign extends Component {
   }
 
   handleCloseCampaign(campaignTypeID, e) {
-    debugger;
+    
     let self = this;
     this.setState({
       loading: true,
@@ -210,7 +209,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign closed successFully.");
@@ -234,7 +233,7 @@ class StoreCampaign extends Component {
   }
 
   handleCreateTicket() {
-    debugger;
+    
     if (this.state.modalData.tiketTitle == "") {
       this.setState({ isTiketTitle: "Please Enter Ticket Title." });
     } else {
@@ -265,14 +264,7 @@ class StoreCampaign extends Component {
     } else {
       this.setState({ isIssueType: "" });
     }
-    // if (
-    //   this.state.modalData.tiketTitle !== "" &&
-    //   this.state.modalData.tiketDetails.length > 0 &&
-    //   this.state.modalData.brandId.length > 0 &&
-    //   this.state.modalData.cateogryId.length > 0 &&
-    //   this.state.modalData.subCategoryId.length > 0 &&
-    //   this.state.modalData.issueTypeId.length > 0
-    // ) {
+
     setTimeout(() => {
       if (
         this.state.isTiketTitle == "" &&
@@ -325,9 +317,9 @@ class StoreCampaign extends Component {
           data: formData,
         })
           .then(function(res) {
-            debugger;
+            
             let Msg = res.data.status;
-            let TID = res.data.responseData;
+            // let TID = res.data.responseData;
             if (Msg) {
               NotificationManager.success(res.data.message);
               self.setState({ raisedTicketModal: false });
@@ -340,19 +332,6 @@ class StoreCampaign extends Component {
           });
       }
     }, 10);
-
-    // } else {
-    //   this.setState({
-    //     isTiketTitle: "Ticket Title field is compulsory.",
-    //     isTiketDetails: "Ticket Details field is compulsory.",
-    //     isBrand: "Brand field is compulsory.",
-    //     isCategory: "Category field is compulsory.",
-    //     isSubCategory: "Sub Category field is compulsory.",
-    //     isIssueType: "Issue Type field is compulsory."
-    //   });
-    // }
-
-    // Don't remove this function
   }
 
   ////handle raised ticket modal close
@@ -363,7 +342,7 @@ class StoreCampaign extends Component {
   }
   ////handle raised ticket modal open
   handleRaisedTicketModalOpen(row, item) {
-    debugger;
+    
     var modalData = {};
     modalData.name = row.customerName;
     modalData.customerId = row.customerID;
@@ -394,7 +373,7 @@ class StoreCampaign extends Component {
 
   ////handle get brand list
   handleGetBrand() {
-    debugger;
+    
     let self = this;
     axios({
       method: "post",
@@ -402,7 +381,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
+        
         var message = response.data.message;
         var brandData = response.data.responseData;
         if (message == "Success" && brandData.length > 0) {
@@ -418,7 +397,7 @@ class StoreCampaign extends Component {
   ////handle get category by brand id list
   handleGetCateogory() {
     let self = this;
-    debugger;
+    
     var brandID = this.state.modalData.brandId;
     axios({
       method: "post",
@@ -427,7 +406,7 @@ class StoreCampaign extends Component {
       params: { BrandID: Number(brandID) },
     })
       .then(function(response) {
-        debugger;
+        
         var categoryData = response.data;
         if (categoryData.length > 0) {
           self.setState({ categoryData });
@@ -442,7 +421,7 @@ class StoreCampaign extends Component {
 
   ////handle get sub category by category id list
   handleGetSubCateogory() {
-    debugger;
+    
     let self = this;
     var categoryID = this.state.modalData.cateogryId;
     axios({
@@ -452,7 +431,7 @@ class StoreCampaign extends Component {
       params: { CategoryID: categoryID },
     })
       .then(function(response) {
-        debugger;
+        
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
         if (message == "Success" && subCategoryData.length > 0) {
@@ -468,7 +447,7 @@ class StoreCampaign extends Component {
 
   ////handle get issue type by sub category list
   handleGetIssueType() {
-    debugger;
+    
     let self = this;
     var subCategoryId = this.state.modalData.subCategoryId;
     axios({
@@ -478,7 +457,7 @@ class StoreCampaign extends Component {
       params: { SubCategoryID: subCategoryId },
     })
       .then(function(response) {
-        debugger;
+        
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
         if (message == "Success" && issueTypeData.length > 0) {
@@ -493,7 +472,7 @@ class StoreCampaign extends Component {
   }
 
   handleOnchange = (e) => {
-    debugger;
+    
     const { name, value } = e.target;
     var modalData = this.state.modalData;
     if (name == "name") {
@@ -644,6 +623,17 @@ class StoreCampaign extends Component {
       }
     }
   };
+
+  handleCustomerNameModalOpen() {
+    this.setState({
+      custNameModal: true,
+    });
+  }
+  handleCustomerNameModalClose() {
+    this.setState({
+      custNameModal: false,
+    });
+  }
   render() {
     return (
       <div className="custom-tableak">
@@ -689,14 +679,15 @@ class StoreCampaign extends Component {
                               <label className="title">SMS Script</label>
                               <label>
                                 A wonderful serenity has taken possession of my
-                                entire soul, like these sweet mornings of spring.
+                                entire soul, like these sweet mornings of
+                                spring.
                               </label>
                             </div>
                           </div>
                         }
                         placement="bottom"
                       >
-                         <a className="button-blue">SMS Script</a>
+                        <a className="button-blue">SMS Script</a>
                       </Popover>
                     </div>
                   );
@@ -741,7 +732,14 @@ class StoreCampaign extends Component {
                       render: (row, item) => {
                         return (
                           <>
-                            <p className="cust-name">{item.customerName}</p>
+                            <p
+                              className="cust-name"
+                              onClick={this.handleCustomerNameModalOpen.bind(
+                                this
+                              )}
+                            >
+                              {item.customerName}
+                            </p>
                             <span className="sml-fnt">
                               {item.customerPhoneNumber}
                             </span>
@@ -831,42 +829,15 @@ class StoreCampaign extends Component {
                                 Not Contacted
                               </label>
                             </div> */}
-                            <label class="table-btnlabel notConnectedBtnRed">
+                            <label className="table-btnlabel notConnectedBtnRed">
                               Not Contacted
                             </label>
-                            <label class="table-btnlabel contactBtnGreen">
+                            <label className="table-btnlabel contactBtnGreen">
                               Contacted
                             </label>
-                            <label class="table-btnlabel followUpBtnYellow">
+                            <label className="table-btnlabel followUpBtnYellow">
                               Follow Up
                             </label>
-                            {/* <div>
-                              <input
-                                type="radio"
-                                name={
-                                  "campaign-status-" + item.campaignCustomerID
-                                }
-                                className="campaign-status-btn"
-                                id={
-                                  "followUpBtnYellow" + item.campaignCustomerID
-                                }
-                                onChange={this.onStatusChange.bind(
-                                  this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
-                                )}
-                                value="102"
-                                checked={item.campaignStatus === 102}
-                              />
-                              <label
-                                className="table-btnlabel followUpBtnYellow"
-                                htmlFor={
-                                  "followUpBtnYellow" + item.campaignCustomerID
-                                }
-                              >
-                                Follow Up
-                              </label>
-                            </div> */}
                           </div>
                         );
                       },
@@ -1006,8 +977,23 @@ class StoreCampaign extends Component {
             // dataSource={this.state.GridData}
           />
         </div>
-        {/* ---------Raised Ticket Modal----------- */}
         <Modal
+          open={this.state.custNameModal}
+          onClose={this.handleCustomerNameModalClose.bind(this)}
+          center
+          modalId="CustomerName-popup"
+          overlayId="logout-ovrly"
+        >
+            <div>Naman Rampal</div>
+            <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="custMdl-icon"
+            onClick={this.handleCustomerNameModalClose.bind(this)}
+          />
+        </Modal>
+        {/* ---------Raised Ticket Modal----------- */}
+        {/* <Modal
           open={this.state.raisedTicketModal}
           onClose={this.handleRaisedTicketModalClose.bind(this)}
           center
@@ -1088,12 +1074,7 @@ class StoreCampaign extends Component {
                   onChange={this.handleOnchange}
                   disabled
                 />
-                {/* {this.state.isBrand !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isBrand}
-                  </p>
-                )} */}
-              </div>
+               
               <div className="col-md-4 mb-3">
                 <label>Brand</label>
                 <select
@@ -1245,7 +1226,7 @@ class StoreCampaign extends Component {
               </button>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
       </div>
     );
   }

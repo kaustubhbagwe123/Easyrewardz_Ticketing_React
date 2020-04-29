@@ -1331,6 +1331,7 @@ table tr th:last-child {
     font-weight: bolder;
     font-size: 14px;
     text-transform: capitalize;
+    cursor: pointer;
 }
 .custom-tableak .table-btnlabel {
   box-shadow: none;
@@ -1361,5 +1362,20 @@ table tr th:last-child {
   /* padding-top: 0px !important;
   background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center */
   background-size: 14px;
+}
+#CustomerName-popup {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  left: 5px;
+  margin: 0 auto;
+  width: 100%;
+  border-radius: 10px;
+  bottom: -45px;
+}
+.custMdl-icon{
+  margin-left: auto;
+    display: block;
+    margin-right: 5px;
+    margin-top: -30px;
+    cursor: pointer;
 }
 /* ------------------Campain Css End ------------------------- */
