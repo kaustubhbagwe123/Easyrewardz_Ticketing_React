@@ -25,6 +25,7 @@ import { Popover } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
+import CKEditor from "ckeditor4-react";
 
 class Header extends Component {
   constructor(props) {
@@ -53,6 +54,71 @@ class Header extends Component {
       cont: [],
       chatModal: false,
       ongoingChatCount: 3,
+      ongoingChatsData: [
+        {
+          name: "Varun Kumar",
+          number: "+91-9873470074",
+          numberOfMessage: 2,
+          chatBegunSince: "56s",
+        },
+        {
+          name: "Naman Rampal",
+          number: "+91-9873470765",
+          numberOfMessage: 1,
+          chatBegunSince: "1m:36s",
+        },
+        {
+          name: "Ankit Gupta",
+          number: "+91-9382838834",
+          numberOfMessage: 0,
+          chatBegunSince: "2m:46s",
+        },
+        {
+          name: "Vijay Rao",
+          number: "+91-9873470074",
+          numberOfMessage: 4,
+          chatBegunSince: "3m:56s",
+        },
+        {
+          name: "Raj Thakkar",
+          number: "+91-9873470074",
+          numberOfMessage: 6,
+          chatBegunSince: "5m:00s",
+        },
+      ],
+      newChatsData: [
+        {
+          name: "Vipin Kumar",
+          number: "+91-9873470074",
+          numberOfMessage: "Waiting for reply",
+          chatBegunSince: "56s",
+        },
+        {
+          name: "Mohit Rampal",
+          number: "+91-9873470765",
+          numberOfMessage: "Waiting for reply",
+          chatBegunSince: "1m:36s",
+        },
+        {
+          name: "Ankit Gupta",
+          number: "+91-9382838834",
+          numberOfMessage: "Waiting for reply",
+          chatBegunSince: "2m:46s",
+        },
+        {
+          name: "Vijay Rao",
+          number: "+91-9873470074",
+          numberOfMessage: "Waiting for reply",
+          chatBegunSince: "3m:56s",
+        },
+        {
+          name: "Raj Thakkar",
+          number: "+91-9873470074",
+          numberOfMessage: "Waiting for reply",
+          chatBegunSince: "5m:00s",
+        },
+      ],
+      newChatCount: 2,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -459,7 +525,6 @@ class Header extends Component {
                 </div>
                 Dashboards
               </Link>
-
               <Link to="StoreTask" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
@@ -476,7 +541,6 @@ class Header extends Component {
                 </div>
                 Task
               </Link>
-
               <Link to="claim" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
@@ -798,11 +862,36 @@ class Header extends Component {
                       )
                     </p>
                     <div className="chat-left-height">
-                      <div className="chat-info">
-                        <div className="d-flex align-items-center">
+                      {this.state.ongoingChatsData &&
+                        this.state.ongoingChatsData.map((chat, i) => (
+                          <div key={i} className="chat-info">
+                            <div className="d-flex align-items-center overflow-hidden">
+                              <span className="dark-blue-ini initial">
+                                {chat.name.charAt(0)}
+                              </span>
+                              <div className="name-num mx-2">
+                                <p className="chat-name">{chat.name}</p>
+                                <p className="num">{chat.number}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>
+                                  {chat.numberOfMessage === 0
+                                    ? "No"
+                                    : chat.numberOfMessage}{" "}
+                                  New Messages
+                                </p>
+                                <p>{chat.chatBegunSince}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      {/* <div className="chat-info">
+                        <div className="d-flex align-items-center overflow-hidden">
                           <span className="dark-blue-ini initial">V</span>
-                          <div className="name-num ml-2">
-                            <p>Varun Kumar</p>
+                          <div className="name-num mx-2">
+                            <p className="chat-name">Varun Kumar</p>
                             <p className="num">+91-9873470074</p>
                           </div>
                         </div>
@@ -814,10 +903,10 @@ class Header extends Component {
                         </div>
                       </div>
                       <div className="chat-info active">
-                        <div className="d-flex align-items-center">
+                        <div className="d-flex align-items-center overflow-hidden">
                           <span className="light-blue-ini initial">M</span>
-                          <div className="name-num ml-2">
-                            <p>Mohit Verma</p>
+                          <div className="name-num mx-2">
+                            <p className="chat-name">Mohit Verma</p>
                             <p className="num">Mohit90@gmail.com</p>
                           </div>
                         </div>
@@ -829,10 +918,10 @@ class Header extends Component {
                         </div>
                       </div>
                       <div className="chat-info">
-                        <div className="d-flex align-items-center">
+                        <div className="d-flex align-items-center overflow-hidden">
                           <span className="yellow-ini initial">A</span>
-                          <div className="name-num ml-2">
-                            <p>Ankit Gupta</p>
+                          <div className="name-num mx-2">
+                            <p className="chat-name">Ankit Gupta</p>
                             <p className="num">+91-9382838834</p>
                           </div>
                         </div>
@@ -842,16 +931,47 @@ class Header extends Component {
                             <p>1m:36s</p>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="chat-cntr">
-                    <p className="chats-heading">New Chats (02)</p>
+                    <p className="chats-heading">
+                      New Chats (
+                      {this.state.newChatCount < 10
+                        ? "0" + this.state.newChatCount
+                        : this.state.newChatCount}
+                      )
+                    </p>
                     <div className="chat-left-height">
-                      <div className="chat-info">
+                      {this.state.ongoingChatsData &&
+                        this.state.ongoingChatsData.map((chat, i) => (
+                          <div key={i} className="chat-info">
+                            <div className="d-flex align-items-center overflow-hidden">
+                              <span className="dark-blue-ini initial">
+                                {chat.name.charAt(0)}
+                              </span>
+                              <div className="name-num mx-2">
+                                <p className="chat-name">{chat.name}</p>
+                                <p className="num">{chat.number}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>
+                                  {chat.numberOfMessage === 0
+                                    ? "No"
+                                    : chat.numberOfMessage}{" "}
+                                  New Messages
+                                </p>
+                                <p>{chat.chatBegunSince}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      {/* <div className="chat-info">
                         <div className="d-flex align-items-center">
                           <span className="green-ini initial">V</span>
-                          <div className="name-num ml-2">
+                          <div className="name-num mx-2">
                             <p>Vipin Kumar</p>
                             <p className="num">+91-9873470074</p>
                           </div>
@@ -866,7 +986,7 @@ class Header extends Component {
                       <div className="chat-info">
                         <div className="d-flex align-items-center">
                           <span className="orange-ini initial">M</span>
-                          <div className="name-num ml-2">
+                          <div className="name-num mx-2">
                             <p>Mohit Kumar</p>
                             <p className="num">Mohit90@gmail.com</p>
                           </div>
@@ -877,7 +997,7 @@ class Header extends Component {
                             <p>1m:36s</p>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -889,73 +1009,122 @@ class Header extends Component {
                     <div className="chatdivtitle">
                       <label className="chattitlelbl">Naman Rampal</label>
                     </div>
-                  </div>
-                  <div className="row chatcontentRow">
-                    <div className="chatcontentDiv"></div>
-                  </div>
-                  <div className="row chatcontentdivtab" >
-                    <ul className="nav nav-tabs" role="tablist">
-                      <li className="nav-item">
-                        <a
-                          className="nav-link active"
-                          data-toggle="tab"
-                          href="#raised-by-me-tab"
-                          role="tab"
-                          aria-controls="raised-by-me-tab"
-                          aria-selected="true"
-                        >
-                          MESSAGE
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#assigned-to-me-tab"
-                          role="tab"
-                          aria-controls="assigned-to-me-tab"
-                          aria-selected="false"
-                        >
-                          CARD
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#task-by-tickets-tab"
-                          role="tab"
-                          aria-controls="task-by-tickets-tab"
-                          aria-selected="false"
-                        >
-                          RECOMMENDED LIST
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#campaign-tab"
-                          role="tab"
-                          aria-controls="campaign-tab"
-                          aria-selected="false"
-                        >
-                          SCHEDULE VISIT
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#campaign-tab"
-                          role="tab"
-                          aria-controls="campaign-tab"
-                          aria-selected="false"
-                        >
-                          GENERATE PAYMENT LINK
-                        </a>
-                      </li>
-                    </ul>
+
+                    <div className="chatcontentRow">
+                      <div className="chatcontentDiv"></div>
+                    </div>
+                    <div className="chatcontentdivtab">
+                      <ul className="nav nav-tabs" role="tablist">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#message-tab"
+                            role="tab"
+                            aria-controls="message-tab"
+                            aria-selected="true"
+                          >
+                            MESSAGE
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#card-tab"
+                            role="tab"
+                            aria-controls="card-tab"
+                            aria-selected="false"
+                          >
+                            CARD
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#recommended-list-tab"
+                            role="tab"
+                            aria-controls="recommended-list-tab"
+                            aria-selected="false"
+                          >
+                            RECOMMENDED LIST
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#schedule-visit-tab"
+                            role="tab"
+                            aria-controls="schedule-visit-tab"
+                            aria-selected="false"
+                          >
+                            SCHEDULE VISIT
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#generate-payment-link-tab"
+                            role="tab"
+                            aria-controls="generate-payment-link-tab"
+                            aria-selected="false"
+                          >
+                            GENERATE PAYMENT LINK
+                          </a>
+                        </li>
+                      </ul>
+                      {/* --------Message Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="message-tab"
+                        role="tabpanel"
+                        aria-labelledby="message-tab"
+                      >
+                        <div>
+                          <CKEditor
+                            // content={this.state.content}
+                            name="messageCKEditor"
+                            // data={this.state.selectedCKCustomer}
+                            // onChange={this.setCKEditorCustomer}
+                            // onBlur={this.onCkBlurCustomer}
+                            // events={{
+                            //   items: this.fileUpload,
+                            // }}
+                          />
+                        </div>
+                      </div>
+                      {/* --------Card Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="card-tab"
+                        role="tabpanel"
+                        aria-labelledby="card-tab"
+                      ></div>
+                      {/* --------Recommended List Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="recommended-list-tab"
+                        role="tabpanel"
+                        aria-labelledby="recommended-list-tab"
+                      ></div>
+                      {/* --------Schedule Visit Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="schedule-visit-tab"
+                        role="tabpanel"
+                        aria-labelledby="schedule-visit-tab"
+                      ></div>
+                      {/* --------Generate Payment Link Tab----- */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="generate-payment-link-tab"
+                        role="tabpanel"
+                        aria-labelledby="generate-payment-link-tab"
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,3 +1,4 @@
+/* Chetan CSS starts */
 h1,
 h2,
 h3,
@@ -17,10 +18,12 @@ p {
   max-width: 100%;
   width: 100%;
   padding: 0;
+  /* height: calc(100vh - 40px);
+  overflow: hidden; */
 }
 .store-chat-header {
   background-color: #2561a8;
-  padding: 12px 20px;
+  padding: 12px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,6 +48,41 @@ p {
   margin: 0 18px 7px;
   font-size: 16px;
 }
+.name-num p,
+.mess-time p {
+  line-height: 1.5;
+}
+.name-num {
+  overflow: hidden;
+}
+.mess-time p {
+  font-weight: 400;
+}
+.mess-time {
+  text-align: right;
+  white-space: nowrap;
+}
+.initial {
+  margin-top: 0;
+  flex: 0 0 28px;
+}
+.chat-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.chat-info {
+  transition: all 0.3s ease-in;
+}
+.chat-info:hover {
+  background-color: #ecf2f4;
+}
+/* .chatbot-left {
+  height: calc(100vh - 94px);
+} */
+/* Chetan CSS ends */
+
+/* Deepak CSS starts */
 .chattitlelbl {
   padding: 25px;
   font-size: 20px;
@@ -55,6 +93,7 @@ p {
   height: 80px;
   background-color: #ecf2f4;
   width: 100%;
+  height: 20%;
 }
 
 .chatcontentDiv {
@@ -65,6 +104,8 @@ p {
 .chatcontentRow {
   margin: 0px;
   background-color: #f5f5f5;
+  height: 40%;
+  width: 100%;
   /* overflow: auto; */
 }
 
@@ -72,13 +113,31 @@ p {
   margin: 0;
   background-color: #ecf2f4;
   padding: 20px;
+  height: 40%;
+  width: 100%;
 }
 .chatcontentdivtab .nav-tabs .nav-link.active {
-  color: #2561a8;
+  color: #fff;
   border: 2px solid #2561a8;
   box-shadow: none;
   border-radius: 10px;
+  background-color: #2561a8;
+  font-weight: 500;
+}
+.chatcontentdivtab .nav-tabs .nav-link {
+  color: #000000;
+  border: 2px solid #2561a8;
+  box-shadow: none;
+  border-radius: 10px;
+  background-color: #fff;
+  font-weight: 500;
 }
 .chatcontentdivtab .nav-tabs {
   border: none;
+}
+.chatcontentdivtab .nav-item {
+  margin-left: 20px;
+}
+.message-div {
+  margin: 20px;
 }
