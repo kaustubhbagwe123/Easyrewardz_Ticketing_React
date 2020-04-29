@@ -1387,4 +1387,9 @@ table tr th:last-child {
   height: 18px;
   cursor: pointer;
 }
+.broadChannel{
+  display: 'block';
+  height: '30px';
+  line-height: 30px;
+}
 /* ------------------Campain Css End ------------------------- */
