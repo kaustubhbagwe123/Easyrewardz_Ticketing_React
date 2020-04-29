@@ -851,13 +851,14 @@ class CreatePriority extends Component {
     if (this.state.rowData.isActive === "") {
       this.setState({ editstatusCompulsion: "Please select status" });
     } else {
-      this.setState({ editstatusCompulsion: "Please select status" });
+      this.setState({ editstatusCompulsion: "" });
     }
     setTimeout(() => {
       if (
         this.state.rowData.priortyName !== "" &&
         this.state.editpriorityNameCompulsion == "" &&
-        this.state.isprority == false
+        this.state.isprority == false &&
+        this.state.editstatusCompulsion === ""
       ) {
         let self = this;
         var activeStatus = 0;
@@ -1106,7 +1107,25 @@ class CreatePriority extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="header-path active">
+            Priority
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             show={this.state.StatusModel}
@@ -1291,27 +1310,8 @@ class CreatePriority extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/store/settings" className="header-path">
-            Settings
-          </Link>
-          <span>&gt;</span>
-          <Link
-            to={{
-              pathname: "/store/settings",
-              tabName: "store-tab",
-            }}
-            className="header-path"
-          >
-            Store
-          </Link>
-          <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path active">
-            Priority
-          </Link>
-        </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
                 {/* {this.state.loading === true ? (

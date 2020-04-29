@@ -1746,7 +1746,26 @@ class ClaimCategoryMaster extends Component {
     ));
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
+        
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab"
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            Claim Category Master
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -1960,27 +1979,8 @@ class ClaimCategoryMaster extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="/store/settings" className="header-path">
-            Settings
-          </Link>
-          <span>&gt;</span>
-          <Link
-            to={{
-              pathname: "/store/settings",
-              tabName: "store-tab"
-            }}
-            className="header-path"
-          >
-            Store
-          </Link>
-          <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active header-path">
-            Claim Category Master
-          </Link>
-        </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr settingtable">
+          <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (

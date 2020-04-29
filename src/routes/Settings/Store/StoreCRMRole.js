@@ -341,6 +341,14 @@ class StoreCRMRole extends Component {
               updateModulesDisabled: "",
               checkRoleName: "",
               statusCompulsory: "",
+              modulesList: [
+                { moduleId: 1, moduleName: "Dashboard", isActive: true },
+                { moduleId: 2, moduleName: "Tasks", isActive: false },
+                { moduleId: 3, moduleName: "Claim", isActive: true },
+                { moduleId: 4, moduleName: "Notification", isActive: true },
+                { moduleId: 5, moduleName: "Settings", isActive: true },
+                { moduleId: 6, moduleName: "Reports", isActive: false },
+              ],
             });
             self.handleGetCRMGridData();
             this.handleModulesDefault();
@@ -355,6 +363,8 @@ class StoreCRMRole extends Component {
           }
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
+            NotificationManager.error("Record Already Exists ");
+          }else{
             NotificationManager.error("Record Already Exists ");
           }
         } else {

@@ -2506,7 +2506,8 @@
 /* StoreModule css Start by Shlok */
 .Store-paddmodule {
   background-color: #f5f8f9;
-  padding: 30px 35px;
+  /* padding: 30px 35px; */
+  padding: 5px 25px;
 }
 .claimtab-lbl {
   display: flex;
