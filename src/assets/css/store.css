@@ -1299,5 +1299,67 @@ table tr th:last-child {
   margin-bottom: 0 !important;
 }
 /* ------------------Campain Css Start 29.04.2020------------------------- */
-
+.custom-tableak {
+  padding: 20px;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+  font-size: 13px !important;
+}
+.button-red {
+  color: #ee6261;
+    font-weight: 600;
+    border-radius: 50px;
+    border: 1px solid #ee6261;
+    padding: 5px 20px;
+    font-size: 12px;
+    margin-right: 10px;
+}
+.button-blue {
+  color: #2196f3;
+  font-weight: 600;
+    border-radius: 50px;
+    font-size: 12px;
+    border: 1px solid #2196f3;
+    padding: 5px 20px;
+    margin-right: 10px;
+}
+.custom-tableak .sml-fnt {
+  font-size: 12px !important;
+}
+.custom-tableak .cust-name {
+  color: #2561a8;
+    font-weight: bolder;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+.custom-tableak .table-btnlabel {
+  box-shadow: none;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-expanded-row .ant-table-tbody > tr:first-child > td {
+  padding-top: 10px !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-expanded-row .ant-table-tbody > tr > td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  background: #fcfcfc !important;
+}
+.custom-tableak .saveBtn {
+  background-color: #fff;
+  border: 1px solid #2561a8;
+  border-radius: 4px;
+  width: 60px;
+  height: 30px;
+}
+.custom-tableak .raisedticket-Btn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 100px;
+  height: 30px;
+  text-transform: initial;
+}
+.custom-tableak .txtStore {
+  /* padding-top: 0px !important;
+  background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center */
+  background-size: 14px;
+}
 /* ------------------Campain Css End ------------------------- */

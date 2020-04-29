@@ -644,7 +644,7 @@ class StoreCampaign extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="custom-tableak">
         <div className="table-cntr store">
           <Table
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
@@ -662,8 +662,8 @@ class StoreCampaign extends Component {
                 dataIndex: "campaignScript",
                 render: (row, item) => {
                   return <div>
-                      <label>Chatbot Script</label>
-                      <label>SMS Script</label>
+                      <label className="button-red">Chatbot Script</label>
+                      <label className="button-blue">SMS Script</label>
                   </div>;
                 },
               },
@@ -706,7 +706,9 @@ class StoreCampaign extends Component {
                       render: (row, item) => {
                         return (
                           <>
+                            <p className="cust-name">
                             {item.customerName}
+                            </p>
                             <span className="sml-fnt">
                               {item.customerPhoneNumber}
                             </span>
@@ -930,7 +932,7 @@ class StoreCampaign extends Component {
                                     : "saveBtn disabled-link"
                                 }
                                 type="button"
-                                style={{ minWidth: "5px", marginRight: "3px" }}
+                                style={{ minWidth: "5px", marginRight: "10px" }}
                                 onClick={this.handleUpdateCampaignStatusResponse.bind(
                                   this,
                                   item.campaignCustomerID,
