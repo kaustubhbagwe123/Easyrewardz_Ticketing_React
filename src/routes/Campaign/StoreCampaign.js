@@ -5,7 +5,7 @@ import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table } from "antd";
+import { Table, Popover } from "antd";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
@@ -20,7 +20,7 @@ class StoreCampaign extends Component {
     this.state = {
       FirstCollapse: false,
       TwoCollapse: false,
-    //   campaignGridData: [],
+      //   campaignGridData: [],
       GridData: TestingDemo(),
       rowExpandedCount: 0,
       raisedTicketModal: false,
@@ -663,10 +663,43 @@ class StoreCampaign extends Component {
                 title: "Campaign Script",
                 dataIndex: "campaignScript",
                 render: (row, item) => {
-                  return <div>
-                      <a className="button-red">Chatbot Script</a>
-                      <a className="button-blue">SMS Script</a>
-                  </div>;
+                  return (
+                    <div>
+                      <Popover
+                        content={
+                          <div className="insertpop1">
+                            <div className="dash-creation-popup">
+                              <label className="title">Chatbot Script</label>
+                              <label>
+                                A wonderful serenity has taken possession of my
+                                entire soul, like these sweet mornings of spring
+                                which I enjoy with my whole heart. I am alone
+                              </label>
+                            </div>
+                          </div>
+                        }
+                        placement="bottom"
+                      >
+                        <a className="button-red">Chatbot Script</a>
+                      </Popover>
+                      <Popover
+                        content={
+                          <div className="insertpop1">
+                            <div className="dash-creation-popup">
+                              <label className="title">SMS Script</label>
+                              <label>
+                                A wonderful serenity has taken possession of my
+                                entire soul, like these sweet mornings of spring.
+                              </label>
+                            </div>
+                          </div>
+                        }
+                        placement="bottom"
+                      >
+                         <a className="button-blue">SMS Script</a>
+                      </Popover>
+                    </div>
+                  );
                 },
               },
               {
@@ -708,9 +741,7 @@ class StoreCampaign extends Component {
                       render: (row, item) => {
                         return (
                           <>
-                            <p className="cust-name">
-                            {item.customerName}
-                            </p>
+                            <p className="cust-name">{item.customerName}</p>
                             <span className="sml-fnt">
                               {item.customerPhoneNumber}
                             </span>
@@ -723,44 +754,44 @@ class StoreCampaign extends Component {
                       dataIndex: "campaignTypeDate",
                     },
                     {
-                        title: "Response",
-                        render: (row, item) => {
-                          return (
-                            <div
+                      title: "Response",
+                      render: (row, item) => {
+                        return (
+                          <div
+                            className={
+                              item.campaignStatus === 0 ? "disabled-input" : ""
+                            }
+                          >
+                            <select
                               className={
-                                item.campaignStatus === 0 ? "disabled-input" : ""
+                                item.campaignStatus === 0
+                                  ? "responceDrop-down dropdown-label disabled-link"
+                                  : "responceDrop-down dropdown-label"
                               }
+                              value={item.response}
+                              onChange={this.onResponseChange.bind(
+                                this,
+                                item.campaignTypeID,
+                                item.campaignCustomerID
+                              )}
                             >
-                              <select
-                                className={
-                                  item.campaignStatus === 0
-                                    ? "responceDrop-down dropdown-label disabled-link"
-                                    : "responceDrop-down dropdown-label"
-                                }
-                                value={item.response}
-                                onChange={this.onResponseChange.bind(
-                                  this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
-                                )}
-                              >
-                                <option hidden>Select Response</option>
-                                {item.campaignResponseList !== null &&
-                                  item.campaignResponseList
-                                    .filter(
-                                      (x) =>
-                                        x.statusNameID === item.campaignStatus
-                                    )
-                                    .map((items, i) => (
-                                      <option key={i} value={items.responseID}>
-                                        {items.response}
-                                      </option>
-                                    ))}
-                              </select>
-                            </div>
-                          );
-                        },
+                              <option hidden>Select Response</option>
+                              {item.campaignResponseList !== null &&
+                                item.campaignResponseList
+                                  .filter(
+                                    (x) =>
+                                      x.statusNameID === item.campaignStatus
+                                  )
+                                  .map((items, i) => (
+                                    <option key={i} value={items.responseID}>
+                                      {items.response}
+                                    </option>
+                                  ))}
+                            </select>
+                          </div>
+                        );
                       },
+                    },
                     {
                       title: "Status",
                       // dataIndex: "articleName"
@@ -800,9 +831,15 @@ class StoreCampaign extends Component {
                                 Not Contacted
                               </label>
                             </div> */}
-                            <label class="table-btnlabel notConnectedBtnRed">Not Contacted</label>
-                            <label class="table-btnlabel contactBtnGreen">Contacted</label>
-                            <label class="table-btnlabel followUpBtnYellow">Follow Up</label>
+                            <label class="table-btnlabel notConnectedBtnRed">
+                              Not Contacted
+                            </label>
+                            <label class="table-btnlabel contactBtnGreen">
+                              Contacted
+                            </label>
+                            <label class="table-btnlabel followUpBtnYellow">
+                              Follow Up
+                            </label>
                             {/* <div>
                               <input
                                 type="radio"
