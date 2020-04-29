@@ -7,7 +7,8 @@ import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
-// import KnowledgeLogoBlue from "./../../assets/Images/knowledge-blue.png";
+import CampaignLogo from "./../../assets/Images/campaign.svg";
+import CampaignLogoBlue from "./../../assets/Images/campaign.svg";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
@@ -205,6 +206,15 @@ class Header extends Component {
       imgClass: "claim-logo",
       activeClass: page === "claim" ? "active single-menu" : "single-menu",
     };
+    var campaign = {
+      data: "Campaign",
+      urls: "campaign",
+      logoBlack: CampaignLogo,
+      logoBlue: CampaignLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -222,7 +232,12 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(claim);
-        } else if (
+        }else if (
+          data[i].moduleName === "Campaign" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(campaign);
+        }else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -257,6 +272,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
