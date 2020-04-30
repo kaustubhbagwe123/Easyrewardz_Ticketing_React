@@ -1586,17 +1586,74 @@ table tr th:last-child {
   .custom-tableak {
     padding: 5px 0;
   }
-  .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
-    background-size: 17px 17px;
-    width: 17px;
-    height: 17px;
-  }
   .broadcast-icon img {
-    height: 16px;
+    height: 15px;
     cursor: pointer;
   }
   .hidedesk {
     display: inline-block;
   }
+  .custom-tableak .cust-name {
+    font-size: 12px;
+  }
+  .custom-tableak .sml-fnt {
+    font-size: 10px !important;
+  }
+  .table-btnlabel {
+    font-size: 10px;
+    line-height: 20px;
+  }
+  .notConnectedBtnRed {
+    width: 80px;
+    height: 22px;
+  }
+  .contactBtnGreen {
+    width: 80px;
+    height: 22px;
+  }
+  .followUpBtnYellow {
+    width: 80px;
+    height: 22px;
+  }
+  .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
+    background-size: 17px 17px;
+    width: 17px;
+    top: 49%;
+    height: 17px;
+  }
+  .custom-tableak .antd-table-campaign .ant-table-row-expanded::after {
+    background-size: 17px 17px;
+    width: 17px;
+    top: 49%;
+    height: 17px;
+  }
+  .info-icon-cp {
+    width: 14px;
+    height: 14px;
+}
+.ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
+  padding: 20px !important;
+  left: 0 !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
+  background: #e5e9ed !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+  font-size: 11px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th span {
+  padding: 10px 7px 4px !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-tbody > tr > td, .custom-tableak .custom-react-table .rt-tbody .rt-td {
+  padding: 7px !important;
+  font-size: 11px;
+}
 }
 /* ------------------Campain Css End ------------------------- */
+
