@@ -1597,8 +1597,12 @@ table tr th:last-child {
     height: 16px;
     cursor: pointer;
   }
+  .hidedesk {
+    display: inline-block;
+  }
 }
-<<<<<<< HEAD
+/* ------------------Campain Css End ------------------------- */
+/* 
 .ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
   padding: 20px !important;
   left: 0 !important;
@@ -1654,12 +1658,4 @@ table tr th:last-child {
 .broadcast-icon img {
   height: 16px;
   cursor: pointer;
-}
-.hidedesk {
-  display: block;
-}
-}
-/* ------------------Campain Css End ------------------------- */
-=======
-/* ------------------Campain Css End ------------------------- */
->>>>>>> 6636c468654e8c923d2543deb85f4c6ff4fdfad7
+} */
