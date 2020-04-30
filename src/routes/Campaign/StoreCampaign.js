@@ -632,7 +632,7 @@ class StoreCampaign extends Component {
                 dataIndex: "campaignName",
                 render: (row, item) => {
                   return (
-                    <div className="table-black-icon">
+                    <div>
                       {item.campaignName}
                       <Popover
                         content={
