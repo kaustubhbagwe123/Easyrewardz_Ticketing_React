@@ -632,12 +632,13 @@ class StoreCampaign extends Component {
                 dataIndex: "campaignName",
                 render: (row, item) => {
                   return (
-                    <div>
+                    <div className="table-black-icon">
+                      {item.campaignName}
                       <Popover
                         content={
                           <div className="general-popover popover-body broadcastpop">
                             <label>
-                              <b>{item.campaignName}</b>
+                              <b>SMS Script</b>
                             </label>
                           </div>
                         }
@@ -710,22 +711,23 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Status",
+                className:"particular-hide",
                 render: (row, item) => {
                   return (
                     <button
                       className="closebtn"
                       type="button"
-                      onClick={this.handleCloseCampaign.bind(
-                        this,
-                        row.campaignTypeID
-                      )}
+                      // onClick={this.handleCloseCampaign.bind(
+                      //   this,
+                      //   row.campaignTypeID
+                      // )}
                     >
                       <label className="hdrcloselabel">Close</label>
                     </button>
                   );
                 },
-                className:
-                  this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
+                // className:
+                //   this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
               },
               {
                 title: "Actions",
@@ -765,7 +767,6 @@ class StoreCampaign extends Component {
                     </Popover>
                   );
                 },
-                // dataIndex: "orderPricePaid"
               },
             ]}
             expandedRowRender={(row) => {
