@@ -1365,13 +1365,13 @@ table tr th:last-child {
   background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center */
   background-size: 14px;
 }
-.customclassforhomeshop .ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow{
+.ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow{
   display: none;
 }
-.customclassforhomeshop .ant-popover-inner {
+.ant-popover-inner {
   border-radius: 20px !important;
 }
-.customclassforhomeshop .ant-popover-placement-bottom, .customclassforhomeshop .ant-popover-placement-bottomLeft, .customclassforhomeshop .ant-popover-placement-bottomRight {
+.ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
   padding-top: 1px !important;
 }
 .custompop .poptitle {
@@ -1488,5 +1488,31 @@ table tr th:last-child {
   display: 'block';
   height: '30px';
   line-height: 30px;
+}
+.broadcastpop label {
+  display: block;
+}
+.broadcastpop .ant-radio-wrapper {
+  display: block;
+}
+/* ------------------Campain Media Queries ------------------------- */
+@media screen and (max-width: 600px) {
+  .custompop {
+    right: 0 !important;
+    width: 100% !important;
+}
+.ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
+  padding: 20px !important;
+  left: 0 !important;
+}
+.insertpop1 {
+  padding: 0px;
+}
+.ant-popover-inner-content {
+  padding: 20px;
+}
+.table-coloum-hide {
+  display: none !important;
+}
 }
 /* ------------------Campain Css End ------------------------- */

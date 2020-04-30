@@ -707,7 +707,7 @@ class StoreCampaign extends Component {
                   return (
                     <Popover
                       content={
-                        <div className="d-flex general-popover popover-body">
+                        <div className="general-popover popover-body broadcastpop">
                           <label>
                             <b>Broadcast to Campaign Customers</b>
                           </label>
