@@ -424,6 +424,20 @@ p {
 .storeUpbtn img{
   width: 20px;
 }
+.message-icon-cnt{
+  position: absolute;
+    background-color: #EB4D4B;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 10%;
+    font-size: 11px;
+    color: #fff;
+    font-weight: 700;
+    top: -13px;
+    right: -10px;
+}
 /* Responsive starts */
 @media all and (max-width: 576px) {
   #chat-popup-overlay {

@@ -596,7 +596,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
-        console.log(response, "---handleGetOngoingChat");
+        console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
   handleUpdateCustomerChatStatus(id) {
@@ -613,6 +613,7 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
+          self.setState({ chatId: 0 });
           self.handleGetOngoingChat();
           self.handleGetNewChat();
         } else {
@@ -631,6 +632,31 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var messageData = response.data.responseData;
+        if (message === "Success" && messageData) {
+          self.setState({ messageData });
+        } else {
+          self.setState({ messageData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatMessagesList");
+      });
+  }
+  handleSaveChatMessages() {
+    let self = this;
+    // var inputParam={}
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/saveChatMessages",
+      headers: authHeader(),
+      data: {
+        // chatID: id,
       },
     })
       .then(function(response) {
@@ -755,31 +781,33 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a href="#!" onClick={this.handleChatModalOpen.bind(this)}>
-              <img src={ChatLogo} alt="logo" className="chatImg" />
-              <img
-                src={ChatLogoBlue}
-                alt="logo"
-                className="chatImg"
-                style={{ display: "none" }}
-              />
+            <a onClick={this.handleChatModalOpen.bind(this)}>
+              <div className="position-relative">
+                <img src={ChatLogo} alt="logo" className="chatImg" />
+                <img
+                  src={ChatLogoBlue}
+                  alt="logo"
+                  className="chatImg"
+                  style={{ display: "none" }}
+                />
+                <span className="message-icon-cnt">3</span>
+              </div>
             </a>
             {/* --notification-- */}
             <a>
               <div
                 className="position-relative"
-                // style={{ display: this.state.notificationAccess }}
                 onClick={this.handleNotificationModalOpen.bind(this)}
               >
                 <img src={NotificationLogo} alt="logo" className="notifi" />
                 <span style={{ display: "none" }} className="icon-fullname">
                   Notifications
                 </span>
-                {/* {this.state.notiCount > 0 && ( */}
+
                 <span className="upper-noti-count">
                   {this.state.notificationCount}
                 </span>
-                {/* } */}
+
                 <span style={{ display: "none" }} className="icon-fullname">
                   Notifications
                 </span>
@@ -1066,7 +1094,11 @@ class Header extends Component {
                         this.state.ongoingChatsData.map((chat, i) => (
                           <div
                             key={i}
-                            className="chat-info"
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
                             onClick={this.handleMakeAsReadOnGoingChat.bind(
                               this,
                               chat.chatID,
@@ -1110,7 +1142,11 @@ class Header extends Component {
                         this.state.newChatsData.map((chat, i) => (
                           <div
                             key={i}
-                            className="chat-info"
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
                             onClick={this.handleUpdateCustomerChatStatus.bind(
                               this,
                               chat.chatID
@@ -1185,9 +1221,24 @@ class Header extends Component {
                         {this.state.ongoingChatsData &&
                           this.state.ongoingChatsData.map((chat, i) => (
                             <div key={i} className="chat-detail-middle-cntr">
-                              <div className="chat-detail-cntr">
+                              <div
+                                className={
+                                  this.state.chatId === chat.chatID
+                                    ? "chat-detail-cntr active"
+                                    : "chat-detail-cntr"
+                                }
+                                onClick={this.handleMakeAsReadOnGoingChat.bind(
+                                  this,
+                                  chat.chatID,
+                                  chat.cumtomerName
+                                )}
+                              >
                                 <div className="chat-face-cntr">
-                                  <img src={DummyFace1} alt="face image" />
+                                  <img
+                                    src={DummyFace1}
+                                    alt="face image"
+                                    title={chat.cumtomerName}
+                                  />
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
@@ -1210,8 +1261,20 @@ class Header extends Component {
                         {this.state.newChatsData &&
                           this.state.newChatsData.map((chat, i) => (
                             <div key={i} className="chat-detail-middle-cntr">
-                              <div className="chat-detail-cntr">
-                                <div className="chat-face-cntr">
+                              <div
+                                className="chat-detail-cntr"
+                                onClick={this.handleUpdateCustomerChatStatus.bind(
+                                  this,
+                                  chat.chatID
+                                )}
+                              >
+                                <div
+                                  className={
+                                    this.state.chatId === chat.chatID
+                                      ? "chat-face-cntr active"
+                                      : "chat-face-cntr"
+                                  }
+                                >
                                   <img src={DummyFace1} alt="face image" />
                                 </div>
                                 <span className="face-name">
