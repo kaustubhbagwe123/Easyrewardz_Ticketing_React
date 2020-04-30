@@ -1586,37 +1586,54 @@ table tr th:last-child {
   .custom-tableak {
     padding: 5px 0;
   }
-  .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
-    background-size: 17px 17px;
-    width: 17px;
-    height: 17px;
-  }
   .broadcast-icon img {
-    height: 16px;
+    height: 15px;
     cursor: pointer;
   }
   .hidedesk {
     display: inline-block;
   }
+  .custom-tableak .cust-name {
+    font-size: 12px;
+  }
+  .custom-tableak .sml-fnt {
+    font-size: 10px !important;
+  }
+  .table-btnlabel {
+    font-size: 10px;
+    line-height: 20px;
+  }
+  .notConnectedBtnRed {
+    width: 80px;
+    height: 22px;
+  }
+  .contactBtnGreen {
+    width: 80px;
+    height: 22px;
+  }
+  .followUpBtnYellow {
+    width: 80px;
+    height: 22px;
+  }
+  .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
+    background-size: 17px 17px;
+    width: 17px;
+    top: 49%;
+    height: 17px;
+  }
+  .custom-tableak .antd-table-campaign .ant-table-row-expanded::after {
+    background-size: 17px 17px;
+    width: 17px;
+    top: 49%;
+    height: 17px;
+  }
+  .info-icon-cp {
+    width: 14px;
+    height: 14px;
 }
-/* ------------------Campain Css End ------------------------- */
-<<<<<<< HEAD
-/* 
 .ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
   padding: 20px !important;
   left: 0 !important;
-}
-.insertpop1 {
-  padding: 0px;
-}
-.ant-popover-inner-content {
-  padding: 20px;
-}
-.table-coloum-hide {
-  display: none !important;
-}
-.particular-hide span {
-  visibility: hidden !important;
 }
 .custom-tableak .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
   background: #e5e9ed !important;
@@ -1637,26 +1654,6 @@ table tr th:last-child {
   padding: 7px !important;
   font-size: 11px;
 }
-.custom-tableak .closebtn {
-  width: 42px;
-  height: 20px;
-  min-width: 42px !important;
 }
-.custom-tableak .hdrcloselabel {
-  font-size: 10px;
-  vertical-align: text-bottom;
-}
-.custom-tableak {
-  padding: 5px 0;
-}
-.custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
-  background-size: 17px 17px;
-  width: 17px;
-  height: 17px;
-}
-.broadcast-icon img {
-  height: 16px;
-  cursor: pointer;
-} */
-=======
->>>>>>> 08560ea6fd62aaa24fddca646856240452d19949
+/* ------------------Campain Css End ------------------------- */
+
