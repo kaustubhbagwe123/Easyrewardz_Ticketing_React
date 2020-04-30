@@ -13,7 +13,9 @@ import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
+import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
+import BackArrow from "./../../assets/Images/blue-top-arrow-blue.png";
 import { Link, withRouter } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
@@ -53,13 +55,24 @@ class Header extends Component {
       selectedUserProfilePicture: "",
       cont: [],
       chatModal: false,
-      ongoingChatCount: 3,
       ongoingChatsData: [
+        {
+          name: "Shalini",
+          number: "+91-9873470074",
+          numberOfMessage: 5,
+          chatBegunSince: "56s",
+        },
         {
           name: "Varun Kumar",
           number: "+91-9873470074",
           numberOfMessage: 2,
           chatBegunSince: "56s",
+        },
+        {
+          name: "Kaustubh Bagwe",
+          number: "+91-9873470074",
+          numberOfMessage: 12,
+          chatBegunSince: "2m:06s",
         },
         {
           name: "Naman Rampal",
@@ -118,7 +131,6 @@ class Header extends Component {
           chatBegunSince: "5m:00s",
         },
       ],
-      newChatCount: 2,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -844,6 +856,12 @@ class Header extends Component {
           overlayId="chat-popup-overlay"
         >
           <div className="store-chat-header">
+            <img
+              src={BackArrow}
+              className="mobile-arrow"
+              alt="back arrow"
+              onClick={this.handleChatModalClose}
+            />
             <h3>Store chat window</h3>
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
@@ -856,9 +874,9 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       Ongoing Chats (
-                      {this.state.ongoingChatCount < 10
-                        ? "0" + this.state.ongoingChatCount
-                        : this.state.ongoingChatCount}
+                      {this.state.ongoingChatsData.length < 10
+                        ? "0" + this.state.ongoingChatsData.length
+                        : this.state.ongoingChatsData.length}
                       )
                     </p>
                     <div className="chat-left-height">
@@ -937,9 +955,9 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       New Chats (
-                      {this.state.newChatCount < 10
-                        ? "0" + this.state.newChatCount
-                        : this.state.newChatCount}
+                      {this.state.newChatsData.length < 10
+                        ? "0" + this.state.newChatsData.length
+                        : this.state.newChatsData.length}
                       )
                     </p>
                     <div className="chat-left-height">
@@ -1002,6 +1020,170 @@ class Header extends Component {
                   </div>
                 </div>
                 {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
+              </div>
+              <div className="mobile-chat-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="ongoing-chat-tab"
+                      data-toggle="tab"
+                      href="#ongoing-chat"
+                      role="tab"
+                      aria-controls="ongoing-chat"
+                      aria-selected="true"
+                    >
+                      Ongoing Chats
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="new-chat-tab"
+                      data-toggle="tab"
+                      href="#new-chat"
+                      role="tab"
+                      aria-controls="new-chat"
+                      aria-selected="false"
+                    >
+                      New Chats
+                    </a>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div
+                    class="tab-pane fade show active"
+                    id="ongoing-chat"
+                    role="tabpanel"
+                    aria-labelledby="ongoing-chat-tab"
+                  >
+                    <div>
+                      <p className="mobile-chat-header">Ongoing Chats</p>
+                      <div className="chat-detail-outer-cntr">
+                        <div className="chat-detail-cntr active">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Naman</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Varun</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Raju</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Kaustubh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Suraj</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Abu</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Vipin</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Devesh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Karan</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="new-chat"
+                    role="tabpanel"
+                    aria-labelledby="new-chat-tab"
+                  >
+                    <div>
+                      <p className="mobile-chat-header">New Chats</p>
+                      <div className="chat-detail-outer-cntr">
+                        <div className="chat-detail-cntr active">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Naman</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Varun</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Raju</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Kaustubh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Suraj</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Abu</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Vipin</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Devesh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Karan</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="col-lg-9 p-0">
                 <div className="chatbot-right">
