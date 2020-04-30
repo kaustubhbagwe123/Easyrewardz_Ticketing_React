@@ -1124,7 +1124,7 @@ class Header extends Component {
                                   <img src={DummyFace1} alt="face image" />
                                 </div>
                                 <span className="face-name">
-                                  {chat.name.split(" ")[0]}
+                                  {chat.cumtomerName.split(" ")[0]}
                                 </span>
                               </div>
                             </div>
@@ -1149,7 +1149,7 @@ class Header extends Component {
                                   <img src={DummyFace1} alt="face image" />
                                 </div>
                                 <span className="face-name">
-                                  {chat.name.split(" ")[0]}
+                                  {chat.cumtomerName.split(" ")[0]}
                                 </span>
                               </div>
                             </div>
@@ -1166,37 +1166,32 @@ class Header extends Component {
                       <label className="chattitlelbl">
                         {this.state.customerName}
                       </label>
-                      
-                    </div>
-
-                    <div className="chatcontentRow">
-                      <div className="chatcontentDiv">
-                        <div className="chat-trail-cntr chat-trail-cntr-right">
-                          <div className="chat-trail-img">
-                            <img src={DummyFace2} alt="face image" />
-                          </div>
-                          <div className="chat-trail-chat-cntr">
-                            <p className="chat-trail-chat">
-                              Hello Sir, Thank you for allowing me to assist you
-                              today. What product will you like to view?
-                            </p>
-                            <span className="chat-trail-time">1m:36s</span>
-                          </div>
-                        </div>
-                        <div className="chat-trail-cntr">
-                          <div className="chat-trail-img">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <div className="chat-trail-chat-cntr">
-                            <p className="chat-trail-chat">Shop</p>
-                            <span className="chat-trail-time">56s</span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                     {this.state.isDownbtn ? (
                       <div className="chatcontentRow">
-                        <div className="chatcontentDiv"></div>
+                        <div className="chatcontentDiv">
+                          <div className="chat-trail-cntr chat-trail-cntr-right">
+                            <div className="chat-trail-img">
+                              <img src={DummyFace2} alt="face image" />
+                            </div>
+                            <div className="chat-trail-chat-cntr">
+                              <p className="chat-trail-chat">
+                                Hello Sir, Thank you for allowing me to assist
+                                you today. What product will you like to view?
+                              </p>
+                              <span className="chat-trail-time">1m:36s</span>
+                            </div>
+                          </div>
+                          <div className="chat-trail-cntr">
+                            <div className="chat-trail-img">
+                              <img src={DummyFace1} alt="face image" />
+                            </div>
+                            <div className="chat-trail-chat-cntr">
+                              <p className="chat-trail-chat">Shop</p>
+                              <span className="chat-trail-time">56s</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     ) : null}
                     <div
