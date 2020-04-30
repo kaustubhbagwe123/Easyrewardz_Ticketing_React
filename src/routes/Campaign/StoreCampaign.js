@@ -3,15 +3,20 @@ import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import Whatsapp from "./../../assets/Images/whatsapp.svg";
+import Sms1 from "./../../assets/Images/sms1.svg";
+import ChatbotS from "./../../assets/Images/sms2.svg";
+import collapsedown from "./../../assets/Images/collapsedown.png";
+import collapseUp from "./../../assets/Images/collapseUp.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
+import Shoe from "./../../assets/Images/shoe.jpg"
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
-// import { Collapse, CardBody, Card } from "reactstrap";
-// import CampaignTable1 from "./Tables/Campaign-row1";
+import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 
 class StoreCampaign extends Component {
@@ -40,6 +45,7 @@ class StoreCampaign extends Component {
       isTiketDetails: "",
       loading: false,
       broadcastChannel: 1,
+      responsiveChildTable: false,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -57,7 +63,6 @@ class StoreCampaign extends Component {
     this.handleCampaignGridData();
     this.handleGetBrand();
   }
-
 
   onStatusChange(campaignTypeID, campaignCustomerID, e) {
     this.state.campaignGridData
@@ -616,6 +621,12 @@ class StoreCampaign extends Component {
       broadcastChannel: e.target.value,
     });
   };
+
+  handleToggleChildTable() {
+    this.setState({
+      responsiveChildTable: !this.state.responsiveChildTable,
+    });
+  }
   render() {
     return (
       <div className="custom-tableak">
@@ -630,13 +641,12 @@ class StoreCampaign extends Component {
                   return (
                     <div>
                       {item.campaignName}
-                    
-                        <img
-                          className="info-icon-cp hidedesk"
-                          src={BlackInfoIcon}
-                          alt="info-icon"
-                          onClick={this.responsiveCustModalOpen.bind(this)}
-                        />
+                      <img
+                        className="info-icon-cp hidedesk"
+                        src={BlackInfoIcon}
+                        alt="info-icon"
+                        onClick={this.responsiveCustModalOpen.bind(this)}
+                      />
                     </div>
                   );
                 },
@@ -667,7 +677,7 @@ class StoreCampaign extends Component {
                         }
                         placement="bottom"
                       >
-                        <a className="button-red">Chatbot Script</a>
+                        <a className="button-red"><img className="ico" src={ChatbotS} alt="Whatsapp Icon"/>Chatbot Script</a>
                       </Popover>
                       <Popover
                         content={
@@ -684,7 +694,7 @@ class StoreCampaign extends Component {
                         }
                         placement="bottom"
                       >
-                        <a className="button-blue">SMS Script</a>
+                        <a className="button-blue"><img className="ico" src={ChatbotS} alt="Whatsapp Icon"/>SMS Script</a>
                       </Popover>
                     </div>
                   );
@@ -712,7 +722,6 @@ class StoreCampaign extends Component {
                     </button>
                   );
                 },
-                
               },
               {
                 title: "Actions",
@@ -771,7 +780,7 @@ class StoreCampaign extends Component {
                                 this
                               )}
                             >
-                              {item.customerName}
+                              {item.customerName}<img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>
                             </p>
                             <span className="sml-fnt">
                               {item.customerPhoneNumber}
@@ -834,10 +843,16 @@ class StoreCampaign extends Component {
                             <label className="table-btnlabel notConnectedBtnRed">
                               Not Contacted
                             </label>
-                            <label className="table-btnlabel contactBtnGreen">
+                            <label
+                              className="table-btnlabel contactBtnGreen"
+                              style={{ display: "none" }}
+                            >
                               Contacted
                             </label>
-                            <label className="table-btnlabel followUpBtnYellow">
+                            <label
+                              className="table-btnlabel followUpBtnYellow"
+                              style={{ display: "none" }}
+                            >
                               Follow Up
                             </label>
                           </div>
@@ -898,35 +913,191 @@ class StoreCampaign extends Component {
                         return (
                           <div className="d-flex">
                             <div>
-                              <button
-                                className="saveBtn"
-                                type="button"
-                                style={{ minWidth: "5px", marginRight: "10px" }}
-                                // onClick={this.handleUpdateCampaignStatusResponse.bind(
-                                //   this,
-                                //   item.campaignCustomerID,
-                                //   item.campaignStatus,
-                                //   item.response,
-                                //   item.callReScheduledTo
-                                // )}
-                              >
-                                <label className="saveLabel">Update</label>
-                              </button>
+                              {this.state.responsiveChildTable ? (
+                                <img
+                                  className="info-icon-cp hidedesk"
+                                  src={collapseUp}
+                                  alt="collapseUp"
+                                  onClick={this.handleToggleChildTable.bind(
+                                    this
+                                  )}
+                                />
+                              ) : (
+                                <img
+                                  className="info-icon-cp hidedesk"
+                                  src={collapsedown}
+                                  alt="collapsedown"
+                                  onClick={this.handleToggleChildTable.bind(
+                                    this
+                                  )}
+                                />
+                              )}
+
+                              <div>
+                                <Collapse
+                                  isOpen={this.state.responsiveChildTable}
+                                >
+                                  <Card>
+                                    <CardBody>
+                                      <div>
+                                        <div className="row">
+                                          <label
+                                            style={{ display: "contents" }}
+                                          >
+                                            Customer Name
+                                          </label>
+                                          <div style={{ display: "contents" }}>
+                                            <label
+                                              style={{ marginLeft: "15px" }}
+                                            >
+                                              Naman Rampal
+                                              <span>9873746575</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="row">
+                                          <label
+                                            style={{ display: "contents" }}
+                                          >
+                                            Date
+                                          </label>
+                                          <div style={{ display: "contents" }}>
+                                            <label
+                                              style={{ marginLeft: "15px" }}
+                                            >
+                                              29 April 2016
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="row">
+                                          <label
+                                            style={{ display: "contents" }}
+                                          >
+                                            Response
+                                          </label>
+                                          <div>
+                                            <select
+                                              className={
+                                                item.campaignStatus === 0
+                                                  ? "responceDrop-down dropdown-label disabled-link"
+                                                  : "responceDrop-down dropdown-label"
+                                              }
+                                              value={item.response}
+                                              onChange={this.onResponseChange.bind(
+                                                this,
+                                                item.campaignTypeID,
+                                                item.campaignCustomerID
+                                              )}
+                                            >
+                                              <option hidden>
+                                                Select Response
+                                              </option>
+                                              {item.campaignResponseList !==
+                                                null &&
+                                                item.campaignResponseList
+                                                  .filter(
+                                                    (x) =>
+                                                      x.statusNameID ===
+                                                      item.campaignStatus
+                                                  )
+                                                  .map((items, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={items.responseID}
+                                                    >
+                                                      {items.response}
+                                                    </option>
+                                                  ))}
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div className="row">
+                                          <label>Status</label>
+                                          <label className="table-btnlabel notConnectedBtnRed">
+                                            Not Contacted
+                                          </label>
+                                        </div>
+                                        <div className="row">
+                                          <label>Call Rescheduled to</label>
+                                          <DatePicker
+                                            id="startDate"
+                                            autoComplete="off"
+                                            showTimeSelect
+                                            name="startDate"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            selected={
+                                              item.callReScheduledTo !== ""
+                                                ? new Date(
+                                                    item.callReScheduledTo
+                                                  )
+                                                : new Date()
+                                            }
+                                            dateFormat="MM/dd/yyyy h:mm aa"
+                                            value={
+                                              item.callReScheduledTo !== ""
+                                                ? moment(item.callReScheduledTo)
+                                                : ""
+                                            }
+                                            onChange={this.onDateChange.bind(
+                                              this,
+                                              item.campaignTypeID,
+                                              item.campaignCustomerID
+                                            )}
+                                            className={
+                                              item.campaignStatus === 102 &&
+                                              item.response === 3
+                                                ? "txtStore dateTimeStore"
+                                                : "txtStore dateTimeStore disabled-link"
+                                            }
+                                            placeholderText="Select Date &amp; Time"
+                                          />
+                                        </div>
+                                        <div className="row">
+                                          <button>update</button>
+                                          <button>Raise Ticket</button>
+                                        </div>
+                                      </div>
+                                    </CardBody>
+                                  </Card>
+                                </Collapse>
+                              </div>
                             </div>
-                            <div>
-                              <button
-                                className="raisedticket-Btn"
-                                type="button"
-                                // onClick={this.handleRaisedTicketModalOpen.bind(
-                                //   this,
-                                //   row,
-                                //   item
-                                // )}
-                              >
-                                <label className="raise-ticketLbl">
-                                  Raise Ticket
-                                </label>
-                              </button>
+                            <div className="table-coloum-hide status-btn-camp">
+                              <div>
+                                <button
+                                  className="saveBtn"
+                                  type="button"
+                                  style={{
+                                    minWidth: "5px",
+                                    marginRight: "10px",
+                                  }}
+                                  // onClick={this.handleUpdateCampaignStatusResponse.bind(
+                                  //   this,
+                                  //   item.campaignCustomerID,
+                                  //   item.campaignStatus,
+                                  //   item.response,
+                                  //   item.callReScheduledTo
+                                  // )}
+                                >
+                                  <label className="saveLabel">Update</label>
+                                </button>
+                              </div>
+                              <div>
+                                <button
+                                  className="raisedticket-Btn"
+                                  type="button"
+                                  // onClick={this.handleRaisedTicketModalOpen.bind(
+                                  //   this,
+                                  //   row,
+                                  //   item
+                                  // )}
+                                >
+                                  <label className="raise-ticketLbl">
+                                    Raise Ticket
+                                  </label>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         );
@@ -1030,23 +1201,145 @@ class StoreCampaign extends Component {
                 <Tabs>
                   <Tab label="Recommended">
                     <div>
-                      <h4 style={{ textAlign: "center" }}></h4>
-                      <div className="right-sect-div right-sect-div-edit"></div>
+                      <div className="pro-slidercam">
+                        <table className="w-100">
+                          <tr>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
                     </div>
                   </Tab>
                   <Tab label="Last Transaction">
                     <div>
-                      <h4 style={{ textAlign: "center" }}></h4>
-                      <div className="right-sect-div right-sect-div-edit"></div>
+                      <div className="transactionbox">
+                          <table>
+                            <tr>
+                              <td>
+                                <h5>Bill No.</h5>
+                                <label>BB332393</label>
+                              </td>
+                              <td>
+                                <h5>Amount</h5>
+                                <label>₹1,499</label>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>Store</h5>
+                                <label>Bata - Rajouri Garden</label>
+                              </td>
+                              <td>
+                                <h5>Date</h5>
+                                <label>12 Jan 2020</label>
+                              </td>
+                            </tr>
+                          </table>
+                          <div className="trasactablist">
+                            <div className="tabscrol">
+                              <table>
+                              <tr>
+                                <th>Article</th>
+                                <th>Qty.</th>
+                                <th>Amount</th>
+                              </tr>
+                              <tr>
+                                <td>Beige Sports Shoes</td>
+                                <td>x1</td>
+                                <td>₹1,499</td>
+                              </tr>
+                              <tr>
+                                <td>Black Sandals</td>
+                                <td>x2</td>
+                                <td>₹4,998</td>
+                              </tr>
+                            </table>
+                            </div>
+                          </div>
+                      </div>
                     </div>
                   </Tab>
                 </Tabs>
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="sharecamp">
+                <h4>Share Campaign Via</h4>
+                <ul>
+                  <li><img className="ico" src={Sms1} alt="SMS Icon"/>SMS</li>
+                  <li><img className="ico" src={Sms1} alt="Email Icon"/>Email</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </Modal>
         {/* ---------Raised Ticket Modal----------- */}
-        {/* <Modal
+        <Modal
           open={this.state.raisedTicketModal}
           onClose={this.handleRaisedTicketModalClose.bind(this)}
           center
@@ -1127,159 +1420,160 @@ class StoreCampaign extends Component {
                   onChange={this.handleOnchange}
                   disabled
                 />
-               
-              <div className="col-md-4 mb-3">
-                <label>Brand</label>
-                <select
-                  name="brand"
-                  value={this.state.modalData["brand"]}
-                  onChange={this.handleOnchange}
+
+                <div className="col-md-4 mb-3">
+                  <label>Brand</label>
+                  <select
+                    name="brand"
+                    value={this.state.modalData["brand"]}
+                    onChange={this.handleOnchange}
+                  >
+                    <option value="">Select</option>
+                    {this.state.brandData !== null &&
+                      this.state.brandData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.brandID}
+                          className="select-category-placeholder"
+                        >
+                          {item.brandName}
+                        </option>
+                      ))}
+                  </select>
+                  {this.state.isBrand !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isBrand}
+                    </p>
+                  )}
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label>Category</label>
+                  <select
+                    name="category"
+                    value={this.state.modalData["category"]}
+                    onChange={this.handleOnchange}
+                  >
+                    <option value="">Select</option>
+                    {this.state.categoryData !== null &&
+                      this.state.categoryData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.categoryID}
+                          className="select-category-placeholder"
+                        >
+                          {item.categoryName}
+                        </option>
+                      ))}
+                  </select>
+                  {this.state.isCategory !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isCategory}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-4 mb-3">
+                  <label>Sub Category</label>
+                  <select
+                    name="subCategory"
+                    value={this.state.modalData["subCategoryId"]}
+                    onChange={this.handleOnchange}
+                  >
+                    <option value="">Select</option>
+                    {this.state.subCategoryData !== null &&
+                      this.state.subCategoryData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.subCategoryID}
+                          className="select-category-placeholder"
+                        >
+                          {item.subCategoryName}
+                        </option>
+                      ))}
+                  </select>
+                  {this.state.isSubCategory !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isSubCategory}
+                    </p>
+                  )}
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label>Issue Type</label>
+                  <select
+                    name="issueType"
+                    value={this.state.modalData["issueTypeId"]}
+                    onChange={this.handleOnchange}
+                  >
+                    <option value="">Select</option>
+                    {this.state.issueTypeData !== null &&
+                      this.state.issueTypeData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.issueTypeID}
+                          className="select-category-placeholder"
+                        >
+                          {item.issueTypeName}
+                        </option>
+                      ))}
+                  </select>
+                  {this.state.isIssueType !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isIssueType}
+                    </p>
+                  )}
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label>Ticket Title</label>
+                  <input
+                    type="text"
+                    name="tiketTitle"
+                    className="email_Id"
+                    value={this.state.modalData["tiketTitle"]}
+                    onChange={this.handleOnchange}
+                  />
+                  {this.state.isTiketTitle !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isTiketTitle}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label>Ticket Details</label>
+                  <textarea
+                    name="tiketDetails"
+                    className="textarea-store"
+                    value={this.state.modalData["tiketDetails"]}
+                    onChange={this.handleOnchange}
+                  ></textarea>
+                  {this.state.isTiketDetails !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isTiketDetails}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="text-right">
+                <a
+                  href="#!"
+                  onClick={this.handleRaisedTicketModalClose.bind(this)}
+                  class="blue-clr mr-4"
                 >
-                  <option value="">Select</option>
-                  {this.state.brandData !== null &&
-                    this.state.brandData.map((item, i) => (
-                      <option
-                        key={i}
-                        value={item.brandID}
-                        className="select-category-placeholder"
-                      >
-                        {item.brandName}
-                      </option>
-                    ))}
-                </select>
-                {this.state.isBrand !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isBrand}
-                  </p>
-                )}
-              </div>
-              <div className="col-md-4 mb-3">
-                <label>Category</label>
-                <select
-                  name="category"
-                  value={this.state.modalData["category"]}
-                  onChange={this.handleOnchange}
+                  CANCEL
+                </a>
+                <button
+                  className="butn"
+                  type="button"
+                  onClick={this.handleCreateTicket.bind(this)}
                 >
-                  <option value="">Select</option>
-                  {this.state.categoryData !== null &&
-                    this.state.categoryData.map((item, i) => (
-                      <option
-                        key={i}
-                        value={item.categoryID}
-                        className="select-category-placeholder"
-                      >
-                        {item.categoryName}
-                      </option>
-                    ))}
-                </select>
-                {this.state.isCategory !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isCategory}
-                  </p>
-                )}
+                  CREATE TICKET
+                </button>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-4 mb-3">
-                <label>Sub Category</label>
-                <select
-                  name="subCategory"
-                  value={this.state.modalData["subCategoryId"]}
-                  onChange={this.handleOnchange}
-                >
-                  <option value="">Select</option>
-                  {this.state.subCategoryData !== null &&
-                    this.state.subCategoryData.map((item, i) => (
-                      <option
-                        key={i}
-                        value={item.subCategoryID}
-                        className="select-category-placeholder"
-                      >
-                        {item.subCategoryName}
-                      </option>
-                    ))}
-                </select>
-                {this.state.isSubCategory !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isSubCategory}
-                  </p>
-                )}
-              </div>
-              <div className="col-md-4 mb-3">
-                <label>Issue Type</label>
-                <select
-                  name="issueType"
-                  value={this.state.modalData["issueTypeId"]}
-                  onChange={this.handleOnchange}
-                >
-                  <option value="">Select</option>
-                  {this.state.issueTypeData !== null &&
-                    this.state.issueTypeData.map((item, i) => (
-                      <option
-                        key={i}
-                        value={item.issueTypeID}
-                        className="select-category-placeholder"
-                      >
-                        {item.issueTypeName}
-                      </option>
-                    ))}
-                </select>
-                {this.state.isIssueType !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isIssueType}
-                  </p>
-                )}
-              </div>
-              <div className="col-md-4 mb-3">
-                <label>Ticket Title</label>
-                <input
-                  type="text"
-                  name="tiketTitle"
-                  className="email_Id"
-                  value={this.state.modalData["tiketTitle"]}
-                  onChange={this.handleOnchange}
-                />
-                {this.state.isTiketTitle !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isTiketTitle}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12 mb-3">
-                <label>Ticket Details</label>
-                <textarea
-                  name="tiketDetails"
-                  className="textarea-store"
-                  value={this.state.modalData["tiketDetails"]}
-                  onChange={this.handleOnchange}
-                ></textarea>
-                {this.state.isTiketDetails !== "" && (
-                  <p style={{ color: "red", marginBottom: "0px" }}>
-                    {this.state.isTiketDetails}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="text-right">
-              <a
-                href="#!"
-                onClick={this.handleRaisedTicketModalClose.bind(this)}
-                class="blue-clr mr-4"
-              >
-                CANCEL
-              </a>
-              <button
-                className="butn"
-                type="button"
-                onClick={this.handleCreateTicket.bind(this)}
-              >
-                CREATE TICKET
-              </button>
             </div>
           </div>
-        </Modal> */}
+        </Modal>
       </div>
     );
   }

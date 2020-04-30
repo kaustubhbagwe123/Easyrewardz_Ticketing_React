@@ -1315,7 +1315,7 @@ table tr th:last-child {
   font-weight: 600;
   border-radius: 50px;
   border: 1px solid #ee6261;
-  padding: 5px 20px;
+  padding: 6px 20px 9px;
   cursor: pointer;
   font-size: 12px;
   margin-right: 10px;
@@ -1327,8 +1327,14 @@ table tr th:last-child {
   font-size: 12px;
   cursor: pointer;
   border: 1px solid #2196f3;
-  padding: 5px 20px;
+  padding: 6px 20px 9px;
   margin-right: 10px;
+}
+.button-red .ico {
+  margin-right: 5px;
+}
+.button-blue .ico {
+  margin-right: 5px;
 }
 .custom-tableak .sml-fnt {
   font-size: 12px !important;
@@ -1481,7 +1487,10 @@ table tr th:last-child {
   background-color: #f2f5f8;
   border-radius: 10px;
   margin: 20px 0 0 0;
-  padding: 18px 23px;
+  padding: 18px 30px;
+}
+.productbox .tab-content {
+  padding: 24px 0 0;
 }
 .productbox .nav-tabs .nav-link.active {
   color: #8694a0;
@@ -1490,6 +1499,8 @@ table tr th:last-child {
   background-color: transparent;
   font-size: 14px;
   padding: 0;
+  padding-bottom: 3px;
+  display: inline;
 }
 .productbox .nav-tabs .nav-link {
   color: #8694a0;
@@ -1498,8 +1509,9 @@ table tr th:last-child {
   font-size: 14px;
   padding: 0;
 }
-.productbox .nav-item:first-child {
-  margin-right: 90px;
+.productbox .nav-item {
+  display: block;
+  width: 50%;
 }
 .broadChannel {
   display: "block";
@@ -1507,7 +1519,122 @@ table tr th:last-child {
   line-height: 30px;
 }
 
-
+.pro-slidercam td {
+  padding: 0;
+  padding-bottom: 7px;
+}
+.pro-slidercam td:first-child {
+  padding-right: 10px;
+}
+.pro-slidercam td:last-child {
+  padding-left: 10px;
+}
+.pro-slidercam .shoeimg {
+  height: 100%;
+  width: auto;
+  display: block;
+    margin: auto;
+}
+.pro-slidercam .imgbox {
+  height: 75px;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  background-color: #fff;
+}
+.pro-slidercam h4 {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 5px;
+  color: #333;
+}
+.whatsappico {
+  height: 18px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.transactionbox td {
+  padding: 0 0 10px 0;
+}
+.transactionbox h5 {
+  color: #8694a0;
+  font-size: 13px;
+  padding: 0 0 1px 0;
+}
+.transactionbox label {
+  color: #666;
+  font-size: 15px;
+}
+.trasactablist {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin-top: 5px;
+  padding: 15px;
+}
+.trasactablist tr:last-child {
+  margin-bottom: 15px;
+}
+.trasactablist th {
+  padding: 0 0 5px;
+  color: #999;
+  font-size: 12.5px;
+}
+.trasactablist td {
+  padding: 5px 0 3px;
+  font-size: 12.5px;
+  color: #777;
+  font-weight: 600;
+}
+.trasactablist .tabscrol {
+  max-height: 75px;
+  overflow: auto;
+}
+.trasactablist .tabscrol::-webkit-scrollbar {
+  width: 4px;
+}
+.trasactablist .tabscrol::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.trasactablist .tabscrol::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.trasactablist .tabscrol::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.sharecamp {
+  margin-top: 25px;
+}
+.sharecamp h4 {
+  font-size: 17px;
+  font-weight: bolder;
+  color: #666;
+  margin-bottom: 8px;
+}
+.sharecamp ul {
+  margin-bottom: 0px;
+}
+.sharecamp li {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 7px;
+  margin-right: 20px;
+  min-width: 120px;
+  text-align: center;
+  color: #888;
+  font-size: 15px;
+}
+.sharecamp li:last-child {
+  margin-right: 0px;
+}
+.sharecamp .ico {
+  margin-right: 7px;
+  height: 24px;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
@@ -1517,6 +1644,9 @@ table tr th:last-child {
 }
 .hidedesk {
   display: none;
+}
+.status-btn-camp{
+  display: contents;
 }
 /* ------------------Campain Media Queries ------------------------- */
 @media screen and (max-width: 600px) {
@@ -1599,6 +1729,9 @@ table tr th:last-child {
   .custom-tableak .cust-name {
     font-size: 12px;
   }
+  .cust-name .ico {
+    margin-left: 10px;
+}
   .custom-tableak .sml-fnt {
     font-size: 10px !important;
   }
