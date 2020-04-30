@@ -393,6 +393,8 @@ p {
   background-color: #fff;
   width: 20px;
   padding: 10px;
+  margin: auto;
+  margin-top: 10px;
 }
 .product-card {
   height: 152px;
