@@ -5,6 +5,7 @@ import ChatLogo from "./../../assets/Images/chat.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
+import Assign from "./../../assets/Images/assign.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
 import CampaignLogo from "./../../assets/Images/campaign.svg";
@@ -15,6 +16,7 @@ import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
+import DummyFace2 from "./../../assets/Images/dummy-face-2.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/blue-top-arrow-blue.png";
 import { Link, withRouter } from "react-router-dom";
@@ -31,6 +33,7 @@ import "./../../assets/css/store-chat.css";
 import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
 import Bata from "./../../assets/Images/Bata2.jpeg";
+import DownArrow from "./../../assets/Images/down.png";
 
 class Header extends Component {
   constructor(props) {
@@ -58,82 +61,8 @@ class Header extends Component {
       selectedUserProfilePicture: "",
       cont: [],
       chatModal: false,
-      ongoingChatsData: [
-        {
-          name: "Shalini",
-          number: "+91-9873470074",
-          numberOfMessage: 5,
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Varun Kumar",
-          number: "+91-9873470074",
-          numberOfMessage: 2,
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Kaustubh Bagwe",
-          number: "+91-9873470074",
-          numberOfMessage: 12,
-          chatBegunSince: "2m:06s",
-        },
-        {
-          name: "Naman Rampal",
-          number: "+91-9873470765",
-          numberOfMessage: 1,
-          chatBegunSince: "1m:36s",
-        },
-        {
-          name: "Ankit Gupta",
-          number: "+91-9382838834",
-          numberOfMessage: 0,
-          chatBegunSince: "2m:46s",
-        },
-        {
-          name: "Vijay Rao",
-          number: "+91-9873470074",
-          numberOfMessage: 4,
-          chatBegunSince: "3m:56s",
-        },
-        {
-          name: "Raj Thakkar",
-          number: "+91-9873470074",
-          numberOfMessage: 6,
-          chatBegunSince: "5m:00s",
-        },
-      ],
-      newChatsData: [
-        {
-          name: "Vipin Kumar",
-          number: "+91-9873470074",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Mohit Rampal",
-          number: "+91-9873470765",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "1m:36s",
-        },
-        {
-          name: "Ankit Gupta",
-          number: "+91-9382838834",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "2m:46s",
-        },
-        {
-          name: "Vijay Rao",
-          number: "+91-9873470074",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "3m:56s",
-        },
-        {
-          name: "Raj Thakkar",
-          number: "+91-9873470074",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "5m:00s",
-        },
-      ],
+      ongoingChatsData: [],
+      newChatsData: [],
       searchCardData: [
         {
           id: 1,
@@ -190,6 +119,10 @@ class Header extends Component {
           isSelect: false,
         },
       ],
+      chatId: 0,
+      isDownbtn: true,
+      customerName: "",
+      messageData: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -302,12 +235,12 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(claim);
-        }else if (
+        } else if (
           data[i].moduleName === "Campaign" &&
           data[i].modulestatus === true
         ) {
           accessdata.push(campaign);
-        }else if (
+        } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -342,7 +275,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -554,8 +486,145 @@ class Header extends Component {
   ////handle chat modal open
   handleChatModalOpen() {
     this.setState({ chatModal: true });
+    this.handleGetOngoingChat();
+    this.handleGetNewChat();
   }
 
+  ////handleGet Ongoing Chat
+  handleGetOngoingChat() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetOngoingChat",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var ongoingChatsData = response.data.responseData;
+        if (message === "Success" && ongoingChatsData) {
+          self.setState({ ongoingChatsData });
+        } else {
+          self.setState({ ongoingChatsData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetOngoingChat");
+      });
+  }
+
+  ////handle Get New Chat
+  handleGetNewChat() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetNewChat",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var newChatsData = response.data.responseData;
+        if (message === "Success" && newChatsData) {
+          self.setState({ newChatsData });
+        } else {
+          self.setState({ newChatsData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetOngoingChat");
+      });
+  }
+  ////handle Make As Read On Going Chat
+  handleMakeAsReadOnGoingChat(id, name) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/MarkAsReadOnGoingChat",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetOngoingChat();
+          self.setState({ customerName: name });
+        } else {
+          self.setState({ customerName: name });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetOngoingChat");
+      });
+  }
+  handleUpdateCustomerChatStatus(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetOngoingChat();
+          self.handleGetNewChat();
+        } else {
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleUpdateCustomerChatStatus");
+      });
+  }
+  ////handle get chat messgae by chat id
+  handleGetChatMessagesList(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/getChatMessagesList",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var messageData = response.data.responseData;
+        if (message === "Success" && messageData) {
+          self.setState({ messageData });
+        } else {
+          self.setState({ messageData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatMessagesList");
+      });
+  }
+  handleSelectCard(id) {
+    if (
+      this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
+      true
+    ) {
+      this.state.searchCardData.filter((x) => x.id === id)[0][
+        "isSelect"
+      ] = false;
+    } else {
+      this.state.searchCardData.filter((x) => x.id === id)[0][
+        "isSelect"
+      ] = true;
+    }
+    this.setState({
+      searchCardData: this.state.searchCardData,
+    });
+  }
+  handleDownButtonClick() {
+    this.setState({ isDownbtn: !this.state.isDownbtn });
+  }
   render() {
     return (
       <React.Fragment>
@@ -946,7 +1015,7 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       Ongoing Chats (
-                      {this.state.ongoingChatsData.length < 10
+                      {this.state.ongoingChatsData.length < 9
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
@@ -954,74 +1023,37 @@ class Header extends Component {
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData &&
                         this.state.ongoingChatsData.map((chat, i) => (
-                          <div key={i} className="chat-info">
+                          <div
+                            key={i}
+                            className="chat-info"
+                            onClick={this.handleMakeAsReadOnGoingChat.bind(
+                              this,
+                              chat.chatID,
+                              chat.cumtomerName
+                            )}
+                          >
                             <div className="d-flex align-items-center overflow-hidden">
                               <span className="dark-blue-ini initial">
-                                {chat.name.charAt(0)}
+                                {chat.cumtomerName.charAt(0)}
                               </span>
                               <div className="name-num mx-2">
-                                <p className="chat-name">{chat.name}</p>
-                                <p className="num">{chat.number}</p>
+                                <p className="chat-name">{chat.cumtomerName}</p>
+                                <p className="num">{chat.mobileNo}</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
                                 <p>
-                                  {chat.numberOfMessage === 0
+                                  {chat.messageCount === 0
                                     ? "No"
-                                    : chat.numberOfMessage}{" "}
+                                    : chat.messageCount}{" "}
                                   New Messages
                                 </p>
-                                <p>{chat.chatBegunSince}</p>
+                                <p>{chat.timeAgo}</p>
                               </div>
                             </div>
                           </div>
                         ))}
-                      {/* <div className="chat-info">
-                        <div className="d-flex align-items-center overflow-hidden">
-                          <span className="dark-blue-ini initial">V</span>
-                          <div className="name-num mx-2">
-                            <p className="chat-name">Varun Kumar</p>
-                            <p className="num">+91-9873470074</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>2 New Messages</p>
-                            <p>56s</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="chat-info active">
-                        <div className="d-flex align-items-center overflow-hidden">
-                          <span className="light-blue-ini initial">M</span>
-                          <div className="name-num mx-2">
-                            <p className="chat-name">Mohit Verma</p>
-                            <p className="num">Mohit90@gmail.com</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>1 New Messages</p>
-                            <p>1m:36s</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="chat-info">
-                        <div className="d-flex align-items-center overflow-hidden">
-                          <span className="yellow-ini initial">A</span>
-                          <div className="name-num mx-2">
-                            <p className="chat-name">Ankit Gupta</p>
-                            <p className="num">+91-9382838834</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>No New Messages</p>
-                            <p>1m:36s</p>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                   <div className="chat-cntr">
@@ -1033,61 +1065,38 @@ class Header extends Component {
                       )
                     </p>
                     <div className="chat-left-height">
-                      {this.state.ongoingChatsData &&
-                        this.state.ongoingChatsData.map((chat, i) => (
-                          <div key={i} className="chat-info">
+                      {this.state.newChatsData &&
+                        this.state.newChatsData.map((chat, i) => (
+                          <div
+                            key={i}
+                            className="chat-info"
+                            onClick={this.handleUpdateCustomerChatStatus.bind(
+                              this,
+                              chat.chatID
+                            )}
+                          >
                             <div className="d-flex align-items-center overflow-hidden">
                               <span className="dark-blue-ini initial">
-                                {chat.name.charAt(0)}
+                                {chat.cumtomerName.charAt(0)}
                               </span>
                               <div className="name-num mx-2">
-                                <p className="chat-name">{chat.name}</p>
-                                <p className="num">{chat.number}</p>
+                                <p className="chat-name">{chat.cumtomerName}</p>
+                                <p className="num">{chat.mobileNo}</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
                                 <p>
-                                  {chat.numberOfMessage === 0
+                                  {chat.messageCount === 0
                                     ? "No"
-                                    : chat.numberOfMessage}{" "}
+                                    : chat.messageCount}{" "}
                                   New Messages
                                 </p>
-                                <p>{chat.chatBegunSince}</p>
+                                <p>{chat.timeAgo}</p>
                               </div>
                             </div>
                           </div>
                         ))}
-                      {/* <div className="chat-info">
-                        <div className="d-flex align-items-center">
-                          <span className="green-ini initial">V</span>
-                          <div className="name-num mx-2">
-                            <p>Vipin Kumar</p>
-                            <p className="num">+91-9873470074</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>Waiting for reply</p>
-                            <p>56s</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="chat-info">
-                        <div className="d-flex align-items-center">
-                          <span className="orange-ini initial">M</span>
-                          <div className="name-num mx-2">
-                            <p>Mohit Kumar</p>
-                            <p className="num">Mohit90@gmail.com</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>Waiting for reply</p>
-                            <p>1m:36s</p>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -1132,60 +1141,19 @@ class Header extends Component {
                     <div>
                       <p className="mobile-chat-header">Ongoing Chats</p>
                       <div className="chat-detail-outer-cntr">
-                        <div className="chat-detail-cntr active">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Naman</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Varun</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Raju</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Kaustubh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Suraj</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Abu</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Vipin</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Devesh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Karan</span>
-                        </div>
+                        {this.state.ongoingChatsData &&
+                          this.state.ongoingChatsData.map((chat, i) => (
+                            <div key={i} className="chat-detail-middle-cntr">
+                              <div className="chat-detail-cntr">
+                                <div className="chat-face-cntr">
+                                  <img src={DummyFace1} alt="face image" />
+                                </div>
+                                <span className="face-name">
+                                  {chat.cumtomerName.split(" ")[0]}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -1198,60 +1166,19 @@ class Header extends Component {
                     <div>
                       <p className="mobile-chat-header">New Chats</p>
                       <div className="chat-detail-outer-cntr">
-                        <div className="chat-detail-cntr active">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Naman</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Varun</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Raju</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Kaustubh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Suraj</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Abu</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Vipin</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Devesh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Karan</span>
-                        </div>
+                        {this.state.newChatsData &&
+                          this.state.newChatsData.map((chat, i) => (
+                            <div key={i} className="chat-detail-middle-cntr">
+                              <div className="chat-detail-cntr">
+                                <div className="chat-face-cntr">
+                                  <img src={DummyFace1} alt="face image" />
+                                </div>
+                                <span className="face-name">
+                                  {chat.cumtomerName.split(" ")[0]}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -1261,13 +1188,41 @@ class Header extends Component {
                 <div className="chatbot-right">
                   <div className="row" style={{ margin: "0" }}>
                     <div className="chatdivtitle">
-                      <label className="chattitlelbl">Naman Rampal</label>
+                      <label className="chattitlelbl">
+                        {this.state.customerName}
+                      </label>
                     </div>
-
-                    <div className="chatcontentRow">
-                      <div className="chatcontentDiv"></div>
-                    </div>
-                    <div className="chatcontentdivtab">
+                    {this.state.isDownbtn ? (
+                      <div className="chatcontentRow">
+                        <div className="chatcontentDiv">
+                          <div className="chat-trail-cntr chat-trail-cntr-right">
+                            <div className="chat-trail-img">
+                              <img src={DummyFace2} alt="face image" />
+                            </div>
+                            <div className="chat-trail-chat-cntr">
+                              <p className="chat-trail-chat">
+                                Hello Sir, Thank you for allowing me to assist
+                                you today. What product will you like to view?
+                              </p>
+                              <span className="chat-trail-time">1m:36s</span>
+                            </div>
+                          </div>
+                          <div className="chat-trail-cntr">
+                            <div className="chat-trail-img">
+                              <img src={DummyFace1} alt="face image" />
+                            </div>
+                            <div className="chat-trail-chat-cntr">
+                              <p className="chat-trail-chat">Shop</p>
+                              <span className="chat-trail-time">56s</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                    <div
+                      className="chatcontentdivtab"
+                      style={{ height: !this.state.isDownbtn ? "80%" : "" }}
+                    >
                       <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
                           <a
@@ -1340,15 +1295,35 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <CKEditor
-                              // content={this.state.content}
-                              name="messageCKEditor"
-                              // data={this.state.selectedCKCustomer}
-                              // onChange={this.setCKEditorCustomer}
-                              // onBlur={this.onCkBlurCustomer}
-                              // events={{
-                              //   items: this.fileUpload,
-                              // }}
+                              config={{
+                                toolbar: [
+                                  {
+                                    name: "basicstyles",
+                                    items: ["Bold", "Italic", "Strike"],
+                                  },
+
+                                  {
+                                    name: "paragraph",
+                                    items: ["NumberedList", "BulletedList"],
+                                  },
+                                  {
+                                    name: "links",
+                                    items: ["Link", "Unlink"],
+                                  },
+                                  {
+                                    name: "insert",
+                                    items: ["Image", "Table"],
+                                  },
+                                  {
+                                    name: "editing",
+                                    items: ["Scayt"],
+                                  },
+                                ],
+                              }}
                             />
+                            <div className="mobile-ck-send">
+                              <img src={Assign} alt="send img" />
+                            </div>
                           </div>
                         </div>
                         {/* --------Card Tab----- */}
@@ -1382,18 +1357,35 @@ class Header extends Component {
                             </div>
                           </div>
                           <div className="container">
-                            <div className="row product-card">
+                            <div
+                              className="row product-card"
+                              style={{
+                                height: !this.state.isDownbtn ? "600px" : "",
+                              }}
+                            >
                               {this.state.searchCardData !== null &&
                                 this.state.searchCardData.map((item, i) => {
                                   return (
-                                    <div className="col-md-6" key={i}>
+                                    <div
+                                      className="col-md-6"
+                                      key={i}
+                                      onClick={this.handleSelectCard.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                    >
                                       <div className="card">
                                         <div className="card-body">
-                                          <div className="selectdot"></div>
+                                          {item.isSelect ? (
+                                            <div className="selectdot"></div>
+                                          ) : null}
                                           {/* <div className="container"> */}
                                           <div
                                             className="row"
-                                            style={{ margin: "0" }}
+                                            style={{
+                                              margin: "0",
+                                              alignItems: "flex-end",
+                                            }}
                                           >
                                             <div className="col-md-4">
                                               <img
@@ -1433,7 +1425,15 @@ class Header extends Component {
                                   );
                                 })}
                             </div>
-                          </div>{" "}
+                            <div className="row">
+                              <button
+                                className="storeUpbtn"
+                                onClick={this.handleDownButtonClick.bind(this)}
+                              >
+                                <img src={DownArrow} alt="down-arrow" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                         {/* --------Recommended List Tab----- */}
                         <div
