@@ -84,7 +84,7 @@ p {
 
 /* Deepak CSS starts */
 .chattitlelbl {
-  padding: 25px;
+  padding: 15px;
   font-size: 20px;
   font-weight: bold;
   color: #2561a8;
@@ -140,4 +140,67 @@ p {
 }
 .message-div {
   margin: 20px;
+}
+
+.searchtxt {
+  background-color: #fff !important;
+  border-radius: 5px 0px 0px 5px;
+  margin-left: 15px;
+}
+.searchtxt-span {
+  background-color: #fff !important;
+  border-radius: 0px 5px 5px 0px !important;
+}
+*:focus {
+  outline: none;
+}
+.product-card .card {
+  padding: 10px;
+  margin-top: 15px;
+}
+.searchtxt-new .search-customerAddSrch {
+  background-color: #ecf2f4;
+  width: 92%;
+  height: 43px;
+  padding: 10px;
+  border: none;
+}
+.bkcprdt {
+  background-color: #f3f3f3;
+  padding: 10px;
+}
+.chat-product-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+}
+.chat-product-code {
+  font-size: 12px;
+  font-weight: 500;
+}
+.chat-product-prize {
+  font-size: 12px;
+  font-weight: bold;
+  color: #000000;
+}
+.chat-product-url {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2aa2fd;
+  width: 100%;
+  cursor: pointer;
+}
+.chat-product-img {
+  width: 100%;
+}
+
+.selectdot {
+  height: 25px;
+    width: 25px;
+    background-color: #00B894;
+    border-radius: 50%;
+    display: inline-block;
+    float: right;
+    margin-top: -20px;
+    margin-right: -25px;
 }

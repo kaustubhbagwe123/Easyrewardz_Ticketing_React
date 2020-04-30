@@ -26,6 +26,8 @@ import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
 import CKEditor from "ckeditor4-react";
+import SearchBlueImg from "./../../assets/Images/search-blue.png";
+import Bata from "./../../assets/Images/Bata2.jpeg";
 
 class Header extends Component {
   constructor(props) {
@@ -119,6 +121,62 @@ class Header extends Component {
         },
       ],
       newChatCount: 2,
+      searchCardData: [
+        {
+          id: 1,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 2,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 3,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 4,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 5,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 6,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+      ],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -173,7 +231,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    //debugger;
+    //
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -276,7 +334,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;
@@ -331,7 +388,7 @@ class Header extends Component {
   }
 
   handleLoggedInUserDetails = () => {
-    //debugger;
+    //
     let self = this;
     axios({
       method: "post",
@@ -339,7 +396,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -764,7 +820,7 @@ class Header extends Component {
                           <div className="notification-popover">
                             {item.customTaskNotificationModels.map(
                               (data, j) => {
-                                //debugger;
+                                //
                                 return (
                                   <p key={j}>
                                     {data.notificatonType == 1 ? (
@@ -1076,54 +1132,133 @@ class Header extends Component {
                           </a>
                         </li>
                       </ul>
-                      {/* --------Message Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="message-tab"
-                        role="tabpanel"
-                        aria-labelledby="message-tab"
-                      >
-                        <div>
-                          <CKEditor
-                            // content={this.state.content}
-                            name="messageCKEditor"
-                            // data={this.state.selectedCKCustomer}
-                            // onChange={this.setCKEditorCustomer}
-                            // onBlur={this.onCkBlurCustomer}
-                            // events={{
-                            //   items: this.fileUpload,
-                            // }}
-                          />
+                      <div className="tab-content">
+                        {/* --------Message Tab----- */}
+                        <div
+                          className="tab-pane fade show active"
+                          id="message-tab"
+                          role="tabpanel"
+                          aria-labelledby="message-tab"
+                        >
+                          <div className="message-div">
+                            <CKEditor
+                              // content={this.state.content}
+                              name="messageCKEditor"
+                              // data={this.state.selectedCKCustomer}
+                              // onChange={this.setCKEditorCustomer}
+                              // onBlur={this.onCkBlurCustomer}
+                              // events={{
+                              //   items: this.fileUpload,
+                              // }}
+                            />
+                          </div>
                         </div>
+                        {/* --------Card Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="card-tab"
+                          role="tabpanel"
+                          aria-labelledby="card-tab"
+                        >
+                          <div>
+                            <div
+                              className="input-group searchtxt-new"
+                              style={{ background: "none" }}
+                            >
+                              <input
+                                type="text"
+                                className="search-customerAddSrch searchtxt"
+                                placeholder="Search ItemId/artcile/SKU ID"
+                                name="Search"
+                                maxLength="100"
+                                autoComplete="off"
+                              />
+                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                                <img
+                                  src={SearchBlueImg}
+                                  alt="SearchBlueImg"
+                                  className="srch-imge"
+                                  // onClick={this.handleSearchCustomer}
+                                />
+                              </span>
+                            </div>
+                          </div>
+                          <div className="container">
+                            <div className="row product-card">
+                              {this.state.searchCardData !== null &&
+                                this.state.searchCardData.map((item, i) => {
+                                  return (
+                                    <div className="col-md-6" key={i}>
+                                      <div className="card">
+                                        <div className="card-body">
+                                          <div className="selectdot"></div>
+                                          {/* <div className="container"> */}
+                                          <div
+                                            className="row"
+                                            style={{ margin: "0" }}
+                                          >
+                                            <div className="col-md-4">
+                                              <img
+                                                className="chat-product-img"
+                                                src={item.productImgURL}
+                                                alt="Product Image"
+                                                title="POWER Black Casual Shoes For Man"
+                                              />
+                                            </div>
+                                            <div className="col-md-8 bkcprdt">
+                                              <div>
+                                                <label className="chat-product-name">
+                                                  {item.productName}
+                                                </label>
+                                              </div>
+                                              <div>
+                                                <label className="chat-product-code">
+                                                  Product Code:
+                                                  {item.productCode}
+                                                </label>
+                                              </div>
+                                              <div>
+                                                <label className="chat-product-prize">
+                                                  {item.productPrize}
+                                                </label>
+                                              </div>
+                                              <div>
+                                                <label className="chat-product-url">
+                                                  {item.productUrl}
+                                                </label>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          </div>{" "}
+                        </div>
+                        {/* --------Recommended List Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="recommended-list-tab"
+                          role="tabpanel"
+                          aria-labelledby="recommended-list-tab"
+                        ></div>
+                        {/* --------Schedule Visit Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="schedule-visit-tab"
+                          role="tabpanel"
+                          aria-labelledby="schedule-visit-tab"
+                        ></div>
+                        {/* --------Generate Payment Link Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="generate-payment-link-tab"
+                          role="tabpanel"
+                          aria-labelledby="generate-payment-link-tab"
+                        ></div>
                       </div>
-                      {/* --------Card Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="card-tab"
-                        role="tabpanel"
-                        aria-labelledby="card-tab"
-                      ></div>
-                      {/* --------Recommended List Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="recommended-list-tab"
-                        role="tabpanel"
-                        aria-labelledby="recommended-list-tab"
-                      ></div>
-                      {/* --------Schedule Visit Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="schedule-visit-tab"
-                        role="tabpanel"
-                        aria-labelledby="schedule-visit-tab"
-                      ></div>
-                      {/* --------Generate Payment Link Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="generate-payment-link-tab"
-                        role="tabpanel"
-                        aria-labelledby="generate-payment-link-tab"
-                      ></div>
                     </div>
                   </div>
                 </div>
