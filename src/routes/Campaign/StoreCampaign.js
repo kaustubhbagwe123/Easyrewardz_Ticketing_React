@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
+import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
@@ -629,6 +630,29 @@ class StoreCampaign extends Component {
               {
                 title: "Campaign Name",
                 dataIndex: "campaignName",
+                render: (row, item) => {
+                  return (
+                    <div>
+                      <Popover
+                        content={
+                          <div className="general-popover popover-body broadcastpop">
+                            <label>
+                              <b>{item.campaignName}</b>
+                            </label>
+                          </div>
+                        }
+                        placement="bottom"
+                        trigger="click"
+                      >
+                        <img
+                          className="info-icon-cp"
+                          src={BlackInfoIcon}
+                          alt="info-icon"
+                        />
+                      </Popover>
+                    </div>
+                  );
+                },
               },
               {
                 title: "Customers",
@@ -637,6 +661,7 @@ class StoreCampaign extends Component {
               {
                 title: "Campaign Script",
                 dataIndex: "campaignScript",
+                className: "table-coloum-hide",
                 render: (row, item) => {
                   return (
                     <div>
@@ -681,10 +706,11 @@ class StoreCampaign extends Component {
               {
                 title: "Campaign Period",
                 dataIndex: "campaignEndDate",
+                className: "table-coloum-hide",
               },
               {
                 title: "Status",
-                render: (row) => {
+                render: (row, item) => {
                   return (
                     <button
                       className="closebtn"
@@ -703,7 +729,7 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Actions",
-                render: (row) => {
+                render: (row, item) => {
                   return (
                     <Popover
                       content={
@@ -1012,7 +1038,9 @@ class StoreCampaign extends Component {
           />
           <div className="row">
             <div className="col-12 col-md-12">
-              <div className="nr-initials"><p>NR</p></div>
+              <div className="nr-initials">
+                <p>NR</p>
+              </div>
               <div className="nr-name">
                 <h3>Naman Rampal</h3>
                 <p>Elite</p>
@@ -1039,27 +1067,25 @@ class StoreCampaign extends Component {
                 <h4>Key Insights</h4>
                 <p>Naman has an ATV Rs 500 in last quarter</p>
                 <p>Naman's favourite product category is Men Closet</p>
-                <p>Naman's basket size is reducing, Recommended Brands are: North Star, Hush Puppies</p>
+                <p>
+                  Naman's basket size is reducing, Recommended Brands are: North
+                  Star, Hush Puppies
+                </p>
               </div>
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
-                <Tabs
-                >
+                <Tabs>
                   <Tab label="Recommended">
                     <div>
                       <h4 style={{ textAlign: "center" }}></h4>
-                      <div className="right-sect-div right-sect-div-edit">
-                      </div>
+                      <div className="right-sect-div right-sect-div-edit"></div>
                     </div>
                   </Tab>
                   <Tab label="Last Transaction">
                     <div>
-                      <h4 style={{ textAlign: "center" }}>
-                        
-                      </h4>
-                      <div className="right-sect-div right-sect-div-edit">
-                      </div>
+                      <h4 style={{ textAlign: "center" }}></h4>
+                      <div className="right-sect-div right-sect-div-edit"></div>
                     </div>
                   </Tab>
                 </Tabs>
