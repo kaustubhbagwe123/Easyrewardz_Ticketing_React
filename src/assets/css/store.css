@@ -1495,6 +1495,9 @@ table tr th:last-child {
 .broadcastpop .ant-radio-wrapper {
   display: block;
 }
+.hidedesk {
+  display: none;
+}
 /* ------------------Campain Media Queries ------------------------- */
 @media screen and (max-width: 600px) {
   .custompop {
@@ -1514,7 +1517,7 @@ table tr th:last-child {
 .table-coloum-hide {
   display: none !important;
 }
-.particular-hide {
+.particular-hide span {
   visibility: hidden !important;
 }
 .custom-tableak .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
@@ -1556,6 +1559,9 @@ table tr th:last-child {
 .broadcast-icon img {
   height: 16px;
   cursor: pointer;
+}
+.hidedesk {
+  display: block;
 }
 }
 /* ------------------Campain Css End ------------------------- */

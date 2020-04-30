@@ -645,7 +645,7 @@ class StoreCampaign extends Component {
                         trigger="click"
                       >
                         <img
-                          className="info-icon-cp"
+                          className="info-icon-cp hidedesk"
                           src={BlackInfoIcon}
                           alt="info-icon"
                         />
