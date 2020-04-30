@@ -122,6 +122,7 @@ class Header extends Component {
       chatId: 0,
       isDownbtn: true,
       customerName: "",
+      messageData: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -578,6 +579,30 @@ class Header extends Component {
       })
       .catch((response) => {
         console.log(response, "---handleUpdateCustomerChatStatus");
+      });
+  }
+  ////handle get chat messgae by chat id
+  handleGetChatMessagesList(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/getChatMessagesList",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var messageData = response.data.responseData;
+        if (message === "Success" && messageData) {
+          self.setState({ messageData });
+        } else {
+          self.setState({ messageData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatMessagesList");
       });
   }
   handleSelectCard(id) {
@@ -1276,10 +1301,7 @@ class Header extends Component {
                                     name: "basicstyles",
                                     items: ["Bold", "Italic", "Strike"],
                                   },
-                                  {
-                                    name: "styles",
-                                    items: ["Styles", "Format"],
-                                  },
+
                                   {
                                     name: "paragraph",
                                     items: ["NumberedList", "BulletedList"],
