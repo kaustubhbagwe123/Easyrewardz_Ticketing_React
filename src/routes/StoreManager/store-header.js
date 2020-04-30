@@ -5,6 +5,7 @@ import ChatLogo from "./../../assets/Images/chat.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
+import Assign from "./../../assets/Images/assign.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
 import CampaignLogo from "./../../assets/Images/campaign.svg";
@@ -15,6 +16,7 @@ import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
+import DummyFace2 from "./../../assets/Images/dummy-face-2.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/blue-top-arrow-blue.png";
 import { Link, withRouter } from "react-router-dom";
@@ -63,6 +65,18 @@ class Header extends Component {
           name: "Shalini",
           number: "+91-9873470074",
           numberOfMessage: 5,
+          chatBegunSince: "56s",
+        },
+        {
+          name: "Abu",
+          number: "+91-9873470074",
+          numberOfMessage: 3,
+          chatBegunSince: "2m:56s",
+        },
+        {
+          name: "Kavita",
+          number: "+91-9873470074",
+          numberOfMessage: 0,
           chatBegunSince: "56s",
         },
         {
@@ -302,12 +316,12 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(claim);
-        }else if (
+        } else if (
           data[i].moduleName === "Campaign" &&
           data[i].modulestatus === true
         ) {
           accessdata.push(campaign);
-        }else if (
+        } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -342,7 +356,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger
+        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -977,51 +991,6 @@ class Header extends Component {
                             </div>
                           </div>
                         ))}
-                      {/* <div className="chat-info">
-                        <div className="d-flex align-items-center overflow-hidden">
-                          <span className="dark-blue-ini initial">V</span>
-                          <div className="name-num mx-2">
-                            <p className="chat-name">Varun Kumar</p>
-                            <p className="num">+91-9873470074</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>2 New Messages</p>
-                            <p>56s</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="chat-info active">
-                        <div className="d-flex align-items-center overflow-hidden">
-                          <span className="light-blue-ini initial">M</span>
-                          <div className="name-num mx-2">
-                            <p className="chat-name">Mohit Verma</p>
-                            <p className="num">Mohit90@gmail.com</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>1 New Messages</p>
-                            <p>1m:36s</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="chat-info">
-                        <div className="d-flex align-items-center overflow-hidden">
-                          <span className="yellow-ini initial">A</span>
-                          <div className="name-num mx-2">
-                            <p className="chat-name">Ankit Gupta</p>
-                            <p className="num">+91-9382838834</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>No New Messages</p>
-                            <p>1m:36s</p>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                   <div className="chat-cntr">
@@ -1033,8 +1002,8 @@ class Header extends Component {
                       )
                     </p>
                     <div className="chat-left-height">
-                      {this.state.ongoingChatsData &&
-                        this.state.ongoingChatsData.map((chat, i) => (
+                      {this.state.newChatsData &&
+                        this.state.newChatsData.map((chat, i) => (
                           <div key={i} className="chat-info">
                             <div className="d-flex align-items-center overflow-hidden">
                               <span className="dark-blue-ini initial">
@@ -1047,47 +1016,12 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>
-                                  {chat.numberOfMessage === 0
-                                    ? "No"
-                                    : chat.numberOfMessage}{" "}
-                                  New Messages
-                                </p>
+                                <p>{chat.numberOfMessage}</p>
                                 <p>{chat.chatBegunSince}</p>
                               </div>
                             </div>
                           </div>
                         ))}
-                      {/* <div className="chat-info">
-                        <div className="d-flex align-items-center">
-                          <span className="green-ini initial">V</span>
-                          <div className="name-num mx-2">
-                            <p>Vipin Kumar</p>
-                            <p className="num">+91-9873470074</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>Waiting for reply</p>
-                            <p>56s</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="chat-info">
-                        <div className="d-flex align-items-center">
-                          <span className="orange-ini initial">M</span>
-                          <div className="name-num mx-2">
-                            <p>Mohit Kumar</p>
-                            <p className="num">Mohit90@gmail.com</p>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mess-time">
-                            <p>Waiting for reply</p>
-                            <p>1m:36s</p>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -1132,60 +1066,19 @@ class Header extends Component {
                     <div>
                       <p className="mobile-chat-header">Ongoing Chats</p>
                       <div className="chat-detail-outer-cntr">
-                        <div className="chat-detail-cntr active">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Naman</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Varun</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Raju</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Kaustubh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Suraj</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Abu</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Vipin</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Devesh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Karan</span>
-                        </div>
+                        {this.state.ongoingChatsData &&
+                          this.state.ongoingChatsData.map((chat, i) => (
+                            <div key={i} className="chat-detail-middle-cntr">
+                              <div className="chat-detail-cntr">
+                                <div className="chat-face-cntr">
+                                  <img src={DummyFace1} alt="face image" />
+                                </div>
+                                <span className="face-name">
+                                  {chat.name.split(" ")[0]}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -1198,60 +1091,19 @@ class Header extends Component {
                     <div>
                       <p className="mobile-chat-header">New Chats</p>
                       <div className="chat-detail-outer-cntr">
-                        <div className="chat-detail-cntr active">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Naman</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Varun</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Raju</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Kaustubh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Suraj</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Abu</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Vipin</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Devesh</span>
-                        </div>
-                        <div className="chat-detail-cntr">
-                          <div className="chat-face-cntr">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <span className="face-name">Karan</span>
-                        </div>
+                        {this.state.newChatsData &&
+                          this.state.newChatsData.map((chat, i) => (
+                            <div key={i} className="chat-detail-middle-cntr">
+                              <div className="chat-detail-cntr">
+                                <div className="chat-face-cntr">
+                                  <img src={DummyFace1} alt="face image" />
+                                </div>
+                                <span className="face-name">
+                                  {chat.name.split(" ")[0]}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -1265,7 +1117,29 @@ class Header extends Component {
                     </div>
 
                     <div className="chatcontentRow">
-                      <div className="chatcontentDiv"></div>
+                      <div className="chatcontentDiv">
+                        <div className="chat-trail-cntr chat-trail-cntr-right">
+                          <div className="chat-trail-img">
+                            <img src={DummyFace2} alt="face image" />
+                          </div>
+                          <div className="chat-trail-chat-cntr">
+                            <p className="chat-trail-chat">
+                              Hello Sir, Thank you for allowing me to assist you
+                              today. What product will you like to view?
+                            </p>
+                            <span className="chat-trail-time">1m:36s</span>
+                          </div>
+                        </div>
+                        <div className="chat-trail-cntr">
+                          <div className="chat-trail-img">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <div className="chat-trail-chat-cntr">
+                            <p className="chat-trail-chat">Shop</p>
+                            <span className="chat-trail-time">56s</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="chatcontentdivtab">
                       <ul className="nav nav-tabs" role="tablist">
@@ -1342,6 +1216,7 @@ class Header extends Component {
                             <CKEditor
                               // content={this.state.content}
                               name="messageCKEditor"
+                              placeholder="hello"
                               // data={this.state.selectedCKCustomer}
                               // onChange={this.setCKEditorCustomer}
                               // onBlur={this.onCkBlurCustomer}
@@ -1349,6 +1224,9 @@ class Header extends Component {
                               //   items: this.fileUpload,
                               // }}
                             />
+                            <div className="mobile-ck-send">
+                              <img src={Assign} alt="send img" />
+                            </div>
                           </div>
                         </div>
                         {/* --------Card Tab----- */}
