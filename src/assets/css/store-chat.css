@@ -27,10 +27,12 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 .store-chat-header h3 {
   color: #fff;
   font-size: 20px;
+  font-weight: 700;
 }
 .rounded-cross {
   color: #fff;
@@ -77,14 +79,94 @@ p {
 .chat-info:hover {
   background-color: #ecf2f4;
 }
+.mobile-chat-tabs {
+  display: none;
+  width: 100%;
+  text-align: center;
+}
 /* .chatbot-left {
   height: calc(100vh - 94px);
 } */
+/* mobile chats tab starts */
+.mobile-arrow {
+  filter: brightness(0) invert(1);
+  display: none;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.mobile-chat-tabs .nav-tabs .nav-link {
+  font-weight: 400;
+  font-size: 13px;
+  color: rgba(37, 97, 168, 0.4);
+  padding: 6px 10px;
+  border-radius: 20px;
+  line-height: 1;
+}
+.mobile-chat-tabs .nav-tabs {
+  justify-content: center;
+  padding: 10px 0;
+  margin: 0 15px;
+  border-bottom: 1px solid rgb(37, 97, 168, 0.2);
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active {
+  background: #2561a8;
+  border: 0;
+  color: #fff;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.mobile-chat-tabs .tab-content {
+  padding: 7px 15px;
+}
+.mobile-chat-header {
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: left;
+}
+.face-name {
+  font-weight: 700;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.chat-face-cntr {
+  width: 50px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.chat-face-cntr img {
+  width: 100%;
+}
+.chat-detail-outer-cntr {
+  display: flex;
+  margin-top: 10px;
+}
+.chat-detail-cntr {
+  margin-right: 25px;
+  position: relative;
+}
+.chat-detail-cntr.active .face-name {
+  color: #2561a8;
+}
+.chat-detail-cntr.active::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: 6px;
+  right: -4px;
+  border-radius: 50%;
+  background: #45ee8e;
+  border: 1px solid #fff;
+}
+/* mobile chats tab ends */
 /* Chetan CSS ends */
 
 /* Deepak CSS starts */
 .chattitlelbl {
-  padding: 25px;
+  padding: 15px;
   font-size: 20px;
   font-weight: bold;
   color: #2561a8;
@@ -141,3 +223,87 @@ p {
 .message-div {
   margin: 20px;
 }
+
+.searchtxt {
+  background-color: #fff !important;
+  border-radius: 5px 0px 0px 5px;
+  margin-left: 15px;
+}
+.searchtxt-span {
+  background-color: #fff !important;
+  border-radius: 0px 5px 5px 0px !important;
+}
+*:focus {
+  outline: none;
+}
+.product-card .card {
+  padding: 10px;
+  margin-top: 15px;
+}
+.searchtxt-new .search-customerAddSrch {
+  background-color: #ecf2f4;
+  width: 92%;
+  height: 43px;
+  padding: 10px;
+  border: none;
+}
+.bkcprdt {
+  background-color: #f3f3f3;
+  padding: 10px;
+}
+.chat-product-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+}
+.chat-product-code {
+  font-size: 12px;
+  font-weight: 500;
+}
+.chat-product-prize {
+  font-size: 12px;
+  font-weight: bold;
+  color: #000000;
+}
+.chat-product-url {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2aa2fd;
+  width: 100%;
+  cursor: pointer;
+}
+.chat-product-img {
+  width: 100%;
+}
+
+.selectdot {
+  height: 25px;
+    width: 25px;
+    background-color: #00B894;
+    border-radius: 50%;
+    display: inline-block;
+    float: right;
+    margin-top: -20px;
+    margin-right: -25px;
+}
+/* Responsive starts */
+@media all and (max-width: 576px) {
+  #chat-popup-overlay {
+    padding: 0px;
+  }
+  .rounded-cross,
+  .chatbot-left {
+    display: none;
+  }
+  .store-chat-header h3 {
+    font-size: 16px;
+  }
+  .store-chat-header {
+    justify-content: center;
+  }
+  .mobile-arrow,
+  .mobile-chat-tabs {
+    display: block;
+  }
+}
+/* Responsive ends */

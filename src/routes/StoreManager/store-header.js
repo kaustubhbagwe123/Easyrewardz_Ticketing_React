@@ -7,13 +7,16 @@ import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
-// import KnowledgeLogoBlue from "./../../assets/Images/knowledge-blue.png";
+import CampaignLogo from "./../../assets/Images/campaign.svg";
+import CampaignLogoBlue from "./../../assets/Images/campaign.svg";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
+import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
+import BackArrow from "./../../assets/Images/blue-top-arrow-blue.png";
 import { Link, withRouter } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
@@ -26,6 +29,8 @@ import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
 import CKEditor from "ckeditor4-react";
+import SearchBlueImg from "./../../assets/Images/search-blue.png";
+import Bata from "./../../assets/Images/Bata2.jpeg";
 
 class Header extends Component {
   constructor(props) {
@@ -53,13 +58,24 @@ class Header extends Component {
       selectedUserProfilePicture: "",
       cont: [],
       chatModal: false,
-      ongoingChatCount: 3,
       ongoingChatsData: [
+        {
+          name: "Shalini",
+          number: "+91-9873470074",
+          numberOfMessage: 5,
+          chatBegunSince: "56s",
+        },
         {
           name: "Varun Kumar",
           number: "+91-9873470074",
           numberOfMessage: 2,
           chatBegunSince: "56s",
+        },
+        {
+          name: "Kaustubh Bagwe",
+          number: "+91-9873470074",
+          numberOfMessage: 12,
+          chatBegunSince: "2m:06s",
         },
         {
           name: "Naman Rampal",
@@ -118,7 +134,62 @@ class Header extends Component {
           chatBegunSince: "5m:00s",
         },
       ],
-      newChatCount: 2,
+      searchCardData: [
+        {
+          id: 1,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 2,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 3,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 4,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 5,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 6,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+      ],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -173,7 +244,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    //debugger;
+    //
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -205,6 +276,15 @@ class Header extends Component {
       imgClass: "claim-logo",
       activeClass: page === "claim" ? "active single-menu" : "single-menu",
     };
+    var campaign = {
+      data: "Campaign",
+      urls: "campaign",
+      logoBlack: CampaignLogo,
+      logoBlue: CampaignLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -222,7 +302,12 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(claim);
-        } else if (
+        }else if (
+          data[i].moduleName === "Campaign" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(campaign);
+        }else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -257,6 +342,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -276,7 +362,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;
@@ -331,7 +416,7 @@ class Header extends Component {
   }
 
   handleLoggedInUserDetails = () => {
-    //debugger;
+    //
     let self = this;
     axios({
       method: "post",
@@ -339,7 +424,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -764,7 +848,7 @@ class Header extends Component {
                           <div className="notification-popover">
                             {item.customTaskNotificationModels.map(
                               (data, j) => {
-                                //debugger;
+                                //
                                 return (
                                   <p key={j}>
                                     {data.notificatonType == 1 ? (
@@ -844,6 +928,12 @@ class Header extends Component {
           overlayId="chat-popup-overlay"
         >
           <div className="store-chat-header">
+            <img
+              src={BackArrow}
+              className="mobile-arrow"
+              alt="back arrow"
+              onClick={this.handleChatModalClose}
+            />
             <h3>Store chat window</h3>
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
@@ -856,9 +946,9 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       Ongoing Chats (
-                      {this.state.ongoingChatCount < 10
-                        ? "0" + this.state.ongoingChatCount
-                        : this.state.ongoingChatCount}
+                      {this.state.ongoingChatsData.length < 10
+                        ? "0" + this.state.ongoingChatsData.length
+                        : this.state.ongoingChatsData.length}
                       )
                     </p>
                     <div className="chat-left-height">
@@ -937,9 +1027,9 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       New Chats (
-                      {this.state.newChatCount < 10
-                        ? "0" + this.state.newChatCount
-                        : this.state.newChatCount}
+                      {this.state.newChatsData.length < 10
+                        ? "0" + this.state.newChatsData.length
+                        : this.state.newChatsData.length}
                       )
                     </p>
                     <div className="chat-left-height">
@@ -1002,6 +1092,170 @@ class Header extends Component {
                   </div>
                 </div>
                 {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
+              </div>
+              <div className="mobile-chat-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="ongoing-chat-tab"
+                      data-toggle="tab"
+                      href="#ongoing-chat"
+                      role="tab"
+                      aria-controls="ongoing-chat"
+                      aria-selected="true"
+                    >
+                      Ongoing Chats
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="new-chat-tab"
+                      data-toggle="tab"
+                      href="#new-chat"
+                      role="tab"
+                      aria-controls="new-chat"
+                      aria-selected="false"
+                    >
+                      New Chats
+                    </a>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div
+                    class="tab-pane fade show active"
+                    id="ongoing-chat"
+                    role="tabpanel"
+                    aria-labelledby="ongoing-chat-tab"
+                  >
+                    <div>
+                      <p className="mobile-chat-header">Ongoing Chats</p>
+                      <div className="chat-detail-outer-cntr">
+                        <div className="chat-detail-cntr active">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Naman</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Varun</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Raju</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Kaustubh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Suraj</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Abu</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Vipin</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Devesh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Karan</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="new-chat"
+                    role="tabpanel"
+                    aria-labelledby="new-chat-tab"
+                  >
+                    <div>
+                      <p className="mobile-chat-header">New Chats</p>
+                      <div className="chat-detail-outer-cntr">
+                        <div className="chat-detail-cntr active">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Naman</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Varun</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Raju</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Kaustubh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Suraj</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Abu</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Vipin</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Devesh</span>
+                        </div>
+                        <div className="chat-detail-cntr">
+                          <div className="chat-face-cntr">
+                            <img src={DummyFace1} alt="face image" />
+                          </div>
+                          <span className="face-name">Karan</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="col-lg-9 p-0">
                 <div className="chatbot-right">
@@ -1076,54 +1330,133 @@ class Header extends Component {
                           </a>
                         </li>
                       </ul>
-                      {/* --------Message Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="message-tab"
-                        role="tabpanel"
-                        aria-labelledby="message-tab"
-                      >
-                        <div>
-                          <CKEditor
-                            // content={this.state.content}
-                            name="messageCKEditor"
-                            // data={this.state.selectedCKCustomer}
-                            // onChange={this.setCKEditorCustomer}
-                            // onBlur={this.onCkBlurCustomer}
-                            // events={{
-                            //   items: this.fileUpload,
-                            // }}
-                          />
+                      <div className="tab-content">
+                        {/* --------Message Tab----- */}
+                        <div
+                          className="tab-pane fade show active"
+                          id="message-tab"
+                          role="tabpanel"
+                          aria-labelledby="message-tab"
+                        >
+                          <div className="message-div">
+                            <CKEditor
+                              // content={this.state.content}
+                              name="messageCKEditor"
+                              // data={this.state.selectedCKCustomer}
+                              // onChange={this.setCKEditorCustomer}
+                              // onBlur={this.onCkBlurCustomer}
+                              // events={{
+                              //   items: this.fileUpload,
+                              // }}
+                            />
+                          </div>
                         </div>
+                        {/* --------Card Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="card-tab"
+                          role="tabpanel"
+                          aria-labelledby="card-tab"
+                        >
+                          <div>
+                            <div
+                              className="input-group searchtxt-new"
+                              style={{ background: "none" }}
+                            >
+                              <input
+                                type="text"
+                                className="search-customerAddSrch searchtxt"
+                                placeholder="Search ItemId/artcile/SKU ID"
+                                name="Search"
+                                maxLength="100"
+                                autoComplete="off"
+                              />
+                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                                <img
+                                  src={SearchBlueImg}
+                                  alt="SearchBlueImg"
+                                  className="srch-imge"
+                                  // onClick={this.handleSearchCustomer}
+                                />
+                              </span>
+                            </div>
+                          </div>
+                          <div className="container">
+                            <div className="row product-card">
+                              {this.state.searchCardData !== null &&
+                                this.state.searchCardData.map((item, i) => {
+                                  return (
+                                    <div className="col-md-6" key={i}>
+                                      <div className="card">
+                                        <div className="card-body">
+                                          <div className="selectdot"></div>
+                                          {/* <div className="container"> */}
+                                          <div
+                                            className="row"
+                                            style={{ margin: "0" }}
+                                          >
+                                            <div className="col-md-4">
+                                              <img
+                                                className="chat-product-img"
+                                                src={item.productImgURL}
+                                                alt="Product Image"
+                                                title="POWER Black Casual Shoes For Man"
+                                              />
+                                            </div>
+                                            <div className="col-md-8 bkcprdt">
+                                              <div>
+                                                <label className="chat-product-name">
+                                                  {item.productName}
+                                                </label>
+                                              </div>
+                                              <div>
+                                                <label className="chat-product-code">
+                                                  Product Code:
+                                                  {item.productCode}
+                                                </label>
+                                              </div>
+                                              <div>
+                                                <label className="chat-product-prize">
+                                                  {item.productPrize}
+                                                </label>
+                                              </div>
+                                              <div>
+                                                <label className="chat-product-url">
+                                                  {item.productUrl}
+                                                </label>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          </div>{" "}
+                        </div>
+                        {/* --------Recommended List Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="recommended-list-tab"
+                          role="tabpanel"
+                          aria-labelledby="recommended-list-tab"
+                        ></div>
+                        {/* --------Schedule Visit Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="schedule-visit-tab"
+                          role="tabpanel"
+                          aria-labelledby="schedule-visit-tab"
+                        ></div>
+                        {/* --------Generate Payment Link Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="generate-payment-link-tab"
+                          role="tabpanel"
+                          aria-labelledby="generate-payment-link-tab"
+                        ></div>
                       </div>
-                      {/* --------Card Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="card-tab"
-                        role="tabpanel"
-                        aria-labelledby="card-tab"
-                      ></div>
-                      {/* --------Recommended List Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="recommended-list-tab"
-                        role="tabpanel"
-                        aria-labelledby="recommended-list-tab"
-                      ></div>
-                      {/* --------Schedule Visit Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="schedule-visit-tab"
-                        role="tabpanel"
-                        aria-labelledby="schedule-visit-tab"
-                      ></div>
-                      {/* --------Generate Payment Link Tab----- */}
-                      <div
-                        className="tab-pane fade show active"
-                        id="generate-payment-link-tab"
-                        role="tabpanel"
-                        aria-labelledby="generate-payment-link-tab"
-                      ></div>
                     </div>
                   </div>
                 </div>

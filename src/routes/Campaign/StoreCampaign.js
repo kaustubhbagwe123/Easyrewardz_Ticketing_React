@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
+import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
@@ -20,9 +21,9 @@ class StoreCampaign extends Component {
       FirstCollapse: false,
       TwoCollapse: false,
       campaignGridData: [],
-      rowExpandedCount: 0,
       raisedTicketModal: false,
       custNameModal: false,
+      ResponsiveCustModal: false,
       brandData: [],
       categoryData: [],
       subCategoryData: [],
@@ -43,7 +44,6 @@ class StoreCampaign extends Component {
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
     this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
-    this.onRowExpand = this.onRowExpand.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
     this.handleRaisedTicketModalClose = this.handleRaisedTicketModalClose.bind(
       this
@@ -58,20 +58,6 @@ class StoreCampaign extends Component {
     this.handleGetBrand();
   }
 
-  onRowExpand(expanded, record) {
-    let rowExpandedCount;
-    if (expanded) {
-      rowExpandedCount = this.state.rowExpandedCount + 1;
-      this.setState({
-        rowExpandedCount,
-      });
-    } else {
-      rowExpandedCount = this.state.rowExpandedCount - 1;
-      this.setState({
-        rowExpandedCount,
-      });
-    }
-  }
 
   onStatusChange(campaignTypeID, campaignCustomerID, e) {
     this.state.campaignGridData
@@ -614,6 +600,17 @@ class StoreCampaign extends Component {
       custNameModal: false,
     });
   }
+
+  responsiveCustModalOpen() {
+    this.setState({
+      ResponsiveCustModal: true,
+    });
+  }
+  responsiveCustModalClose() {
+    this.setState({
+      ResponsiveCustModal: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
@@ -629,6 +626,20 @@ class StoreCampaign extends Component {
               {
                 title: "Campaign Name",
                 dataIndex: "campaignName",
+                render: (row, item) => {
+                  return (
+                    <div>
+                      {item.campaignName}
+                    
+                        <img
+                          className="info-icon-cp hidedesk"
+                          src={BlackInfoIcon}
+                          alt="info-icon"
+                          onClick={this.responsiveCustModalOpen.bind(this)}
+                        />
+                    </div>
+                  );
+                },
               },
               {
                 title: "Customers",
@@ -637,6 +648,7 @@ class StoreCampaign extends Component {
               {
                 title: "Campaign Script",
                 dataIndex: "campaignScript",
+                className: "table-coloum-hide",
                 render: (row, item) => {
                   return (
                     <div>
@@ -681,33 +693,34 @@ class StoreCampaign extends Component {
               {
                 title: "Campaign Period",
                 dataIndex: "campaignEndDate",
+                className: "table-coloum-hide",
               },
               {
                 title: "Status",
-                render: (row) => {
+                className: "particular-hide",
+                render: (row, item) => {
                   return (
                     <button
                       className="closebtn"
                       type="button"
-                      onClick={this.handleCloseCampaign.bind(
-                        this,
-                        row.campaignTypeID
-                      )}
+                      // onClick={this.handleCloseCampaign.bind(
+                      //   this,
+                      //   row.campaignTypeID
+                      // )}
                     >
                       <label className="hdrcloselabel">Close</label>
                     </button>
                   );
                 },
-                className:
-                  this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
+                
               },
               {
                 title: "Actions",
-                render: (row) => {
+                render: (row, item) => {
                   return (
                     <Popover
                       content={
-                        <div className="d-flex general-popover popover-body">
+                        <div className="general-popover popover-body broadcastpop">
                           <label>
                             <b>Broadcast to Campaign Customers</b>
                           </label>
@@ -739,7 +752,6 @@ class StoreCampaign extends Component {
                     </Popover>
                   );
                 },
-                // dataIndex: "orderPricePaid"
               },
             ]}
             expandedRowRender={(row) => {
@@ -771,9 +783,11 @@ class StoreCampaign extends Component {
                     {
                       title: "Date",
                       dataIndex: "campaignTypeDate",
+                      className: "table-coloum-hide",
                     },
                     {
                       title: "Response",
+                      className: "table-coloum-hide",
                       render: (row, item) => {
                         return (
                           <div
@@ -817,39 +831,6 @@ class StoreCampaign extends Component {
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
-                            {/* <div className="position-relative">
-                              {item.noOfTimesNotContacted !== 0 &&
-                                item.campaignStatus === 101 && (
-                                  <div className="not-contacted-count">
-                                    {item.noOfTimesNotContacted}
-                                  </div>
-                                )}
-                              <input
-                                type="radio"
-                                name={
-                                  "campaign-status-" + item.campaignCustomerID
-                                }
-                                className="campaign-status-btn"
-                                id={
-                                  "notConnectedBtnRed" + item.campaignCustomerID
-                                }
-                                onChange={this.onStatusChange.bind(
-                                  this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
-                                )}
-                                value="101"
-                                checked={item.campaignStatus === 101}
-                              />
-                              <label
-                                className="table-btnlabel notConnectedBtnRed"
-                                htmlFor={
-                                  "notConnectedBtnRed" + item.campaignCustomerID
-                                }
-                              >
-                                Not Contacted
-                              </label>
-                            </div> */}
                             <label className="table-btnlabel notConnectedBtnRed">
                               Not Contacted
                             </label>
@@ -865,6 +846,7 @@ class StoreCampaign extends Component {
                     },
                     {
                       title: "Call Recheduled To",
+                      className: "table-coloum-hide",
                       // dataIndex: "pricePaid"
                       render: (row, item) => {
                         return (
@@ -915,65 +897,31 @@ class StoreCampaign extends Component {
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
-                            <div
-                              className={
-                                (item.campaignStatus === 100 &&
-                                  item.response !== 0) ||
-                                (item.campaignStatus === 101 &&
-                                  item.response !== 0) ||
-                                (item.campaignStatus === 102 &&
-                                  item.response !== 0 &&
-                                  item.callReScheduledTo !== "")
-                                  ? ""
-                                  : "disabled-input"
-                              }
-                            >
+                            <div>
                               <button
-                                className={
-                                  (item.campaignStatus === 100 &&
-                                    item.response !== 0) ||
-                                  (item.campaignStatus === 101 &&
-                                    item.response !== 0) ||
-                                  (item.campaignStatus === 102 &&
-                                    item.response !== 0 &&
-                                    item.callReScheduledTo !== "")
-                                    ? "saveBtn"
-                                    : "saveBtn disabled-link"
-                                }
+                                className="saveBtn"
                                 type="button"
                                 style={{ minWidth: "5px", marginRight: "10px" }}
-                                onClick={this.handleUpdateCampaignStatusResponse.bind(
-                                  this,
-                                  item.campaignCustomerID,
-                                  item.campaignStatus,
-                                  item.response,
-                                  item.callReScheduledTo
-                                )}
+                                // onClick={this.handleUpdateCampaignStatusResponse.bind(
+                                //   this,
+                                //   item.campaignCustomerID,
+                                //   item.campaignStatus,
+                                //   item.response,
+                                //   item.callReScheduledTo
+                                // )}
                               >
                                 <label className="saveLabel">Update</label>
                               </button>
                             </div>
-                            <div
-                              className={
-                                item.campaignStatus === 100 &&
-                                item.response !== 0
-                                  ? ""
-                                  : "disabled-input"
-                              }
-                            >
+                            <div>
                               <button
-                                className={
-                                  item.campaignStatus === 100 &&
-                                  item.response !== 0
-                                    ? "raisedticket-Btn"
-                                    : "raisedticket-Btn disabled-link"
-                                }
+                                className="raisedticket-Btn"
                                 type="button"
-                                onClick={this.handleRaisedTicketModalOpen.bind(
-                                  this,
-                                  row,
-                                  item
-                                )}
+                                // onClick={this.handleRaisedTicketModalOpen.bind(
+                                //   this,
+                                //   row,
+                                //   item
+                                // )}
                               >
                                 <label className="raise-ticketLbl">
                                   Raise Ticket
@@ -989,7 +937,7 @@ class StoreCampaign extends Component {
                 />
               );
             }}
-            onExpand={this.onRowExpand}
+            // onExpand={this.onRowExpand}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
@@ -997,6 +945,36 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
+        <Modal
+          open={this.state.ResponsiveCustModal}
+          onClose={this.responsiveCustModalClose.bind(this)}
+          center
+          modalId="customername-popup"
+          overlayId="logout-ovrly"
+        >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.responsiveCustModalClose.bind(this)}
+          />
+          <div className="productbox">
+            <Tabs>
+              <Tab label="Chatbot Script">
+                <div>
+                  <h4 style={{ textAlign: "center" }}></h4>
+                  <div className="right-sect-div right-sect-div-edit"></div>
+                </div>
+              </Tab>
+              <Tab label="SMS Script">
+                <div>
+                  <h4 style={{ textAlign: "center" }}></h4>
+                  <div className="right-sect-div right-sect-div-edit"></div>
+                </div>
+              </Tab>
+            </Tabs>
+          </div>
+        </Modal>
         <Modal
           open={this.state.custNameModal}
           onClose={this.handleCustomerNameModalClose.bind(this)}
@@ -1012,7 +990,9 @@ class StoreCampaign extends Component {
           />
           <div className="row">
             <div className="col-12 col-md-12">
-              <div className="nr-initials"><p>NR</p></div>
+              <div className="nr-initials">
+                <p>NR</p>
+              </div>
               <div className="nr-name">
                 <h3>Naman Rampal</h3>
                 <p>Elite</p>
@@ -1039,27 +1019,25 @@ class StoreCampaign extends Component {
                 <h4>Key Insights</h4>
                 <p>Naman has an ATV Rs 500 in last quarter</p>
                 <p>Naman's favourite product category is Men Closet</p>
-                <p>Naman's basket size is reducing, Recommended Brands are: North Star, Hush Puppies</p>
+                <p>
+                  Naman's basket size is reducing, Recommended Brands are: North
+                  Star, Hush Puppies
+                </p>
               </div>
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
-                <Tabs
-                >
+                <Tabs>
                   <Tab label="Recommended">
                     <div>
                       <h4 style={{ textAlign: "center" }}></h4>
-                      <div className="right-sect-div right-sect-div-edit">
-                      </div>
+                      <div className="right-sect-div right-sect-div-edit"></div>
                     </div>
                   </Tab>
                   <Tab label="Last Transaction">
                     <div>
-                      <h4 style={{ textAlign: "center" }}>
-                        
-                      </h4>
-                      <div className="right-sect-div right-sect-div-edit">
-                      </div>
+                      <h4 style={{ textAlign: "center" }}></h4>
+                      <div className="right-sect-div right-sect-div-edit"></div>
                     </div>
                   </Tab>
                 </Tabs>
