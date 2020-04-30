@@ -1533,9 +1533,7 @@ table tr th:last-child {
   .table-coloum-hide {
     display: none !important;
   }
-  .table-black-icon {
-    display: block !important;
-  }
+
   .particular-hide span {
     visibility: hidden !important;
   }
