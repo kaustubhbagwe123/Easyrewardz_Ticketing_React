@@ -1302,46 +1302,61 @@ table tr th:last-child {
 .custom-tableak {
   padding: 20px;
 }
-.custom-tableak .custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+.custom-tableak
+  .custom-antd-table
+  .ant-table-thead
+  > tr
+  > th
+  .ant-table-column-title {
   font-size: 13px !important;
 }
 .button-red {
   color: #ee6261 !important;
-    font-weight: 600;
-    border-radius: 50px;
-    border: 1px solid #ee6261;
-    padding: 5px 20px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-right: 10px;
+  font-weight: 600;
+  border-radius: 50px;
+  border: 1px solid #ee6261;
+  padding: 5px 20px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 10px;
 }
 .button-blue {
   color: #2196f3 !important;
   font-weight: 600;
-    border-radius: 50px;
-    font-size: 12px;
-    cursor: pointer;
-    border: 1px solid #2196f3;
-    padding: 5px 20px;
-    margin-right: 10px;
+  border-radius: 50px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #2196f3;
+  padding: 5px 20px;
+  margin-right: 10px;
 }
 .custom-tableak .sml-fnt {
   font-size: 12px !important;
 }
 .custom-tableak .cust-name {
   color: #2561a8;
-    font-weight: bolder;
-    font-size: 14px;
-    text-transform: capitalize;
-    cursor: pointer;
+  font-weight: bolder;
+  font-size: 14px;
+  text-transform: capitalize;
+  cursor: pointer;
 }
 .custom-tableak .table-btnlabel {
   box-shadow: none;
 }
-.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-expanded-row .ant-table-tbody > tr:first-child > td {
+.custom-tableak
+  .custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:first-child
+  > td {
   padding-top: 10px !important;
 }
-.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-expanded-row .ant-table-tbody > tr > td {
+.custom-tableak
+  .custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
   background: #fcfcfc !important;
@@ -1365,19 +1380,21 @@ table tr th:last-child {
   background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center */
   background-size: 14px;
 }
-.customclassforhomeshop .ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow{
+.ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow {
   display: none;
 }
-.customclassforhomeshop .ant-popover-inner {
+.ant-popover-inner {
   border-radius: 20px !important;
 }
-.customclassforhomeshop .ant-popover-placement-bottom, .customclassforhomeshop .ant-popover-placement-bottomLeft, .customclassforhomeshop .ant-popover-placement-bottomRight {
+.ant-popover-placement-bottom,
+.ant-popover-placement-bottomLeft,
+.ant-popover-placement-bottomRight {
   padding-top: 1px !important;
 }
 .custompop .poptitle {
   font-size: 18px;
-    font-weight: bolder;
-    margin-bottom: 15px;
+  font-weight: bolder;
+  margin-bottom: 15px;
 }
 .broadcast-icon {
   display: inline;
@@ -1404,11 +1421,11 @@ table tr th:last-child {
   float: left;
   width: 7%;
   background: #0080ff;
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-    color: #fff;
-    font-size: 17px;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  color: #fff;
+  font-size: 17px;
 }
 .nr-name {
   float: right;
@@ -1433,14 +1450,14 @@ table tr th:last-child {
 }
 .lifetimevalue h4 {
   color: #8694a0;
-    font-size: 16px;
-    font-weight: bold;
+  font-size: 16px;
+  font-weight: bold;
 }
 .lifetimevalue label {
   color: #000;
-    font-size: 26px;
-    font-weight: normal;
-    margin-top: 1px;
+  font-size: 26px;
+  font-weight: normal;
+  margin-top: 1px;
 }
 .keyinsights {
   background-color: #f2f5f8;
@@ -1450,9 +1467,9 @@ table tr th:last-child {
 }
 .keyinsights h4 {
   color: #8694a0;
-    font-size: 16px;
-    margin-bottom: 15px;
-    font-weight: normal;
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: normal;
 }
 .keyinsights p {
   color: #828282;
@@ -1484,9 +1501,222 @@ table tr th:last-child {
 .productbox .nav-item:first-child {
   margin-right: 90px;
 }
-.broadChannel{
-  display: 'block';
-  height: '30px';
+.broadChannel {
+  display: "block";
+  height: "30px";
   line-height: 30px;
 }
+.custom-tabcount{
+  background: #2561a8;
+  display: inline-block;
+  width: 120px;
+  padding: 5px 6px 5px 11px;
+  border-radius: 4px;
+  margin-left: 30px;
+}
+.tab-title{
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  margin-right: 48px;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 500;
+  font-family: unset;
+  margin-left: 3px;
+}
+.tab-count{
+  width: 32px;
+  height: 30px;
+  display: inline-block;
+  background: white;
+  text-align: center;
+  border-radius: 4px;
+  color: #2561a8;
+  font-size: 20px;
+
+}
+.custom-tabs{
+  margin-bottom: 17px;
+}
+.custom-tabcount1{
+  background-color: #d3e2f1;
+  display: inline-block;
+  width: 120px;
+  padding: 5px 6px 5px 11px;
+  border-radius: 4px;
+  margin-left: 30px;
+}
+.tab-title1{
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  margin-right: 48px;
+  color: black;
+  font-size: 19px;
+  font-weight: 500;
+  font-family: unset;
+  margin-left: 3px;
+}
+.tab-count1{
+  width: 32px;
+  height: 30px;
+  display: inline-block;
+  background: #eff4f9;
+  text-align: center;
+  border-radius: 4px;
+  color: black;
+  font-size: 20px;
+}
 /* ------------------Campain Css End ------------------------- */
+.broadcastpop label {
+  display: block;
+}
+.broadcastpop .ant-radio-wrapper {
+  display: block;
+}
+.hidedesk {
+  display: none;
+}
+/* ------------------Campain Media Queries ------------------------- */
+@media screen and (max-width: 600px) {
+  .custompop {
+    right: 0 !important;
+    width: 100% !important;
+  }
+  .ant-popover-placement-bottom,
+  .ant-popover-placement-bottomLeft,
+  .ant-popover-placement-bottomRight {
+    padding: 20px !important;
+    left: 0 !important;
+  }
+  .insertpop1 {
+    padding: 0px;
+  }
+  .ant-popover-inner-content {
+    padding: 20px;
+  }
+  .table-coloum-hide {
+    display: none !important;
+  }
+
+  .particular-hide span {
+    visibility: hidden !important;
+  }
+  .custom-tableak
+    .custom-antd-table.antd-table-campaign
+    .ant-table-thead
+    > tr
+    > th {
+    background: #e5e9ed !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+  .custom-tableak
+    .custom-antd-table
+    .ant-table-thead
+    > tr
+    > th
+    .ant-table-column-title {
+    font-size: 11px !important;
+  }
+  .custom-tableak .custom-antd-table .ant-table-thead > tr > th,
+  .custom-react-table .rt-thead .rt-th span {
+    padding: 10px 7px 4px !important;
+  }
+  .custom-tableak
+    .custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+  .custom-tableak .custom-antd-table .ant-table-tbody > tr > td,
+  .custom-tableak .custom-react-table .rt-tbody .rt-td {
+    padding: 7px !important;
+    font-size: 11px;
+  }
+  .custom-tableak .closebtn {
+    width: 42px;
+    height: 20px;
+    min-width: 42px !important;
+  }
+  .custom-tableak .hdrcloselabel {
+    font-size: 10px;
+    vertical-align: text-bottom;
+  }
+  .custom-tableak {
+    padding: 5px 0;
+  }
+  .broadcast-icon img {
+    height: 15px;
+    cursor: pointer;
+  }
+  .hidedesk {
+    display: inline-block;
+  }
+  .custom-tableak .cust-name {
+    font-size: 12px;
+  }
+  .custom-tableak .sml-fnt {
+    font-size: 10px !important;
+  }
+  .table-btnlabel {
+    font-size: 10px;
+    line-height: 20px;
+  }
+  .notConnectedBtnRed {
+    width: 80px;
+    height: 22px;
+  }
+  .contactBtnGreen {
+    width: 80px;
+    height: 22px;
+  }
+  .followUpBtnYellow {
+    width: 80px;
+    height: 22px;
+  }
+  .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
+    background-size: 17px 17px;
+    width: 17px;
+    top: 49%;
+    height: 17px;
+  }
+  .custom-tableak .antd-table-campaign .ant-table-row-expanded::after {
+    background-size: 17px 17px;
+    width: 17px;
+    top: 49%;
+    height: 17px;
+  }
+  .info-icon-cp {
+    width: 14px;
+    height: 14px;
+}
+.ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
+  padding: 20px !important;
+  left: 0 !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
+  background: #e5e9ed !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+  font-size: 11px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th span {
+  padding: 10px 7px 4px !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-tbody > tr > td, .custom-tableak .custom-react-table .rt-tbody .rt-td {
+  padding: 7px !important;
+  font-size: 11px;
+}
+}
+/* ------------------Campain Css End ------------------------- */
+
