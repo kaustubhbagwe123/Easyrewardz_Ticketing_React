@@ -1506,68 +1506,8 @@ table tr th:last-child {
   height: "30px";
   line-height: 30px;
 }
-.custom-tabcount{
-  background: #2561a8;
-  display: inline-block;
-  width: 120px;
-  padding: 5px 6px 5px 11px;
-  border-radius: 4px;
-  margin-left: 30px;
-}
-.tab-title{
-  display: inline-block;
-  width: 20px;
-  height: 30px;
-  margin-right: 48px;
-  color: #fff;
-  font-size: 19px;
-  font-weight: 500;
-  font-family: unset;
-  margin-left: 3px;
-}
-.tab-count{
-  width: 32px;
-  height: 30px;
-  display: inline-block;
-  background: white;
-  text-align: center;
-  border-radius: 4px;
-  color: #2561a8;
-  font-size: 20px;
 
-}
-.custom-tabs{
-  margin-bottom: 17px;
-}
-.custom-tabcount1{
-  background-color: #d3e2f1;
-  display: inline-block;
-  width: 120px;
-  padding: 5px 6px 5px 11px;
-  border-radius: 4px;
-  margin-left: 30px;
-}
-.tab-title1{
-  display: inline-block;
-  width: 20px;
-  height: 30px;
-  margin-right: 48px;
-  color: black;
-  font-size: 19px;
-  font-weight: 500;
-  font-family: unset;
-  margin-left: 3px;
-}
-.tab-count1{
-  width: 32px;
-  height: 30px;
-  display: inline-block;
-  background: #eff4f9;
-  text-align: center;
-  border-radius: 4px;
-  color: black;
-  font-size: 20px;
-}
+
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
@@ -1719,4 +1659,86 @@ table tr th:last-child {
 }
 }
 /* ------------------Campain Css End ------------------------- */
+
+/* ------------------Appointment Css Start ------------------------- */
+.custom-tabcount{
+  background: #2561a8;
+  display: inline-block;
+  width: 120px;
+  padding: 5px 6px 5px 11px;
+  border-radius: 4px;
+  margin-left: 30px;
+}
+.tab-title{
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  margin-right: 48px;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 500;
+  font-family: unset;
+  margin-left: 3px;
+}
+.tab-count{
+  width: 32px;
+  height: 30px;
+  display: inline-block;
+  background: white;
+  text-align: center;
+  border-radius: 4px;
+  color: #2561a8;
+  font-size: 20px;
+
+}
+.custom-tabs{
+  margin-bottom: 17px;
+}
+.custom-tabcount1{
+  background-color: #d3e2f1;
+  display: inline-block;
+  width: 120px;
+  padding: 5px 6px 5px 11px;
+  border-radius: 4px;
+  margin-left: 30px;
+}
+.tab-title1{
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  margin-right: 48px;
+  color: black;
+  font-size: 19px;
+  font-weight: 500;
+  font-family: unset;
+  margin-left: 3px;
+}
+.tab-count1{
+  width: 32px;
+  height: 30px;
+  display: inline-block;
+  background: #eff4f9;
+  text-align: center;
+  border-radius: 4px;
+  color: black;
+  font-size: 20px;
+}
+.custom-tableak .statusBtn {
+  background-color: #00B894;
+  border: 1px solid #00B894;
+  border-radius: 4px;
+  width: 60px;
+  height: 30px;
+}
+.statusLabel{
+  color: white;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+  text-transform: initial;
+}
+
+/* ------------------Appointment Css End ------------------------- */
 
