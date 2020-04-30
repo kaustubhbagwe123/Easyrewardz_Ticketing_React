@@ -33,6 +33,10 @@ import "./../../assets/css/store-chat.css";
 import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
 import Bata from "./../../assets/Images/Bata2.jpeg";
+import DownArrow from "./../../assets/Images/down.png";
+import RightBlue from "./../../assets/Images/rightblue.png";
+import UpBlue from "./../../assets/Images/new-Up.png";
+import DownBlue from "./../../assets/Images/new-Down.png";
 
 class Header extends Component {
   constructor(props) {
@@ -60,94 +64,8 @@ class Header extends Component {
       selectedUserProfilePicture: "",
       cont: [],
       chatModal: false,
-      ongoingChatsData: [
-        {
-          name: "Shalini",
-          number: "+91-9873470074",
-          numberOfMessage: 5,
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Abu",
-          number: "+91-9873470074",
-          numberOfMessage: 3,
-          chatBegunSince: "2m:56s",
-        },
-        {
-          name: "Kavita",
-          number: "+91-9873470074",
-          numberOfMessage: 0,
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Varun Kumar",
-          number: "+91-9873470074",
-          numberOfMessage: 2,
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Kaustubh Bagwe",
-          number: "+91-9873470074",
-          numberOfMessage: 12,
-          chatBegunSince: "2m:06s",
-        },
-        {
-          name: "Naman Rampal",
-          number: "+91-9873470765",
-          numberOfMessage: 1,
-          chatBegunSince: "1m:36s",
-        },
-        {
-          name: "Ankit Gupta",
-          number: "+91-9382838834",
-          numberOfMessage: 0,
-          chatBegunSince: "2m:46s",
-        },
-        {
-          name: "Vijay Rao",
-          number: "+91-9873470074",
-          numberOfMessage: 4,
-          chatBegunSince: "3m:56s",
-        },
-        {
-          name: "Raj Thakkar",
-          number: "+91-9873470074",
-          numberOfMessage: 6,
-          chatBegunSince: "5m:00s",
-        },
-      ],
-      newChatsData: [
-        {
-          name: "Vipin Kumar",
-          number: "+91-9873470074",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "56s",
-        },
-        {
-          name: "Mohit Rampal",
-          number: "+91-9873470765",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "1m:36s",
-        },
-        {
-          name: "Ankit Gupta",
-          number: "+91-9382838834",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "2m:46s",
-        },
-        {
-          name: "Vijay Rao",
-          number: "+91-9873470074",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "3m:56s",
-        },
-        {
-          name: "Raj Thakkar",
-          number: "+91-9873470074",
-          numberOfMessage: "Waiting for reply",
-          chatBegunSince: "5m:00s",
-        },
-      ],
+      ongoingChatsData: [],
+      newChatsData: [],
       searchCardData: [
         {
           id: 1,
@@ -203,7 +121,47 @@ class Header extends Component {
           productImgURL: Bata,
           isSelect: false,
         },
+        {
+          id: 7,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 8,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 9,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 10,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
       ],
+      chatId: 0,
+      isDownbtn: true,
+      customerName: "",
+      messageData: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -356,7 +314,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -568,8 +525,173 @@ class Header extends Component {
   ////handle chat modal open
   handleChatModalOpen() {
     this.setState({ chatModal: true });
+    this.handleGetOngoingChat();
+    this.handleGetNewChat();
   }
 
+  ////handleGet Ongoing Chat
+  handleGetOngoingChat() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetOngoingChat",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var ongoingChatsData = response.data.responseData;
+        if (message === "Success" && ongoingChatsData) {
+          self.setState({ ongoingChatsData });
+        } else {
+          self.setState({ ongoingChatsData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetOngoingChat");
+      });
+  }
+
+  ////handle Get New Chat
+  handleGetNewChat() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetNewChat",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var newChatsData = response.data.responseData;
+        if (message === "Success" && newChatsData) {
+          self.setState({ newChatsData });
+        } else {
+          self.setState({ newChatsData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetOngoingChat");
+      });
+  }
+  ////handle Make As Read On Going Chat
+  handleMakeAsReadOnGoingChat(id, name) {
+    let self = this;
+    this.setState({ chatId: id });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/MarkAsReadOnGoingChat",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetOngoingChat();
+          self.handleGetChatMessagesList(id);
+          self.setState({ customerName: name });
+        } else {
+          self.setState({ customerName: name });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleMakeAsReadOnGoingChat");
+      });
+  }
+  handleUpdateCustomerChatStatus(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.setState({ chatId: 0 });
+          self.handleGetOngoingChat();
+          self.handleGetNewChat();
+        } else {
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleUpdateCustomerChatStatus");
+      });
+  }
+  ////handle get chat messgae by chat id
+  handleGetChatMessagesList(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/getChatMessagesList",
+      headers: authHeader(),
+      params: {
+        chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var messageData = response.data.responseData;
+        if (message === "Success" && messageData) {
+          self.setState({ messageData });
+        } else {
+          self.setState({ messageData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatMessagesList");
+      });
+  }
+  handleSaveChatMessages() {
+    let self = this;
+    // var inputParam={}
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/saveChatMessages",
+      headers: authHeader(),
+      data: {
+        // chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var messageData = response.data.responseData;
+        if (message === "Success" && messageData) {
+          self.setState({ messageData });
+        } else {
+          self.setState({ messageData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatMessagesList");
+      });
+  }
+  handleSelectCard(id) {
+    if (
+      this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
+      true
+    ) {
+      this.state.searchCardData.filter((x) => x.id === id)[0][
+        "isSelect"
+      ] = false;
+    } else {
+      this.state.searchCardData.filter((x) => x.id === id)[0][
+        "isSelect"
+      ] = true;
+    }
+    this.setState({
+      searchCardData: this.state.searchCardData,
+    });
+  }
+  handleDownButtonClick() {
+    this.setState({ isDownbtn: !this.state.isDownbtn });
+  }
   render() {
     return (
       <React.Fragment>
@@ -659,31 +781,33 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a href="#!" onClick={this.handleChatModalOpen.bind(this)}>
-              <img src={ChatLogo} alt="logo" className="chatImg" />
-              <img
-                src={ChatLogoBlue}
-                alt="logo"
-                className="chatImg"
-                style={{ display: "none" }}
-              />
+            <a onClick={this.handleChatModalOpen.bind(this)}>
+              <div className="position-relative">
+                <img src={ChatLogo} alt="logo" className="chatImg" />
+                <img
+                  src={ChatLogoBlue}
+                  alt="logo"
+                  className="chatImg"
+                  style={{ display: "none" }}
+                />
+                <span className="message-icon-cnt">3</span>
+              </div>
             </a>
             {/* --notification-- */}
             <a>
               <div
                 className="position-relative"
-                // style={{ display: this.state.notificationAccess }}
                 onClick={this.handleNotificationModalOpen.bind(this)}
               >
                 <img src={NotificationLogo} alt="logo" className="notifi" />
                 <span style={{ display: "none" }} className="icon-fullname">
                   Notifications
                 </span>
-                {/* {this.state.notiCount > 0 && ( */}
+
                 <span className="upper-noti-count">
                   {this.state.notificationCount}
                 </span>
-                {/* } */}
+
                 <span style={{ display: "none" }} className="icon-fullname">
                   Notifications
                 </span>
@@ -960,7 +1084,7 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       Ongoing Chats (
-                      {this.state.ongoingChatsData.length < 10
+                      {this.state.ongoingChatsData.length < 9
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
@@ -968,25 +1092,37 @@ class Header extends Component {
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData &&
                         this.state.ongoingChatsData.map((chat, i) => (
-                          <div key={i} className="chat-info">
+                          <div
+                            key={i}
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
+                            onClick={this.handleMakeAsReadOnGoingChat.bind(
+                              this,
+                              chat.chatID,
+                              chat.cumtomerName
+                            )}
+                          >
                             <div className="d-flex align-items-center overflow-hidden">
                               <span className="dark-blue-ini initial">
-                                {chat.name.charAt(0)}
+                                {chat.cumtomerName.charAt(0)}
                               </span>
                               <div className="name-num mx-2">
-                                <p className="chat-name">{chat.name}</p>
-                                <p className="num">{chat.number}</p>
+                                <p className="chat-name">{chat.cumtomerName}</p>
+                                <p className="num">{chat.mobileNo}</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
                                 <p>
-                                  {chat.numberOfMessage === 0
+                                  {chat.messageCount === 0
                                     ? "No"
-                                    : chat.numberOfMessage}{" "}
+                                    : chat.messageCount}{" "}
                                   New Messages
                                 </p>
-                                <p>{chat.chatBegunSince}</p>
+                                <p>{chat.timeAgo}</p>
                               </div>
                             </div>
                           </div>
@@ -1004,20 +1140,36 @@ class Header extends Component {
                     <div className="chat-left-height">
                       {this.state.newChatsData &&
                         this.state.newChatsData.map((chat, i) => (
-                          <div key={i} className="chat-info">
+                          <div
+                            key={i}
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
+                            onClick={this.handleUpdateCustomerChatStatus.bind(
+                              this,
+                              chat.chatID
+                            )}
+                          >
                             <div className="d-flex align-items-center overflow-hidden">
                               <span className="dark-blue-ini initial">
-                                {chat.name.charAt(0)}
+                                {chat.cumtomerName.charAt(0)}
                               </span>
                               <div className="name-num mx-2">
-                                <p className="chat-name">{chat.name}</p>
-                                <p className="num">{chat.number}</p>
+                                <p className="chat-name">{chat.cumtomerName}</p>
+                                <p className="num">{chat.mobileNo}</p>
                               </div>
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>{chat.numberOfMessage}</p>
-                                <p>{chat.chatBegunSince}</p>
+                                <p>
+                                  {chat.messageCount === 0
+                                    ? "No"
+                                    : chat.messageCount}{" "}
+                                  New Messages
+                                </p>
+                                <p>{chat.timeAgo}</p>
                               </div>
                             </div>
                           </div>
@@ -1069,12 +1221,27 @@ class Header extends Component {
                         {this.state.ongoingChatsData &&
                           this.state.ongoingChatsData.map((chat, i) => (
                             <div key={i} className="chat-detail-middle-cntr">
-                              <div className="chat-detail-cntr">
+                              <div
+                                className={
+                                  this.state.chatId === chat.chatID
+                                    ? "chat-detail-cntr active"
+                                    : "chat-detail-cntr"
+                                }
+                                onClick={this.handleMakeAsReadOnGoingChat.bind(
+                                  this,
+                                  chat.chatID,
+                                  chat.cumtomerName
+                                )}
+                              >
                                 <div className="chat-face-cntr">
-                                  <img src={DummyFace1} alt="face image" />
+                                  <img
+                                    src={DummyFace1}
+                                    alt="face image"
+                                    title={chat.cumtomerName}
+                                  />
                                 </div>
                                 <span className="face-name">
-                                  {chat.name.split(" ")[0]}
+                                  {chat.cumtomerName.split(" ")[0]}
                                 </span>
                               </div>
                             </div>
@@ -1094,12 +1261,24 @@ class Header extends Component {
                         {this.state.newChatsData &&
                           this.state.newChatsData.map((chat, i) => (
                             <div key={i} className="chat-detail-middle-cntr">
-                              <div className="chat-detail-cntr">
-                                <div className="chat-face-cntr">
+                              <div
+                                className="chat-detail-cntr"
+                                onClick={this.handleUpdateCustomerChatStatus.bind(
+                                  this,
+                                  chat.chatID
+                                )}
+                              >
+                                <div
+                                  className={
+                                    this.state.chatId === chat.chatID
+                                      ? "chat-face-cntr active"
+                                      : "chat-face-cntr"
+                                  }
+                                >
                                   <img src={DummyFace1} alt="face image" />
                                 </div>
                                 <span className="face-name">
-                                  {chat.name.split(" ")[0]}
+                                  {chat.cumtomerName.split(" ")[0]}
                                 </span>
                               </div>
                             </div>
@@ -1113,35 +1292,59 @@ class Header extends Component {
                 <div className="chatbot-right">
                   <div className="row" style={{ margin: "0" }}>
                     <div className="chatdivtitle">
-                      <label className="chattitlelbl">Naman Rampal</label>
+                      <label className="chattitlelbl">
+                        {this.state.customerName}
+                      </label>
                     </div>
-
-                    <div className="chatcontentRow">
-                      <div className="chatcontentDiv">
-                        <div className="chat-trail-cntr chat-trail-cntr-right">
-                          <div className="chat-trail-img">
-                            <img src={DummyFace2} alt="face image" />
-                          </div>
-                          <div className="chat-trail-chat-cntr">
-                            <p className="chat-trail-chat">
-                              Hello Sir, Thank you for allowing me to assist you
-                              today. What product will you like to view?
-                            </p>
-                            <span className="chat-trail-time">1m:36s</span>
-                          </div>
-                        </div>
-                        <div className="chat-trail-cntr">
-                          <div className="chat-trail-img">
-                            <img src={DummyFace1} alt="face image" />
-                          </div>
-                          <div className="chat-trail-chat-cntr">
-                            <p className="chat-trail-chat">Shop</p>
-                            <span className="chat-trail-time">56s</span>
-                          </div>
+                    {this.state.isDownbtn ? (
+                      <div className="chatcontentRow">
+                        <div className="chatcontentDiv">
+                          {this.state.messageData !== null
+                            ? this.state.messageData.map((item, i) => {
+                                return (
+                                  <div
+                                    key={i}
+                                    className={
+                                      item.byCustomer
+                                        ? "chat-trail-cntr"
+                                        : "chat-trail-cntr chat-trail-cntr-right"
+                                    }
+                                  >
+                                    <div className="chat-trail-img">
+                                      <img
+                                        src={DummyFace2}
+                                        alt="face image"
+                                        title={item.customerName}
+                                      />
+                                    </div>
+                                    <div className="chat-trail-chat-cntr">
+                                      <p className="chat-trail-chat">
+                                        {item.message}
+                                      </p>
+                                      <span className="chat-trail-time">
+                                        {item.chatTime}
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              })
+                            : null}
+                          {/* <div className="chat-trail-cntr">
+                            <div className="chat-trail-img">
+                              <img src={DummyFace1} alt="face image" />
+                            </div>
+                            <div className="chat-trail-chat-cntr">
+                              <p className="chat-trail-chat">Shop</p>
+                              <span className="chat-trail-time">56s</span>
+                            </div>
+                          </div> */}
                         </div>
                       </div>
-                    </div>
-                    <div className="chatcontentdivtab">
+                    ) : null}
+                    <div
+                      className="chatcontentdivtab"
+                      style={{ height: !this.state.isDownbtn ? "80%" : "" }}
+                    >
                       <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
                           <a
@@ -1214,15 +1417,31 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <CKEditor
-                              // content={this.state.content}
-                              name="messageCKEditor"
-                              placeholder="hello"
-                              // data={this.state.selectedCKCustomer}
-                              // onChange={this.setCKEditorCustomer}
-                              // onBlur={this.onCkBlurCustomer}
-                              // events={{
-                              //   items: this.fileUpload,
-                              // }}
+                              config={{
+                                toolbar: [
+                                  {
+                                    name: "basicstyles",
+                                    items: ["Bold", "Italic", "Strike"],
+                                  },
+
+                                  {
+                                    name: "paragraph",
+                                    items: ["NumberedList", "BulletedList"],
+                                  },
+                                  {
+                                    name: "links",
+                                    items: ["Link", "Unlink"],
+                                  },
+                                  {
+                                    name: "insert",
+                                    items: ["Image", "Table"],
+                                  },
+                                  {
+                                    name: "editing",
+                                    items: ["Scayt"],
+                                  },
+                                ],
+                              }}
                             />
                             <div className="mobile-ck-send">
                               <img src={Assign} alt="send img" />
@@ -1260,18 +1479,40 @@ class Header extends Component {
                             </div>
                           </div>
                           <div className="container">
-                            <div className="row product-card">
+                            <div
+                              className="row product-card"
+                              style={{
+                                height: !this.state.isDownbtn ? "600px" : "",
+                              }}
+                            >
                               {this.state.searchCardData !== null &&
                                 this.state.searchCardData.map((item, i) => {
                                   return (
-                                    <div className="col-md-6" key={i}>
+                                    <div
+                                      className="col-md-6"
+                                      key={i}
+                                      onClick={this.handleSelectCard.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                    >
                                       <div className="card">
                                         <div className="card-body">
-                                          <div className="selectdot"></div>
+                                          {item.isSelect ? (
+                                            <div className="selectdot">
+                                              <img
+                                                src={RightBlue}
+                                                alt={"select-card"}
+                                              />
+                                            </div>
+                                          ) : null}
                                           {/* <div className="container"> */}
                                           <div
                                             className="row"
-                                            style={{ margin: "0" }}
+                                            style={{
+                                              margin: "0",
+                                              alignItems: "flex-end",
+                                            }}
                                           >
                                             <div className="col-md-4">
                                               <img
@@ -1311,7 +1552,19 @@ class Header extends Component {
                                   );
                                 })}
                             </div>
-                          </div>{" "}
+                            <div className="row">
+                              <button
+                                className="storeUpbtn"
+                                onClick={this.handleDownButtonClick.bind(this)}
+                              >
+                                {this.state.isDownbtn ? (
+                                  <img src={DownBlue} alt="down-arrow" />
+                                ) : (
+                                  <img src={UpBlue} alt="down-arrow" />
+                                )}
+                              </button>
+                            </div>
+                          </div>
                         </div>
                         {/* --------Recommended List Tab----- */}
                         <div

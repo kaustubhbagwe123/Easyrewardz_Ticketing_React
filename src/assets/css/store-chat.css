@@ -133,7 +133,7 @@ p {
 }
 .chat-face-cntr {
   width: 50px;
-  border-radius: 10px;
+  border-radius: 6px;
   overflow: hidden;
 }
 .chat-face-cntr img {
@@ -251,6 +251,20 @@ p {
   text-align: right;
 }
 /* chat trail ends */
+
+/* ck editor starts */
+.cke_toolbox {
+  display: flex;
+  overflow: auto;
+}
+.cke_toolgroup {
+  display: flex;
+}
+.cke_top {
+  background: #fff !important;
+  border-top: 1px solid #f0f0f0 !important;
+}
+/* ck editor ends */
 
 /* Chetan CSS ends */
 
@@ -375,6 +389,55 @@ p {
   margin-top: -20px;
   margin-right: -25px;
 }
+.storeUpbtn {
+  background-color: #fff;
+  width: 20px;
+  padding: 10px;
+  margin: auto;
+  margin-top: 10px;
+}
+.product-card {
+  height: 152px;
+  overflow: auto;
+}
+.product-card::-webkit-scrollbar {
+  width: 5px;
+}
+.product-card::-webkit-scrollbar-track {
+  background: #e9e9e9;
+  border-radius: 10px;
+}
+.product-card::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.product-card::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+}
+.product-card .col-md-4 {
+  align-items: flex-end;
+}
+.selectdot img{
+  width: 15px;
+  margin: 5px;
+}
+.storeUpbtn img{
+  width: 20px;
+}
+.message-icon-cnt{
+  position: absolute;
+    background-color: #EB4D4B;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 10%;
+    font-size: 11px;
+    color: #fff;
+    font-weight: 700;
+    top: -13px;
+    right: -10px;
+}
 /* Responsive starts */
 @media all and (max-width: 576px) {
   #chat-popup-overlay {
@@ -454,7 +517,32 @@ p {
   .chatcontentDiv {
     margin-right: 5px;
     margin-left: 15px;
+    /* height: calc(100vh - 314px); */
+    height: calc(100vh - 404px);
   }
   /* right side part ends */
+
+  /* ck editor starts */
+  .cke_top {
+    padding: 0 !important;
+    padding-right: 8px !important;
+  }
+  .cke_toolgroup {
+    margin-bottom: 1px !important;
+  }
+  /* ck editor ends */
+}
+
+@media all and (max-width: 425px) {
+  .chat-face-cntr {
+    width: 35px;
+  }
+  .chat-detail-cntr {
+    margin-right: 20px;
+  }
+  .chatcontentDiv {
+    /* height: calc(100vh - 299px); */
+    height: calc(100vh - 389px);
+  }
 }
 /* Responsive ends */

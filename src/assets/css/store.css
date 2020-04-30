@@ -1706,6 +1706,9 @@ table tr th:last-child {
 .hidedesk {
   display: none;
 }
+.status-btn-camp{
+  display: contents;
+}
 /* ------------------Campain Media Queries ------------------------- */
 @media screen and (max-width: 600px) {
   .custompop {
