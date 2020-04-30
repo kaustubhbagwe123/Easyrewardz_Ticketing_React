@@ -1514,5 +1514,48 @@ table tr th:last-child {
 .table-coloum-hide {
   display: none !important;
 }
+.particular-hide {
+  visibility: hidden !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
+  background: #e5e9ed !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th .ant-table-column-title {
+  font-size: 11px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-thead > tr > th, .custom-react-table .rt-thead .rt-th span {
+  padding: 10px 7px 4px !important;
+}
+.custom-tableak .custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.custom-tableak .custom-antd-table .ant-table-tbody > tr > td, .custom-tableak .custom-react-table .rt-tbody .rt-td {
+  padding: 7px !important;
+  font-size: 11px;
+}
+.custom-tableak .closebtn {
+  width: 42px;
+  height: 20px;
+  min-width: 42px !important;
+}
+.custom-tableak .hdrcloselabel {
+  font-size: 10px;
+  vertical-align: text-bottom;
+}
+.custom-tableak {
+  padding: 5px 0;
+}
+.custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
+  background-size: 17px 17px;
+  width: 17px;
+  height: 17px;
+}
+.broadcast-icon img {
+  height: 16px;
+  cursor: pointer;
+}
 }
 /* ------------------Campain Css End ------------------------- */
