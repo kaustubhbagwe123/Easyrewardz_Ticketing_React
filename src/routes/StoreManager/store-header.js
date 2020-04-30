@@ -34,6 +34,9 @@ import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
 import Bata from "./../../assets/Images/Bata2.jpeg";
 import DownArrow from "./../../assets/Images/down.png";
+import RightBlue from "./../../assets/Images/rightblue.png";
+import UpBlue from "./../../assets/Images/new-Up.png";
+import DownBlue from "./../../assets/Images/new-Down.png";
 
 class Header extends Component {
   constructor(props) {
@@ -536,6 +539,7 @@ class Header extends Component {
   ////handle Make As Read On Going Chat
   handleMakeAsReadOnGoingChat(id, name) {
     let self = this;
+    this.setState({ chatId: id });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/MarkAsReadOnGoingChat",
@@ -549,6 +553,7 @@ class Header extends Component {
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           self.handleGetOngoingChat();
+          self.handleGetChatMessagesList(id);
           self.setState({ customerName: name });
         } else {
           self.setState({ customerName: name });
@@ -1195,19 +1200,37 @@ class Header extends Component {
                     {this.state.isDownbtn ? (
                       <div className="chatcontentRow">
                         <div className="chatcontentDiv">
-                          <div className="chat-trail-cntr chat-trail-cntr-right">
-                            <div className="chat-trail-img">
-                              <img src={DummyFace2} alt="face image" />
-                            </div>
-                            <div className="chat-trail-chat-cntr">
-                              <p className="chat-trail-chat">
-                                Hello Sir, Thank you for allowing me to assist
-                                you today. What product will you like to view?
-                              </p>
-                              <span className="chat-trail-time">1m:36s</span>
-                            </div>
-                          </div>
-                          <div className="chat-trail-cntr">
+                          {this.state.messageData !== null
+                            ? this.state.messageData.map((item, i) => {
+                                return (
+                                  <div
+                                    key={i}
+                                    className={
+                                      item.byCustomer
+                                        ? "chat-trail-cntr"
+                                        : "chat-trail-cntr chat-trail-cntr-right"
+                                    }
+                                  >
+                                    <div className="chat-trail-img">
+                                      <img
+                                        src={DummyFace2}
+                                        alt="face image"
+                                        title={item.customerName}
+                                      />
+                                    </div>
+                                    <div className="chat-trail-chat-cntr">
+                                      <p className="chat-trail-chat">
+                                        {item.message}
+                                      </p>
+                                      <span className="chat-trail-time">
+                                        {item.chatTime}
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              })
+                            : null}
+                          {/* <div className="chat-trail-cntr">
                             <div className="chat-trail-img">
                               <img src={DummyFace1} alt="face image" />
                             </div>
@@ -1215,7 +1238,7 @@ class Header extends Component {
                               <p className="chat-trail-chat">Shop</p>
                               <span className="chat-trail-time">56s</span>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     ) : null}
@@ -1377,7 +1400,12 @@ class Header extends Component {
                                       <div className="card">
                                         <div className="card-body">
                                           {item.isSelect ? (
-                                            <div className="selectdot"></div>
+                                            <div className="selectdot">
+                                              <img
+                                                src={RightBlue}
+                                                alt={"select-card"}
+                                              />
+                                            </div>
                                           ) : null}
                                           {/* <div className="container"> */}
                                           <div
@@ -1430,7 +1458,11 @@ class Header extends Component {
                                 className="storeUpbtn"
                                 onClick={this.handleDownButtonClick.bind(this)}
                               >
-                                <img src={DownArrow} alt="down-arrow" />
+                                {this.state.isDownbtn ? (
+                                  <img src={DownBlue} alt="down-arrow" />
+                                ) : (
+                                  <img src={UpBlue} alt="down-arrow" />
+                                )}
                               </button>
                             </div>
                           </div>

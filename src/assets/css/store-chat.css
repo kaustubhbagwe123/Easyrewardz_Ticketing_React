@@ -402,6 +402,13 @@ p {
 .product-card .col-md-4{
   align-items: flex-end;
 }
+.selectdot img{
+  width: 15px;
+  margin: 5px;
+}
+.storeUpbtn img{
+  width: 20px;
+}
 /* Responsive starts */
 @media all and (max-width: 576px) {
   #chat-popup-overlay {
