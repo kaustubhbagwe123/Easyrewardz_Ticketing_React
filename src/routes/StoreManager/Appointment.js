@@ -3,6 +3,8 @@ import { Table } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { authHeader } from "./../../helpers/authHeader";
+import moment from "moment";
+import { NotificationManager } from "react-notifications";
 
 class Appointment extends Component {
     constructor(props) {
@@ -41,24 +43,48 @@ class Appointment extends Component {
           //                       subAppointmentData: [{id:20, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
           //                       {id:21, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]}],
           appointmentGridData:[],
-          rowExpandedCount: 0               
+          rowExpandedCount: 0,
+          todayCount: 0,
+          tomorrowCount: 0,
+          dayAfterTomorrowCount: 0,
+          tomorrowDay: "",
+          dayAfterTomorrowDay: "",
+          status: "",
+          tabFor: 1       
         }
         this.onRowExpand = this.onRowExpand.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
     }
 
     componentDidMount() {
-        this.handleAppointmentGridData();
+        this.handleAppointmentGridData(1);
+        this.handleAppointmentCount();
     }
 
-    handleAppointmentGridData() {
+    handleAppointmentGridData(tabFor) {
         debugger;
         let self = this;
+        var date = "";
         this.setState({
           loading: true,
+          tabFor: tabFor
         });
+        if(tabFor === 1){
+          date = moment(new Date()).format('YYYY-MM-DD');
+        }
+        if(tabFor === 2){
+          var todayDate = new Date();
+          date = moment(todayDate.setDate(todayDate.getDate() + 1)).format('YYYY-MM-DD');
+        }
+        if(tabFor === 3){
+          var todayDate = new Date();
+          date = moment(todayDate.setDate(todayDate.getDate() + 2)).format('YYYY-MM-DD');
+        }
+        
         axios({
             method: "post",
             url: config.apiUrl + "/Appointment/GetAppointmentList",
+            params: {AppDate : date},
             headers: authHeader(),
         }).then(function(res) {
             debugger;
@@ -77,6 +103,66 @@ class Appointment extends Component {
         });
     }
 
+    handleAppointmentCount() {
+      debugger;
+      let self = this;
+      axios({
+          method: "post",
+          url: config.apiUrl + "/Appointment/GetAppointmentCount",
+          headers: authHeader(),
+      }).then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success" && data) {
+            self.setState({
+              todayCount: data[0].today,
+              tomorrowCount: data[0].tomorrow,
+              dayAfterTomorrowCount: data[0].dayAfterTomorrow
+            });
+          }
+          var todayDate = new Date();
+          var tomorrowDate = moment(todayDate.setDate(todayDate.getDate() + 1)).format('Do');
+          var dayAterTomorrowDate = moment(todayDate.setDate(todayDate.getDate() + 1)).format('Do');
+          self.setState({
+            tomorrowDay: tomorrowDate,
+            dayAfterTomorrowDay: dayAterTomorrowDate
+          });
+      }).catch((data) => {
+          console.log(data);
+      });
+  }
+
+    handleUpdateAppointment(appointmentID) {
+      debugger;
+      let self = this;
+      if(this.state.status!=="")
+      {
+        axios({
+            method: "post",
+            url: config.apiUrl + "/Appointment/UpdateAppointmentStatus",
+            data:{
+              AppointmentID: appointmentID,
+              Status: parseInt(this.state.status)
+            },
+            headers: authHeader(),
+        }).then(function(res) {
+            debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success("Record updated successFully.");
+            }else{
+              NotificationManager.error(status);
+            }
+            self.handleAppointmentGridData();
+        }).catch((data) => {
+            console.log(data);
+        });
+      }else{
+        NotificationManager.error("Please select status.");
+      }
+  }
+
     onRowExpand(expanded, record) {
         debugger;
         let rowExpandedCount;
@@ -93,21 +179,28 @@ class Appointment extends Component {
         }
       }
 
+      handleOnChange(e){
+        debugger;
+        this.setState({
+          [e.target.name]: e.target.value
+        });
+      }
+
     render() {
         return(
             <div className="custom-tableak">
               <div className="custom-tabs">
-                <div className="custom-tabcount">
-                  <p className="tab-title">Today</p>
-                  <span className="tab-count">30</span>
+                <div className={this.state.tabFor === 1? "custom-tabcount":"custom-tabcount1"} onClick={this.handleAppointmentGridData.bind(this,1)}>
+                  <p className={this.state.tabFor === 1? "tab-title":"tab-title1"}>Today</p>
+                  <span className={this.state.tabFor === 1? "tab-count":"tab-count1"}>{this.state.todayCount}</span>
                 </div>
-                <div className="custom-tabcount1">
-                  <p className="tab-title1">21st</p>
-                  <span className="tab-count1">46</span>
+                <div className={this.state.tabFor === 2? "custom-tabcount":"custom-tabcount1"} onClick={this.handleAppointmentGridData.bind(this,2)}>
+                  <p className={this.state.tabFor === 2? "tab-title":"tab-title1"}>{this.state.tomorrowDay}</p>
+                  <span className={this.state.tabFor === 2? "tab-count":"tab-count1"}>{this.state.tomorrowCount}</span>
                 </div>
-                <div className="custom-tabcount1">
-                  <p className="tab-title1">22nd</p>
-                  <span className="tab-count1">44</span>
+                <div className={this.state.tabFor === 3? "custom-tabcount":"custom-tabcount1"} onClick={this.handleAppointmentGridData.bind(this,3)}>
+                  <p className={this.state.tabFor === 3? "tab-title":"tab-title1"}>{this.state.dayAfterTomorrowDay}</p>
+                  <span className={this.state.tabFor === 3? "tab-count":"tab-count1"}>{this.state.dayAfterTomorrowCount}</span>
                 </div>
               </div>
               <div className="table-cntr store">
@@ -116,7 +209,7 @@ class Appointment extends Component {
                   columns={[
                     {
                       title: "Date",
-                      dataIndex: "apointmentDate",
+                      dataIndex: "appointmentDate",
                     },
                     {
                       title: "Time",
@@ -124,7 +217,7 @@ class Appointment extends Component {
                     },
                     {
                       title: "Appointments",
-                      dataIndex: "noOfPeople",
+                      dataIndex: "nOofPeople",
 
                       
                       },
@@ -144,23 +237,23 @@ class Appointment extends Component {
                           },
                           {
                             title: "Mobile No.",
-                            dataIndex: "mobileNo",
+                            dataIndex: "customerNumber",
                           },
                           {
                               title: "No. of People",
-                              dataIndex: "noOfPeople",
+                              dataIndex: "nOofPeople",
                           },
                           {
                             title: "Status",
                             render: (row, item) => {
-                              if(item.status !== 1){
+                              if(item.status !== ""){
                               return (
                                 <div className="d-flex">
                                   <div>
                                     <button className="statusBtn" type="button"  style={{ minWidth: "5px", marginRight: "10px" }}
                                     disabled
                                     >
-                                    <label className="statusLabel">Visited</label>
+                                    <label className="statusLabel">{item.status}</label>
                                     </button>
                                   </div>
                                 </div>
@@ -169,10 +262,12 @@ class Appointment extends Component {
                                 return (
                                 <div className="d-flex">
                                   <div>
-                                    <select>
-                                      <option>Select Status</option>
-                                      <option>Cancel</option>
-                                      <option>Visited</option>
+                                    <select name="status" value={this.state.status}
+                                     onChange={this.handleOnChange}
+                                    >
+                                      <option value="">Select Status</option>
+                                      <option value="0">Cancel</option>
+                                      <option value="1">Visited</option>
                                     </select>
                                   </div>
                               </div>);
@@ -273,11 +368,13 @@ class Appointment extends Component {
                           {
                             title: "Actions",
                             render: (row, item) => {
-                              if(item.status === 0 ){
+                              if(item.status === "" ){
                               return (
                                 <div className="d-flex">
                                   <div>
-                                    <button className="saveBtn" type="button"  style={{ minWidth: "5px", marginRight: "10px" }}>
+                                    <button className="saveBtn" type="button"  style={{ minWidth: "5px", marginRight: "10px" }}
+                                    onClick={this.handleUpdateAppointment.bind(this,item.appointmentID)}
+                                    >
                                       <label className="saveLabel">Update</label>
                                     </button>
                                   </div>

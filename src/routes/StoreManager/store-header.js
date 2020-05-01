@@ -37,6 +37,8 @@ import DownArrow from "./../../assets/Images/down.png";
 import RightBlue from "./../../assets/Images/rightblue.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
+import AppointmentLogo from "./../../assets/Images/appointments.svg";
+import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
 
 class Header extends Component {
   constructor(props) {
@@ -260,8 +262,8 @@ class Header extends Component {
     var appointment = {
       data: "Appointment",
       urls: "appointment",
-      logoBlack: CampaignLogo,
-      logoBlue: CampaignLogoBlue,
+      logoBlack: AppointmentLogo,
+      logoBlue: AppointmentLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
       activeClass: page === "Appointment" ? "active single-menu" : "single-menu",
