@@ -817,7 +817,7 @@ class Header extends Component {
   handleOngoingChatClick = (id, name, count) => {
     this.setState({ customerName: name });
     this.setState({ chatId: id });
-    
+
     if (this.state.chatId === id) {
       this.handleGetChatMessagesList(id);
     } else {
@@ -1410,6 +1410,9 @@ class Header extends Component {
                               </div>
                             </div>
                           ))}
+                        {this.state.ongoingChatsData.length === 0 && (
+                          <p className="no-record">No Records Found !</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1450,6 +1453,9 @@ class Header extends Component {
                               </div>
                             </div>
                           ))}
+                        {this.state.newChatsData.length === 0 && (
+                          <p className="no-record">No Records Found !</p>
+                        )}
                       </div>
                     </div>
                   </div>

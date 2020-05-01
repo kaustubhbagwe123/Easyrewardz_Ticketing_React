@@ -187,8 +187,7 @@ p {
   text-align: center;
   line-height: 30px;
   right: 15px;
-  top: 25px;
-  display: none;
+  bottom: 55px;
 }
 .mobile-ck-send img {
   width: 15px;
@@ -229,6 +228,14 @@ p {
 }
 .searchtxt-new {
   margin-bottom: 10px;
+}
+.no-record {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: -20px;
+  font-size: 13px;
 }
 /* mobile chats tab ends */
 
@@ -609,10 +616,12 @@ p {
     justify-content: center;
   }
   .mobile-arrow,
-  .mobile-ck-send,
   .mobile-chat-tabs,
   .chat-tabs-mobile {
     display: block;
+  }
+  .mobile-ck-send {
+    top: 25px;
   }
 
   /* right side part starts */
