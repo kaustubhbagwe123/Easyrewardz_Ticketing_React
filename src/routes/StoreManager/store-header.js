@@ -1770,7 +1770,7 @@ class Header extends Component {
                                 <label className="s-lable">
                                   Today:11 May 2020
                                 </label>
-                                <div style={{ display: "inline-block" }}>
+                                <div className="schedule-btn-cntr">
                                   <button className="s-red-btn">
                                     11AM-12PM
                                     <img
