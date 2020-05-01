@@ -1397,6 +1397,9 @@ table tr th:last-child {
 .ant-popover-placement-bottomRight {
   padding-top: 1px !important;
 }
+.ant-popover-arrow {
+  display: none !important;
+}
 .custompop .poptitle {
   font-size: 18px;
   font-weight: bolder;
@@ -1617,6 +1620,7 @@ table tr th:last-child {
 }
 .sharecamp ul {
   margin-bottom: 0px;
+  float: right;
 }
 .sharecamp li {
   background-color: #f9f9f9;
@@ -1721,6 +1725,7 @@ table tr th:last-child {
     font-weight: bold;
     padding-top: 5px;
 }
+
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
@@ -1967,6 +1972,16 @@ table tr th:last-child {
 }
 .transactionbox label {
   font-size: 13px;
+}
+.info-icon-cp {
+  bottom: 4px;
+}
+.customernamecam {
+  max-width: 90px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
 }
 }
 /* ------------------Campain Css End ------------------------- */
