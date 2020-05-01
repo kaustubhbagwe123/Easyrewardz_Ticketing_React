@@ -257,6 +257,15 @@ class Header extends Component {
       imgClass: "campaign-icon",
       activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
     };
+    var appointment = {
+      data: "Appointment",
+      urls: "appointment",
+      logoBlack: CampaignLogo,
+      logoBlue: CampaignLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass: page === "Appointment" ? "active single-menu" : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -279,7 +288,13 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(campaign);
-        } else if (
+        }else if (
+          data[i].moduleName === "Appointment" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(appointment);
+        }
+        else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {

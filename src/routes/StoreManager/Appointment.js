@@ -1,43 +1,47 @@
 import React, { Component, Fragment } from "react";
 import { Table } from "antd";
+import axios from "axios";
+import config from "./../../helpers/config";
+import { authHeader } from "./../../helpers/authHeader";
 
 class Appointment extends Component {
     constructor(props) {
         super(props);
         this.state = {
           loading: false,
-          appointmentGridData: [{id:1, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:1, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: "Visited"},
-                                {id:2, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:3, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:2, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:4, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:5, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:3, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:6, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:7, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:4, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:8, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:9, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:5, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:10, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:11, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:6, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:12, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:13, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:7, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:14, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:15, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:8, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:16, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:17, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:9, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:18, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:19, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-                                {id:10, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-                                subAppointmentData: [{id:20, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-                                {id:21, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]}],
-                              rowExpandedCount: 0                
+          // appointmentGridData: [{id:1, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:1, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: "Visited"},
+          //                       {id:2, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:3, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:2, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:4, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:5, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:3, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:6, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:7, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:4, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:8, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:9, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:5, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:10, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:11, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:6, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:12, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:13, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:7, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:14, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:15, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:8, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:16, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:17, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:9, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:18, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:19, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
+          //                       {id:10, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
+          //                       subAppointmentData: [{id:20, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
+          //                       {id:21, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]}],
+          appointmentGridData:[],
+          rowExpandedCount: 0               
         }
         this.onRowExpand = this.onRowExpand.bind(this);
     }
@@ -49,28 +53,28 @@ class Appointment extends Component {
     handleAppointmentGridData() {
         debugger;
         let self = this;
-        // this.setState({
-        //   loading: true,
-        // });
-        // axios({
-        //     method: "post",
-        //     url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
-        //     headers: authHeader(),
-        // }).then(function(res) {
-        //     debugger;
-        //     let status = res.data.message;
-        //     let data = res.data.responseData;
-        //     if (status === "Success" && data) {
-        //       self.setState({
-        //         campaignGridData: data,
-        //       });
-        //     }
-        //     self.setState({
-        //        loading: false,
-        //     });
-        // }).catch((data) => {
-        //     console.log(data);
-        // });
+        this.setState({
+          loading: true,
+        });
+        axios({
+            method: "post",
+            url: config.apiUrl + "/Appointment/GetAppointmentList",
+            headers: authHeader(),
+        }).then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success" && data) {
+              self.setState({
+                appointmentGridData: data,
+              });
+            }
+            self.setState({
+               loading: false,
+            });
+        }).catch((data) => {
+            console.log(data);
+        });
     }
 
     onRowExpand(expanded, record) {
@@ -112,27 +116,27 @@ class Appointment extends Component {
                   columns={[
                     {
                       title: "Date",
-                      dataIndex: "date",
+                      dataIndex: "apointmentDate",
                     },
                     {
                       title: "Time",
-                      dataIndex: "time",
+                      dataIndex: "timeSlot",
                     },
                     {
                       title: "Appointments",
-                      dataIndex: "appointments",
+                      dataIndex: "noOfPeople",
 
                       
                       },
-                    {
-                      title: "Actions",
-                      // dataIndex: "orderPricePaid"
-                    },
+                      {
+                        title: "Actions",
+                        // dataIndex: "orderPricePaid"
+                      },
                   ]}
                   expandedRowRender={(row) => {
                     return (
                       <Table
-                        dataSource={row.subAppointmentData}
+                        dataSource={row.appointmentCustomerList}
                         columns={[
                           {
                             title: "Customer Name",
@@ -149,18 +153,29 @@ class Appointment extends Component {
                           {
                             title: "Status",
                             render: (row, item) => {
-                              if(item.status !== ""){
+                              if(item.status !== 1){
                               return (
                                 <div className="d-flex">
                                   <div>
-                                    <button className="saveBtn" type="button"  style={{ minWidth: "5px", marginRight: "10px" }}>
-                                      <label className="saveLabel">{item.status}</label>
+                                    <button className="statusBtn" type="button"  style={{ minWidth: "5px", marginRight: "10px" }}
+                                    disabled
+                                    >
+                                    <label className="statusLabel">Visited</label>
                                     </button>
                                   </div>
                                 </div>
                                 );
                               }else{
-                                return item.status;
+                                return (
+                                <div className="d-flex">
+                                  <div>
+                                    <select>
+                                      <option>Select Status</option>
+                                      <option>Cancel</option>
+                                      <option>Visited</option>
+                                    </select>
+                                  </div>
+                              </div>);
                               }
                             }
                           //   render: (row, item) => {
@@ -258,7 +273,7 @@ class Appointment extends Component {
                           {
                             title: "Actions",
                             render: (row, item) => {
-                              if(item.status === ""){
+                              if(item.status === 0 ){
                               return (
                                 <div className="d-flex">
                                   <div>
@@ -279,7 +294,7 @@ class Appointment extends Component {
                   onExpand={this.onRowExpand}
                   expandIconColumnIndex={3}
                   expandIconAsCell={false}
-                  pagination={false}
+                  pagination={{defaultPageSize:5}}
                   loading={this.state.loading}
                   dataSource={this.state.appointmentGridData}
                 />
