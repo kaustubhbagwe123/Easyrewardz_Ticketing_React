@@ -15,6 +15,7 @@ import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
+import SendUp from "./../../assets/Images/send-up.png";
 import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
 import DummyFace2 from "./../../assets/Images/dummy-face-2.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
@@ -32,11 +33,15 @@ import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
 import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
-import Bata from "./../../assets/Images/Bata2.jpeg";
+import Bata from "./../../assets/Images/Bata2.jpg";
 import DownArrow from "./../../assets/Images/down.png";
 import RightBlue from "./../../assets/Images/rightblue.png";
+import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
+import CircleRight from "./../../assets/Images/circle-right.png";
+import ReactHtmlParser from "react-html-parser";
+import { Tooltip } from "antd";
 
 class Header extends Component {
   constructor(props) {
@@ -162,6 +167,11 @@ class Header extends Component {
       isDownbtn: true,
       customerName: "",
       messageData: [],
+      message: "",
+      chatMessageCount: 0,
+      activeTab: 1,
+      cardModal: false,
+      searchItem: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -212,6 +222,7 @@ class Header extends Component {
         1
       );
       this.handleGetNotigfication();
+      this.handleGetChatNotificationCount();
     }
   }
 
@@ -263,7 +274,8 @@ class Header extends Component {
       logoBlue: CampaignLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
-      activeClass: page === "Appointment" ? "active single-menu" : "single-menu",
+      activeClass:
+        page === "Appointment" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -287,13 +299,12 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(campaign);
-        }else if (
+        } else if (
           data[i].moduleName === "Appointment" &&
           data[i].modulestatus === true
         ) {
           accessdata.push(appointment);
-        }
-        else if (
+        } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -554,6 +565,11 @@ class Header extends Component {
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
           self.setState({ ongoingChatsData });
+          // setInterval(() => {
+          // if (self.state.chatModal) {
+          //   self.handleGetOngoingChat();
+          // }
+          // }, 40000);
         } else {
           self.setState({ ongoingChatsData });
         }
@@ -576,6 +592,11 @@ class Header extends Component {
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
           self.setState({ newChatsData });
+          // setInterval(() => {
+          // if (self.state.chatModal) {
+          //   self.handleGetNewChat();
+          // }
+          // }, 40000);
         } else {
           self.setState({ newChatsData });
         }
@@ -650,7 +671,14 @@ class Header extends Component {
         var message = response.data.message;
         var messageData = response.data.responseData;
         if (message === "Success" && messageData) {
-          self.setState({ messageData });
+          self.setState({
+            messageData,
+          });
+          // setInterval(() => {
+          // if (self.state.chatModal) {
+          //  self.handleGetChatMessagesList(id);
+          //   }
+          // }, 20000);
         } else {
           self.setState({ messageData });
         }
@@ -659,31 +687,107 @@ class Header extends Component {
         console.log(response, "---handleGetChatMessagesList");
       });
   }
+  ////handle save chat messgae
   handleSaveChatMessages() {
+    debugger;
     let self = this;
-    // var inputParam={}
-
+    var inputParam = {};
+    inputParam.chatID = this.state.chatId;
+    inputParam.message = this.state.message;
+    inputParam.attachment = null;
+    inputParam.byCustomer = false;
+    inputParam.chatStatus = 0;
+    inputParam.storeManagerId = 0;
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/saveChatMessages",
       headers: authHeader(),
-      data: {
-        // chatID: id,
-      },
+      data: inputParam,
     })
       .then(function(response) {
         var message = response.data.message;
-        var messageData = response.data.responseData;
-        if (message === "Success" && messageData) {
-          self.setState({ messageData });
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetChatMessagesList(self.state.chatId);
         } else {
-          self.setState({ messageData });
         }
       })
       .catch((response) => {
         console.log(response, "---handleGetChatMessagesList");
       });
   }
+  ////handle get chat notification count
+  handleGetChatNotificationCount() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatNotificationCount",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var chatMessageCount = response.data.responseData;
+        self.setState({ chatMessageCount });
+        // setInterval(() => {
+        // self.handleGetChatNotificationCount();
+        // }, 30000);
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatNotificationCount");
+      });
+  }
+
+  ////handle get chat notification count
+  handleSearchChatItemDetails() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/searchChatItemDetails",
+      headers: authHeader(),
+      params: {
+        SearchText: this.state.searchItem,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var searchCardData = response.data.responseData;
+
+        if (message == "Success" && searchCardData) {
+          self.setState({ searchCardData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleSearchChatItemDetails");
+      });
+  }
+  ////handle get chat notification count
+  handleGetTimeSlot() {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetTimeSlot",
+      headers: authHeader(),
+      params: {
+        storeID: 1,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var timeSlotData = response.data.responseData;
+
+        if (message == "Success" && timeSlotData) {
+          self.setState({ timeSlotData });
+        } else {
+          self.setState({ timeSlotData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetTimeSlot");
+      });
+  }
+
+  ////handlecselect card in card tab
   handleSelectCard(id) {
     if (
       this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
@@ -701,9 +805,45 @@ class Header extends Component {
       searchCardData: this.state.searchCardData,
     });
   }
+  ////handle button down click
   handleDownButtonClick() {
     this.setState({ isDownbtn: !this.state.isDownbtn });
   }
+  ////handle on change ck editor
+  handleOnChangeCKEditor = (evt) => {
+    debugger;
+    var message = evt.editor.getData();
+    this.setState({
+      message,
+    });
+  };
+  ////handle on going chat click
+  handleOngoingChatClick = (id, name, count) => {
+    this.setState({ customerName: name });
+    this.setState({ chatId: id });
+
+    if (this.state.chatId === id) {
+      this.handleGetChatMessagesList(id);
+    } else {
+      if (count === 0) {
+        this.handleGetChatMessagesList(id);
+      } else {
+        this.handleMakeAsReadOnGoingChat(id, name);
+      }
+    }
+  };
+
+  onCloseCardModal = () => {
+    this.setState({ cardModal: false });
+  };
+  onOpenCardModal = () => {
+    this.setState({ cardModal: true });
+  };
+  ////handle search item text change
+  handleSearchItemChange = (e) => {
+    this.setState({ searchItem: e.target.value });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -802,7 +942,9 @@ class Header extends Component {
                   className="chatImg"
                   style={{ display: "none" }}
                 />
-                <span className="message-icon-cnt">3</span>
+                <span className="message-icon-cnt">
+                  {this.state.chatMessageCount}
+                </span>
               </div>
             </a>
             {/* --notification-- */}
@@ -1111,10 +1253,11 @@ class Header extends Component {
                                 ? "chat-info active"
                                 : "chat-info"
                             }
-                            onClick={this.handleMakeAsReadOnGoingChat.bind(
+                            onClick={this.handleOngoingChatClick.bind(
                               this,
                               chat.chatID,
-                              chat.cumtomerName
+                              chat.cumtomerName,
+                              chat.messageCount
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -1144,7 +1287,7 @@ class Header extends Component {
                   <div className="chat-cntr">
                     <p className="chats-heading">
                       New Chats (
-                      {this.state.newChatsData.length < 10
+                      {this.state.newChatsData.length < 9
                         ? "0" + this.state.newChatsData.length
                         : this.state.newChatsData.length}
                       )
@@ -1204,10 +1347,10 @@ class Header extends Component {
                       />
                     </div>
                   </div> */}
-                  <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
+                  <ul className="nav nav-tabs" role="tablist">
+                    <li className="nav-item">
                       <a
-                        class="nav-link active"
+                        className="nav-link active"
                         id="ongoing-chat-tab"
                         data-toggle="tab"
                         href="#ongoing-chat"
@@ -1218,9 +1361,9 @@ class Header extends Component {
                         Ongoing Chats
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li className="nav-item">
                       <a
-                        class="nav-link"
+                        className="nav-link"
                         id="new-chat-tab"
                         data-toggle="tab"
                         href="#new-chat"
@@ -1233,9 +1376,9 @@ class Header extends Component {
                     </li>
                   </ul>
                 </div>
-                <div class="tab-content">
+                <div className="tab-content">
                   <div
-                    class="tab-pane fade show active"
+                    className="tab-pane fade show active"
                     id="ongoing-chat"
                     role="tabpanel"
                     aria-labelledby="ongoing-chat-tab"
@@ -1252,18 +1395,22 @@ class Header extends Component {
                                     ? "chat-detail-cntr active"
                                     : "chat-detail-cntr"
                                 }
-                                onClick={this.handleMakeAsReadOnGoingChat.bind(
+                                onClick={this.handleOngoingChatClick.bind(
                                   this,
                                   chat.chatID,
-                                  chat.cumtomerName
+                                  chat.cumtomerName,
+                                  chat.messageCount
                                 )}
                               >
                                 <div className="chat-face-cntr">
-                                  <img
-                                    src={DummyFace1}
-                                    alt="face image"
-                                    title={chat.cumtomerName}
-                                  />
+                                  <div className="chat-face-inner-cntr">
+                                    <img
+                                      src={DummyFace1}
+                                      alt="face image"
+                                      title={chat.cumtomerName}
+                                    />
+                                    <span className="online"></span>
+                                  </div>
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
@@ -1271,11 +1418,14 @@ class Header extends Component {
                               </div>
                             </div>
                           ))}
+                        {this.state.ongoingChatsData.length === 0 && (
+                          <p className="no-record">No Records Found !</p>
+                        )}
                       </div>
                     </div>
                   </div>
                   <div
-                    class="tab-pane fade"
+                    className="tab-pane fade"
                     id="new-chat"
                     role="tabpanel"
                     aria-labelledby="new-chat-tab"
@@ -1300,7 +1450,10 @@ class Header extends Component {
                                       : "chat-face-cntr"
                                   }
                                 >
-                                  <img src={DummyFace1} alt="face image" />
+                                  <div className="chat-face-inner-cntr">
+                                    <img src={DummyFace1} alt="face image" />
+                                    <span className="online"></span>
+                                  </div>
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
@@ -1308,6 +1461,9 @@ class Header extends Component {
                               </div>
                             </div>
                           ))}
+                        {this.state.newChatsData.length === 0 && (
+                          <p className="no-record">No Records Found !</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1344,9 +1500,10 @@ class Header extends Component {
                                     </div>
                                     <div className="chat-trail-chat-cntr">
                                       <p className="chat-trail-chat">
-                                        {item.message}
+                                        {ReactHtmlParser(item.message)}
                                       </p>
                                       <span className="chat-trail-time">
+                                        {item.chatDate + " "}
                                         {item.chatTime}
                                       </span>
                                     </div>
@@ -1367,7 +1524,7 @@ class Header extends Component {
                       </div>
                     ) : null}
                     <div
-                      className="chatcontentdivtab"
+                      className="chatcontentdivtab chat-tabs-desktop"
                       style={{ height: !this.state.isDownbtn ? "80%" : "" }}
                     >
                       <ul className="nav nav-tabs" role="tablist">
@@ -1415,6 +1572,7 @@ class Header extends Component {
                             role="tab"
                             aria-controls="schedule-visit-tab"
                             aria-selected="false"
+                            onClick={this.handleGetTimeSlot.bind(this)}
                           >
                             SCHEDULE VISIT
                           </a>
@@ -1442,6 +1600,8 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <CKEditor
+                              data={this.state.message}
+                              onChange={this.handleOnChangeCKEditor}
                               config={{
                                 toolbar: [
                                   {
@@ -1468,7 +1628,11 @@ class Header extends Component {
                                 ],
                               }}
                             />
-                            <div className="mobile-ck-send">
+
+                            <div
+                              className="mobile-ck-send"
+                              onClick={this.handleSaveChatMessages.bind(this)}
+                            >
                               <img src={Assign} alt="send img" />
                             </div>
                           </div>
@@ -1485,22 +1649,38 @@ class Header extends Component {
                               className="input-group searchtxt-new"
                               style={{ background: "none" }}
                             >
-                              <input
-                                type="text"
-                                className="search-customerAddSrch searchtxt"
-                                placeholder="Search ItemId/artcile/SKU ID"
-                                name="Search"
-                                maxLength="100"
-                                autoComplete="off"
-                              />
-                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
-                                <img
-                                  src={SearchBlueImg}
-                                  alt="SearchBlueImg"
-                                  className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
+                              <form
+                                style={{ width: "100%" }}
+                                onSubmit={this.handleSearchChatItemDetails.bind(
+                                  this
+                                )}
+                              >
+                                <input
+                                  type="text"
+                                  className="search-customerAddSrch searchtxt"
+                                  placeholder="Search ItemId/artcile/SKU ID"
+                                  name="Search"
+                                  maxLength="100"
+                                  autoComplete="off"
+                                  value={this.state.searchItem}
+                                  onChange={this.handleSearchItemChange.bind(
+                                    this
+                                  )}
                                 />
-                              </span>
+                                <span
+                                  onClick={this.handleSearchChatItemDetails.bind(
+                                    this
+                                  )}
+                                  className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                >
+                                  <img
+                                    src={SearchBlueImg}
+                                    alt="SearchBlueImg"
+                                    className="srch-imge"
+                                    // onClick={this.handleSearchCustomer}
+                                  />
+                                </span>
+                              </form>
                             </div>
                           </div>
                           <div className="container">
@@ -1516,17 +1696,17 @@ class Header extends Component {
                                     <div
                                       className="col-md-6"
                                       key={i}
-                                      onClick={this.handleSelectCard.bind(
-                                        this,
-                                        item.id
-                                      )}
+                                      // onClick={this.handleSelectCard.bind(
+                                      //   this,
+                                      //   // item.id
+                                      // )}
                                     >
                                       <div className="card">
-                                        <div className="card-body">
+                                        <div className="card-body position-relative">
                                           {item.isSelect ? (
                                             <div className="selectdot">
                                               <img
-                                                src={RightBlue}
+                                                src={CardTick}
                                                 alt={"select-card"}
                                               />
                                             </div>
@@ -1591,6 +1771,303 @@ class Header extends Component {
                             </div>
                           </div>
                         </div>
+                        {/* --------Recommended List Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="recommended-list-tab"
+                          role="tabpanel"
+                          aria-labelledby="recommended-list-tab"
+                        ></div>
+                        {/* --------Schedule Visit Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="schedule-visit-tab"
+                          role="tabpanel"
+                          aria-labelledby="schedule-visit-tab"
+                        >
+                          <div
+                            className="row"
+                            style={{ marginLeft: "5px", marginTop: "10px" }}
+                          >
+                            <div className="col-md-8">
+                              <div>
+                                <label className="s-lable">
+                                  Today:11 May 2020
+                                </label>
+                                <div className="schedule-btn-cntr">
+                                  <button className="s-red-btn">
+                                    11AM-12PM
+                                    <img
+                                      className="s-img-select"
+                                      src={CircleRight}
+                                      alt="circle-right"
+                                    />
+                                  </button>
+                                  <button className="s-green-btn">
+                                    11AM-12PM
+                                  </button>
+                                  <button className="s-yellw-btn">
+                                    11AM-12PM
+                                  </button>
+                                  <button className="s-green-btn ">
+                                    11AM-12PM
+                                  </button>
+                                </div>
+                                <div className="selectdot-blue"></div>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="row">
+                                <div>
+                                  <label>Select Slot</label>
+                                  <button className="s-green-active">
+                                    2PM-3PM
+                                    <img
+                                      className="s-img-select"
+                                      src={CircleRight}
+                                      alt="circle-right"
+                                    />
+                                  </button>
+                                </div>
+                                <div>
+                                  <label>No of People</label>
+                                  <input type="text" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* --------Generate Payment Link Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="generate-payment-link-tab"
+                          role="tabpanel"
+                          aria-labelledby="generate-payment-link-tab"
+                        ></div>
+                      </div>
+                    </div>
+                    <div
+                      className="chatcontentdivtab chat-tabs-mobile"
+                      style={{ height: !this.state.isDownbtn ? "80%" : "" }}
+                    >
+                      <ul className="nav nav-tabs" role="tablist">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#message-tab"
+                            role="tab"
+                            aria-controls="message-tab"
+                            aria-selected="true"
+                          >
+                            MESSAGE
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#card-tab"
+                            role="tab"
+                            aria-controls="card-tab"
+                            aria-selected="false"
+                            onClick={this.onOpenCardModal}
+                          >
+                            CARD
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#recommended-list-tab"
+                            role="tab"
+                            aria-controls="recommended-list-tab"
+                            aria-selected="false"
+                          >
+                            RECOMMENDED LIST
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#schedule-visit-tab"
+                            role="tab"
+                            aria-controls="schedule-visit-tab"
+                            aria-selected="false"
+                          >
+                            SCHEDULE VISIT
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#generate-payment-link-tab"
+                            role="tab"
+                            aria-controls="generate-payment-link-tab"
+                            aria-selected="false"
+                          >
+                            GENERATE PAYMENT LINK
+                          </a>
+                        </li>
+                      </ul>
+                      <div className="tab-content">
+                        {/* --------Message Tab----- */}
+                        <div
+                          className="tab-pane fade show active"
+                          id="message-tab"
+                          role="tabpanel"
+                          aria-labelledby="message-tab"
+                        >
+                          <div className="message-div">
+                            <CKEditor
+                              onChange={this.handleOnChangeCKEditor.bind(this)}
+                              config={{
+                                toolbar: [
+                                  {
+                                    name: "basicstyles",
+                                    items: ["Bold", "Italic", "Strike"],
+                                  },
+
+                                  {
+                                    name: "paragraph",
+                                    items: ["NumberedList", "BulletedList"],
+                                  },
+                                  {
+                                    name: "links",
+                                    items: ["Link", "Unlink"],
+                                  },
+                                  {
+                                    name: "insert",
+                                    items: ["Image", "Table"],
+                                  },
+                                  {
+                                    name: "editing",
+                                    items: ["Scayt"],
+                                  },
+                                ],
+                              }}
+                            />
+                            <div
+                              className="mobile-ck-send"
+                              onClick={this.handleSaveChatMessages.bind(this)}
+                            >
+                              <img src={Assign} alt="send img" />
+                            </div>
+                          </div>
+                        </div>
+                        {/* -------- Card Modal ----- */}
+                        <Modal
+                          open={this.state.cardModal}
+                          onClose={this.onCloseCardModal}
+                          center
+                          modalId="mobile-tabs-popup"
+                          overlayId="mobile-tabs-overlay"
+                        >
+                          <div className="mobile-chat-popup">
+                            <div
+                              className="input-group searchtxt-new"
+                              style={{ background: "none" }}
+                            >
+                              <input
+                                type="text"
+                                className="search-customerAddSrch searchtxt"
+                                placeholder="Search ItemId/artcile/SKU ID"
+                                name="Search"
+                                maxLength="100"
+                                autoComplete="off"
+                              />
+                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                                <img
+                                  src={SearchBlueImg}
+                                  alt="SearchBlueImg"
+                                  className="srch-imge"
+                                  // onClick={this.handleSearchCustomer}
+                                />
+                              </span>
+                            </div>
+                            <div className="product-card">
+                              {this.state.searchCardData !== null &&
+                                this.state.searchCardData.map((item, i) => {
+                                  return (
+                                    <div
+                                      className="card"
+                                      key={i}
+                                      onClick={this.handleSelectCard.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                    >
+                                      <div className="card-body position-relative">
+                                        {item.isSelect ? (
+                                          <div className="selectdot">
+                                            <img
+                                              src={CardTick}
+                                              alt={"select-card"}
+                                            />
+                                          </div>
+                                        ) : null}
+                                        <div className="mobile-card-cntr">
+                                          <div className="mobile-card-img">
+                                            <img
+                                              className="chat-product-img"
+                                              src={item.productImgURL}
+                                              alt="Product Image"
+                                              title="POWER Black Casual Shoes For Man"
+                                            />
+                                          </div>
+                                          <div className="bkcprdt">
+                                            {/* <div> */}
+                                            <label className="chat-product-name">
+                                              {item.productName}
+                                            </label>
+                                            {/* </div> */}
+                                            {/* <div> */}
+                                            <label className="chat-product-code">
+                                              Product Code:
+                                              {item.productCode}
+                                            </label>
+                                            {/* </div> */}
+                                            {/* <div> */}
+                                            <label className="chat-product-prize">
+                                              {item.productPrize}
+                                            </label>
+                                            {/* </div> */}
+                                            {/* <div> */}
+                                            <label className="chat-product-url">
+                                              {item.productUrl}
+                                            </label>
+                                            {/* </div> */}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                            <div className="chat-btn-cntr">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseCardModal}
+                              >
+                                Close
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.onCloseCardModal}
+                              >
+                                Send
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
                         {/* --------Recommended List Tab----- */}
                         <div
                           className="tab-pane fade"

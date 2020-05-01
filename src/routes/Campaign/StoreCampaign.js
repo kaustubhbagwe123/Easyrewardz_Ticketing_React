@@ -54,7 +54,7 @@ class StoreCampaign extends Component {
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
-    this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
+    this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
       this
     );
@@ -67,7 +67,7 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
-    this.handleCampaignGridData();
+    this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
 
@@ -105,7 +105,7 @@ class StoreCampaign extends Component {
     this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
-  handleCampaignGridData() {
+  handleGetCampaignGridData() {
     let self = this;
     this.setState({
       loading: true,
@@ -119,27 +119,25 @@ class StoreCampaign extends Component {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        if (status === "Success" && data) {
+        if (status === "Success") {
           self.setState({
             campaignGridData: data,
+            loading: false,
+          });
+        } else {
+          self.setState({
+            campaignGridData: [],
+            loading: false,
           });
         }
-        self.setState({
-          loading: false,
-        });
       })
       .catch((data) => {
         console.log(data);
       });
   }
-
-  handleUpdateCampaignStatusResponse(
-    campaignCustomerID,
-    campaignStatus,
-    response,
-    callReScheduledTo,
-    e
-  ) {
+  ///// Handle Update Campaign data
+  handleUpdateCampaignResponse(id, responseID, callRescheduledTo) {
+    debugger;
     let self = this,
       calculatedCallReScheduledTo;
 
@@ -147,29 +145,29 @@ class StoreCampaign extends Component {
       loading: true,
     });
 
-    if (campaignStatus === 102) {
-      calculatedCallReScheduledTo = callReScheduledTo;
+    if (responseID === 3) {
+      calculatedCallReScheduledTo = moment(callRescheduledTo).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
     } else {
       calculatedCallReScheduledTo = "";
     }
-
-    // update campaign
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreTask/UpdateCampaignStatusResponse",
+      url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
       headers: authHeader(),
       data: {
-        CampaignCustomerID: campaignCustomerID,
-        StatusNameID: campaignStatus,
-        ResponseID: response,
+        CampaignCustomerID: id,
+        ResponseID: responseID,
         CallReScheduledTo: calculatedCallReScheduledTo,
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Record saved successFully.");
-          self.handleCampaignGridData();
+          NotificationManager.success("Record Updated Successfully.");
+          self.handleGetCampaignGridData();
         } else {
           self.setState({
             loading: false,
@@ -200,7 +198,7 @@ class StoreCampaign extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign closed successFully.");
-          self.handleCampaignGridData();
+          self.handleGetCampaignGridData();
         } else {
           self.setState({
             loading: false,
@@ -937,7 +935,7 @@ class StoreCampaign extends Component {
                               }
                               onChange={this.onDateChange.bind(this, item.id)}
                               className={
-                                item.statusID === 102 && item.responseID === 3
+                                item.responseID === 3
                                   ? "txtStore dateTimeStore"
                                   : "txtStore dateTimeStore disabled-link"
                               }
@@ -1084,7 +1082,6 @@ class StoreCampaign extends Component {
                                                 item.id
                                               )}
                                               className={
-                                                item.statusID === 102 &&
                                                 item.responseID === 3
                                                   ? "txtStore dateTimeStore"
                                                   : "txtStore dateTimeStore disabled-link"
@@ -1108,21 +1105,16 @@ class StoreCampaign extends Component {
                             <div className="table-coloum-hide status-btn-camp">
                               <div>
                                 <button
-                                  className="saveBtn"
+                                  className="saveBtn saveLabel"
                                   type="button"
-                                  style={{
-                                    minWidth: "5px",
-                                    marginRight: "10px",
-                                  }}
-                                  // onClick={this.handleUpdateCampaignStatusResponse.bind(
-                                  //   this,
-                                  //   item.campaignCustomerID,
-                                  //   item.campaignStatus,
-                                  //   item.response,
-                                  //   item.callReScheduledTo
-                                  // )}
+                                  onClick={this.handleUpdateCampaignResponse.bind(
+                                    this,
+                                    item.id,
+                                    item.responseID,
+                                    item.callRescheduledTo
+                                  )}
                                 >
-                                  <label className="saveLabel">Update</label>
+                                  Update
                                 </button>
                               </div>
                               <div style={{ display: "none" }}>
