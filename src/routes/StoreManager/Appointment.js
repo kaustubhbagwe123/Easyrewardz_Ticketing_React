@@ -106,6 +106,14 @@ class Appointment extends Component {
     handleAppointmentCount() {
       debugger;
       let self = this;
+      var todayDate = new Date();
+      var tomorrowDate = moment(todayDate.setDate(todayDate.getDate() + 1)).format('Do');
+      var dayAterTomorrowDate = moment(todayDate.setDate(todayDate.getDate() + 1)).format('Do');
+      self.setState({
+        tomorrowDay: tomorrowDate,
+        dayAfterTomorrowDay: dayAterTomorrowDate
+      });
+      
       axios({
           method: "post",
           url: config.apiUrl + "/Appointment/GetAppointmentCount",
@@ -121,13 +129,7 @@ class Appointment extends Component {
               dayAfterTomorrowCount: data[0].dayAfterTomorrow
             });
           }
-          var todayDate = new Date();
-          var tomorrowDate = moment(todayDate.setDate(todayDate.getDate() + 1)).format('Do');
-          var dayAterTomorrowDate = moment(todayDate.setDate(todayDate.getDate() + 1)).format('Do');
-          self.setState({
-            tomorrowDay: tomorrowDate,
-            dayAfterTomorrowDay: dayAterTomorrowDate
-          });
+          
       }).catch((data) => {
           console.log(data);
       });
