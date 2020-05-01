@@ -1585,6 +1585,9 @@ table tr th:last-child {
   color: #999;
   font-size: 12.5px;
 }
+.trasactablist table thead tr {
+  background-color: transparent !important;
+}
 .trasactablist td {
   padding: 5px 0 3px;
   font-size: 12.5px;
@@ -1627,7 +1630,7 @@ table tr th:last-child {
   padding: 15px;
   border-radius: 7px;
   margin-right: 20px;
-  min-width: 120px;
+  min-width: 160px;
   text-align: center;
   color: #888;
   font-size: 15px;
