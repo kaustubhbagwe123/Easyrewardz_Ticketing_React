@@ -15,6 +15,7 @@ import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
+import SendUp from "./../../assets/Images/send-up.png";
 import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
 import DummyFace2 from "./../../assets/Images/dummy-face-2.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
@@ -35,6 +36,7 @@ import SearchBlueImg from "./../../assets/Images/search-blue.png";
 import Bata from "./../../assets/Images/Bata2.jpeg";
 import DownArrow from "./../../assets/Images/down.png";
 import RightBlue from "./../../assets/Images/rightblue.png";
+import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
 
@@ -162,6 +164,7 @@ class Header extends Component {
       isDownbtn: true,
       customerName: "",
       messageData: [],
+      cardModal: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -264,7 +267,8 @@ class Header extends Component {
       logoBlue: CampaignLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
-      activeClass: page === "Appointment" ? "active single-menu" : "single-menu",
+      activeClass:
+        page === "Appointment" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -288,13 +292,12 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(campaign);
-        }else if (
+        } else if (
           data[i].moduleName === "Appointment" &&
           data[i].modulestatus === true
         ) {
           accessdata.push(appointment);
-        }
-        else if (
+        } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -707,6 +710,14 @@ class Header extends Component {
   handleDownButtonClick() {
     this.setState({ isDownbtn: !this.state.isDownbtn });
   }
+
+  onCloseCardModal = () => {
+    this.setState({ cardModal: false });
+  };
+  onOpenCardModal = () => {
+    this.setState({ cardModal: true });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -1262,11 +1273,14 @@ class Header extends Component {
                                 )}
                               >
                                 <div className="chat-face-cntr">
-                                  <img
-                                    src={DummyFace1}
-                                    alt="face image"
-                                    title={chat.cumtomerName}
-                                  />
+                                  <div className="chat-face-inner-cntr">
+                                    <img
+                                      src={DummyFace1}
+                                      alt="face image"
+                                      title={chat.cumtomerName}
+                                    />
+                                    <span className="online"></span>
+                                  </div>
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
@@ -1303,7 +1317,10 @@ class Header extends Component {
                                       : "chat-face-cntr"
                                   }
                                 >
-                                  <img src={DummyFace1} alt="face image" />
+                                  <div className="chat-face-inner-cntr">
+                                    <img src={DummyFace1} alt="face image" />
+                                    <span className="online"></span>
+                                  </div>
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
@@ -1370,7 +1387,7 @@ class Header extends Component {
                       </div>
                     ) : null}
                     <div
-                      className="chatcontentdivtab"
+                      className="chatcontentdivtab chat-tabs-desktop"
                       style={{ height: !this.state.isDownbtn ? "80%" : "" }}
                     >
                       <ul className="nav nav-tabs" role="tablist">
@@ -1525,11 +1542,11 @@ class Header extends Component {
                                       )}
                                     >
                                       <div className="card">
-                                        <div className="card-body">
+                                        <div className="card-body position-relative">
                                           {item.isSelect ? (
                                             <div className="selectdot">
                                               <img
-                                                src={RightBlue}
+                                                src={CardTick}
                                                 alt={"select-card"}
                                               />
                                             </div>
@@ -1594,6 +1611,247 @@ class Header extends Component {
                             </div>
                           </div>
                         </div>
+                        {/* --------Recommended List Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="recommended-list-tab"
+                          role="tabpanel"
+                          aria-labelledby="recommended-list-tab"
+                        ></div>
+                        {/* --------Schedule Visit Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="schedule-visit-tab"
+                          role="tabpanel"
+                          aria-labelledby="schedule-visit-tab"
+                        ></div>
+                        {/* --------Generate Payment Link Tab----- */}
+                        <div
+                          className="tab-pane fade"
+                          id="generate-payment-link-tab"
+                          role="tabpanel"
+                          aria-labelledby="generate-payment-link-tab"
+                        ></div>
+                      </div>
+                    </div>
+                    <div
+                      className="chatcontentdivtab chat-tabs-mobile"
+                      style={{ height: !this.state.isDownbtn ? "80%" : "" }}
+                    >
+                      <ul className="nav nav-tabs" role="tablist">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#message-tab"
+                            role="tab"
+                            aria-controls="message-tab"
+                            aria-selected="true"
+                          >
+                            MESSAGE
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#card-tab"
+                            role="tab"
+                            aria-controls="card-tab"
+                            aria-selected="false"
+                            onClick={this.onOpenCardModal}
+                          >
+                            CARD
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#recommended-list-tab"
+                            role="tab"
+                            aria-controls="recommended-list-tab"
+                            aria-selected="false"
+                          >
+                            RECOMMENDED LIST
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#schedule-visit-tab"
+                            role="tab"
+                            aria-controls="schedule-visit-tab"
+                            aria-selected="false"
+                          >
+                            SCHEDULE VISIT
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#generate-payment-link-tab"
+                            role="tab"
+                            aria-controls="generate-payment-link-tab"
+                            aria-selected="false"
+                          >
+                            GENERATE PAYMENT LINK
+                          </a>
+                        </li>
+                      </ul>
+                      <div className="tab-content">
+                        {/* --------Message Tab----- */}
+                        <div
+                          className="tab-pane fade show active"
+                          id="message-tab"
+                          role="tabpanel"
+                          aria-labelledby="message-tab"
+                        >
+                          <div className="message-div">
+                            <CKEditor
+                              config={{
+                                toolbar: [
+                                  {
+                                    name: "basicstyles",
+                                    items: ["Bold", "Italic", "Strike"],
+                                  },
+
+                                  {
+                                    name: "paragraph",
+                                    items: ["NumberedList", "BulletedList"],
+                                  },
+                                  {
+                                    name: "links",
+                                    items: ["Link", "Unlink"],
+                                  },
+                                  {
+                                    name: "insert",
+                                    items: ["Image", "Table"],
+                                  },
+                                  {
+                                    name: "editing",
+                                    items: ["Scayt"],
+                                  },
+                                ],
+                              }}
+                            />
+                            <div className="mobile-ck-send">
+                              <img src={Assign} alt="send img" />
+                            </div>
+                          </div>
+                        </div>
+                        {/* -------- Card Modal ----- */}
+                        <Modal
+                          open={this.state.cardModal}
+                          onClose={this.onCloseCardModal}
+                          center
+                          modalId="mobile-tabs-popup"
+                          overlayId="mobile-tabs-overlay"
+                        >
+                          <div className="mobile-chat-popup">
+                            <div
+                              className="input-group searchtxt-new"
+                              style={{ background: "none" }}
+                            >
+                              <input
+                                type="text"
+                                className="search-customerAddSrch searchtxt"
+                                placeholder="Search ItemId/artcile/SKU ID"
+                                name="Search"
+                                maxLength="100"
+                                autoComplete="off"
+                              />
+                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                                <img
+                                  src={SearchBlueImg}
+                                  alt="SearchBlueImg"
+                                  className="srch-imge"
+                                  // onClick={this.handleSearchCustomer}
+                                />
+                              </span>
+                            </div>
+                            <div className="product-card">
+                              {this.state.searchCardData !== null &&
+                                this.state.searchCardData.map((item, i) => {
+                                  return (
+                                    <div
+                                      className="card"
+                                      key={i}
+                                      onClick={this.handleSelectCard.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                    >
+                                      <div className="card-body position-relative">
+                                        {item.isSelect ? (
+                                          <div className="selectdot">
+                                            <img
+                                              src={CardTick}
+                                              alt={"select-card"}
+                                            />
+                                          </div>
+                                        ) : null}
+                                        <div className="mobile-card-cntr">
+                                          <div className="mobile-card-img">
+                                            <img
+                                              className="chat-product-img"
+                                              src={item.productImgURL}
+                                              alt="Product Image"
+                                              title="POWER Black Casual Shoes For Man"
+                                            />
+                                          </div>
+                                          <div className="bkcprdt">
+                                            {/* <div> */}
+                                            <label className="chat-product-name">
+                                              {item.productName}
+                                            </label>
+                                            {/* </div> */}
+                                            {/* <div> */}
+                                            <label className="chat-product-code">
+                                              Product Code:
+                                              {item.productCode}
+                                            </label>
+                                            {/* </div> */}
+                                            {/* <div> */}
+                                            <label className="chat-product-prize">
+                                              {item.productPrize}
+                                            </label>
+                                            {/* </div> */}
+                                            {/* <div> */}
+                                            <label className="chat-product-url">
+                                              {item.productUrl}
+                                            </label>
+                                            {/* </div> */}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                            <div className="chat-btn-cntr">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseCardModal}
+                              >
+                                Close
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.onCloseCardModal}
+                              >
+                                Send
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
                         {/* --------Recommended List Tab----- */}
                         <div
                           className="tab-pane fade"

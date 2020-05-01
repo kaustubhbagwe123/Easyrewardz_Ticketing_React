@@ -88,6 +88,9 @@ p {
   height: calc(100vh - 94px);
 } */
 /* mobile chats tab starts */
+.chat-tabs-mobile {
+  display: none;
+}
 .mobile-arrow {
   filter: brightness(0) invert(1);
   display: none;
@@ -133,6 +136,10 @@ p {
 }
 .chat-face-cntr {
   width: 50px;
+  margin: auto;
+  position: relative;
+}
+.chat-face-inner-cntr {
   border-radius: 6px;
   overflow: hidden;
 }
@@ -143,6 +150,7 @@ p {
   display: flex;
   margin-top: 10px;
   overflow: auto;
+  min-height: 71px;
 }
 .chat-detail-outer-cntr .chat-detail-middle-cntr:last-child .chat-detail-cntr {
   margin-right: 15px;
@@ -154,8 +162,9 @@ p {
 .chat-detail-cntr.active .face-name {
   color: #2561a8;
 }
-.chat-detail-cntr.active::after {
-  content: "";
+/* .chat-detail-cntr.active::after, */
+.online {
+  /* content: ""; */
   position: absolute;
   width: 9px;
   height: 9px;
@@ -183,6 +192,43 @@ p {
 }
 .mobile-ck-send img {
   width: 15px;
+}
+#mobile-tabs-overlay {
+  background: rgba(0, 0, 0, 0.65);
+  padding: 20px;
+}
+#mobile-tabs-popup {
+  background: #ecf2f4;
+  padding: 15px;
+  padding-right: 5px;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.mobile-chat-popup .search-customerAddSrch {
+  font-size: 13px;
+  padding-left: 15px !important;
+  padding-right: 2px !important;
+  margin: 0;
+  width: calc(100% - 30px) !important;
+  border: 1px solid #d8dfe2 !important;
+  border-right: 0 !important;
+}
+.mobile-chat-popup .search-customerAddSrch::placeholder {
+  color: #2561a8;
+  padding: 0;
+  font-weight: 400;
+}
+.mobile-chat-popup .input-group-addon {
+  width: 30px;
+  border: 1px solid #d8dfe2 !important;
+  border-left: 0 !important;
+}
+.mobile-card-cntr {
+  display: flex;
+  align-items: flex-end;
+}
+.searchtxt-new {
+  margin-bottom: 10px;
 }
 /* mobile chats tab ends */
 
@@ -250,6 +296,29 @@ p {
 .chat-trail-cntr-right .chat-trail-time {
   text-align: right;
 }
+.butn,
+.butn-inv {
+  font-weight: 700;
+  border-radius: 8px;
+  font-size: 14px;
+  height: 36px;
+  padding: 6px 10px;
+  min-width: 85px;
+}
+.send-up {
+  width: 22px;
+  filter: invert(1);
+  /* position: relative;
+  top: -1px; */
+  margin-left: 4px;
+  float: right;
+}
+.chat-btn-cntr {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-right: 10px;
+}
 /* chat trail ends */
 
 /* ck editor starts */
@@ -264,8 +333,12 @@ p {
   background: #fff !important;
   border-top: 1px solid #f0f0f0 !important;
 }
+.cke_bottom {
+  display: none !important;
+}
 /* ck editor ends */
 
+/* mobile search starts */
 .mobile-search-img {
   width: 13px;
 }
@@ -291,6 +364,8 @@ p {
   padding: 0;
   font-weight: 400;
 }
+/* mobile search ends */
+
 /* Chetan CSS ends */
 
 /* Deepak CSS starts */
@@ -366,7 +441,12 @@ p {
 }
 .product-card .card {
   padding: 10px;
-  margin-top: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px 0 rgb(219, 219, 219, 0.5);
+}
+.mobile-chat-popup .product-card .card:last-child {
+  margin-bottom: 0px;
 }
 .searchtxt-new .search-customerAddSrch {
   background-color: #ecf2f4;
@@ -378,6 +458,7 @@ p {
 .bkcprdt {
   background-color: #f3f3f3;
   padding: 10px;
+  width: 100%;
 }
 .chat-product-name {
   font-size: 14px;
@@ -386,7 +467,8 @@ p {
 }
 .chat-product-code {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
+  color: #686767;
 }
 .chat-product-prize {
   font-size: 12px;
@@ -395,7 +477,7 @@ p {
 }
 .chat-product-url {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: #2aa2fd;
   width: 100%;
   cursor: pointer;
@@ -405,14 +487,11 @@ p {
 }
 
 .selectdot {
-  height: 25px;
   width: 25px;
-  background-color: #00b894;
-  border-radius: 50%;
-  display: inline-block;
-  float: right;
-  margin-top: -20px;
-  margin-right: -25px;
+  position: absolute;
+  top: -20px;
+  z-index: 1;
+  right: -20px;
 }
 .storeUpbtn {
   background-color: #fff;
@@ -422,7 +501,7 @@ p {
   margin-top: 10px;
 }
 .product-card {
-  height: 152px;
+  height: 138px;
   overflow: auto;
 }
 .product-card::-webkit-scrollbar {
@@ -443,25 +522,24 @@ p {
   align-items: flex-end;
 }
 .selectdot img {
-  width: 15px;
-  margin: 5px;
+  width: 100%;
 }
 .storeUpbtn img {
   width: 20px;
 }
-.message-icon-cnt{
+.message-icon-cnt {
   position: absolute;
-    background-color: #EB4D4B;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    text-align: center;
-    border-radius: 10%;
-    font-size: 11px;
-    color: #fff;
-    font-weight: 700;
-    top: -13px;
-    right: -10px;
+  background-color: #eb4d4b;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 10%;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 700;
+  top: -13px;
+  right: -10px;
 }
 /* Responsive starts */
 @media all and (max-width: 576px) {
@@ -470,7 +548,8 @@ p {
   }
   .rounded-cross,
   .chatbot-left,
-  .chatdivtitle {
+  .chatdivtitle,
+  .chat-tabs-desktop {
     display: none;
   }
   .store-chat-header h3 {
@@ -481,7 +560,8 @@ p {
   }
   .mobile-arrow,
   .mobile-ck-send,
-  .mobile-chat-tabs {
+  .mobile-chat-tabs,
+  .chat-tabs-mobile {
     display: block;
   }
 
@@ -556,6 +636,47 @@ p {
     margin-bottom: 1px !important;
   }
   /* ck editor ends */
+
+  /* card modal starts */
+  .bkcprdt label {
+    display: block;
+  }
+  .storeUpbtn {
+    display: none;
+  }
+  .product-card {
+    max-height: calc(100vh - 171px);
+    height: 100%;
+    padding-right: 10px;
+  }
+  .searchtxt-new {
+    padding-right: 10px;
+  }
+  .mobile-card-img {
+    flex: 0 0 100px;
+    margin-right: 15px;
+  }
+  .chat-product-name {
+    font-size: 10px;
+  }
+  .chat-product-code,
+  .chat-product-prize,
+  .chat-product-url {
+    font-size: 9px;
+  }
+  .chat-product-prize {
+    margin-top: 6px;
+  }
+  .selectdot {
+    width: 22px;
+    top: -13px;
+    right: -13px;
+  }
+  .product-card .card {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  /* card modal ends */
 }
 
 @media all and (max-width: 425px) {
@@ -569,5 +690,30 @@ p {
     /* height: calc(100vh - 299px); */
     height: calc(100vh - 389px);
   }
+  .chat-detail-outer-cntr {
+    min-height: 56px;
+  }
+  .online {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* card modal starts */
+  .mobile-card-img {
+    flex: 0 0 70px;
+    margin-right: 10px;
+  }
+  .chat-product-name {
+    font-size: 8px;
+  }
+  .chat-product-code,
+  .chat-product-prize,
+  .chat-product-url {
+    font-size: 7px;
+  }
+  .selectdot {
+    width: 20px;
+  }
+  /* card modal ends */
 }
 /* Responsive ends */
