@@ -1373,6 +1373,12 @@ table tr th:last-child {
   border-radius: 4px;
   width: 60px;
   height: 30px;
+  min-width: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.custom-tableak .saveLabel {
+  text-align: center;
 }
 .custom-tableak .raisedticket-Btn {
   background-color: #2561a8;
@@ -1729,6 +1735,9 @@ table tr th:last-child {
     padding-top: 5px;
 }
 .custom-tableak .dropdown-label {
+  font-size: 12px;
+}
+.custom-tableak .table-btnlabel {
   font-size: 12px;
 }
 .custom-tableak .txtStore, .custom-tableak .txtStore::placeholder {
