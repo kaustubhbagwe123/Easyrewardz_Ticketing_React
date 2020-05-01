@@ -266,6 +266,31 @@ p {
 }
 /* ck editor ends */
 
+.mobile-search-img {
+  width: 13px;
+}
+.mobile-search-img img {
+  width: 100%;
+}
+.mobile-search-cntr {
+  position: absolute;
+  top: 10px;
+  padding: 0 15px;
+  display: flex;
+  width: 100%;
+}
+.mobile-search-input input {
+  width: 100%;
+  border: 0;
+  padding: 3px 10px;
+  font-size: 13px;
+  color: #3c3c3c;
+}
+.mobile-search-input input::placeholder {
+  color: rgba(60, 60, 60, 0.4);
+  padding: 0;
+  font-weight: 400;
+}
 /* Chetan CSS ends */
 
 /* Deepak CSS starts */
@@ -417,11 +442,11 @@ p {
 .product-card .col-md-4 {
   align-items: flex-end;
 }
-.selectdot img{
+.selectdot img {
   width: 15px;
   margin: 5px;
 }
-.storeUpbtn img{
+.storeUpbtn img {
   width: 20px;
 }
 /* Responsive starts */

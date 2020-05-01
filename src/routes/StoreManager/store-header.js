@@ -1144,34 +1144,47 @@ class Header extends Component {
                 {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
               </div>
               <div className="mobile-chat-tabs">
-                <ul class="nav nav-tabs" role="tablist">
-                  <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      id="ongoing-chat-tab"
-                      data-toggle="tab"
-                      href="#ongoing-chat"
-                      role="tab"
-                      aria-controls="ongoing-chat"
-                      aria-selected="true"
-                    >
-                      Ongoing Chats
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="new-chat-tab"
-                      data-toggle="tab"
-                      href="#new-chat"
-                      role="tab"
-                      aria-controls="new-chat"
-                      aria-selected="false"
-                    >
-                      New Chats
-                    </a>
-                  </li>
-                </ul>
+                <div className="position-relative">
+                  {/* <div className="mobile-search-cntr">
+                    <div className="mobile-search-img">
+                      <img src={SearchBlueImg} alt="SearchBlueImg" />
+                    </div>
+                    <div className="mobile-search-input w-100">
+                      <input
+                        type="text"
+                        placeholder="Enter your Search terms here..."
+                      />
+                    </div>
+                  </div> */}
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active"
+                        id="ongoing-chat-tab"
+                        data-toggle="tab"
+                        href="#ongoing-chat"
+                        role="tab"
+                        aria-controls="ongoing-chat"
+                        aria-selected="true"
+                      >
+                        Ongoing Chats
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="new-chat-tab"
+                        data-toggle="tab"
+                        href="#new-chat"
+                        role="tab"
+                        aria-controls="new-chat"
+                        aria-selected="false"
+                      >
+                        New Chats
+                      </a>
+                    </li>
+                  </ul>
+                </div>
                 <div class="tab-content">
                   <div
                     class="tab-pane fade show active"
