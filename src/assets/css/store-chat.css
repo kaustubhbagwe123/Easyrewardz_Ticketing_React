@@ -433,11 +433,11 @@ p {
   border-radius: 10px;
 }
 .product-card::-webkit-scrollbar-thumb {
-  background: #cac8c8;
+  background: #2561a8;
   border-radius: 10px;
 }
 .product-card::-webkit-scrollbar-thumb:hover {
-  background: #a5a3a3;
+  background: #2561a8;
 }
 .product-card .col-md-4 {
   align-items: flex-end;
@@ -449,19 +449,72 @@ p {
 .storeUpbtn img {
   width: 20px;
 }
-.message-icon-cnt{
+.message-icon-cnt {
   position: absolute;
-    background-color: #EB4D4B;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    text-align: center;
-    border-radius: 10%;
-    font-size: 11px;
-    color: #fff;
-    font-weight: 700;
-    top: -13px;
-    right: -10px;
+  background-color: #eb4d4b;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 10%;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 700;
+  top: -13px;
+  right: -10px;
+}
+.message-div #cke_88_bottom {
+  display: none;
+}
+.s-yellw-btn {
+  margin-right: 15px;
+  color: #000;
+  border-color: #f7b500;
+  background-color: #fff;
+}
+.s-green-btn {
+  margin-right: 15px;
+  color: #000;
+  border-color: #30ba93;
+  background-color: #fff;
+}
+.s-red-btn {
+  margin-right: 15px;
+  color: #000;
+  border-color: #bd3939;
+  background-color: #fff;
+}
+.s-red-active {
+  background-color: #bd3939;
+  border-color: #bd3939;
+  color: #fff;
+}
+.s-yellow-active {
+  background-color: #f7b500;
+  border-color: #f7b500;
+  color: #fff;
+}
+.s-green-active {
+  background-color: #30ba93;
+  border-color: #30ba93;
+  color: #fff;
+}
+.s-lable {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.s-img-select {
+  width: 20px;
+  margin-top: -4px;
+}
+.selectdot-blue {
+  height: 28px;
+  width: 28px;
+  background-color: #2561a8;
+  border-radius: 50%;
+  float: right;
+  margin-top: 6px;
 }
 /* Responsive starts */
 @media all and (max-width: 576px) {
