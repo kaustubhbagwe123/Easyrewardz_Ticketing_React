@@ -50,6 +50,7 @@ class StoreCampaign extends Component {
       ChildTblLoading: false,
       broadcastChannel: 1,
       responsiveChildTable: false,
+      responsiveShareVia: false,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -620,6 +621,16 @@ class StoreCampaign extends Component {
       ResponsiveCustModal: false,
     });
   }
+  handleShareViaModalOpen() {
+    this.setState({
+      responsiveShareVia: true,
+    });
+  }
+  handleShareViaModalClose() {
+    this.setState({
+      responsiveShareVia: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
@@ -674,7 +685,9 @@ class StoreCampaign extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      <label className="customernamecam">{item.campaignName}</label>
+                      <label className="customernamecam">
+                        {item.campaignName}
+                      </label>
                       <img
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
@@ -1206,15 +1219,15 @@ class StoreCampaign extends Component {
                 <table>
                   <tbody>
                     <tr>
-                    <td>
-                      <h4>Lifetime Value</h4>
-                      <label>₹16,347</label>
-                    </td>
-                    <td>
-                      <h4>Visit Count</h4>
-                      <label>08</label>
-                    </td>
-                  </tr>
+                      <td>
+                        <h4>Lifetime Value</h4>
+                        <label>₹16,347</label>
+                      </td>
+                      <td>
+                        <h4>Visit Count</h4>
+                        <label>08</label>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -1242,112 +1255,136 @@ class StoreCampaign extends Component {
                         <table className="w-100">
                           <tbody>
                             <tr>
-                            <td>
-                              <div className="imgbox">
-                                <Popover
-                                  content={
-                                  <div className="productdesc">
-                                    <h4>Blue Casual Shoes</h4>
-                                    <p>Product Code - F808920000</p>
-                                    <table>
-                                      <tbody>
-                                        <tr>
-                                        <td>
-                                          <label>Colors:</label>
-                                        </td>
-                                        <td>
-                                          <ul>
-                                            <li><a className="colorblue"><span>1</span></a></li>
-                                            <li><a className="colorblack"><span>1</span></a></li>
-                                            <li><a className="colorgrey"><span>1</span></a></li>
-                                          </ul>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <label>Sizes:</label>
-                                        </td>
-                                        <td>
-                                          <ul className="sizes">
-                                            <li><a>6</a></li>
-                                            <li><a className="active">7</a></li>
-                                            <li><a>8</a></li>
-                                            <li><a>9</a></li>
-                                            <li><a>10</a></li>
-                                            <li><a>11</a></li>
-                                          </ul>
-                                        </td>
-                                      </tr>
-                                      </tbody>
-                                    </table>
-                                    <h3>INR 3499/-</h3>
-                                  </div>
-                                  }
-                                  placement="left"
-                                  trigger="click"
-                                >
+                              <td>
+                                <div className="imgbox">
+                                  <Popover
+                                    content={
+                                      <div className="productdesc">
+                                        <h4>Blue Casual Shoes</h4>
+                                        <p>Product Code - F808920000</p>
+                                        <table>
+                                          <tbody>
+                                            <tr>
+                                              <td>
+                                                <label>Colors:</label>
+                                              </td>
+                                              <td>
+                                                <ul>
+                                                  <li>
+                                                    <a className="colorblue">
+                                                      <span>1</span>
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="colorblack">
+                                                      <span>1</span>
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="colorgrey">
+                                                      <span>1</span>
+                                                    </a>
+                                                  </li>
+                                                </ul>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td>
+                                                <label>Sizes:</label>
+                                              </td>
+                                              <td>
+                                                <ul className="sizes">
+                                                  <li>
+                                                    <a>6</a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="active">7</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>8</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>9</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>10</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>11</a>
+                                                  </li>
+                                                </ul>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <h3>INR 3499/-</h3>
+                                      </div>
+                                    }
+                                    placement="left"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      className="shoeimg"
+                                      src={Shoe}
+                                      alt="Product Image"
+                                    />
+                                  </Popover>
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                              <td>
+                                <div className="imgbox">
                                   <img
                                     className="shoeimg"
                                     src={Shoe}
                                     alt="Product Image"
                                   />
-                                </Popover>
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                          </tr>
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div className="imgbox">
+                                  <img
+                                    className="shoeimg"
+                                    src={Shoe}
+                                    alt="Product Image"
+                                  />
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                              <td>
+                                <div className="imgbox">
+                                  <img
+                                    className="shoeimg"
+                                    src={Shoe}
+                                    alt="Product Image"
+                                  />
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -1356,9 +1393,9 @@ class StoreCampaign extends Component {
                   <Tab label="Last Transaction">
                     <div>
                       <div className="transactionbox">
-                          <table>
-                            <tbody>
-                              <tr>
+                        <table>
+                          <tbody>
+                            <tr>
                               <td>
                                 <h5>Bill No.</h5>
                                 <label>BB332393</label>
@@ -1378,10 +1415,10 @@ class StoreCampaign extends Component {
                                 <label>12 Jan 2020</label>
                               </td>
                             </tr>
-                            </tbody>
-                          </table>
-                          <div className="trasactablist">
-                            <div className="tabscrol">
+                          </tbody>
+                        </table>
+                        <div className="trasactablist">
+                          <div className="tabscrol">
                             <table>
                               <thead>
                                 <tr>
@@ -1436,7 +1473,10 @@ class StoreCampaign extends Component {
                 </ul>
               </div>
               <div className="sharecampmob">
-                <label className="shareviabtn">
+                <label
+                  className="shareviabtn"
+                  onClick={this.handleShareViaModalOpen.bind(this)}
+                >
                   <img className="shareviaimg" src={Sharevia} alt="Share Via" />
                   Share Via
                 </label>
@@ -1448,6 +1488,42 @@ class StoreCampaign extends Component {
                 </ul> */}
               </div>
             </div>
+          </div>
+        </Modal>
+        {/* ---------------Share via Modal-------------------- */}
+        <Modal
+          open={this.state.responsiveShareVia}
+          onClose={this.handleShareViaModalClose.bind(this)}
+          center
+          modalId="customername-popup"
+          overlayId="logout-ovrly"
+        >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cncl-icn"
+            onClick={this.handleShareViaModalClose.bind(this)}
+          />
+          <div>
+            <h4>Choose Channel</h4>
+            <ul>
+              <li>
+                <img className="ico" src={Sms1} alt="SMS Icon" />
+                SMS
+              </li>
+              <li>
+                <img className="ico" src={Sms1} alt="Email Icon" />
+                Email
+              </li>
+              <li>
+                <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                Send Via Messanger
+              </li>
+              <li>
+                <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                Send Via Bot
+              </li>
+            </ul>
           </div>
         </Modal>
         {/* ---------Raised Ticket Modal----------- */}
