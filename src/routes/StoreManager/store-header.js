@@ -41,7 +41,7 @@ import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
 
 class Header extends Component {
   constructor(props) {
