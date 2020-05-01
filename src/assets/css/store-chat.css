@@ -187,8 +187,7 @@ p {
   text-align: center;
   line-height: 30px;
   right: 15px;
-  top: 25px;
-  display: none;
+  bottom: 55px;
 }
 .mobile-ck-send img {
   width: 15px;
@@ -229,6 +228,14 @@ p {
 }
 .searchtxt-new {
   margin-bottom: 10px;
+}
+.no-record {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: -20px;
+  font-size: 13px;
 }
 /* mobile chats tab ends */
 
@@ -541,6 +548,14 @@ p {
   top: -13px;
   right: -10px;
 }
+.schedule-btn-cntr {
+  display: inline-block;
+}
+.schedule-btn-cntr button {
+  font-size: 12px;
+  position: relative;
+  padding: 8px 22px 8px 10px;
+}
 .s-yellw-btn {
   margin-right: 15px;
   color: #000;
@@ -575,13 +590,16 @@ p {
   color: #fff;
 }
 .s-lable {
-  font-size: 14px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  color: #000;
 }
 .s-img-select {
-  width: 20px;
-  margin-top: -4px;
+  width: 18px;
+  right: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
 }
 .selectdot-blue {
   height: 28px;
@@ -609,10 +627,12 @@ p {
     justify-content: center;
   }
   .mobile-arrow,
-  .mobile-ck-send,
   .mobile-chat-tabs,
   .chat-tabs-mobile {
     display: block;
+  }
+  .mobile-ck-send {
+    top: 25px;
   }
 
   /* right side part starts */

@@ -1418,6 +1418,9 @@ class Header extends Component {
                               </div>
                             </div>
                           ))}
+                        {this.state.ongoingChatsData.length === 0 && (
+                          <p className="no-record">No Records Found !</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1458,6 +1461,9 @@ class Header extends Component {
                               </div>
                             </div>
                           ))}
+                        {this.state.newChatsData.length === 0 && (
+                          <p className="no-record">No Records Found !</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1788,7 +1794,7 @@ class Header extends Component {
                                 <label className="s-lable">
                                   Today:11 May 2020
                                 </label>
-                                <div style={{ display: "inline-block" }}>
+                                <div className="schedule-btn-cntr">
                                   <button className="s-red-btn">
                                     11AM-12PM
                                     <img
