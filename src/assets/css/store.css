@@ -1725,7 +1725,12 @@ table tr th:last-child {
     font-weight: bold;
     padding-top: 5px;
 }
-
+.custom-tableak .dropdown-label {
+  font-size: 13px;
+}
+.custom-tableak .txtStore, .custom-tableak .txtStore::placeholder {
+  font-size: 13px;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
