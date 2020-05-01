@@ -3,12 +3,18 @@ import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import Sharevia from "./../../assets/Images/sharevia.png";
+import Dropdown3 from "./../../assets/Images/dropdown3.png";
+import Whatsapp from "./../../assets/Images/whatsapp.svg";
+import Sms1 from "./../../assets/Images/sms1.svg";
+import ChatbotS from "./../../assets/Images/sms2.svg";
 import collapsedown from "./../../assets/Images/collapsedown.png";
 import collapseUp from "./../../assets/Images/collapseUp.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
+import Shoe from "./../../assets/Images/shoe.jpg"
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
@@ -698,7 +704,7 @@ class StoreCampaign extends Component {
                         }
                         placement="bottom"
                       >
-                        <a className="button-red">Chatbot Script</a>
+                        <a className="button-red"><img className="ico" src={ChatbotS} alt="Whatsapp Icon"/>Chatbot Script</a>
                       </Popover>
                       <Popover
                         content={
@@ -713,7 +719,7 @@ class StoreCampaign extends Component {
                         }
                         placement="bottom"
                       >
-                        <a className="button-blue">SMS Script</a>
+                        <a className="button-blue"><img className="ico" src={ChatbotS} alt="Whatsapp Icon"/>SMS Script</a>
                       </Popover>
                     </div>
                   );
@@ -800,7 +806,7 @@ class StoreCampaign extends Component {
                                 this
                               )}
                             >
-                              {item.customerName}
+                              {item.customerName}<img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>
                             </p>
                             <span className="sml-fnt">
                               {item.customerNumber}
@@ -1180,6 +1186,7 @@ class StoreCampaign extends Component {
                   Naman's basket size is reducing, Recommended Brands are: North
                   Star, Hush Puppies
                 </p>
+                <img className="keyingsightdrp" src={Dropdown3} alt="Down Arrow"/>
               </div>
             </div>
             <div className="col-12 col-md-6">
@@ -1187,17 +1194,191 @@ class StoreCampaign extends Component {
                 <Tabs>
                   <Tab label="Recommended">
                     <div>
-                      <h4 style={{ textAlign: "center" }}></h4>
-                      <div className="right-sect-div right-sect-div-edit"></div>
+                      <div className="pro-slidercam">
+                        <table className="w-100">
+                          <tr>
+                            <td>
+                              <div className="imgbox">
+                                <Popover
+                                  content={
+                                  <div className="productdesc">
+                                    <h4>Blue Casual Shoes</h4>
+                                    <p>Product Code - F808920000</p>
+                                    <table>
+                                      <tr>
+                                        <td>
+                                          <label>Colors:</label>
+                                        </td>
+                                        <td>
+                                          <ul>
+                                            <li><a className="colorblue"><span>1</span></a></li>
+                                            <li><a className="colorblack"><span>1</span></a></li>
+                                            <li><a className="colorgrey"><span>1</span></a></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <label>Sizes:</label>
+                                        </td>
+                                        <td>
+                                          <ul className="sizes">
+                                            <li><a>6</a></li>
+                                            <li><a className="active">7</a></li>
+                                            <li><a>8</a></li>
+                                            <li><a>9</a></li>
+                                            <li><a>10</a></li>
+                                            <li><a>11</a></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <h3>INR 3499/-</h3>
+                                  </div>
+                                  }
+                                  placement="left"
+                                  trigger="click"
+                                  >
+                                  <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                  </Popover>
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                            <td>
+                              <div className="imgbox">
+                                <img
+                                  className="shoeimg"
+                                  src={Shoe}
+                                  alt="Product Image"
+                                />
+                                <img
+                                  className="whatsappico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </div>
+                              <h4>Casual Shoe</h4>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
                     </div>
                   </Tab>
                   <Tab label="Last Transaction">
                     <div>
-                      <h4 style={{ textAlign: "center" }}></h4>
-                      <div className="right-sect-div right-sect-div-edit"></div>
+                      <div className="transactionbox">
+                          <table>
+                            <tr>
+                              <td>
+                                <h5>Bill No.</h5>
+                                <label>BB332393</label>
+                              </td>
+                              <td>
+                                <h5>Amount</h5>
+                                <label>₹1,499</label>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>Store</h5>
+                                <label>Bata - Rajouri Garden</label>
+                              </td>
+                              <td>
+                                <h5>Date</h5>
+                                <label>12 Jan 2020</label>
+                              </td>
+                            </tr>
+                          </table>
+                          <div className="trasactablist">
+                            <div className="tabscrol">
+                              <table>
+                              <tr>
+                                <th>Article</th>
+                                <th>Qty.</th>
+                                <th>Amount</th>
+                              </tr>
+                              <tr>
+                                <td>Beige Sports Shoes</td>
+                                <td>x1</td>
+                                <td>₹1,499</td>
+                              </tr>
+                              <tr>
+                                <td>Black Sandals</td>
+                                <td>x2</td>
+                                <td>₹4,998</td>
+                              </tr>
+                            </table>
+                            </div>
+                          </div>
+                      </div>
                     </div>
                   </Tab>
                 </Tabs>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="sharecamp">
+                <h4>Share Campaign Via</h4>
+                <ul>
+                  <li><img className="ico" src={Sms1} alt="SMS Icon"/>SMS</li>
+                  <li><img className="ico" src={Sms1} alt="Email Icon"/>Email</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
+                </ul>
+              </div>
+              <div className="sharecampmob">
+                <label class="shareviabtn">
+                <img className="shareviaimg" src={Sharevia} alt="Share Via"/>
+                Share Via</label>
+                {/* <ul>
+                  <li><img className="ico" src={Sms1} alt="SMS Icon"/>SMS</li>
+                  <li><img className="ico" src={Sms1} alt="Email Icon"/>Email</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
+                </ul> */}
               </div>
             </div>
           </div>

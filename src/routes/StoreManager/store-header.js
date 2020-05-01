@@ -34,6 +34,9 @@ import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
 import Bata from "./../../assets/Images/Bata2.jpeg";
 import DownArrow from "./../../assets/Images/down.png";
+import RightBlue from "./../../assets/Images/rightblue.png";
+import UpBlue from "./../../assets/Images/new-Up.png";
+import DownBlue from "./../../assets/Images/new-Down.png";
 
 class Header extends Component {
   constructor(props) {
@@ -111,6 +114,42 @@ class Header extends Component {
         },
         {
           id: 6,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 7,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 8,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 9,
+          productName: "POWER Black Casual Shoes For Man",
+          productCode: "F808600200",
+          productPrize: "INR 3000/- INR 2799/- (-%30)",
+          productUrl: "www.google.com/productid-F808600200",
+          productImgURL: Bata,
+          isSelect: false,
+        },
+        {
+          id: 10,
           productName: "POWER Black Casual Shoes For Man",
           productCode: "F808600200",
           productPrize: "INR 3000/- INR 2799/- (-%30)",
@@ -217,6 +256,15 @@ class Header extends Component {
       imgClass: "campaign-icon",
       activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
     };
+    var appointment = {
+      data: "Appointment",
+      urls: "appointment",
+      logoBlack: CampaignLogo,
+      logoBlue: CampaignLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass: page === "Appointment" ? "active single-menu" : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -239,7 +287,13 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(campaign);
-        } else if (
+        }else if (
+          data[i].moduleName === "Appointment" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(appointment);
+        }
+        else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
         ) {
@@ -533,6 +587,7 @@ class Header extends Component {
   ////handle Make As Read On Going Chat
   handleMakeAsReadOnGoingChat(id, name) {
     let self = this;
+    this.setState({ chatId: id });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/MarkAsReadOnGoingChat",
@@ -546,13 +601,14 @@ class Header extends Component {
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           self.handleGetOngoingChat();
+          self.handleGetChatMessagesList(id);
           self.setState({ customerName: name });
         } else {
           self.setState({ customerName: name });
         }
       })
       .catch((response) => {
-        console.log(response, "---handleGetOngoingChat");
+        console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
   handleUpdateCustomerChatStatus(id) {
@@ -569,6 +625,7 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
+          self.setState({ chatId: 0 });
           self.handleGetOngoingChat();
           self.handleGetNewChat();
         } else {
@@ -587,6 +644,31 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         chatID: id,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var messageData = response.data.responseData;
+        if (message === "Success" && messageData) {
+          self.setState({ messageData });
+        } else {
+          self.setState({ messageData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatMessagesList");
+      });
+  }
+  handleSaveChatMessages() {
+    let self = this;
+    // var inputParam={}
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/saveChatMessages",
+      headers: authHeader(),
+      data: {
+        // chatID: id,
       },
     })
       .then(function(response) {
@@ -711,31 +793,33 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a href="#!" onClick={this.handleChatModalOpen.bind(this)}>
-              <img src={ChatLogo} alt="logo" className="chatImg" />
-              <img
-                src={ChatLogoBlue}
-                alt="logo"
-                className="chatImg"
-                style={{ display: "none" }}
-              />
+            <a onClick={this.handleChatModalOpen.bind(this)}>
+              <div className="position-relative">
+                <img src={ChatLogo} alt="logo" className="chatImg" />
+                <img
+                  src={ChatLogoBlue}
+                  alt="logo"
+                  className="chatImg"
+                  style={{ display: "none" }}
+                />
+                <span className="message-icon-cnt">3</span>
+              </div>
             </a>
             {/* --notification-- */}
             <a>
               <div
                 className="position-relative"
-                // style={{ display: this.state.notificationAccess }}
                 onClick={this.handleNotificationModalOpen.bind(this)}
               >
                 <img src={NotificationLogo} alt="logo" className="notifi" />
                 <span style={{ display: "none" }} className="icon-fullname">
                   Notifications
                 </span>
-                {/* {this.state.notiCount > 0 && ( */}
+
                 <span className="upper-noti-count">
                   {this.state.notificationCount}
                 </span>
-                {/* } */}
+
                 <span style={{ display: "none" }} className="icon-fullname">
                   Notifications
                 </span>
@@ -1022,7 +1106,11 @@ class Header extends Component {
                         this.state.ongoingChatsData.map((chat, i) => (
                           <div
                             key={i}
-                            className="chat-info"
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
                             onClick={this.handleMakeAsReadOnGoingChat.bind(
                               this,
                               chat.chatID,
@@ -1066,7 +1154,11 @@ class Header extends Component {
                         this.state.newChatsData.map((chat, i) => (
                           <div
                             key={i}
-                            className="chat-info"
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
                             onClick={this.handleUpdateCustomerChatStatus.bind(
                               this,
                               chat.chatID
@@ -1100,34 +1192,47 @@ class Header extends Component {
                 {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
               </div>
               <div className="mobile-chat-tabs">
-                <ul class="nav nav-tabs" role="tablist">
-                  <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      id="ongoing-chat-tab"
-                      data-toggle="tab"
-                      href="#ongoing-chat"
-                      role="tab"
-                      aria-controls="ongoing-chat"
-                      aria-selected="true"
-                    >
-                      Ongoing Chats
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="new-chat-tab"
-                      data-toggle="tab"
-                      href="#new-chat"
-                      role="tab"
-                      aria-controls="new-chat"
-                      aria-selected="false"
-                    >
-                      New Chats
-                    </a>
-                  </li>
-                </ul>
+                <div className="position-relative">
+                  {/* <div className="mobile-search-cntr">
+                    <div className="mobile-search-img">
+                      <img src={SearchBlueImg} alt="SearchBlueImg" />
+                    </div>
+                    <div className="mobile-search-input w-100">
+                      <input
+                        type="text"
+                        placeholder="Enter your Search terms here..."
+                      />
+                    </div>
+                  </div> */}
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active"
+                        id="ongoing-chat-tab"
+                        data-toggle="tab"
+                        href="#ongoing-chat"
+                        role="tab"
+                        aria-controls="ongoing-chat"
+                        aria-selected="true"
+                      >
+                        Ongoing Chats
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="new-chat-tab"
+                        data-toggle="tab"
+                        href="#new-chat"
+                        role="tab"
+                        aria-controls="new-chat"
+                        aria-selected="false"
+                      >
+                        New Chats
+                      </a>
+                    </li>
+                  </ul>
+                </div>
                 <div class="tab-content">
                   <div
                     class="tab-pane fade show active"
@@ -1141,9 +1246,24 @@ class Header extends Component {
                         {this.state.ongoingChatsData &&
                           this.state.ongoingChatsData.map((chat, i) => (
                             <div key={i} className="chat-detail-middle-cntr">
-                              <div className="chat-detail-cntr">
+                              <div
+                                className={
+                                  this.state.chatId === chat.chatID
+                                    ? "chat-detail-cntr active"
+                                    : "chat-detail-cntr"
+                                }
+                                onClick={this.handleMakeAsReadOnGoingChat.bind(
+                                  this,
+                                  chat.chatID,
+                                  chat.cumtomerName
+                                )}
+                              >
                                 <div className="chat-face-cntr">
-                                  <img src={DummyFace1} alt="face image" />
+                                  <img
+                                    src={DummyFace1}
+                                    alt="face image"
+                                    title={chat.cumtomerName}
+                                  />
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
@@ -1166,8 +1286,20 @@ class Header extends Component {
                         {this.state.newChatsData &&
                           this.state.newChatsData.map((chat, i) => (
                             <div key={i} className="chat-detail-middle-cntr">
-                              <div className="chat-detail-cntr">
-                                <div className="chat-face-cntr">
+                              <div
+                                className="chat-detail-cntr"
+                                onClick={this.handleUpdateCustomerChatStatus.bind(
+                                  this,
+                                  chat.chatID
+                                )}
+                              >
+                                <div
+                                  className={
+                                    this.state.chatId === chat.chatID
+                                      ? "chat-face-cntr active"
+                                      : "chat-face-cntr"
+                                  }
+                                >
                                   <img src={DummyFace1} alt="face image" />
                                 </div>
                                 <span className="face-name">
@@ -1192,19 +1324,37 @@ class Header extends Component {
                     {this.state.isDownbtn ? (
                       <div className="chatcontentRow">
                         <div className="chatcontentDiv">
-                          <div className="chat-trail-cntr chat-trail-cntr-right">
-                            <div className="chat-trail-img">
-                              <img src={DummyFace2} alt="face image" />
-                            </div>
-                            <div className="chat-trail-chat-cntr">
-                              <p className="chat-trail-chat">
-                                Hello Sir, Thank you for allowing me to assist
-                                you today. What product will you like to view?
-                              </p>
-                              <span className="chat-trail-time">1m:36s</span>
-                            </div>
-                          </div>
-                          <div className="chat-trail-cntr">
+                          {this.state.messageData !== null
+                            ? this.state.messageData.map((item, i) => {
+                                return (
+                                  <div
+                                    key={i}
+                                    className={
+                                      item.byCustomer
+                                        ? "chat-trail-cntr"
+                                        : "chat-trail-cntr chat-trail-cntr-right"
+                                    }
+                                  >
+                                    <div className="chat-trail-img">
+                                      <img
+                                        src={DummyFace2}
+                                        alt="face image"
+                                        title={item.customerName}
+                                      />
+                                    </div>
+                                    <div className="chat-trail-chat-cntr">
+                                      <p className="chat-trail-chat">
+                                        {item.message}
+                                      </p>
+                                      <span className="chat-trail-time">
+                                        {item.chatTime}
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              })
+                            : null}
+                          {/* <div className="chat-trail-cntr">
                             <div className="chat-trail-img">
                               <img src={DummyFace1} alt="face image" />
                             </div>
@@ -1212,7 +1362,7 @@ class Header extends Component {
                               <p className="chat-trail-chat">Shop</p>
                               <span className="chat-trail-time">56s</span>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     ) : null}
@@ -1374,7 +1524,12 @@ class Header extends Component {
                                       <div className="card">
                                         <div className="card-body">
                                           {item.isSelect ? (
-                                            <div className="selectdot"></div>
+                                            <div className="selectdot">
+                                              <img
+                                                src={RightBlue}
+                                                alt={"select-card"}
+                                              />
+                                            </div>
                                           ) : null}
                                           {/* <div className="container"> */}
                                           <div
@@ -1427,7 +1582,11 @@ class Header extends Component {
                                 className="storeUpbtn"
                                 onClick={this.handleDownButtonClick.bind(this)}
                               >
-                                <img src={DownArrow} alt="down-arrow" />
+                                {this.state.isDownbtn ? (
+                                  <img src={DownBlue} alt="down-arrow" />
+                                ) : (
+                                  <img src={UpBlue} alt="down-arrow" />
+                                )}
                               </button>
                             </div>
                           </div>
