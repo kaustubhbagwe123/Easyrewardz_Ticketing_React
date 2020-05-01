@@ -816,6 +816,8 @@ class Header extends Component {
   ////handle on going chat click
   handleOngoingChatClick = (id, name, count) => {
     this.setState({ customerName: name });
+    this.setState({ chatId: id });
+    
     if (this.state.chatId === id) {
       this.handleGetChatMessagesList(id);
     } else {
