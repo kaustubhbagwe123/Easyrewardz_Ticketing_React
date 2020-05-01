@@ -674,7 +674,7 @@ class StoreCampaign extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      {item.campaignName}
+                      <label className="customernamecam">{item.campaignName}</label>
                       <img
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
@@ -1204,7 +1204,8 @@ class StoreCampaign extends Component {
             <div className="col-12 col-md-6">
               <div className="lifetimevalue">
                 <table>
-                  <tr>
+                  <tbody>
+                    <tr>
                     <td>
                       <h4>Lifetime Value</h4>
                       <label>₹16,347</label>
@@ -1214,6 +1215,7 @@ class StoreCampaign extends Component {
                       <label>08</label>
                     </td>
                   </tr>
+                  </tbody>
                 </table>
               </div>
               <div className="keyinsights">
@@ -1238,69 +1240,48 @@ class StoreCampaign extends Component {
                     <div>
                       <div className="pro-slidercam">
                         <table className="w-100">
-                          <tr>
+                          <tbody>
+                            <tr>
                             <td>
                               <div className="imgbox">
                                 <Popover
                                   content={
-                                    <div className="productdesc">
-                                      <h4>Blue Casual Shoes</h4>
-                                      <p>Product Code - F808920000</p>
-                                      <table>
+                                  <div className="productdesc">
+                                    <h4>Blue Casual Shoes</h4>
+                                    <p>Product Code - F808920000</p>
+                                    <table>
+                                      <tbody>
                                         <tr>
-                                          <td>
-                                            <label>Colors:</label>
-                                          </td>
-                                          <td>
-                                            <ul>
-                                              <li>
-                                                <a className="colorblue">
-                                                  <span>1</span>
-                                                </a>
-                                              </li>
-                                              <li>
-                                                <a className="colorblack">
-                                                  <span>1</span>
-                                                </a>
-                                              </li>
-                                              <li>
-                                                <a className="colorgrey">
-                                                  <span>1</span>
-                                                </a>
-                                              </li>
-                                            </ul>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>
-                                            <label>Sizes:</label>
-                                          </td>
-                                          <td>
-                                            <ul className="sizes">
-                                              <li>
-                                                <a>6</a>
-                                              </li>
-                                              <li>
-                                                <a className="active">7</a>
-                                              </li>
-                                              <li>
-                                                <a>8</a>
-                                              </li>
-                                              <li>
-                                                <a>9</a>
-                                              </li>
-                                              <li>
-                                                <a>10</a>
-                                              </li>
-                                              <li>
-                                                <a>11</a>
-                                              </li>
-                                            </ul>
-                                          </td>
-                                        </tr>
-                                      </table>
-                                      <h3>INR 3499/-</h3>
-                                    </div>
+                                        <td>
+                                          <label>Colors:</label>
+                                        </td>
+                                        <td>
+                                          <ul>
+                                            <li><a className="colorblue"><span>1</span></a></li>
+                                            <li><a className="colorblack"><span>1</span></a></li>
+                                            <li><a className="colorgrey"><span>1</span></a></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <label>Sizes:</label>
+                                        </td>
+                                        <td>
+                                          <ul className="sizes">
+                                            <li><a>6</a></li>
+                                            <li><a className="active">7</a></li>
+                                            <li><a>8</a></li>
+                                            <li><a>9</a></li>
+                                            <li><a>10</a></li>
+                                            <li><a>11</a></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                      </tbody>
+                                    </table>
+                                    <h3>INR 3499/-</h3>
+                                  </div>
                                   }
                                   placement="left"
                                   trigger="click"
@@ -1367,6 +1348,7 @@ class StoreCampaign extends Component {
                               <h4>Casual Shoe</h4>
                             </td>
                           </tr>
+                          </tbody>
                         </table>
                       </div>
                     </div>
@@ -1374,46 +1356,52 @@ class StoreCampaign extends Component {
                   <Tab label="Last Transaction">
                     <div>
                       <div className="transactionbox">
-                        <table>
-                          <tr>
-                            <td>
-                              <h5>Bill No.</h5>
-                              <label>BB332393</label>
-                            </td>
-                            <td>
-                              <h5>Amount</h5>
-                              <label>₹1,499</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <h5>Store</h5>
-                              <label>Bata - Rajouri Garden</label>
-                            </td>
-                            <td>
-                              <h5>Date</h5>
-                              <label>12 Jan 2020</label>
-                            </td>
-                          </tr>
-                        </table>
-                        <div className="trasactablist">
-                          <div className="tabscrol">
+                          <table>
+                            <tbody>
+                              <tr>
+                              <td>
+                                <h5>Bill No.</h5>
+                                <label>BB332393</label>
+                              </td>
+                              <td>
+                                <h5>Amount</h5>
+                                <label>₹1,499</label>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>Store</h5>
+                                <label>Bata - Rajouri Garden</label>
+                              </td>
+                              <td>
+                                <h5>Date</h5>
+                                <label>12 Jan 2020</label>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                          <div className="trasactablist">
+                            <div className="tabscrol">
                             <table>
-                              <tr>
-                                <th>Article</th>
-                                <th>Qty.</th>
-                                <th>Amount</th>
-                              </tr>
-                              <tr>
-                                <td>Beige Sports Shoes</td>
-                                <td>x1</td>
-                                <td>₹1,499</td>
-                              </tr>
-                              <tr>
-                                <td>Black Sandals</td>
-                                <td>x2</td>
-                                <td>₹4,998</td>
-                              </tr>
+                              <thead>
+                                <tr>
+                                  <th>Article</th>
+                                  <th>Qty.</th>
+                                  <th>Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Beige Sports Shoes</td>
+                                  <td>x1</td>
+                                  <td>₹1,499</td>
+                                </tr>
+                                <tr>
+                                  <td>Black Sandals</td>
+                                  <td>x2</td>
+                                  <td>₹4,998</td>
+                                </tr>
+                              </tbody>
                             </table>
                           </div>
                         </div>
