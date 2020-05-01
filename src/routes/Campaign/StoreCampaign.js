@@ -3,6 +3,8 @@ import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import Sharevia from "./../../assets/Images/sharevia.png";
+import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
@@ -1194,6 +1196,7 @@ class StoreCampaign extends Component {
                   Naman's basket size is reducing, Recommended Brands are: North
                   Star, Hush Puppies
                 </p>
+                <img className="keyingsightdrp" src={Dropdown3} alt="Down Arrow"/>
               </div>
             </div>
             <div className="col-12 col-md-6">
@@ -1206,11 +1209,52 @@ class StoreCampaign extends Component {
                           <tr>
                             <td>
                               <div className="imgbox">
-                                <img
+                                <Popover
+                                  content={
+                                  <div className="productdesc">
+                                    <h4>Blue Casual Shoes</h4>
+                                    <p>Product Code - F808920000</p>
+                                    <table>
+                                      <tr>
+                                        <td>
+                                          <label>Colors:</label>
+                                        </td>
+                                        <td>
+                                          <ul>
+                                            <li><a className="colorblue"><span>1</span></a></li>
+                                            <li><a className="colorblack"><span>1</span></a></li>
+                                            <li><a className="colorgrey"><span>1</span></a></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <label>Sizes:</label>
+                                        </td>
+                                        <td>
+                                          <ul className="sizes">
+                                            <li><a>6</a></li>
+                                            <li><a className="active">7</a></li>
+                                            <li><a>8</a></li>
+                                            <li><a>9</a></li>
+                                            <li><a>10</a></li>
+                                            <li><a>11</a></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <h3>INR 3499/-</h3>
+                                  </div>
+                                  }
+                                  placement="left"
+                                  trigger="click"
+                                  >
+                                  <img
                                   className="shoeimg"
                                   src={Shoe}
                                   alt="Product Image"
                                 />
+                                  </Popover>
                                 <img
                                   className="whatsappico"
                                   src={Whatsapp}
@@ -1334,6 +1378,17 @@ class StoreCampaign extends Component {
                   <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
                   <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
                 </ul>
+              </div>
+              <div className="sharecampmob">
+                <label class="shareviabtn">
+                <img className="shareviaimg" src={Sharevia} alt="Share Via"/>
+                Share Via</label>
+                {/* <ul>
+                  <li><img className="ico" src={Sms1} alt="SMS Icon"/>SMS</li>
+                  <li><img className="ico" src={Sms1} alt="Email Icon"/>Email</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
+                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
+                </ul> */}
               </div>
             </div>
           </div>
