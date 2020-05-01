@@ -3,6 +3,8 @@ import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import Sharevia from "./../../assets/Images/sharevia.png";
+import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
@@ -12,7 +14,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
-import Shoe from "./../../assets/Images/shoe.jpg"
+import Shoe from "./../../assets/Images/shoe.jpg";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
@@ -33,6 +35,7 @@ class StoreCampaign extends Component {
       categoryData: [],
       subCategoryData: [],
       issueTypeData: [],
+      CampChildTableData: [],
       modalData: {},
       isName: "",
       isMobile: "",
@@ -44,13 +47,17 @@ class StoreCampaign extends Component {
       isTiketTitle: "",
       isTiketDetails: "",
       loading: false,
+      ChildTblLoading: false,
       broadcastChannel: 1,
       responsiveChildTable: false,
+      responsiveShareVia: false,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
-    this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
-    this.onStatusChange = this.onStatusChange.bind(this);
+    this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
+    this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
+      this
+    );
     this.handleRaisedTicketModalClose = this.handleRaisedTicketModalClose.bind(
       this
     );
@@ -60,81 +67,77 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
-    this.handleCampaignGridData();
+    this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
 
-  onStatusChange(campaignTypeID, campaignCustomerID, e) {
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].campaignStatus = parseInt(e.target.value);
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].response = 0;
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].callReScheduledTo = "";
-    this.setState({ campaignGridData: this.state.campaignGridData });
+  // onStatusChange(campaignTypeID, campaignCustomerID, e) {
+  //   this.state.campaignGridData
+  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
+  //     .storeCampaignCustomerList.filter(
+  //       (x) => x.campaignCustomerID == campaignCustomerID
+  //     )[0].campaignStatus = parseInt(e.target.value);
+  //   this.state.campaignGridData
+  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
+  //     .storeCampaignCustomerList.filter(
+  //       (x) => x.campaignCustomerID == campaignCustomerID
+  //     )[0].response = 0;
+  //   this.state.campaignGridData
+  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
+  //     .storeCampaignCustomerList.filter(
+  //       (x) => x.campaignCustomerID == campaignCustomerID
+  //     )[0].callReScheduledTo = "";
+  //   this.setState({ campaignGridData: this.state.campaignGridData });
+  // }
+
+  onResponseChange(campaignCustomerID, e) {
+    debugger;
+    this.state.CampChildTableData.filter(
+      (x) => x.id === campaignCustomerID
+    )[0].responseID = parseInt(e.target.value);
+    this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
-  onResponseChange(campaignTypeID, campaignCustomerID, e) {
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].response = parseInt(e.target.value);
-    this.setState({ campaignGridData: this.state.campaignGridData });
+  onDateChange(campaignCustomerID, e) {
+    this.state.CampChildTableData.filter(
+      (x) => x.id === campaignCustomerID
+    )[0].callRescheduledTo = e;
+    this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
-  onDateChange(campaignTypeID, campaignCustomerID, e) {
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].callReScheduledTo = e;
-    this.setState({ campaignGridData: this.state.campaignGridData });
-  }
-
-  handleCampaignGridData() {
+  handleGetCampaignGridData() {
     let self = this;
     this.setState({
       loading: true,
     });
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        if (status === "Success" && data) {
+        if (status === "Success") {
           self.setState({
             campaignGridData: data,
+            loading: false,
+          });
+        } else {
+          self.setState({
+            campaignGridData: [],
+            loading: false,
           });
         }
-        self.setState({
-          loading: false,
-        });
       })
       .catch((data) => {
         console.log(data);
       });
   }
-
-  handleUpdateCampaignStatusResponse(
-    campaignCustomerID,
-    campaignStatus,
-    response,
-    callReScheduledTo,
-    e
-  ) {
+  ///// Handle Update Campaign data
+  handleUpdateCampaignResponse(id, responseID, callRescheduledTo) {
+    debugger;
     let self = this,
       calculatedCallReScheduledTo;
 
@@ -142,29 +145,29 @@ class StoreCampaign extends Component {
       loading: true,
     });
 
-    if (campaignStatus === 102) {
-      calculatedCallReScheduledTo = callReScheduledTo;
+    if (responseID === 3) {
+      calculatedCallReScheduledTo = moment(callRescheduledTo).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
     } else {
       calculatedCallReScheduledTo = "";
     }
-
-    // update campaign
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreTask/UpdateCampaignStatusResponse",
+      url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
       headers: authHeader(),
       data: {
-        CampaignCustomerID: campaignCustomerID,
-        StatusNameID: campaignStatus,
-        ResponseID: response,
+        CampaignCustomerID: id,
+        ResponseID: responseID,
         CallReScheduledTo: calculatedCallReScheduledTo,
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Record saved successFully.");
-          self.handleCampaignGridData();
+          NotificationManager.success("Record Updated Successfully.");
+          self.handleGetCampaignGridData();
         } else {
           self.setState({
             loading: false,
@@ -195,7 +198,7 @@ class StoreCampaign extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign closed successFully.");
-          self.handleCampaignGridData();
+          self.handleGetCampaignGridData();
         } else {
           self.setState({
             loading: false,
@@ -616,6 +619,16 @@ class StoreCampaign extends Component {
       ResponsiveCustModal: false,
     });
   }
+  handleShareViaModalOpen() {
+    this.setState({
+      responsiveShareVia: true,
+    });
+  }
+  handleShareViaModalClose() {
+    this.setState({
+      responsiveShareVia: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
@@ -626,6 +639,36 @@ class StoreCampaign extends Component {
     this.setState({
       responsiveChildTable: !this.state.responsiveChildTable,
     });
+  }
+  /// Handle Get Campaign customer details
+  handleGetCampaignCustomerData(data, row) {
+    debugger;
+    this.setState({
+      ChildTblLoading: true,
+    });
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+      headers: authHeader(),
+      params: {
+        campaignScriptID: row.campaignID,
+        pageNo: 1,
+        pageSize: 10,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          self.setState({ CampChildTableData: data, ChildTblLoading: false });
+        } else {
+          self.setState({ CampChildTableData: [], ChildTblLoading: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   }
   render() {
     return (
@@ -640,7 +683,9 @@ class StoreCampaign extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      {item.campaignName}
+                      <label className="customernamecam">
+                        {item.campaignName}
+                      </label>
                       <img
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
@@ -653,7 +698,7 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Customers",
-                dataIndex: "contactCount",
+                dataIndex: "customerCount",
               },
               {
                 title: "Campaign Script",
@@ -661,40 +706,50 @@ class StoreCampaign extends Component {
                 className: "table-coloum-hide",
                 render: (row, item) => {
                   return (
-                    <div>
+                    <div className="chatbotwid">
                       <Popover
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
                               <label className="poptitle">Chatbot Script</label>
-                              <label>
-                                A wonderful serenity has taken possession of my
-                                entire soul, like these sweet mornings of spring
-                                which I enjoy with my whole heart. I am alone
+                              <label className="channelScript">
+                                {item.chatbotScript}
                               </label>
                             </div>
                           </div>
                         }
                         placement="bottom"
                       >
-                        <a className="button-red"><img className="ico" src={ChatbotS} alt="Whatsapp Icon"/>Chatbot Script</a>
+                        <a className="button-red">
+                          <img
+                            className="ico"
+                            src={ChatbotS}
+                            alt="Chatbot Icon"
+                          />
+                          Chatbot Script
+                        </a>
                       </Popover>
                       <Popover
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
                               <label className="poptitle">SMS Script</label>
-                              <label>
-                                A wonderful serenity has taken possession of my
-                                entire soul, like these sweet mornings of
-                                spring.
+                              <label className="channelScript">
+                                {item.smsScript}
                               </label>
                             </div>
                           </div>
                         }
                         placement="bottom"
                       >
-                        <a className="button-blue"><img className="ico" src={ChatbotS} alt="Whatsapp Icon"/>SMS Script</a>
+                        <a className="button-blue">
+                          <img
+                            className="ico"
+                            src={ChatbotS}
+                            alt="Chatbot Icon"
+                          />
+                          SMS Script
+                        </a>
                       </Popover>
                     </div>
                   );
@@ -702,11 +757,12 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Campaign Period",
-                dataIndex: "campaignEndDate",
+                dataIndex: "campaingPeriod",
                 className: "table-coloum-hide",
               },
               {
                 title: "Status",
+                dataIndex: "status",
                 className: "particular-hide",
                 render: (row, item) => {
                   return (
@@ -718,7 +774,7 @@ class StoreCampaign extends Component {
                       //   row.campaignTypeID
                       // )}
                     >
-                      <label className="hdrcloselabel">Close</label>
+                      <label className="hdrcloselabel">{item.status}</label>
                     </button>
                   );
                 },
@@ -766,7 +822,7 @@ class StoreCampaign extends Component {
             expandedRowRender={(row) => {
               return (
                 <Table
-                  dataSource={row.storeCampaignCustomerList}
+                  dataSource={this.state.CampChildTableData}
                   columns={[
                     {
                       title: "Customer Name",
@@ -780,10 +836,15 @@ class StoreCampaign extends Component {
                                 this
                               )}
                             >
-                              {item.customerName}<img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>
+                              {item.customerName}
+                              <img
+                                className="ico"
+                                src={Whatsapp}
+                                alt="Whatsapp Icon"
+                              />
                             </p>
                             <span className="sml-fnt">
-                              {item.customerPhoneNumber}
+                              {item.customerNumber}
                             </span>
                           </>
                         );
@@ -791,7 +852,7 @@ class StoreCampaign extends Component {
                     },
                     {
                       title: "Date",
-                      dataIndex: "campaignTypeDate",
+                      dataIndex: "campaignDate",
                       className: "table-coloum-hide",
                     },
                     {
@@ -799,36 +860,22 @@ class StoreCampaign extends Component {
                       className: "table-coloum-hide",
                       render: (row, item) => {
                         return (
-                          <div
-                            className={
-                              item.campaignStatus === 0 ? "disabled-input" : ""
-                            }
-                          >
+                          <div>
                             <select
-                              className={
-                                item.campaignStatus === 0
-                                  ? "responceDrop-down dropdown-label disabled-link"
-                                  : "responceDrop-down dropdown-label"
-                              }
-                              value={item.response}
+                              className="responceDrop-down dropdown-label"
+                              value={item.responseID}
                               onChange={this.onResponseChange.bind(
                                 this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
+                                item.id
                               )}
                             >
                               <option hidden>Select Response</option>
-                              {item.campaignResponseList !== null &&
-                                item.campaignResponseList
-                                  .filter(
-                                    (x) =>
-                                      x.statusNameID === item.campaignStatus
-                                  )
-                                  .map((items, i) => (
-                                    <option key={i} value={items.responseID}>
-                                      {items.response}
-                                    </option>
-                                  ))}
+                              {item.hsCampaignResponseList !== null &&
+                                item.hsCampaignResponseList.map((items, i) => (
+                                  <option key={i} value={items.responseID}>
+                                    {items.response}
+                                  </option>
+                                ))}
                             </select>
                           </div>
                         );
@@ -836,25 +883,23 @@ class StoreCampaign extends Component {
                     },
                     {
                       title: "Status",
-                      // dataIndex: "articleName"
+                      dataIndex: "statusName",
                       render: (row, item) => {
                         return (
-                          <div className="d-flex">
-                            <label className="table-btnlabel notConnectedBtnRed">
-                              Not Contacted
-                            </label>
-                            <label
-                              className="table-btnlabel contactBtnGreen"
-                              style={{ display: "none" }}
-                            >
-                              Contacted
-                            </label>
-                            <label
-                              className="table-btnlabel followUpBtnYellow"
-                              style={{ display: "none" }}
-                            >
-                              Follow Up
-                            </label>
+                          <div>
+                            {item.statusID === 100 ? (
+                              <label className="table-btnlabel contactBtnGreen">
+                                {item.statusName}
+                              </label>
+                            ) : item.statusID === 101 ? (
+                              <label className="table-btnlabel notConnectedBtnRed">
+                                {item.statusName}
+                              </label>
+                            ) : item.statusID === 102 ? (
+                              <label className="table-btnlabel followUpBtnYellow">
+                                {item.statusName}
+                              </label>
+                            ) : null}
                           </div>
                         );
                       },
@@ -862,14 +907,12 @@ class StoreCampaign extends Component {
                     {
                       title: "Call Recheduled To",
                       className: "table-coloum-hide",
-                      // dataIndex: "pricePaid"
+                      dataIndex: "pricePaid",
                       render: (row, item) => {
                         return (
                           <div
                             className={
-                              item.campaignStatus === 102 && item.response === 3
-                                ? ""
-                                : "disabled-input"
+                              item.responseID === 3 ? "" : "disabled-input"
                             }
                           >
                             <DatePicker
@@ -880,24 +923,19 @@ class StoreCampaign extends Component {
                               showMonthDropdown
                               showYearDropdown
                               selected={
-                                item.callReScheduledTo !== ""
-                                  ? new Date(item.callReScheduledTo)
+                                item.callRescheduledTo !== ""
+                                  ? new Date(item.callRescheduledTo)
                                   : new Date()
                               }
                               dateFormat="MM/dd/yyyy h:mm aa"
                               value={
-                                item.callReScheduledTo !== ""
-                                  ? moment(item.callReScheduledTo)
+                                item.callRescheduledTo !== ""
+                                  ? moment(item.callRescheduledTo)
                                   : ""
                               }
-                              onChange={this.onDateChange.bind(
-                                this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
-                              )}
+                              onChange={this.onDateChange.bind(this, item.id)}
                               className={
-                                item.campaignStatus === 102 &&
-                                item.response === 3
+                                item.responseID === 3
                                   ? "txtStore dateTimeStore"
                                   : "txtStore dateTimeStore disabled-link"
                               }
@@ -933,7 +971,7 @@ class StoreCampaign extends Component {
                                 />
                               )}
 
-                              <div>
+                              <div className="hidedesk">
                                 <Collapse
                                   isOpen={this.state.responsiveChildTable}
                                 >
@@ -950,8 +988,8 @@ class StoreCampaign extends Component {
                                             <label
                                               style={{ marginLeft: "15px" }}
                                             >
-                                              Naman Rampal
-                                              <span>9873746575</span>
+                                              {item.customerName}
+                                              <span>{item.customerNumber}</span>
                                             </label>
                                           </div>
                                         </div>
@@ -965,7 +1003,7 @@ class StoreCampaign extends Component {
                                             <label
                                               style={{ marginLeft: "15px" }}
                                             >
-                                              29 April 2016
+                                              {item.campaignDate}
                                             </label>
                                           </div>
                                         </div>
@@ -977,85 +1015,86 @@ class StoreCampaign extends Component {
                                           </label>
                                           <div>
                                             <select
-                                              className={
-                                                item.campaignStatus === 0
-                                                  ? "responceDrop-down dropdown-label disabled-link"
-                                                  : "responceDrop-down dropdown-label"
-                                              }
-                                              value={item.response}
+                                              className="responceDrop-down dropdown-label"
+                                              value={item.responseID}
                                               onChange={this.onResponseChange.bind(
                                                 this,
-                                                item.campaignTypeID,
-                                                item.campaignCustomerID
+                                                item.id
                                               )}
                                             >
                                               <option hidden>
                                                 Select Response
                                               </option>
-                                              {item.campaignResponseList !==
+                                              {item.hsCampaignResponseList !==
                                                 null &&
-                                                item.campaignResponseList
-                                                  .filter(
-                                                    (x) =>
-                                                      x.statusNameID ===
-                                                      item.campaignStatus
-                                                  )
-                                                  .map((items, i) => (
+                                                item.hsCampaignResponseList.map(
+                                                  (items, i) => (
                                                     <option
                                                       key={i}
                                                       value={items.responseID}
                                                     >
                                                       {items.response}
                                                     </option>
-                                                  ))}
+                                                  )
+                                                )}
                                             </select>
                                           </div>
                                         </div>
                                         <div className="row">
                                           <label>Status</label>
                                           <label className="table-btnlabel notConnectedBtnRed">
-                                            Not Contacted
+                                            {item.statusName}
                                           </label>
                                         </div>
                                         <div className="row">
                                           <label>Call Rescheduled to</label>
-                                          <DatePicker
-                                            id="startDate"
-                                            autoComplete="off"
-                                            showTimeSelect
-                                            name="startDate"
-                                            showMonthDropdown
-                                            showYearDropdown
-                                            selected={
-                                              item.callReScheduledTo !== ""
-                                                ? new Date(
-                                                    item.callReScheduledTo
-                                                  )
-                                                : new Date()
-                                            }
-                                            dateFormat="MM/dd/yyyy h:mm aa"
-                                            value={
-                                              item.callReScheduledTo !== ""
-                                                ? moment(item.callReScheduledTo)
-                                                : ""
-                                            }
-                                            onChange={this.onDateChange.bind(
-                                              this,
-                                              item.campaignTypeID,
-                                              item.campaignCustomerID
-                                            )}
+                                          <div
                                             className={
-                                              item.campaignStatus === 102 &&
-                                              item.response === 3
-                                                ? "txtStore dateTimeStore"
-                                                : "txtStore dateTimeStore disabled-link"
+                                              item.responseID === 3
+                                                ? ""
+                                                : "disabled-input"
                                             }
-                                            placeholderText="Select Date &amp; Time"
-                                          />
+                                          >
+                                            <DatePicker
+                                              id="startDate"
+                                              autoComplete="off"
+                                              showTimeSelect
+                                              name="startDate"
+                                              showMonthDropdown
+                                              showYearDropdown
+                                              selected={
+                                                item.callRescheduledTo !== ""
+                                                  ? new Date(
+                                                      item.callRescheduledTo
+                                                    )
+                                                  : new Date()
+                                              }
+                                              dateFormat="MM/dd/yyyy h:mm aa"
+                                              value={
+                                                item.callRescheduledTo !== ""
+                                                  ? moment(
+                                                      item.callRescheduledTo
+                                                    )
+                                                  : ""
+                                              }
+                                              onChange={this.onDateChange.bind(
+                                                this,
+                                                item.id
+                                              )}
+                                              className={
+                                                item.responseID === 3
+                                                  ? "txtStore dateTimeStore"
+                                                  : "txtStore dateTimeStore disabled-link"
+                                              }
+                                              placeholderText="Select Date &amp; Time"
+                                            />
+                                          </div>
                                         </div>
                                         <div className="row">
                                           <button>update</button>
-                                          <button>Raise Ticket</button>
+                                          <button style={{ display: "none" }}>
+                                            Raise Ticket
+                                          </button>
                                         </div>
                                       </div>
                                     </CardBody>
@@ -1066,24 +1105,19 @@ class StoreCampaign extends Component {
                             <div className="table-coloum-hide status-btn-camp">
                               <div>
                                 <button
-                                  className="saveBtn"
+                                  className="saveBtn saveLabel"
                                   type="button"
-                                  style={{
-                                    minWidth: "5px",
-                                    marginRight: "10px",
-                                  }}
-                                  // onClick={this.handleUpdateCampaignStatusResponse.bind(
-                                  //   this,
-                                  //   item.campaignCustomerID,
-                                  //   item.campaignStatus,
-                                  //   item.response,
-                                  //   item.callReScheduledTo
-                                  // )}
+                                  onClick={this.handleUpdateCampaignResponse.bind(
+                                    this,
+                                    item.id,
+                                    item.responseID,
+                                    item.callRescheduledTo
+                                  )}
                                 >
-                                  <label className="saveLabel">Update</label>
+                                  Update
                                 </button>
                               </div>
-                              <div>
+                              <div style={{ display: "none" }}>
                                 <button
                                   className="raisedticket-Btn"
                                   type="button"
@@ -1105,13 +1139,14 @@ class StoreCampaign extends Component {
                     },
                   ]}
                   pagination={false}
+                  loading={this.state.ChildTblLoading}
                 />
               );
             }}
-            // onExpand={this.onRowExpand}
+            onExpand={this.handleGetCampaignCustomerData}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
-            pagination={false}
+            pagination={true}
             loading={this.state.loading}
             dataSource={this.state.campaignGridData}
           />
@@ -1129,18 +1164,54 @@ class StoreCampaign extends Component {
             className="cust-icon"
             onClick={this.responsiveCustModalClose.bind(this)}
           />
-          <div className="productbox">
+          <div className="customername-popupmob">
             <Tabs>
               <Tab label="Chatbot Script">
-                <div>
-                  <h4 style={{ textAlign: "center" }}></h4>
-                  <div className="right-sect-div right-sect-div-edit"></div>
+                <div className="">
+                  <div class="dash-creation-popup custompop">
+                    <label class="poptitle">Chatbot Script</label>
+                    <label class="channelScript">
+                      Dear, I am , your Relationship Manager from Bata, store.
+                      Our store is open now as per local government guidelines.
+                      Your safety &amp; convenience continue to remain our top
+                      priority, and we have introduced new ways Of shopping for
+                      you! You can click on wnuw.bata.in/rec to view our new
+                      collections in your favorite categories. Enter "Visit" to
+                      book an appointment for store visit. Enter "Shop" for
+                      assisted shopping via WhatsApp and one of our staff will
+                      get in touch with you shortly. Enter "Browse" to explore
+                      your favorite categories and continue with your shopping.
+                      Enter "Go Back" to Exit Shopping Mode
+                    </label>
+                  </div>
+                  <div className="camperiod">
+                    <h4>
+                      Campaign Period<span>13 May-20/31 May-20</span>
+                    </h4>
+                  </div>
                 </div>
               </Tab>
               <Tab label="SMS Script">
-                <div>
-                  <h4 style={{ textAlign: "center" }}></h4>
-                  <div className="right-sect-div right-sect-div-edit"></div>
+                <div className="">
+                  <div class="dash-creation-popup custompop">
+                    <label class="poptitle">SMS Script</label>
+                    <label class="channelScript">
+                      Dear, I am , your Relationship Manager from Bata, store.
+                      Our store is open now as per local government guidelines.
+                      Your safety &amp; convenience continue to remain our top
+                      priority, and we have introduced new ways Of shopping for
+                      you! You can click on wnuw.bata.in/rec to view our new
+                      collections in your favorite categories. Enter "Visit" to
+                      book an appointment for store visit. Enter "Shop" for
+                      assisted shopping via WhatsApp and one of our staff will
+                      get in touch with you shortly.
+                    </label>
+                  </div>
+                  <div className="camperiod">
+                    <h4>
+                      Campaign Period<span>13 May-20/31 May-20</span>
+                    </h4>
+                  </div>
                 </div>
               </Tab>
             </Tabs>
@@ -1174,16 +1245,18 @@ class StoreCampaign extends Component {
             <div className="col-12 col-md-6">
               <div className="lifetimevalue">
                 <table>
-                  <tr>
-                    <td>
-                      <h4>Lifetime Value</h4>
-                      <label>₹16,347</label>
-                    </td>
-                    <td>
-                      <h4>Visit Count</h4>
-                      <label>08</label>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <h4>Lifetime Value</h4>
+                        <label>₹16,347</label>
+                      </td>
+                      <td>
+                        <h4>Visit Count</h4>
+                        <label>08</label>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <div className="keyinsights">
@@ -1194,6 +1267,11 @@ class StoreCampaign extends Component {
                   Naman's basket size is reducing, Recommended Brands are: North
                   Star, Hush Puppies
                 </p>
+                <img
+                  className="keyingsightdrp"
+                  src={Dropdown3}
+                  alt="Down Arrow"
+                />
               </div>
             </div>
             <div className="col-12 col-md-6">
@@ -1203,70 +1281,139 @@ class StoreCampaign extends Component {
                     <div>
                       <div className="pro-slidercam">
                         <table className="w-100">
-                          <tr>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                            <td>
-                              <div className="imgbox">
-                                <img
-                                  className="shoeimg"
-                                  src={Shoe}
-                                  alt="Product Image"
-                                />
-                                <img
-                                  className="whatsappico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </div>
-                              <h4>Casual Shoe</h4>
-                            </td>
-                          </tr>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div className="imgbox">
+                                  <Popover
+                                    content={
+                                      <div className="productdesc">
+                                        <h4>Blue Casual Shoes</h4>
+                                        <p>Product Code - F808920000</p>
+                                        <table>
+                                          <tbody>
+                                            <tr>
+                                              <td>
+                                                <label>Colors:</label>
+                                              </td>
+                                              <td>
+                                                <ul>
+                                                  <li>
+                                                    <a className="colorblue">
+                                                      <span>1</span>
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="colorblack">
+                                                      <span>1</span>
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="colorgrey">
+                                                      <span>1</span>
+                                                    </a>
+                                                  </li>
+                                                </ul>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td>
+                                                <label>Sizes:</label>
+                                              </td>
+                                              <td>
+                                                <ul className="sizes">
+                                                  <li>
+                                                    <a>6</a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="active">7</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>8</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>9</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>10</a>
+                                                  </li>
+                                                  <li>
+                                                    <a>11</a>
+                                                  </li>
+                                                </ul>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <h3>INR 3499/-</h3>
+                                      </div>
+                                    }
+                                    placement="left"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      className="shoeimg"
+                                      src={Shoe}
+                                      alt="Product Image"
+                                    />
+                                  </Popover>
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                              <td>
+                                <div className="imgbox">
+                                  <img
+                                    className="shoeimg"
+                                    src={Shoe}
+                                    alt="Product Image"
+                                  />
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div className="imgbox">
+                                  <img
+                                    className="shoeimg"
+                                    src={Shoe}
+                                    alt="Product Image"
+                                  />
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                              <td>
+                                <div className="imgbox">
+                                  <img
+                                    className="shoeimg"
+                                    src={Shoe}
+                                    alt="Product Image"
+                                  />
+                                  <img
+                                    className="whatsappico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
+                                </div>
+                                <h4>Casual Shoe</h4>
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
                     </div>
@@ -1274,7 +1421,8 @@ class StoreCampaign extends Component {
                   <Tab label="Last Transaction">
                     <div>
                       <div className="transactionbox">
-                          <table>
+                        <table>
+                          <tbody>
                             <tr>
                               <td>
                                 <h5>Bill No.</h5>
@@ -1295,28 +1443,33 @@ class StoreCampaign extends Component {
                                 <label>12 Jan 2020</label>
                               </td>
                             </tr>
-                          </table>
-                          <div className="trasactablist">
-                            <div className="tabscrol">
-                              <table>
-                              <tr>
-                                <th>Article</th>
-                                <th>Qty.</th>
-                                <th>Amount</th>
-                              </tr>
-                              <tr>
-                                <td>Beige Sports Shoes</td>
-                                <td>x1</td>
-                                <td>₹1,499</td>
-                              </tr>
-                              <tr>
-                                <td>Black Sandals</td>
-                                <td>x2</td>
-                                <td>₹4,998</td>
-                              </tr>
+                          </tbody>
+                        </table>
+                        <div className="trasactablist">
+                          <div className="tabscrol">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Article</th>
+                                  <th>Qty.</th>
+                                  <th>Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Beige Sports Shoes</td>
+                                  <td>x1</td>
+                                  <td>₹1,499</td>
+                                </tr>
+                                <tr>
+                                  <td>Black Sandals</td>
+                                  <td>x2</td>
+                                  <td>₹4,998</td>
+                                </tr>
+                              </tbody>
                             </table>
-                            </div>
                           </div>
+                        </div>
                       </div>
                     </div>
                   </Tab>
@@ -1329,13 +1482,90 @@ class StoreCampaign extends Component {
               <div className="sharecamp">
                 <h4>Share Campaign Via</h4>
                 <ul>
-                  <li><img className="ico" src={Sms1} alt="SMS Icon"/>SMS</li>
-                  <li><img className="ico" src={Sms1} alt="Email Icon"/>Email</li>
-                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
-                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
+                  <li>
+                    <img className="ico" src={Sms1} alt="SMS Icon" />
+                    SMS
+                  </li>
+                  <li>
+                    <img className="ico" src={Sms1} alt="Email Icon" />
+                    Email
+                  </li>
+                  <li>
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    Send Via Messanger
+                  </li>
+                  <li>
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    Send Via Bot
+                  </li>
                 </ul>
               </div>
+              <div className="sharecampmob">
+                <label
+                  className="shareviabtn"
+                  onClick={this.handleShareViaModalOpen.bind(this)}
+                >
+                  <img className="shareviaimg" src={Sharevia} alt="Share Via" />
+                  Share Via
+                </label>
+              </div>
             </div>
+          </div>
+        </Modal>
+        {/* ---------------Share via Modal-------------------- */}
+        <Modal
+          open={this.state.responsiveShareVia}
+          onClose={this.handleShareViaModalClose.bind(this)}
+          center
+          modalId="sharecamp-popup"
+          overlayId="logout-ovrly"
+        >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleShareViaModalClose.bind(this)}
+          />
+          <div>
+            <h4>Choose Channel</h4>
+            <table className="w-100">
+              <tbody>
+                <tr>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    <a href="">Send Via Messanger</a>
+                   </div>
+                  </td>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    <a href="">Send Via Bot</a>
+                   </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Sms1} alt="SMS Icon" />
+                      <a href="">SMS</a>
+                   </div>
+                  </td>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Sms1} alt="Email Icon" />
+                    <a href="">Email</a>
+                   </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="sharecampmob">
+                <label
+                  className="shareviabtn">
+                  Share Now
+                </label>
+              </div>
           </div>
         </Modal>
         {/* ---------Raised Ticket Modal----------- */}
@@ -1559,7 +1789,7 @@ class StoreCampaign extends Component {
                 <a
                   href="#!"
                   onClick={this.handleRaisedTicketModalClose.bind(this)}
-                  class="blue-clr mr-4"
+                  className="blue-clr mr-4"
                 >
                   CANCEL
                 </a>

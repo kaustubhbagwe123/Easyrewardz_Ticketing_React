@@ -219,12 +219,16 @@ class Appointment extends Component {
                       title: "Appointments",
                       dataIndex: "nOofPeople",
 
-                      
-                      },
-                      {
-                        title: "Actions",
+                    },
+                    {
+                      title: "Max Capacity",
+                      dataIndex: "maxCapacity",
+
+                    },
+                    {
+                      title: "Actions",
                         // dataIndex: "orderPricePaid"
-                      },
+                    },
                   ]}
                   expandedRowRender={(row) => {
                     return (
@@ -389,7 +393,7 @@ class Appointment extends Component {
                     );
                   }}
                   onExpand={this.onRowExpand}
-                  expandIconColumnIndex={3}
+                  expandIconColumnIndex={4}
                   expandIconAsCell={false}
                   pagination={{defaultPageSize:5}}
                   loading={this.state.loading}
