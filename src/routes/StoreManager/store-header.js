@@ -675,7 +675,7 @@ class Header extends Component {
           });
           // setInterval(() => {
           // if (self.state.chatModal) {
-          self.handleGetChatMessagesList(id);
+          //  self.handleGetChatMessagesList(id);
           //   }
           // }, 20000);
         } else {
