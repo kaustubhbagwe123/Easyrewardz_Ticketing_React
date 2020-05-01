@@ -1373,6 +1373,12 @@ table tr th:last-child {
   border-radius: 4px;
   width: 60px;
   height: 30px;
+  min-width: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.custom-tableak .saveLabel {
+  text-align: center;
 }
 .custom-tableak .raisedticket-Btn {
   background-color: #2561a8;
@@ -1396,6 +1402,9 @@ table tr th:last-child {
 .ant-popover-placement-bottomLeft,
 .ant-popover-placement-bottomRight {
   padding-top: 1px !important;
+}
+.ant-popover-arrow {
+  display: none !important;
 }
 .custompop .poptitle {
   font-size: 18px;
@@ -1582,6 +1591,9 @@ table tr th:last-child {
   color: #999;
   font-size: 12.5px;
 }
+.trasactablist table thead tr {
+  background-color: transparent !important;
+}
 .trasactablist td {
   padding: 5px 0 3px;
   font-size: 12.5px;
@@ -1617,13 +1629,14 @@ table tr th:last-child {
 }
 .sharecamp ul {
   margin-bottom: 0px;
+  float: right;
 }
 .sharecamp li {
   background-color: #f9f9f9;
   padding: 15px;
   border-radius: 7px;
   margin-right: 20px;
-  min-width: 120px;
+  min-width: 160px;
   text-align: center;
   color: #888;
   font-size: 15px;
@@ -1635,8 +1648,106 @@ table tr th:last-child {
   margin-right: 7px;
   height: 24px;
 }
+.cust-name .ico {
+  margin-left: 10px;
+}
+.sharecampmob {
+  display: none;
+}
+.keyingsightdrp {
+  display: none;
+}
+.productbox .nav-tabs {
+  overflow: inherit;
+  border:none;
+}
+.productdesc {
+  padding: 15px;
+  width: 250px;
+}
+.productdesc h4 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+.productdesc p {
+  color: #999;
+  font-size: 13px;
+}
+.productdesc table {
+  margin: 10px 0;
+}
+.productdesc td {
+  padding: 7px 0;
+}
+.productdesc ul {
+  margin: 0;
+}
+.productdesc li {
+  line-height: 0;
+  display: inline;
+}
+.productdesc label {
+  color: #666;
+  font-size: 13px;
+}
+.productdesc span {
+  display: inherit;
+  visibility: hidden;
+}
+.productdesc .colorblue {
+  background-color: #2a72c7;
+  padding: 2px 6px;
+  border-radius: 50px;
+  display: inline;
+  margin-right: 5px;
+}
+.productdesc .colorblack {
+  background-color: #3e3e3e;
+  padding: 2px 6px;
+  border-radius: 50px;
+  margin-right: 5px;
+  display: inline;
+}
+.productdesc .colorgrey {
+  background-color: #bbbaba;
+  padding: 2px 6px;
+  border-radius: 50px;
+  margin-right: 5px;
+  display: inline;
+}
+.productdesc .sizes a {
+  color: #333;
+  font-size: 13px;
+  margin-right: 12px;
+}
+.productdesc .sizes a:hover, .productdesc .sizes a:focus, .productdesc .sizes a:active {
+  color: #bbbaba;
+}
+.productdesc .sizes .active {
+  color: #bbbaba;
+}
+.productdesc h3 {
+  color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+}
+.custom-tableak .dropdown-label {
+  font-size: 12px;
+}
+.custom-tableak .table-btnlabel {
+  font-size: 12px;
+}
+.custom-tableak .txtStore, .custom-tableak .txtStore::placeholder {
+  font-size: 13px;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
+  display: block;
+}
+.channelScript {
   display: block;
 }
 .broadcastpop .ant-radio-wrapper {
@@ -1729,9 +1840,6 @@ table tr th:last-child {
   .custom-tableak .cust-name {
     font-size: 12px;
   }
-  .cust-name .ico {
-    margin-left: 10px;
-  }
   .custom-tableak .sml-fnt {
     font-size: 10px !important;
   }
@@ -1764,8 +1872,8 @@ table tr th:last-child {
     height: 17px;
   }
   .info-icon-cp {
-    width: 14px;
-    height: 14px;
+    width: 17px;
+    height: 17px;
 }
 .ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
   padding: 20px !important;
@@ -1789,6 +1897,108 @@ table tr th:last-child {
 .custom-tableak .custom-antd-table .ant-table-tbody > tr > td, .custom-tableak .custom-react-table .rt-tbody .rt-td {
   padding: 7px !important;
   font-size: 11px;
+}
+#customername-popup {
+  padding: 20px;
+  margin: 15px;
+}
+.cust-icon {
+  height: 12px;
+}
+.nr-initials {
+  width: 18%;
+  font-size: 14px;
+}
+.nr-name {
+  float: right;
+  padding-left: 5px;
+  width: 79%;
+}
+.nr-name h3 {
+  font-size: 20px;
+  letter-spacing: 0;
+}
+.nr-name p {
+  font-size: 14px;
+}
+.lifetimevalue h4 {
+  font-size: 13px;
+}
+.lifetimevalue label {
+  font-size: 20px;
+}
+.keyinsights h4 {
+  font-size: 13px;
+}
+.keyinsights p {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.productbox .nav-tabs .nav-link.active {
+  font-size: 13px;
+}
+.productbox .nav-tabs .nav-link {
+  font-size: 13px;
+  display: inline;
+}
+.pro-slidercam h4 {
+  font-size: 12px;
+    margin-top: 3px;
+}
+.sharecamp {
+  margin-top: 25px;
+  display: none;
+}
+.sharecampmob {
+  display: block;
+}
+.cust-name .ico {
+  margin-left: 4px;
+}
+.shareviabtn {
+  background-color: #00b894;
+    border-radius: 5px;
+    padding: 7px;
+    color: #ffff;
+    margin-top: 15px;
+    font-size: 12px;
+    display: block;
+    text-align: center;
+}
+.shareviabtn .shareviaimg {
+  height: 13px;
+  margin-right: 5px;
+}
+.keyingsightdrp {
+  display: block;
+  height: 7px;
+  width: 14px;
+  margin: auto;
+}
+.productbox {
+  padding: 18px 20px;
+}
+.keyinsights {
+  padding: 18px 20px;
+}
+.trasactablist th {
+  font-size: 12px;
+}
+.trasactablist td {
+  font-size: 12px;
+}
+.transactionbox label {
+  font-size: 13px;
+}
+.info-icon-cp {
+  bottom: 4px;
+}
+.customernamecam {
+  max-width: 90px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
 }
 }
 /* ------------------Campain Css End ------------------------- */
