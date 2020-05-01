@@ -1,5 +1,5 @@
 let config = {
- // apiUrl: "https://localhost:44357/api",
+  apiUrl: "https://localhost:44357/api",
   // hierarchyTemplate: [["Designation", "ReportTo", "Status"]],
   // priorityTemplate: [["PriorityName", "Status"]],
   // userTemplate: [
@@ -313,9 +313,9 @@ let config = {
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
-  // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
+ //apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api"  /// -------HomeShop API---------
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
-  apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
+ // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'

@@ -1572,6 +1572,9 @@ table tr th:last-child {
 .broadcastpop label {
   display: block;
 }
+.channelScript {
+  display: block;
+}
 .broadcastpop .ant-radio-wrapper {
   display: block;
 }

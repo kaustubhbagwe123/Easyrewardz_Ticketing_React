@@ -177,7 +177,6 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    //
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -348,7 +347,6 @@ class Header extends Component {
   }
 
   handleLoggedInUserDetails = () => {
-    //
     let self = this;
     axios({
       method: "post",
@@ -405,7 +403,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //
         var status = res.data.status;
         // var Msg=res.data.message
         if (status === true) {

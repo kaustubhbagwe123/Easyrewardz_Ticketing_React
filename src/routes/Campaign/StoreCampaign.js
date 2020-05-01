@@ -29,6 +29,7 @@ class StoreCampaign extends Component {
       categoryData: [],
       subCategoryData: [],
       issueTypeData: [],
+      CampChildTableData: [],
       modalData: {},
       isName: "",
       isMobile: "",
@@ -46,7 +47,9 @@ class StoreCampaign extends Component {
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
     this.handleCampaignGridData = this.handleCampaignGridData.bind(this);
-    this.onStatusChange = this.onStatusChange.bind(this);
+    this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
+      this
+    );
     this.handleRaisedTicketModalClose = this.handleRaisedTicketModalClose.bind(
       this
     );
@@ -60,41 +63,37 @@ class StoreCampaign extends Component {
     this.handleGetBrand();
   }
 
-  onStatusChange(campaignTypeID, campaignCustomerID, e) {
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].campaignStatus = parseInt(e.target.value);
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].response = 0;
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].callReScheduledTo = "";
-    this.setState({ campaignGridData: this.state.campaignGridData });
+  // onStatusChange(campaignTypeID, campaignCustomerID, e) {
+  //   this.state.campaignGridData
+  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
+  //     .storeCampaignCustomerList.filter(
+  //       (x) => x.campaignCustomerID == campaignCustomerID
+  //     )[0].campaignStatus = parseInt(e.target.value);
+  //   this.state.campaignGridData
+  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
+  //     .storeCampaignCustomerList.filter(
+  //       (x) => x.campaignCustomerID == campaignCustomerID
+  //     )[0].response = 0;
+  //   this.state.campaignGridData
+  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
+  //     .storeCampaignCustomerList.filter(
+  //       (x) => x.campaignCustomerID == campaignCustomerID
+  //     )[0].callReScheduledTo = "";
+  //   this.setState({ campaignGridData: this.state.campaignGridData });
+  // }
+
+  onResponseChange(campaignCustomerID, e) {
+    debugger
+    this.state.CampChildTableData
+      .filter((x) => x.id === campaignCustomerID)[0]
+     = parseInt(e.target.value);
+    this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
-  onResponseChange(campaignTypeID, campaignCustomerID, e) {
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].response = parseInt(e.target.value);
-    this.setState({ campaignGridData: this.state.campaignGridData });
-  }
-
-  onDateChange(campaignTypeID, campaignCustomerID, e) {
-    this.state.campaignGridData
-      .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-      .storeCampaignCustomerList.filter(
-        (x) => x.campaignCustomerID == campaignCustomerID
-      )[0].callReScheduledTo = e;
-    this.setState({ campaignGridData: this.state.campaignGridData });
+  onDateChange(campaignCustomerID, e) {
+    this.state.CampChildTableData
+      .filter((x) => x.id === campaignCustomerID)[0].callRescheduledTo = e;
+    this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
   handleCampaignGridData() {
@@ -104,10 +103,11 @@ class StoreCampaign extends Component {
     });
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -623,6 +623,33 @@ class StoreCampaign extends Component {
       responsiveChildTable: !this.state.responsiveChildTable,
     });
   }
+  /// Handle Get Campaign customer details
+  handleGetCampaignCustomerData(data, row) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+      headers: authHeader(),
+      params: {
+        campaignScriptID: row.campaignID,
+        pageNo: 1,
+        pageSize: 10,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          self.setState({ CampChildTableData: data });
+        } else {
+          self.setState({ CampChildTableData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
   render() {
     return (
       <div className="custom-tableak">
@@ -649,7 +676,7 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Customers",
-                dataIndex: "contactCount",
+                dataIndex: "customerCount",
               },
               {
                 title: "Campaign Script",
@@ -663,10 +690,8 @@ class StoreCampaign extends Component {
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
                               <label className="poptitle">Chatbot Script</label>
-                              <label>
-                                A wonderful serenity has taken possession of my
-                                entire soul, like these sweet mornings of spring
-                                which I enjoy with my whole heart. I am alone
+                              <label className="channelScript">
+                                {item.chatbotScript}
                               </label>
                             </div>
                           </div>
@@ -680,10 +705,8 @@ class StoreCampaign extends Component {
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
                               <label className="poptitle">SMS Script</label>
-                              <label>
-                                A wonderful serenity has taken possession of my
-                                entire soul, like these sweet mornings of
-                                spring.
+                              <label className="channelScript">
+                                {item.smsScript}
                               </label>
                             </div>
                           </div>
@@ -698,11 +721,12 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Campaign Period",
-                dataIndex: "campaignEndDate",
+                dataIndex: "campaingPeriod",
                 className: "table-coloum-hide",
               },
               {
                 title: "Status",
+                dataIndex: "status",
                 className: "particular-hide",
                 render: (row, item) => {
                   return (
@@ -714,7 +738,7 @@ class StoreCampaign extends Component {
                       //   row.campaignTypeID
                       // )}
                     >
-                      <label className="hdrcloselabel">Close</label>
+                      <label className="hdrcloselabel">{item.status}</label>
                     </button>
                   );
                 },
@@ -762,7 +786,7 @@ class StoreCampaign extends Component {
             expandedRowRender={(row) => {
               return (
                 <Table
-                  dataSource={row.storeCampaignCustomerList}
+                  dataSource={this.state.CampChildTableData}
                   columns={[
                     {
                       title: "Customer Name",
@@ -779,7 +803,7 @@ class StoreCampaign extends Component {
                               {item.customerName}
                             </p>
                             <span className="sml-fnt">
-                              {item.customerPhoneNumber}
+                              {item.customerNumber}
                             </span>
                           </>
                         );
@@ -787,7 +811,7 @@ class StoreCampaign extends Component {
                     },
                     {
                       title: "Date",
-                      dataIndex: "campaignTypeDate",
+                      dataIndex: "campaignDate",
                       className: "table-coloum-hide",
                     },
                     {
@@ -795,36 +819,22 @@ class StoreCampaign extends Component {
                       className: "table-coloum-hide",
                       render: (row, item) => {
                         return (
-                          <div
-                            className={
-                              item.campaignStatus === 0 ? "disabled-input" : ""
-                            }
-                          >
+                          <div>
                             <select
-                              className={
-                                item.campaignStatus === 0
-                                  ? "responceDrop-down dropdown-label disabled-link"
-                                  : "responceDrop-down dropdown-label"
-                              }
+                              className="responceDrop-down dropdown-label"
                               value={item.response}
                               onChange={this.onResponseChange.bind(
                                 this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
+                                item.id
                               )}
                             >
                               <option hidden>Select Response</option>
-                              {item.campaignResponseList !== null &&
-                                item.campaignResponseList
-                                  .filter(
-                                    (x) =>
-                                      x.statusNameID === item.campaignStatus
-                                  )
-                                  .map((items, i) => (
-                                    <option key={i} value={items.responseID}>
-                                      {items.response}
-                                    </option>
-                                  ))}
+                              {item.hsCampaignResponseList !== null &&
+                                item.hsCampaignResponseList.map((items, i) => (
+                                  <option key={i} value={items.responseID}>
+                                    {items.response}
+                                  </option>
+                                ))}
                             </select>
                           </div>
                         );
@@ -832,25 +842,23 @@ class StoreCampaign extends Component {
                     },
                     {
                       title: "Status",
-                      // dataIndex: "articleName"
+                      dataIndex: "statusName",
                       render: (row, item) => {
                         return (
-                          <div className="d-flex">
-                            <label className="table-btnlabel notConnectedBtnRed">
-                              Not Contacted
-                            </label>
-                            <label
-                              className="table-btnlabel contactBtnGreen"
-                              style={{ display: "none" }}
-                            >
-                              Contacted
-                            </label>
-                            <label
-                              className="table-btnlabel followUpBtnYellow"
-                              style={{ display: "none" }}
-                            >
-                              Follow Up
-                            </label>
+                          <div>
+                            {item.statusID === 100 ? (
+                              <label className="table-btnlabel contactBtnGreen">
+                                {item.statusName}
+                              </label>
+                            ) : item.statusID === 101 ? (
+                              <label className="table-btnlabel notConnectedBtnRed">
+                                {item.statusName}
+                              </label>
+                            ) : item.statusID === 102 ? (
+                              <label className="table-btnlabel followUpBtnYellow">
+                                {item.statusName}
+                              </label>
+                            ) : null}
                           </div>
                         );
                       },
@@ -858,16 +866,10 @@ class StoreCampaign extends Component {
                     {
                       title: "Call Recheduled To",
                       className: "table-coloum-hide",
-                      // dataIndex: "pricePaid"
+                      dataIndex: "pricePaid",
                       render: (row, item) => {
                         return (
-                          <div
-                            className={
-                              item.campaignStatus === 102 && item.response === 3
-                                ? ""
-                                : "disabled-input"
-                            }
-                          >
+                          <div>
                             <DatePicker
                               id="startDate"
                               autoComplete="off"
@@ -876,24 +878,22 @@ class StoreCampaign extends Component {
                               showMonthDropdown
                               showYearDropdown
                               selected={
-                                item.callReScheduledTo !== ""
-                                  ? new Date(item.callReScheduledTo)
+                                item.callRescheduledTo !== ""
+                                  ? new Date(item.callRescheduledTo)
                                   : new Date()
                               }
                               dateFormat="MM/dd/yyyy h:mm aa"
                               value={
-                                item.callReScheduledTo !== ""
-                                  ? moment(item.callReScheduledTo)
+                                item.callRescheduledTo !== ""
+                                  ? moment(item.callRescheduledTo)
                                   : ""
                               }
                               onChange={this.onDateChange.bind(
                                 this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
+                                item.id
                               )}
                               className={
-                                item.campaignStatus === 102 &&
-                                item.response === 3
+                                item.statusID === 102 && item.responseID === 3
                                   ? "txtStore dateTimeStore"
                                   : "txtStore dateTimeStore disabled-link"
                               }
@@ -929,7 +929,7 @@ class StoreCampaign extends Component {
                                 />
                               )}
 
-                              <div>
+                              <div className="hidedesk">
                                 <Collapse
                                   isOpen={this.state.responsiveChildTable}
                                 >
@@ -946,8 +946,8 @@ class StoreCampaign extends Component {
                                             <label
                                               style={{ marginLeft: "15px" }}
                                             >
-                                              Naman Rampal
-                                              <span>9873746575</span>
+                                              {item.customerName}
+                                              <span>{item.customerNumber}</span>
                                             </label>
                                           </div>
                                         </div>
@@ -961,7 +961,7 @@ class StoreCampaign extends Component {
                                             <label
                                               style={{ marginLeft: "15px" }}
                                             >
-                                              29 April 2016
+                                              {item.campaignDate}
                                             </label>
                                           </div>
                                         </div>
@@ -973,44 +973,35 @@ class StoreCampaign extends Component {
                                           </label>
                                           <div>
                                             <select
-                                              className={
-                                                item.campaignStatus === 0
-                                                  ? "responceDrop-down dropdown-label disabled-link"
-                                                  : "responceDrop-down dropdown-label"
-                                              }
+                                              className="responceDrop-down dropdown-label"
                                               value={item.response}
                                               onChange={this.onResponseChange.bind(
                                                 this,
-                                                item.campaignTypeID,
-                                                item.campaignCustomerID
+                                                item.id
                                               )}
                                             >
                                               <option hidden>
                                                 Select Response
                                               </option>
-                                              {item.campaignResponseList !==
+                                              {item.hsCampaignResponseList !==
                                                 null &&
-                                                item.campaignResponseList
-                                                  .filter(
-                                                    (x) =>
-                                                      x.statusNameID ===
-                                                      item.campaignStatus
-                                                  )
-                                                  .map((items, i) => (
+                                                item.hsCampaignResponseList.map(
+                                                  (items, i) => (
                                                     <option
                                                       key={i}
                                                       value={items.responseID}
                                                     >
                                                       {items.response}
                                                     </option>
-                                                  ))}
+                                                  )
+                                                )}
                                             </select>
                                           </div>
                                         </div>
                                         <div className="row">
                                           <label>Status</label>
                                           <label className="table-btnlabel notConnectedBtnRed">
-                                            Not Contacted
+                                            {item.statusName}
                                           </label>
                                         </div>
                                         <div className="row">
@@ -1023,26 +1014,25 @@ class StoreCampaign extends Component {
                                             showMonthDropdown
                                             showYearDropdown
                                             selected={
-                                              item.callReScheduledTo !== ""
+                                              item.callRescheduledTo !== ""
                                                 ? new Date(
-                                                    item.callReScheduledTo
+                                                    item.callRescheduledTo
                                                   )
                                                 : new Date()
                                             }
                                             dateFormat="MM/dd/yyyy h:mm aa"
                                             value={
-                                              item.callReScheduledTo !== ""
-                                                ? moment(item.callReScheduledTo)
+                                              item.callRescheduledTo !== ""
+                                                ? moment(item.callRescheduledTo)
                                                 : ""
                                             }
                                             onChange={this.onDateChange.bind(
                                               this,
-                                              item.campaignTypeID,
-                                              item.campaignCustomerID
+                                              item.id
                                             )}
                                             className={
-                                              item.campaignStatus === 102 &&
-                                              item.response === 3
+                                              item.statusID === 102 &&
+                                              item.responseID === 3
                                                 ? "txtStore dateTimeStore"
                                                 : "txtStore dateTimeStore disabled-link"
                                             }
@@ -1104,10 +1094,10 @@ class StoreCampaign extends Component {
                 />
               );
             }}
-            // onExpand={this.onRowExpand}
+            onExpand={this.handleGetCampaignCustomerData}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
-            pagination={false}
+            pagination={true}
             loading={this.state.loading}
             dataSource={this.state.campaignGridData}
           />
