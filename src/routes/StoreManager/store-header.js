@@ -41,8 +41,11 @@ import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
 import AppointmentLogo from "./../../assets/Images/appointments.svg";
+import ChatBubbleBlue from "./../../assets/Images/chat-bubble-blue.svg";
+import ChatBubbleWhite from "./../../assets/Images/chat-bubble-white.svg";
 import ChatCount from "./../../assets/Images/chat-count.svg";
 import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
+import BellIcon from "./../../assets/Images/bell-icon.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
@@ -250,34 +253,34 @@ class Header extends Component {
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
-    var dashboard = {
-      data: "Dashboards",
-      urls: "storedashboard",
-      logoBlack: DashboardLogo,
-      logoBlue: DashboardLogoBlue,
-      imgAlt: "dashboard icon",
-      imgClass: "dashboardImg1",
-      activeClass:
-        page === "storedashboard" ? "active single-menu" : "single-menu",
-    };
-    var task = {
-      data: "Task",
-      urls: "StoreTask",
-      logoBlack: TicketLogo,
-      logoBlue: TicketLogoBlue,
-      imgAlt: "ticket icon",
-      imgClass: "myTicket",
-      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
-    };
-    var claim = {
-      data: "Claim",
-      urls: "claim",
-      logoBlack: ClaimLogo,
-      logoBlue: ClaimLogoBlue,
-      imgAlt: "claim icon",
-      imgClass: "claim-logo",
-      activeClass: page === "claim" ? "active single-menu" : "single-menu",
-    };
+    // var dashboard = {
+    //   data: "Dashboards",
+    //   urls: "storedashboard",
+    //   logoBlack: DashboardLogo,
+    //   logoBlue: DashboardLogoBlue,
+    //   imgAlt: "dashboard icon",
+    //   imgClass: "dashboardImg1",
+    //   activeClass:
+    //     page === "storedashboard" ? "active single-menu" : "single-menu",
+    // };
+    // var task = {
+    //   data: "Task",
+    //   urls: "StoreTask",
+    //   logoBlack: TicketLogo,
+    //   logoBlue: TicketLogoBlue,
+    //   imgAlt: "ticket icon",
+    //   imgClass: "myTicket",
+    //   activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+    // };
+    // var claim = {
+    //   data: "Claim",
+    //   urls: "claim",
+    //   logoBlack: ClaimLogo,
+    //   logoBlue: ClaimLogoBlue,
+    //   imgAlt: "claim icon",
+    //   imgClass: "claim-logo",
+    //   activeClass: page === "claim" ? "active single-menu" : "single-menu",
+    // };
     var campaign = {
       data: "Campaign",
       urls: "campaign",
@@ -299,22 +302,23 @@ class Header extends Component {
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
+        // if (
+        //   data[i].moduleName === "Dashboard" &&
+        //   data[i].modulestatus === true
+        // ) {
+        //   accessdata.push(dashboard);
+        // } else if (
+        //   data[i].moduleName === "Tasks" &&
+        //   data[i].modulestatus === true
+        // ) {
+        //   accessdata.push(task);
+        // } else if (
+        //   data[i].moduleName === "Claim" &&
+        //   data[i].modulestatus === true
+        // ) {
+        //   accessdata.push(claim);
+        // } else
         if (
-          data[i].moduleName === "Dashboard" &&
-          data[i].modulestatus === true
-        ) {
-          accessdata.push(dashboard);
-        } else if (
-          data[i].moduleName === "Tasks" &&
-          data[i].modulestatus === true
-        ) {
-          accessdata.push(task);
-        } else if (
-          data[i].moduleName === "Claim" &&
-          data[i].modulestatus === true
-        ) {
-          accessdata.push(claim);
-        } else if (
           data[i].moduleName === "Campaign" &&
           data[i].modulestatus === true
         ) {
@@ -956,7 +960,6 @@ class Header extends Component {
   };
   onOpenCardModal = () => {
     this.setState({ cardModal: true });
-    
   };
   ////handle search item text change
   handleSearchItemChange = (e) => {
@@ -973,14 +976,14 @@ class Header extends Component {
   handleNoOfPeopleChange = (e) => {
     debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
-      if (Number(e.target.value) <= this.state.selectedSlot.maxCapacity) {
+      if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
         this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
       } else {
         if (e.target.value !== "") {
           this.setState({
             noOfPeople: "",
             noOfPeopleMax:
-              "Maximum capacity are " + this.state.selectedSlot.maxCapacity,
+              "Maximum capacity are " + this.state.selectedSlot.remaining,
           });
         } else {
           this.setState({
@@ -1034,8 +1037,9 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            <div className="er">
-              <label className="er-label">ER</label>
+            <div className="er bell-icon">
+              {/* <label className="er-label">ER</label> */}
+              <img src={BellIcon} alt="bell icon" />
             </div>
             <div className="hamb-menu">
               <img src={Hamb} alt="hamburger icon" />
@@ -1542,6 +1546,19 @@ class Header extends Component {
                         aria-controls="ongoing-chat"
                         aria-selected="true"
                       >
+                        <div className="chats-count">
+                          <img
+                            src={ChatBubbleBlue}
+                            className="chat-bubble-blue"
+                            alt="chat count"
+                          />
+                          <img
+                            src={ChatBubbleWhite}
+                            className="chat-bubble-white"
+                            alt="chat count"
+                          />
+                          <span>12</span>
+                        </div>
                         Ongoing Chats
                       </a>
                     </li>
@@ -1555,6 +1572,19 @@ class Header extends Component {
                         aria-controls="new-chat"
                         aria-selected="false"
                       >
+                        <div className="chats-count">
+                          <img
+                            src={ChatBubbleBlue}
+                            className="chat-bubble-blue"
+                            alt="chat count"
+                          />
+                          <img
+                            src={ChatBubbleWhite}
+                            className="chat-bubble-white"
+                            alt="chat count"
+                          />
+                          <span>6</span>
+                        </div>
                         New Chats
                       </a>
                     </li>
@@ -1588,6 +1618,15 @@ class Header extends Component {
                               >
                                 <div className="chat-face-cntr">
                                   <div className="chat-face-inner-cntr">
+                                    <div className="chat-notification-cntr">
+                                      <img
+                                        src={ChatCount}
+                                        alt="notification image"
+                                      />
+                                      <span className="chat-notification-count">
+                                        15
+                                      </span>
+                                    </div>
                                     <img
                                       src={DummyFace1}
                                       alt="face image"
@@ -1635,6 +1674,15 @@ class Header extends Component {
                                   }
                                 >
                                   <div className="chat-face-inner-cntr">
+                                    <div className="chat-notification-cntr">
+                                      <img
+                                        src={ChatCount}
+                                        alt="notification image"
+                                      />
+                                      <span className="chat-notification-count">
+                                        15
+                                      </span>
+                                    </div>
                                     <img src={DummyFace1} alt="face image" />
                                     <span className="online"></span>
                                   </div>
