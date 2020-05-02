@@ -334,7 +334,8 @@ class Header extends Component {
     this.subscription.unsubscribe();
   }
   componentDidUpdate() {
-    if (this.state.chatModal) {
+    debugger;
+    if (this.state.chatModal && this.state.isDownbtn) {
       this.scrollToBottom();
     }
   }
@@ -708,7 +709,7 @@ class Header extends Component {
       inputParam.byCustomer = false;
       inputParam.chatStatus = 0;
       inputParam.storeManagerId = 0;
-      this.setState({message:""})
+      this.setState({ message: "" });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
@@ -1799,7 +1800,7 @@ class Header extends Component {
                                 {this.state.isDownbtn ? (
                                   <img src={DownBlue} alt="down-arrow" />
                                 ) : (
-                                  <img src={UpBlue} alt="down-arrow" />
+                                  <img src={UpBlue} alt="up-arrow" />
                                 )}
                               </button>
                             </div>
