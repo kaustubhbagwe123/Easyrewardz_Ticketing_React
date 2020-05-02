@@ -330,6 +330,11 @@ class Header extends Component {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
   }
+  componentDidUpdate() {
+    if (this.state.chatModal) {
+      this.scrollToBottom();
+    }
+  }
 
   handleCRMRole(id) {
     let self = this;
@@ -691,30 +696,35 @@ class Header extends Component {
   handleSaveChatMessages() {
     debugger;
     let self = this;
-    var inputParam = {};
-    inputParam.chatID = this.state.chatId;
-    inputParam.message = this.state.message;
-    inputParam.attachment = null;
-    inputParam.byCustomer = false;
-    inputParam.chatStatus = 0;
-    inputParam.storeManagerId = 0;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/saveChatMessages",
-      headers: authHeader(),
-      data: inputParam,
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var responseData = response.data.responseData;
-        if (message === "Success" && responseData) {
-          self.handleGetChatMessagesList(self.state.chatId);
-        } else {
-        }
+
+    if (this.state.message !== "" && this.state.chatId > 0) {
+      var inputParam = {};
+      inputParam.chatID = this.state.chatId;
+      inputParam.message = this.state.message;
+      inputParam.attachment = null;
+      inputParam.byCustomer = false;
+      inputParam.chatStatus = 0;
+      inputParam.storeManagerId = 0;
+      this.setState({message:""})
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/saveChatMessages",
+        headers: authHeader(),
+        data: inputParam,
       })
-      .catch((response) => {
-        console.log(response, "---handleGetChatMessagesList");
-      });
+        .then(function(response) {
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+          if (message === "Success" && responseData) {
+            self.handleGetChatMessagesList(self.state.chatId);
+            self.setState({ message: "" });
+          } else {
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleGetChatMessagesList");
+        });
+    }
   }
   ////handle get chat notification count
   handleGetChatNotificationCount() {
@@ -843,6 +853,12 @@ class Header extends Component {
   handleSearchItemChange = (e) => {
     this.setState({ searchItem: e.target.value });
   };
+  scrollToBottom() {
+    const scrollHeight = this.messageList.scrollHeight;
+    const height = this.messageList.clientHeight;
+    const maxScrollTop = scrollHeight - height;
+    this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  }
 
   render() {
     return (
@@ -1479,7 +1495,12 @@ class Header extends Component {
                     </div>
                     {this.state.isDownbtn ? (
                       <div className="chatcontentRow">
-                        <div className="chatcontentDiv">
+                        <div
+                          className="chatcontentDiv"
+                          ref={(div) => {
+                            this.messageList = div;
+                          }}
+                        >
                           {this.state.messageData !== null
                             ? this.state.messageData.map((item, i) => {
                                 return (
@@ -1628,10 +1649,20 @@ class Header extends Component {
                                 ],
                               }}
                             />
-
+                            {this.state.isMessage !== "" && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginBottom: "0px",
+                                }}
+                              >
+                                {this.state.isMessage}
+                              </p>
+                            )}
                             <div
                               className="mobile-ck-send"
                               onClick={this.handleSaveChatMessages.bind(this)}
+                              title={"Send"}
                             >
                               <img src={Assign} alt="send img" />
                             </div>
@@ -1950,9 +1981,11 @@ class Header extends Component {
                                 ],
                               }}
                             />
+
                             <div
                               className="mobile-ck-send"
                               onClick={this.handleSaveChatMessages.bind(this)}
+                              title={"Send"}
                             >
                               <img src={Assign} alt="send img" />
                             </div>

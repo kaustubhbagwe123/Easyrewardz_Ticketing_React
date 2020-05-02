@@ -188,6 +188,7 @@ p {
   line-height: 30px;
   right: 15px;
   bottom: 55px;
+  cursor: pointer;
 }
 .mobile-ck-send img {
   width: 15px;
