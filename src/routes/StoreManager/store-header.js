@@ -926,6 +926,14 @@ class Header extends Component {
   };
   ////handle select slot button
   handleSelectSlot = (e) => {};
+
+  onCloseScheduleModal = () => {
+    this.setState({ scheduleModal: false });
+  };
+  onOpenScheduleModal = () => {
+    this.setState({ scheduleModal: true });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -2243,6 +2251,7 @@ class Header extends Component {
                             role="tab"
                             aria-controls="schedule-visit-tab"
                             aria-selected="false"
+                            onClick={this.onOpenScheduleModal}
                           >
                             SCHEDULE VISIT
                           </a>
@@ -2424,13 +2433,207 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="recommended-list-tab"
                         ></div>
-                        {/* --------Schedule Visit Tab----- */}
-                        <div
-                          className="tab-pane fade"
-                          id="schedule-visit-tab"
-                          role="tabpanel"
-                          aria-labelledby="schedule-visit-tab"
-                        ></div>
+                        {/* -------- Schedule Visit Modal ----- */}
+                        <Modal
+                          open={this.state.scheduleModal}
+                          onClose={this.onCloseScheduleModal}
+                          center
+                          modalId="mobile-tabs-popup"
+                          overlayId="mobile-tabs-overlay"
+                          classNames={{ modal: "schedule-visit-popup" }}
+                        >
+                          <div className="schedule-mobile-cntr">
+                            <div>
+                              <div className="schedule-left-outer-cntr">
+                                <div className="schedule-left-cntr">
+                                  <div>
+                                    <label className="s-lable">
+                                      Today:11 May 2020
+                                    </label>
+                                    <div className="schedule-btn-outer-cntr">
+                                      <div className="schedule-btn-cntr">
+                                        <button className="s-red-btn s-red-active">
+                                          11AM-12PM
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                        <Tooltip
+                                          placement="left"
+                                          title="4 MORE PEOPLE LEFT"
+                                        >
+                                          <button className="s-green-btn">
+                                            11AM-12PM
+                                          </button>
+                                        </Tooltip>
+                                        <button className="s-yellow-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-green-btn ">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-red-btn s-red-active">
+                                          11AM-12PM
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                        <button className="s-green-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-yellow-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-green-btn ">
+                                          11AM-12PM
+                                        </button>
+                                      </div>
+                                      <div className="selectdot-blue">
+                                        <img src={SchRight} alt="right arrow" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label className="s-lable">
+                                      Tomorrow:12 May 2020
+                                    </label>
+                                    <div className="schedule-btn-outer-cntr">
+                                      <div className="schedule-btn-cntr">
+                                        <button className="s-red-btn s-red-active">
+                                          11AM-12PM
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                        <button className="s-green-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-yellow-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-green-btn ">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-red-btn s-red-active">
+                                          11AM-12PM
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                        <button className="s-green-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-yellow-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-green-btn ">
+                                          11AM-12PM
+                                        </button>
+                                      </div>
+                                      <div className="selectdot-blue">
+                                        <img src={SchRight} alt="right arrow" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label className="s-lable">
+                                      Day after Tomorrow:13 May 2020
+                                    </label>
+                                    <div className="schedule-btn-outer-cntr">
+                                      <div className="schedule-btn-cntr">
+                                        <button className="s-red-btn s-red-active">
+                                          11AM-12PM
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                        <button className="s-green-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-yellow-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-green-btn ">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-red-btn s-red-active">
+                                          11AM-12PM
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                        <button className="s-green-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-yellow-btn">
+                                          11AM-12PM
+                                        </button>
+                                        <button className="s-green-btn ">
+                                          11AM-12PM
+                                        </button>
+                                      </div>
+                                      <div className="selectdot-blue">
+                                        <img src={SchRight} alt="right arrow" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="schedule-right-cntr">
+                                <div>
+                                  <label className="s-lable">
+                                    Selected Slot
+                                  </label>
+                                  <button className="s-green-btn s-green-active select-slot-cntr mx-0">
+                                    2PM-3PM
+                                    <img
+                                      className="s-img-select"
+                                      src={CircleRight}
+                                      alt="circle-right"
+                                    />
+                                  </button>
+                                </div>
+                                <div>
+                                  <label className="s-lable">
+                                    No of People
+                                  </label>
+                                  <input type="text" />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="chat-btn-cntr">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseScheduleModal}
+                              >
+                                Close
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.onCloseScheduleModal}
+                              >
+                                Send
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
                         {/* --------Generate Payment Link Tab----- */}
                         <div
                           className="tab-pane fade"

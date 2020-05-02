@@ -94,6 +94,10 @@ class Appointment extends Component {
               self.setState({
                 appointmentGridData: data,
               });
+            }else{
+              self.setState({
+                appointmentGridData: [],
+              });
             }
             self.setState({
                loading: false,
