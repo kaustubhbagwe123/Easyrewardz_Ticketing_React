@@ -71,25 +71,6 @@ class StoreCampaign extends Component {
     this.handleGetBrand();
   }
 
-  // onStatusChange(campaignTypeID, campaignCustomerID, e) {
-  //   this.state.campaignGridData
-  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-  //     .storeCampaignCustomerList.filter(
-  //       (x) => x.campaignCustomerID == campaignCustomerID
-  //     )[0].campaignStatus = parseInt(e.target.value);
-  //   this.state.campaignGridData
-  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-  //     .storeCampaignCustomerList.filter(
-  //       (x) => x.campaignCustomerID == campaignCustomerID
-  //     )[0].response = 0;
-  //   this.state.campaignGridData
-  //     .filter((x) => x.campaignTypeID == campaignTypeID)[0]
-  //     .storeCampaignCustomerList.filter(
-  //       (x) => x.campaignCustomerID == campaignCustomerID
-  //     )[0].callReScheduledTo = "";
-  //   this.setState({ campaignGridData: this.state.campaignGridData });
-  // }
-
   onResponseChange(campaignCustomerID, e) {
     debugger;
     this.state.CampChildTableData.filter(
@@ -706,7 +687,7 @@ class StoreCampaign extends Component {
                 className: "table-coloum-hide",
                 render: (row, item) => {
                   return (
-                    <div>
+                    <div className="chatbotwid">
                       <Popover
                         content={
                           <div className="insertpop1">
@@ -724,7 +705,7 @@ class StoreCampaign extends Component {
                           <img
                             className="ico"
                             src={ChatbotS}
-                            alt="Whatsapp Icon"
+                            alt="Chatbot Icon"
                           />
                           Chatbot Script
                         </a>
@@ -746,7 +727,7 @@ class StoreCampaign extends Component {
                           <img
                             className="ico"
                             src={ChatbotS}
-                            alt="Whatsapp Icon"
+                            alt="Chatbot Icon"
                           />
                           SMS Script
                         </a>
@@ -828,8 +809,9 @@ class StoreCampaign extends Component {
                       title: "Customer Name",
                       // dataIndex: "orderMasterID",
                       render: (row, item) => {
+                        debugger
                         return (
-                          <>
+                          <div>
                             <p
                               className="cust-name"
                               onClick={this.handleCustomerNameModalOpen.bind(
@@ -846,7 +828,378 @@ class StoreCampaign extends Component {
                             <span className="sml-fnt">
                               {item.customerNumber}
                             </span>
-                          </>
+                            <div>
+                              <Modal
+                                open={this.state.custNameModal}
+                                onClose={this.handleCustomerNameModalClose.bind(
+                                  this
+                                )}
+                                center
+                                modalId="customername-popup"
+                                overlayId="logout-ovrly"
+                              >
+                                <img
+                                  src={CancelIcon}
+                                  alt="cancel-icone"
+                                  className="cust-icon"
+                                  onClick={this.handleCustomerNameModalClose.bind(
+                                    this
+                                  )}
+                                />
+                                <div className="row">
+                                  <div className="col-12 col-md-12">
+                                    <div className="nr-initials">
+                                      <p>NR</p>
+                                    </div>
+                                    <div className="nr-name">
+                                      <h3>Naman Rampal</h3>
+                                      <p>Elite</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-12 col-md-6">
+                                    <div className="lifetimevalue">
+                                      <table>
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <h4>Lifetime Value</h4>
+                                              <label>₹16,347</label>
+                                            </td>
+                                            <td>
+                                              <h4>Visit Count</h4>
+                                              <label>08</label>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                    <div className="keyinsights">
+                                      <h4>Key Insights</h4>
+                                      <p>
+                                        Naman has an ATV Rs 500 in last quarter
+                                      </p>
+                                      <p>
+                                        Naman's favourite product category is
+                                        Men Closet
+                                      </p>
+                                      <p>
+                                        Naman's basket size is reducing,
+                                        Recommended Brands are: North Star, Hush
+                                        Puppies
+                                      </p>
+                                      <img
+                                        className="keyingsightdrp"
+                                        src={Dropdown3}
+                                        alt="Down Arrow"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-12 col-md-6">
+                                    <div className="productbox">
+                                      <Tabs>
+                                        <Tab label="Recommended">
+                                          <div>
+                                            <div className="pro-slidercam">
+                                              <table className="w-100">
+                                                <tbody>
+                                                  <tr>
+                                                    <td>
+                                                      <div className="imgbox">
+                                                        <Popover
+                                                          content={
+                                                            <div className="productdesc">
+                                                              <h4>
+                                                                Blue Casual
+                                                                Shoes
+                                                              </h4>
+                                                              <p>
+                                                                Product Code -
+                                                                F808920000
+                                                              </p>
+                                                              <table>
+                                                                <tbody>
+                                                                  <tr>
+                                                                    <td>
+                                                                      <label>
+                                                                        Colors:
+                                                                      </label>
+                                                                    </td>
+                                                                    <td>
+                                                                      <ul>
+                                                                        <li>
+                                                                          <a className="colorblue">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a className="colorblack">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a className="colorgrey">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    </td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                    <td>
+                                                                      <label>
+                                                                        Sizes:
+                                                                      </label>
+                                                                    </td>
+                                                                    <td>
+                                                                      <ul className="sizes">
+                                                                        <li>
+                                                                          <a>
+                                                                            6
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a className="active">
+                                                                            7
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a>
+                                                                            8
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a>
+                                                                            9
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a>
+                                                                            10
+                                                                          </a>
+                                                                        </li>
+                                                                        <li>
+                                                                          <a>
+                                                                            11
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    </td>
+                                                                  </tr>
+                                                                </tbody>
+                                                              </table>
+                                                              <h3>
+                                                                INR 3499/-
+                                                              </h3>
+                                                            </div>
+                                                          }
+                                                          placement="left"
+                                                          trigger="click"
+                                                        >
+                                                          <img
+                                                            className="shoeimg"
+                                                            src={Shoe}
+                                                            alt="Product Image"
+                                                          />
+                                                        </Popover>
+                                                        <img
+                                                          className="whatsappico"
+                                                          src={Whatsapp}
+                                                          alt="Whatsapp Icon"
+                                                        />
+                                                      </div>
+                                                      <h4>Casual Shoe</h4>
+                                                    </td>
+                                                    <td>
+                                                      <div className="imgbox">
+                                                        <img
+                                                          className="shoeimg"
+                                                          src={Shoe}
+                                                          alt="Product Image"
+                                                        />
+                                                        <img
+                                                          className="whatsappico"
+                                                          src={Whatsapp}
+                                                          alt="Whatsapp Icon"
+                                                        />
+                                                      </div>
+                                                      <h4>Casual Shoe</h4>
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>
+                                                      <div className="imgbox">
+                                                        <img
+                                                          className="shoeimg"
+                                                          src={Shoe}
+                                                          alt="Product Image"
+                                                        />
+                                                        <img
+                                                          className="whatsappico"
+                                                          src={Whatsapp}
+                                                          alt="Whatsapp Icon"
+                                                        />
+                                                      </div>
+                                                      <h4>Casual Shoe</h4>
+                                                    </td>
+                                                    <td>
+                                                      <div className="imgbox">
+                                                        <img
+                                                          className="shoeimg"
+                                                          src={Shoe}
+                                                          alt="Product Image"
+                                                        />
+                                                        <img
+                                                          className="whatsappico"
+                                                          src={Whatsapp}
+                                                          alt="Whatsapp Icon"
+                                                        />
+                                                      </div>
+                                                      <h4>Casual Shoe</h4>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </div>
+                                          </div>
+                                        </Tab>
+                                        <Tab label="Last Transaction">
+                                          <div>
+                                            <div className="transactionbox">
+                                              <table>
+                                                <tbody>
+                                                  <tr>
+                                                    <td>
+                                                      <h5>Bill No.</h5>
+                                                      <label>BB332393</label>
+                                                    </td>
+                                                    <td>
+                                                      <h5>Amount</h5>
+                                                      <label>₹1,499</label>
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>
+                                                      <h5>Store</h5>
+                                                      <label>
+                                                        Bata - Rajouri Garden
+                                                      </label>
+                                                    </td>
+                                                    <td>
+                                                      <h5>Date</h5>
+                                                      <label>12 Jan 2020</label>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                              <div className="trasactablist">
+                                                <div className="tabscrol">
+                                                  <table>
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Article</th>
+                                                        <th>Qty.</th>
+                                                        <th>Amount</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      <tr>
+                                                        <td>
+                                                          Beige Sports Shoes
+                                                        </td>
+                                                        <td>x1</td>
+                                                        <td>₹1,499</td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Black Sandals</td>
+                                                        <td>x2</td>
+                                                        <td>₹4,998</td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </Tab>
+                                      </Tabs>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-12">
+                                    <div className="sharecamp">
+                                      <h4>Share Campaign Via</h4>
+                                      <ul>
+                                        {item.smsFlag === true ? (
+                                          <li>
+                                            <img
+                                              className="ico"
+                                              src={Sms1}
+                                              alt="SMS Icon"
+                                            />
+                                            SMS
+                                          </li>
+                                        ) : null}
+                                        {item.emailFlag === true ? (
+                                          <li>
+                                            <img
+                                              className="ico"
+                                              src={Sms1}
+                                              alt="Email Icon"
+                                            />
+                                            Email
+                                          </li>
+                                        ) : null}
+                                        {item.messengerFlag === true ? (
+                                          <li>
+                                            <img
+                                              className="ico"
+                                              src={Whatsapp}
+                                              alt="Whatsapp Icon"
+                                            />
+                                            Send Via Messanger
+                                          </li>
+                                        ) : null}
+                                        {item.botFlag === true ? (
+                                          <li>
+                                            <img
+                                              className="ico"
+                                              src={Whatsapp}
+                                              alt="Whatsapp Icon"
+                                            />
+                                            Send Via Bot
+                                          </li>
+                                        ) : null}
+                                      </ul>
+                                    </div>
+                                    <div className="sharecampmob">
+                                      <label
+                                        className="shareviabtn"
+                                        onClick={this.handleShareViaModalOpen.bind(
+                                          this
+                                        )}
+                                      >
+                                        <img
+                                          className="shareviaimg"
+                                          src={Sharevia}
+                                          alt="Share Via"
+                                        />
+                                        Share Via
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Modal>
+                            </div>
+                          </div>
                         );
                       },
                     },
@@ -1091,7 +1444,18 @@ class StoreCampaign extends Component {
                                           </div>
                                         </div>
                                         <div className="row">
-                                          <button>update</button>
+                                          <button
+                                            className="saveBtn saveLabel"
+                                            type="button"
+                                            onClick={this.handleUpdateCampaignResponse.bind(
+                                              this,
+                                              item.id,
+                                              item.responseID,
+                                              item.callRescheduledTo
+                                            )}
+                                          >
+                                            Update
+                                          </button>
                                           <button style={{ display: "none" }}>
                                             Raise Ticket
                                           </button>
@@ -1164,322 +1528,57 @@ class StoreCampaign extends Component {
             className="cust-icon"
             onClick={this.responsiveCustModalClose.bind(this)}
           />
-          <div className="productbox">
+          <div className="customername-popupmob">
             <Tabs>
               <Tab label="Chatbot Script">
-                <div>
-                  <h4 style={{ textAlign: "center" }}></h4>
-                  <div className="right-sect-div right-sect-div-edit"></div>
+                <div className="">
+                  <div class="dash-creation-popup custompop">
+                    <label class="poptitle">Chatbot Script</label>
+                    <label class="channelScript">
+                      Dear, I am , your Relationship Manager from Bata, store.
+                      Our store is open now as per local government guidelines.
+                      Your safety &amp; convenience continue to remain our top
+                      priority, and we have introduced new ways Of shopping for
+                      you! You can click on wnuw.bata.in/rec to view our new
+                      collections in your favorite categories. Enter "Visit" to
+                      book an appointment for store visit. Enter "Shop" for
+                      assisted shopping via WhatsApp and one of our staff will
+                      get in touch with you shortly. Enter "Browse" to explore
+                      your favorite categories and continue with your shopping.
+                      Enter "Go Back" to Exit Shopping Mode
+                    </label>
+                  </div>
+                  <div className="camperiod">
+                    <h4>
+                      Campaign Period<span>13 May-20/31 May-20</span>
+                    </h4>
+                  </div>
                 </div>
               </Tab>
               <Tab label="SMS Script">
-                <div>
-                  <h4 style={{ textAlign: "center" }}></h4>
-                  <div className="right-sect-div right-sect-div-edit"></div>
+                <div className="">
+                  <div class="dash-creation-popup custompop">
+                    <label class="poptitle">SMS Script</label>
+                    <label class="channelScript">
+                      Dear, I am , your Relationship Manager from Bata, store.
+                      Our store is open now as per local government guidelines.
+                      Your safety &amp; convenience continue to remain our top
+                      priority, and we have introduced new ways Of shopping for
+                      you! You can click on wnuw.bata.in/rec to view our new
+                      collections in your favorite categories. Enter "Visit" to
+                      book an appointment for store visit. Enter "Shop" for
+                      assisted shopping via WhatsApp and one of our staff will
+                      get in touch with you shortly.
+                    </label>
+                  </div>
+                  <div className="camperiod">
+                    <h4>
+                      Campaign Period<span>13 May-20/31 May-20</span>
+                    </h4>
+                  </div>
                 </div>
               </Tab>
             </Tabs>
-          </div>
-        </Modal>
-        <Modal
-          open={this.state.custNameModal}
-          onClose={this.handleCustomerNameModalClose.bind(this)}
-          center
-          modalId="customername-popup"
-          overlayId="logout-ovrly"
-        >
-          <img
-            src={CancelIcon}
-            alt="cancel-icone"
-            className="cust-icon"
-            onClick={this.handleCustomerNameModalClose.bind(this)}
-          />
-          <div className="row">
-            <div className="col-12 col-md-12">
-              <div className="nr-initials">
-                <p>NR</p>
-              </div>
-              <div className="nr-name">
-                <h3>Naman Rampal</h3>
-                <p>Elite</p>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12 col-md-6">
-              <div className="lifetimevalue">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <h4>Lifetime Value</h4>
-                        <label>₹16,347</label>
-                      </td>
-                      <td>
-                        <h4>Visit Count</h4>
-                        <label>08</label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="keyinsights">
-                <h4>Key Insights</h4>
-                <p>Naman has an ATV Rs 500 in last quarter</p>
-                <p>Naman's favourite product category is Men Closet</p>
-                <p>
-                  Naman's basket size is reducing, Recommended Brands are: North
-                  Star, Hush Puppies
-                </p>
-                <img
-                  className="keyingsightdrp"
-                  src={Dropdown3}
-                  alt="Down Arrow"
-                />
-              </div>
-            </div>
-            <div className="col-12 col-md-6">
-              <div className="productbox">
-                <Tabs>
-                  <Tab label="Recommended">
-                    <div>
-                      <div className="pro-slidercam">
-                        <table className="w-100">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <div className="imgbox">
-                                  <Popover
-                                    content={
-                                      <div className="productdesc">
-                                        <h4>Blue Casual Shoes</h4>
-                                        <p>Product Code - F808920000</p>
-                                        <table>
-                                          <tbody>
-                                            <tr>
-                                              <td>
-                                                <label>Colors:</label>
-                                              </td>
-                                              <td>
-                                                <ul>
-                                                  <li>
-                                                    <a className="colorblue">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="colorblack">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="colorgrey">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                </ul>
-                                              </td>
-                                            </tr>
-                                            <tr>
-                                              <td>
-                                                <label>Sizes:</label>
-                                              </td>
-                                              <td>
-                                                <ul className="sizes">
-                                                  <li>
-                                                    <a>6</a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="active">7</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>8</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>9</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>10</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>11</a>
-                                                  </li>
-                                                </ul>
-                                              </td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                        <h3>INR 3499/-</h3>
-                                      </div>
-                                    }
-                                    placement="left"
-                                    trigger="click"
-                                  >
-                                    <img
-                                      className="shoeimg"
-                                      src={Shoe}
-                                      alt="Product Image"
-                                    />
-                                  </Popover>
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </Tab>
-                  <Tab label="Last Transaction">
-                    <div>
-                      <div className="transactionbox">
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <h5>Bill No.</h5>
-                                <label>BB332393</label>
-                              </td>
-                              <td>
-                                <h5>Amount</h5>
-                                <label>₹1,499</label>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h5>Store</h5>
-                                <label>Bata - Rajouri Garden</label>
-                              </td>
-                              <td>
-                                <h5>Date</h5>
-                                <label>12 Jan 2020</label>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div className="trasactablist">
-                          <div className="tabscrol">
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>Article</th>
-                                  <th>Qty.</th>
-                                  <th>Amount</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Beige Sports Shoes</td>
-                                  <td>x1</td>
-                                  <td>₹1,499</td>
-                                </tr>
-                                <tr>
-                                  <td>Black Sandals</td>
-                                  <td>x2</td>
-                                  <td>₹4,998</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Tab>
-                </Tabs>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <div className="sharecamp">
-                <h4>Share Campaign Via</h4>
-                <ul>
-                  <li>
-                    <img className="ico" src={Sms1} alt="SMS Icon" />
-                    SMS
-                  </li>
-                  <li>
-                    <img className="ico" src={Sms1} alt="Email Icon" />
-                    Email
-                  </li>
-                  <li>
-                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                    Send Via Messanger
-                  </li>
-                  <li>
-                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                    Send Via Bot
-                  </li>
-                </ul>
-              </div>
-              <div className="sharecampmob">
-                <label
-                  className="shareviabtn"
-                  onClick={this.handleShareViaModalOpen.bind(this)}
-                >
-                  <img className="shareviaimg" src={Sharevia} alt="Share Via" />
-                  Share Via
-                </label>
-                {/* <ul>
-                  <li><img className="ico" src={Sms1} alt="SMS Icon"/>SMS</li>
-                  <li><img className="ico" src={Sms1} alt="Email Icon"/>Email</li>
-                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Messanger</li>
-                  <li><img className="ico" src={Whatsapp} alt="Whatsapp Icon"/>Send Via Bot</li>
-                </ul> */}
-              </div>
-            </div>
           </div>
         </Modal>
         {/* ---------------Share via Modal-------------------- */}
@@ -1487,35 +1586,55 @@ class StoreCampaign extends Component {
           open={this.state.responsiveShareVia}
           onClose={this.handleShareViaModalClose.bind(this)}
           center
-          modalId="customername-popup"
+          modalId="sharecamp-popup"
           overlayId="logout-ovrly"
         >
           <img
             src={CancelIcon}
             alt="cancel-icone"
-            className="cncl-icn"
+            className="cust-icon"
             onClick={this.handleShareViaModalClose.bind(this)}
           />
           <div>
             <h4>Choose Channel</h4>
-            <ul>
-              <li>
-                <img className="ico" src={Sms1} alt="SMS Icon" />
-                SMS
-              </li>
-              <li>
-                <img className="ico" src={Sms1} alt="Email Icon" />
-                Email
-              </li>
-              <li>
-                <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                Send Via Messanger
-              </li>
-              <li>
-                <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                Send Via Bot
-              </li>
-            </ul>
+            <table className="w-100">
+              <tbody>
+                <tr>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    <a href="">Send Via Messanger</a>
+                   </div>
+                  </td>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    <a href="">Send Via Bot</a>
+                   </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Sms1} alt="SMS Icon" />
+                      <a href="">SMS</a>
+                   </div>
+                  </td>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Sms1} alt="Email Icon" />
+                    <a href="">Email</a>
+                   </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="sharecampmob">
+                <label
+                  className="shareviabtn">
+                  Share Now
+                </label>
+              </div>
           </div>
         </Modal>
         {/* ---------Raised Ticket Modal----------- */}

@@ -40,6 +40,8 @@ import RightBlue from "./../../assets/Images/rightblue.png";
 import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
+import AppointmentLogo from "./../../assets/Images/appointments.svg";
+import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
@@ -271,8 +273,8 @@ class Header extends Component {
     var appointment = {
       data: "Appointment",
       urls: "appointment",
-      logoBlack: CampaignLogo,
-      logoBlue: CampaignLogoBlue,
+      logoBlack: AppointmentLogo,
+      logoBlue: AppointmentLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
       activeClass:
