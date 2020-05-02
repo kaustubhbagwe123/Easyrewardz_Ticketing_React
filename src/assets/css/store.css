@@ -1651,6 +1651,7 @@ table tr th:last-child {
   text-align: center;
   color: #888;
   font-size: 15px;
+  cursor: pointer;
 }
 .sharecamp li:last-child {
   margin-right: 0px;

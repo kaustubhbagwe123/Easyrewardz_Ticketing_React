@@ -1,60 +1,6 @@
 let config = {
   apiUrl: "https://localhost:44357/api",
-  // hierarchyTemplate: [["Designation", "ReportTo", "Status"]],
-  // priorityTemplate: [["PriorityName", "Status"]],
-  // userTemplate: [
-  //   [
-  //     "UserName",
-  //     "FirstName",
-  //     "LastName",
-  //     "Mobile Number",
-  //     "User Email ID",
-  //     "User Designation",
-  //     "Reportee Designation",
-  //     "Reports To",
-  //     "CRM Role",
-  //     "Copy Escalation",
-  //     "Assign Escalation",
-  //     "Escalation Agent Name",
-  //     "Status",
-  //   ],
-  // ],
-  // alertTemplate: [["AlertType", "Communication Mode", "Status"]],
-  // categoryTemplate: [
-  //   ["BrandName", "Category", "SubCategory", "IssueType", "Status"],
-  // ],
-  // // slaTemplate: [
-  // //   [
-  // //     "IssueType",
-  // //     "Priority",
-  // //     "SLABreachPercent",
-  // //     "RespondValue",
-  // //     "RespondDuration",
-  // //     "ResolutionValue",
-  // //     "ResolutionDuration",
-  // //     "Status",
-  // //   ],
-  // // ],
-  // crmRoleTemplate: [
-  //   ["RoleName", "Status", "EnabledModules", "DisabledModules"],
-  // ],
-  // storeTemplate: [
-  //   [
-  //     "Brand",
-  //     "City",
-  //     "State",
-  //     "PinCode",
-  //     "StoreName",
-  //     "Address",
-  //     "StoreCode",
-  //     "Region",
-  //     "Zone",
-  //     "StoreType",
-  //     "StoreEmailID",
-  //     "StorePhoneNo",
-  //     "Status",
-  //   ],
-  // ],
+  
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
     ["Designation", "ReportTo", "Status"],

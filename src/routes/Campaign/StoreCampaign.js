@@ -22,6 +22,9 @@ import { NotificationManager } from "react-notifications";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import Pagination from "./CampaignPagination";
+// import ChildTablePagination from "./ChildTablePagination";
+
+// import Demo from "./../../store/Hashtag";
 
 class StoreCampaign extends Component {
   constructor(props) {
@@ -57,7 +60,10 @@ class StoreCampaign extends Component {
       customerModalDetails: {},
       currentPage: 1,
       postsPerPage: 5,
-      totalGridRecord:[]
+      totalGridRecord: [],
+      childCurrentPage:1,
+      ChildPostsPerPage: 5,
+      childTotalGridRecord: [],
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -78,11 +84,12 @@ class StoreCampaign extends Component {
     this.handleGetBrand();
   }
 
-  onResponseChange(campaignCustomerID, e) {
+  onResponseChange(campaignCustomerID, item, e) {
     debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
+
     this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
@@ -115,13 +122,13 @@ class StoreCampaign extends Component {
           self.setState({
             campaignGridData: currentPosts,
             loading: false,
-            totalGridRecord:data.length
+            totalGridRecord: data.length,
           });
         } else {
           self.setState({
             campaignGridData: [],
             loading: false,
-            totalGridRecord:[]
+            totalGridRecord: [],
           });
         }
       })
@@ -130,47 +137,61 @@ class StoreCampaign extends Component {
       });
   }
   ///// Handle Update Campaign data
-  handleUpdateCampaignResponse(id, responseID, callRescheduledTo) {
+  handleUpdateCampaignResponse(
+    id,
+    responseID,
+    callRescheduledTo,
+    campaignScriptID
+  ) {
     debugger;
-    let self = this,
-      calculatedCallReScheduledTo;
-
-    this.setState({
-      loading: true,
-    });
-
-    if (responseID === 3) {
-      calculatedCallReScheduledTo = moment(callRescheduledTo).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
-    } else {
-      calculatedCallReScheduledTo = "";
-    }
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
-      headers: authHeader(),
-      data: {
-        CampaignCustomerID: id,
-        ResponseID: responseID,
-        CallReScheduledTo: calculatedCallReScheduledTo,
-      },
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Record Updated Successfully.");
-          self.handleGetCampaignGridData();
-        } else {
-          self.setState({
-            loading: false,
-          });
-        }
-      })
-      .catch((data) => {
-        console.log(data);
+    if (responseID !== 0) {
+      let self = this,
+        calculatedCallReScheduledTo;
+      var check = true;
+      var Updatecheck = "";
+      this.setState({
+        loading: true,
       });
+
+      if (responseID === 3) {
+        calculatedCallReScheduledTo = moment(callRescheduledTo).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+      } else {
+        calculatedCallReScheduledTo = "";
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
+        headers: authHeader(),
+        data: {
+          CampaignCustomerID: id,
+          ResponseID: responseID,
+          CallReScheduledTo: calculatedCallReScheduledTo,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Record Updated Successfully.");
+            self.handleGetCampaignCustomerData(
+              check,
+              Updatecheck,
+              campaignScriptID
+            );
+          } else {
+            self.setState({
+              loading: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Please Select Response.");
+    }
   }
 
   handleCloseCampaign(campaignTypeID, e) {
@@ -645,17 +666,24 @@ class StoreCampaign extends Component {
     });
   }
   /// Handle Get Campaign customer details
-  handleGetCampaignCustomerData(data, row) {
+  handleGetCampaignCustomerData(data, row, check) {
+    debugger;
     this.setState({
       ChildTblLoading: true,
     });
+    var campaignId = 0;
+    if (check !== undefined) {
+      campaignId = check;
+    } else {
+      campaignId = row.campaignID;
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
       headers: authHeader(),
       params: {
-        campaignScriptID: row.campaignID,
+        campaignScriptID: campaignId,
         pageNo: 1,
         pageSize: 10,
       },
@@ -664,9 +692,79 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          self.setState({ CampChildTableData: data, ChildTblLoading: false });
+          self.setState({
+            CampChildTableData: data,
+            ChildTblLoading: false,
+            loading: false,
+          });
         } else {
-          self.setState({ CampChildTableData: [], ChildTblLoading: false });
+          self.setState({
+            CampChildTableData: [],
+            ChildTblLoading: false,
+            loading: false,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// Send Via Bot data
+  handleSendViaBotData(data) {
+    debugger;
+    // let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
+      headers: authHeader(),
+      data: {
+        StoreID: data.storecode,
+        ProgramCode: data.programcode,
+        CustomerID: data.id,
+        CustomerMobileNumber: data.customerNumber,
+        StoreManagerId: data.storeManagerId,
+        CampaignScriptID: data.campaignScriptID,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        // var data = response.data.responseData;
+        if (message == "Success") {
+          NotificationManager.success("Success.");
+        } else {
+          NotificationManager.error("Failed");
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// Send Via Messanger data
+  handleSendViaMessanger(data) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/CampaignShareMassanger",
+      headers: authHeader(),
+      data: {
+        StoreID: data.storecode,
+        ProgramCode: data.programcode,
+        CustomerID: data.id,
+        CustomerMobileNumber: data.customerNumber,
+        StoreManagerId: data.storeManagerId,
+        CampaignScriptID: data.campaignScriptID,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          window.open("//" + data, "_blank");
+        } else {
+          NotificationManager.error("Failed");
         }
       })
       .catch((response) => {
@@ -835,8 +933,6 @@ class StoreCampaign extends Component {
                       title: "Customer Name",
                       dataIndex: "id",
                       render: (row, item) => {
-                        debugger;
-
                         return (
                           <div>
                             <p
@@ -876,7 +972,8 @@ class StoreCampaign extends Component {
                               value={item.responseID}
                               onChange={this.onResponseChange.bind(
                                 this,
-                                item.id
+                                item.id,
+                                item
                               )}
                             >
                               <option hidden>Select Response</option>
@@ -1029,7 +1126,8 @@ class StoreCampaign extends Component {
                                               value={item.responseID}
                                               onChange={this.onResponseChange.bind(
                                                 this,
-                                                item.id
+                                                item.id,
+                                                item
                                               )}
                                             >
                                               <option hidden>
@@ -1108,7 +1206,8 @@ class StoreCampaign extends Component {
                                               this,
                                               item.id,
                                               item.responseID,
-                                              item.callRescheduledTo
+                                              item.callRescheduledTo,
+                                              item.campaignScriptID
                                             )}
                                           >
                                             Update
@@ -1132,7 +1231,8 @@ class StoreCampaign extends Component {
                                     this,
                                     item.id,
                                     item.responseID,
-                                    item.callRescheduledTo
+                                    item.callRescheduledTo,
+                                    item.campaignScriptID
                                   )}
                                 >
                                   Update
@@ -1522,13 +1622,23 @@ class StoreCampaign extends Component {
                     </li>
                   ) : null}
                   {this.state.customerModalDetails.messengerFlag === true ? (
-                    <li>
+                    <li
+                      onClick={this.handleSendViaMessanger.bind(
+                        this,
+                        this.state.customerModalDetails
+                      )}
+                    >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Messanger
                     </li>
                   ) : null}
                   {this.state.customerModalDetails.botFlag === true ? (
-                    <li>
+                    <li
+                      onClick={this.handleSendViaBotData.bind(
+                        this,
+                        this.state.customerModalDetails
+                      )}
+                    >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Bot
                     </li>
