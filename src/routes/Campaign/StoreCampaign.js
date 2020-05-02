@@ -22,38 +22,6 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import Pagination from "./CampaignPagination";
 
-const CustomPagination = (campaignGridData) => {
-  debugger;
-  // const [campaignGridData, setCampaignGridData] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(5);
-
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     setLoading(true);
-  //     const res = await axios({
-  //       method: "post",
-  //       url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
-  //       headers: authHeader(),
-  //     });
-  //     setCampaignGridData(res.data.responseData);
-  //     setLoading(false);
-  //   };
-  //   fetchPosts();
-  // },[]);
-
-  ///Get Current GridData
-  const indexOfLastpost = currentPage * postsPerPage;
-  const indexOfFirstpost = indexOfLastpost - postsPerPage;
-  const currentPosts = campaignGridData.slice(
-    indexOfFirstpost,
-    indexOfLastpost
-  );
-
-  return <div></div>;
-};
-
 class StoreCampaign extends Component {
   constructor(props) {
     super(props);

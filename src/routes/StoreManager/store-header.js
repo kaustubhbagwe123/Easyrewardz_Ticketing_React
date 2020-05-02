@@ -41,6 +41,7 @@ import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
 import AppointmentLogo from "./../../assets/Images/appointments.svg";
+import ChatCount from "./../../assets/Images/chat-count.svg";
 import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
@@ -185,6 +186,12 @@ class Header extends Component {
       isSelectSlot: "",
       customerId: 0,
       mobileNo: "",
+      daySelect: "",
+      datesSelect: "",
+      slotID: "",
+      scheduleModal: false,
+      recommendedModal: false,
+      paymentModal: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -1003,6 +1010,20 @@ class Header extends Component {
   };
   onOpenScheduleModal = () => {
     this.setState({ scheduleModal: true });
+  };
+
+  onCloseRecommendedModal = () => {
+    this.setState({ recommendedModal: false });
+  };
+  onOpenRecommendedModal = () => {
+    this.setState({ recommendedModal: true });
+  };
+
+  onClosePaymentModal = () => {
+    this.setState({ paymentModal: false });
+  };
+  onOpenPaymentModal = () => {
+    this.setState({ paymentModal: true });
   };
 
   render() {
@@ -1955,7 +1976,18 @@ class Header extends Component {
                           id="recommended-list-tab"
                           role="tabpanel"
                           aria-labelledby="recommended-list-tab"
-                        ></div>
+                        >
+                          <div className="recommended-cntr">
+                            <button className="butn">
+                              Send Recommended List
+                              <img
+                                src={SendUp}
+                                alt="send"
+                                className="send-up"
+                              />
+                            </button>
+                          </div>
+                        </div>
                         {/* --------Schedule Visit Tab----- */}
                         <div
                           className="tab-pane fade"
@@ -2190,7 +2222,60 @@ class Header extends Component {
                           id="generate-payment-link-tab"
                           role="tabpanel"
                           aria-labelledby="generate-payment-link-tab"
-                        ></div>
+                        >
+                          <div
+                            className="input-group searchtxt-new"
+                            style={{ background: "none" }}
+                          >
+                            <form
+                              style={{ width: "100%" }}
+                              // onSubmit={this.handleSearchChatItemDetails.bind(
+                              //   this
+                              // )}
+                            >
+                              <input
+                                type="text"
+                                className="search-customerAddSrch searchtxt"
+                                placeholder="Search Order Id"
+                                name="Search"
+                                maxLength="100"
+                                autoComplete="off"
+                                // value={this.state.searchItem}
+                                // onChange={this.handleSearchItemChange.bind(
+                                //   this
+                                // )}
+                              />
+                              <span
+                                // onClick={this.handleSearchChatItemDetails.bind(
+                                //   this
+                                // )}
+                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                              >
+                                <img
+                                  src={SearchBlueImg}
+                                  alt="SearchBlueImg"
+                                  className="srch-imge"
+                                  // onClick={this.handleSearchCustomer}
+                                />
+                              </span>
+                            </form>
+                          </div>
+                          <div className="payment-details">
+                            <label>Amount</label>
+                            <span>INR 1299</span>
+                          </div>
+                          <div className="payment-link-butn">
+                            <button className="butn">
+                              Send Payment Link
+                              <img
+                                src={SendUp}
+                                alt="send"
+                                className="send-up"
+                              />
+                            </button>
+                          </div>
+                          <div className="clearfix"></div>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2231,6 +2316,7 @@ class Header extends Component {
                             role="tab"
                             aria-controls="recommended-list-tab"
                             aria-selected="false"
+                            onClick={this.onOpenRecommendedModal}
                           >
                             RECOMMENDED LIST
                           </a>
@@ -2256,6 +2342,7 @@ class Header extends Component {
                             role="tab"
                             aria-controls="generate-payment-link-tab"
                             aria-selected="false"
+                            onClick={this.onOpenPaymentModal}
                           >
                             GENERATE PAYMENT LINK
                           </a>
@@ -2418,13 +2505,37 @@ class Header extends Component {
                             </div>
                           </div>
                         </Modal>
-                        {/* --------Recommended List Tab----- */}
-                        <div
-                          className="tab-pane fade"
-                          id="recommended-list-tab"
-                          role="tabpanel"
-                          aria-labelledby="recommended-list-tab"
-                        ></div>
+                        {/* --------Recommended List Modal----- */}
+                        <Modal
+                          open={this.state.recommendedModal}
+                          onClose={this.onCloseRecommendedModal}
+                          center
+                          modalId="mobile-tabs-popup"
+                          overlayId="mobile-tabs-overlay"
+                          classNames={{ modal: "recommended-list-popup" }}
+                        >
+                          <div className="recommended-cntr m-0 h-100">
+                            <div className="chat-btn-cntr">
+                              <button
+                                className="butn"
+                                onClick={this.onCloseRecommendedModal}
+                              >
+                                Send Recommended List
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up"
+                                />
+                              </button>
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseRecommendedModal}
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
                         {/* -------- Schedule Visit Modal ----- */}
                         <Modal
                           open={this.state.scheduleModal}
@@ -2626,13 +2737,75 @@ class Header extends Component {
                             </div>
                           </div>
                         </Modal>
-                        {/* --------Generate Payment Link Tab----- */}
-                        <div
-                          className="tab-pane fade"
-                          id="generate-payment-link-tab"
-                          role="tabpanel"
-                          aria-labelledby="generate-payment-link-tab"
-                        ></div>
+                        {/* -------- Generate Payment Link Modal ----- */}
+                        <Modal
+                          open={this.state.paymentModal}
+                          onClose={this.onClosePaymentModal}
+                          center
+                          modalId="mobile-tabs-popup"
+                          overlayId="mobile-tabs-overlay"
+                          classNames={{ modal: "recommended-list-popup" }}
+                        >
+                          <div className="schedule-mobile-cntr p-0">
+                            <div>
+                              <div className="mobile-chat-popup">
+                                <div
+                                  className="input-group searchtxt-new pr-0"
+                                  style={{ background: "none" }}
+                                >
+                                  <input
+                                    type="text"
+                                    className="search-customerAddSrch searchtxt"
+                                    placeholder="Search Order Id"
+                                    name="Search"
+                                    maxLength="100"
+                                    autoComplete="off"
+                                    // value={this.state.searchItem}
+                                    // onChange={this.handleSearchItemChange.bind(
+                                    //   this
+                                    // )}
+                                  />
+                                  <span
+                                    // onClick={this.handleSearchChatItemDetails.bind(
+                                    //   this
+                                    // )}
+                                    className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                  >
+                                    <img
+                                      src={SearchBlueImg}
+                                      alt="SearchBlueImg"
+                                      className="srch-imge"
+                                      // onClick={this.handleSearchCustomer}
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="payment-details">
+                                <label>Amount</label>
+                                <span>INR 1299</span>
+                              </div>
+                            </div>
+                            <div className="chat-btn-cntr">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onClosePaymentModal}
+                              >
+                                Close
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.onClosePaymentModal}
+                              >
+                                Send
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
                       </div>
                     </div>
                   </div>
