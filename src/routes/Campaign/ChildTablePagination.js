@@ -1,7 +1,7 @@
 import React from "react";
 import Demo from "./../../store/Hashtag";
 
-const CampaignPagination = ({ postsPerPage, totalGridData }) => {
+const ChildTablePagination = ({ postsPerPage, totalGridData }) => {
   const pageNumber = [];
 
   for (let i = 1; i <= Math.ceil(totalGridData / postsPerPage); i++) {
@@ -12,7 +12,7 @@ const CampaignPagination = ({ postsPerPage, totalGridData }) => {
       <ul className="pagination">
         {pageNumber.map((number) => (
           <li key={number} className="page-item">
-            <a href={Demo.BLANK_LINK} className="page-link" style={{display:"none"}}>
+            <a href={Demo.BLANK_LINK} className="page-link">
               {number}
             </a>
           </li>
@@ -22,4 +22,5 @@ const CampaignPagination = ({ postsPerPage, totalGridData }) => {
   );
 };
 
-export default CampaignPagination;
+export default ChildTablePagination;
+

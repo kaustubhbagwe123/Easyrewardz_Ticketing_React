@@ -98,13 +98,33 @@ p {
   top: 50%;
   transform: translateY(-50%);
 }
+.chats-count {
+  position: relative;
+  display: inline-block;
+  margin-right: 5px;
+}
+.chats-count span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 7px;
+  font-weight: 700;
+  transform: translate(-50%, -50%);
+  margin-left: -0.5px;
+  margin-top: -0.5px;
+  color: #fff;
+}
 .mobile-chat-tabs .nav-tabs .nav-link {
   font-weight: 400;
   font-size: 13px;
   color: rgba(37, 97, 168, 0.4);
-  padding: 6px 10px;
+  padding: 5px 10px;
   border-radius: 20px;
   line-height: 1;
+  min-height: 25px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
 }
 .mobile-chat-tabs .nav-tabs {
   justify-content: center;
@@ -118,6 +138,21 @@ p {
   color: #fff;
   padding-right: 20px;
   padding-left: 20px;
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active .chats-count span {
+  color: #2561a8;
+}
+.chat-bubble-white {
+  display: none;
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active .chats-count .chat-bubble-white {
+  display: block;
+}
+.chat-bubble-blue {
+  display: block;
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active .chats-count .chat-bubble-blue {
+  display: none;
 }
 .mobile-chat-tabs .tab-content {
   padding: 7px 0px 7px 15px;
@@ -147,12 +182,27 @@ p {
 }
 .chat-detail-outer-cntr {
   display: flex;
-  margin-top: 10px;
+  padding-top: 10px;
   overflow: auto;
-  min-height: 71px;
+  min-height: 81px;
+  margin-left: -4px;
 }
 .chat-detail-outer-cntr .chat-detail-middle-cntr:last-child .chat-detail-cntr {
   margin-right: 15px;
+}
+.chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
+  padding-left: 4px;
+}
+.chat-notification-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  font-size: 9px;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  margin-top: 1px;
+  margin-left: -0.5px;
 }
 .chat-detail-cntr {
   margin-right: 25px;
@@ -160,6 +210,12 @@ p {
 }
 .chat-detail-cntr.active .face-name {
   color: #2561a8;
+}
+.chat-notification-cntr {
+  width: 17px;
+  position: absolute;
+  top: -12px;
+  left: -4px;
 }
 /* .chat-detail-cntr.active::after, */
 .online {
@@ -201,14 +257,15 @@ p {
 }
 .mobile-chat-popup .search-customerAddSrch {
   font-size: 13px;
-  padding-left: 15px !important;
+  /* padding-left: 15px !important; */
   padding-right: 2px !important;
   margin: 0;
   width: calc(100% - 30px) !important;
   border: 1px solid #d8dfe2 !important;
   border-right: 0 !important;
 }
-.mobile-chat-popup .search-customerAddSrch::placeholder {
+/* .mobile-chat-popup */
+.search-customerAddSrch::placeholder {
   color: #2561a8;
   padding: 0;
   font-weight: 400;
@@ -223,6 +280,7 @@ p {
   align-items: flex-end;
 }
 .searchtxt-new {
+  margin-top: 15px;
   margin-bottom: 10px;
 }
 .no-record {
@@ -303,13 +361,20 @@ p {
 .butn-inv {
   font-weight: 700;
   border-radius: 8px;
-  font-size: 14px;
-  height: 36px;
+  font-size: 16px;
+  height: 40px;
   padding: 6px 10px;
+  padding-left: 15px;
   min-width: 95px;
 }
+.butn {
+  color: rgba(255, 255, 255, 0.85);
+}
+.butn-inv {
+  background: transparent;
+}
 .send-up {
-  width: 22px;
+  width: 24px;
   filter: invert(1);
   /* position: relative;
   top: -1px; */
@@ -368,6 +433,60 @@ p {
   font-weight: 400;
 }
 /* mobile search ends */
+
+/* recommended list starts */
+.recommended-cntr {
+  margin-left: 20px;
+  margin-top: 15px;
+}
+.recommended-cntr .send-up {
+  margin-left: 25px;
+}
+/* recommended list ends */
+
+/* recommended list mobile starts */
+.recommended-list-popup > div {
+  height: 100%;
+}
+.recommended-list-popup {
+  padding: 15px !important;
+  height: 100%;
+}
+.recommended-cntr .chat-btn-cntr {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.recommended-cntr .chat-btn-cntr button {
+  margin: 10px 0;
+}
+/* recommended list mobile ends */
+
+/* payment link starts */
+.payment-link-butn {
+  float: right;
+  margin-right: 18px;
+  margin-top: 30px;
+}
+.payment-details {
+  margin-left: 17px;
+  padding-top: 5px;
+}
+.payment-details span {
+  font-size: 20px;
+  font-weight: 700;
+}
+.payment-details label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  display: block;
+  margin-bottom: -2px;
+}
+/* payment link ends */
 
 /* Chetan CSS ends */
 
@@ -457,6 +576,7 @@ p {
   height: 43px;
   padding: 10px;
   border: none;
+  padding-left: 15px;
 }
 .bkcprdt {
   background-color: #f3f3f3;
@@ -677,6 +797,10 @@ p {
   width: 8px;
   height: 8px;
 }
+.schedule-btn-cntr *:focus {
+  outline: none;
+}
+
 /* Responsive starts */
 @media all and (max-width: 576px) {
   #chat-popup-overlay {
@@ -705,6 +829,8 @@ p {
   .butn,
   .butn-inv {
     min-width: 85px;
+    height: 36px;
+    font-size: 14px;
   }
 
   /* right side part starts */
@@ -780,6 +906,9 @@ p {
   /* ck editor ends */
 
   /* card modal starts */
+  .send-up {
+    width: 22px;
+  }
   .bkcprdt label {
     display: block;
   }
@@ -792,6 +921,7 @@ p {
     padding-right: 10px;
   }
   .searchtxt-new {
+    margin-top: 0;
     padding-right: 10px;
   }
   .mobile-card-img {
@@ -888,6 +1018,19 @@ p {
     max-height: calc(100vh - 230px);
   }
   /* schedule modal ends */
+
+  /* payment link mobile starts */
+  .payment-details label {
+    font-size: 12px;
+    margin-bottom: 0;
+  }
+  .payment-details span {
+    font-size: 16px;
+  }
+  .payment-details {
+    margin-left: 5px;
+  }
+  /* payment link mobile ends */
 }
 
 @media all and (max-width: 425px) {
@@ -902,11 +1045,14 @@ p {
     height: calc(100vh - 389px);
   }
   .chat-detail-outer-cntr {
-    min-height: 56px;
+    min-height: 66px;
   }
   .online {
     width: 8px;
     height: 8px;
+  }
+  .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
+    padding-left: 2px;
   }
 
   /* card modal starts */

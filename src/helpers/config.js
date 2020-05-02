@@ -1,60 +1,6 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
-  // hierarchyTemplate: [["Designation", "ReportTo", "Status"]],
-  // priorityTemplate: [["PriorityName", "Status"]],
-  // userTemplate: [
-  //   [
-  //     "UserName",
-  //     "FirstName",
-  //     "LastName",
-  //     "Mobile Number",
-  //     "User Email ID",
-  //     "User Designation",
-  //     "Reportee Designation",
-  //     "Reports To",
-  //     "CRM Role",
-  //     "Copy Escalation",
-  //     "Assign Escalation",
-  //     "Escalation Agent Name",
-  //     "Status",
-  //   ],
-  // ],
-  // alertTemplate: [["AlertType", "Communication Mode", "Status"]],
-  // categoryTemplate: [
-  //   ["BrandName", "Category", "SubCategory", "IssueType", "Status"],
-  // ],
-  // // slaTemplate: [
-  // //   [
-  // //     "IssueType",
-  // //     "Priority",
-  // //     "SLABreachPercent",
-  // //     "RespondValue",
-  // //     "RespondDuration",
-  // //     "ResolutionValue",
-  // //     "ResolutionDuration",
-  // //     "Status",
-  // //   ],
-  // // ],
-  // crmRoleTemplate: [
-  //   ["RoleName", "Status", "EnabledModules", "DisabledModules"],
-  // ],
-  // storeTemplate: [
-  //   [
-  //     "Brand",
-  //     "City",
-  //     "State",
-  //     "PinCode",
-  //     "StoreName",
-  //     "Address",
-  //     "StoreCode",
-  //     "Region",
-  //     "Zone",
-  //     "StoreType",
-  //     "StoreEmailID",
-  //     "StorePhoneNo",
-  //     "Status",
-  //   ],
-  // ],
+  //apiUrl: "https://localhost:44357/api",
+  
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
     ["Designation", "ReportTo", "Status"],
@@ -313,7 +259,7 @@ let config = {
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
-  //apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api"  /// -------HomeShop API---------
+  apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api"  /// -------HomeShop API---------
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
   // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'

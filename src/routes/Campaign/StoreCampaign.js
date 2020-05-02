@@ -5,6 +5,7 @@ import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import Sharevia from "./../../assets/Images/sharevia.png";
 import Dropdown3 from "./../../assets/Images/dropdown3.png";
+import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
@@ -21,6 +22,9 @@ import { NotificationManager } from "react-notifications";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import Pagination from "./CampaignPagination";
+// import ChildTablePagination from "./ChildTablePagination";
+
+// import Demo from "./../../store/Hashtag";
 
 class StoreCampaign extends Component {
   constructor(props) {
@@ -56,7 +60,11 @@ class StoreCampaign extends Component {
       customerModalDetails: {},
       currentPage: 1,
       postsPerPage: 5,
-      totalGridRecord:[]
+      totalGridRecord: [],
+      childCurrentPage: 1,
+      ChildPostsPerPage: 5,
+      childTotalGridRecord: [],
+      ResponsiveBroadCast: false,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -77,11 +85,12 @@ class StoreCampaign extends Component {
     this.handleGetBrand();
   }
 
-  onResponseChange(campaignCustomerID, e) {
-    debugger;
+  onResponseChange(campaignCustomerID, item, e) {
+    //debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
+
     this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
@@ -103,7 +112,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -114,13 +123,13 @@ class StoreCampaign extends Component {
           self.setState({
             campaignGridData: currentPosts,
             loading: false,
-            totalGridRecord:data.length
+            totalGridRecord: data.length,
           });
         } else {
           self.setState({
             campaignGridData: [],
             loading: false,
-            totalGridRecord:[]
+            totalGridRecord: [],
           });
         }
       })
@@ -129,47 +138,61 @@ class StoreCampaign extends Component {
       });
   }
   ///// Handle Update Campaign data
-  handleUpdateCampaignResponse(id, responseID, callRescheduledTo) {
-    debugger;
-    let self = this,
-      calculatedCallReScheduledTo;
-
-    this.setState({
-      loading: true,
-    });
-
-    if (responseID === 3) {
-      calculatedCallReScheduledTo = moment(callRescheduledTo).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
-    } else {
-      calculatedCallReScheduledTo = "";
-    }
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
-      headers: authHeader(),
-      data: {
-        CampaignCustomerID: id,
-        ResponseID: responseID,
-        CallReScheduledTo: calculatedCallReScheduledTo,
-      },
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Record Updated Successfully.");
-          self.handleGetCampaignGridData();
-        } else {
-          self.setState({
-            loading: false,
-          });
-        }
-      })
-      .catch((data) => {
-        console.log(data);
+  handleUpdateCampaignResponse(
+    id,
+    responseID,
+    callRescheduledTo,
+    campaignScriptID
+  ) {
+    //debugger;
+    if (responseID !== 0) {
+      let self = this,
+        calculatedCallReScheduledTo;
+      var check = true;
+      var Updatecheck = "";
+      this.setState({
+        loading: true,
       });
+
+      if (responseID === 3) {
+        calculatedCallReScheduledTo = moment(callRescheduledTo).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+      } else {
+        calculatedCallReScheduledTo = "";
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
+        headers: authHeader(),
+        data: {
+          CampaignCustomerID: id,
+          ResponseID: responseID,
+          CallReScheduledTo: calculatedCallReScheduledTo,
+        },
+      })
+        .then(function(res) {
+          //debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Record Updated Successfully.");
+            self.handleGetCampaignCustomerData(
+              check,
+              Updatecheck,
+              campaignScriptID
+            );
+          } else {
+            self.setState({
+              loading: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Please Select Response.");
+    }
   }
 
   handleCloseCampaign(campaignTypeID, e) {
@@ -592,7 +615,7 @@ class StoreCampaign extends Component {
   };
 
   handleCustomerNameModalOpen(data) {
-    debugger;
+    //debugger;
     var strTag = data.customerName.split(" ");
     var sortName = strTag[0].charAt(0).toUpperCase();
     if (strTag.length === 1) {
@@ -632,6 +655,16 @@ class StoreCampaign extends Component {
       responsiveShareVia: false,
     });
   }
+  handleBroadCastModalOpen() {
+    this.setState({
+      ResponsiveBroadCast: true,
+    });
+  }
+  handleBroadCastModalClose() {
+    this.setState({
+      ResponsiveBroadCast: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
@@ -644,17 +677,25 @@ class StoreCampaign extends Component {
     });
   }
   /// Handle Get Campaign customer details
-  handleGetCampaignCustomerData(data, row) {
+  handleGetCampaignCustomerData(data, row, check) {
+    //debugger;
     this.setState({
       ChildTblLoading: true,
+      CampChildTableData: [],
     });
+    var campaignId = 0;
+    if (check !== undefined) {
+      campaignId = check;
+    } else {
+      campaignId = row.campaignID;
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
       headers: authHeader(),
       params: {
-        campaignScriptID: row.campaignID,
+        campaignScriptID: campaignId,
         pageNo: 1,
         pageSize: 10,
       },
@@ -663,9 +704,84 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          self.setState({ CampChildTableData: data, ChildTblLoading: false });
+          const indexOfLastpost =
+            self.state.childCurrentPage * self.state.ChildPostsPerPage;
+          const indexOfFirstpost =
+            indexOfLastpost - self.state.ChildPostsPerPage;
+          const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
+          self.setState({
+            CampChildTableData: data,
+            ChildTblLoading: false,
+            loading: false,
+          });
         } else {
-          self.setState({ CampChildTableData: [], ChildTblLoading: false });
+          self.setState({
+            CampChildTableData: [],
+            ChildTblLoading: false,
+            loading: false,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// Send Via Bot data
+  handleSendViaBotData(data) {
+    //debugger;
+    // let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
+      headers: authHeader(),
+      data: {
+        StoreID: data.storecode,
+        ProgramCode: data.programcode,
+        CustomerID: data.id,
+        CustomerMobileNumber: data.customerNumber,
+        StoreManagerId: data.storeManagerId,
+        CampaignScriptID: data.campaignScriptID,
+      },
+    })
+      .then(function(response) {
+        //debugger;
+        var message = response.data.message;
+        // var data = response.data.responseData;
+        if (message == "Success") {
+          NotificationManager.success("Success.");
+        } else {
+          NotificationManager.error("Failed");
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// Send Via Messanger data
+  handleSendViaMessanger(data) {
+    //debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/CampaignShareMassanger",
+      headers: authHeader(),
+      data: {
+        StoreID: data.storecode,
+        ProgramCode: data.programcode,
+        CustomerID: data.id,
+        CustomerMobileNumber: data.customerNumber,
+        StoreManagerId: data.storeManagerId,
+        CampaignScriptID: data.campaignScriptID,
+      },
+    })
+      .then(function(response) {
+        //debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          window.open("//" + data, "_blank");
+        } else {
+          NotificationManager.error("Failed");
         }
       })
       .catch((response) => {
@@ -710,6 +826,7 @@ class StoreCampaign extends Component {
                   return (
                     <div className="chatbotwid">
                       <Popover
+                        overlayClassName="antcustom"
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
@@ -732,6 +849,7 @@ class StoreCampaign extends Component {
                         </a>
                       </Popover>
                       <Popover
+                        overlayClassName="antcustom"
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
@@ -785,13 +903,14 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row, item) => {
                   return (
-                    <Popover
+                      <Popover
+                      overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
-                          <label>
-                            <b>Broadcast to Campaign Customers</b>
+                          <label className="broadcasttitle">
+                           Broadcast to Campaign Customers
                           </label>
-                          <label>Choose Channel</label>
+                          <label className="broadcastsubtitle">Choose Channel</label>
                           <div>
                             <Radio.Group
                               onChange={this.handleBroadcastChange}
@@ -808,30 +927,39 @@ class StoreCampaign extends Component {
                               </Radio>
                             </Radio.Group>
                           </div>
+                          <button type="button" className="executebtn">Execute</button>
                         </div>
                       }
                       placement="bottom"
                       trigger="click"
                     >
-                      <div className="broadcast-icon">
-                        <img src={BroadCastIcon} alt="cancel-icone" />
-                      </div>
+                    <div className="broadcast-icon">
+                    <img
+                      src={BroadCastIcon}
+                      alt="cancel-icone"
+                      onClick={this.handleBroadCastModalOpen.bind(this)}
+                      className="broadcastimg"
+                    />
+                  </div>
+                      
                     </Popover>
+                   
                   );
                 },
               },
             ]}
-            expandedRowRender={(row) => {
+            expandedRowRender={(row, item) => {
+              //debugger;
               return (
                 <Table
-                  dataSource={this.state.CampChildTableData}
+                  dataSource={this.state.CampChildTableData.filter(
+                    (x) => x.campaignScriptID === row.campaignID
+                  )}
                   columns={[
                     {
                       title: "Customer Name",
                       dataIndex: "id",
                       render: (row, item) => {
-                        debugger;
-
                         return (
                           <div>
                             <p
@@ -871,7 +999,8 @@ class StoreCampaign extends Component {
                               value={item.responseID}
                               onChange={this.onResponseChange.bind(
                                 this,
-                                item.id
+                                item.id,
+                                item
                               )}
                             >
                               <option hidden>Select Response</option>
@@ -1024,7 +1153,8 @@ class StoreCampaign extends Component {
                                               value={item.responseID}
                                               onChange={this.onResponseChange.bind(
                                                 this,
-                                                item.id
+                                                item.id,
+                                                item
                                               )}
                                             >
                                               <option hidden>
@@ -1103,7 +1233,8 @@ class StoreCampaign extends Component {
                                               this,
                                               item.id,
                                               item.responseID,
-                                              item.callRescheduledTo
+                                              item.callRescheduledTo,
+                                              item.campaignScriptID
                                             )}
                                           >
                                             Update
@@ -1127,7 +1258,8 @@ class StoreCampaign extends Component {
                                     this,
                                     item.id,
                                     item.responseID,
-                                    item.callRescheduledTo
+                                    item.callRescheduledTo,
+                                    item.campaignScriptID
                                   )}
                                 >
                                   Update
@@ -1307,6 +1439,7 @@ class StoreCampaign extends Component {
                               <td>
                                 <div className="imgbox">
                                   <Popover
+                                    overlayClassName="antcustom ant-prodesc"
                                     content={
                                       <div className="productdesc">
                                         <h4>Blue Casual Shoes</h4>
@@ -1516,13 +1649,23 @@ class StoreCampaign extends Component {
                     </li>
                   ) : null}
                   {this.state.customerModalDetails.messengerFlag === true ? (
-                    <li>
+                    <li
+                      onClick={this.handleSendViaMessanger.bind(
+                        this,
+                        this.state.customerModalDetails
+                      )}
+                    >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Messanger
                     </li>
                   ) : null}
                   {this.state.customerModalDetails.botFlag === true ? (
-                    <li>
+                    <li
+                      onClick={this.handleSendViaBotData.bind(
+                        this,
+                        this.state.customerModalDetails
+                      )}
+                    >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Bot
                     </li>
@@ -1538,6 +1681,42 @@ class StoreCampaign extends Component {
                   Share Via
                 </label>
               </div>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          open={this.state.ResponsiveBroadCast}
+          onClose={this.handleBroadCastModalClose.bind(this)}
+          center
+          modalId="sharecamp-popup"
+          overlayId="logout-ovrly"
+        >
+           <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleBroadCastModalClose.bind(this)}
+          />
+          <div className="general-popover popover-body broadcastpop">
+            <label>
+              <b>Broadcast to Campaign Customers</b>
+            </label>
+            <label>Choose Channel</label>
+            <div>
+              <Radio.Group
+                onChange={this.handleBroadcastChange}
+                value={this.state.broadcastChannel}
+              >
+                <Radio className="broadChannel" value={1}>
+                  Email
+                </Radio>
+                <Radio className="broadChannel" value={2}>
+                  SMS
+                </Radio>
+                <Radio className="broadChannel" value={3}>
+                  Whatsapp
+                </Radio>
+              </Radio.Group>
             </div>
           </div>
         </Modal>
@@ -1561,30 +1740,42 @@ class StoreCampaign extends Component {
               <tbody>
                 <tr>
                   <td>
-                    <div className="chatbox">
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      <a href="">Send Via Messanger</a>
-                    </div>
+                    <a href="#">
+                      <div className="chatbox">
+                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                        Send Via Messanger
+                      </div>
+                    </a>
                   </td>
                   <td>
+                    <a href="#">
                     <div className="chatbox">
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      <a href="">Send Via Bot</a>
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                      Send Via Bot
                     </div>
+                    </a>
                   </td>
                 </tr>
                 <tr>
                   <td>
+                    <a href="#">
                     <div className="chatbox">
                       <img className="ico" src={Sms1} alt="SMS Icon" />
-                      <a href="">SMS</a>
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                      SMS
                     </div>
+                    </a>
                   </td>
                   <td>
+                    <a href="#">
                     <div className="chatbox">
                       <img className="ico" src={Sms1} alt="Email Icon" />
-                      <a href="">Email</a>
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                      Email
                     </div>
+                    </a>
                   </td>
                 </tr>
               </tbody>
