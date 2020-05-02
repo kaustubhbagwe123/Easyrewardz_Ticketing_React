@@ -197,6 +197,7 @@ p {
   padding-right: 5px;
   border-radius: 8px;
   box-shadow: none;
+  width: 100%;
 }
 .mobile-chat-popup .search-customerAddSrch {
   font-size: 13px;
@@ -813,6 +814,75 @@ p {
     margin-bottom: 10px;
   }
   /* card modal ends */
+
+  /* schedule modal starts */
+  .schedule-visit-popup > div {
+    height: 100%;
+  }
+  .schedule-mobile-cntr {
+    padding: 0 5px 5px 5px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+  .selectdot-blue {
+    display: none;
+  }
+  .s-lable {
+    font-size: 12px;
+    margin-bottom: -4px;
+  }
+  .schedule-btn-cntr button,
+  .select-slot-cntr,
+  .schedule-right-cntr input {
+    margin-top: 11px;
+    font-weight: 700;
+    font-size: 10px;
+    padding: 4px 24px 4px 8px;
+    flex: 0 1 29%;
+  }
+  .schedule-left-cntr > div {
+    margin-bottom: 20px;
+  }
+  .schedule-left-cntr::after {
+    content: "";
+    border-bottom: 1px solid #d7d7d7;
+  }
+  .schedule-visit-popup {
+    padding: 0 !important;
+    height: 100%;
+  }
+  .schedule-left-outer-cntr {
+    padding: 20px 0 20px 15px;
+    border-bottom: 1px solid #d7d7d7;
+  }
+  .schedule-right-cntr {
+    justify-content: initial;
+    padding: 15px;
+  }
+  .schedule-right-cntr .s-lable {
+    font-size: 12px;
+    color: #000;
+  }
+  .schedule-right-cntr > div {
+    margin-right: 20px;
+  }
+  .schedule-right-cntr > div:last-child {
+    margin-right: 0px;
+  }
+  .schedule-right-cntr input {
+    width: 80px;
+    color: #000;
+    padding: 4px 8px;
+  }
+  .schedule-visit-popup .chat-btn-cntr {
+    padding: 0 15px 15px;
+  }
+  .schedule-left-cntr {
+    max-height: calc(100vh - 230px);
+  }
+  /* schedule modal ends */
 }
 
 @media all and (max-width: 425px) {
@@ -851,5 +921,15 @@ p {
     width: 20px;
   }
   /* card modal ends */
+}
+
+@media all and (max-width: 385px) {
+  /* schedule modal starts */
+  .schedule-btn-cntr button,
+  .select-slot-cntr,
+  .schedule-right-cntr input {
+    flex: 0 1 44%;
+  }
+  /* schedule modal ends */
 }
 /* Responsive ends */
