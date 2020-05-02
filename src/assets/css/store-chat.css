@@ -92,7 +92,6 @@ p {
   display: none;
 }
 .mobile-arrow {
-  filter: brightness(0) invert(1);
   display: none;
   position: absolute;
   left: 15px;
@@ -181,16 +180,12 @@ p {
 .mobile-ck-send {
   position: absolute;
   width: 30px;
-  height: 30px;
-  background: #2561a8;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 30px;
   right: 15px;
   bottom: 55px;
+  cursor: pointer;
 }
 .mobile-ck-send img {
-  width: 15px;
+  width: 100%;
 }
 #mobile-tabs-overlay {
   background: rgba(0, 0, 0, 0.65);
@@ -310,7 +305,7 @@ p {
   font-size: 14px;
   height: 36px;
   padding: 6px 10px;
-  min-width: 85px;
+  min-width: 95px;
 }
 .send-up {
   width: 22px;
@@ -511,18 +506,22 @@ p {
   height: 138px;
   overflow: auto;
 }
-.product-card::-webkit-scrollbar {
+.product-card::-webkit-scrollbar,
+.schedule-left-cntr::-webkit-scrollbar {
   width: 5px;
 }
-.product-card::-webkit-scrollbar-track {
+.product-card::-webkit-scrollbar-track,
+.schedule-left-cntr::-webkit-scrollbar-track {
   background: #e9e9e9;
   border-radius: 10px;
 }
-.product-card::-webkit-scrollbar-thumb {
+.product-card::-webkit-scrollbar-thumb,
+.schedule-left-cntr::-webkit-scrollbar-thumb {
   background: #2561a8;
   border-radius: 10px;
 }
-.product-card::-webkit-scrollbar-thumb:hover {
+.product-card::-webkit-scrollbar-thumb:hover,
+.schedule-left-cntr::-webkit-scrollbar-thumb:hover {
   background: #2561a8;
 }
 .product-card .col-md-4 {
@@ -533,6 +532,9 @@ p {
 }
 .storeUpbtn img {
   width: 20px;
+}
+.schedule-btn-outer-cntr {
+  display: flex;
 }
 .message-icon-cnt {
   position: absolute;
@@ -549,50 +551,58 @@ p {
   right: -10px;
 }
 .schedule-btn-cntr {
-  display: inline-block;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -7px;
 }
 .schedule-btn-cntr button {
+  cursor: pointer;
+}
+.schedule-btn-cntr button,
+.select-slot-cntr,
+.schedule-right-cntr input {
   font-size: 12px;
   position: relative;
-  padding: 8px 22px 8px 10px;
+  padding: 6px 24px 6px 8px;
+  margin: 0 7px;
+  margin-top: 14px;
+  flex: 0 1 22%;
+  border-radius: 3px;
+  min-width: auto;
 }
 .s-yellw-btn {
-  margin-right: 15px;
   color: #000;
   border-color: #f7b500;
   background-color: #fff;
 }
 .s-green-btn {
-  margin-right: 15px;
   color: #000;
   border-color: #30ba93;
   background-color: #fff;
 }
 .s-red-btn {
-  margin-right: 15px;
   color: #000;
   border-color: #bd3939;
   background-color: #fff;
+  cursor: initial !important;
 }
 .s-red-active {
   background-color: #bd3939;
-  border-color: #bd3939;
   color: #fff;
 }
 .s-yellow-active {
   background-color: #f7b500;
-  border-color: #f7b500;
   color: #fff;
 }
 .s-green-active {
   background-color: #30ba93;
-  border-color: #30ba93;
   color: #fff;
 }
 .s-lable {
   font-weight: 700;
-  margin-bottom: 5px;
+  margin-bottom: -8px;
   color: #000;
+  display: block;
 }
 .s-img-select {
   width: 18px;
@@ -600,14 +610,66 @@ p {
   top: 50%;
   transform: translateY(-50%);
   position: absolute;
+  filter: invert(1);
 }
 .selectdot-blue {
-  height: 28px;
-  width: 28px;
+  height: 24px;
+  line-height: 21px;
+  flex: 0 0 24px;
   background-color: #2561a8;
   border-radius: 50%;
-  float: right;
-  margin-top: 6px;
+  margin-top: 17px;
+  text-align: center;
+  margin-left: 10px;
+}
+.selectdot-blue img {
+  width: 17px;
+  filter: invert(1);
+}
+.schedule-left-cntr {
+  max-height: 200px;
+  overflow: auto;
+}
+.schedule-left-cntr > div {
+  margin-bottom: 15px;
+}
+.schedule-left-cntr > div:last-child {
+  margin-bottom: 0px;
+}
+.schedule-right-outer-cntr {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+.schedule-right-cntr {
+  display: flex;
+  justify-content: space-evenly;
+}
+.schedule-right-cntr input {
+  border: 1px solid #b6b6b6;
+  margin-left: 0;
+  margin-right: 0;
+  width: 85px;
+  padding: 5px 8px;
+  font-size: 14px;
+}
+.schedule-right-cntr .s-lable {
+  color: #4a4a4a;
+  font-size: 15px;
+}
+.ant-tooltip-inner {
+  font-size: 11px;
+  max-width: 100px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  padding-right: 13px;
+  padding-left: 13px;
+}
+.ant-tooltip-arrow::before {
+  width: 8px;
+  height: 8px;
 }
 /* Responsive starts */
 @media all and (max-width: 576px) {
@@ -633,6 +695,10 @@ p {
   }
   .mobile-ck-send {
     top: 25px;
+  }
+  .butn,
+  .butn-inv {
+    min-width: 85px;
   }
 
   /* right side part starts */
