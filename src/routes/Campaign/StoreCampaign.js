@@ -5,6 +5,7 @@ import BroadCastIcon from "./../../assets/Images/broadCast.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import Sharevia from "./../../assets/Images/sharevia.png";
 import Dropdown3 from "./../../assets/Images/dropdown3.png";
+import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
@@ -825,6 +826,7 @@ class StoreCampaign extends Component {
                   return (
                     <div className="chatbotwid">
                       <Popover
+                        overlayClassName="antcustom"
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
@@ -847,6 +849,7 @@ class StoreCampaign extends Component {
                         </a>
                       </Popover>
                       <Popover
+                        overlayClassName="antcustom"
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
@@ -900,13 +903,14 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row, item) => {
                   return (
-                    <Popover
+                      <Popover
+                      overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
-                          <label>
-                            <b>Broadcast to Campaign Customers</b>
+                          <label className="broadcasttitle">
+                           Broadcast to Campaign Customers
                           </label>
-                          <label>Choose Channel</label>
+                          <label className="broadcastsubtitle">Choose Channel</label>
                           <div>
                             <Radio.Group
                               onChange={this.handleBroadcastChange}
@@ -923,6 +927,7 @@ class StoreCampaign extends Component {
                               </Radio>
                             </Radio.Group>
                           </div>
+                          <button type="button" className="executebtn">Execute</button>
                         </div>
                       }
                       placement="bottom"
@@ -1434,6 +1439,7 @@ class StoreCampaign extends Component {
                               <td>
                                 <div className="imgbox">
                                   <Popover
+                                    overlayClassName="antcustom ant-prodesc"
                                     content={
                                       <div className="productdesc">
                                         <h4>Blue Casual Shoes</h4>
@@ -1734,30 +1740,42 @@ class StoreCampaign extends Component {
               <tbody>
                 <tr>
                   <td>
-                    <div className="chatbox">
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      <a href="">Send Via Messanger</a>
-                    </div>
+                    <a href="#">
+                      <div className="chatbox">
+                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                        Send Via Messanger
+                      </div>
+                    </a>
                   </td>
                   <td>
+                    <a href="#">
                     <div className="chatbox">
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      <a href="">Send Via Bot</a>
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                      Send Via Bot
                     </div>
+                    </a>
                   </td>
                 </tr>
                 <tr>
                   <td>
+                    <a href="#">
                     <div className="chatbox">
                       <img className="ico" src={Sms1} alt="SMS Icon" />
-                      <a href="">SMS</a>
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                      SMS
                     </div>
+                    </a>
                   </td>
                   <td>
+                    <a href="#">
                     <div className="chatbox">
                       <img className="ico" src={Sms1} alt="Email Icon" />
-                      <a href="">Email</a>
+                        <img className="tick" src={Tick} alt="Tick Icon" />
+                      Email
                     </div>
+                    </a>
                   </td>
                 </tr>
               </tbody>

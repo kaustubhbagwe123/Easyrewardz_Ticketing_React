@@ -1796,9 +1796,6 @@ table tr th:last-child {
 .status-btn-camp{
   display: contents;
 }
-.broadcastimg {
-  display: none;
-}
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {
@@ -2166,9 +2163,7 @@ table tr th:last-child {
   font-weight: normal;
   color: #333;
 }
-.broadcastimg {
-  display: block;
-}
+
 }
 /* ------------------Campain Css End ------------------------- */
 
