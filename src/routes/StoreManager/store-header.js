@@ -46,6 +46,7 @@ import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
 import { ItemMeta } from "semantic-ui-react";
+import moment from "moment";
 
 class Header extends Component {
   constructor(props) {
@@ -179,9 +180,11 @@ class Header extends Component {
       timeSlotData: [],
       selectedSlot: {},
       noOfPeople: "",
-      daySelect: "",
-      datesSelect: "",
-      slotID: "",
+      selectedDate: "",
+      noOfPeopleMax: "",
+      isSelectSlot: "",
+      customerId: 0,
+      mobileNo: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -835,28 +838,67 @@ class Header extends Component {
   ////handle send schedual visit
   handleScheduleVisit() {
     let self = this;
+    var inputParam = {};
+    if (this.state.customerId == 0) {
+    } else {
+    }
+    if (Object.keys(this.state.selectedSlot).length === 0) {
+      this.setState({ isSelectSlot: "please select time slot" });
+    } else {
+      this.setState({ isSelectSlot: "" });
+    }
+    if (this.state.noOfPeople === "") {
+      this.setState({ noOfPeopleMax: "Please enter the no of people" });
+    } else {
+      this.setState({ noOfPeopleMax: "" });
+    }
+    setTimeout(() => {
+      if (
+        this.state.customerId > 0 &&
+        this.state.noOfPeopleMax == "" &&
+        this.state.isSelectSlot == "" &&
+        Object.keys(this.state.selectedSlot).length !== 0
+      ) {
+        var date = new Date(this.state.selectedDate);
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/ScheduleVisit",
-      headers: authHeader(),
-      params: {
-        storeID: 1,
-      },
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var timeSlotData = response.data.responseData;
+        inputParam.CustomerID = this.state.customerId;
+        inputParam.AppointmentDate =
+          moment(date)
+            .format("YYYY-MM-DD")
+            .toString() || "";
+        inputParam.SlotID = this.state.selectedSlot.timeSlotId;
+        inputParam.NOofPeople = Number(this.state.noOfPeople);
+        inputParam.MobileNo = this.state.mobileNo;
+        inputParam.StoreID = 1;
 
-        if (message == "Success" && timeSlotData) {
-          self.setState({ timeSlotData });
-        } else {
-          self.setState({ timeSlotData });
-        }
-      })
-      .catch((response) => {
-        console.log(response, "---handleScheduleVisit");
-      });
+        debugger;
+        var messagedata =
+          "Your appointment is booked at " +
+          this.state.selectedDate +
+          " on " +
+          this.state.selectedSlot.timeSlot;
+        this.setState({ message: messagedata });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/CustomerChat/ScheduleVisit",
+          headers: authHeader(),
+          data: inputParam,
+        })
+          .then(function(response) {
+            debugger;
+            var message = response.data.message;
+            var timeSlotData = response.data.responseData;
+            if (message == "Success" && timeSlotData) {
+              self.setState({ noOfPeople: "", selectSlot: {} });
+              self.handleGetTimeSlot();
+              self.handleSaveChatMessages();
+            }
+          })
+          .catch((response) => {
+            console.log(response, "---handleScheduleVisit");
+          });
+      }
+    }, 500);
   }
   ////handlecselect card in card tab
   handleSelectCard(id) {
@@ -888,9 +930,8 @@ class Header extends Component {
     });
   };
   ////handle on going chat click
-  handleOngoingChatClick = (id, name, count) => {
-    this.setState({ customerName: name });
-    this.setState({ chatId: id });
+  handleOngoingChatClick = (id, name, count, mobileNo, customerId) => {
+    this.setState({ chatId: id, customerName: name, mobileNo, customerId });
 
     if (this.state.chatId === id) {
       this.handleGetChatMessagesList(id);
@@ -908,6 +949,7 @@ class Header extends Component {
   };
   onOpenCardModal = () => {
     this.setState({ cardModal: true });
+    
   };
   ////handle search item text change
   handleSearchItemChange = (e) => {
@@ -922,13 +964,42 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
-    this.setState({ noOfPeople: e.target.value });
+    debugger;
+    if (Object.keys(this.state.selectedSlot).length !== 0) {
+      if (Number(e.target.value) <= this.state.selectedSlot.maxCapacity) {
+        this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+      } else {
+        if (e.target.value !== "") {
+          this.setState({
+            noOfPeople: "",
+            noOfPeopleMax:
+              "Maximum capacity are " + this.state.selectedSlot.maxCapacity,
+          });
+        } else {
+          this.setState({
+            noOfPeople: "",
+            noOfPeopleMax: "",
+          });
+        }
+      }
+    } else {
+      this.setState({ isSelectSlot: "Please select time slot" });
+    }
   };
   ////handle select slot button
-  handleSelectSlot = (e) => {};
+  handleSelectSlot = (data, selectedDate) => {
+    debugger;
+    this.setState({
+      selectedSlot: data,
+      selectedDate,
+      isSelectSlot: "",
+      noOfPeople: "",
+    });
+  };
 
   onCloseScheduleModal = () => {
     this.setState({ scheduleModal: false });
+    this.handleGetTimeSlot();
   };
   onOpenScheduleModal = () => {
     this.setState({ scheduleModal: true });
@@ -1347,7 +1418,9 @@ class Header extends Component {
                               this,
                               chat.chatID,
                               chat.cumtomerName,
-                              chat.messageCount
+                              chat.messageCount,
+                              chat.mobileNo,
+                              chat.customerID
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -1667,7 +1740,7 @@ class Header extends Component {
                             role="tab"
                             aria-controls="schedule-visit-tab"
                             aria-selected="false"
-                            // onClick={this.handleGetTimeSlot.bind(this)}
+                            onClick={this.handleGetTimeSlot.bind(this)}
                           >
                             SCHEDULE VISIT
                           </a>
@@ -1900,101 +1973,125 @@ class Header extends Component {
                                     return (
                                       <div key={i}>
                                         <label className="s-lable">
-                                          {item.day + ":" + item.dates}
+                                          {item.day}:{item.dates}
                                         </label>
                                         <div className="schedule-btn-outer-cntr">
                                           <div className="schedule-btn-cntr">
-                                            {item.timeSlotModels.map(
-                                              (data, k) => {
-                                                if (
-                                                  data.alreadyScheduleDetails
-                                                    .length > 0
-                                                ) {
+                                            {item.alreadyScheduleDetails
+                                              .length > 0 &&
+                                              item.alreadyScheduleDetails.map(
+                                                (data, k) => {
+                                                  var selectSlot = false;
                                                   if (
-                                                    data.alreadyScheduleDetails[
-                                                      data
-                                                        .alreadyScheduleDetails
-                                                        .length - 1
-                                                    ]["visitedCount"] ===
-                                                    data.alreadyScheduleDetails[
-                                                      data
-                                                        .alreadyScheduleDetails
-                                                        .length - 1
-                                                    ]["maxCapacity"]
+                                                    this.state.timeSlotData[i]
+                                                      .alreadyScheduleDetails[
+                                                      k
+                                                    ] ===
+                                                    this.state.selectedSlot
+                                                  ) {
+                                                    selectSlot = true;
+                                                  }
+
+                                                  if (
+                                                    data.maxCapacity ==
+                                                    data.visitedCount
                                                   ) {
                                                     return (
                                                       <Tooltip
                                                         placement="left"
                                                         title={
-                                                          data
-                                                            .alreadyScheduleDetails[
-                                                            data
-                                                              .alreadyScheduleDetails
-                                                              .length - 1
-                                                          ]["remaining"] +
+                                                          data.remaining +
                                                           " MORE PEOPLE LEFT"
                                                         }
                                                       >
                                                         <button
+                                                          key={k}
                                                           className="s-red-active"
                                                           style={{
                                                             cursor: "no-drop",
                                                           }}
                                                         >
-                                                          11AM-12PM
-                                                        </button>
-                                                      </Tooltip>
-                                                    );
-                                                  } else {
-                                                    return (
-                                                      <Tooltip
-                                                        placement="left"
-                                                        title={
-                                                          data
-                                                            .alreadyScheduleDetails[
-                                                            data
-                                                              .alreadyScheduleDetails
-                                                              .length - 1
-                                                          ]["remaining"] +
-                                                          " MORE PEOPLE LEFT"
-                                                        }
-                                                      >
-                                                        <button className="s-yellow-btn">
-                                                          11AM-12PM
+                                                          {data.timeSlot}
                                                         </button>
                                                       </Tooltip>
                                                     );
                                                   }
-                                                } else {
-                                                  return (
-                                                    <Tooltip
-                                                      placement="left"
-                                                      title={
-                                                        data.maxCapacity +
-                                                        " MORE PEOPLE LEFT"
-                                                      }
-                                                    >
-                                                      <button
-                                                        className="s-green-btn"
-                                                        // onClick={this.handleSelectSlot.bind(
-                                                        //   this,
-                                                        //   item,
-                                                        //   data
-                                                        // )}
+                                                  if (
+                                                    data.remaining <
+                                                    data.maxCapacity
+                                                  ) {
+                                                    return (
+                                                      <Tooltip
+                                                        placement="left"
+                                                        title={
+                                                          data.remaining +
+                                                          " MORE PEOPLE LEFT"
+                                                        }
                                                       >
-                                                        {data.timeSlot}
-                                                        {item.time}
-                                                        {/* <img
-                                                          className="s-img-select"
-                                                          src={CircleRight}
-                                                          alt="circle-right"
-                                                        /> */}
-                                                      </button>
-                                                    </Tooltip>
-                                                  );
+                                                        <button
+                                                          key={k}
+                                                          className={
+                                                            selectSlot
+                                                              ? "s-yellow-active"
+                                                              : "s-yellow-btn"
+                                                          }
+                                                          onClick={this.handleSelectSlot.bind(
+                                                            this,
+                                                            data,
+                                                            item.dates
+                                                          )}
+                                                        >
+                                                          {data.timeSlot}
+                                                          {selectSlot ? (
+                                                            <img
+                                                              className="s-img-select"
+                                                              src={CircleRight}
+                                                              alt="circle-right"
+                                                            />
+                                                          ) : null}
+                                                        </button>
+                                                      </Tooltip>
+                                                    );
+                                                  }
+                                                  if (
+                                                    data.maxCapacity ===
+                                                    data.remaining
+                                                  ) {
+                                                    return (
+                                                      <Tooltip
+                                                        placement="left"
+                                                        title={
+                                                          data.remaining +
+                                                          " MORE PEOPLE LEFT"
+                                                        }
+                                                      >
+                                                        <button
+                                                          key={k}
+                                                          className={
+                                                            selectSlot
+                                                              ? "s-green-active"
+                                                              : "s-green-btn"
+                                                          }
+                                                          onClick={this.handleSelectSlot.bind(
+                                                            this,
+                                                            data,
+                                                            item.dates
+                                                          )}
+                                                        >
+                                                          {data.timeSlot}
+                                                          {selectSlot ? (
+                                                            <img
+                                                              className="s-img-select"
+                                                              src={CircleRight}
+                                                              alt="circle-right"
+                                                            />
+                                                          ) : null}
+                                                        </button>
+                                                      </Tooltip>
+                                                    );
+                                                  }
                                                 }
-                                              }
-                                            )}
+                                              )}
                                           </div>
                                           <div className="selectdot-blue">
                                             <img
@@ -2007,149 +2104,6 @@ class Header extends Component {
                                     );
                                   })
                                 : null}
-                              <div>
-                                <label className="s-lable">
-                                  Today:12 May 2020
-                                </label>
-                                <div className="schedule-btn-outer-cntr">
-                                  <div className="schedule-btn-cntr">
-                                    <button className="s-red-btn s-red-active">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-green-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <Tooltip
-                                      placement="left"
-                                      title={"4 MORE PEOPLE LEFT"}
-                                    >
-                                      <button className="s-yellow-active">
-                                        11AM-12PM
-                                        <img
-                                          className="s-img-select"
-                                          src={CircleRight}
-                                          alt="circle-right"
-                                        />
-                                      </button>
-                                    </Tooltip>
-                                    <button className="s-green-btn ">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-red-btn s-red-active">
-                                      11AM-12PM
-                                      {/* <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      /> */}
-                                    </button>
-                                    <button className="s-green-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-yellow-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-green-btn ">
-                                      11AM-12PM
-                                    </button>
-                                  </div>
-                                  <div className="selectdot-blue">
-                                    <img src={SchRight} alt="right arrow" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <label className="s-lable">
-                                  Tomorrow:12 May 2020
-                                </label>
-                                <div className="schedule-btn-outer-cntr">
-                                  <div className="schedule-btn-cntr">
-                                    <button className="s-red-btn s-red-active">
-                                      11AM-12PM
-                                      {/* <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      /> */}
-                                    </button>
-                                    <button className="s-green-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-yellow-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-green-btn ">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-red-btn s-red-active">
-                                      11AM-12PM
-                                      {/* <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      /> */}
-                                    </button>
-                                    <button className="s-green-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-yellow-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-green-btn ">
-                                      11AM-12PM
-                                    </button>
-                                  </div>
-                                  <div className="selectdot-blue">
-                                    <img src={SchRight} alt="right arrow" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <label className="s-lable">
-                                  Day after Tomorrow:13 May 2020
-                                </label>
-                                <div className="schedule-btn-outer-cntr">
-                                  <div className="schedule-btn-cntr">
-                                    <button className="s-red-btn s-red-active">
-                                      11AM-12PM
-                                      {/* <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      /> */}
-                                    </button>
-                                    <button className="s-green-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-yellow-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-green-btn ">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-red-btn s-red-active">
-                                      11AM-12PM
-                                      {/* <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      /> */}
-                                    </button>
-                                    <button className="s-green-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-yellow-btn">
-                                      11AM-12PM
-                                    </button>
-                                    <button className="s-green-btn ">
-                                      11AM-12PM
-                                    </button>
-                                  </div>
-                                  <div className="selectdot-blue">
-                                    <img src={SchRight} alt="right arrow" />
-                                  </div>
-                                </div>
-                              </div>
                             </div>
                             <div className="col-md-4">
                               <div className="schedule-right-outer-cntr">
@@ -2158,14 +2112,39 @@ class Header extends Component {
                                     <label className="s-lable">
                                       Selected Slot
                                     </label>
-                                    <button className="s-green-btn s-green-active select-slot-cntr mx-0">
-                                      2PM-3PM
-                                      <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      />
-                                    </button>
+                                    {Object.keys(this.state.selectedSlot)
+                                      .length !== 0 ? (
+                                      <button
+                                        className={
+                                          this.state.selectedSlot.maxCapacity ==
+                                          this.state.selectedSlot.remaining
+                                            ? "s-green-btn s-green-active select-slot-cntr mx-0"
+                                            : this.state.selectedSlot
+                                                .visitedCount <
+                                              this.state.selectedSlot
+                                                .maxCapacity
+                                            ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                            : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                        }
+                                      >
+                                        {this.state.selectedSlot.timeSlot}
+                                        <img
+                                          className="s-img-select"
+                                          src={CircleRight}
+                                          alt="circle-right"
+                                        />
+                                      </button>
+                                    ) : null}
+                                    {this.state.isSelectSlot !== "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.isSelectSlot}
+                                      </p>
+                                    )}
                                   </div>
                                   <div>
                                     <label className="s-lable">
@@ -2178,9 +2157,22 @@ class Header extends Component {
                                         this
                                       )}
                                     />
+                                    {this.state.noOfPeopleMax !== "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.noOfPeopleMax}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
-                                <button className="butn ml-auto">
+                                <button
+                                  className="butn ml-auto"
+                                  onClick={this.handleScheduleVisit.bind(this)}
+                                >
                                   Send
                                   <img
                                     src={SendUp}
@@ -2446,149 +2438,149 @@ class Header extends Component {
                             <div>
                               <div className="schedule-left-outer-cntr">
                                 <div className="schedule-left-cntr">
-                                  <div>
-                                    <label className="s-lable">
-                                      Today:11 May 2020
-                                    </label>
-                                    <div className="schedule-btn-outer-cntr">
-                                      <div className="schedule-btn-cntr">
-                                        <button className="s-red-btn s-red-active">
-                                          11AM-12PM
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                        <Tooltip
-                                          placement="left"
-                                          title="4 MORE PEOPLE LEFT"
-                                        >
-                                          <button className="s-green-btn">
-                                            11AM-12PM
-                                          </button>
-                                        </Tooltip>
-                                        <button className="s-yellow-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-green-btn ">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-red-btn s-red-active">
-                                          11AM-12PM
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                        <button className="s-green-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-yellow-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-green-btn ">
-                                          11AM-12PM
-                                        </button>
-                                      </div>
-                                      <div className="selectdot-blue">
-                                        <img src={SchRight} alt="right arrow" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <label className="s-lable">
-                                      Tomorrow:12 May 2020
-                                    </label>
-                                    <div className="schedule-btn-outer-cntr">
-                                      <div className="schedule-btn-cntr">
-                                        <button className="s-red-btn s-red-active">
-                                          11AM-12PM
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                        <button className="s-green-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-yellow-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-green-btn ">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-red-btn s-red-active">
-                                          11AM-12PM
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                        <button className="s-green-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-yellow-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-green-btn ">
-                                          11AM-12PM
-                                        </button>
-                                      </div>
-                                      <div className="selectdot-blue">
-                                        <img src={SchRight} alt="right arrow" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <label className="s-lable">
-                                      Day after Tomorrow:13 May 2020
-                                    </label>
-                                    <div className="schedule-btn-outer-cntr">
-                                      <div className="schedule-btn-cntr">
-                                        <button className="s-red-btn s-red-active">
-                                          11AM-12PM
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                        <button className="s-green-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-yellow-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-green-btn ">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-red-btn s-red-active">
-                                          11AM-12PM
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                        <button className="s-green-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-yellow-btn">
-                                          11AM-12PM
-                                        </button>
-                                        <button className="s-green-btn ">
-                                          11AM-12PM
-                                        </button>
-                                      </div>
-                                      <div className="selectdot-blue">
-                                        <img src={SchRight} alt="right arrow" />
-                                      </div>
-                                    </div>
-                                  </div>
+                                  {this.state.timeSlotData !== null
+                                    ? this.state.timeSlotData.map((item, i) => {
+                                        return (
+                                          <div key={i}>
+                                            <label className="s-lable">
+                                              {item.day}:{item.dates}
+                                            </label>
+                                            <div className="schedule-btn-outer-cntr">
+                                              <div className="schedule-btn-cntr">
+                                                {item.alreadyScheduleDetails
+                                                  .length > 0 &&
+                                                  item.alreadyScheduleDetails.map(
+                                                    (data, k) => {
+                                                      var selectSlot = false;
+                                                      if (
+                                                        this.state.timeSlotData[
+                                                          i
+                                                        ]
+                                                          .alreadyScheduleDetails[
+                                                          k
+                                                        ] ===
+                                                        this.state.selectedSlot
+                                                      ) {
+                                                        selectSlot = true;
+                                                      }
+
+                                                      if (
+                                                        data.maxCapacity ==
+                                                        data.visitedCount
+                                                      ) {
+                                                        return (
+                                                          <Tooltip
+                                                            placement="left"
+                                                            title={
+                                                              data.remaining +
+                                                              " MORE PEOPLE LEFT"
+                                                            }
+                                                          >
+                                                            <button
+                                                              key={k}
+                                                              className="s-red-active"
+                                                              style={{
+                                                                cursor:
+                                                                  "no-drop",
+                                                              }}
+                                                            >
+                                                              {data.timeSlot}
+                                                            </button>
+                                                          </Tooltip>
+                                                        );
+                                                      }
+                                                      if (
+                                                        data.remaining <
+                                                        data.maxCapacity
+                                                      ) {
+                                                        return (
+                                                          <Tooltip
+                                                            placement="left"
+                                                            title={
+                                                              data.remaining +
+                                                              " MORE PEOPLE LEFT"
+                                                            }
+                                                          >
+                                                            <button
+                                                              key={k}
+                                                              className={
+                                                                selectSlot
+                                                                  ? "s-yellow-active"
+                                                                  : "s-yellow-btn"
+                                                              }
+                                                              onClick={this.handleSelectSlot.bind(
+                                                                this,
+                                                                data,
+                                                                item.dates
+                                                              )}
+                                                            >
+                                                              {data.timeSlot}
+                                                              {selectSlot ? (
+                                                                <img
+                                                                  className="s-img-select"
+                                                                  src={
+                                                                    CircleRight
+                                                                  }
+                                                                  alt="circle-right"
+                                                                />
+                                                              ) : null}
+                                                            </button>
+                                                          </Tooltip>
+                                                        );
+                                                      }
+                                                      if (
+                                                        data.maxCapacity ===
+                                                        data.remaining
+                                                      ) {
+                                                        return (
+                                                          <Tooltip
+                                                            placement="left"
+                                                            title={
+                                                              data.remaining +
+                                                              " MORE PEOPLE LEFT"
+                                                            }
+                                                          >
+                                                            <button
+                                                              key={k}
+                                                              className={
+                                                                selectSlot
+                                                                  ? "s-green-active"
+                                                                  : "s-green-btn"
+                                                              }
+                                                              onClick={this.handleSelectSlot.bind(
+                                                                this,
+                                                                data,
+                                                                item.dates
+                                                              )}
+                                                            >
+                                                              {data.timeSlot}
+                                                              {selectSlot ? (
+                                                                <img
+                                                                  className="s-img-select"
+                                                                  src={
+                                                                    CircleRight
+                                                                  }
+                                                                  alt="circle-right"
+                                                                />
+                                                              ) : null}
+                                                            </button>
+                                                          </Tooltip>
+                                                        );
+                                                      }
+                                                    }
+                                                  )}
+                                              </div>
+                                              <div className="selectdot-blue">
+                                                <img
+                                                  src={SchRight}
+                                                  alt="right arrow"
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      })
+                                    : null}
                                 </div>
                               </div>
                               <div className="schedule-right-cntr">
