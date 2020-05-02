@@ -39,6 +39,8 @@ import RightBlue from "./../../assets/Images/rightblue.png";
 import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
+import AppointmentLogo from "./../../assets/Images/appointments.svg";
+import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
@@ -171,6 +173,7 @@ class Header extends Component {
       chatMessageCount: 0,
       activeTab: 1,
       cardModal: false,
+      searchItem: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -269,8 +272,8 @@ class Header extends Component {
     var appointment = {
       data: "Appointment",
       urls: "appointment",
-      logoBlack: CampaignLogo,
-      logoBlue: CampaignLogoBlue,
+      logoBlack: AppointmentLogo,
+      logoBlue: AppointmentLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
       activeClass:
@@ -688,6 +691,7 @@ class Header extends Component {
   }
   ////handle save chat messgae
   handleSaveChatMessages() {
+    debugger;
     let self = this;
     var inputParam = {};
     inputParam.chatID = this.state.chatId;
@@ -743,14 +747,15 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/searchChatItemDetails",
       headers: authHeader(),
       params: {
-        SearchText: "",
+        SearchText: this.state.searchItem,
       },
     })
       .then(function(response) {
         var message = response.data.message;
-        var responseData = response.data.responseData;
+        var searchCardData = response.data.responseData;
 
-        if (message == "Success" && responseData) {
+        if (message == "Success" && searchCardData) {
+          self.setState({ searchCardData });
         }
       })
       .catch((response) => {
@@ -808,6 +813,7 @@ class Header extends Component {
   }
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
+    debugger;
     var message = evt.editor.getData();
     this.setState({
       message,
@@ -834,6 +840,10 @@ class Header extends Component {
   };
   onOpenCardModal = () => {
     this.setState({ cardModal: true });
+  };
+  ////handle search item text change
+  handleSearchItemChange = (e) => {
+    this.setState({ searchItem: e.target.value });
   };
 
   render() {
@@ -1641,22 +1651,38 @@ class Header extends Component {
                               className="input-group searchtxt-new"
                               style={{ background: "none" }}
                             >
-                              <input
-                                type="text"
-                                className="search-customerAddSrch searchtxt"
-                                placeholder="Search ItemId/artcile/SKU ID"
-                                name="Search"
-                                maxLength="100"
-                                autoComplete="off"
-                              />
-                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
-                                <img
-                                  src={SearchBlueImg}
-                                  alt="SearchBlueImg"
-                                  className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
+                              <form
+                                style={{ width: "100%" }}
+                                onSubmit={this.handleSearchChatItemDetails.bind(
+                                  this
+                                )}
+                              >
+                                <input
+                                  type="text"
+                                  className="search-customerAddSrch searchtxt"
+                                  placeholder="Search ItemId/artcile/SKU ID"
+                                  name="Search"
+                                  maxLength="100"
+                                  autoComplete="off"
+                                  value={this.state.searchItem}
+                                  onChange={this.handleSearchItemChange.bind(
+                                    this
+                                  )}
                                 />
-                              </span>
+                                <span
+                                  onClick={this.handleSearchChatItemDetails.bind(
+                                    this
+                                  )}
+                                  className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                >
+                                  <img
+                                    src={SearchBlueImg}
+                                    alt="SearchBlueImg"
+                                    className="srch-imge"
+                                    // onClick={this.handleSearchCustomer}
+                                  />
+                                </span>
+                              </form>
                             </div>
                           </div>
                           <div className="container">
@@ -1672,10 +1698,10 @@ class Header extends Component {
                                     <div
                                       className="col-md-6"
                                       key={i}
-                                      onClick={this.handleSelectCard.bind(
-                                        this,
-                                        item.id
-                                      )}
+                                      // onClick={this.handleSelectCard.bind(
+                                      //   this,
+                                      //   // item.id
+                                      // )}
                                     >
                                       <div className="card">
                                         <div className="card-body position-relative">
@@ -1770,7 +1796,7 @@ class Header extends Component {
                                 <label className="s-lable">
                                   Today:11 May 2020
                                 </label>
-                                <div style={{ display: "inline-block" }}>
+                                <div className="schedule-btn-cntr">
                                   <button className="s-red-btn">
                                     11AM-12PM
                                     <img
@@ -1899,6 +1925,7 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <CKEditor
+                              onChange={this.handleOnChangeCKEditor.bind(this)}
                               config={{
                                 toolbar: [
                                   {
@@ -1925,7 +1952,10 @@ class Header extends Component {
                                 ],
                               }}
                             />
-                            <div className="mobile-ck-send">
+                            <div
+                              className="mobile-ck-send"
+                              onClick={this.handleSaveChatMessages.bind(this)}
+                            >
                               <img src={Assign} alt="send img" />
                             </div>
                           </div>

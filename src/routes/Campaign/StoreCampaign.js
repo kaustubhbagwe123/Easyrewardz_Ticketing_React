@@ -687,7 +687,7 @@ class StoreCampaign extends Component {
                 className: "table-coloum-hide",
                 render: (row, item) => {
                   return (
-                    <div>
+                    <div className="chatbotwid">
                       <Popover
                         content={
                           <div className="insertpop1">
@@ -705,7 +705,7 @@ class StoreCampaign extends Component {
                           <img
                             className="ico"
                             src={ChatbotS}
-                            alt="Whatsapp Icon"
+                            alt="Chatbot Icon"
                           />
                           Chatbot Script
                         </a>
@@ -727,7 +727,7 @@ class StoreCampaign extends Component {
                           <img
                             className="ico"
                             src={ChatbotS}
-                            alt="Whatsapp Icon"
+                            alt="Chatbot Icon"
                           />
                           SMS Script
                         </a>
@@ -1528,58 +1528,113 @@ class StoreCampaign extends Component {
             className="cust-icon"
             onClick={this.responsiveCustModalClose.bind(this)}
           />
-          <div className="productbox">
+          <div className="customername-popupmob">
             <Tabs>
               <Tab label="Chatbot Script">
-                <div>
-                  <h4 style={{ textAlign: "center" }}></h4>
-                  <div className="right-sect-div right-sect-div-edit"></div>
+                <div className="">
+                  <div class="dash-creation-popup custompop">
+                    <label class="poptitle">Chatbot Script</label>
+                    <label class="channelScript">
+                      Dear, I am , your Relationship Manager from Bata, store.
+                      Our store is open now as per local government guidelines.
+                      Your safety &amp; convenience continue to remain our top
+                      priority, and we have introduced new ways Of shopping for
+                      you! You can click on wnuw.bata.in/rec to view our new
+                      collections in your favorite categories. Enter "Visit" to
+                      book an appointment for store visit. Enter "Shop" for
+                      assisted shopping via WhatsApp and one of our staff will
+                      get in touch with you shortly. Enter "Browse" to explore
+                      your favorite categories and continue with your shopping.
+                      Enter "Go Back" to Exit Shopping Mode
+                    </label>
+                  </div>
+                  <div className="camperiod">
+                    <h4>
+                      Campaign Period<span>13 May-20/31 May-20</span>
+                    </h4>
+                  </div>
                 </div>
               </Tab>
               <Tab label="SMS Script">
-                <div>
-                  <h4 style={{ textAlign: "center" }}></h4>
-                  <div className="right-sect-div right-sect-div-edit"></div>
+                <div className="">
+                  <div class="dash-creation-popup custompop">
+                    <label class="poptitle">SMS Script</label>
+                    <label class="channelScript">
+                      Dear, I am , your Relationship Manager from Bata, store.
+                      Our store is open now as per local government guidelines.
+                      Your safety &amp; convenience continue to remain our top
+                      priority, and we have introduced new ways Of shopping for
+                      you! You can click on wnuw.bata.in/rec to view our new
+                      collections in your favorite categories. Enter "Visit" to
+                      book an appointment for store visit. Enter "Shop" for
+                      assisted shopping via WhatsApp and one of our staff will
+                      get in touch with you shortly.
+                    </label>
+                  </div>
+                  <div className="camperiod">
+                    <h4>
+                      Campaign Period<span>13 May-20/31 May-20</span>
+                    </h4>
+                  </div>
                 </div>
               </Tab>
             </Tabs>
           </div>
         </Modal>
-
         {/* ---------------Share via Modal-------------------- */}
         <Modal
           open={this.state.responsiveShareVia}
           onClose={this.handleShareViaModalClose.bind(this)}
           center
-          modalId="customername-popup"
+          modalId="sharecamp-popup"
           overlayId="logout-ovrly"
         >
           <img
             src={CancelIcon}
             alt="cancel-icone"
-            className="cncl-icn"
+            className="cust-icon"
             onClick={this.handleShareViaModalClose.bind(this)}
           />
           <div>
             <h4>Choose Channel</h4>
-            <ul>
-              <li>
-                <img className="ico" src={Sms1} alt="SMS Icon" />
-                SMS
-              </li>
-              <li>
-                <img className="ico" src={Sms1} alt="Email Icon" />
-                Email
-              </li>
-              <li>
-                <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                Send Via Messanger
-              </li>
-              <li>
-                <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                Send Via Bot
-              </li>
-            </ul>
+            <table className="w-100">
+              <tbody>
+                <tr>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    <a href="">Send Via Messanger</a>
+                   </div>
+                  </td>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                    <a href="">Send Via Bot</a>
+                   </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Sms1} alt="SMS Icon" />
+                      <a href="">SMS</a>
+                   </div>
+                  </td>
+                  <td>
+                   <div className="chatbox">
+                    <img className="ico" src={Sms1} alt="Email Icon" />
+                    <a href="">Email</a>
+                   </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="sharecampmob">
+                <label
+                  className="shareviabtn">
+                  Share Now
+                </label>
+              </div>
           </div>
         </Modal>
         {/* ---------Raised Ticket Modal----------- */}

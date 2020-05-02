@@ -1591,8 +1591,12 @@ table tr th:last-child {
   color: #999;
   font-size: 12.5px;
 }
-.trasactablist table thead tr {
+.transactionbox table thead tr, .transactionbox table tbody tr {
   background-color: transparent !important;
+  border: none;
+}
+.lifetimevalue table tbody tr, .pro-slidercam table tbody tr {
+  border: none;
 }
 .trasactablist td {
   padding: 5px 0 3px;
@@ -1678,6 +1682,9 @@ table tr th:last-child {
 .productdesc table {
   margin: 10px 0;
 }
+.productdesc table tbody tr {
+  border-bottom: none;
+}
 .productdesc td {
   padding: 7px 0;
 }
@@ -1743,6 +1750,35 @@ table tr th:last-child {
 .custom-tableak .txtStore, .custom-tableak .txtStore::placeholder {
   font-size: 13px;
 }
+.chatbotwid {
+  min-width: 300px;
+}
+.ant-table-pagination {
+  padding: 0 20px;
+}
+.ant-table-pagination .anticon {
+  vertical-align: text-bottom;
+}
+.ant-table-pagination.ant-pagination {
+  float: right !important;
+  margin: 5px 16px !important;
+}
+.ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next {
+  min-width: 20px !important;
+  height: 20px !important;
+  line-height: 18px !important;
+}
+.ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
+  font-size: 10px !important;
+}
+.ant-pagination-item {
+  min-width: 20px !important;
+  height: 20px !important;
+  line-height: 18px !important;
+}
+.ant-pagination-item a {
+  font-size: 11px !important;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
@@ -1760,6 +1796,45 @@ table tr th:last-child {
   display: contents;
 }
 /* ------------------Campain Media Queries ------------------------- */
+
+@media (min-width: 768px) and (max-width: 850px) {
+  #customername-popup {
+    width: 730px; 
+  }
+  .sharecamp li {
+    min-width: 135px;
+  }
+}
+@media (min-width: 320px) and (max-width: 767px) {
+  #customername-popup {
+    width: 730px; 
+  }
+  .sharecamp li {
+    min-width: 135px;
+  }
+  .sharecamp {
+    margin-top: 25px;
+    display: none;
+  }
+  .sharecampmob {
+    display: block;
+  }
+  .shareviabtn {
+    background-color: #00b894;
+      border-radius: 5px;
+      padding: 7px;
+      color: #ffff;
+      margin-top: 15px;
+      font-size: 12px;
+      display: block;
+      text-align: center;
+  }
+  .shareviabtn .shareviaimg {
+    height: 13px;
+    margin-right: 5px;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .custompop {
     right: 0 !important;
@@ -1825,7 +1900,6 @@ table tr th:last-child {
   }
   .custom-tableak .hdrcloselabel {
     font-size: 10px;
-    vertical-align: text-bottom;
   }
   .custom-tableak {
     padding: 5px 0;
@@ -1898,10 +1972,6 @@ table tr th:last-child {
   padding: 7px !important;
   font-size: 11px;
 }
-#customername-popup {
-  padding: 20px;
-  margin: 15px;
-}
 .cust-icon {
   height: 12px;
 }
@@ -1947,27 +2017,9 @@ table tr th:last-child {
 }
 .sharecamp {
   margin-top: 25px;
-  display: none;
-}
-.sharecampmob {
-  display: block;
 }
 .cust-name .ico {
   margin-left: 4px;
-}
-.shareviabtn {
-  background-color: #00b894;
-    border-radius: 5px;
-    padding: 7px;
-    color: #ffff;
-    margin-top: 15px;
-    font-size: 12px;
-    display: block;
-    text-align: center;
-}
-.shareviabtn .shareviaimg {
-  height: 13px;
-  margin-right: 5px;
 }
 .keyingsightdrp {
   display: block;
@@ -1999,6 +2051,116 @@ table tr th:last-child {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
+}
+#customername-popup {
+  width: 90%; 
+  padding: 30px 20px 20px;
+}
+.customername-popupmob .nav-tabs {
+  border: none;
+  margin: auto;
+  display: block;
+  text-align: center;
+}
+.customername-popupmob .nav-tabs .nav-link.active {
+  color: inherit;
+  border: none;
+  background: none;
+}
+.customername-popupmob .nav-item:first-child .nav-link {
+  color: #ee6261 !important;
+  font-weight: 600;
+  border-radius: 50px;
+  border: 1px solid #ee6261;
+  padding: 6px 15px;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 110px;
+  margin-right: 10px;
+}
+.customername-popupmob .nav-item:last-child .nav-link {
+  color: #2196f3 !important;
+  font-weight: 600;
+  border-radius: 50px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  min-width: 110px;
+  border: 1px solid #2196f3;
+  padding: 6px 15px;
+}
+.customername-popupmob .tab-content {
+  padding-top: 18px;
+  padding-bottom: 0;
+}
+.customername-popupmob .poptitle {
+  font-size: 16px;
+  font-weight: bolder;
+  margin-bottom: 15px;
+}
+.channelScript {
+  display: block;
+  font-size: 11px;
+}
+.camperiod {
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding-top: 15px;
+}
+.camperiod h4 {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+}
+.camperiod h4 span {
+  color: #333;
+  margin-left: 15px;
+}
+#sharecamp-popup {
+  width: 90%; 
+  padding: 20px 10px 20px;
+  position: relative;
+  border-radius: 20px;
+}
+#sharecamp-popup h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+#sharecamp-popup table tbody tr {
+  border: none;
+}
+#sharecamp-popup table td {
+  width: 50%;
+  padding: 0px;
+}
+#sharecamp-popup .chatbox {
+  padding: 10px;
+  background: #f2f5f8;
+  margin: 0 10px 10px 0;
+  border-radius: 10px;
+}
+#sharecamp-popup table td:nth-child(2) .chatbox {
+  margin: 0 0px 10px 0;
+}
+#sharecamp-popup table td:nth-child(3) .chatbox {
+  margin: 0 10px 0px 0;
+}
+#sharecamp-popup table td:nth-child(4) .chatbox {
+  margin: 0 0px 0px 0;
+}
+#sharecamp-popup .ico {
+  display: block;
+  height: 30px;
+  margin: auto;
+  margin-bottom: 6px;
+}
+#sharecamp-popup a {
+  text-align: center;
+  display: block;
+  font-size: 11px;
+  font-weight: normal;
+  color: #333;
 }
 }
 /* ------------------Campain Css End ------------------------- */
