@@ -45,6 +45,7 @@ import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
+import { ItemMeta } from "semantic-ui-react";
 
 class Header extends Component {
   constructor(props) {
@@ -175,6 +176,12 @@ class Header extends Component {
       activeTab: 1,
       cardModal: false,
       searchItem: "",
+      timeSlotData: [],
+      selectedSlot: {},
+      noOfPeople: "",
+      daySelect: "",
+      datesSelect: "",
+      slotID: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -334,7 +341,6 @@ class Header extends Component {
     this.subscription.unsubscribe();
   }
   componentDidUpdate() {
-    debugger;
     if (this.state.chatModal && this.state.isDownbtn) {
       this.scrollToBottom();
     }
@@ -698,7 +704,6 @@ class Header extends Component {
   }
   ////handle save chat messgae
   handleSaveChatMessages() {
-    debugger;
     let self = this;
 
     if (this.state.message !== "" && this.state.chatId > 0) {
@@ -801,6 +806,58 @@ class Header extends Component {
       });
   }
 
+  ////handle get chat notification count
+  handleGetTimeSlot() {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetTimeSlot",
+      headers: authHeader(),
+      params: {
+        storeID: 1,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var timeSlotData = response.data.responseData;
+
+        if (message == "Success" && timeSlotData) {
+          self.setState({ timeSlotData });
+        } else {
+          self.setState({ timeSlotData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetTimeSlot");
+      });
+  }
+  ////handle send schedual visit
+  handleScheduleVisit() {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/ScheduleVisit",
+      headers: authHeader(),
+      params: {
+        storeID: 1,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var timeSlotData = response.data.responseData;
+
+        if (message == "Success" && timeSlotData) {
+          self.setState({ timeSlotData });
+        } else {
+          self.setState({ timeSlotData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleScheduleVisit");
+      });
+  }
   ////handlecselect card in card tab
   handleSelectCard(id) {
     if (
@@ -825,7 +882,6 @@ class Header extends Component {
   }
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
-    debugger;
     var message = evt.editor.getData();
     this.setState({
       message,
@@ -857,13 +913,19 @@ class Header extends Component {
   handleSearchItemChange = (e) => {
     this.setState({ searchItem: e.target.value });
   };
+  ////handle got to message scroll down
   scrollToBottom() {
     const scrollHeight = this.messageList.scrollHeight;
     const height = this.messageList.clientHeight;
     const maxScrollTop = scrollHeight - height;
     this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }
-
+  ////handle no of people text change
+  handleNoOfPeopleChange = (e) => {
+    this.setState({ noOfPeople: e.target.value });
+  };
+  ////handle select slot button
+  handleSelectSlot = (e) => {};
   render() {
     return (
       <React.Fragment>
@@ -1597,7 +1659,7 @@ class Header extends Component {
                             role="tab"
                             aria-controls="schedule-visit-tab"
                             aria-selected="false"
-                            onClick={this.handleGetTimeSlot.bind(this)}
+                            // onClick={this.handleGetTimeSlot.bind(this)}
                           >
                             SCHEDULE VISIT
                           </a>
@@ -1825,46 +1887,158 @@ class Header extends Component {
                             style={{ marginLeft: "5px", marginTop: "10px" }}
                           >
                             <div className="col-md-8 schedule-left-cntr">
+                              {this.state.timeSlotData !== null
+                                ? this.state.timeSlotData.map((item, i) => {
+                                    return (
+                                      <div key={i}>
+                                        <label className="s-lable">
+                                          {item.day + ":" + item.dates}
+                                        </label>
+                                        <div className="schedule-btn-outer-cntr">
+                                          <div className="schedule-btn-cntr">
+                                            {item.timeSlotModels.map(
+                                              (data, k) => {
+                                                if (
+                                                  data.alreadyScheduleDetails
+                                                    .length > 0
+                                                ) {
+                                                  if (
+                                                    data.alreadyScheduleDetails[
+                                                      data
+                                                        .alreadyScheduleDetails
+                                                        .length - 1
+                                                    ]["visitedCount"] ===
+                                                    data.alreadyScheduleDetails[
+                                                      data
+                                                        .alreadyScheduleDetails
+                                                        .length - 1
+                                                    ]["maxCapacity"]
+                                                  ) {
+                                                    return (
+                                                      <Tooltip
+                                                        placement="left"
+                                                        title={
+                                                          data
+                                                            .alreadyScheduleDetails[
+                                                            data
+                                                              .alreadyScheduleDetails
+                                                              .length - 1
+                                                          ]["remaining"] +
+                                                          " MORE PEOPLE LEFT"
+                                                        }
+                                                      >
+                                                        <button
+                                                          className="s-red-active"
+                                                          style={{
+                                                            cursor: "no-drop",
+                                                          }}
+                                                        >
+                                                          11AM-12PM
+                                                        </button>
+                                                      </Tooltip>
+                                                    );
+                                                  } else {
+                                                    return (
+                                                      <Tooltip
+                                                        placement="left"
+                                                        title={
+                                                          data
+                                                            .alreadyScheduleDetails[
+                                                            data
+                                                              .alreadyScheduleDetails
+                                                              .length - 1
+                                                          ]["remaining"] +
+                                                          " MORE PEOPLE LEFT"
+                                                        }
+                                                      >
+                                                        <button className="s-yellow-btn">
+                                                          11AM-12PM
+                                                        </button>
+                                                      </Tooltip>
+                                                    );
+                                                  }
+                                                } else {
+                                                  return (
+                                                    <Tooltip
+                                                      placement="left"
+                                                      title={
+                                                        data.maxCapacity +
+                                                        " MORE PEOPLE LEFT"
+                                                      }
+                                                    >
+                                                      <button
+                                                        className="s-green-btn"
+                                                        // onClick={this.handleSelectSlot.bind(
+                                                        //   this,
+                                                        //   item,
+                                                        //   data
+                                                        // )}
+                                                      >
+                                                        {data.timeSlot}
+                                                        {item.time}
+                                                        {/* <img
+                                                          className="s-img-select"
+                                                          src={CircleRight}
+                                                          alt="circle-right"
+                                                        /> */}
+                                                      </button>
+                                                    </Tooltip>
+                                                  );
+                                                }
+                                              }
+                                            )}
+                                          </div>
+                                          <div className="selectdot-blue">
+                                            <img
+                                              src={SchRight}
+                                              alt="right arrow"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  })
+                                : null}
                               <div>
                                 <label className="s-lable">
-                                  Today:11 May 2020
+                                  Today:12 May 2020
                                 </label>
                                 <div className="schedule-btn-outer-cntr">
                                   <div className="schedule-btn-cntr">
                                     <button className="s-red-btn s-red-active">
                                       11AM-12PM
-                                      <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      />
+                                    </button>
+                                    <button className="s-green-btn">
+                                      11AM-12PM
                                     </button>
                                     <Tooltip
                                       placement="left"
-                                      title="4 MORE PEOPLE LEFT"
+                                      title={"4 MORE PEOPLE LEFT"}
                                     >
-                                      <button className="s-green-btn">
+                                      <button className="s-yellow-active">
                                         11AM-12PM
+                                        <img
+                                          className="s-img-select"
+                                          src={CircleRight}
+                                          alt="circle-right"
+                                        />
                                       </button>
                                     </Tooltip>
-                                    <button className="s-yellw-btn">
-                                      11AM-12PM
-                                    </button>
                                     <button className="s-green-btn ">
                                       11AM-12PM
                                     </button>
                                     <button className="s-red-btn s-red-active">
                                       11AM-12PM
-                                      <img
+                                      {/* <img
                                         className="s-img-select"
                                         src={CircleRight}
                                         alt="circle-right"
-                                      />
+                                      /> */}
                                     </button>
                                     <button className="s-green-btn">
                                       11AM-12PM
                                     </button>
-                                    <button className="s-yellw-btn">
+                                    <button className="s-yellow-btn">
                                       11AM-12PM
                                     </button>
                                     <button className="s-green-btn ">
@@ -1884,16 +2058,16 @@ class Header extends Component {
                                   <div className="schedule-btn-cntr">
                                     <button className="s-red-btn s-red-active">
                                       11AM-12PM
-                                      <img
+                                      {/* <img
                                         className="s-img-select"
                                         src={CircleRight}
                                         alt="circle-right"
-                                      />
+                                      /> */}
                                     </button>
                                     <button className="s-green-btn">
                                       11AM-12PM
                                     </button>
-                                    <button className="s-yellw-btn">
+                                    <button className="s-yellow-btn">
                                       11AM-12PM
                                     </button>
                                     <button className="s-green-btn ">
@@ -1901,16 +2075,16 @@ class Header extends Component {
                                     </button>
                                     <button className="s-red-btn s-red-active">
                                       11AM-12PM
-                                      <img
+                                      {/* <img
                                         className="s-img-select"
                                         src={CircleRight}
                                         alt="circle-right"
-                                      />
+                                      /> */}
                                     </button>
                                     <button className="s-green-btn">
                                       11AM-12PM
                                     </button>
-                                    <button className="s-yellw-btn">
+                                    <button className="s-yellow-btn">
                                       11AM-12PM
                                     </button>
                                     <button className="s-green-btn ">
@@ -1930,16 +2104,16 @@ class Header extends Component {
                                   <div className="schedule-btn-cntr">
                                     <button className="s-red-btn s-red-active">
                                       11AM-12PM
-                                      <img
+                                      {/* <img
                                         className="s-img-select"
                                         src={CircleRight}
                                         alt="circle-right"
-                                      />
+                                      /> */}
                                     </button>
                                     <button className="s-green-btn">
                                       11AM-12PM
                                     </button>
-                                    <button className="s-yellw-btn">
+                                    <button className="s-yellow-btn">
                                       11AM-12PM
                                     </button>
                                     <button className="s-green-btn ">
@@ -1947,16 +2121,16 @@ class Header extends Component {
                                     </button>
                                     <button className="s-red-btn s-red-active">
                                       11AM-12PM
-                                      <img
+                                      {/* <img
                                         className="s-img-select"
                                         src={CircleRight}
                                         alt="circle-right"
-                                      />
+                                      /> */}
                                     </button>
                                     <button className="s-green-btn">
                                       11AM-12PM
                                     </button>
-                                    <button className="s-yellw-btn">
+                                    <button className="s-yellow-btn">
                                       11AM-12PM
                                     </button>
                                     <button className="s-green-btn ">
@@ -1989,7 +2163,13 @@ class Header extends Component {
                                     <label className="s-lable">
                                       No of People
                                     </label>
-                                    <input type="text" />
+                                    <input
+                                      type="text"
+                                      value={this.state.noOfPeople}
+                                      onChange={this.handleNoOfPeopleChange.bind(
+                                        this
+                                      )}
+                                    />
                                   </div>
                                 </div>
                                 <button className="butn ml-auto">

@@ -570,15 +570,17 @@ p {
   border-radius: 3px;
   min-width: auto;
 }
-.s-yellw-btn {
+.s-yellow-btn {
   color: #000;
   border-color: #f7b500;
   background-color: #fff;
+  cursor: pointer;
 }
 .s-green-btn {
   color: #000;
   border-color: #30ba93;
   background-color: #fff;
+  cursor: pointer;
 }
 .s-red-btn {
   color: #000;
@@ -589,14 +591,17 @@ p {
 .s-red-active {
   background-color: #bd3939;
   color: #fff;
+  border-color: #bd3939;
 }
 .s-yellow-active {
   background-color: #f7b500;
   color: #fff;
+  border-color: #f7b500;
 }
 .s-green-active {
   background-color: #30ba93;
   color: #fff;
+  border-color: #30ba93;
 }
 .s-lable {
   font-weight: 700;
