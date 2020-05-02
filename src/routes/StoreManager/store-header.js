@@ -182,6 +182,8 @@ class Header extends Component {
       daySelect: "",
       datesSelect: "",
       slotID: "",
+      messageSuggestionData: [],
+      messageSuggestion: ""
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -883,10 +885,68 @@ class Header extends Component {
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
     var message = evt.editor.getData();
+    var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
+    messageSuggestion = messageSuggestion.replace("&nbsp;","").trim();
     this.setState({
       message,
+      messageSuggestion
     });
+    setTimeout(() => {
+      if (this.state.messageSuggestion.length > 2) {
+        this.handleGetMessageSuggestionList();
+      } else {
+        this.setState({
+          messageSuggestionData: []
+        });
+      }
+    }, 1);
   };
+
+  handleGetMessageSuggestionList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/gettitlesuggestions",
+      headers: authHeader(),
+      params: {
+        TikcketTitle: this.state.messageSuggestion
+      }
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ messageSuggestionData: data });
+        } else {
+          self.setState({ messageSuggestionData: [] });
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+  }
+
+  handleAppendMessageSuggestion = e => {
+    this.setState({ toggleTitle: true });
+    var startPoint = this.state.message.length;
+    var textLength = this.state.message.length;
+    var textBefore = this.state.message.substring(0, startPoint);
+    var textBeforeArr = textBefore.split(" ");
+    textBeforeArr.pop();
+    textBeforeArr.push(e.currentTarget.textContent);
+    textBefore = textBeforeArr.join(" ");
+    var textAfter = this.state.message.substring(startPoint, textLength);
+    // alert(textBefore + "....." + textAfter);
+    // let clickedInfo = e.currentTarget.innerText;
+    let clickedInfo = e.currentTarget.textContent;
+    let message = this.state.message;
+    //titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
+    message = "<p>"+textBefore + " " + textAfter+"</p>";
+
+    this.setState({ message });
+    // this.searchInput.focus();
+  };
+
   ////handle on going chat click
   handleOngoingChatClick = (id, name, count) => {
     this.setState({ customerName: name });
@@ -1697,6 +1757,7 @@ class Header extends Component {
                             <CKEditor
                               data={this.state.message}
                               onChange={this.handleOnChangeCKEditor}
+                              id="messageSuggestion"
                               config={{
                                 toolbar: [
                                   {
@@ -1732,6 +1793,22 @@ class Header extends Component {
                               >
                                 {this.state.isMessage}
                               </p>
+                            )}
+                            {this.state.messageSuggestionData !== null &&
+                            this.state.messageSuggestionData.length > 0 &&
+                            this.state.messageSuggestionData.length > 0 && (
+                              <div className="custom-ticket-title-suggestions">
+                                {this.state.messageSuggestionData !== null &&
+                                  this.state.messageSuggestionData.map((item, i) => (
+                                    <span
+                                      key={i}
+                                      onClick={this.handleAppendMessageSuggestion}
+                                      title={item.ticketTitleToolTip}
+                                    >
+                                      {item.ticketTitle}
+                                    </span>
+                                  ))}
+                              </div>
                             )}
                             <div
                               className="mobile-ck-send"
