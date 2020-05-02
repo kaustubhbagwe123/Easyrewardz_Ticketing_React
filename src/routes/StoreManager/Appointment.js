@@ -11,37 +11,6 @@ class Appointment extends Component {
         super(props);
         this.state = {
           loading: false,
-          // appointmentGridData: [{id:1, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:1, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: "Visited"},
-          //                       {id:2, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:3, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:2, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:4, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:5, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:3, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:6, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:7, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:4, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:8, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:9, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:5, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:10, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:11, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:6, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:12, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:13, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:7, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:14, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:15, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:8, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:16, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:17, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:9, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:18, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:19, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]},
-          //                       {id:10, date:"12 Feb, 2020", time:"09-10PM", appointments:"12",
-          //                       subAppointmentData: [{id:20, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""},
-          //                       {id:21, customerName: "Vipin Sattar", mobileNo: "+91 9876543210", noOfPeople: "2", status: ""}]}],
           appointmentGridData:[],
           rowExpandedCount: 0,
           todayCount: 0,
@@ -49,7 +18,7 @@ class Appointment extends Component {
           dayAfterTomorrowCount: 0,
           tomorrowDay: "",
           dayAfterTomorrowDay: "",
-          status: "",
+          status: [],
           tabFor: 1       
         }
         this.onRowExpand = this.onRowExpand.bind(this);
@@ -67,7 +36,8 @@ class Appointment extends Component {
         var date = "";
         this.setState({
           loading: true,
-          tabFor: tabFor
+          tabFor: tabFor,
+          status: []
         });
         if(tabFor === 1){
           date = moment(new Date()).format('YYYY-MM-DD');
@@ -149,7 +119,7 @@ class Appointment extends Component {
             url: config.apiUrl + "/Appointment/UpdateAppointmentStatus",
             data:{
               AppointmentID: appointmentID,
-              Status: parseInt(this.state.status)
+              Status: parseInt(this.state.status[appointmentID])
             },
             headers: authHeader(),
         }).then(function(res) {
@@ -160,7 +130,7 @@ class Appointment extends Component {
             }else{
               NotificationManager.error(status);
             }
-            self.handleAppointmentGridData();
+            self.handleAppointmentGridData(self.state.tabFor);
         }).catch((data) => {
             console.log(data);
         });
@@ -184,13 +154,17 @@ class Appointment extends Component {
           });
         }
       }
-
-      handleOnChange(e){
-        debugger;
-        this.setState({
-          [e.target.name]: e.target.value
+      
+      handleOnChange(event, index) {
+        const val = event.target.value;
+        this.setState(oldState => {
+          const newStatus = oldState.status.slice();
+          newStatus[index] = val;
+          return {
+            status: newStatus
+          };
         });
-      }
+      };
 
     render() {
         return(
@@ -272,8 +246,8 @@ class Appointment extends Component {
                                 return (
                                 <div className="d-flex">
                                   <div>
-                                    <select name="status" value={this.state.status}
-                                     onChange={this.handleOnChange}
+                                    <select value={this.state.status[row.appointmentID]}
+                                     onChange={e => this.handleOnChange(e, row.appointmentID)}
                                     >
                                       <option value="">Select Status</option>
                                       <option value="0">Cancel</option>
