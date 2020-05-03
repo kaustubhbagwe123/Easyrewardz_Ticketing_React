@@ -1152,8 +1152,6 @@ class StoreCampaign extends Component {
                       },
                     },
                   ]}
-<<<<<<< HEAD
-=======
                   expandedRowRender={(row, item) => {
                     return (
                       <div className="innertabcollapse">
@@ -1291,7 +1289,6 @@ class StoreCampaign extends Component {
                   }}
                   expandIconColumnIndex={3}
                   expandIconAsCell={false}
->>>>>>> f5014494232eaf2396211d600332c079a2fac452
                   pagination={false}
                   loading={this.state.ChildTblLoading}
                 />
