@@ -1831,6 +1831,9 @@ table tr th:last-child {
   text-align: center;
   line-height: 0;
 }
+.innertabcollapse td {
+  padding: 0;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
