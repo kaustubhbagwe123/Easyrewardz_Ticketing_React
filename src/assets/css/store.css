@@ -1385,6 +1385,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100px;
   height: 30px;
+  color: #fff;
   text-transform: initial;
 }
 .custom-tableak .txtStore {
@@ -1760,8 +1761,9 @@ table tr th:last-child {
   font-size: 12px;
 }
 .custom-tableak .table-btnlabel {
-  font-size: 12px;
+  font-size: 11px;
 }
+
 .custom-tableak .txtStore,
 .custom-tableak .txtStore::placeholder {
   font-size: 13px;
@@ -1832,7 +1834,8 @@ table tr th:last-child {
   line-height: 0;
 }
 .innertabcollapse td {
-  padding: 0;
+  padding: 7px !important;
+  font-size: 11px;
 }
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
@@ -1982,13 +1985,16 @@ display: none;
   .notConnectedBtnRed {
     width: 95px;
     height: 22px;
+    font-weight: normal;
   }
   .contactBtnGreen {
     width: 95px;
+    font-weight: normal;
     height: 22px;
   }
   .followUpBtnYellow {
     width: 95px;
+    font-weight: normal;
     height: 22px;
   }
   .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
@@ -2289,7 +2295,24 @@ display: none;
 }
 .midalResponseAction .ant-table-row-collapsed,.midalResponseAction .ant-table-row-expanded{
   display: block;
-  }
+}
+.custom-tableak .txtStore, .custom-tableak .txtStore::placeholder {
+  font-size: 12px;
+}
+.innertabcollapse .dateTimeStore {
+  width: 160px;
+  height: 28px;
+}
+.innertabcollapse .responceDrop-down {
+  width: 160px;
+  height: 28px;
+}
+.custom-tableak .saveLabel {
+  text-align: center;
+  font-size: 11px;
+  width: 60px;
+  height: 28px;
+}
 }
 /* ------------------Campain Css End ------------------------- */
 

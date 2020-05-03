@@ -1116,10 +1116,15 @@ class StoreCampaign extends Component {
                                 <label>Customer Name</label>
                               </td>
                               <td>
-                                <label>
+                                <label className="cust-name">
                                   {row.customerName}
-                                  <span>{row.customerNumber}</span>
+                                  <img
+                                className="ico"
+                                src={Whatsapp}
+                                alt="Whatsapp Icon"
+                              />
                                 </label>
+                                  <span className="sml-fnt">{row.customerNumber}</span>
                               </td>
                               <td></td>
                             </tr>
@@ -1217,8 +1222,9 @@ class StoreCampaign extends Component {
                               <td></td>
                             </tr>
                             <tr>
-                              <td>
-                                <button
+                              <td colspan="3">
+                                <div style={{float:"right"}}>
+                                  <button
                                   className="saveBtn saveLabel"
                                   type="button"
                                   onClick={this.handleUpdateCampaignResponse.bind(
@@ -1231,9 +1237,12 @@ class StoreCampaign extends Component {
                                 >
                                   Update
                                 </button>
-                                <button style={{ display: "none" }}>
+                                <button 
+                                  className="raisedticket-Btn saveLabel"
+                                  style={{ display: "none" }}>
                                   Raise Ticket
                                 </button>
+                                </div>
                               </td>
                             </tr>
                           </tbody>
