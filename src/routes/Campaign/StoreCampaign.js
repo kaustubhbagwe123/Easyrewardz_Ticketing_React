@@ -1302,10 +1302,6 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> f5014494232eaf2396211d600332c079a2fac452
         <Pagination
           postsPerPage={this.state.postsPerPage}
           totalGridData={this.state.totalGridRecord}
