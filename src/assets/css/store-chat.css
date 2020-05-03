@@ -612,9 +612,9 @@ p {
 .selectdot {
   width: 25px;
   position: absolute;
-  top: -20px;
+  top: 0px;
   z-index: 1;
-  right: -20px;
+  right: 6px;
 }
 .storeUpbtn {
   background-color: #fff;

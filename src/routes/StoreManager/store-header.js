@@ -721,13 +721,21 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages() {
+  handleSaveChatMessages(messageStringData) {
     let self = this;
+    var messagecontent = "";
+    if (messageStringData) {
+      messagecontent = messageStringData
+        .replace("col-md-4", "col-md-2")
+        .replace("col-md-8", "col-md-10");
+    } else {
+      messagecontent = this.state.message;
+    }
 
-    if (this.state.message !== "" && this.state.chatId > 0) {
+    if (messagecontent !== "" && this.state.chatId > 0) {
       var inputParam = {};
       inputParam.chatID = this.state.chatId;
-      inputParam.message = this.state.message;
+      inputParam.message = messagecontent;
       inputParam.attachment = null;
       inputParam.byCustomer = false;
       inputParam.chatStatus = 0;
@@ -934,6 +942,8 @@ class Header extends Component {
     // this.setState({
     //   searchCardData: this.state.searchCardData,
     // });
+    // var messageStringData = document.getElementById("card" + id).innerHTML;
+
     this.setState({ selectedCard: id });
   }
   ////handle button down click
@@ -944,17 +954,17 @@ class Header extends Component {
   handleOnChangeCKEditor = (evt) => {
     var message = evt.editor.getData();
     var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
-    messageSuggestion = messageSuggestion.replace("&nbsp;","").trim();
+    messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     this.setState({
       message,
-      messageSuggestion
+      messageSuggestion,
     });
     setTimeout(() => {
       if (this.state.messageSuggestion.length > 2) {
         this.handleGetMessageSuggestionList();
       } else {
         this.setState({
-          messageSuggestionData: []
+          messageSuggestionData: [],
         });
       }
     }, 1);
@@ -967,8 +977,8 @@ class Header extends Component {
       url: config.apiUrl + "/Ticketing/gettitlesuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: this.state.messageSuggestion
-      }
+        TikcketTitle: this.state.messageSuggestion,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -979,12 +989,12 @@ class Header extends Component {
           self.setState({ messageSuggestionData: [] });
         }
       })
-      .catch(res => {
+      .catch((res) => {
         console.log(res);
       });
   }
 
-  handleAppendMessageSuggestion = e => {
+  handleAppendMessageSuggestion = (e) => {
     this.setState({ toggleTitle: true });
     var startPoint = this.state.message.length;
     var textLength = this.state.message.length;
@@ -999,7 +1009,7 @@ class Header extends Component {
     let clickedInfo = e.currentTarget.textContent;
     let message = this.state.message;
     //titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
-    message = "<p>"+textBefore + " " + textAfter+"</p>";
+    message = "<p>" + textBefore + " " + textAfter + "</p>";
 
     this.setState({ message });
     // this.searchInput.focus();
@@ -1092,8 +1102,28 @@ class Header extends Component {
   onOpenPaymentModal = () => {
     this.setState({ paymentModal: true });
   };
+  ////handel enter pressed event in card
+  enterPressed(event) {
+    var code = event.keyCode || event.which;
+    if (code === 13) {
+      this.handleSearchChatItemDetails();
+    }
+  }
+  ////handle card send button
+  handleSendCard() {
+    if (this.state.selectedCard > 0) {
+      debugger;
+      var messageStringData = document.getElementById(
+        "card" + this.state.selectedCard
+      ).innerHTML;
+      // this.setState({ message: messageStringData });
+
+      this.handleSaveChatMessages(messageStringData);
+    }
+  }
 
   render() {
+    console.log(this.state.message);
     return (
       <React.Fragment>
         <div
@@ -1903,8 +1933,11 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <CKEditor
+                              onBeforeLoad={(CKEDITOR) =>
+                                (CKEDITOR.disableAutoInline = true)
+                              }
                               data={this.state.message}
-                              onChange={this.handleOnChangeCKEditor}
+                              onChange={this.handleOnChangeCKEditor.bind(this)}
                               id="messageSuggestion"
                               config={{
                                 toolbar: [
@@ -1943,21 +1976,25 @@ class Header extends Component {
                               </p>
                             )}
                             {this.state.messageSuggestionData !== null &&
-                            this.state.messageSuggestionData.length > 0 &&
-                            this.state.messageSuggestionData.length > 0 && (
-                              <div className="custom-ticket-title-suggestions">
-                                {this.state.messageSuggestionData !== null &&
-                                  this.state.messageSuggestionData.map((item, i) => (
-                                    <span
-                                      key={i}
-                                      onClick={this.handleAppendMessageSuggestion}
-                                      title={item.ticketTitleToolTip}
-                                    >
-                                      {item.ticketTitle}
-                                    </span>
-                                  ))}
-                              </div>
-                            )}
+                              this.state.messageSuggestionData.length > 0 &&
+                              this.state.messageSuggestionData.length > 0 && (
+                                <div className="custom-ticket-title-suggestions">
+                                  {this.state.messageSuggestionData !== null &&
+                                    this.state.messageSuggestionData.map(
+                                      (item, i) => (
+                                        <span
+                                          key={i}
+                                          onClick={
+                                            this.handleAppendMessageSuggestion
+                                          }
+                                          title={item.ticketTitleToolTip}
+                                        >
+                                          {item.ticketTitle}
+                                        </span>
+                                      )
+                                    )}
+                                </div>
+                              )}
                             <div
                               className="mobile-ck-send"
                               onClick={this.handleSaveChatMessages.bind(this)}
@@ -1979,38 +2016,32 @@ class Header extends Component {
                               className="input-group searchtxt-new"
                               style={{ background: "none" }}
                             >
-                              <form
-                                style={{ width: "100%" }}
-                                onSubmit={this.handleSearchChatItemDetails.bind(
+                              <input
+                                type="text"
+                                className="search-customerAddSrch searchtxt"
+                                placeholder="Search ItemId/artcile/SKU ID"
+                                name="Search"
+                                maxLength="100"
+                                autoComplete="off"
+                                value={this.state.searchItem}
+                                onChange={this.handleSearchItemChange.bind(
                                   this
                                 )}
+                                onKeyPress={this.enterPressed.bind(this)}
+                              />
+                              <span
+                                onClick={this.handleSearchChatItemDetails.bind(
+                                  this
+                                )}
+                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
                               >
-                                <input
-                                  type="text"
-                                  className="search-customerAddSrch searchtxt"
-                                  placeholder="Search ItemId/artcile/SKU ID"
-                                  name="Search"
-                                  maxLength="100"
-                                  autoComplete="off"
-                                  value={this.state.searchItem}
-                                  onChange={this.handleSearchItemChange.bind(
-                                    this
-                                  )}
+                                <img
+                                  src={SearchBlueImg}
+                                  alt="SearchBlueImg"
+                                  className="srch-imge"
+                                  // onClick={this.handleSearchCustomer}
                                 />
-                                <span
-                                  onClick={this.handleSearchChatItemDetails.bind(
-                                    this
-                                  )}
-                                  className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                >
-                                  <img
-                                    src={SearchBlueImg}
-                                    alt="SearchBlueImg"
-                                    className="srch-imge"
-                                    // onClick={this.handleSearchCustomer}
-                                  />
-                                </span>
-                              </form>
+                              </span>
                             </div>
                           </div>
                           <div className="container">
@@ -2022,7 +2053,6 @@ class Header extends Component {
                             >
                               {this.state.searchCardData !== null &&
                                 this.state.searchCardData.map((item, i) => {
-                                  debugger;
                                   return (
                                     <div
                                       className="col-md-6"
@@ -2032,18 +2062,18 @@ class Header extends Component {
                                         this,
                                         item.itemID
                                       )}
-                                    >
+                                    >{item.itemID ===
+                                      this.state.selectedCard ? (
+                                        <div className="selectdot">
+                                          <img
+                                            src={CardTick}
+                                            alt={"select-card"}
+                                          />
+                                        </div>
+                                      ) : null}
                                       <div className="card">
                                         <div className="card-body position-relative">
-                                          {item.itemID ===
-                                          this.state.selectedCard ? (
-                                            <div className="selectdot">
-                                              <img
-                                                src={CardTick}
-                                                alt={"select-card"}
-                                              />
-                                            </div>
-                                          ) : null}
+                                          
                                           {/* <div className="container"> */}
                                           <div
                                             className="row"
@@ -2079,9 +2109,9 @@ class Header extends Component {
                                                 </label>
                                               </div>
                                               <div>
-                                                <label className="chat-product-url">
+                                                <a href={item.redirectionUrl} target="_blank" className="chat-product-url">
                                                   {item.redirectionUrl}
-                                                </label>
+                                                </a>
                                               </div>
                                             </div>
                                           </div>
@@ -2105,7 +2135,10 @@ class Header extends Component {
                                     <img src={UpBlue} alt="up-arrow" />
                                   )}
                                 </button>
-                                <button className="butn">
+                                <button
+                                  className="butn"
+                                  onClick={this.handleSendCard.bind(this)}
+                                >
                                   Send
                                   <img
                                     src={SendUp}
@@ -2505,6 +2538,9 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <CKEditor
+                              onBeforeLoad={(CKEDITOR) =>
+                                (CKEDITOR.disableAutoInline = true)
+                              }
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                               config={{
                                 toolbar: [
